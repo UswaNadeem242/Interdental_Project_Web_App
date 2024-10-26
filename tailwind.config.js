@@ -2,7 +2,49 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        brand: "#013764",
+        secondaryBrand: "#001D58",
+        tertiaryBrand: "#393A44",
+        primaryText: "#434343",
+        secondaryText: "#949494",
+        textField: "#F8F8F8",
+        card: "#F8F8F8",
+        bgWhite: "#FFFFFF",
+        bgBlack: "#000000",
+      },
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+        workSans: ["Work Sans", "sans-serif"],
+      },
+      fontWeight: {
+        thin: 100,
+        extralight: 200,
+        light: 300,
+        normal: 400,
+        medium: 500,
+        semibold: 600,
+        bold: 700,
+        extrabold: 800,
+        black: 900,
+      },
+      fontWeight: {
+        thin: 100,
+        extralight: 200,
+        light: 300,
+        normal: 400,
+        medium: 500,
+        semibold: 600,
+        bold: 700,
+        extrabold: 800,
+        black: 900,
+      },
+      fontSize: {
+        primary: "14px",
+        secondary: "28px",
+      },
+    },
   },
   plugins: [],
 };
