@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
@@ -6,10 +7,11 @@ import Layout from "./layout/Layout";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Shop from "./pages/Shop";
 import Brands from "./pages/Brands";
 import Categories from "./pages/Categories";
 import About from "./pages/About";
+import Shop from "./pages/Shop";
+const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
 
 // const router = createBrowserRouter([
 //   {
@@ -33,6 +35,7 @@ function App() {
           <Route path="/brands" element={<Brands />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/aboutus" element={<About />} />
+          <Route path="/product/:productId" element={<SingleProduct />} />
         </Routes>
         <Footer />
       </Router>

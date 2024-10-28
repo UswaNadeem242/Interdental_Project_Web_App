@@ -31,7 +31,7 @@ const Brands = () => {
     <div className="flex flex-col justify-start items-center">
       <div className="flex flex-col justify-center items-center w-[1306px] h-[205px] space-y-[24px]">
         <h1 className="font-workSans font-semibold text-[20px] leading-[23.46px] text-black">
-          Brands
+          BRANDS
         </h1>
         <div className="flex justify-center items-center w-[1282px] h-[158px] gap-[21.72px]">
           {brands.map((brand) => (

@@ -7,6 +7,7 @@ import product5 from "../assets/product5.png";
 import product6 from "../assets/product6.png";
 import product7 from "../assets/product7.png";
 import product8 from "../assets/product8.png";
+import { useNavigate } from "react-router-dom";
 
 const featureProducts = [
   {
@@ -60,9 +61,10 @@ const featureProducts = [
 ];
 
 const FeaturedProducts = () => {
+  const navigate = useNavigate();
   return (
     // h-[906px] change needs to be done on parent div
-    <div className="flex flex-col justify-center items-center w-[1306px] mb-[100px]">
+    <div className="flex flex-col justify-center items-center w-[1306px] mb-[100px] space-y-16">
       <div className="flex justify-center items-center w-[1305px] h-[63px] gap-[41px]">
         <div className="w-[376px] h-[1px] border-[1px] border-[#0000001A]"></div>
         <div className="flex flex-col justify-center items-center w-[219px] h-[63px] space-y-[8px]">
@@ -80,7 +82,10 @@ const FeaturedProducts = () => {
       <div className="w-[1305.62px] h-[806px] space-y-[32px]">
         <div className="flex flex-wrap w-full h-[386px] gap-[31px]">
           {featureProducts.map((product) => (
-            <div className="flex flex-col justify-center items-center w-[303.15px] h-[386px] p-[20px] space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]">
+            <div
+              onClick={() => navigate(`/product/${product.id}`)}
+              className="flex flex-col justify-center items-center cursor-pointer w-[303.15px] h-[386px] p-[20px] space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
+            >
               <img
                 src={product.img}
                 alt="product"
