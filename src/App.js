@@ -11,7 +11,10 @@ import Brands from "./pages/Brands";
 import Categories from "./pages/Categories";
 import About from "./pages/About";
 import Shop from "./pages/Shop";
-const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
+import SingleProduct from "./pages/SingleProduct";
+import Signup from "./pages/Signup";
+import ForgetPassword from "./pages/ForgetPassword";
+// const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
 
 // const router = createBrowserRouter([
 //   {
@@ -23,21 +26,96 @@ const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
 //     element: <Login />,
 //   },
 // ]);
+const MainLayout = ({ children }) => (
+  <div>
+    <Header />
+    <div>{children}</div>
+    <Footer />
+  </div>
+);
+
+const PlainLayout = ({ children }) => <div>{children}</div>;
 
 function App() {
   return (
     <div>
       <Router>
-        <Header />
+        {/* <Header /> */}
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/brands" element={<Brands />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/aboutus" element={<About />} />
-          <Route path="/product/:productId" element={<SingleProduct />} />
+          <Route
+            path="/"
+            element={
+              <MainLayout>
+                <Home />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/shop"
+            element={
+              <MainLayout>
+                <Shop />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/brands"
+            element={
+              <MainLayout>
+                <Brands />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/categories"
+            element={
+              <MainLayout>
+                <Categories />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/aboutus"
+            element={
+              <MainLayout>
+                <About />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/product/:productId"
+            element={
+              <MainLayout>
+                <SingleProduct />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PlainLayout>
+                <Login />
+              </PlainLayout>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PlainLayout>
+                <Signup />
+              </PlainLayout>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <PlainLayout>
+                <ForgetPassword />
+              </PlainLayout>
+            }
+          />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
 
       {/* <Layout>

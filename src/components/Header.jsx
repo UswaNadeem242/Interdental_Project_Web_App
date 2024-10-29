@@ -3,8 +3,10 @@ import { NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import vector from "../assets/Vector.png";
 import search from "../assets/Search.png";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const NavMenu = [
     {
       id: 1,
@@ -107,8 +109,11 @@ const Header = () => {
             </svg>
           </div>
           <div className="flex justify-between items-center w-[125px]">
-            <div className="flex justify-center items-center  w-[65px] h-[34px] rounded-[37px] gap-[8px] bg-secondaryBrand">
-              <h1 className="flex justify-center items-center leading-[18px] font-poppins font-normal text-white text-[12px] w-full">
+            <div
+              onClick={() => navigate("/login")}
+              className="flex justify-center items-center  w-[65px] h-[34px] rounded-[37px] gap-[8px] bg-secondaryBrand"
+            >
+              <h1 className="flex justify-center items-center cursor-pointer leading-[18px] font-poppins font-normal text-white text-[12px] w-full">
                 Log in
               </h1>
             </div>
