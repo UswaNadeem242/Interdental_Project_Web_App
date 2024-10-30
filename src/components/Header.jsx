@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import vector from "../assets/Vector.png";
 import search from "../assets/Search.png";
 import { useNavigate } from "react-router-dom";
+import ShoppingCart from "../modals/ShoppingCartModal";
+import ProfileDropdown from "./dropdowns/ProfileDropdown";
+import CategoriesDropdowon from "./dropdowns/CategoriesDropdown";
+import SearchBarDropdown from "./dropdowns/SearchBarDropdown";
+import NotificationsDropdown from "./dropdowns/NotificationsDropdown";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profileDropdown, setProfileDropdown] = useState(false);
+  const [categoriesDropdown, setCategoriesDropdown] = useState(false);
+  const [searchDropdown, setSearchDropdown] = useState(false);
+  const [notificationsDropdown, setNotificationsDropdown] = useState(false);
+
+  const [user, setuser] = useState({
+    name: "Jhoony",
+  });
   const NavMenu = [
     {
       id: 1,
@@ -34,21 +48,42 @@ const Header = () => {
       <div className="flex w-full h-[45.77px] px-[100px] gap-[94px]">
         <img src={logo} alt="logo" className="w-[200px] h-[45.77px]" />
         <div className="flex w-[665.83px] gap-[32px]">
-          <div className="flex justify-center items-center w-[126px] h-[42px] gap-[8px] px-[16px] py-[8px] rounded-[50px] border-[1px] border-[#0000001A]">
-            <h1>Categories</h1>
-            <img src={vector} alt="vector" />
-          </div>
-          <div className="relative w-[531.83px]">
-            <input
-              type="text"
-              name=""
-              id=""
-              placeholder="Search"
-              className="w-[531.83px] h-[42px] border-[1px] border-[#0000001A] rounded-[53px] gap-[8px] px-[16px] py-[4px] placeholder:font-poppins placeholder:font-normal placeholder:text-14px"
-            />
-            <div className="absolute right-[8px] top-[20px] transform -translate-y-1/2 w-[34px] h-[34px] rounded-[22px] p-[8px] gap-[8px] bg-secondaryBrand">
-              <img src={search} alt="search" className="w-[18px] h-[18px]" />
+          <div className="flex flex-col relative">
+            <div
+              onClick={() => setCategoriesDropdown(!categoriesDropdown)}
+              className="flex justify-center items-center w-[126px] h-[42px] gap-[8px] px-[16px] py-[8px] rounded-[50px] border-[1px] border-[#0000001A]"
+            >
+              <h1>Categories</h1>
+              <img src={vector} alt="vector" />
             </div>
+            {categoriesDropdown && (
+              <div className="absolute right-0 top-12 mt-2 z-10">
+                <CategoriesDropdowon />
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col relative">
+            <div
+              onClick={() => setSearchDropdown(!searchDropdown)}
+              className="relative w-[531.83px]"
+            >
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Search"
+                className="w-[531.83px] h-[42px] border-[1px] border-[#0000001A] outline-none rounded-[53px] gap-[8px] px-[16px] py-[4px] placeholder:font-poppins placeholder:font-normal placeholder:text-14px"
+              />
+              <div className="absolute right-[8px] top-[20px] transform -translate-y-1/2 w-[34px] h-[34px] rounded-[22px] p-[8px] gap-[8px] bg-secondaryBrand">
+                <img src={search} alt="search" className="w-[18px] h-[18px]" />
+              </div>
+            </div>
+            {searchDropdown && (
+              <div className="absolute right-0 top-12 mt-2 z-10">
+                <SearchBarDropdown />
+              </div>
+            )}
           </div>
         </div>
         <div className="flex justify-between items-center w-[258.17px] h-[34px] gap-[20.39px]">
@@ -59,6 +94,7 @@ const Header = () => {
               viewBox="0 0 26 25"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              onClick={() => setIsModalOpen(true)}
             >
               <path
                 d="M20.1654 17.2964H11.5597C10.7765 17.2908 10.018 17.022 9.40607 16.5333C8.79415 16.0445 8.36441 15.3641 8.18594 14.6015L6.81452 9.02667C6.68834 8.50903 6.68187 7.96943 6.7956 7.44891C6.90933 6.92839 7.14027 6.44066 7.47084 6.02282C7.80142 5.60497 8.22292 5.26802 8.70331 5.03757C9.18369 4.80713 9.7103 4.68927 10.2431 4.69295H21.5574C22.0902 4.68927 22.6168 4.80713 23.0972 5.03757C23.5775 5.26802 23.999 5.60497 24.3296 6.02282C24.6602 6.44066 24.8911 6.92839 25.0049 7.44891C25.1186 7.96943 25.1121 8.50903 24.9859 9.02667L23.6145 14.6152C23.4293 15.3873 22.9869 16.0734 22.3601 16.5606C21.7333 17.0479 20.9593 17.3074 20.1654 17.2964ZM10.2019 6.40724C9.9309 6.40807 9.66356 6.47021 9.41995 6.58902C9.17633 6.70782 8.96275 6.88021 8.79521 7.09326C8.62766 7.30632 8.5105 7.55452 8.45249 7.81929C8.39448 8.08405 8.39712 8.3585 8.46023 8.6221L9.83166 14.2107C9.92454 14.6023 10.1472 14.951 10.4634 15.2C10.7797 15.449 11.1709 15.5837 11.5734 15.5821H20.1654C20.5679 15.5837 20.9591 15.449 21.2753 15.2C21.5915 14.951 21.8142 14.6023 21.9071 14.2107L23.2785 8.6221C23.343 8.35839 23.3467 8.08347 23.2892 7.81815C23.2317 7.55282 23.1147 7.30405 22.9469 7.09065C22.7791 6.87725 22.5649 6.70483 22.3206 6.58643C22.0763 6.46803 21.8083 6.40675 21.5368 6.40724H10.2019Z"
@@ -88,39 +124,105 @@ const Header = () => {
                 stroke-linejoin="round"
               />
             </svg>
-            <svg
-              width="25"
-              height="25"
-              viewBox="0 0 25 25"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M19.3595 10.5968V9.89217C19.3595 6.02344 16.3378 2.88721 12.6104 2.88721C8.88291 2.88721 5.86122 6.02344 5.86122 9.89217V10.5968C5.86122 11.4424 5.62007 12.269 5.16815 12.9726L4.06071 14.6967C3.04918 16.2716 3.8214 18.4121 5.58071 18.9101C10.1831 20.2129 15.0376 20.2129 19.64 18.9101C21.3993 18.4121 22.1715 16.2716 21.16 14.6967L20.0526 12.9726C19.6006 12.269 19.3595 11.4424 19.3595 10.5968Z"
-                stroke="#434343"
-                stroke-width="1.5"
-              />
-              <path
-                d="M8.11035 19.8872C8.76538 21.635 10.5328 22.8872 12.6104 22.8872C14.6879 22.8872 16.4553 21.635 17.1104 19.8872"
-                stroke="#434343"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </svg>
+            <div className="flex flex-col relative">
+              <svg
+                width="25"
+                height="25"
+                viewBox="0 0 25 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={() => setNotificationsDropdown(!notificationsDropdown)}
+              >
+                <path
+                  d="M19.3595 10.5968V9.89217C19.3595 6.02344 16.3378 2.88721 12.6104 2.88721C8.88291 2.88721 5.86122 6.02344 5.86122 9.89217V10.5968C5.86122 11.4424 5.62007 12.269 5.16815 12.9726L4.06071 14.6967C3.04918 16.2716 3.8214 18.4121 5.58071 18.9101C10.1831 20.2129 15.0376 20.2129 19.64 18.9101C21.3993 18.4121 22.1715 16.2716 21.16 14.6967L20.0526 12.9726C19.6006 12.269 19.3595 11.4424 19.3595 10.5968Z"
+                  stroke="#434343"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M8.11035 19.8872C8.76538 21.635 10.5328 22.8872 12.6104 22.8872C14.6879 22.8872 16.4553 21.635 17.1104 19.8872"
+                  stroke="#434343"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+              {notificationsDropdown && (
+                <div className="absolute right-0 top-12 mt-1 z-10">
+                  <NotificationsDropdown />
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex justify-between items-center w-[125px]">
-            <div
-              onClick={() => navigate("/login")}
-              className="flex justify-center items-center  w-[65px] h-[34px] rounded-[37px] gap-[8px] bg-secondaryBrand"
-            >
-              <h1 className="flex justify-center items-center cursor-pointer leading-[18px] font-poppins font-normal text-white text-[12px] w-full">
-                Log in
+          {user && user?.name ? (
+            <div className="flex flex-col relative">
+              <div
+                onClick={() => setProfileDropdown(!profileDropdown)}
+                className="flex justify-center items-center w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-[4px]"
+              >
+                <svg
+                  width="38"
+                  height="38"
+                  viewBox="0 0 38 38"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect width="38" height="38" rx="19" fill="#F8F8F8" />
+                  <ellipse
+                    cx="18.9997"
+                    cy="14.2502"
+                    rx="3.16667"
+                    ry="3.16667"
+                    stroke="#001D58"
+                    stroke-width="1.1875"
+                  />
+                  <ellipse
+                    cx="18.9997"
+                    cy="22.9582"
+                    rx="5.54167"
+                    ry="3.16667"
+                    stroke="#001D58"
+                    stroke-width="1.1875"
+                  />
+                </svg>
+
+                <p className="font-poppins font-normal text-[14px] w-[80px] leading-[21px] text-[#393A44]">
+                  {user?.name}
+                </p>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.33301 6L7.99967 10L12.6663 6"
+                    stroke="#001D58"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              {profileDropdown && (
+                <div className="absolute right-0 top-12 mt-2 z-10">
+                  <ProfileDropdown />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex justify-between items-center w-[125px]">
+              <div
+                onClick={() => navigate("/login")}
+                className="flex justify-center items-center  w-[65px] h-[34px] rounded-[37px] gap-[8px] bg-secondaryBrand"
+              >
+                <h1 className="flex justify-center items-center cursor-pointer leading-[18px] font-poppins font-normal text-white text-[12px] w-full">
+                  Log in
+                </h1>
+              </div>
+              <h1 className="flex justify-center items-center leading-[18px] font-poppins font-normal text-black text-[12px] w-[60px]">
+                Sign Up
               </h1>
             </div>
-            <h1 className="flex justify-center items-center leading-[18px] font-poppins font-normal text-black text-[12px] w-[60px]">
-              Sign Up
-            </h1>
-          </div>
+          )}
         </div>
       </div>
       <div className="flex justify-center items-center w-full h-[37px] p-[8px] gap-[64px] bg-[#FAFAFA]">
@@ -188,6 +290,12 @@ const Header = () => {
           </nav>
         ))} */}
       </div>
+      {isModalOpen && (
+        <ShoppingCart
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </div>
   );
 };

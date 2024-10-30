@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import loginrectangle from "../assets/loginrectangle.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import AccountDeactivate from "../modals/AccountDeactivateModal";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="flex justify-start items-center gap-24 p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
       <div className="flex flex-col items-start justify-start -space-y-12">
@@ -198,7 +200,7 @@ const Signup = () => {
                   </clipPath>
                 </defs>
               </svg>
-              <h1>Login with Google</h1>
+              <h1 onClick={() => setIsModalOpen(true)}>Login with Google</h1>
             </div>
             <div className="flex w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF]">
               <svg
@@ -231,6 +233,12 @@ const Signup = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <AccountDeactivate
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </div>
   );
 };

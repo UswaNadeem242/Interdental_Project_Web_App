@@ -17,6 +17,7 @@ module.exports = {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         workSans: ["Work Sans", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
       },
       fontWeight: {
         thin: 100,

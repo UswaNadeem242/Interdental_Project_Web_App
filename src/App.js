@@ -14,6 +14,8 @@ import Shop from "./pages/Shop";
 import SingleProduct from "./pages/SingleProduct";
 import Signup from "./pages/Signup";
 import ForgetPassword from "./pages/ForgetPassword";
+import NewPassword from "./pages/NewPassword";
+import Orders from "./pages/Orders";
 // const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
 
 // const router = createBrowserRouter([
@@ -112,6 +114,22 @@ function App() {
               <PlainLayout>
                 <ForgetPassword />
               </PlainLayout>
+            }
+          />
+          <Route
+            path="/new-password"
+            element={
+              <PlainLayout>
+                <NewPassword />
+              </PlainLayout>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <MainLayout>
+                <Orders />
+              </MainLayout>
             }
           />
         </Routes>
