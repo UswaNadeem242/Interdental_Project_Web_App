@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import NotificationSettingsModal from "../../modals/NotificationSettingsModals";
 
 const ProfileDropdown = () => {
   const navigate = useNavigate();
+  const [isNotficationsOpen, setisNotificationsOpen] = useState(false);
   return (
     <div className="flex flex-col justify-center items-center w-[303px] h-[286px] rounded-[12px] p-[16px] gap-[16px] bg-[#FFFFFF] absolute right-0 top-[4px] z-10  shadow-[0_0_10px_#00000017]">
       <div className="flex flex-col justify-start items-start w-[271px] h-[214px] rounded-[16px] gap-[2px] py-[8px] shadow-[0_0_10px_#04060F0D]">
@@ -87,7 +89,10 @@ const ProfileDropdown = () => {
             />
           </svg>
         </div>
-        <div className="flex justify-between items-center w-[271px] h-[48px] rounded-[10px] gap-[14px] py-[15px] px-[14px]">
+        <div
+          onClick={() => setisNotificationsOpen(true)}
+          className="flex justify-between items-center w-[271px] h-[48px] rounded-[10px] gap-[14px] py-[15px] px-[14px]"
+        >
           <svg
             width="18"
             height="18"
@@ -207,6 +212,13 @@ const ProfileDropdown = () => {
           Sign Out
         </h1>
       </div>
+
+      {isNotficationsOpen && (
+        <NotificationSettingsModal
+          isModalOpen={isNotficationsOpen}
+          setIsModalOpen={setisNotificationsOpen}
+        />
+      )}
     </div>
   );
 };
