@@ -1,10 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import loginrectangle from "../assets/loginrectangle.png";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://13.212.26.131:8080/api/users/sign-in",
+        {
+          email: email,
+          password: password,
+          fcmToken: "",
+          gmailToken: "",
+          facebookToken: "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+          },
+        }
+      );
+      setLoading(false);
+      localStorage.setItem("token", response.data.data.accessToken);
+      navigate("/admin/dashboard");
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
   return (
     <div className="flex justify-start items-center gap-24 p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
       <div className="flex flex-col items-start justify-start -space-y-12">
@@ -85,6 +118,8 @@ const Login = () => {
             type="text"
             className="w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
             placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             name=""
             id=""
           />
@@ -93,6 +128,8 @@ const Login = () => {
               type="text"
               className="w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               name=""
               id=""
             />
@@ -120,7 +157,13 @@ const Login = () => {
           </p>
         </div>
         <div className="flex flex-col w-[494px] h-[270px] gap-[32px]">
-          <button className="w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-[14px] leading-[21px]">
+          <button
+            onClick={() => handleLogin()}
+            disabled={loading}
+            className={`w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-[14px] leading-[21px] ${
+              loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+            }`}
+          >
             Login
           </button>
           <div className="flex justify-center items-center w-[494px] h-[56px] gap-[16px]">

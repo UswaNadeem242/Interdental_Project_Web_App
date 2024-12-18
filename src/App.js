@@ -17,6 +17,9 @@ import ForgetPassword from "./pages/ForgetPassword";
 import NewPassword from "./pages/NewPassword";
 import Orders from "./pages/Orders";
 import OrderInfo from "./pages/OrderInfo";
+import Admin from "./pages/admin/Admin";
+import ProtectedRoute from "./components/ProtectRoute";
+import AdminSidebar from "./components/admin/AdminSidebar";
 // const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
 
 // const router = createBrowserRouter([
@@ -37,7 +40,13 @@ const MainLayout = ({ children }) => (
   </div>
 );
 
-const PlainLayout = ({ children }) => <div>{children}</div>;
+const PlainLayout = ({ children }) => (
+  <div className="flex absolute pt-[16px] pl-[16px] pb-[16px] gap-8 bg-gray-200 w-full">
+    <AdminSidebar />
+    {children}
+  </div>
+);
+const SimpleLayout = ({ children }) => <div className="">{children}</div>;
 
 function App() {
   return (
@@ -96,33 +105,33 @@ function App() {
           <Route
             path="/login"
             element={
-              <PlainLayout>
+              <SimpleLayout>
                 <Login />
-              </PlainLayout>
+              </SimpleLayout>
             }
           />
           <Route
             path="/signup"
             element={
-              <PlainLayout>
+              <SimpleLayout>
                 <Signup />
-              </PlainLayout>
+              </SimpleLayout>
             }
           />
           <Route
             path="/forgot-password"
             element={
-              <PlainLayout>
+              <SimpleLayout>
                 <ForgetPassword />
-              </PlainLayout>
+              </SimpleLayout>
             }
           />
           <Route
             path="/new-password"
             element={
-              <PlainLayout>
+              <SimpleLayout>
                 <NewPassword />
-              </PlainLayout>
+              </SimpleLayout>
             }
           />
           <Route
@@ -139,6 +148,16 @@ function App() {
               <MainLayout>
                 <OrderInfo />
               </MainLayout>
+            }
+          />
+          <Route
+            path="/admin/*"
+            element={
+              <PlainLayout>
+                <ProtectedRoute>
+                  <Admin />
+                </ProtectedRoute>
+              </PlainLayout>
             }
           />
         </Routes>
