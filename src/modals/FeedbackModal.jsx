@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Group from "../assets/Group.png";
+// import Group from "../assets/Group.png";
 
 const FeedbackModal = ({ isModalOpen, setIsModalOpen }) => {
   const [rating, setRating] = useState(0);

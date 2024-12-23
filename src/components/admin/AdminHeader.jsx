@@ -1,5 +1,5 @@
 import React from "react";
-import user from "../../assets/user.png";
+// import user from "../../assets/user.png";
 import { useNavigate } from "react-router-dom";
 
 const AdminHeader = ({ title, subTitle }) => {
@@ -67,7 +67,7 @@ const AdminHeader = ({ title, subTitle }) => {
         </svg>
         <div className="flex justify-start items-center w-[220px] h-[58px] gap-[8px] p-[8px] rounded-[32px] bg-white">
           <img
-            src={user}
+            src="/build/assets/user.png"
             alt="user"
             className="w-[40px] h-[40px] rounded-[32px]"
           />

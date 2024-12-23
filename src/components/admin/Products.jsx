@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import AdminHeader from "../../components/admin/AdminHeader";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AddQuantityModal from "../../modals/AddQuantityModal";
+import { BASE_URL } from "../../config";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -9,92 +11,31 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
   const tabs = ["Name", "Product ID", "Category", "Stock", "Price"];
-  // const products = [
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  //   {
-  //     id: 1,
-  //     productId: 12,
-  //     name: "Mgr Financial Plan ",
-  //     category: "Contact Lenses",
-  //     stock: 543,
-  //     price: 233,
-  //   },
-  // ];
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [addedProducts, setAddedProducts] = useState([]);
+  const [isQuantityModalOpen, setIsQuantityModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleCheckboxChange = (productId, isChecked) => {
+    setSelectedProducts((prevSelected) =>
+      isChecked
+        ? [...prevSelected, productId]
+        : prevSelected.filter((id) => id !== productId)
+    );
+    setAddedProducts((prevAdded) =>
+      isChecked
+        ? [
+            ...prevAdded,
+            products.find((product) => product.productId === productId),
+          ]
+        : prevAdded.filter((product) => product.productId !== productId)
+    );
+  };
+
   const getAllProducts = async () => {
     try {
       const response = await axios.get(
-        "http://13.212.26.131:8080/product/getAll",
+        `${BASE_URL}/interdentallab/product/getAll`,
         {
           headers: {
             Accept: "*/*",
@@ -110,7 +51,24 @@ const Products = () => {
   };
   useEffect(() => {
     getAllProducts();
-  }, []);
+  }, [products]);
+
+  const handleDelete = async (productId) => {
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}/interdentallab/product/delete/${productId}`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      alert("Product deleted successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex flex-col justify-center items-start">
       <AdminHeader title="Products" />
@@ -139,6 +97,8 @@ const Products = () => {
             <input
               type="text"
               placeholder="Search here..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-[918px] h-[18px] py-4 bg-[#F8F8F8] outline-none"
             />
             <div className="flex w-[77px] h-[33px] bg-[#FFFFFF] rounded-[8px] py-[6px] px-[8px] gap-[8px]">
@@ -164,7 +124,7 @@ const Products = () => {
           </div>
           <div
             onClick={() => navigate("/admin/list-product")}
-            className="w-[175px] h-[48px] rounded-[8px] bg-[#F8F8F8] py-[17px] px-[12px] gap-[8px] flex justify-center items-center"
+            className="w-[175px] h-[48px] cursor-pointer rounded-[8px] bg-[#F8F8F8] py-[17px] px-[12px] gap-[8px] flex justify-center items-center"
           >
             <svg
               width="16"
@@ -194,9 +154,9 @@ const Products = () => {
               <div className="w-[250px] h-[20px] flex justify-start items-start gap-[16px] ">
                 <input
                   type="checkbox"
-                  onChange={(e) => {
-                    setIsChecked(e.target.checked);
-                  }}
+                  // onChange={(e) => {
+                  //   setIsChecked(e.target.checked);
+                  // }}
                   className="w-[20px] h-[20px] rounded-[6px] border-[1px] border-[#D0D5DD]"
                 />
                 <h1 className="w-[116.84px] h-[18px] font-poppins font-semibold text-[12px] leading-[18px] text-[#949494]">
@@ -217,40 +177,93 @@ const Products = () => {
               </h1>
             </div>
             {/* Orders Listing */}
-            {products.map((p) => (
-              <div className="w-full h-[50px] py-[16px] px-[20px] gap-[67px] flex justify-start items-center">
-                <div className="w-[250px] h-[32px] flex justify-start items-center gap-[16px]">
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    className="w-[20px] h-[20px] rounded-[6px] border-[1px] border-[#D0D5DD]"
-                  />
-                  <img
-                    src={p?.imageUrls[0]?.imageUrl}
-                    alt="product image"
-                    className="w-[32px] h-[32px]"
-                  />
+            {products
+              .filter((p) =>
+                p.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((p) => (
+                <div className="w-full h-[50px] cursor-pointer py-[16px] px-[20px] gap-[67px] flex justify-start items-center">
+                  <div className="w-[250px] h-[32px] flex justify-start items-center gap-[16px]">
+                    <input
+                      type="checkbox"
+                      // checked={isChecked}
+                      // onChange={(e) => {
+                      //   setIsChecked(e.target.checked);
+                      // }}
+                      checked={selectedProducts.includes(p.productId)}
+                      onChange={(e) =>
+                        handleCheckboxChange(p.productId, e.target.checked)
+                      }
+                      className="w-[20px] h-[20px] rounded-[6px] border-[1px] border-[#D0D5DD]"
+                    />
+                    <img
+                      src={p?.imageUrls[0]?.imageUrl}
+                      alt="product image"
+                      className="w-[32px] h-[32px]"
+                    />
+                    <h1
+                      onClick={() => navigate(`/admin/products/${p.productId}`)}
+                      className="w-[116.84px] h-[18px] font-poppins font-normal cursor-pointer text-[12px] leading-[18px] text-[#434343]"
+                    >
+                      {p.name}
+                    </h1>
+                  </div>
                   <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                    {p.name}
+                    {p.productId}
                   </h1>
+                  <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                    {p.categoryId}
+                  </h1>
+                  <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                    {p.stockQuantity}
+                  </h1>
+                  <div className="relative">
+                    <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                      ${p.price}
+                    </h1>
+                    {selectedProducts.includes(p.productId) && (
+                      <div className="absolute -top-4 -right-12 z-50 flex justify-center items-center gap-[16px] w-[287px] h-[46px] rounded-[12px] border-[1px] border-[#001D58] bg-white py-[20px] px-[16px]">
+                        <button
+                          onClick={() => handleDelete(p.productId)}
+                          className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[148px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]"
+                        >
+                          Delete Product
+                        </button>
+                        <button
+                          onClick={() => setIsQuantityModalOpen(true)}
+                          className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[111px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]"
+                        >
+                          Add Stock
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  {/* {selectedProducts.includes(p.productId) ? (
+                  <div className="z-50 flex justify-center items-center gap-[16px] w-[287px] h-[46px] rounded-[12px] border-[1px] border-[#001D58] bg-white py-[20px] px-[16px]">
+                    <button className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[148px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]">
+                      Delete Product
+                    </button>
+                    <button className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[111px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]">
+                      Add Stock
+                    </button>
+                  </div>
+                ) : (
+                  <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                    ${p.price}
+                  </h1>
+                )} */}
                 </div>
-                <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                  {p.productId}
-                </h1>
-                <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                  {p.categoryId}
-                </h1>
-                <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                  {p.stockQuantity}
-                </h1>
-                <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                  ${p.price}
-                </h1>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>
+      {isQuantityModalOpen && (
+        <AddQuantityModal
+          isModalOpen={isQuantityModalOpen}
+          setIsModalOpen={setIsQuantityModalOpen}
+          selectedProducts={addedProducts}
+        />
+      )}
     </div>
   );
 };

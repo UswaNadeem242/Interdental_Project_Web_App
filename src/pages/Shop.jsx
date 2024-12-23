@@ -1,59 +1,59 @@
 import React, { useState } from "react";
-import product1 from "../assets/product1.png";
-import product2 from "../assets/product2.png";
-import product3 from "../assets/product3.png";
-import product4 from "../assets/product4.png";
-import product5 from "../assets/product5.png";
-import product6 from "../assets/product6.png";
-import product7 from "../assets/product7.png";
-import product8 from "../assets/product8.png";
+// import product1 from "../assets/product1.png";
+// import product2 from "../assets/product2.png";
+// import product3 from "../assets/product3.png";
+// import product4 from "../assets/product4.png";
+// import product5 from "../assets/product5.png";
+// import product6 from "../assets/product6.png";
+// import product7 from "../assets/product7.png";
+// import product8 from "../assets/product8.png";
 import { useNavigate } from "react-router-dom";
 const featureProducts = [
   {
     id: 1,
-    img: product1,
+    img: "/build/assets/product1.png",
     title: "G Gold Lable 1 Mini",
     price: 233.65,
   },
   {
     id: 2,
-    img: product2,
+    img: "/build/assets/product2.png",
     title: "G Gold Lable 1 Mini",
     price: 739.65,
   },
   {
     id: 3,
-    img: product3,
+    img: "/build/assets/product3.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 4,
-    img: product4,
+    img: "/build/assets/product4.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 5,
-    img: product5,
+    img: "/build/assets/product5.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 6,
-    img: product6,
+    img: "/build/assets/product6.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 7,
-    img: product7,
+    img: "/build/assets/product7.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 8,
-    img: product8,
+    img: "/build/assets/product8.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },

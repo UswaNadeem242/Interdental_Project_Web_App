@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Layout from "./layout/Layout";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Brands from "./pages/Brands";
@@ -51,7 +51,7 @@ const SimpleLayout = ({ children }) => <div className="">{children}</div>;
 function App() {
   return (
     <div>
-      <Router>
+      <BrowserRouter basename="/build">
         {/* <Header /> */}
         <Routes>
           <Route
@@ -162,7 +162,7 @@ function App() {
           />
         </Routes>
         {/* <Footer /> */}
-      </Router>
+      </BrowserRouter>
 
       {/* <Layout>
         <RouterProvider router={router} />

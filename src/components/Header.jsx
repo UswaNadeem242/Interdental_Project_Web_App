@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../assets/logo.png";
-import vector from "../assets/Vector.png";
-import search from "../assets/Search.png";
+// import logo from "../assets/logo.png";
+// import vector from "../assets/Vector.png";
+// import search from "../assets/Search.png";
 import { useNavigate } from "react-router-dom";
 import ShoppingCart from "../modals/ShoppingCartModal";
 import ProfileDropdown from "./dropdowns/ProfileDropdown";
@@ -46,7 +46,11 @@ const Header = () => {
   return (
     <div className="flex flex-col justify-center items-center h-[110.77px] w-full bg-[#FFFFFF] rounded-[8px] gap-[8px] pt-[20px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
       <div className="flex w-full h-[45.77px] px-[100px] gap-[94px]">
-        <img src={logo} alt="logo" className="w-[200px] h-[45.77px]" />
+        <img
+          src="/build/assets/logo.png"
+          alt="logo"
+          className="w-[200px] h-[45.77px]"
+        />
         <div className="flex w-[665.83px] gap-[32px]">
           <div className="flex flex-col relative">
             <div
@@ -54,7 +58,7 @@ const Header = () => {
               className="flex justify-center items-center w-[126px] h-[42px] gap-[8px] px-[16px] py-[8px] rounded-[50px] border-[1px] border-[#0000001A]"
             >
               <h1>Categories</h1>
-              <img src={vector} alt="vector" />
+              <img src="/build/assets/vector.png" alt="vector" />
             </div>
             {categoriesDropdown && (
               <div className="absolute right-0 top-12 mt-2 z-10">
@@ -76,7 +80,11 @@ const Header = () => {
                 className="w-[531.83px] h-[42px] border-[1px] border-[#0000001A] outline-none rounded-[53px] gap-[8px] px-[16px] py-[4px] placeholder:font-poppins placeholder:font-normal placeholder:text-14px"
               />
               <div className="absolute right-[8px] top-[20px] transform -translate-y-1/2 w-[34px] h-[34px] rounded-[22px] p-[8px] gap-[8px] bg-secondaryBrand">
-                <img src={search} alt="search" className="w-[18px] h-[18px]" />
+                <img
+                  src="/build/assets/search.png"
+                  alt="search"
+                  className="w-[18px] h-[18px]"
+                />
               </div>
             </div>
             {searchDropdown && (

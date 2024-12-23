@@ -1,30 +1,30 @@
 import React from "react";
-import brand1 from "../assets/brand1.png";
-import brand2 from "../assets/brand2.png";
-import brand3 from "../assets/brand3.png";
-import brand4 from "../assets/brand4.png";
-import brand5 from "../assets/brand5.png";
-import brand6 from "../assets/brand6.png";
+// import brand1 from "../assets/brand1.png";
+// import brand2 from "../assets/brand2.png";
+// import brand3 from "../assets/brand3.png";
+// import brand4 from "../assets/brand4.png";
+// import brand5 from "../assets/brand5.png";
+// import brand6 from "../assets/brand6.png";
 
 const Brands = () => {
   const brands = [
     {
-      logo: brand1,
+      logo: "/build/assets/brand1.png",
     },
     {
-      logo: brand2,
+      logo: "/build/assets/brand2.png",
     },
     {
-      logo: brand3,
+      logo: "/build/assets/brand3.png",
     },
     {
-      logo: brand4,
+      logo: "/build/assets/brand4.png",
     },
     {
-      logo: brand5,
+      logo: "/build/assets/brand5.png",
     },
     {
-      logo: brand6,
+      logo: "/build/assets/brand6.png",
     },
   ];
   return (

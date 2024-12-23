@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CartProduct from "../components/CartProduct";
-import product2 from "../assets/product2.png";
+// import product2 from "../assets/product2.png";
 
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [activeTab, setActiveTab] = useState("cart");
@@ -228,7 +228,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                 >
                   <div className="flex justify-center items-center w-[555px] h-[103.33px] gap-[16px]">
                     <img
-                      src={product2}
+                      src="/build/assets/product2.png"
                       alt="product"
                       className="w-[98px] h-[103.33px]"
                     />
@@ -246,7 +246,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </div>
                   <div className="flex justify-center items-center w-[555px] h-[103.33px] gap-[16px]">
                     <img
-                      src={product2}
+                      src="/build/assets/product2.png"
                       alt="product"
                       className="w-[98px] h-[103.33px]"
                     />

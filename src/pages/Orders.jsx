@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import product8 from "../assets/product8.png";
+// import product8 from "../assets/product8.png";
 
 const Orders = () => {
   const tabs = ["Active", "Shipped", "Completed"];
@@ -59,7 +59,7 @@ const Orders = () => {
               </div>
               <div className="flex justify-center items-center w-full h-[111px] border-t-[1px] border-[#0000001A] p-[8px] gap-[8px]">
                 <img
-                  src={product8}
+                  src="/build/assets/product8.png"
                   alt="product"
                   className="w-[95px] h-[95px]"
                 />
@@ -120,7 +120,7 @@ const Orders = () => {
               </div>
               <div className="flex justify-center items-center w-full h-[111px] border-t-[1px] border-[#0000001A] p-[8px] gap-[8px]">
                 <img
-                  src={product8}
+                  src="/build/assets/product8.png"
                   alt="product"
                   className="w-[95px] h-[95px]"
                 />
@@ -181,7 +181,7 @@ const Orders = () => {
               </div>
               <div className="flex justify-center items-center w-full h-[111px] border-t-[1px] border-[#0000001A] p-[8px] gap-[8px]">
                 <img
-                  src={product8}
+                  src="/build/assets/product8.png"
                   alt="product"
                   className="w-[95px] h-[95px]"
                 />
@@ -242,7 +242,7 @@ const Orders = () => {
               </div>
               <div className="flex justify-center items-center w-full h-[111px] border-t-[1px] border-[#0000001A] p-[8px] gap-[8px]">
                 <img
-                  src={product8}
+                  src="/build/assets/product8.png"
                   alt="product"
                   className="w-[95px] h-[95px]"
                 />

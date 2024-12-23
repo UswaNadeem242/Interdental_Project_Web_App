@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/logo.png";
+// import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
 const AdminSidebar = () => {
@@ -18,7 +18,11 @@ const AdminSidebar = () => {
     <div className="flex flex-col justify-start items-start rounded-[16px] space-y-[32px] w-[220px] h-[1105px] bg-[#FFFFFF]">
       <div className="flex flex-col justify-start items-start gap-[32px] space-y-[28px] w-[220px] h-[1105px] rounded-[16px] bg-[#FFFFFF]">
         <div className="w-[220px] h-[72px] py-[16px] px-[24px] gap-[12px]">
-          <img src={logo} alt="logo" className="w-[200px] h-[45.77px]" />
+          <img
+            src="/build/assets/logo.png"
+            alt="logo"
+            className="w-[200px] h-[45.77px]"
+          />
         </div>
         <div className="flex flex-col justify-start items-start w-[220px] h-[845px] p-[24px] space-y-4">
           <NavLink

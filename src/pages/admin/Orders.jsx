@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminHeader from "../../components/admin/AdminHeader";
 import FilterOptionsDropdown from "../../components/dropdowns/FilterOptionsDropdown";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../../config";
 
 const Orders = () => {
   const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [orders, setOrders] = useState([]);
   const tabs = ["All", "Pending", "In Progress", "Shipped", "Completed"];
   const recentOrders = [
     {
@@ -138,6 +141,33 @@ const Orders = () => {
       items: 8,
     },
   ];
+
+  const getAllOrders = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/interdentallab/orders/getAllOrders`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setOrders(response.data.orders);
+      console.log(response.data.orders);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getAllOrders();
+  }, []);
+
+  const filteredOrders =
+    selectedIndex === 0
+      ? orders
+      : orders.filter((order) => order.orderStatus === tabs[selectedIndex]);
+
   return (
     <div className="flex flex-col justify-center items-start">
       <AdminHeader title="Orders" />
@@ -202,7 +232,7 @@ const Orders = () => {
               className={`${
                 index === selectedIndex &&
                 "bg-[#F8F8F8] border-b-[1px] border-[#0000001A] "
-              } flex justify-center items-center w-auto h-[40px] rounded-[39px] py-[17px] px-[18px] gap-[8px] border-l-[1px] border-r-[1px] border-b-[1px] border-[#0000001A]`}
+              } flex justify-center items-center w-auto h-[40px] cursor-pointer rounded-[39px] py-[17px] px-[18px] gap-[8px] border-l-[1px] border-r-[1px] border-b-[1px] border-[#0000001A]`}
             >
               <p className="font-poppins font-bold text-[12px] leading-[18px] text-[#434343]">
                 {tab}
@@ -235,35 +265,48 @@ const Orders = () => {
               </h1>
             </div>
             {/* Orders Listing */}
-            {recentOrders.map((order) => (
-              <div
-                onClick={() => navigate(`/admin/orders/${order.id}`)}
-                className="w-full h-[50px] py-[16px] px-[20px] gap-[67px] flex justify-start items-center"
-              >
-                <h1 className="w-[116.84px] h-[88px] font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
-                  #{order.id}
-                </h1>
-                <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                  {order.buyer}
-                </h1>
-                <div className="w-[116.84px] h-[88px] font-poppins font-semibold text-[12px] leading-[18px] text-[#949494]">
-                  <div className="w-[57px] h-[23px] py-[4px] px-[8px] gap-[8px] bg-[#FF57570D] rounded-[33px]">
-                    <h1 className="font-poppins font-normal text-[10px] leading-[15px] text-[#FF5757]">
-                      {order.status}
-                    </h1>
+            {filteredOrders.length > 0 ? (
+              filteredOrders.map((order) => (
+                <div
+                  onClick={() => navigate(`/admin/orders/${order.orderId}`)}
+                  className="w-full h-[50px] py-[16px] px-[20px] gap-[67px] flex justify-start items-center cursor-pointer"
+                >
+                  <h1 className="w-[116.84px] h-[88px] font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
+                    #{order?.orderId}
+                  </h1>
+                  <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                    {order?.buyer}
+                  </h1>
+                  <div className="w-[116.84px] h-[88px] font-poppins font-semibold text-[12px] leading-[18px] text-[#949494]">
+                    <div className="w-[57px] h-[23px] py-[4px] px-[8px] gap-[8px] bg-[#FF57570D] rounded-[33px]">
+                      <h1 className="font-poppins font-normal text-[10px] leading-[15px] text-[#FF5757]">
+                        {order?.orderStatus}
+                      </h1>
+                    </div>
                   </div>
+                  <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                    {new Intl.DateTimeFormat("en-GB", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    }).format(new Date(order.createdAt))}
+                  </h1>
+                  <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                    {order.orderItems.reduce(
+                      (acc, item) => acc + item.unitPrice,
+                      0
+                    )}
+                  </h1>
+                  <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                    {order.orderItems.length}
+                  </h1>
                 </div>
-                <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                  {order.date}
-                </h1>
-                <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                  {order.total}
-                </h1>
-                <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                  {order.items}
-                </h1>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p>
+                No orders found for the status of <b>"{tabs[selectedIndex]}"</b>
+              </p>
+            )}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import product1 from "../assets/product1.png";
+// import product1 from "../assets/product1.png";
 
 const CartProduct = () => {
   const [count, setCount] = useState(1);
@@ -8,7 +8,7 @@ const CartProduct = () => {
       <div className="flex justify-center items-center w-[555px] h-[156px] gap-[16px]">
         <div className="flex justify-between items-center w-[515px] h-[156px] gap-[16px] ">
           <img
-            src={product1}
+            src="/build/assets/product1.png"
             alt="product"
             className="w-[115.13px] h-[131.94px]"
           />

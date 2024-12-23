@@ -6,6 +6,8 @@ import Users from "./Users";
 import Products from "../../components/admin/Products";
 import ListProduct from "./ListProduct";
 import OrderDetails from "./OrderDetails";
+import ProductDetails from "./ProductDetails";
+import UpdateProduct from "./UpdateProduct";
 
 const Admin = () => {
   return (
@@ -15,7 +17,9 @@ const Admin = () => {
         <Route path="/orders" element={<Orders />} />
         <Route path="/users" element={<Users />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/products/:productId" element={<ProductDetails />} />
         <Route path="/list-product" element={<ListProduct />} />
+        <Route path="/update-product/:productId" element={<UpdateProduct />} />
         <Route path="/orders/:id" element={<OrderDetails />} />
       </Routes>
     </div>

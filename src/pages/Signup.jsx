@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import loginrectangle from "../assets/loginrectangle.png";
-import logo from "../assets/logo.png";
+// import loginrectangle from "../assets/loginrectangle.png";
+// import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import AccountDeactivate from "../modals/AccountDeactivateModal";
 
@@ -10,10 +10,10 @@ const Signup = () => {
   return (
     <div className="flex justify-start items-center gap-24 p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
       <div className="flex flex-col items-start justify-start -space-y-12">
-        <img src={logo} alt="logo" />
+        <img src="/build/assets/logo.png" alt="logo" />
         <img
           className="w-[777px] h-[874px] rounded-[124px] "
-          src={loginrectangle}
+          src="/build/assets/loginrectangle.png"
           alt="locin rectangle image"
         />
         <svg

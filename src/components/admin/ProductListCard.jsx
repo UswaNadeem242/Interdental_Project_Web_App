@@ -1,11 +1,15 @@
 import React from "react";
-import product6 from "../../assets/product6.png";
+// import product6 from "../../assets/product6.png";
 
 const ProductListCard = () => {
   return (
     <div className="flex justify-between items-center w-[350px] h-[62.05px] border-b-[1px] border-[#0000000D] py-[12px]">
       <div className="flex justify-between items-center w-[186.12px] h-[38px] gap-[16.07px]">
-        <img src={product6} alt="product" className="w-[38.05px] h-[38.05px]" />
+        <img
+          src="/build/assets/product6.png"
+          alt="product"
+          className="w-[38.05px] h-[38.05px]"
+        />
         <div className="flex flex-col justify-start items-start w-[132px] h-[37.69px]">
           <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
             Pain Management

@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-import loginrectangle from "../assets/loginrectangle.png";
-import logo from "../assets/logo.png";
+// import loginrectangle from "../assets/loginrectangle.png";
+// import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { BASE_URL } from "../config";
 const Login = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://13.212.26.131:8080/api/users/sign-in",
+        `${BASE_URL}/interdentallab/api/users/sign-in`,
         {
           email: email,
           password: password,
@@ -41,10 +42,10 @@ const Login = () => {
   return (
     <div className="flex justify-start items-center gap-24 p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
       <div className="flex flex-col items-start justify-start -space-y-12">
-        <img src={logo} alt="logo" />
+        <img src="/build/assets/logo.png" alt="logo" />
         <img
           className="w-[777px] h-[874px] rounded-[124px] "
-          src={loginrectangle}
+          src="/build/assets/loginrectangle.png"
           alt="locin rectangle image"
         />
         <svg
@@ -125,7 +126,7 @@ const Login = () => {
           />
           <div className="relative w-[494px]">
             <input
-              type="text"
+              type={showPassword ? "text" : "password"}
               className="w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
               placeholder="Password"
               value={password}
@@ -140,6 +141,7 @@ const Login = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
             >
               <path
                 fill-rule="evenodd"

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import about from "../assets/about.png";
+// import about from "../assets/about.png";
 import AccountRequiredModal from "../modals/AccountRequiredModal";
 const About = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -7,7 +7,11 @@ const About = () => {
   return (
     <div className="flex flex-col justify-center items-center w-full h-full ">
       <div className="flex justify-center items-center w-[1511px] h-[814px] border-t-[1px] border-[#0000001A] bg-[#FFFFFF] py-[132px] px-[100px] gap-[120px]">
-        <img src={about} alt="about us image" className="w-[550px] h-[550px]" />
+        <img
+          src="/build/assets/about.png"
+          alt="about us image"
+          className="w-[550px] h-[550px]"
+        />
         <div className="flex flex-col justify-start items-start w-[575px] h-[398.73px] space-y-[16px]">
           <h1 className="font-poppins font-bold text-[24px] leading-[36px] text-[#949494]">
             About Us

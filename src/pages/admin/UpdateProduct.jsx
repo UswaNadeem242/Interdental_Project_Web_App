@@ -5,9 +5,13 @@ import axios from "axios";
 import AddBrandModal from "../../modals/AddBrandModal";
 import AddCategoryModal from "../../modals/AddCategoryModal";
 import { BASE_URL } from "../../config";
+import { useParams } from "react-router-dom";
 
-const ListProduct = () => {
+const UpdateProduct = () => {
   const navigate = useNavigate();
+  const { productId } = useParams();
+
+  const [product, setProduct] = useState({});
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
@@ -24,6 +28,33 @@ const ListProduct = () => {
   const [sku, setSku] = useState(
     () => `SKU-${Math.floor(Math.random() * 1000000)}`
   );
+
+  const getProductDetails = async () => {
+    try {
+      const response = await axios.get(
+        `http://13.212.26.131:8081/interdentallab/product/get/${productId}`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setProduct(response.data);
+      setName(response.data.name);
+      setDescription(response.data.description);
+      setStockQuantity(response.data.stockQuantity);
+      setPrice(response.data.price);
+      setCategoryId(response.data.categoryId);
+      setBrandId(response.data.brandId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getProductDetails();
+  }, []);
 
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -54,10 +85,6 @@ const ListProduct = () => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    getAllCategories();
-  }, []);
-
   const getAllBrands = async () => {
     try {
       const response = await axios.get(
@@ -75,11 +102,13 @@ const ListProduct = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
+    getAllCategories();
     getAllBrands();
   }, []);
 
-  const handleSave = async () => {
+  const handleUpdate = async () => {
     if (
       !name ||
       !description ||
@@ -103,8 +132,8 @@ const ListProduct = () => {
         brandId,
         sku,
       };
-      const response = await axios.post(
-        `${BASE_URL}/interdentallab/product/add`,
+      const response = await axios.put(
+        `${BASE_URL}/interdentallab/product/update/${productId}`,
         payload,
         {
           headers: {
@@ -115,7 +144,7 @@ const ListProduct = () => {
         }
       );
       console.log(response);
-      alert("Product added successfully");
+      alert("Product Updated successfully");
       navigate("/admin/products");
     } catch (error) {
       console.log(error);
@@ -128,7 +157,7 @@ const ListProduct = () => {
       <div className="w-[1108px] h-[60px] flex justify-between items-center">
         <div className="w-[344px] h-[60px] flex flex-col justify-start items-start">
           <h1 className="font-poppins font-bold text-[26px] leading-[39px] text-[#434343]">
-            List Product
+            Update Product
           </h1>
         </div>
         <div className="flex justify-start items-center gap-[24px]">
@@ -141,11 +170,11 @@ const ListProduct = () => {
             </p>
           </button>
           <button
-            onClick={() => handleSave()}
+            onClick={() => handleUpdate()}
             className="flex justify-center items-center w-[145px] h-[53px] rounded-[32px] bg-[#001D58] border-[1px] border-[#013764] py-[16px] px-[45px] gap-[8px]"
           >
             <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#F8F8F8]">
-              Save
+              Update
             </p>
           </button>
         </div>
@@ -567,4 +596,4 @@ const ListProduct = () => {
   );
 };
 
-export default ListProduct;
+export default UpdateProduct;

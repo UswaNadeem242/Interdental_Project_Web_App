@@ -1,14 +1,14 @@
 import React from "react";
-import starFilled from "../assets/star-filled.png";
-import starOutlined from "../assets/star-outlined.png";
-import customer from "../assets/customer.png";
+// import starFilled from "../assets/star-filled.png";
+// import starOutlined from "../assets/star-outlined.png";
+// import customer from "../assets/customer.png";
 
 const CustomerFeedback = () => {
   return (
     <div className="flex flex-col justify-start items-start w-[92%] h-[69.58px] border-b-[1px] border-[#0000000D] space-y-[9.59px]">
       <div className="flex gap-[10px] w-full h-[33.99px]">
         <img
-          src={customer}
+          src="/build/assets/customer.png"
           alt="customer image"
           className="w-[33.98px] h-[31.97px]"
         />
@@ -16,27 +16,27 @@ const CustomerFeedback = () => {
           <h1>Kristin Watson</h1>
           <div className="flex w-[63.95px] h-[12.79px]">
             <img
-              src={starFilled}
+              src="/build/assets/starFilled/png"
               alt="star filled"
               className="w-[12.79px] h-[12.79px]"
             />
             <img
-              src={starFilled}
+              src="/build/assets/starFilled/png"
               alt="star filled"
               className="w-[12.79px] h-[12.79px]"
             />
             <img
-              src={starFilled}
+              src="/build/assets/starFilled/png"
               alt="star filled"
               className="w-[12.79px] h-[12.79px]"
             />
             <img
-              src={starFilled}
+              src="/build/assets/starFilled/png"
               alt="star filled"
               className="w-[12.79px] h-[12.79px]"
             />
             <img
-              src={starFilled}
+              src="/build/assets/starFilled/png"
               alt="star filled"
               className="w-[12.79px] h-[12.79px]"
             />
