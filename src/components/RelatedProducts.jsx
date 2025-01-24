@@ -14,59 +14,59 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 // import product8 from "../assets/product8.png";
 import { useNavigate } from "react-router-dom";
 
-const RelatedProducts = () => {
+const RelatedProducts = ({ relatedProducts }) => {
   const navigate = useNavigate();
   const swiperRef = useRef(null);
-  const relatedProducts = [
-    {
-      id: 1,
-      img: "/build/assets/product1.png",
-      title: "G Gold Lable 1 Mini",
-      price: 233.65,
-    },
-    {
-      id: 2,
-      img: "/build/assets/product2.png",
-      title: "G Gold Lable 1 Mini",
-      price: 739.65,
-    },
-    {
-      id: 3,
-      img: "/build/assets/product3.png",
-      title: "G Gold Lable 1 Mini",
-      price: 634.23,
-    },
-    {
-      id: 4,
-      img: "/build/assets/product4.png",
-      title: "G Gold Lable 1 Mini",
-      price: 634.23,
-    },
-    {
-      id: 5,
-      img: "/build/assets/product5.png",
-      title: "G Gold Lable 1 Mini",
-      price: 634.23,
-    },
-    {
-      id: 6,
-      img: "/build/assets/product6.png",
-      title: "G Gold Lable 1 Mini",
-      price: 634.23,
-    },
-    {
-      id: 7,
-      img: "/build/assets/product7.png",
-      title: "G Gold Lable 1 Mini",
-      price: 634.23,
-    },
-    {
-      id: 8,
-      img: "/build/assets/product8.png",
-      title: "G Gold Lable 1 Mini",
-      price: 634.23,
-    },
-  ];
+  // const relatedProducts = [
+  //   {
+  //     id: 1,
+  //     img: "/build/assets/product1.png",
+  //     title: "G Gold Lable 1 Mini",
+  //     price: 233.65,
+  //   },
+  //   {
+  //     id: 2,
+  //     img: "/build/assets/product2.png",
+  //     title: "G Gold Lable 1 Mini",
+  //     price: 739.65,
+  //   },
+  //   {
+  //     id: 3,
+  //     img: "/build/assets/product3.png",
+  //     title: "G Gold Lable 1 Mini",
+  //     price: 634.23,
+  //   },
+  //   {
+  //     id: 4,
+  //     img: "/build/assets/product4.png",
+  //     title: "G Gold Lable 1 Mini",
+  //     price: 634.23,
+  //   },
+  //   {
+  //     id: 5,
+  //     img: "/build/assets/product5.png",
+  //     title: "G Gold Lable 1 Mini",
+  //     price: 634.23,
+  //   },
+  //   {
+  //     id: 6,
+  //     img: "/build/assets/product6.png",
+  //     title: "G Gold Lable 1 Mini",
+  //     price: 634.23,
+  //   },
+  //   {
+  //     id: 7,
+  //     img: "/build/assets/product7.png",
+  //     title: "G Gold Lable 1 Mini",
+  //     price: 634.23,
+  //   },
+  //   {
+  //     id: 8,
+  //     img: "/build/assets/product8.png",
+  //     title: "G Gold Lable 1 Mini",
+  //     price: 634.23,
+  //   },
+  // ];
   return (
     <div className="flex flex-col justify-start items-start w-full h-[464.17px] gap-[40px]">
       <h1 className="font-poppins font-semibold text-[30.46px] text-[#1A1A1A]">
@@ -93,22 +93,22 @@ const RelatedProducts = () => {
             {relatedProducts.map((product) => (
               <SwiperSlide>
                 <div
-                  onClick={() => navigate(`/product/${product.id}`)}
+                  onClick={() => navigate(`/product/${product?.id}`)}
                   onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
                   onMouseLeave={() => swiperRef.current.swiper.autoplay.start()}
                   className="flex flex-col justify-center items-center cursor-pointer bg-white w-[283.15px] h-[366px]  space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
                 >
                   <img
-                    src={product.img}
+                    src={product?.img}
                     alt="product"
                     className="w-[263.15px] h-[260.45px]"
                   />
                   <div className="flex flex-col justify-center items-center space-y-[7.55px]">
                     <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
-                      {product.title}
+                      {product?.title}
                     </h1>
                     <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
-                      ${product.price}
+                      ${product?.price}
                     </h1>
                   </div>
                 </div>

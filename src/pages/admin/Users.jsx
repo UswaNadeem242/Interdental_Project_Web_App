@@ -3,6 +3,7 @@ import AdminHeader from "../../components/admin/AdminHeader";
 // import userpic from "../../assets/users.png";
 import axios from "axios";
 import { BASE_URL } from "../../config";
+import Toast from "../../components/Toast";
 
 const Users = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -15,6 +16,10 @@ const Users = () => {
   const [actionsModal, setActionsModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+
   const allUsers = [
     {
       id: 1,
@@ -87,6 +92,10 @@ const Users = () => {
     getAllUsers();
   }, []);
 
+  const closeToast = () => {
+    setToastVisible(false);
+  };
+
   const handleDeactivateUser = async (id) => {
     try {
       const response = await axios.delete(
@@ -100,10 +109,16 @@ const Users = () => {
         }
       );
       console.log(response);
-      alert("User De-Activated successfully");
+      setToastMessage("User De-Activated successfully!");
+      setToastType("success");
+      setToastVisible(true);
+      // alert("User De-Activated successfully");
       setActionsModal(false);
     } catch (error) {
       console.log(error);
+      setToastMessage(`Error: ${error}`);
+      setToastType("success");
+      setToastVisible(true);
     }
   };
   console.log(tabs[selectedIndex]);
@@ -329,6 +344,12 @@ const Users = () => {
           </div>
         </div>
       </div>
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
     </div>
   );
 };

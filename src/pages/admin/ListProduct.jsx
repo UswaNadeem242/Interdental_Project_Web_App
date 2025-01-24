@@ -5,6 +5,7 @@ import axios from "axios";
 import AddBrandModal from "../../modals/AddBrandModal";
 import AddCategoryModal from "../../modals/AddCategoryModal";
 import { BASE_URL } from "../../config";
+import Toast from "../../components/Toast";
 
 const ListProduct = () => {
   const navigate = useNavigate();
@@ -24,6 +25,9 @@ const ListProduct = () => {
   const [sku, setSku] = useState(
     () => `SKU-${Math.floor(Math.random() * 1000000)}`
   );
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
 
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -79,6 +83,10 @@ const ListProduct = () => {
     getAllBrands();
   }, []);
 
+  const closeToast = () => {
+    setToastVisible(false);
+  };
+
   const handleSave = async () => {
     if (
       !name ||
@@ -89,7 +97,9 @@ const ListProduct = () => {
       !brandId ||
       !sku
     ) {
-      alert("Please fill all the fields");
+      setToastMessage("Please fill all the fields !");
+      setToastType("error");
+      setToastVisible(true);
       return;
     }
     try {
@@ -114,11 +124,18 @@ const ListProduct = () => {
           },
         }
       );
-      console.log(response);
-      alert("Product added successfully");
-      navigate("/admin/products");
+
+      setToastMessage("Product added successfully!");
+      setToastType("success");
+      setToastVisible(true);
+      setTimeout(() => {
+        navigate("/admin/products");
+      }, 2000);
     } catch (error) {
       console.log(error);
+      setToastMessage("Error while adding !");
+      setToastType("error");
+      setToastVisible(true);
     }
   };
 
@@ -563,6 +580,12 @@ const ListProduct = () => {
           categoriesList={categoriesList}
         />
       )}
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
     </div>
   );
 };

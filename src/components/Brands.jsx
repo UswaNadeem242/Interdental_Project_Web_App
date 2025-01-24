@@ -1,4 +1,6 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../config";
 // import brand1 from "../assets/brand1.png";
 // import brand2 from "../assets/brand2.png";
 // import brand3 from "../assets/brand3.png";
@@ -7,6 +9,7 @@ import React from "react";
 // import brand6 from "../assets/brand6.png";
 
 const Brands = () => {
+  const [brandsList, setBrandsList] = useState([]);
   const brands = [
     {
       logo: "/build/assets/brand1.png",
@@ -27,6 +30,28 @@ const Brands = () => {
       logo: "/build/assets/brand6.png",
     },
   ];
+
+  const getAllBrands = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/interdentallab/api/brands?page=0&size=10`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setBrandsList(response.data.content);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getAllBrands();
+  }, []);
+
   return (
     <div className="flex flex-col justify-start items-center">
       <div className="flex flex-col justify-center items-center w-[1306px] h-[205px] space-y-[24px]">
@@ -34,9 +59,12 @@ const Brands = () => {
           BRANDS
         </h1>
         <div className="flex justify-center items-center w-[1282px] h-[158px] gap-[21.72px]">
-          {brands.map((brand) => (
-            <div className="flex justify-center items-center bg-white rounded-[28.97px] gap-[21.72px] p-[10.86px] w-[195.56px] h-[158px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
-              <img src={brand.logo} alt="brands" />
+          {brandsList.map((brand) => (
+            <div
+              key={brand.id}
+              className="flex justify-center items-center overflow-hidden bg-white rounded-[28.97px] gap-[21.72px] p-[10.86px] w-[195.56px] h-[158px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]"
+            >
+              <img src={brand.logoUrl} alt="brands" />
             </div>
           ))}
         </div>

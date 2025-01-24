@@ -1,8 +1,56 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { BASE_URL } from "../config";
 // import product1 from "../assets/product1.png";
 
-const CartProduct = () => {
-  const [count, setCount] = useState(1);
+const CartProduct = ({ item }) => {
+  const [count, setCount] = useState(item.quantity);
+
+  const handleDeleteItem = async () => {
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}/interdentallab/api/cart/${item.id}/remove`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      alert("Item removed from cart");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleUpdateItem = async (status) => {
+    if (status === "add") {
+      setCount(count + 1);
+    } else if (status === "subtract") {
+      if (count === 1) {
+        handleDeleteItem();
+      }
+      setCount(count - 1);
+    }
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/interdentallab/api/cart/${item.id}/update`,
+        {
+          cartItemId: item.id,
+          quantity: status === "add" ? count + 1 : count - 1,
+        },
+        {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex justify-center items-center w-[587px] h-[188px] rounded-[16px] border-[1px] border-[#0000000D] space-y-[24px] p-[16px] bg-[#FFFFFF]">
       <div className="flex justify-center items-center w-[555px] h-[156px] gap-[16px]">
@@ -13,9 +61,9 @@ const CartProduct = () => {
             className="w-[115.13px] h-[131.94px]"
           />
           <div className="flex flex-col justify-start items-start w-[373.87px] h-[156px] gap-[8px]">
-            <h1>Apple-Dental Air Turbine</h1>
-            <h1>Keep the soil evenly moist for the healthiest gro...</h1>
-            <h1>$70</h1>
+            <h1>{item.productName}</h1>
+            <h1>Prouct description here</h1>
+            <h1>${item.price}</h1>
             <div className="flex justify-between items-center w-[124px] h-[50px] rounded-[170px] border-[1px] border-[#0000000D] p-[8px]">
               <svg
                 width="35"
@@ -23,7 +71,8 @@ const CartProduct = () => {
                 viewBox="0 0 35 35"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                onClick={() => setCount(count - 1)}
+                className="cursor-pointer"
+                onClick={() => handleUpdateItem("subtract")}
               >
                 <rect
                   x="0.134766"
@@ -48,7 +97,8 @@ const CartProduct = () => {
                 viewBox="0 0 35 35"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                onClick={() => setCount(count + 1)}
+                className="cursor-pointer"
+                onClick={() => handleUpdateItem("add")}
               >
                 <rect
                   x="0.134766"
@@ -75,6 +125,8 @@ const CartProduct = () => {
           viewBox="0 0 24 25"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          className="cursor-pointer"
+          onClick={() => handleDeleteItem()}
         >
           <g clip-path="url(#clip0_13855_2364)">
             <path

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
-const NotificationsDropdown = () => {
+const NotificationsDropdown = ({ setNotificationsDropdown }) => {
+  const dropdownRef = useRef(null);
   const notifications = [
     {
       id: 1,
@@ -24,8 +25,26 @@ const NotificationsDropdown = () => {
       Time: "15 May 2020 9:00 am",
     },
   ];
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setNotificationsDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   return (
-    <div className="w-[367px] h-[368px] bg-white rounded-[8px] border-[1px] space-y-[10px] p-[16px] border-[#0000000D] shadow-[0_0_0_1px_#0000000D]">
+    <div
+      ref={dropdownRef}
+      className="w-[367px] h-[368px] bg-white rounded-[8px] border-[1px] space-y-[10px] p-[16px] border-[#0000000D] shadow-[0_0_0_1px_#0000000D]"
+    >
       <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#000000]">
         Notifications
       </p>

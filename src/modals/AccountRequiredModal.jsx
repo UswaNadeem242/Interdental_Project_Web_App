@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const AccountRequiredModal = ({ isModalOpen, setIsModalOpen }) => {
+  const navigate = useNavigate();
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -53,7 +55,7 @@ const AccountRequiredModal = ({ isModalOpen, setIsModalOpen }) => {
             </h1>
           </button>
           <button
-            onClick={handleCloseModal}
+            onClick={() => navigate("/signup")}
             className="flex justify-center items-center bg-[#001D58] text-white w-[118.5px] h-[40px] rounded-[12px] border-[1px] border-[#001D58] gap-[8px] py-[19px] px-[10px] "
           >
             <h1 className="text-[12px] font-poppins font-normal leading-[18px]">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -10,11 +10,152 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 // import customer from "../assets/customer.png";
 import CustomerFeedback from "../components/CustomerFeedback";
 import RelatedProducts from "../components/RelatedProducts";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../config";
+import Toast from "../components/Toast";
+import { useAuth } from "../auth/AuthContext";
 
 const SingleProduct = () => {
+  const { productId } = useParams();
+  const { user } = useAuth();
+  console.log("single product", user);
+
+  const [product, setProduct] = useState({});
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+
+  const getProduct = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/interdentallab/api/products/${productId}`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setProduct(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllCategories = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/interdentallab/category/getAllCategories`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setCategoriesList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getRelatedProducts = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/interdentallab/api/products/${productId}/related`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setRelatedProducts(response.data);
+      console.log("related products", response.data);
+    } catch (error) {
+      setRelatedProducts(error.response.data.data);
+    }
+  };
+
+  useEffect(() => {
+    getProduct();
+    getAllCategories();
+    getRelatedProducts();
+  }, [productId]);
+
+  const closeToast = () => {
+    setToastVisible(false);
+  };
+
+  const handleAddtoCart = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        id: productId,
+        productId: productId,
+        productName: product.name,
+        quantity: 1,
+        price: product.price,
+        totalPrice: product.price,
+      };
+      const response = await axios.post(
+        `${BASE_URL}/interdentallab/api/cart/add`,
+        payload,
+        {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log(response);
+      setToastMessage("Added to Cart !");
+      setToastType("success");
+      setToastVisible(true);
+      // alert("Added to cart");
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const handleAddtoWishlist = async () => {
+    try {
+      const payload = {
+        id: productId,
+        productId: productId,
+        productName: product.name,
+        price: product.price,
+      };
+      const response = await axios.post(
+        `${BASE_URL}/interdentallab/api/wishlist/add`,
+        payload,
+        {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setToastMessage("Added to Wishlist !");
+      setToastType("success");
+      setToastVisible(true);
+    } catch (error) {
+      setToastMessage(`Error: ${error}`);
+      setToastType("success");
+      setToastVisible(true);
+    }
+  };
   return (
     <div className="flex justify-center items-center bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
-      <div className="flex flex-col justify-center items-center w-[1312px] h-[1561.74px] space-y-[32px] mt-8 pt-[8px] pl-[100px]">
+      <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
           <div className="flex justify-center items-center w-[1131px] h-[501px]">
             <div className="flex flex-col justify-start items-center w-[94px] h-[503px] space-y-[8px]">
@@ -80,7 +221,7 @@ const SingleProduct = () => {
                 <div className="flex flex-col justify-center items-start w-[440.97px] h-[68.59px] space-y-[9.59px]">
                   <div className="flex justify-start items-center w-[440.97px] h-[35px] gap-[6.39px]">
                     <h1 className="font-poppins font-semibold text-[28.78px] w-[365px] h-[35px] leading-[34.53px] text-[#1A1A1A]">
-                      Woodpecker Scaling Tip
+                      {product.name}
                     </h1>
                     <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-[8px] px-[12.79px] gap-[7.99px] bg-[#001D580D]">
                       <h1 className="font-poppins font-normal text-secondaryBrand text-[11.19px] leading-[16.79px] w-[44px] h-[17px]">
@@ -116,7 +257,7 @@ const SingleProduct = () => {
                     </h1>
                   </div>
                   <h1 className="font-poppins font-semibold text-[19.18px] leading-[28.78px] text-secondaryBrand">
-                    $17.98
+                    ${product.price}
                   </h1>
                 </div>
 
@@ -124,30 +265,34 @@ const SingleProduct = () => {
               </div>
               <div className="w-[454.03px] h-[51px]">
                 <h1 className="font-poppins font-normal text-[11.19px] leading-[16.79px] text-[#808080]">
-                  Class aptent taciti sociosqu ad litora torquent per conubia
-                  nostra, per inceptos himenaeos. Nulla nibh diam, blandit vel
-                  consequat nec, ultrices et ipsum. Nulla varius magna a
-                  consequat pulvinar.{" "}
+                  {product.description}
                 </h1>
               </div>
               <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-[9.59px]">
-                <div className="flex justify-center items-center w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]">
+                <div className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]">
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
                     Buy Now
                   </h1>
                 </div>
-                <div className="flex justify-center items-center w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]">
+                <div
+                  onClick={() => handleAddtoCart()}
+                  className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
+                >
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-white">
-                    Add to Cart
+                    {loading ? "Adding..." : "Add to Cart"}
                   </h1>
                 </div>
-                <div className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]">
+                <div
+                  onClick={() => handleAddtoWishlist()}
+                  className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]"
+                >
                   <svg
                     width="27"
                     height="27"
                     viewBox="0 0 27 27"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    className="cursor-pointer"
                   >
                     <path
                       d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
@@ -162,7 +307,11 @@ const SingleProduct = () => {
                   Category:
                 </h1>
                 <h1 className="font-poppins font-normal text-[12px] leading-[18px] text-[#808080]">
-                  Dental Laser
+                  {
+                    categoriesList.find(
+                      (category) => category.categoryId === product.categoryId
+                    )?.name
+                  }
                 </h1>
               </div>
             </div>
@@ -183,8 +332,18 @@ const SingleProduct = () => {
             </div>
           </div>
         </div>
-        <RelatedProducts />
+        {relatedProducts?.length > 0 ? (
+          <RelatedProducts relatedProducts={relatedProducts} />
+        ) : (
+          <p>No Related Products Found.</p>
+        )}
       </div>
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
     </div>
   );
 };

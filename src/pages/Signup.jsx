@@ -3,10 +3,63 @@ import React, { useState } from "react";
 // import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import AccountDeactivate from "../modals/AccountDeactivateModal";
+import axios from "axios";
+import { BASE_URL } from "../config";
+import Toast from "../components/Toast";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cPassword, setCPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+
+  const handleSignup = async () => {
+    if (!firstName || !lastName || !email || !password || !cPassword) {
+      setToastMessage("Please fill all the fields !");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+    if (password != cPassword) {
+      setToastMessage("Passwords are not same !");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/interdentallab/api/users/sign-up?email=${email}&password=${password}&role=PATIENT`,
+        {
+          headers: {
+            Accept: "*/*",
+          },
+        }
+      );
+      setToastMessage("User Registered Successfully !");
+      setToastType("success");
+      setToastVisible(true);
+      console.log("response", response);
+    } catch (error) {
+      console.log(error);
+      setToastMessage(`Error: ${error}`);
+      setToastType("success");
+      setToastVisible(true);
+    }
+  };
+
+  const closeToast = () => {
+    setToastVisible(false);
+  };
+
   return (
     <div className="flex justify-start items-center gap-24 p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
       <div className="flex flex-col items-start justify-start -space-y-12">
@@ -90,6 +143,8 @@ const Signup = () => {
               placeholder="Fist Name"
               name=""
               id=""
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
             />
             <input
               type="text"
@@ -97,6 +152,8 @@ const Signup = () => {
               placeholder="Last Name"
               name=""
               id=""
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
             />
           </div>
           <input
@@ -105,14 +162,18 @@ const Signup = () => {
             placeholder="Email Address"
             name=""
             id=""
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <div className="relative w-[494px]">
             <input
-              type="text"
+              type={showPassword ? "text" : "password"}
               className="w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
               placeholder="Password"
               name=""
               id=""
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <svg
               width="16"
@@ -121,6 +182,7 @@ const Signup = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
             >
               <path
                 fill-rule="evenodd"
@@ -132,11 +194,13 @@ const Signup = () => {
           </div>
           <div className="relative w-[494px]">
             <input
-              type="text"
+              type={showCPassword ? "text" : "password"}
               className="w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
               placeholder="Confirm Password"
               name=""
               id=""
+              value={cPassword}
+              onChange={(e) => setCPassword(e.target.value)}
             />
             <svg
               width="16"
@@ -145,6 +209,7 @@ const Signup = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              onClick={() => setShowCPassword(!showCPassword)}
             >
               <path
                 fill-rule="evenodd"
@@ -159,7 +224,10 @@ const Signup = () => {
           </p>
         </div>
         <div className="flex flex-col w-[494px] h-[270px] gap-[32px]">
-          <button className="w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-[14px] leading-[21px]">
+          <button
+            onClick={() => handleSignup()}
+            className="w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-[14px] leading-[21px]"
+          >
             Sign Up
           </button>
           <div className="flex justify-center items-center w-[494px] h-[56px] gap-[16px]">
@@ -239,6 +307,12 @@ const Signup = () => {
           setIsModalOpen={setIsModalOpen}
         />
       )}
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
     </div>
   );
 };

@@ -9,62 +9,62 @@ import React from "react";
 // import product8 from "../assets/product8.png";
 import { useNavigate } from "react-router-dom";
 
-const featureProducts = [
-  {
-    id: 1,
-    img: "/build/assets/product1.png",
-    title: "G Gold Lable 1 Mini",
-    price: 233.65,
-  },
-  {
-    id: 2,
-    img: "/build/assets/product2.png",
-    title: "G Gold Lable 1 Mini",
-    price: 739.65,
-  },
-  {
-    id: 3,
-    img: "/build/assets/product3.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 4,
-    img: "/build/assets/product4.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 5,
-    img: "/build/assets/product5.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 6,
-    img: "/build/assets/product6.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 7,
-    img: "/build/assets/product7.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 8,
-    img: "/build/assets/product8.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-];
+// const featureProducts = [
+//   {
+//     id: 1,
+//     img: "/build/assets/product1.png",
+//     title: "G Gold Lable 1 Mini",
+//     price: 233.65,
+//   },
+//   {
+//     id: 2,
+//     img: "/build/assets/product2.png",
+//     title: "G Gold Lable 1 Mini",
+//     price: 739.65,
+//   },
+//   {
+//     id: 3,
+//     img: "/build/assets/product3.png",
+//     title: "G Gold Lable 1 Mini",
+//     price: 634.23,
+//   },
+//   {
+//     id: 4,
+//     img: "/build/assets/product4.png",
+//     title: "G Gold Lable 1 Mini",
+//     price: 634.23,
+//   },
+//   {
+//     id: 5,
+//     img: "/build/assets/product5.png",
+//     title: "G Gold Lable 1 Mini",
+//     price: 634.23,
+//   },
+//   {
+//     id: 6,
+//     img: "/build/assets/product6.png",
+//     title: "G Gold Lable 1 Mini",
+//     price: 634.23,
+//   },
+//   {
+//     id: 7,
+//     img: "/build/assets/product7.png",
+//     title: "G Gold Lable 1 Mini",
+//     price: 634.23,
+//   },
+//   {
+//     id: 8,
+//     img: "/build/assets/product8.png",
+//     title: "G Gold Lable 1 Mini",
+//     price: 634.23,
+//   },
+// ];
 
-const FeaturedProducts = () => {
+const FeaturedProducts = ({ products }) => {
   const navigate = useNavigate();
   return (
     // h-[906px] change needs to be done on parent div
-    <div className="flex flex-col justify-center items-center w-[1306px] mb-[100px] space-y-16">
+    <div className="flex flex-col justify-center items-center w-[1306px] h-auto mb-[100px] space-y-[45px]">
       <div className="flex justify-center items-center w-[1305px] h-[63px] gap-[41px]">
         <div className="w-[376px] h-[1px] border-[1px] border-[#0000001A]"></div>
         <div className="flex flex-col justify-center items-center w-[219px] h-[63px] space-y-[8px]">
@@ -79,21 +79,21 @@ const FeaturedProducts = () => {
         </div>
         <div className="w-[376px] h-[1px] border-[1px] border-[#0000001A]"></div>
       </div>
-      <div className="w-[1305.62px] h-[806px] space-y-[32px]">
-        <div className="flex flex-wrap w-full h-[386px] gap-[31px]">
-          {featureProducts.map((product) => (
+      <div className="w-[1305.62px] h-auto space-y-[32px]">
+        <div className="flex flex-wrap w-full h-auto gap-[31px]">
+          {products.map((product) => (
             <div
               onClick={() => navigate(`/product/${product.id}`)}
-              className="flex flex-col justify-center items-center cursor-pointer w-[303.15px] h-[386px] p-[20px] space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
+              className="flex flex-col justify-center items-center bg-white cursor-pointer w-[303.15px] h-[386px] p-[20px] space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
             >
               <img
-                src={product.img}
+                src={product?.img}
                 alt="product"
                 className="w-[263.15px] h-[260.45px]"
               />
               <div className="flex flex-col justify-center items-center space-y-[7.55px]">
                 <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
-                  {product.title}
+                  {product.name}
                 </h1>
                 <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
                   ${product.price}
@@ -103,9 +103,9 @@ const FeaturedProducts = () => {
           ))}
         </div>
 
-        <div className="w-full h-[386px] gap-[31px]">
+        {/* <div className="w-full h-[386px] gap-[31px]">
           <div className="w-[303.15px] h-[386px] p-[20px] gap-[24px] border-[1px] border-[#0000000D] rounded-[16px]"></div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

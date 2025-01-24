@@ -43,7 +43,10 @@ const NewPassword = () => {
           >
             Reset Password
           </button>
-          <div className="flex justify-center items-center gap-[8px] w-[130px] h-[24px]">
+          <div
+            onClick={() => navigate("/login")}
+            className="flex justify-center items-center cursor-pointer gap-[8px] w-[130px] h-[24px]"
+          >
             <svg
               width="25"
               height="24"

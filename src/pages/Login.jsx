@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../config";
+import { useAuth } from "../auth/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +15,10 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      alert("Please fill all the fields");
+      return;
+    }
     setLoading(true);
     try {
       const response = await axios.post(
@@ -32,10 +38,19 @@ const Login = () => {
         }
       );
       setLoading(false);
-      localStorage.setItem("token", response.data.data.accessToken);
-      navigate("/admin/dashboard");
+      login(response.data.data.users, response.data.data.accessToken);
+      console.log("test", response);
+      // localStorage.setItem("token", response.data.data.accessToken);
+      if (response.data.data.users.roles[0] === "ADMIN") {
+        navigate("/admin/dashboard");
+      } else if (response.data.data.users.roles[0] === "PATIENT") {
+        navigate("/");
+      } else {
+        alert("Login failed");
+      }
     } catch (error) {
       console.log(error);
+      alert("Wrong credentials");
       setLoading(false);
     }
   };

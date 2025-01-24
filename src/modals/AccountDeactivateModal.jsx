@@ -29,7 +29,7 @@ const AccountDeactivate = ({ isModalOpen, setIsModalOpen }) => {
             Account Deactivate
           </p>
           <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#949494] text-center">
-            Your Account is deactivated by the admin Contact admin to active
+            Your Account is deactivated by the admin. Contact admin to active
             your account
           </p>
         </div>

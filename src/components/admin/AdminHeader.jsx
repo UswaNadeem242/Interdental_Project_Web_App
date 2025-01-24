@@ -1,11 +1,13 @@
 import React from "react";
 // import user from "../../assets/user.png";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext";
 
 const AdminHeader = ({ title, subTitle }) => {
   const navigate = useNavigate();
-  const logout = () => {
-    localStorage.removeItem("token");
+  const { logout } = useAuth();
+  const handleLogout = () => {
+    logout();
     navigate("/login");
   };
   return (
@@ -87,7 +89,7 @@ const AdminHeader = ({ title, subTitle }) => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="cursor-pointer"
-          onClick={() => logout()}
+          onClick={() => handleLogout()}
         >
           <rect width="56" height="56" rx="28" fill="white" />
           <path
