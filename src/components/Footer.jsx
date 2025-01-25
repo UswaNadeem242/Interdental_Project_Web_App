@@ -1,6 +1,7 @@
 import React from "react";
 
 const Footer = () => {
+  const year = new Date().getFullYear();
   return (
     <div className="relative bottom-0 flex justify-center items-center  h-[298.87px] w-full bg-secondaryBrand py-[64.98px] px-[167.52px] gap-[100px]">
       <div className="flex flex-col justify-center items-center w-[355.55px] h-[168.92px] gap-[30.46px]">
@@ -8,7 +9,7 @@ const Footer = () => {
           Lab
         </h1>
         <div className="flex flex-col justify-between items-start space-y-[8.12px] text-[#D9DBE1] font-poppins font-normal text-[14px] leading-[21px]">
-          <h1>Copyright @2024 Interdental</h1>
+          <h1>Copyright @{year} Interdental</h1>
           <h1>All rights reserved</h1>
         </div>
       </div>
@@ -44,8 +45,7 @@ const Footer = () => {
               height="33"
               viewBox="0 0 33 33"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <path
                 opacity="0.1"
                 fill-rule="evenodd"
@@ -65,8 +65,7 @@ const Footer = () => {
               height="33"
               viewBox="0 0 34 33"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <path
                 opacity="0.1"
                 fill-rule="evenodd"
@@ -86,8 +85,7 @@ const Footer = () => {
               height="33"
               viewBox="0 0 42 33"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <g filter="url(#filter0_d_13293_408)">
                 <path
                   opacity="0.1"
@@ -111,8 +109,7 @@ const Footer = () => {
                   width="40.4893"
                   height="40.489"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
-                >
+                  color-interpolation-filters="sRGB">
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
                     in="SourceAlpha"
@@ -147,8 +144,7 @@ const Footer = () => {
               height="33"
               viewBox="0 0 33 33"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <path
                 opacity="0.1"
                 fill-rule="evenodd"

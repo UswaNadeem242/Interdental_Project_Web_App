@@ -22,6 +22,10 @@ import ProtectedRoute from "./components/ProtectRoute";
 import AdminSidebar from "./components/admin/AdminSidebar";
 import { AuthProvider } from "./auth/AuthContext";
 import Wishlist from "./pages/Wishlist";
+import LandingPage from "./pages/landing-page/landing-page";
+import Patients from "./pages/landing-page/patient";
+import Doctor from "./pages/landing-page/doctor";
+import Contact from "./pages/landing-page/contact";
 // const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
 
 const MainLayout = ({ children }) => (
@@ -49,20 +53,25 @@ function App() {
         <BrowserRouter basename="/build">
           {/* <Header /> */}
           <Routes>
-            <Route
-              path="/"
+            <Route path="/" element={<LandingPage />} />
+            {
+              /* <Route
+              path="/landing"
               element={
-                <MainLayout>
-                  <Home />
-                </MainLayout>
-              }
-            />
+                <LandingPage />
+
+                // <MainLayout>
+                /* <Home /> */
+              // </MainLayout>
+            }{" "}
+            <Route path="/patient" element={<Patients isLanding={false} />} />
+            <Route path="/doctor" element={<Doctor isLanding={false} />} />
             <Route
               path="/shop"
               element={
-                <MainLayout>
-                  <Shop />
-                </MainLayout>
+                // <MainLayout>
+                <Shop />
+                // </MainLayout>
               }
             />
             <Route
@@ -81,14 +90,8 @@ function App() {
                 </MainLayout>
               }
             />
-            <Route
-              path="/aboutus"
-              element={
-                <MainLayout>
-                  <About />
-                </MainLayout>
-              }
-            />
+            <Route path="/about-us" element={<About isLanding={false} />} />
+            <Route path="/contact-us" element={<Contact isLanding={false} />} />
             <Route
               path="/product/:productId"
               element={
@@ -167,6 +170,7 @@ function App() {
           {/* <Footer /> */}
         </BrowserRouter>
       </AuthProvider>
+
       {/* <Layout>
         <RouterProvider router={router} />
       </Layout> */}
