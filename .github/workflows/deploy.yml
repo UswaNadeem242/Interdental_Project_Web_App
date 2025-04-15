@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build and Deploy to Tomcat
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build Project
+      run: CI=false npm run build
+
+    - name: Check if Build Folder Exists
+      run: |
+        if [ ! -d "build" ]; then
+          echo "❌ Build folder not found! Exiting..."
+          exit 1
+        fi
+        echo "✅ Build folder exists."
+
+    - name: Install sshpass
+      run: sudo apt-get update && sudo apt-get install -y sshpass
+
+    - name: Deploy to Remote Server (Tomcat)
+      run: |
+        echo "🚀 Deploying to Tomcat server..."
+
+        # Remove old build
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ubuntu@43.204.227.243 << 'EOF'
+          sudo rm -rf /opt/tomcat/webapps/build
+          sudo mkdir -p /opt/tomcat/webapps/build
+        EOF
+
+        # Upload new build
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" scp -r build/* ubuntu@43.204.227.243:/tmp/frontend_build/
+
+        # Move to Tomcat webapps
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ubuntu@43.204.227.243 << 'EOF'
+          sudo mv /tmp/frontend_build /opt/tomcat/webapps/build
+          sudo chown -R ubuntu:ubuntu /opt/tomcat/webapps/build
+          echo "✅ Deployment complete."
+        EOF
