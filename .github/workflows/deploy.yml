@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-deploy:
     name: Build and Deploy to Staging
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, staging]
 
     steps:
     - name: Checkout Code
@@ -20,70 +20,34 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-
-    - name: Install npm dependencies
+    - name: Install Dependencies
       run: npm install
 
     - name: Install web-vitals
       run: npm install web-vitals
 
     - name: Build the Application
-      run: CI=false npm run build
-
-    - name: Check if Build Folder Exists
-      run: |
-        if [ ! -d "build" ]; then
-          echo "❌ Build folder not found! Exiting..."
-          exit 1
-        fi
-        echo "✅ Build folder exists. Proceeding with deployment."
-
-    - name: Install SSH & SCP
-      run: sudo apt-get update && sudo apt-get install -y sshpass
+      run: npm run build
 
     - name: Deploy to Staging Server
-      env:
-        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       run: |
-        SERVER_USER="ubuntu"
-        SERVER_IP="43.204.227.243"
-        TARGET_DIR="/opt/tomcat/webapps"
-        BUILD_DIR_NAME="build"
-        BACKUP_DIR_NAME="backup"
+        echo "📁 Preparing backup directory..."
+        sudo mkdir -p /opt/tomcat/webapps/backup
 
-        # Step 1: Backup existing build if it exists
-        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << EOF
-          sudo mkdir -p $TARGET_DIR/$BACKUP_DIR_NAME
-          if [ -d $TARGET_DIR/ROOT ]; then
-            TIMESTAMP=\$(date +%F-%T)
-            sudo mv $TARGET_DIR/ROOT $TARGET_DIR/$BACKUP_DIR_NAME/ROOT_\$TIMESTAMP
-            echo "✅ Existing ROOT moved to backup/ROOT_\$TIMESTAMP"
-          else
-            echo "ℹ️ No existing ROOT directory found, skipping backup."
-          fi
-          sudo mkdir -p $TARGET_DIR/ROOT
-        EOF
+        echo "🗃️ Backing up old build..."
+        if [ -d /opt/tomcat/webapps/build ]; then
+          sudo mv /opt/tomcat/webapps/build /opt/tomcat/webapps/backup/build_$(date +%F-%T)
+          echo "✅ Old build backed up."
+        fi
 
-        # Step 2: Upload new build folder
-        sshpass -p "$SSH_PASSWORD" scp -r $BUILD_DIR_NAME $SERVER_USER@$SERVER_IP:/tmp/latest_build
+        echo "🚚 Copying new build..."
+        sudo cp -r build /opt/tomcat/webapps/
 
-        # Step 3: Deploy to Tomcat ROOT
-        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << EOF
-          sudo rm -rf $TARGET_DIR/ROOT/*
-          sudo cp -r /tmp/latest_build/* $TARGET_DIR/ROOT/
-          sudo rm -rf /tmp/latest_build
+        echo "🔧 Setting permissions..."
+        sudo chown -R ubuntu:ubuntu /opt/tomcat/webapps/build
+        sudo chmod -R 755 /opt/tomcat/webapps/build
 
-          echo "✅ New build copied to ROOT directory."
+        echo "🔄 Restarting Tomcat..."
+        sudo systemctl restart tomcat
 
-          # ✅ Set permissions for Tomcat group and Ubuntu user
-          sudo chown -R $SERVER_USER:tomcat $TARGET_DIR
-          sudo chmod -R 775 $TARGET_DIR
-
-          sudo systemctl restart tomcat
-
-          echo "🚀 Deployment completed successfully."
-        EOF
+        echo "🚀 Deployment complete!"
