@@ -27,7 +27,7 @@ jobs:
       run: npm install web-vitals
 
     - name: Build the Application
-      run: npm run build
+      run: CI='' npm run build
 
     - name: Deploy to Staging Server
       run: |
