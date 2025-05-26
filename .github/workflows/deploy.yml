@@ -34,20 +34,23 @@ jobs:
         echo "📁 Preparing backup directory..."
         sudo mkdir -p /opt/tomcat/webapps/backup
 
-        echo "🗃️ Backing up old build..."
-        if [ -d /opt/tomcat/webapps/build ]; then
-          sudo mv /opt/tomcat/webapps/build /opt/tomcat/webapps/backup/build_$(date +%F-%T)
-          echo "✅ Old build backed up."
+        echo "🗃️ Backing up old ROOT..."
+        if [ -d /opt/tomcat/webapps/ROOT ]; then
+          sudo mv /opt/tomcat/webapps/ROOT /opt/tomcat/webapps/backup/ROOT_$(date +%F-%T)
+          echo "✅ Old ROOT backed up."
         fi
 
-        echo "🚚 Copying new build..."
-        sudo cp -r build /opt/tomcat/webapps/
+        echo "📂 Creating new ROOT directory..."
+        sudo mkdir -p /opt/tomcat/webapps/ROOT
+
+        echo "🚚 Copying new build contents to ROOT..."
+        sudo cp -r build/* /opt/tomcat/webapps/ROOT/
 
         echo "🔧 Setting permissions..."
-        sudo chown -R ubuntu:ubuntu /opt/tomcat/webapps/build
-        sudo chmod -R 755 /opt/tomcat/webapps/build
+        sudo chown -R ubuntu:ubuntu /opt/tomcat/webapps/ROOT
+        sudo chmod -R 755 /opt/tomcat/webapps/ROOT
 
         echo "🔄 Restarting Tomcat..."
         sudo systemctl restart tomcat
 
-        echo "🚀 Deployment complete!"
+        echo "🚀 Deployment to ROOT complete!"
