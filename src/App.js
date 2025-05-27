@@ -50,7 +50,7 @@ function App() {
   return (
     <div>
       <AuthProvider>
-        <BrowserRouter basename="/build">
+        <BrowserRouter>
           {/* <Header /> */}
           <Routes>
             <Route path="/" element={<LandingPage />} />
