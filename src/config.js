@@ -1,3 +1,3 @@
-const BASE_URL = "http://13.212.26.131:8081";
+const BASE_URL = "https://api.interdentalusa.com/";
 
 export { BASE_URL };
