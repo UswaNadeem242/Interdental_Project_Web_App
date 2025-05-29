@@ -1,3 +1,3 @@
-const BASE_URL = "https://interdentalusa.com/api";
+const BASE_URL = "https://api.interdentalusa.com/";
 
 export { BASE_URL };
