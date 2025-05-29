@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-deploy:
     name: Build and Deploy to Staging
-    runs-on: [self-hosted, Linux, X64, staging]
+    runs-on: [self-hosted, Linux, X64]
 
     steps:
     - name: Checkout Code
@@ -29,25 +29,30 @@ jobs:
     - name: Build the Application
       run: CI='' npm run build
 
-    - name: Deploy to Staging Server
+    - name: Deploy to /var/www/interdentalusa.com
       run: |
-        echo "📁 Preparing backup directory..."
-        sudo mkdir -p /opt/tomcat/webapps/backup
+        TARGET_DIR=/var/www/interdentalusa.com
+        BACKUP_DIR=/var/www/backup/interdentalusa.com_$(date +%F-%T)
 
-        echo "🗃️ Backing up old build..."
-        if [ -d /opt/tomcat/webapps/build ]; then
-          sudo mv /opt/tomcat/webapps/build /opt/tomcat/webapps/backup/build_$(date +%F-%T)
-          echo "✅ Old build backed up."
+        echo "📁 Creating backup directory: $BACKUP_DIR"
+        sudo mkdir -p $BACKUP_DIR
+
+        echo "🗃️ Backing up current deployment..."
+        if [ -d "$TARGET_DIR" ]; then
+          sudo cp -r $TARGET_DIR/* $BACKUP_DIR/
+          echo "✅ Backup completed: $BACKUP_DIR"
+        else
+          echo "⚠️ Target directory does not exist. Skipping backup."
         fi
 
-        echo "🚚 Copying new build..."
-        sudo cp -r build /opt/tomcat/webapps/
+        echo "🧹 Cleaning target directory..."
+        sudo rm -rf $TARGET_DIR/*
+        
+        echo "🚚 Copying new build to $TARGET_DIR"
+        sudo cp -r build/* $TARGET_DIR/
 
         echo "🔧 Setting permissions..."
-        sudo chown -R ubuntu:ubuntu /opt/tomcat/webapps/build
-        sudo chmod -R 755 /opt/tomcat/webapps/build
+        sudo chown -R ubuntu:www-data $TARGET_DIR
+        sudo chmod -R 755 $TARGET_DIR
 
-        echo "🔄 Restarting Tomcat..."
-        sudo systemctl restart tomcat
-
-        echo "🚀 Deployment complete!"
+        echo "🚀 Deployment to $TARGET_DIR complete!"
