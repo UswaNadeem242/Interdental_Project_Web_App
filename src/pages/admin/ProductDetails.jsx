@@ -27,7 +27,7 @@ const ProductDetails = () => {
   const getProductDetails = async () => {
     try {
       const response = await axios.get(
-        `http://13.212.26.131:8081/interdentallab/product/get/${productId}`,
+        `${BASE_URL}/interdentallab/product/get/${productId}`,
         {
           headers: {
             Accept: "*/*",

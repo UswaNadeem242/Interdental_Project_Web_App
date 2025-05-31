@@ -57,10 +57,10 @@ const Login = () => {
   return (
     <div className="flex justify-start items-center gap-24 p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
       <div className="flex flex-col items-start justify-start -space-y-12">
-        <img src="/build/assets/logo.png" alt="logo" />
+        <img src="/assets/logo.png" alt="logo" />
         <img
           className="w-[777px] h-[874px] rounded-[124px] "
-          src="/build/assets/loginrectangle.png"
+          src="/assets/loginrectangle.png"
           alt="locin rectangle image"
         />
         <svg

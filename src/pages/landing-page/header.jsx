@@ -1,6 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <header className="sticky top-8 z-50 rounded-full mx-16 flex justify-between items-center px-8 py-4 bg-white shadow-md">
       <div className="flex items-center space-x-2">
@@ -15,7 +16,8 @@ const Header = () => {
             isActive
               ? "bg-blue-100 text-blue-500 px-4 py-2 rounded-full"
               : "hover:text-blue-500 px-4 py-2 hover:bg-blue-100 rounded-full"
-          }>
+          }
+        >
           Home
         </NavLink>
         <NavLink
@@ -24,7 +26,8 @@ const Header = () => {
             isActive
               ? "bg-blue-100 text-blue-500 px-4 py-2 rounded-full"
               : "hover:text-blue-500 px-4 py-2 hover:bg-blue-100 rounded-full"
-          }>
+          }
+        >
           Shop
         </NavLink>
         <NavLink
@@ -33,7 +36,8 @@ const Header = () => {
             isActive
               ? "bg-blue-100 text-blue-500 px-4 py-2 rounded-full"
               : "hover:text-blue-500 px-4 py-2 hover:bg-blue-100 rounded-full"
-          }>
+          }
+        >
           Patient
         </NavLink>
         <NavLink
@@ -42,7 +46,8 @@ const Header = () => {
             isActive
               ? "bg-blue-100 text-blue-500 px-4 py-2 rounded-full"
               : "hover:text-blue-500 px-4 py-2 hover:bg-blue-100 rounded-full"
-          }>
+          }
+        >
           Doctor
         </NavLink>
         <NavLink
@@ -51,7 +56,8 @@ const Header = () => {
             isActive
               ? "bg-blue-100 text-blue-500 px-4 py-2 rounded-full"
               : "hover:text-blue-500 px-4 py-2 hover:bg-blue-100 rounded-full"
-          }>
+          }
+        >
           About Us
         </NavLink>
         <NavLink
@@ -60,15 +66,22 @@ const Header = () => {
             isActive
               ? "bg-blue-100 text-blue-500 px-4 py-2 rounded-full"
               : "hover:text-blue-500 px-4 py-2 hover:bg-blue-100 rounded-full"
-          }>
+          }
+        >
           Contact Us
         </NavLink>
       </nav>
       <div className="space-x-4">
-        <button className="hidden md:inline-block px-4 py-2 font-semibold border bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100">
+        <button
+          onClick={() => navigate("/login")}
+          className="hidden md:inline-block px-4 py-2 font-semibold border bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100"
+        >
           Log In
         </button>
-        <button className="px-4 py-2 bg-blue-900 text-white font-semibold rounded-full hover:bg-blue-600">
+        <button
+          onClick={() => navigate("/signup")}
+          className="px-4 py-2 bg-blue-900 text-white font-semibold rounded-full hover:bg-blue-600"
+        >
           Register Now
         </button>
       </div>

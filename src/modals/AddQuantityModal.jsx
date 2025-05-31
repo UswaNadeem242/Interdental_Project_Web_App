@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 // import Group from "../assets/Group.png";
 import axios from "axios";
+import { BASE_URL } from "../config";
 
 const AddQuantityModal = ({
   isModalOpen,
@@ -32,7 +33,7 @@ const AddQuantityModal = ({
         parentCategoryId,
       };
       const response = await axios.post(
-        "http://13.212.26.131:8080/category/addCategory",
+        `${BASE_URL}/category/addCategory`,
         payload,
         {
           headers: {
