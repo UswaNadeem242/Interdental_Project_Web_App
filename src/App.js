@@ -63,6 +63,7 @@ function App() {
                 // <MainLayout>
                 /* <Home /> */
               // </MainLayout>
+              // test
             }{" "}
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
