@@ -73,15 +73,12 @@ const Users = () => {
 
   const getAllUsers = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/admin/users`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/admin/users`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setUsers(response.data);
       console.log(response);
     } catch (error) {
@@ -99,7 +96,7 @@ const Users = () => {
   const handleDeactivateUser = async (id) => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}/interdentallab/api/admin/users/${id}/deactivate`,
+        `${BASE_URL}/api/admin/users/${id}/deactivate`,
         {
           headers: {
             "Content-Type": "application/json",

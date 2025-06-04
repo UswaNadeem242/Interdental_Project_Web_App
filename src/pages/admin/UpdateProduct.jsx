@@ -31,15 +31,12 @@ const UpdateProduct = () => {
 
   const getProductDetails = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/interdentallab/product/get/${productId}`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/product/get/${productId}`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       setProduct(response.data);
       setName(response.data.name);
@@ -72,7 +69,7 @@ const UpdateProduct = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/category/getAllCategories`,
+        `${BASE_URL}/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -87,15 +84,12 @@ const UpdateProduct = () => {
   };
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/admin/brands`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/admin/brands`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       console.log(response.data);
       setBrandsList(response.data);
     } catch (error) {
@@ -133,7 +127,7 @@ const UpdateProduct = () => {
         sku,
       };
       const response = await axios.put(
-        `${BASE_URL}/interdentallab/product/update/${productId}`,
+        `${BASE_URL}/product/update/${productId}`,
         payload,
         {
           headers: {

@@ -90,7 +90,7 @@ const Shop = () => {
   const getAllProducts = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/products/getallproducts?page=0&size=10`,
+        `${BASE_URL}/api/products/getallproducts?page=0&size=10`,
         {
           headers: {
             Accept: "*/*",
@@ -106,7 +106,7 @@ const Shop = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/category/getAllCategories`,
+        `${BASE_URL}/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -123,7 +123,7 @@ const Shop = () => {
   const getAllBrands = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/brands?page=0&size=10`,
+        `${BASE_URL}/api/brands?page=0&size=10`,
         {
           headers: {
             Accept: "*/*",
@@ -194,7 +194,8 @@ const Shop = () => {
                   style={{
                     left: `${(minPrice / 2000) * 100}%`,
                     right: `${100 - (maxPrice / 2000) * 100}%`,
-                  }}></div>
+                  }}
+                ></div>
 
                 {/* Min Range Slider */}
                 <input
@@ -246,7 +247,8 @@ const Shop = () => {
                     checked === "inStock"
                       ? "text-secondaryBrand"
                       : "text-[#949494]"
-                  }`}>
+                  }`}
+                >
                   In Stock
                 </label>
               </div>
@@ -266,7 +268,8 @@ const Shop = () => {
                     checked === "outOfStock"
                       ? "text-secondaryBrand"
                       : "text-[#949494]"
-                  }`}>
+                  }`}
+                >
                   Out of Stock
                 </label>
               </div>
@@ -286,7 +289,8 @@ const Shop = () => {
                     selectedCategory === c.categoryId
                       ? "text-secondaryBrand  font-medium"
                       : "text-secondaryText cursor-pointer font-normal"
-                  }`}>
+                  }`}
+                >
                   {c.name}
                 </h1>
               ))}
@@ -300,7 +304,8 @@ const Shop = () => {
               {brandsList.map((b) => (
                 <h1
                   key={b.id}
-                  className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText">
+                  className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
+                >
                   {b.name}
                 </h1>
               ))}
@@ -313,7 +318,8 @@ const Shop = () => {
               filteredProducts.map((product) => (
                 <div
                   onClick={() => handleProduct(product)}
-                  className="flex flex-col justify-center items-center cursor-pointer bg-white w-[303.15px] h-[386px] p-[20px] space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]">
+                  className="flex flex-col justify-center items-center cursor-pointer bg-white w-[303.15px] h-[386px] p-[20px] space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
+                >
                   <img
                     src={product?.img}
                     alt="product"

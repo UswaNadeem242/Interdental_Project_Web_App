@@ -34,7 +34,7 @@ const Brands = () => {
   const getAllBrands = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/brands?page=0&size=10`,
+        `${BASE_URL}/api/brands?page=0&size=10`,
         {
           headers: {
             Accept: "*/*",

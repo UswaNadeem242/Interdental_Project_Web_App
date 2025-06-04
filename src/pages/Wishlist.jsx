@@ -12,15 +12,12 @@ const Wishlist = () => {
 
   const getWishlist = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/wishlist`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/wishlist`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       console.log(response);
       setWishlist(response.data.items);
     } catch (error) {
@@ -37,7 +34,7 @@ const Wishlist = () => {
   const handleRemoveItem = async (id) => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}/interdentallab/api/wishlist/${id}/remove`,
+        `${BASE_URL}/api/wishlist/${id}/remove`,
         {
           headers: {
             Accept: "*/*",
@@ -68,17 +65,13 @@ const Wishlist = () => {
         price: item.price,
         totalPrice: item.price,
       };
-      const response = await axios.post(
-        `${BASE_URL}/interdentallab/api/cart/add`,
-        payload,
-        {
-          headers: {
-            Accept: "*/*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       setToastMessage("Added to Cart !");
       setToastType("success");

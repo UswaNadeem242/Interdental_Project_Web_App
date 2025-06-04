@@ -13,15 +13,12 @@ const HeroSection = () => {
 
   const getBanners = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/interdentallab/banners/getallBanners`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/banners/getallBanners`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setBanners(response.data.banners);
       console.log("banners", response.data.banners);
     } catch (error) {

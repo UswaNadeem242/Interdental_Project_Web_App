@@ -9,7 +9,7 @@ const CartProduct = ({ item }) => {
   const handleDeleteItem = async () => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}/interdentallab/api/cart/${item.id}/remove`,
+        `${BASE_URL}/api/cart/${item.id}/remove`,
         {
           headers: {
             Accept: "*/*",
@@ -33,7 +33,7 @@ const CartProduct = ({ item }) => {
     }
     try {
       const response = await axios.put(
-        `${BASE_URL}/interdentallab/api/cart/${item.id}/update`,
+        `${BASE_URL}/api/cart/${item.id}/update`,
         {
           cartItemId: item.id,
           quantity: status === "add" ? count + 1 : count - 1,

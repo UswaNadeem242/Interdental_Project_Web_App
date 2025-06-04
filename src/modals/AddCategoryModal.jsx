@@ -28,7 +28,7 @@ const AddCategoryModal = ({ isModalOpen, setIsModalOpen, categoriesList }) => {
         parentCategoryId,
       };
       const response = await axios.post(
-        `${BASE_URL}/interdentallab/category/addCategory`,
+        `${BASE_URL}/category/addCategory`,
         payload,
         {
           headers: {

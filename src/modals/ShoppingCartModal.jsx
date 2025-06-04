@@ -48,7 +48,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
 
   const getCart = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/interdentallab/api/cart`, {
+      const response = await axios.get(`${BASE_URL}/api/cart`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

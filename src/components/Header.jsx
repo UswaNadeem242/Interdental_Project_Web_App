@@ -38,7 +38,7 @@ const Header = () => {
   const getAllProducts = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/products/getallproducts?page=0&size=10`,
+        `${BASE_URL}/api/products/getallproducts?page=0&size=10`,
         {
           headers: {
             Accept: "*/*",
@@ -54,7 +54,7 @@ const Header = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/category/getAllCategories`,
+        `${BASE_URL}/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",

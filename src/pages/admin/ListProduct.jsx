@@ -45,7 +45,7 @@ const ListProduct = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/category/getAllCategories`,
+        `${BASE_URL}/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -64,15 +64,12 @@ const ListProduct = () => {
 
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/admin/brands`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/admin/brands`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       console.log(response.data);
       setBrandsList(response.data);
     } catch (error) {
@@ -113,17 +110,13 @@ const ListProduct = () => {
         brandId,
         sku,
       };
-      const response = await axios.post(
-        `${BASE_URL}/interdentallab/product/add`,
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/product/add`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       setToastMessage("Product added successfully!");
       setToastType("success");

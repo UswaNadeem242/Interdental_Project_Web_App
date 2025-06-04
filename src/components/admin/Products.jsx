@@ -34,15 +34,12 @@ const Products = () => {
 
   const getAllProducts = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/interdentallab/product/getAll`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/product/getAll`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setProducts(response.data);
       console.log(response.data);
     } catch (error) {
@@ -56,7 +53,7 @@ const Products = () => {
   const handleDelete = async (productId) => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}/interdentallab/product/delete/${productId}`,
+        `${BASE_URL}/product/delete/${productId}`,
         {
           headers: {
             Accept: "*/*",

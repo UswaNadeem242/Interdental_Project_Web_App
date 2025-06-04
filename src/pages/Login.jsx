@@ -22,7 +22,7 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${BASE_URL}/interdentallab/api/users/sign-in`,
+        `${BASE_URL}/api/users/sign-in`,
         {
           email: email,
           password: password,

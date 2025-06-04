@@ -26,15 +26,12 @@ const ProductDetails = () => {
 
   const getProductDetails = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/interdentallab/product/get/${productId}`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/product/get/${productId}`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       console.log(response);
       setProduct(response.data);
     } catch (error) {
@@ -44,7 +41,7 @@ const ProductDetails = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/category/getAllCategories`,
+        `${BASE_URL}/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -66,7 +63,7 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}/interdentallab/product/delete/${productId}`,
+        `${BASE_URL}/product/delete/${productId}`,
         {
           headers: {
             Accept: "*/*",

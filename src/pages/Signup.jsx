@@ -37,7 +37,7 @@ const Signup = () => {
     }
     try {
       const response = await axios.post(
-        `${BASE_URL}/interdentallab/api/users/sign-up?email=${email}&password=${password}&role=PATIENT`,
+        `${BASE_URL}/api/users/sign-up?email=${email}&password=${password}&firstName=${firstName}&lastName=${lastName}`,
         {
           headers: {
             Accept: "*/*",

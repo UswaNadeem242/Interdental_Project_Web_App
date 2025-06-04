@@ -44,7 +44,7 @@ const AddBrandModal = ({ isModalOpen, setIsModalOpen }) => {
         logoUrl: uploadedImage,
       };
       const response = await axios.post(
-        `${BASE_URL}/interdentallab/api/admin/brands`,
+        `${BASE_URL}/api/admin/brands`,
         payload,
         {
           headers: {

@@ -32,7 +32,7 @@ const SingleProduct = () => {
   const getProduct = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/products/${productId}`,
+        `${BASE_URL}/api/products/${productId}`,
         {
           headers: {
             Accept: "*/*",
@@ -49,7 +49,7 @@ const SingleProduct = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/category/getAllCategories`,
+        `${BASE_URL}/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -65,7 +65,7 @@ const SingleProduct = () => {
   const getRelatedProducts = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/interdentallab/api/products/${productId}/related`,
+        `${BASE_URL}/api/products/${productId}/related`,
         {
           headers: {
             Accept: "*/*",
@@ -101,17 +101,13 @@ const SingleProduct = () => {
         price: product.price,
         totalPrice: product.price,
       };
-      const response = await axios.post(
-        `${BASE_URL}/interdentallab/api/cart/add`,
-        payload,
-        {
-          headers: {
-            Accept: "*/*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       console.log(response);
       setToastMessage("Added to Cart !");
       setToastType("success");
@@ -133,7 +129,7 @@ const SingleProduct = () => {
         price: product.price,
       };
       const response = await axios.post(
-        `${BASE_URL}/interdentallab/api/wishlist/add`,
+        `${BASE_URL}/api/wishlist/add`,
         payload,
         {
           headers: {
