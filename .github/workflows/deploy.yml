@@ -7,52 +7,48 @@ on:
 
 jobs:
   build-and-deploy:
-    name: Build and Deploy to Staging
+    name: Build and Deploy to VPS
     runs-on: [self-hosted, Linux, X64]
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: 📦 Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up JDK
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: 🧰 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Install Dependencies
-      run: npm install
+      - name: 📥 Install dependencies
+        run: npm ci
 
-    - name: Install web-vitals
-      run: npm install web-vitals
+      - name: 🛠 Build the React app
+        run: CI=false npm run build
 
-    - name: Build the Application
-      run: CI='' npm run build
+      - name: 🚀 Deploy to VPS folder
+        run: |
+          TARGET_DIR="/var/www/interdentalusa.com"
+          BACKUP_DIR="/var/www/backup/interdentalusa.com_$(date +'%F-%H-%M-%S')"
 
-    - name: Deploy to /var/www/interdentalusa.com
-      run: |
-        TARGET_DIR=/var/www/interdentalusa.com
-        BACKUP_DIR=/var/www/backup/interdentalusa.com_$(date +%F-%T)
+          echo "📁 Creating backup directory at: $BACKUP_DIR"
+          sudo mkdir -p "$BACKUP_DIR"
 
-        echo "📁 Creating backup directory: $BACKUP_DIR"
-        sudo mkdir -p $BACKUP_DIR
+          echo "📤 Backing up current deployment from $TARGET_DIR"
+          if [ -d "$TARGET_DIR" ]; then
+            sudo cp -r "$TARGET_DIR"/* "$BACKUP_DIR"/
+            echo "✅ Backup completed"
+          else
+            echo "⚠️ Target directory does not exist. Skipping backup."
+          fi
 
-        echo "🗃️ Backing up current deployment..."
-        if [ -d "$TARGET_DIR" ]; then
-          sudo cp -r $TARGET_DIR/* $BACKUP_DIR/
-          echo "✅ Backup completed: $BACKUP_DIR"
-        else
-          echo "⚠️ Target directory does not exist. Skipping backup."
-        fi
+          echo "🧹 Cleaning target directory"
+          sudo rm -rf "$TARGET_DIR"/*
 
-        echo "🧹 Cleaning target directory..."
-        sudo rm -rf $TARGET_DIR/*
-        
-        echo "🚚 Copying new build to $TARGET_DIR"
-        sudo cp -r build/* $TARGET_DIR/
+          echo "📁 Copying build files to $TARGET_DIR"
+          sudo cp -r build/* "$TARGET_DIR"/
 
-        echo "🔧 Setting permissions..."
-        sudo chown -R ubuntu:www-data $TARGET_DIR
-        sudo chmod -R 755 $TARGET_DIR
+          echo "🔒 Fixing ownership and permissions"
+          sudo chown -R ubuntu:www-data "$TARGET_DIR"
+          sudo chmod -R 755 "$TARGET_DIR"
 
-        echo "🚀 Deployment to $TARGET_DIR complete!"
+          echo "✅ Deployment complete!"
