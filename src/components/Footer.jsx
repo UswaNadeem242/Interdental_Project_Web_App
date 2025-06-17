@@ -1,28 +1,29 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
-    <div className="relative bottom-0 flex justify-center items-center  h-[298.87px] w-full bg-secondaryBrand py-[64.98px] px-[167.52px] gap-[100px]">
-      <div className="flex flex-col justify-center items-center w-[355.55px] h-[168.92px] gap-[30.46px]">
+    <div className="relative bottom-0 flex flex-col justify-start items-start space-y-[60px] gap-0 lg:flex-row lg:justify-center lg:items-center h-auto lg:h-[298.87px] w-full bg-secondaryBrand px-4 py-[64.98px] lg:px-[167.52px] lg:gap-[100px]">
+      <div className="flex flex-col justify-start items-start lg:justify-center lg:items-center w-full lg:w-[355.55px] h-auto lg:h-[168.92px] gap-[30.46px]">
         <h1 className="font-poppins font-medium text-[16px] text-[#FFFFFF] leading-[24px]">
           Lab
         </h1>
-        <div className="flex flex-col justify-between items-start space-y-[8.12px] text-[#D9DBE1] font-poppins font-normal text-[14px] leading-[21px]">
+        <div className="flex flex-col justify-between items-start space-y-[8.12px] text-[#D9DBE1] font-poppins font-normal text-[14px] leading-[21px] w-full">
           <h1>Copyright @{year} Interdental</h1>
           <h1>All rights reserved</h1>
         </div>
       </div>
-      <div className="flex w-[564.49px] h-[168.92px] gap-[30.46px]">
+      <div className="flex flex-col justify-start items-start lg:flex-row lg:justify-center lg:items-center space-y-[60px] lg:space-y-0 gap-0 w-full lg:w-[564.49px] h-auto lg:h-[168.92px] lg:gap-[30.46px]">
         <div className="w-[162.44px] h-[168.92px] space-y-[24.37px] text-[#FFFFFF]">
           <h1 className="font-poppins font-medium text-[16px] leading-[24px]">
             Company
           </h1>
-          <div className="w-[162.44px] h-[120.55px] space-y-[12.18px] text-[#D9DBE1]">
-            <h1>Home</h1>
-            <h1>Menu</h1>
-            <h1>Shop</h1>
-            <h1>Contact Us</h1>
+          <div className=" flex flex-col justify-start items-start w-[162.44px] h-[120.55px] space-y-[12.18px] text-[#D9DBE1]">
+            <Link to="/">Home</Link>
+            <Link to="/about-us">About Us</Link>
+            <Link to="/shop">Shop</Link>
+            <Link to="/contact-us">Contact Us</Link>
           </div>
         </div>
         <div className="w-[162.44px] h-[168.92px] space-y-[24.37px] text-[#FFFFFF]">
@@ -35,17 +36,18 @@ const Footer = () => {
             <h1>Privacy Policy</h1>
           </div>
         </div>
-        <div className="w-[162.44px] h-[168.92px] space-y-[24.37px] text-white">
+        <div className="w-[162.44px] h-auto lg:h-[168.92px] space-y-[24.37px] text-white">
           <h1 className="font-poppins font-medium text-[16px] leading-[24px]">
             Follow Us
           </h1>
-          <div className="flex w-[178.69px] h-[120.55px] gap-[16.24px]">
+          <div className="flex w-[178.69px] h-auto lg:h-[120.55px] gap-[16.24px]">
             <svg
               width="33"
               height="33"
               viewBox="0 0 33 33"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 opacity="0.1"
                 fill-rule="evenodd"
@@ -65,7 +67,8 @@ const Footer = () => {
               height="33"
               viewBox="0 0 34 33"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 opacity="0.1"
                 fill-rule="evenodd"
@@ -85,7 +88,8 @@ const Footer = () => {
               height="33"
               viewBox="0 0 42 33"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <g filter="url(#filter0_d_13293_408)">
                 <path
                   opacity="0.1"
@@ -109,7 +113,8 @@ const Footer = () => {
                   width="40.4893"
                   height="40.489"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB">
+                  color-interpolation-filters="sRGB"
+                >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
                     in="SourceAlpha"
@@ -144,7 +149,8 @@ const Footer = () => {
               height="33"
               viewBox="0 0 33 33"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 opacity="0.1"
                 fill-rule="evenodd"

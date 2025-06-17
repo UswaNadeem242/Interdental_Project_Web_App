@@ -10,7 +10,7 @@ import { useAuth } from "../auth/AuthContext";
 
 const Home = () => {
   const { user } = useAuth();
-  console.log("home", user);
+
   const [products, setProducts] = useState([]);
   const getAllProducts = async () => {
     try {
@@ -31,6 +31,8 @@ const Home = () => {
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  console.log("products", products);
   return (
     <div className="flex flex-col justify-start items-center space-y-[65px] bg-gray-100 pb-16">
       <HeroSection />

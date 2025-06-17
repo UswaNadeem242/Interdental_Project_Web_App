@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Contact from "./contact";
 import Header from "./header";
@@ -89,6 +90,7 @@ const steps = [
   },
 ];
 const Patients = ({ isLanding }) => {
+  const navigate = useNavigate();
   return (
     <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc]">
       {!isLanding && <Header />}
@@ -101,7 +103,10 @@ const Patients = ({ isLanding }) => {
             and ensuring your satisfaction. Whether you need a crown, bridge, or
             denture, we are here to help.
           </p>
-          <button className="mt-6 px-6 py-3 rounded-full border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition  transition-all duration-300 flex items-center group">
+          <button
+            onClick={() => navigate("/patient")}
+            className="mt-6 px-6 py-3 rounded-full border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition  transition-all duration-300 flex items-center group"
+          >
             <span className="mr-4">Register</span>
             <span className="w-8 h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
               <svg
@@ -109,7 +114,8 @@ const Patients = ({ isLanding }) => {
                 height="39"
                 viewBox="0 0 39 39"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg">
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <rect
                   x="0.970001"
                   y="0.63623"
@@ -154,7 +160,8 @@ const Patients = ({ isLanding }) => {
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className="bg-white border rounded-lg shadow-md p-6 text-center hover:shadow-lg transition">
+              className="bg-white border rounded-lg shadow-md p-6 text-center hover:shadow-lg transition"
+            >
               <h3 className="text-xl font-bold text-blue-900">{plan.title}</h3>
               <p className="mt-2 text-blue-400 font-semibold ">
                 {plan.duration}
@@ -162,7 +169,8 @@ const Patients = ({ isLanding }) => {
               <p className="mt-4 text-gray-800 font-bold ">{plan.price}</p>
               <p className="mt-2 text-gray-600">{plan.description}</p>
               <button
-                className={`mt-16 px-6 py-3 w-full border transition rounded-lg  ${plan.buttonStyle}`}>
+                className={`mt-16 px-6 py-3 w-full border transition rounded-lg  ${plan.buttonStyle}`}
+              >
                 GET IT NOW
               </button>
             </div>
@@ -185,7 +193,8 @@ const Patients = ({ isLanding }) => {
               {concerns.map((concern, index) => (
                 <div
                   key={index}
-                  className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+                  className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
+                >
                   <h3 className="text-xl font-semibold text-blue-800 mb-4">
                     {concern.title}
                   </h3>
@@ -204,7 +213,8 @@ const Patients = ({ isLanding }) => {
               {steps.map((step) => (
                 <div
                   key={step.id}
-                  className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+                  className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition"
+                >
                   <div className="flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-900 font-bold rounded-full mx-auto mb-6">
                     {step.id}
                   </div>
@@ -279,7 +289,8 @@ const Patients = ({ isLanding }) => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                  className="w-full py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+                >
                   Submit
                 </button>
               </form>

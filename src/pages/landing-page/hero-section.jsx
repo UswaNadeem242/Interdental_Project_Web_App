@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc] flex flex-col md:flex-row justify-around items-center h-screen">
       {/* Left Section: Text Content */}
@@ -21,29 +24,41 @@ const HeroSection = () => {
           durable and aesthetically refined dental solutions that are built to
           last.
         </p>
-        <button className="mt-6 px-6 py-3 rounded-full border-2 border-[#78c3d8] text-[#494949] hover:bg-[#78c3d8] hover:text-white flex items-center ">
-          <span className="mr-4">Explore Our Solutions</span>
-          <span className="w-8 h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
-            <svg
-              width="39"
-              height="38"
-              viewBox="0 0 39 38"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <rect
-                x="0.970001"
-                width="37.7273"
-                height="37.7273"
-                rx="18.8636"
-                fill="#001D58"
-              />
-              <path
-                d="M21.1641 15.7226C20.899 15.4574 20.899 15.0275 21.1641 14.7623C21.4293 14.4972 21.8592 14.4972 22.1244 14.7623L25.7456 18.3836C26.0107 18.6487 26.0107 19.0786 25.7456 19.3438L22.1244 22.965C21.8592 23.2301 21.4293 23.2301 21.1641 22.965C20.899 22.6998 20.899 22.2699 21.1641 22.0048L23.6263 19.5426H14.8545C14.4795 19.5426 14.1755 19.2387 14.1755 18.8637C14.1755 18.4887 14.4795 18.1847 14.8545 18.1847H23.6263L21.1641 15.7226Z"
-                fill="white"
-              />
-            </svg>
-          </span>
-        </button>
+        <div className="w-auto h-auto flex justify-start items-center gap-4">
+          <button
+            onClick={() => navigate("/signup")}
+            className="mt-6 px-6 py-3 rounded-full border-2 border-[#78c3d8] text-[#494949] hover:bg-[#78c3d8] hover:text-white flex items-center "
+          >
+            <span className="mr-4">Explore Our Solutions</span>
+            <span className="w-8 h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
+              <svg
+                width="39"
+                height="38"
+                viewBox="0 0 39 38"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="0.970001"
+                  width="37.7273"
+                  height="37.7273"
+                  rx="18.8636"
+                  fill="#001D58"
+                />
+                <path
+                  d="M21.1641 15.7226C20.899 15.4574 20.899 15.0275 21.1641 14.7623C21.4293 14.4972 21.8592 14.4972 22.1244 14.7623L25.7456 18.3836C26.0107 18.6487 26.0107 19.0786 25.7456 19.3438L22.1244 22.965C21.8592 23.2301 21.4293 23.2301 21.1641 22.965C20.899 22.6998 20.899 22.2699 21.1641 22.0048L23.6263 19.5426H14.8545C14.4795 19.5426 14.1755 19.2387 14.1755 18.8637C14.1755 18.4887 14.4795 18.1847 14.8545 18.1847H23.6263L21.1641 15.7226Z"
+                  fill="white"
+                />
+              </svg>
+            </span>
+          </button>
+          <button
+            onClick={() => navigate("/shop")}
+            className=" mt-6 px-6 py-3 rounded-full border-2 bg-[#001D58] text-white text-center hover:bg-[#78c3d8] hover:text-white flex justify-center items-center "
+          >
+            <span className="h-8 pt-1">Buy Now</span>
+          </button>
+        </div>
       </section>
 
       {/* Right Section: Images */}

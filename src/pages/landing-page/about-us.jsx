@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const AboutUs = () => {
+  const navigate = useNavigate();
   return (
     <section className="bg-white py-16 px-8 flex flex-col md:flex-row items-center justify-between">
       {/* Left Side: Image */}
@@ -25,7 +28,10 @@ const AboutUs = () => {
           and their patients to create the highest quality work on both a
           functional and aesthetic level.
         </p>
-        <button className="mt-6 inline-flex items-center px-6 py-3 bg-transparent border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition">
+        <button
+          onClick={() => navigate("/about-us")}
+          className="mt-6 inline-flex items-center px-6 py-3 bg-transparent border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition"
+        >
           <span className="mr-4">View More</span>
           <span className="w-8 h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
             <svg
@@ -33,7 +39,8 @@ const AboutUs = () => {
               height="38"
               viewBox="0 0 39 38"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <rect
                 x="0.970001"
                 width="37.7273"

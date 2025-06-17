@@ -3,13 +3,30 @@ import { NavLink, useNavigate } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
   return (
-    <header className="sticky top-8 z-50 rounded-full mx-16 flex justify-between items-center px-8 py-4 bg-white shadow-md">
+    <header className="sticky top-8 z-50 w-[90%] mx-auto rounded-full flex justify-between items-center px-8 py-4 bg-white shadow-md">
+      <svg
+        width="22"
+        height="20"
+        viewBox="0 0 22 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="flex lg:hidden"
+      >
+        <path
+          d="M1.62891 3.89404H20.3696M1.62891 10.0052H20.3696M1.62891 16.1163H20.3696"
+          stroke="#434343"
+          stroke-width="1.83333"
+          stroke-miterlimit="10"
+          stroke-linecap="round"
+        />
+      </svg>
+
       <div className="flex items-center space-x-2">
         <NavLink to="/" className="text-2xl font-bold text-blue-900">
           Interdental <span className="text-blue-300">Lab</span>
         </NavLink>
       </div>
-      <nav className="hidden md:flex space-x-6 text-lg">
+      <nav className="hidden lg:flex space-x-6 text-lg">
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -71,7 +88,7 @@ const Header = () => {
           Contact Us
         </NavLink>
       </nav>
-      <div className="space-x-4">
+      <div className="hidden lg:flex space-x-4">
         <button
           onClick={() => navigate("/login")}
           className="hidden md:inline-block px-4 py-2 font-semibold border bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100"

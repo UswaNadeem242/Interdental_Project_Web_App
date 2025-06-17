@@ -1,30 +1,33 @@
+import { useNavigate } from "react-router-dom";
+
 const products = [
   {
     id: 1,
     name: "GC Gold Label 1 Mini",
     price: "$739.65",
-    image: "/path/to/product1.jpg",
+    image: "/assets/product1.png",
   },
   {
     id: 2,
     name: "Apple-Dental Air Turbine",
     price: "$396.84",
-    image: "/path/to/product2.jpg",
+    image: "/assets/product2.png",
   },
   {
     id: 3,
     name: "Woodpecker Scaling Tip",
     price: "$928.41",
-    image: "/path/to/product3.jpg",
+    image: "/assets/product3.png",
   },
   {
     id: 4,
     name: "Woodpecker Endo Motor",
     price: "$778.35",
-    image: "/path/to/product4.jpg",
+    image: "/assets/product4.png",
   },
 ];
 const Products = () => {
+  const navigate = useNavigate();
   return (
     <section className="py-16 px-8 bg-white text-center">
       {/* Section Header */}
@@ -41,11 +44,12 @@ const Products = () => {
         {products.map((product) => (
           <div
             key={product.id}
-            className="bg-white border rounded-lg shadow hover:shadow-lg transition">
+            className="flex flex-col justify-center items-center bg-white border rounded-lg shadow hover:shadow-lg transition"
+          >
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-40 object-contain p-4"
+              className="w-[264px] h-[260px] object-contain p-4"
             />
             <div className="p-4">
               <h3 className="text-lg font-semibold text-gray-800">
@@ -58,7 +62,10 @@ const Products = () => {
       </div>
 
       {/* View All Button */}
-      <button className="mt-8 inline-flex items-center px-6 py-3 border border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition">
+      <button
+        onClick={() => navigate("/shop")}
+        className="mt-8 inline-flex items-center px-6 py-3 border border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition"
+      >
         View All
       </button>
     </section>

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-// import loginrectangle from "../assets/loginrectangle.png";
-// import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import { useAuth } from "../auth/AuthContext";
+
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -40,7 +39,6 @@ const Login = () => {
       setLoading(false);
       login(response.data.data.users, response.data.data.accessToken);
       console.log("test", response);
-      // localStorage.setItem("token", response.data.data.accessToken);
       if (response.data.data.users.roles[0] === "ADMIN") {
         navigate("/admin/dashboard");
       } else if (response.data.data.users.roles[0] === "PATIENT") {
@@ -54,14 +52,16 @@ const Login = () => {
       setLoading(false);
     }
   };
+
   return (
-    <div className="flex justify-start items-center gap-24 p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
-      <div className="flex flex-col items-start justify-start -space-y-12">
+    <div className="flex flex-col lg:flex-row justify-start items-center lg:gap-24 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
+      {/* Image div - hidden on mobile, shown on lg screens and above */}
+      <div className="hidden lg:flex flex-col items-start justify-start -space-y-12">
         <img src="/assets/logo.png" alt="logo" />
         <img
-          className="w-[777px] h-[874px] rounded-[124px] "
+          className="w-[777px] h-[874px] rounded-[124px]"
           src="/assets/loginrectangle.png"
-          alt="locin rectangle image"
+          alt="login rectangle image"
         />
         <svg
           width="157"
@@ -89,9 +89,9 @@ const Login = () => {
               width="156.093"
               height="157"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"
@@ -120,34 +120,34 @@ const Login = () => {
           </defs>
         </svg>
       </div>
-      <div className="flex flex-col justify-center items-center w-[494px] h-[581px] gap-[32px] top-[172px] left-[908px]">
-        <div className="flex flex-col justify-center items-center w-[494px] h-[103px] gap-[32px]">
-          <h1 className="font-poppins font-bold text-[44px] leading-[66px] text-secondaryBrand">
+
+      {/* Login form */}
+      <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[581px] gap-6 lg:gap-[32px]">
+        <img src="/assets/logo.png" alt="logo" className="block md:hidden" />
+        <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[103px] gap-4 lg:gap-[32px]">
+          <h1 className="font-poppins font-bold text-3xl lg:text-[44px] leading-[66px] text-secondaryBrand">
             Log in
           </h1>
-          <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#949494]">
+          <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#949494]">
             Welcome back! Please enter your credentials to continue.
           </p>
         </div>
-        <div className="flex flex-col justify-center items-center w-[494px] h-[144px] gap-[16px]">
+
+        <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[144px] gap-4 lg:gap-[16px]">
           <input
             type="text"
-            className="w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
+            className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            name=""
-            id=""
           />
-          <div className="relative w-[494px]">
+          <div className="relative w-full lg:w-[494px]">
             <input
               type={showPassword ? "text" : "password"}
-              className="w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
+              className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              name=""
-              id=""
             />
             <svg
               width="16"
@@ -159,8 +159,8 @@ const Login = () => {
               onClick={() => setShowPassword(!showPassword)}
             >
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M14.3131 0.914813C14.5328 1.13456 14.5328 1.49081 14.3131 1.71056L2.48255 13.5403C2.37305 13.6506 2.22905 13.7053 2.08505 13.7053C1.94105 13.7053 1.79705 13.6506 1.68755 13.5403C1.4678 13.3206 1.4678 12.9651 1.68755 12.7453L3.16651 11.2673C2.10615 10.2974 1.20666 8.98997 0.546125 7.45046C0.484625 7.30796 0.484625 7.14746 0.546125 7.00571C1.31188 5.23271 2.39037 3.76496 3.66537 2.76221C6.135 0.807749 9.38173 0.704006 11.9515 2.48121L13.5181 0.914813C13.7378 0.695063 14.0933 0.695063 14.3131 0.914813ZM14.0354 4.53056C14.5784 5.25131 15.0554 6.08456 15.4536 7.00406C15.5159 7.14656 15.5159 7.30856 15.4536 7.45031C13.8816 11.0931 11.0954 13.2673 8.00015 13.2673C7.2974 13.2673 6.5984 13.1533 5.9234 12.9291C5.62865 12.8308 5.4689 12.5121 5.56715 12.2173C5.6654 11.9218 5.98265 11.7651 6.2789 11.8611C6.83915 12.0478 7.41815 12.1423 8.00015 12.1423C10.5711 12.1423 12.9209 10.3108 14.3227 7.22756C13.9807 6.47831 13.5824 5.79956 13.1369 5.20706C12.9501 4.95881 12.9997 4.60556 13.2479 4.41881C13.4954 4.23206 13.8486 4.28306 14.0354 4.53056ZM4.36212 3.64571C3.28513 4.49321 2.36038 5.72771 1.67788 7.22921C2.27296 8.54355 3.05474 9.65198 3.96279 10.4705L5.56614 8.86734C5.23995 8.38739 5.06442 7.82152 5.06442 7.22891C5.06442 5.60891 6.38142 4.29116 7.99992 4.29116C8.58716 4.29116 9.16159 4.46997 9.63985 4.79314L11.141 3.29209C9.00137 1.90892 6.39724 2.0351 4.36212 3.64571ZM10.4281 7.09616C10.7341 7.15091 10.9374 7.44341 10.8826 7.74941C10.6674 8.94416 9.72087 9.89216 8.52688 10.1097C8.49313 10.1157 8.45863 10.1187 8.42562 10.1187C8.15938 10.1187 7.92237 9.92816 7.87287 9.65666C7.81737 9.35141 8.01987 9.05816 8.32587 9.00266C9.06087 8.86916 9.64287 8.28566 9.77487 7.54991C9.83037 7.24466 10.1229 7.04366 10.4281 7.09616ZM7.99992 5.41616C7.00168 5.41616 6.18942 6.22916 6.18942 7.22891C6.18942 7.51795 6.25747 7.79695 6.38574 8.04751L8.81997 5.61299C8.56936 5.48528 8.28748 5.41616 7.99992 5.41616Z"
                 fill="#808080"
               />
@@ -168,23 +168,25 @@ const Login = () => {
           </div>
           <p
             onClick={() => navigate("/forgot-password")}
-            className="flex justify-end w-full font-poppins font-normal cursor-pointer text-[12px] leading-[18px] text-secondaryBrand"
+            className="flex justify-end w-full font-poppins font-normal cursor-pointer text-xs lg:text-[12px] leading-[18px] text-secondaryBrand"
           >
             Forgot Password ?
           </p>
         </div>
-        <div className="flex flex-col w-[494px] h-[270px] gap-[32px]">
+
+        <div className="flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
           <button
             onClick={() => handleLogin()}
             disabled={loading}
-            className={`w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-[14px] leading-[21px] ${
+            className={`w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px] ${
               loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
             }`}
           >
             Login
           </button>
-          <div className="flex justify-center items-center w-[494px] h-[56px] gap-[16px]">
-            <div className="flex w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF]">
+
+          <div className="flex flex-row justify-center items-center w-full lg:w-[494px] h-auto lg:h-[56px] gap-4 lg:gap-[16px]">
+            <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center">
               <svg
                 width="25"
                 height="24"
@@ -192,7 +194,7 @@ const Login = () => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g clip-path="url(#clip0_13834_3306)">
+                <g clipPath="url(#clip0_13834_3306)">
                   <path
                     d="M24.2663 12.2764C24.2663 11.4606 24.2001 10.6405 24.059 9.83801H12.7402V14.459H19.222C18.953 15.9493 18.0888 17.2677 16.8233 18.1055V21.1039H20.6903C22.9611 19.0138 24.2663 15.9273 24.2663 12.2764Z"
                     fill="#4285F4"
@@ -221,9 +223,9 @@ const Login = () => {
                   </clipPath>
                 </defs>
               </svg>
-              <h1>Login with Google</h1>
+              <h1 className="hidden lg:block">Login with Google</h1>
             </div>
-            <div className="flex w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF]">
+            <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center">
               <svg
                 width="25"
                 height="24"
@@ -232,22 +234,23 @@ const Login = () => {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M18.5 8.25H14V5.25C14 4.85218 14.158 4.47064 14.4393 4.18934C14.7206 3.90804 15.1022 3.75 15.5 3.75H17V0H14C12.8065 0 11.6619 0.474106 10.818 1.31802C9.97411 2.16193 9.5 3.30653 9.5 4.5V8.25H6.5V12H9.5V24H14V12H17L18.5 8.25Z"
                   fill="#1976D2"
                 />
               </svg>
-              <h1>Log in with Facebook</h1>
+              <h1 className="hidden lg:block">Login with Facebook</h1>
             </div>
           </div>
-          <div className="flex flex-col justify-center items-center w-full h-[93px] space-y-[16px]">
-            <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#808080]">
-              Don’t Have account
+
+          <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
+            <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">
+              Don't Have account
             </p>
             <button
               onClick={() => navigate("/signup")}
-              className="w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-[129px] font-poppins font-semibold border-[1px] border-[#013764] text-secondaryBrand text-[14px] leading-[21px]"
+              className="w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] font-poppins font-semibold border-[1px] border-[#013764] text-secondaryBrand text-sm lg:text-[14px] leading-[21px]"
             >
               Sign up
             </button>
