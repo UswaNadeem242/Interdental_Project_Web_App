@@ -34,7 +34,7 @@ const Products = () => {
 
   const getAllProducts = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/product/getAll`, {
+      const response = await axios.get(`${BASE_URL}/api/product/getAll`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -48,7 +48,7 @@ const Products = () => {
   };
   useEffect(() => {
     getAllProducts();
-  }, [products]);
+  }, []);
 
   const handleDelete = async (productId) => {
     try {
@@ -174,68 +174,71 @@ const Products = () => {
               </h1>
             </div>
             {/* Orders Listing */}
-            {products
-              .filter((p) =>
-                p.name.toLowerCase().includes(searchQuery.toLowerCase())
-              )
-              .map((p) => (
-                <div className="w-full h-[50px] cursor-pointer py-[16px] px-[20px] gap-[67px] flex justify-start items-center">
-                  <div className="w-[250px] h-[32px] flex justify-start items-center gap-[16px]">
-                    <input
-                      type="checkbox"
-                      // checked={isChecked}
-                      // onChange={(e) => {
-                      //   setIsChecked(e.target.checked);
-                      // }}
-                      checked={selectedProducts.includes(p.productId)}
-                      onChange={(e) =>
-                        handleCheckboxChange(p.productId, e.target.checked)
-                      }
-                      className="w-[20px] h-[20px] rounded-[6px] border-[1px] border-[#D0D5DD]"
-                    />
-                    <img
-                      src={p?.imageUrls[0]?.imageUrl}
-                      alt="product image"
-                      className="w-[32px] h-[32px]"
-                    />
-                    <h1
-                      onClick={() => navigate(`/admin/products/${p.productId}`)}
-                      className="w-[116.84px] h-[18px] font-poppins font-normal cursor-pointer text-[12px] leading-[18px] text-[#434343]"
-                    >
-                      {p.name}
-                    </h1>
-                  </div>
-                  <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                    {p.productId}
-                  </h1>
-                  <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                    {p.categoryId}
-                  </h1>
-                  <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                    {p.stockQuantity}
-                  </h1>
-                  <div className="relative">
+            {products &&
+              products
+                // .filter((p) =>
+                //   p.name.toLowerCase().includes(searchQuery.toLowerCase())
+                // )
+                .map((p) => (
+                  <div className="w-full h-[50px] cursor-pointer py-[16px] px-[20px] gap-[67px] flex justify-start items-center">
+                    <div className="w-[250px] h-[32px] flex justify-start items-center gap-[16px]">
+                      <input
+                        type="checkbox"
+                        // checked={isChecked}
+                        // onChange={(e) => {
+                        //   setIsChecked(e.target.checked);
+                        // }}
+                        checked={selectedProducts.includes(p.productId)}
+                        onChange={(e) =>
+                          handleCheckboxChange(p.productId, e.target.checked)
+                        }
+                        className="w-[20px] h-[20px] rounded-[6px] border-[1px] border-[#D0D5DD]"
+                      />
+                      <img
+                        src={p?.imageUrls[0]?.imageUrl}
+                        alt="product image"
+                        className="w-[32px] h-[32px]"
+                      />
+                      <h1
+                        onClick={() =>
+                          navigate(`/admin/products/${p.productId}`)
+                        }
+                        className="w-[116.84px] h-[18px] font-poppins font-normal cursor-pointer text-[12px] leading-[18px] text-[#434343]"
+                      >
+                        {p.name}
+                      </h1>
+                    </div>
                     <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                      ${p.price}
+                      {p.productId}
                     </h1>
-                    {selectedProducts.includes(p.productId) && (
-                      <div className="absolute -top-4 -right-12 z-50 flex justify-center items-center gap-[16px] w-[287px] h-[46px] rounded-[12px] border-[1px] border-[#001D58] bg-white py-[20px] px-[16px]">
-                        <button
-                          onClick={() => handleDelete(p.productId)}
-                          className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[148px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]"
-                        >
-                          Delete Product
-                        </button>
-                        <button
-                          onClick={() => setIsQuantityModalOpen(true)}
-                          className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[111px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]"
-                        >
-                          Add Stock
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  {/* {selectedProducts.includes(p.productId) ? (
+                    <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                      {p.categoryId}
+                    </h1>
+                    <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                      {p.stockQuantity}
+                    </h1>
+                    <div className="relative">
+                      <h1 className="w-[116.84px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
+                        ${p.price}
+                      </h1>
+                      {selectedProducts.includes(p.productId) && (
+                        <div className="absolute -top-4 -right-12 z-50 flex justify-center items-center gap-[16px] w-[287px] h-[46px] rounded-[12px] border-[1px] border-[#001D58] bg-white py-[20px] px-[16px]">
+                          <button
+                            onClick={() => handleDelete(p.productId)}
+                            className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[148px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]"
+                          >
+                            Delete Product
+                          </button>
+                          <button
+                            onClick={() => setIsQuantityModalOpen(true)}
+                            className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[111px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]"
+                          >
+                            Add Stock
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    {/* {selectedProducts.includes(p.productId) ? (
                   <div className="z-50 flex justify-center items-center gap-[16px] w-[287px] h-[46px] rounded-[12px] border-[1px] border-[#001D58] bg-white py-[20px] px-[16px]">
                     <button className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[148px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]">
                       Delete Product
@@ -249,8 +252,8 @@ const Products = () => {
                     ${p.price}
                   </h1>
                 )} */}
-                </div>
-              ))}
+                  </div>
+                ))}
           </div>
         </div>
       </div>

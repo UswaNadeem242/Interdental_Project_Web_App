@@ -20,57 +20,6 @@ const Users = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
 
-  const allUsers = [
-    {
-      id: 1,
-      img: "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-      name: "Gloria",
-      since: "February 11, 2024",
-      email: "gloria@me.com",
-      status: "Active",
-    },
-    {
-      id: 2,
-      img: "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-      name: "Gloria",
-      since: "11/22/2026",
-      email: "gloria@me.com",
-      status: "Deactive",
-    },
-    {
-      id: 1,
-      img: "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-      name: "Gloria",
-      since: "11/22/2026",
-      email: "gloria@me.com",
-      status: "Active",
-    },
-    {
-      id: 2,
-      img: "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-      name: "Gloria",
-      since: "11/22/2026",
-      email: "gloria@me.com",
-      status: "Deactive",
-    },
-    {
-      id: 1,
-      img: "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-      name: "Gloria",
-      since: "11/22/2026",
-      email: "gloria@me.com",
-      status: "Active",
-    },
-    {
-      id: 2,
-      img: "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-      name: "Gloria",
-      since: "11/22/2026",
-      email: "gloria@me.com",
-      status: "Deactive",
-    },
-  ];
-
   const getAllUsers = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/admin/users`, {
@@ -85,6 +34,7 @@ const Users = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getAllUsers();
   }, []);
@@ -111,6 +61,7 @@ const Users = () => {
       setToastVisible(true);
       // alert("User De-Activated successfully");
       setActionsModal(false);
+      getAllUsers();
     } catch (error) {
       console.log(error);
       setToastMessage(`Error: ${error}`);
@@ -118,6 +69,7 @@ const Users = () => {
       setToastVisible(true);
     }
   };
+  
   console.log(tabs[selectedIndex]);
   const filteredUsers =
     selectedIndex === 0

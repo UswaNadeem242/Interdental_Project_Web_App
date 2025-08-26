@@ -1,12 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import product1 from "../assets/product1.png";
-// import product2 from "../assets/product2.png";
-// import product3 from "../assets/product3.png";
-// import product4 from "../assets/product4.png";
-// import product5 from "../assets/product5.png";
-// import product6 from "../assets/product6.png";
-// import product7 from "../assets/product7.png";
-// import product8 from "../assets/product8.png";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config";
 import axios from "axios";
@@ -90,7 +82,7 @@ const Shop = () => {
   const getAllProducts = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/products/getallproducts?page=0&size=10`,
+        `${BASE_URL}/api/product/getAll`,
         {
           headers: {
             Accept: "*/*",
@@ -98,15 +90,19 @@ const Shop = () => {
           },
         }
       );
-      setProducts(response.data.data.content);
+      console.log('-=-====--=-=-response.data.data==--==-=-==-=--====',response.data.data)
+      setProducts(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+
+  
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/category/getAllCategories`,
+        `${BASE_URL}/api/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -123,7 +119,7 @@ const Shop = () => {
   const getAllBrands = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/brands?page=0&size=10`,
+        `${BASE_URL}/api/brands`,
         {
           headers: {
             Accept: "*/*",
@@ -149,14 +145,14 @@ const Shop = () => {
   };
 
   // Filter products based on the selected price range and category
-  const filteredProducts = products.filter((product) => {
-    const isInPriceRange =
-      product.price >= minPrice && product.price <= maxPrice;
-    const isInCategory = selectedCategory
-      ? product.categoryId === selectedCategory
-      : true; // Filter by category if selectedCategory exists
-    return isInPriceRange && isInCategory;
-  });
+  // const filteredProducts = products.filter((product) => {
+  //   const isInPriceRange =
+  //     product.price >= minPrice && product.price <= maxPrice;
+  //   const isInCategory = selectedCategory
+  //     ? product.categoryId === selectedCategory
+  //     : true; // Filter by category if selectedCategory exists
+  //   return isInPriceRange && isInCategory;
+  // });
 
   const handleCheckboxChange = (e) => {
     const { id, checked } = e.target;
@@ -281,7 +277,7 @@ const Shop = () => {
               Categories
             </h1>
             <div className="w-[142px] h-auto space-y-[8px]">
-              {categoriesList.map((c) => (
+              {featureProducts.map((c) => (
                 <h1
                   key={c.categoryId}
                   onClick={() => handleCategoryChange(c.categoryId, c.name)}
@@ -314,8 +310,8 @@ const Shop = () => {
         </div>
         <div className="w-[1224px] h-[971.44px] gap-[32px] top-[143px] left-[431px]">
           <div className="flex flex-wrap w-full h-[386px] gap-[31px]">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
+            {featureProducts.length > 0 ? (
+              featureProducts.map((product) => (
                 <div
                   onClick={() => handleProduct(product)}
                   className="flex flex-col justify-center items-center cursor-pointer bg-white w-[303.15px] h-[386px] p-[20px] space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
