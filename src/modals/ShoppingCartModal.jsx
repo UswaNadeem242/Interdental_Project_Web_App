@@ -3,6 +3,7 @@ import CartProduct from "../components/CartProduct";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 // import product2 from "../assets/product2.png";
 
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
@@ -23,9 +24,36 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [street, setStreet] = useState("");
-
+  const { user } = useAuth();
   const handleOpenModal = () => {
     setIsModalOpen(true);
+  };
+
+  const createOrder = async () => {
+    // 
+    console.log("=--=-==--=user=--=-===-", user);
+
+    try {
+      const payload = {
+        userId: user.id,
+        orderItems: cart.items,
+      };
+      console.log("-=-=-=-=-=payload-=-=-=-=-=-==--=", payload);
+      const response = await axios.post(`${BASE_URL}/orders/createOrder`, payload, {
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if(response.status === 200){
+        setActiveTab("order")
+      }
+      console.log(response);
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCloseModal = () => {
@@ -61,7 +89,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   };
   useEffect(() => {
     getCart();
-  }, [cart]);
+  }, []);
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
 
@@ -157,7 +185,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               {cart?.items?.length > 0 ? (
                 <div className="flex flex-col justify-start items-start gap-4 overflow-y-auto h-[calc(100vh-320px)]">
                   {cart?.items?.map((item) => (
-                    <CartProduct item={item} />
+                    <CartProduct item={item} getCart={getCart} />
                   ))}
                   <div className="fixed bottom-0 w-[587px] h-[168px] rounded-[32px] border-[1px] border-[#0000000D] space-y-[24px] py-[24px] px-[32px] bg-[#FFFFFF]">
                     <div className="flex justify-between items-center w-[523px] h-[39px] gap-[16px] border-b-[1px] border-[#0000000D]">
@@ -453,7 +481,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     cart?.items?.map((item) => (
                       <div className="flex justify-center items-center w-[555px] h-[103.33px] gap-[16px]">
                         <img
-                          src="/build/assets/product2.png"
+                          src="/assets/product2.png"
                           alt="product"
                           className="w-[98px] h-[103.33px]"
                         />
@@ -508,7 +536,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   } flex justify-start items-start w-[587px] h-[52px] gap-[8px] p-[16px] rounded-[16px]`}
                 >
                   <img
-                    src="/build/assets/paypal.png"
+                    src="/assets/paypal.png"
                     alt=""
                     className="w-[20px] h-[20px]"
                   />
@@ -713,7 +741,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         {activeTab === "review" && (
           <div className="flex justify-center items-center w-[587px] h-[105px] rounded-[32px] py-[24px] px-[32px] gap-[24px]">
             <button
-              onClick={() => setActiveTab("order")}
+              onClick={() => {
+                createOrder();
+              }}
               className="flex justify-center items-center w-[523px] h-[57px] rounded-[99px] py-[18px] px-[129px] bg-[#001D58] text-white shadow-lg"
             >
               Confirm Order

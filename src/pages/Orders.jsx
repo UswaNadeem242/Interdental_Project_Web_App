@@ -59,7 +59,7 @@ const Orders = () => {
               </div>
               <div className="flex justify-center items-center w-full h-[111px] border-t-[1px] border-[#0000001A] p-[8px] gap-[8px]">
                 <img
-                  src="/build/assets/product8.png"
+                  src="/assets/product8.png"
                   alt="product"
                   className="w-[95px] h-[95px]"
                 />
@@ -120,7 +120,7 @@ const Orders = () => {
               </div>
               <div className="flex justify-center items-center w-full h-[111px] border-t-[1px] border-[#0000001A] p-[8px] gap-[8px]">
                 <img
-                  src="/build/assets/product8.png"
+                  src="/assets/product8.png"
                   alt="product"
                   className="w-[95px] h-[95px]"
                 />
@@ -181,7 +181,7 @@ const Orders = () => {
               </div>
               <div className="flex justify-center items-center w-full h-[111px] border-t-[1px] border-[#0000001A] p-[8px] gap-[8px]">
                 <img
-                  src="/build/assets/product8.png"
+                  src="/assets/product8.png"
                   alt="product"
                   className="w-[95px] h-[95px]"
                 />
@@ -242,7 +242,7 @@ const Orders = () => {
               </div>
               <div className="flex justify-center items-center w-full h-[111px] border-t-[1px] border-[#0000001A] p-[8px] gap-[8px]">
                 <img
-                  src="/build/assets/product8.png"
+                  src="/assets/product8.png"
                   alt="product"
                   className="w-[95px] h-[95px]"
                 />

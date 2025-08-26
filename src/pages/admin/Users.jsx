@@ -197,7 +197,7 @@ const Users = () => {
                 >
                   <div className="flex items-center gap-[16px] w-[200px]">
                     <img
-                      src="/build/assets/userpic.png"
+                      src="/assets/userpic.png"
                       alt="img"
                       className="w-[32px] h-[32px] rounded-full"
                     />

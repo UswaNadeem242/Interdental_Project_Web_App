@@ -96,11 +96,12 @@ const Header = () => {
   ];
 
   const handleCart = () => {
-    if (user) {
-      setIsModalOpen(true);
-    } else {
-      setIsActionModalOpen(true);
-    }
+    // if (user) {
+    //   setIsModalOpen(true);
+    // } else {
+    //   setIsActionModalOpen(true);
+    // }
+     setIsModalOpen(true);
   };
   const handleWishlist = () => {
     if (user) {
@@ -121,7 +122,7 @@ const Header = () => {
     <div className="flex flex-col justify-center items-center h-[110.77px] w-full bg-[#FFFFFF] rounded-[8px] gap-[8px] pt-[20px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
       <div className="flex w-full h-[45.77px] px-[100px] gap-[94px]">
         <img
-          src="/build/assets/logo.png"
+          src="/assets/logo.png"
           alt="logo"
           className="w-[200px] h-[45.77px]"
         />
@@ -135,7 +136,7 @@ const Header = () => {
                 {categoriesList.find((c) => c.categoryId === categoryId)
                   ?.name || "Categories"}
               </h1>
-              {/* <img src="/build/assets/vector.png" alt="vector" /> */}
+              {/* <img src="/assets/vector.png" alt="vector" /> */}
               <svg
                 width="10"
                 height="6"
@@ -181,7 +182,7 @@ const Header = () => {
               />
               <div className="absolute right-[8px] top-[20px] transform -translate-y-1/2 w-[34px] h-[34px] rounded-[22px] p-[8px] gap-[8px] bg-secondaryBrand">
                 {/* <img
-                  src="/build/assets/search.png"
+                  src="/assets/search.png"
                   alt="search"
                   className="w-[18px] h-[18px]"
                 /> */}

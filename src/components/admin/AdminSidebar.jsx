@@ -19,7 +19,7 @@ const AdminSidebar = () => {
       <div className="flex flex-col justify-start items-start gap-[32px] space-y-[28px] w-[220px] h-[1105px] rounded-[16px] bg-[#FFFFFF]">
         <div className="w-[220px] h-[72px] py-[16px] px-[24px] gap-[12px]">
           <img
-            src="/build/assets/logo.png"
+            src="/assets/logo.png"
             alt="logo"
             className="w-[200px] h-[45.77px]"
           />

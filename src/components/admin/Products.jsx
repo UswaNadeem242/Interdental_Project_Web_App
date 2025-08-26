@@ -40,7 +40,7 @@ const Products = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setProducts(response.data);
+      setProducts(response.data.data);
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -53,7 +53,7 @@ const Products = () => {
   const handleDelete = async (productId) => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}/product/delete/${productId}`,
+        `${BASE_URL}/api/product/delete/${productId}`,
         {
           headers: {
             Accept: "*/*",
@@ -62,6 +62,7 @@ const Products = () => {
         }
       );
       alert("Product deleted successfully");
+      getAllProducts();
     } catch (error) {
       console.log(error);
     }
@@ -176,9 +177,9 @@ const Products = () => {
             {/* Orders Listing */}
             {products &&
               products
-                // .filter((p) =>
-                //   p.name.toLowerCase().includes(searchQuery.toLowerCase())
-                // )
+                .filter((p) =>
+                  p.name.toLowerCase().includes(searchQuery.toLowerCase())
+                )
                 .map((p) => (
                   <div className="w-full h-[50px] cursor-pointer py-[16px] px-[20px] gap-[67px] flex justify-start items-center">
                     <div className="w-[250px] h-[32px] flex justify-start items-center gap-[16px]">
@@ -194,8 +195,9 @@ const Products = () => {
                         }
                         className="w-[20px] h-[20px] rounded-[6px] border-[1px] border-[#D0D5DD]"
                       />
+                      {console.log('-==-=--=-=-=pppppp-=--=-=--=-=-=-=',p)}
                       <img
-                        src={p?.imageUrls[0]?.imageUrl}
+                        src={p?.imageUrls[0]}
                         alt="product image"
                         className="w-[32px] h-[32px]"
                       />
