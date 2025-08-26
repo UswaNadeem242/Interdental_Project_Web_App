@@ -14,9 +14,8 @@ const AddBrandModal = ({ isModalOpen, setIsModalOpen }) => {
     const file = event.target.files[0];
     if (file) {
       // Create a URL for the uploaded image to preview it
-      const imageUrl = URL.createObjectURL(file);
-      console.log("imageUrl", imageUrl);
-      setUploadedImage(imageUrl);
+
+      setUploadedImage(file);
     }
   };
 
@@ -36,29 +35,37 @@ const AddBrandModal = ({ isModalOpen, setIsModalOpen }) => {
       alert("Please fill all the fields");
       return;
     }
+
     try {
-      const payload = {
-        id: 3,
-        name,
-        description,
-        logoUrl: uploadedImage,
-      };
+      const formData = new FormData();
+
+      // Append the image file (File object from input)
+      formData.append("image", uploadedImage);
+
+      // Append the brand object with proper MIME type
+      const brandData = { name, description };
+      formData.append(
+        "brand",
+        new Blob([JSON.stringify(brandData)], { type: "application/json" })
+      );
+
       const response = await axios.post(
-        `${BASE_URL}/api/admin/brands`,
-        payload,
+        `${BASE_URL}/api/admin/brands/addbrand`,
+        formData,
         {
           headers: {
-            "Content-Type": "application/json",
-            Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
+            // ❌ don't manually set multipart/form-data
+            // axios + browser will set correct boundary
           },
         }
       );
-      console.log(response);
+
+      console.log("✅ Success:", response.data);
       alert("Brand added successfully");
       setIsModalOpen(false);
     } catch (error) {
-      console.log(error);
+      console.error("❌ Error:", error);
     }
   };
 
@@ -75,10 +82,11 @@ const AddBrandModal = ({ isModalOpen, setIsModalOpen }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div className="w-[303px] h-[295px] gap-[16px]">
         <div className="flex flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg w-[303px] h-auto relative">
+          {console.log("=--=-=--==--uploadedImage=-=-=-==--=", uploadedImage)}
           <div className="w-[114px] h-[121px] flex flex-col justify-center items-center space-y-[8px]">
             {uploadedImage ? (
               <img
-                src="/build/assets/uploadedImage.png"
+                src={URL.createObjectURL(uploadedImage)}
                 alt="Uploaded Brand Logo"
                 className="w-[95px] h-[95px] object-cover rounded-full"
               />
