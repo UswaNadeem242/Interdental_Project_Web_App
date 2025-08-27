@@ -56,14 +56,17 @@ const featureProducts = [
 
 const Shop = () => {
   const navigate = useNavigate();
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1000);
+  const [minPrice, setMinPrice] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(null);
   const [products, setProducts] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [brandsList, setBrandsList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedbrand, setSelectedbrand] = useState(null);
   const [categoryName, setCategoryName] = useState("");
+  const [brandName, setBrandName] = useState("");
   const [checked, setChecked] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleMinChange = (e) => {
     const value = Math.min(Number(e.target.value), maxPrice - 1);
@@ -78,7 +81,7 @@ const Shop = () => {
   const handleProduct = (product) => {
     navigate(`/product/${product.productId}`);
 
-    console.log('=--=-=-=-=product-=-=-=-=',product)
+    console.log("=--=-=-=-=product-=-=-=-=", product);
   };
 
   const getAllProducts = async () => {
@@ -141,14 +144,32 @@ const Shop = () => {
     setCategoryName(name);
   };
 
-  // Filter products based on the selected price range and category
+  const handleBrandChange = (id, name) => {
+    setSelectedbrand(id);
+    setBrandName(name);
+  };
+
   const filteredProducts = products.filter((product) => {
+    // Price filter
     const isInPriceRange =
-      product.price >= minPrice && product.price <= maxPrice;
+      !minPrice && !maxPrice
+        ? true // if no price range is selected → show all
+        : product.price >= minPrice && product.price <= maxPrice;
+
+    // Category filter
     const isInCategory = selectedCategory
       ? product.categoryId === selectedCategory
-      : true; // Filter by category if selectedCategory exists
-    return isInPriceRange && isInCategory;
+      : true;
+
+    // Brand filter
+    const isInBrand = selectedbrand ? product.brandId === selectedbrand : true;
+
+    // Search filter
+    const matchesSearch = searchTerm
+      ? product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      : true;
+
+    return isInPriceRange && isInCategory && isInBrand && matchesSearch;
   });
 
   const handleCheckboxChange = (e) => {
@@ -168,6 +189,37 @@ const Shop = () => {
           <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
             Filter
           </h1>
+          <div className="rounded-[53px] pl-[16px] py-[4px] border h-[44px] w-[234px] items-center flex flex-row pr-[8px]">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+              className="my-auto rounded w-full outline-none border-none focus:ring-0"
+            />
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8.25 14.251C11.5637 14.251 14.25 11.5647 14.25 8.25098C14.25 4.93727 11.5637 2.25098 8.25 2.25098C4.93629 2.25098 2.25 4.93727 2.25 8.25098C2.25 11.5647 4.93629 14.251 8.25 14.251Z"
+                stroke="#001D58"
+                stroke-width="1.28571"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M15.7508 15.7508L12.4883 12.4883"
+                stroke="#001D58"
+                stroke-width="1.28571"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
           <div className="w-[258px] h-[1px] border-[1px] border-[#0000001A]"></div>
           {/* Price filter */}
           <div className="flex flex-col justify-center items-start w-[258px] h-[99.33px] rounded-[17px] pr-[12px] py-[12px] gap-[16px] bg-white">
@@ -176,8 +228,8 @@ const Shop = () => {
             </h1>
             <div className="w-full mx-auto">
               <div className="flex justify-between text-sm text-gray-600 mb-2">
-                <span>${minPrice}</span>
-                <span>${maxPrice}</span>
+                <span>${minPrice ? minPrice : 0}</span>
+                <span>{maxPrice && `$${maxPrice}`}</span>
               </div>
 
               <div className="relative h-2 bg-gray-200 rounded">
@@ -185,13 +237,12 @@ const Shop = () => {
                 <div
                   className="absolute h-2 bg-[#001D58] rounded"
                   style={{
-                    left: `${(minPrice / 2000) * 100}%`,
-                    right: `${100 - (maxPrice / 2000) * 100}%`,
+                    left: `${(minPrice / 20000) * 100}%`,
+                    right: `${100 - (maxPrice / 20000) * 100}%`,
                   }}
                 ></div>
-
                 {/* Min Range Slider */}
-                <input
+                {/* <input
                   type="range"
                   min="0"
                   max="2000"
@@ -201,13 +252,13 @@ const Shop = () => {
                   style={{
                     accentColor: "#001D58",
                   }}
-                />
-
+                /> */}
                 {/* Max Range Slider */}
+
                 <input
                   type="range"
                   min="0"
-                  max="2000"
+                  max="20000"
                   value={maxPrice}
                   onChange={handleMaxChange}
                   className="absolute top-0 w-full h-2 cursor-pointer appearance-none bg-transparent pointer-events-auto"
@@ -297,7 +348,13 @@ const Shop = () => {
               {brandsList.map((b) => (
                 <h1
                   key={b.id}
-                  className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
+                  onClick={() => handleBrandChange(b.id, b.name)}
+                  // className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
+                  className={`font-poppins text-[12px] leading-[18px] ${
+                    selectedbrand === b.id
+                      ? "text-secondaryBrand  font-medium"
+                      : "text-secondaryText cursor-pointer font-normal"
+                  }`}
                 >
                   {b.name}
                 </h1>

@@ -221,7 +221,6 @@ const SingleProduct = () => {
                 )}
               </Swiper>
             </div>
-            {console.log("==--=-=-==-product.name=--==-=-=", product)}
             <div className="flex flex-col justify-start items-center w-[454.03px] h-[307.4px] space-y-[19.18px]">
               <div className="flex flex-col justify-center items-center w-[454px] h-[129.57px] border-b-[1px] border-[##E6E6E6] space-y-[15.99px]">
                 <div className="flex flex-col justify-center items-start w-[440.97px] h-[68.59px] space-y-[9.59px]">

@@ -30,27 +30,40 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   const createOrder = async () => {
-    // 
+    //
     console.log("=--=-==--=user=--=-===-", user);
 
     try {
+      // const payload = {
+      //   userId: ,
+      //   orderItems: cart.items,
+      // };
+
       const payload = {
         userId: user.id,
+        name: name,
+        address: `${country},${state},${city},${street}`,
+        email: email,
+        phone: phone,
         orderItems: cart.items,
       };
+
       console.log("-=-=-=-=-=payload-=-=-=-=-=-==--=", payload);
-      const response = await axios.post(`${BASE_URL}/orders/createOrder`, payload, {
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if(response.status === 200){
-        setActiveTab("order")
+      const response = await axios.post(
+        `${BASE_URL}/orders/createOrder`,
+        payload,
+        {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setActiveTab("order");
       }
       console.log(response);
-
     } catch (error) {
       console.log(error);
     }

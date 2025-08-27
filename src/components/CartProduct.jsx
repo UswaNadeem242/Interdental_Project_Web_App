@@ -58,9 +58,9 @@ const CartProduct = ({ item, getCart }) => {
       <div className="flex justify-center items-center w-[555px] h-[156px] gap-[16px]">
         <div className="flex justify-between items-center w-[515px] h-[156px] gap-[16px] ">
           <img
-            src="/assets/product1.png"
+            src={item?.imageUrl[0]}
             alt="product"
-            className="w-[115.13px] h-[131.94px]"
+            className="w-[115.13px] rounded-[20px] h-[131.94px]"
           />
           <div className="flex flex-col justify-start items-start w-[373.87px] h-[156px] gap-[8px]">
             <h1>{item.productName}</h1>
