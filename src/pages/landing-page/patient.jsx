@@ -89,26 +89,29 @@ const steps = [
     ],
   },
 ];
+
 const Patients = ({ isLanding }) => {
   const navigate = useNavigate();
   return (
     <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc]">
       {!isLanding && <Header />}
-      <section className=" py-16 px-8 mx-48 flex flex-col md:flex-row items-center justify-between">
+      <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:mx-12 xl:mx-24 2xl:mx-48 flex flex-col md:flex-row items-center justify-between">
         {/* Left Side: Text */}
         <div className="w-full md:w-1/2 text-gray-800">
-          <h3 className="text-4xl font-bold text-blue-900">PATIENT</h3>
-          <p className="mt-4 text-gray-600">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900">
+            PATIENT
+          </h3>
+          <p className="mt-4 text-sm sm:text-base md:text-lg text-gray-600">
             Our team of experts is committed to delivering exceptional results
             and ensuring your satisfaction. Whether you need a crown, bridge, or
             denture, we are here to help.
           </p>
           <button
             onClick={() => navigate("/patient")}
-            className="mt-6 px-6 py-3 rounded-full border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition  transition-all duration-300 flex items-center group"
+            className="mt-6 px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300 flex items-center group text-sm sm:text-base"
           >
-            <span className="mr-4">Register</span>
-            <span className="w-8 h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
+            <span className="mr-2 sm:mr-4">Register</span>
+            <span className="w-6 sm:w-8 h-6 sm:h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
               <svg
                 width="39"
                 height="39"
@@ -134,42 +137,46 @@ const Patients = ({ isLanding }) => {
         </div>
 
         {/* Right Side: Image */}
-        <div className="w-full md:w-1/2 flex justify-center items-center relative mt-8 md:mt-0">
+        <div className="w-full md:w-1/2 flex justify-center items-center relative mt-6 sm:mt-8 md:mt-0">
           {/* Circular Image */}
           <img
             src="/assets/landing-page/patient-image.png"
             alt="Patient"
-            className="w-124 h-124 object-cover"
+            className="w-64 sm:w-80 md:w-96 lg:w-124 h-64 sm:h-80 md:h-96 lg:h-124 object-cover"
           />
-
-          {/* Small Circle */}
         </div>
       </section>
 
-      <section className="bg-[#F9FCFF] py-16 px-8 text-center">
+      <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
         {/* Section Header */}
-        <h2 className="text-3xl font-bold text-blue-400">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-400">
           PATIENT YEARLY PLAN
         </h2>
-        <p className="mt-12 text-gray-600">
+        <p className="mt-6 sm:mt-8 md:mt-12 text-sm sm:text-base md:text-lg text-gray-600">
           Our warranty gives you the comfort and reassurance you deserve
         </p>
 
         {/* Plans Grid */}
-        <div className="mx-32 mt-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className="bg-white border rounded-lg shadow-md p-6 text-center hover:shadow-lg transition"
+              className="bg-white border rounded-lg shadow-md p-4 sm:p-6 text-center hover:shadow-lg transition"
             >
-              <h3 className="text-xl font-bold text-blue-900">{plan.title}</h3>
-              <p className="mt-2 text-blue-400 font-semibold ">
+              <h3 className="text-lg sm:text-xl font-bold text-blue-900">
+                {plan.title}
+              </h3>
+              <p className="mt-2 text-sm sm:text-base text-blue-400 font-semibold">
                 {plan.duration}
               </p>
-              <p className="mt-4 text-gray-800 font-bold ">{plan.price}</p>
-              <p className="mt-2 text-gray-600">{plan.description}</p>
+              <p className="mt-2 sm:mt-4 text-base sm:text-lg text-gray-800 font-bold">
+                {plan.price}
+              </p>
+              <p className="mt-2 text-sm sm:text-base text-gray-600">
+                {plan.description}
+              </p>
               <button
-                className={`mt-16 px-6 py-3 w-full border transition rounded-lg  ${plan.buttonStyle}`}
+                className={`mt-8 sm:mt-12 md:mt-16 px-4 sm:px-6 py-2 sm:py-3 w-full border transition rounded-lg text-sm sm:text-base ${plan.buttonStyle}`}
               >
                 GET IT NOW
               </button>
@@ -179,49 +186,50 @@ const Patients = ({ isLanding }) => {
       </section>
       {!isLanding && (
         <>
-          {" "}
-          <div className="py-16 px-4 md:px-16 lg:px-24 bg-gray-50">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-semibold text-blue-900">
+          <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-blue-900">
                 Common Concerns
               </h2>
-              <p className="text-gray-600 mt-4">
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 mt-4">
                 Our warranty gives you the comfort and reassurance you deserve
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6">
               {concerns.map((concern, index) => (
                 <div
                   key={index}
-                  className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
+                  className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition"
                 >
-                  <h3 className="text-xl font-semibold text-blue-800 mb-4">
+                  <h3 className="text-lg sm:text-xl font-semibold text-blue-800 mb-4">
                     {concern.title}
                   </h3>
-                  <p className="text-gray-600">{concern.description}</p>
+                  <p className="text-sm sm:text-base text-gray-600">
+                    {concern.description}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
-          <div className="py-16 px-4 md:px-16 lg:px-24 bg-gray-50">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-semibold text-blue-900">
+          <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-blue-900">
                 Get Started
               </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
               {steps.map((step) => (
                 <div
                   key={step.id}
-                  className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition"
+                  className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md hover:shadow-lg transition"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-900 font-bold rounded-full mx-auto mb-6">
+                  <div className="flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-blue-100 text-blue-900 font-bold rounded-full mx-auto mb-4 sm:mb-6">
                     {step.id}
                   </div>
-                  <h3 className="text-xl font-bold text-center text-gray-800 mb-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-center text-gray-800 mb-4">
                     {step.title}
                   </h3>
-                  <ul className="list-disc list-inside text-gray-600 space-y-2">
+                  <ul className="list-disc list-inside text-gray-600 text-sm sm:text-base space-y-2">
                     {step.description.map((desc, index) => (
                       <li key={index}>{desc}</li>
                     ))}
@@ -230,66 +238,66 @@ const Patients = ({ isLanding }) => {
               ))}
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-center py-16 px-4 md:px-16 lg:px-24 bg-gray-50">
+          <div className="flex flex-col md:flex-row items-center justify-center py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
             {/* Left Section: Image */}
             <div className="relative w-full md:w-1/2 flex justify-center items-center">
               <img
                 src="/assets/landing-page/patient-image-2.png"
                 alt="Patient"
-                className="w-96 h-96 object-cover"
+                className="w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 object-cover"
               />
             </div>
 
             {/* Right Section: Form */}
-            <div className="w-full md:w-1/2 mt-10 md:mt-0 md:ml-12">
-              <h2 className="text-2xl md:text-3xl font-bold text-blue-900 mb-6 text-center md:text-left">
+            <div className="w-full md:w-1/2 mt-6 sm:mt-8 md:mt-0 md:ml-6 lg:ml-12">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-900 mb-6 text-center md:text-left">
                 Patient Registration
               </h2>
               <form className="space-y-4">
-                <div className="flex space-x-4">
+                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <input
                     type="text"
                     placeholder="First Name"
-                    className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <input
                     type="text"
                     placeholder="Last Name"
-                    className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <div className="flex space-x-4">
+                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <input
                     type="tel"
                     placeholder="Phone"
-                    className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <input
                     type="email"
                     placeholder="Email"
-                    className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <input
                   type="text"
                   placeholder="Address"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <div className="flex space-x-4">
+                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <input
                     type="text"
                     placeholder="City"
-                    className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <input
                     type="text"
                     placeholder="ZIP"
-                    className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+                  className="w-full py-2 sm:py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-700 transition text-sm sm:text-base"
                 >
                   Submit
                 </button>
