@@ -6,7 +6,7 @@ const ProductListCard = () => {
     <div className="flex justify-between items-center w-[350px] h-[62.05px] border-b-[1px] border-[#0000000D] py-[12px]">
       <div className="flex justify-between items-center w-[186.12px] h-[38px] gap-[16.07px]">
         <img
-          src="/build/assets/product6.png"
+          src="/assets/product6.png"
           alt="product"
           className="w-[38.05px] h-[38.05px]"
         />

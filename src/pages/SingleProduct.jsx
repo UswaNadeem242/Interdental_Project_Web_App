@@ -32,7 +32,7 @@ const SingleProduct = () => {
   const getProduct = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/products/${productId}`,
+        `${BASE_URL}/api/product/get/${productId}`,
         {
           headers: {
             Accept: "*/*",
@@ -49,7 +49,7 @@ const SingleProduct = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/category/getAllCategories`,
+        `${BASE_URL}/api/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -101,6 +101,7 @@ const SingleProduct = () => {
         price: product.price,
         totalPrice: product.price,
       };
+      console.log("-=-=-=-=-=payload-=-=-=-=-=-==--=", payload);
       const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
         headers: {
           Accept: "*/*",
@@ -151,36 +152,37 @@ const SingleProduct = () => {
   };
   return (
     <div className="flex justify-center items-center bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
+      {console.log("=-=-=-=productId-==-=-=--=", productId)}
       <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
           <div className="flex justify-center items-center w-[1131px] h-[501px]">
-            <div className="flex flex-col justify-start items-center w-[94px] h-[503px] space-y-[8px]">
+            {/* <div className="flex flex-col justify-start items-center w-[94px] h-[503px] space-y-[8px]">
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
-            </div>
+            </div> */}
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
                 spaceBetween={30}
@@ -196,20 +198,27 @@ const SingleProduct = () => {
                 modules={[Autoplay, Pagination, Navigation]}
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
-                <SwiperSlide>
-                  <img
-                    className="object-fit h-[100%] w-[100%] overflow-hidden rounded-[16px]"
-                    src="/build/assets/product6.png"
-                    alt="img"
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    className="object-fit h-[100%] w-[100%] overflow-hidden rounded-[16px]"
-                    src="/build/assets/product6.png"
-                    alt="img"
-                  />
-                </SwiperSlide>
+                {product &&
+                product.imageUrls &&
+                product.imageUrls.length > 0 ? (
+                  product.imageUrls.map((url, index) => (
+                    <SwiperSlide key={index}>
+                      <img
+                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                        src={url}
+                        alt={`product-${index}`}
+                      />
+                    </SwiperSlide>
+                  ))
+                ) : (
+                  <SwiperSlide>
+                    <img
+                      className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                      src="/assets/product6.png" // fallback
+                      alt="default product"
+                    />
+                  </SwiperSlide>
+                )}
               </Swiper>
             </div>
             <div className="flex flex-col justify-start items-center w-[454.03px] h-[307.4px] space-y-[19.18px]">
@@ -217,7 +226,7 @@ const SingleProduct = () => {
                 <div className="flex flex-col justify-center items-start w-[440.97px] h-[68.59px] space-y-[9.59px]">
                   <div className="flex justify-start items-center w-[440.97px] h-[35px] gap-[6.39px]">
                     <h1 className="font-poppins font-semibold text-[28.78px] w-[365px] h-[35px] leading-[34.53px] text-[#1A1A1A]">
-                      {product.name}
+                      {product && product.name}
                     </h1>
                     <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-[8px] px-[12.79px] gap-[7.99px] bg-[#001D580D]">
                       <h1 className="font-poppins font-normal text-secondaryBrand text-[11.19px] leading-[16.79px] w-[44px] h-[17px]">
@@ -227,33 +236,18 @@ const SingleProduct = () => {
                   </div>
                   <div className="flex justify-center items-center w-[129.03px] h-[24px] gap-[6.39px]">
                     <div className="flex w-[97.64px] h-[15.19px] gap-[5.42px]">
-                      <img
-                        src="/build/assets/starFilled.png"
-                        alt="star filled"
-                      />
-                      <img
-                        src="/build/assets/starFilled.png"
-                        alt="star filled"
-                      />
-                      <img
-                        src="/build/assets/starFilled.png"
-                        alt="star filled"
-                      />
-                      <img
-                        src="/build/assets/starOutlined.png"
-                        alt="star outlined"
-                      />
-                      <img
-                        src="/build/assets/starOutlined.png"
-                        alt="star outlined"
-                      />
+                      <img src="/assets/star-filled.png" alt="star filled" />
+                      <img src="/assets/star-filled.png" alt="star filled" />
+                      <img src="/assets/star-filled.png" alt="star filled" />
+                      <img src="/assets/star-filled.png" alt="star outlined" />
+                      <img src="/assets/star-filled.png" alt="star outlined" />
                     </div>
                     <h1 className="font-poppins font-semibold text-[15.99px] text-black leading-[23.98px]">
                       5.0
                     </h1>
                   </div>
                   <h1 className="font-poppins font-semibold text-[19.18px] leading-[28.78px] text-secondaryBrand">
-                    ${product.price}
+                    ${product && product.price}
                   </h1>
                 </div>
 
@@ -261,7 +255,7 @@ const SingleProduct = () => {
               </div>
               <div className="w-[454.03px] h-[51px]">
                 <h1 className="font-poppins font-normal text-[11.19px] leading-[16.79px] text-[#808080]">
-                  {product.description}
+                  {product && product.description}
                 </h1>
               </div>
               <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-[9.59px]">
@@ -305,7 +299,8 @@ const SingleProduct = () => {
                 <h1 className="font-poppins font-normal text-[12px] leading-[18px] text-[#808080]">
                   {
                     categoriesList.find(
-                      (category) => category.categoryId === product.categoryId
+                      (category) =>
+                        category.categoryId === product && product.categoryId
                     )?.name
                   }
                 </h1>
@@ -313,6 +308,7 @@ const SingleProduct = () => {
             </div>
           </div>
         </div>
+
         <div className="flex flex-col justify-start items-start w-full h-[430.25px] py-[20px] px-[24px] space-y-[25.58px] rounded-[16px] bg-white">
           <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-[#434343]">
             Customer Feedback

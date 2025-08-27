@@ -9,57 +9,6 @@ import React from "react";
 // import product8 from "../assets/product8.png";
 import { useNavigate } from "react-router-dom";
 
-// const featureProducts = [
-//   {
-//     id: 1,
-//     img: "/build/assets/product1.png",
-//     title: "G Gold Lable 1 Mini",
-//     price: 233.65,
-//   },
-//   {
-//     id: 2,
-//     img: "/build/assets/product2.png",
-//     title: "G Gold Lable 1 Mini",
-//     price: 739.65,
-//   },
-//   {
-//     id: 3,
-//     img: "/build/assets/product3.png",
-//     title: "G Gold Lable 1 Mini",
-//     price: 634.23,
-//   },
-//   {
-//     id: 4,
-//     img: "/build/assets/product4.png",
-//     title: "G Gold Lable 1 Mini",
-//     price: 634.23,
-//   },
-//   {
-//     id: 5,
-//     img: "/build/assets/product5.png",
-//     title: "G Gold Lable 1 Mini",
-//     price: 634.23,
-//   },
-//   {
-//     id: 6,
-//     img: "/build/assets/product6.png",
-//     title: "G Gold Lable 1 Mini",
-//     price: 634.23,
-//   },
-//   {
-//     id: 7,
-//     img: "/build/assets/product7.png",
-//     title: "G Gold Lable 1 Mini",
-//     price: 634.23,
-//   },
-//   {
-//     id: 8,
-//     img: "/build/assets/product8.png",
-//     title: "G Gold Lable 1 Mini",
-//     price: 634.23,
-//   },
-// ];
-
 const FeaturedProducts = ({ products }) => {
   const navigate = useNavigate();
   return (

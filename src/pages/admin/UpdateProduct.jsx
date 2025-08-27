@@ -37,6 +37,7 @@ const UpdateProduct = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      console.log("-=-=-=-=");
 
       setProduct(response.data);
       setName(response.data.name);
@@ -69,7 +70,7 @@ const UpdateProduct = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/category/getAllCategories`,
+        `${BASE_URL}/api/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -84,14 +85,14 @@ const UpdateProduct = () => {
   };
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/admin/brands`, {
+      const response = await axios.get(`${BASE_URL}/api/brands`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response.data);
-      setBrandsList(response.data);
+      console.log("-=-=-=-=--=response.data=--==-=-=", response.data);
+      setBrandsList(response.data.content);
     } catch (error) {
       console.log(error);
     }
@@ -127,7 +128,7 @@ const UpdateProduct = () => {
         sku,
       };
       const response = await axios.put(
-        `${BASE_URL}/product/update/${productId}`,
+        `${BASE_URL}/api/product/update/${productId}`,
         payload,
         {
           headers: {
@@ -577,6 +578,7 @@ const UpdateProduct = () => {
         <AddBrandModal
           isModalOpen={isAddBrandModal}
           setIsModalOpen={setIsAddBrandModal}
+          getAllBrands={getAllBrands}
         />
       )}
       {isAddCategoryModal && (
@@ -584,6 +586,7 @@ const UpdateProduct = () => {
           isModalOpen={isAddCategoryModal}
           setIsModalOpen={setIsAddCategoryModal}
           categoriesList={categoriesList}
+          getAllCategories={getAllCategories}
         />
       )}
     </div>

@@ -12,22 +12,22 @@ const Brands = () => {
   const [brandsList, setBrandsList] = useState([]);
   const brands = [
     {
-      logo: "/build/assets/brand1.png",
+      logo: "/assets/brand1.png",
     },
     {
-      logo: "/build/assets/brand2.png",
+      logo: "/assets/brand2.png",
     },
     {
-      logo: "/build/assets/brand3.png",
+      logo: "/assets/brand3.png",
     },
     {
-      logo: "/build/assets/brand4.png",
+      logo: "/assets/brand4.png",
     },
     {
-      logo: "/build/assets/brand5.png",
+      logo: "/assets/brand5.png",
     },
     {
-      logo: "/build/assets/brand6.png",
+      logo: "/assets/brand6.png",
     },
   ];
 
