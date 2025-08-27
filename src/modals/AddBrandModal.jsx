@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { BASE_URL } from "../config";
 
-const AddBrandModal = ({ isModalOpen, setIsModalOpen }) => {
+const AddBrandModal = ({ isModalOpen, getAllBrands, setIsModalOpen }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const fileInputRef = useRef();
   const [name, setName] = useState("");
@@ -50,7 +50,7 @@ const AddBrandModal = ({ isModalOpen, setIsModalOpen }) => {
       );
 
       const response = await axios.post(
-        `${BASE_URL}/api/admin/brands/addbrand`,
+        `${BASE_URL}/api/brands/addbrand`,
         formData,
         {
           headers: {
@@ -62,7 +62,9 @@ const AddBrandModal = ({ isModalOpen, setIsModalOpen }) => {
       );
 
       console.log("✅ Success:", response.data);
+      getAllBrands();
       alert("Brand added successfully");
+
       setIsModalOpen(false);
     } catch (error) {
       console.error("❌ Error:", error);

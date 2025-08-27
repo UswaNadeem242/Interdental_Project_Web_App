@@ -26,14 +26,17 @@ const ProductDetails = () => {
 
   const getProductDetails = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/product/get/${productId}`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      console.log(response);
-      setProduct(response.data);
+      const response = await axios.get(
+        `${BASE_URL}/api/product/get/${productId}`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log("=--=-=-==-=response-=-=-=-==-=-", response);
+      setProduct(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +44,7 @@ const ProductDetails = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/category/getAllCategories`,
+        `${BASE_URL}/api/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -63,7 +66,7 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}/product/delete/${productId}`,
+        `${BASE_URL}/api/product/delete/${productId}`,
         {
           headers: {
             Accept: "*/*",
@@ -80,37 +83,38 @@ const ProductDetails = () => {
   };
   return (
     <div className="flex justify-center items-center">
+      {console.log("-=-=-==--=productId=-=-==-=-=", productId)}
       <div className="flex flex-col justify-start items-start w-[1108px] h-auto space-y-[32px] mt-0 pt-[8px] ">
         <AdminHeader title="Product Detail" />
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
           <div className="flex justify-center items-center w-[1108px] h-[501px]">
-            <div className="flex flex-col justify-start items-center w-[94px] h-[503px] space-y-[8px]">
+            {/* <div className="flex flex-col justify-start items-center w-[94px] h-[503px] space-y-[8px]">
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
               <img
-                src="/build/assets/product6.png"
+                src="/assets/product6.png"
                 alt="product"
                 className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
               />
-            </div>
+            </div> */}
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
                 spaceBetween={30}
@@ -126,20 +130,27 @@ const ProductDetails = () => {
                 modules={[Autoplay, Pagination, Navigation]}
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
-                <SwiperSlide>
-                  <img
-                    className="object-fit h-[100%] w-[100%] overflow-hidden rounded-[16px]"
-                    src="/build/assets/product6.png"
-                    alt="img"
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    className="object-fit h-[100%] w-[100%] overflow-hidden rounded-[16px]"
-                    src="/build/assets/product6.png"
-                    alt="img"
-                  />
-                </SwiperSlide>
+                {product &&
+                product.imageUrls &&
+                product.imageUrls.length > 0 ? (
+                  product.imageUrls.map((url, index) => (
+                    <SwiperSlide key={index}>
+                      <img
+                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                        src={url}
+                        alt={`product-${index}`}
+                      />
+                    </SwiperSlide>
+                  ))
+                ) : (
+                  <SwiperSlide>
+                    <img
+                      className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                      src="/assets/product6.png" // fallback
+                      alt="default product"
+                    />
+                  </SwiperSlide>
+                )}
               </Swiper>
             </div>
             <div className="flex flex-col justify-start items-start w-[454.03px] h-auto space-y-[19.18px]">
@@ -157,24 +168,15 @@ const ProductDetails = () => {
                   </div>
                   <div className="flex justify-center items-center w-[129.03px] h-[24px] gap-[6.39px]">
                     <div className="flex w-[97.64px] h-[15.19px] gap-[5.42px]">
+                      <img src="/assets/star-filled.png" alt="star filled" />
+                      <img src="/assets/star-filled.png" alt="star filled" />
+                      <img src="/assets/star-filled.png" alt="star filled" />
                       <img
-                        src="/build/assets/starFilled.png"
-                        alt="star filled"
-                      />
-                      <img
-                        src="/build/assets/starFilled.png"
-                        alt="star filled"
-                      />
-                      <img
-                        src="/build/assets/starFilled.png"
-                        alt="star filled"
-                      />
-                      <img
-                        src="/build/assets/starOutlined.png"
+                        src="/assets/star-outlined.png"
                         alt="star outlined"
                       />
                       <img
-                        src="/build/assets/starOutlined.png"
+                        src="/assets/star-outlined.png"
                         alt="star outlined"
                       />
                     </div>

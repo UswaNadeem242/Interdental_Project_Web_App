@@ -52,7 +52,7 @@ const Orders = () => {
               <div className="flex flex-col justify-start items-start w-[560px] h-[334px] rounded-[12px] border-[1px] p-[24px] space-y-[28px] bg-white border-[#0000000D]">
                 <div className="flex justify-start items-center gap-2">
                   <img
-                    src="/build/assets/logopond.png"
+                    src="/assets/logopond.png"
                     alt="logo"
                     className="w-[26px] h-[26px] rounded-[14.82px] border-[0.91px] border-[#EF6A1F]"
                   />
@@ -62,7 +62,7 @@ const Orders = () => {
                 <div className="w-[512px] h-[244px] space-y-[16px] flex flex-col justify-center items-start">
                   <div className="flex w-[512px] h-[60px] gap-[4px] border-b-[1px] border-[#0000001A] pb-20">
                     <img
-                      src="/build/assets/product8.png"
+                      src="/assets/product8.png"
                       alt="product"
                       className="w-[60px] h-[60px] rounded-[7.75px] p-[5.16px] gap-[5.16px]"
                     />
@@ -80,7 +80,7 @@ const Orders = () => {
                   </div>
                   <div className="flex w-[512px] h-[60px] gap-[4px] border-b-[1px] border-[#0000001A] pb-20">
                     <img
-                      src="/build/assets/product8.png"
+                      src="/assets/product8.png"
                       alt="product"
                       className="w-[60px] h-[60px] rounded-[7.75px] p-[5.16px] gap-[5.16px]"
                     />
@@ -98,7 +98,7 @@ const Orders = () => {
                   </div>
                   <div className="flex w-[512px] h-[60px] gap-[4px]  pb-20">
                     <img
-                      src="/build/assets/product8.png"
+                      src="/assets/product8.png"
                       alt="product"
                       className="w-[60px] h-[60px] rounded-[7.75px] p-[5.16px] gap-[5.16px]"
                     />

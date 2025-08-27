@@ -22,7 +22,7 @@ const AccountDeactivate = ({ isModalOpen, setIsModalOpen }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div className="flex flex-col justify-center items-center  bg-white py-[32px] px-[24px] rounded-[24px] shadow-lg w-[361px] h-[393px] relative">
-        <img src="/build/assets/Group.png" alt="account deactivate profile" />
+        <img src="/assets/Group.png" alt="account deactivate profile" />
 
         <div className="flex flex-col justify-center items-center gap-[8px] w-[319px] h-[183px]">
           <p className="font-poppins font-bold text-[26px] leading-[39px] text-[#000000]">

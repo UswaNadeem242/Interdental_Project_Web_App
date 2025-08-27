@@ -3,7 +3,12 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { BASE_URL } from "../config";
 
-const AddCategoryModal = ({ isModalOpen, setIsModalOpen, categoriesList }) => {
+const AddCategoryModal = ({
+  isModalOpen,
+  getAllCategories,
+  setIsModalOpen,
+  categoriesList,
+}) => {
   const [name, setName] = useState("");
   const [parentCategoryId, setParentCategoryId] = useState(null);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
@@ -28,7 +33,7 @@ const AddCategoryModal = ({ isModalOpen, setIsModalOpen, categoriesList }) => {
         parentCategoryId,
       };
       const response = await axios.post(
-        `${BASE_URL}/category/addCategory`,
+        `${BASE_URL}/api/category/addCategory`,
         payload,
         {
           headers: {
@@ -39,6 +44,7 @@ const AddCategoryModal = ({ isModalOpen, setIsModalOpen, categoriesList }) => {
         }
       );
       console.log(response);
+      getAllCategories();
       alert("Categroy added successfully");
       setIsModalOpen(false);
     } catch (error) {

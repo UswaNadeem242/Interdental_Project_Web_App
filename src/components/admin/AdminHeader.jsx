@@ -69,7 +69,7 @@ const AdminHeader = ({ title, subTitle }) => {
         </svg>
         <div className="flex justify-start items-center w-[220px] h-[58px] gap-[8px] p-[8px] rounded-[32px] bg-white">
           <img
-            src="/build/assets/user.png"
+            src="/assets/user.png"
             alt="user"
             className="w-[40px] h-[40px] rounded-[32px]"
           />

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { BASE_URL } from "../config";
 // import product1 from "../assets/product1.png";
 
-const CartProduct = ({ item }) => {
+const CartProduct = ({ item, getCart }) => {
   const [count, setCount] = useState(item.quantity);
 
   const handleDeleteItem = async () => {
@@ -18,6 +18,7 @@ const CartProduct = ({ item }) => {
         }
       );
       alert("Item removed from cart");
+      getCart();
     } catch (error) {
       console.log(error);
     }
@@ -46,6 +47,7 @@ const CartProduct = ({ item }) => {
           },
         }
       );
+      getCart();
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -56,13 +58,13 @@ const CartProduct = ({ item }) => {
       <div className="flex justify-center items-center w-[555px] h-[156px] gap-[16px]">
         <div className="flex justify-between items-center w-[515px] h-[156px] gap-[16px] ">
           <img
-            src="/build/assets/product1.png"
+            src="/assets/product1.png"
             alt="product"
             className="w-[115.13px] h-[131.94px]"
           />
           <div className="flex flex-col justify-start items-start w-[373.87px] h-[156px] gap-[8px]">
             <h1>{item.productName}</h1>
-            <h1>Prouct description here</h1>
+            {/* <h1>Prouct description here</h1> */}
             <h1>${item.price}</h1>
             <div className="flex justify-between items-center w-[124px] h-[50px] rounded-[170px] border-[1px] border-[#0000000D] p-[8px]">
               <svg

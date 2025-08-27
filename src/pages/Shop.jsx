@@ -6,49 +6,49 @@ import Header from "./landing-page/header";
 const featureProducts = [
   {
     id: 1,
-    img: "/build/assets/product1.png",
+    img: "/assets/product1.png",
     title: "G Gold Lable 1 Mini",
     price: 233.65,
   },
   {
     id: 2,
-    img: "/build/assets/product2.png",
+    img: "/assets/product2.png",
     title: "G Gold Lable 1 Mini",
     price: 739.65,
   },
   {
     id: 3,
-    img: "/build/assets/product3.png",
+    img: "/assets/product3.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 4,
-    img: "/build/assets/product4.png",
+    img: "/assets/product4.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 5,
-    img: "/build/assets/product5.png",
+    img: "/assets/product5.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 6,
-    img: "/build/assets/product6.png",
+    img: "/assets/product6.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 7,
-    img: "/build/assets/product7.png",
+    img: "/assets/product7.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
   {
     id: 8,
-    img: "/build/assets/product8.png",
+    img: "/assets/product8.png",
     title: "G Gold Lable 1 Mini",
     price: 634.23,
   },
@@ -76,29 +76,29 @@ const Shop = () => {
   };
 
   const handleProduct = (product) => {
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product.productId}`);
+
+    console.log('=--=-=-=-=product-=-=-=-=',product)
   };
 
   const getAllProducts = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/product/getAll`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      const response = await axios.get(`${BASE_URL}/api/product/getAll`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log(
+        "-=-====--=-=-response.data.data==--==-=-==-=--====",
+        response.data.data
       );
-      console.log('-=-====--=-=-response.data.data==--==-=-==-=--====',response.data.data)
       setProducts(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-
-  
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
@@ -118,15 +118,12 @@ const Shop = () => {
 
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/brands`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/brands`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       setBrandsList(response.data.content);
     } catch (error) {
@@ -145,14 +142,14 @@ const Shop = () => {
   };
 
   // Filter products based on the selected price range and category
-  // const filteredProducts = products.filter((product) => {
-  //   const isInPriceRange =
-  //     product.price >= minPrice && product.price <= maxPrice;
-  //   const isInCategory = selectedCategory
-  //     ? product.categoryId === selectedCategory
-  //     : true; // Filter by category if selectedCategory exists
-  //   return isInPriceRange && isInCategory;
-  // });
+  const filteredProducts = products.filter((product) => {
+    const isInPriceRange =
+      product.price >= minPrice && product.price <= maxPrice;
+    const isInCategory = selectedCategory
+      ? product.categoryId === selectedCategory
+      : true; // Filter by category if selectedCategory exists
+    return isInPriceRange && isInCategory;
+  });
 
   const handleCheckboxChange = (e) => {
     const { id, checked } = e.target;
@@ -277,7 +274,7 @@ const Shop = () => {
               Categories
             </h1>
             <div className="w-[142px] h-auto space-y-[8px]">
-              {featureProducts.map((c) => (
+              {filteredProducts.map((c) => (
                 <h1
                   key={c.categoryId}
                   onClick={() => handleCategoryChange(c.categoryId, c.name)}
@@ -310,14 +307,14 @@ const Shop = () => {
         </div>
         <div className="w-[1224px] h-[971.44px] gap-[32px] top-[143px] left-[431px]">
           <div className="flex flex-wrap w-full h-[386px] gap-[31px]">
-            {featureProducts.length > 0 ? (
-              featureProducts.map((product) => (
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
                 <div
                   onClick={() => handleProduct(product)}
                   className="flex flex-col justify-center items-center cursor-pointer bg-white w-[303.15px] h-[386px] p-[20px] space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
                 >
                   <img
-                    src={product?.img}
+                    src={product.imageUrls[0]}
                     alt="product"
                     className="w-[263.15px] h-[260.45px]"
                   />

@@ -30,12 +30,17 @@ const ListProduct = () => {
   const [toastType, setToastType] = useState("success");
 
   const handleFileUpload = (event) => {
+    // const files = Array.from(event.target.files);
+    // const newImages = files.map((file) => {
+    //   // const imageUrl = URL.createObjectURL(file);
+    //   return { imageUrl, altText: file.name || "Product Image" };
+    // });
     const files = Array.from(event.target.files);
-    const newImages = files.map((file) => {
-      const imageUrl = URL.createObjectURL(file);
-      return { imageUrl, altText: file.name || "Product Image" };
-    });
-    setImages((prevImages) => [...prevImages, ...newImages]);
+    const newImages = files.map((file) => ({
+      file, // keep original file for upload
+      preview: URL.createObjectURL(file), // ✅ preview url
+    }));
+    setImages((prev) => [...prev, ...newImages]);
   };
 
   const removeImage = (index) => {
@@ -45,7 +50,7 @@ const ListProduct = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/category/getAllCategories`,
+        `${BASE_URL}/api/category/getAllCategories`,
         {
           headers: {
             Accept: "*/*",
@@ -64,14 +69,14 @@ const ListProduct = () => {
 
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/admin/brands`, {
+      const response = await axios.get(`${BASE_URL}/api/brands`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       console.log(response.data);
-      setBrandsList(response.data);
+      setBrandsList(response.data.content);
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +89,76 @@ const ListProduct = () => {
     setToastVisible(false);
   };
 
+  // const handleSave = async () => {
+  //   if (
+  //     !name ||
+  //     !description ||
+  //     !price ||
+  //     !stockQuantity ||
+  //     !categoryId ||
+  //     !brandId ||
+  //     !sku ||
+  //     !images ||
+  //     images.length === 0
+  //   ) {
+  //     setToastMessage("Please fill all the fields and upload images!");
+  //     setToastType("error");
+  //     setToastVisible(true);
+  //     return;
+  //   }
+
+  //   try {
+  //     // Create FormData object
+  //     const formData = new FormData();
+
+  //     // Append product payload as JSON
+  //     const productPayload = {
+  //       name,
+  //       description,
+  //       SKU: sku, // 👈 keep SKU in uppercase since backend expects it
+  //       price,
+  //       stockQuantity,
+  //       categoryId,
+  //       brandId,
+  //     };
+  //     formData.append("images", images);
+
+  //     formData.append(
+  //       "product",
+  //       new Blob([JSON.stringify(productPayload)], { type: "application/json" })
+  //     );
+
+  //     // Append images (each File object)
+  //     // images.forEach((img) => {
+  //     //   formData.append("images", img);
+  //     // });
+
+  //     // Send request
+  //     const response = await axios.post(
+  //       `${BASE_URL}/api/product/add`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     );
+
+  //     // Success response
+  //     setToastMessage("Product added successfully!");
+  //     setToastType("success");
+  //     setToastVisible(true);
+
+  //     setTimeout(() => {
+  //       navigate("/admin/products");
+  //     }, 2000);
+  //   } catch (error) {
+  //     console.error("Error while adding product:", error);
+  //     setToastMessage("Error while adding product!");
+  //     setToastType("error");
+  //     setToastVisible(true);
+  //   }
+  // };
   const handleSave = async () => {
     if (
       !name ||
@@ -92,46 +167,67 @@ const ListProduct = () => {
       !stockQuantity ||
       !categoryId ||
       !brandId ||
-      !sku
+      !sku ||
+      !images ||
+      images.length === 0
     ) {
-      setToastMessage("Please fill all the fields !");
+      setToastMessage("Please fill all the fields and upload images!");
       setToastType("error");
       setToastVisible(true);
       return;
     }
+
     try {
-      const payload = {
+      const formData = new FormData();
+
+      // Product payload
+      const productPayload = {
         name,
         description,
         price,
         stockQuantity,
         categoryId,
-        images,
         brandId,
-        sku,
+        sku, // lowercase as per your curl
       };
-      const response = await axios.post(`${BASE_URL}/product/add`, payload, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+
+      // ✅ Append product as plain JSON string (NOT Blob)
+      formData.append("product", JSON.stringify(productPayload));
+
+      // Append images
+      images.forEach((img) => {
+        formData.append("images", img.file);
       });
+
+      // formData.append("images", images);
+
+      console.log("=-=-=-==-=-formData-=-=-=-=-=-==-", formData);
+      // API call
+      const response = await axios.post(
+        `${BASE_URL}/api/product/add`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       setToastMessage("Product added successfully!");
       setToastType("success");
       setToastVisible(true);
+
       setTimeout(() => {
         navigate("/admin/products");
       }, 2000);
     } catch (error) {
-      console.log(error);
-      setToastMessage("Error while adding !");
+      console.error("Error while adding product:", error);
+      setToastMessage("Error while adding product!");
       setToastType("error");
       setToastVisible(true);
     }
   };
-
   return (
     <div className="flex flex-col justify-center items-start">
       {/* <AdminHeader title="List Product" /> */}
@@ -280,11 +376,12 @@ const ListProduct = () => {
 
             {/* Uploaded Images */}
             <div className="flex flex-wrap gap-[16px] mt-[16px]">
+              {console.log("=-=--===-=images-=-=-=-=-===-", images)}
               {images.map((image, index) => (
                 <div key={index} className="relative w-[120px] h-[120px]">
                   <img
-                    src={image.imageUrl}
-                    alt={image.altText}
+                    src={image.preview} // ✅ use preview url
+                    alt={image.file.name}
                     className="w-full h-full object-cover rounded-[8px]"
                   />
                   <button
