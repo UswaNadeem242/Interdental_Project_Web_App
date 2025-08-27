@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 const HeroSection = () => {
   const navigate = useNavigate();
   return (
-    <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc] flex flex-col md:flex-row justify-around items-center h-screen">
+    <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc] flex flex-col md:flex-row justify-around items-center h-auto sm:h-screen min-h-[600px] py-8 sm:py-12 md:py-16">
       {/* Left Section: Text Content */}
-      <section className="text-center md:text-left px-8 md:px-16">
-        <h2 className="text-xs md:text-5xl font-normal text-gray-900 leading-tight space-y-4">
+      <section className="text-left md:text-left px-4 sm:px-8 md:px-12 lg:px-16">
+        <h2 className="text-2xl mb-8 sm:text-3xl md:text-4xl lg:text-5xl font-normal text-gray-900 leading-tight space-y-2 sm:space-y-3 md:space-y-4">
           <span className="block font-normal">
             Crafting
             <span className="text-gray-600 font-bold"> Smiles</span>
@@ -19,24 +19,25 @@ const HeroSection = () => {
             <span className="text-blue-400 font-bold"> Artistry</span>
           </span>
         </h2>
-        <p className="mt-4 text-lg text-gray-700 max-w-lg mx-auto md:mx-0">
+        <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto md:mx-0">
           Blending cutting-edge technology with expert craftsmanship, we create
           durable and aesthetically refined dental solutions that are built to
           last.
         </p>
-        <div className="w-auto h-auto flex justify-start items-center gap-4">
+        <div className="mr-20 w-auto h-auto flex flex-col sm:flex-row justify-center md:justify-start items-center gap-3 sm:gap-4 md:gap-6 mt-4 sm:mt-6">
           <button
             onClick={() => navigate("/signup")}
-            className="mt-6 px-6 py-3 rounded-full border-2 border-[#78c3d8] text-[#494949] hover:bg-[#78c3d8] hover:text-white flex items-center "
+            className="w-full sm:w-auto mt-3 sm:mt-0 px-4 sm:px-5 md:px-6 py-2 sm:py-3 rounded-full border-2 border-[#78c3d8] text-[#494949] hover:bg-[#78c3d8] hover:text-white flex items-center justify-center text-sm sm:text-base"
           >
-            <span className="mr-4">Explore Our Solutions</span>
-            <span className="w-8 h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
+            <span className="mr-2 sm:mr-4">Explore Our Solutions</span>
+            <span className="w-6 sm:w-8 h-6 sm:h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
               <svg
-                width="39"
-                height="38"
+                width="30"
+                height="30"
                 viewBox="0 0 39 38"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="w-[24px] sm:w-[30px] h-[24px] sm:h-[30px]"
               >
                 <rect
                   x="0.970001"
@@ -54,22 +55,22 @@ const HeroSection = () => {
           </button>
           <button
             onClick={() => navigate("/shop")}
-            className=" mt-6 px-6 py-3 rounded-full border-2 bg-[#001D58] text-white text-center hover:bg-[#78c3d8] hover:text-white flex justify-center items-center "
+            className="w-full sm:w-auto mt-3 sm:mt-0 px-4 sm:px-5 md:px-6 py-2 sm:py-3 rounded-full border-2 bg-[#001D58] text-white text-center hover:bg-[#78c3d8] hover:text-white flex justify-center items-center text-sm sm:text-base"
           >
-            <span className="h-8 pt-1">Buy Now</span>
+            <span className="h-6 sm:h-8 pt-1">Buy Now</span>
           </button>
         </div>
       </section>
 
       {/* Right Section: Images */}
-      <section className="flex justify-center items-center mt-12 md:mt-0 space-x-6">
+      <section className="flex justify-center items-center mt-8 sm:mt-10 md:mt-12 lg:mt-0 space-x-4 sm:space-x-6 md:space-x-8">
         <img
           src="/assets/landing-page/hero-image.png"
           alt="Patient 1"
-          className="w-full h-full object-cover"
+          className="w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] object-cover"
         />
         {/* First Image */}
-        {/* <div className="w-36 h-48 md:w-40 md:h-56 bg-gray-300 rounded-full overflow-hidden shadow-lg">
+        {/* <div className="w-24 sm:w-28 md:w-36 lg:w-40 h-32 sm:h-40 md:h-48 lg:h-56 bg-gray-300 rounded-full overflow-hidden shadow-lg">
           <img
             src="/assets/landing-page/hero-image-1.jpeg"
             alt="Patient 1"
@@ -77,7 +78,7 @@ const HeroSection = () => {
           />
         </div> */}
         {/* Second Image */}
-        {/* <div className="w-36 h-48 md:w-40 md:h-56 bg-gray-300 rounded-full overflow-hidden shadow-lg">
+        {/* <div className="w-24 sm:w-28 md:w-36 lg:w-40 h-32 sm:h-40 md:h-48 lg:h-56 bg-gray-300 rounded-full overflow-hidden shadow-lg">
           <img
             src="/assets/landing-page/hero-image-2.jpeg"
             alt="Patient 2"
@@ -85,7 +86,7 @@ const HeroSection = () => {
           />
         </div> */}
         {/* Third Image */}
-        {/* <div className="w-36 h-48 md:w-40 md:h-56 bg-gray-300 rounded-full overflow-hidden shadow-lg">
+        {/* <div className="w-24 sm:w-28 md:w-36 lg:w-40 h-32 sm:h-40 md:h-48 lg:h-56 bg-gray-300 rounded-full overflow-hidden shadow-lg">
           <img
             src="/assets/landing-page/hero-image-3.jpeg"
             alt="Patient 3"

@@ -40,7 +40,7 @@ const Products = () => {
       </p>
 
       {/* Product Grid */}
-      <div className="m-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="m-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-auto">
         {products.map((product) => (
           <div
             key={product.id}

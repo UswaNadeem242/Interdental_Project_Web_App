@@ -133,7 +133,7 @@ const Login = () => {
           </p>
         </div>
 
-        <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[144px] gap-4 lg:gap-[16px]">
+        <div className="flex flex-col justify-center items-center w-full px-4 lg:w-[494px] h-auto lg:h-[144px] gap-4 lg:gap-[16px]">
           <input
             type="text"
             className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
@@ -174,11 +174,11 @@ const Login = () => {
           </p>
         </div>
 
-        <div className="flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
+        <div className="flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 px-6 lg:gap-[32px]">
           <button
             onClick={() => handleLogin()}
             disabled={loading}
-            className={`w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px] ${
+            className={`w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4  lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px] ${
               loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
             }`}
           >

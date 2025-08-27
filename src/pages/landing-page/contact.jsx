@@ -5,8 +5,8 @@ const Contact = ({ isLanding }) => {
   return (
     <>
       {!isLanding && <Header />}
-      <section className="bg-white py-16 px-0 lg:px-8">
-        <div className="w-full lg:max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-0 lg:gap-8 lg:shadow-lg rounded-xl">
+      <section className="bg-white py-16 px-0 lg:px-8 ">
+        <div className="w-full lg:max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-1 gap-0 lg:gap-8 lg:shadow-lg rounded-xl">
           {/* Contact Details */}
           <div className="p-8 rounded-lg ">
             <h3 className="text-2xl font-extrabold text-black-900">
@@ -169,9 +169,9 @@ const Contact = ({ isLanding }) => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white p-8 rounded-lg">
+          <div className="bg-white p-8 rounded-lg grid md:grid-cols-1 ">
             <form>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
                 <input
                   type="text"
                   placeholder="First Name"

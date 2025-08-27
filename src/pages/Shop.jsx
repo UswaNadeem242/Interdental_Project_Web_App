@@ -81,24 +81,22 @@ const Shop = () => {
 
   const getAllProducts = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/product/getAll`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      const response = await axios.get(`${BASE_URL}/api/product/getAll`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log(
+        "-=-====--=-=-response.data.data==--==-=-==-=--====",
+        response.data.data
       );
-      console.log('-=-====--=-=-response.data.data==--==-=-==-=--====',response.data.data)
       setProducts(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-
-  
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
@@ -118,15 +116,12 @@ const Shop = () => {
 
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/brands`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/brands`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       setBrandsList(response.data.content);
     } catch (error) {
