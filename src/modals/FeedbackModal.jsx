@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../config";
+import axios from "axios";
 // import Group from "../assets/Group.png";
 
-const FeedbackModal = ({ isModalOpen, setIsModalOpen }) => {
+const FeedbackModal = ({ isModalOpen, setIsModalOpen, isItemId }) => {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [review, setReview] = useState("");
 
   const filledStar = (
     <svg
@@ -87,6 +90,7 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen }) => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    addRating();
   };
 
   useEffect(() => {
@@ -98,6 +102,29 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen }) => {
     return () => document.body.classList.remove("overflow-hidden");
   }, [isModalOpen]);
 
+  const addRating = async () => {
+    try {
+      const payload = {
+        accommodationId: isItemId, // pass actual ID
+        rating: rating, // 1–5 stars
+        review: review,
+      };
+
+      console.log("-=-=-=payload==--===-==", payload);
+      const response = await axios.post(`${BASE_URL}/api/ratings/add`, payload, {
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      console.log("Rating submitted:", response.data);
+    } catch (error) {
+      console.error("Error adding rating:", error);
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div className="w-[311px] h-[373.21px] gap-[18px]">
@@ -108,7 +135,7 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen }) => {
             </h1>
             <p className="font-poppins font-normal text-center text-[14px] w-[324px] leading-[21px] text-[#949494]">
               Your opinion is very helpful for us. Help us be better by giving
-              us an honest score below
+              us an honest score below{hoverRating}/{rating}
             </p>
             <div className="flex justify-start items-center gap-[5px] w-[251px] h-[46px]">
               {[...Array(5)].map((_, index) => (
@@ -134,6 +161,8 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen }) => {
                   type="text"
                   placeholder="Enter your openion"
                   className="outline-none w-full"
+                  value={review}
+                  onChange={(e) => setReview(e.target.value)}
                 />
               </div>
             </div>

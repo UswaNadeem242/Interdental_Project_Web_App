@@ -150,7 +150,7 @@ function App() {
               }
             />
             <Route
-              path="/order-info"
+              path="/order-info/:orderId"
               element={
                 <MainLayout>
                   <OrderInfo />

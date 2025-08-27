@@ -1,9 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AdminHeader from "../../components/admin/AdminHeader";
 import { useParams } from "react-router-dom";
+import { BASE_URL } from "../../config";
+import axios from "axios";
 
 const OrderDetails = () => {
   const params = useParams();
+
+
+    const [orders, setOrders] = useState();
+
+  const getAllOrders = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/orders/getOrderByID/${params.id}`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setOrders(response.data);
+      console.log(response.data.orders);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  
+  useEffect(() => {
+    getAllOrders();
+  }, []);
+
   return (
     <div className="flex flex-col justify-center items-start space-y-6">
       <AdminHeader title="Order" subTitle={params.id} />

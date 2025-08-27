@@ -45,6 +45,7 @@ const Wishlist = () => {
       setToastMessage("Product Removed From Wishlist !");
       setToastType("success");
       setToastVisible(true);
+      getWishlist();
     } catch (error) {
       console.log(error);
       setToastMessage(`Error: ${error}`);
@@ -95,6 +96,11 @@ const Wishlist = () => {
           {wishlist?.map((item) => (
             <div className="flex flex-col justify-start items-start space-y-[24px] bg-white border-[1px] border-[#0000000D] rounded-[16px] p-[20px] w-[303.15] h-auto">
               <div className="w-[263.15px] h-[264px] bg-gray-400"></div>
+              {/* <img
+                                     className="w-[263.15px] h-[264px] bg-gray-400"
+                                      src={item.}
+                                      alt={`product-${index}`}
+                                    /> */}
               <div className="flex flex-col justify-center items-center space-y-[7.55px] w-[263.15px] h-auto">
                 <p className="font-poppins font-semibold text-[16px] leading-[24px] text-[#000000]">
                   {item.productName}

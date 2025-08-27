@@ -1,16 +1,46 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useParams } from "react-router-dom";
 // import product8 from "../assets/product8.png";
 // import logopond from "../assets/logopond.png";
 import FeedbackModal from "../modals/FeedbackModal";
+import axios from "axios";
+import { BASE_URL } from "../config";
 
 const Orders = () => {
   const tabs = ["Order Detail", "Track Order"];
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFeedbackOpen, SetIsFeedbackOpen] = useState(false);
+  const [isItemId, SetIsItemId] = useState(false);
+  const { orderId } = useParams();
+
+  const [orders, setOrders] = useState();
+
+  const getAllOrders = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/orders/getOrderByID/${orderId}`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setOrders(response.data);
+      console.log(response.data.orders);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  
+  useEffect(() => {
+    getAllOrders();
+  }, []);
 
   return (
     <div className="flex justify-center items-center w-full h-auto py-8 bg-[#F8F8F8]">
+      {console.log("-=-=-=-==-orderId=-==-===--=", orders)}
       <div className="flex flex-col justify-start items-start w-[1200px] h-[517px] p-[32px] space-y-[16px] rounded-[16px] bg-white ">
         <div className="flex justify-start items-center gap-2">
           <div className="flex justify-center items-center bg-[#F7F8F8] w-[32px] h-[32px] rounded-[8px]">
@@ -59,61 +89,34 @@ const Orders = () => {
 
                   <p>Black Beauty Store</p>
                 </div>
-                <div className="w-[512px] h-[244px] space-y-[16px] flex flex-col justify-center items-start">
-                  <div className="flex w-[512px] h-[60px] gap-[4px] border-b-[1px] border-[#0000001A] pb-20">
-                    <img
-                      src="/assets/product8.png"
-                      alt="product"
-                      className="w-[60px] h-[60px] rounded-[7.75px] p-[5.16px] gap-[5.16px]"
-                    />
-                    <div className="flex w-[444px] h-[46px] gap-[4px]">
-                      <div className="flex flex-col justify-start items-start w-[357px] h-[46px] space-y-[4px]">
-                        <p>Woodpecker Endo Motor</p>
-                        <p>$ 20</p>
+                <div className="w-[512px] h-auto space-y-[16px] flex flex-col  items-start">
+                  {orders &&
+                    orders?.orderItems.map((order) => (
+                      <div className="flex w-[512px] h-[60px] gap-[4px] border-b-[1px] border-[#0000001A] pb-20">
+                        <img
+                          src="/assets/product8.png"
+                          alt="product"
+                          className="w-[60px] h-[60px] rounded-[7.75px] p-[5.16px] gap-[5.16px]"
+                        />
+                        <div className="flex w-[444px] h-[46px] gap-[4px]">
+                          <div className="flex flex-col justify-start items-start w-[357px] h-[46px] space-y-[4px]">
+                            <p>{order.productName}</p>
+                            <p>$ {order.unitPrice}</p>
+                          </div>
+                        </div>
+                        <div
+                          onClick={() => {
+                            SetIsFeedbackOpen(true);
+                            SetIsItemId(order.productId);
+                          }}
+                          className="flex justify-center items-center w-[113px] h-[23px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px]"
+                        >
+                          <p className="ffont-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
+                            Leave Review
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-center items-center w-[93px] h-[23px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px]">
-                      <p className="ffont-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
-                        Leave Review
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex w-[512px] h-[60px] gap-[4px] border-b-[1px] border-[#0000001A] pb-20">
-                    <img
-                      src="/assets/product8.png"
-                      alt="product"
-                      className="w-[60px] h-[60px] rounded-[7.75px] p-[5.16px] gap-[5.16px]"
-                    />
-                    <div className="flex w-[444px] h-[46px] gap-[4px]">
-                      <div className="flex flex-col justify-start items-start w-[357px] h-[46px] space-y-[4px]">
-                        <p>Woodpecker Endo Motor</p>
-                        <p>$ 20</p>
-                      </div>
-                    </div>
-                    <div className="flex justify-center items-center w-[93px] h-[23px] rounded-[33px] border-[1px] border-[#F8F8F8] bg-[#F8F8F8] py-[4px] px-[8px]">
-                      <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#909198]">
-                        View Review
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex w-[512px] h-[60px] gap-[4px]  pb-20">
-                    <img
-                      src="/assets/product8.png"
-                      alt="product"
-                      className="w-[60px] h-[60px] rounded-[7.75px] p-[5.16px] gap-[5.16px]"
-                    />
-                    <div className="flex w-[444px] h-[46px] gap-[4px]">
-                      <div className="flex flex-col justify-start items-start w-[357px] h-[46px] space-y-[4px]">
-                        <p>Woodpecker Endo Motor</p>
-                        <p>$ 20</p>
-                      </div>
-                    </div>
-                    <div className="flex justify-center items-center w-[93px] h-[23px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px]">
-                      <p className="ffont-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
-                        Leave Review
-                      </p>
-                    </div>
-                  </div>
+                    ))}
                 </div>
               </div>
             </div>
@@ -124,7 +127,7 @@ const Orders = () => {
                     Product Subtotal
                   </p>
                   <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
-                    $ 45.00
+                    ${orders?.totalAmount}
                   </p>
                 </div>
                 <div className="w-[528px] h-[33px] flex justify-between items-center py-[6px]">
@@ -132,7 +135,7 @@ const Orders = () => {
                     Sale tax
                   </p>
                   <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
-                    $ 45.00
+                    $ 0.00
                   </p>
                 </div>
                 <div className="w-[528px] h-[33px] flex justify-between items-center py-[6px]">
@@ -140,7 +143,7 @@ const Orders = () => {
                     Credit Card
                   </p>
                   <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
-                    $ 45.00
+                    $ 0.00
                   </p>
                 </div>
               </div>
@@ -151,17 +154,17 @@ const Orders = () => {
                     Grand Total
                   </p>
                   <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
-                    $ 45.00
+                    $ {orders?.totalAmount}
                   </p>
                 </div>
               </div>
               <div className="flex flex-col w-[560px] h-[65px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px] space-y-[16px]">
                 <div className="w-[528px] h-[33px] flex justify-between items-center py-[6px]">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
-                    Shipping Detail
+                    Order Status
                   </p>
                   <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
-                    $ 45.00
+                    {orders?.orderStatus}
                   </p>
                 </div>
               </div>
@@ -452,6 +455,7 @@ const Orders = () => {
         <FeedbackModal
           isModalOpen={isFeedbackOpen}
           setIsModalOpen={SetIsFeedbackOpen}
+          isItemId={isItemId}
         />
       )}
     </div>
