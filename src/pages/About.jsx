@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-// import about from "../assets/about.png";
+import React, { useState } from "react"; 
 import AccountRequiredModal from "../modals/AccountRequiredModal";
 import Header from "./landing-page/header";
-import Footer from "../components/Footer";
+import Footer from "../components/Footer"; 
 const About = ({ isLanding }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  //  const [isModalPassword, setIsModalPassword] = useState(false);
 
   return (
     <>
       <Header />
+
       <div className="flex flex-col justify-center items-center w-full h-full ">
         <div className="flex justify-center items-center w-[1511px] h-[814px] border-t-[1px] border-[#0000001A] bg-[#FFFFFF] py-[132px] px-[100px] gap-[120px]">
           <img
@@ -56,6 +57,7 @@ const About = ({ isLanding }) => {
                 />
               </svg>
             </div>
+           
           </div>
         </div>
 
@@ -109,6 +111,13 @@ const About = ({ isLanding }) => {
             setIsModalOpen={setIsModalOpen}
           />
         )}
+     
+        {/* {isModalPassword && (
+          <ChangePasswordModel
+            isModalPassword={isModalPassword}
+            setIsModalPassword={setIsModalPassword}
+          />
+        )} */}
       </div>
       <Footer />
     </>
