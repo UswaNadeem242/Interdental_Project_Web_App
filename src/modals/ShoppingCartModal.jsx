@@ -356,7 +356,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
                 >
                   <div className="flex justify-center items-center w-[587px] h-[53px] border-b-[1px] border-[#0000000D] py-[8px] px-[16px] gap-[8px]">
-                    <img src="/public/assets/paypal.png" alt="paypal" />
+                    <img src="/assets/paypal.png" alt="paypal" />
                     <h1 className="w-[509px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                       Paypal
                     </h1>

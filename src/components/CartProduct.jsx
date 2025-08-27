@@ -64,7 +64,7 @@ const CartProduct = ({ item, getCart }) => {
           />
           <div className="flex flex-col justify-start items-start w-[373.87px] h-[156px] gap-[8px]">
             <h1>{item.productName}</h1>
-            <h1>Prouct description here</h1>
+            {/* <h1>Prouct description here</h1> */}
             <h1>${item.price}</h1>
             <div className="flex justify-between items-center w-[124px] h-[50px] rounded-[170px] border-[1px] border-[#0000000D] p-[8px]">
               <svg

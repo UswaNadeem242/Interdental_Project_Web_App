@@ -314,7 +314,7 @@ const Shop = () => {
                   className="flex flex-col justify-center items-center cursor-pointer bg-white w-[303.15px] h-[386px] p-[20px] space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
                 >
                   <img
-                    src={product[0]?.img}
+                    src={product.imageUrls[0]}
                     alt="product"
                     className="w-[263.15px] h-[260.45px]"
                   />
