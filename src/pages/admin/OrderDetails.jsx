@@ -3,12 +3,13 @@ import AdminHeader from "../../components/admin/AdminHeader";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../config";
 import axios from "axios";
+import ProductOrder from "./ProductOrder";
 
 const OrderDetails = () => {
   const params = useParams();
 
 
-    const [orders, setOrders] = useState();
+  const [orders, setOrders] = useState();
 
   const getAllOrders = async () => {
     try {
@@ -28,7 +29,7 @@ const OrderDetails = () => {
     }
   };
 
-  
+
   useEffect(() => {
     getAllOrders();
   }, []);
@@ -286,6 +287,7 @@ const OrderDetails = () => {
           </div>
         </div>
       </div>
+      <ProductOrder />
     </div>
   );
 };
