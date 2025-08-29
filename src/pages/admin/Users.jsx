@@ -69,7 +69,7 @@ const Users = () => {
       setToastVisible(true);
     }
   };
-  
+
   console.log(tabs[selectedIndex]);
   const filteredUsers =
     selectedIndex === 0
@@ -196,13 +196,8 @@ const Users = () => {
                   className="flex justify-between items-center w-full h-[64px] py-[16px] px-[20px] border-b-[1px] border-[#0000000D]"
                 >
                   <div className="flex items-center gap-[16px] w-[200px]">
-                    <img
-                      src="/assets/userpic.png"
-                      alt="img"
-                      className="w-[32px] h-[32px] rounded-full"
-                    />
                     <h1 className="font-poppins font-semibold text-[14px] leading-[18px] text-[#434343]">
-                      {user.name}
+                      {user.firstName} {user.lastName}
                     </h1>
                   </div>
 
