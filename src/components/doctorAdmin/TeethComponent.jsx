@@ -1,0 +1,110 @@
+import React, { useMemo, useState } from "react";
+
+const defaultTeeth = [
+    { id: 1, name: "UR 3rd Molar (Wisdom)" }, { id: 2, name: "UR 2nd Molar" },
+    { id: 3, name: "UR 1st Molar" }, { id: 4, name: "UR 2nd Premolar" },
+    { id: 5, name: "UR 1st Premolar" }, { id: 6, name: "UR Canine" },
+    { id: 7, name: "UR Lateral Incisor" }, { id: 8, name: "UR Central Incisor" },
+    { id: 9, name: "UL Central Incisor" }, { id: 10, name: "UL Lateral Incisor" },
+    { id: 11, name: "UL Canine" }, { id: 12, name: "UL 1st Premolar" },
+    { id: 13, name: "UL 2nd Premolar" }, { id: 14, name: "UL 1st Molar" },
+    { id: 15, name: "UL 2nd Molar" }, { id: 16, name: "UL 3rd Molar (Wisdom)" },
+    { id: 17, name: "LL 3rd Molar (Wisdom)" }, { id: 18, name: "LL 2nd Molar" },
+    { id: 19, name: "LL 1st Molar" }, { id: 20, name: "LL 2nd Premolar" },
+    { id: 21, name: "LL 1st Premolar" }, { id: 22, name: "LL Canine" },
+    { id: 23, name: "LL Lateral Incisor" }, { id: 24, name: "LL Central Incisor" },
+    { id: 25, name: "LR Central Incisor" }, { id: 26, name: "LR Lateral Incisor" },
+    { id: 27, name: "LR Canine" }, { id: 28, name: "LR 1st Premolar" },
+    { id: 29, name: "LR 2nd Premolar" }, { id: 30, name: "LR 1st Molar" },
+    { id: 31, name: "LR 2nd Molar" }, { id: 32, name: "LR 3rd Molar (Wisdom)" },
+];
+
+const FDI_BY_UNIVERSAL = [
+    18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28,
+    38, 37, 36, 35, 34, 33, 32, 31, 41, 42, 43, 44, 45, 46, 47, 48
+];
+const PALMER_QTXT = { 1: "UR", 2: "UL", 3: "LL", 4: "LR" };
+const PALMER_SYMBOL = { UR: "┘", UL: "└", LL: "┌", LR: "┐" };
+
+const toFDI = id => FDI_BY_UNIVERSAL[id - 1];
+const toPalmerFromFDI = fdi => {
+    const q = Math.floor(fdi / 10);
+    return `${PALMER_QTXT[q]} ${fdi % 10} ${PALMER_SYMBOL[PALMER_QTXT[q]]}`;
+};
+
+export default function TeethChart({
+    teeth = defaultTeeth,
+    onSelect,
+    initialSelectedIds = [],
+    sizePx = 420,
+    showIds = true,
+}) {
+    const [selectedIds, setSelectedIds] = useState(initialSelectedIds);
+
+    const toothSize = Math.max(22, Math.floor(sizePx * 0.07));
+    const centerX = sizePx / 2;
+    const centerY = sizePx / 2;
+
+    const upper = teeth.slice(0, 16);
+    const lower = teeth.slice(16);
+
+    const upperPos = useMemo(() => arcPositions(upper.length, -160, -20, centerX, centerY, sizePx * 0.42, 1), [upper.length, sizePx]);
+    const lowerPos = useMemo(() => arcPositions(lower.length, 200, 340, centerX, centerY, sizePx * 0.42, 17), [lower.length, sizePx]);
+
+    const toggle = tooth => {
+        const next = selectedIds.includes(tooth.id) ? selectedIds.filter(id => id !== tooth.id) : [...selectedIds, tooth.id];
+        setSelectedIds(next);
+        if (onSelect) {
+            onSelect(next.map(id => {
+                const t = teeth.find(x => x.id === id);
+                const fdi = toFDI(id);
+                return { ...t, fdi, palmer: toPalmerFromFDI(fdi) };
+            }));
+        }
+    };
+
+    return (
+        <div className="relative w-full max-w-[480px] aspect-square mx-auto">
+            {upper.map((t, i) => (
+                <ToothButton key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
+                    size={toothSize} x={upperPos[i].x} y={upperPos[i].y} selected={selectedIds.includes(t.id)} onClick={() => toggle(t)} showId={showIds} />
+            ))}
+            {lower.map((t, i) => (
+                <ToothButton key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
+                    size={toothSize} x={lowerPos[i].x} y={lowerPos[i].y} selected={selectedIds.includes(t.id)} onClick={() => toggle(t)} showId={showIds} />
+            ))}
+        </div>
+    );
+}
+
+function arcPositions(count, degStart, degEnd, cx, cy, r, startId) {
+    const toRad = d => (d * Math.PI) / 180;
+    return Array.from({ length: count }, (_, i) => {
+        const t = count === 1 ? 0.5 : i / (count - 1);
+        const deg = degStart + (degEnd - degStart) * t;
+
+        // Custom Y-direction logic
+        // Teeth 1–16 → downward (Y+), Teeth 17–32 → upward (Y-)
+        const toothId = startId + i;
+        const yOffset = Math.sin(toRad(deg)) * r * (toothId <= 16 ? 1 : -1);
+
+        return {
+            x: cx + Math.cos(toRad(deg)) * r,
+            y: cy + yOffset
+        };
+    });
+}
+
+function ToothButton({ tooth, fdi, palmer, size, x, y, selected, onClick, showId }) {
+    return (
+        <button title={`${tooth.name} • FDI ${fdi} • Palmer ${palmer}`} onClick={onClick}
+            className={`absolute rounded-full flex items-center justify-center text-[11px] font-semibold
+        bg-zinc-200 hover:bg-amber-200 active:scale-95 transition shadow-sm ring-1 ring-zinc-300/60
+        ${selected ? "bg-amber-400 ring-amber-600 shadow-md" : ""}`}
+            style={{ width: size, height: size, left: x - size / 2, top: y - size / 2 }}>
+            {showId ? tooth.id : null}
+            <span className="absolute -top-1 -left-1 text-[9px] px-1 rounded bg-white/90 ring-1 ring-zinc-300 shadow">{fdi}</span>
+            <span className="absolute -bottom-1 -right-1 text-[9px] px-1 rounded bg-white/90 ring-1 ring-zinc-300 shadow">{palmer}</span>
+        </button>
+    );
+}

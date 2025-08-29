@@ -167,6 +167,16 @@ function App() {
                 </PlainLayout>
               }
             />
+             <Route
+              path="/doctorAdmin/*"
+              element={
+                <PlainLayout>
+                  <ProtectedRoute>
+                    <Admin />
+                  </ProtectedRoute>
+                </PlainLayout>
+              }
+            />
           </Routes>
           {/* <Footer /> */}
         </BrowserRouter>

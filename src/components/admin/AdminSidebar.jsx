@@ -10,6 +10,7 @@ const AdminSidebar = () => {
   const [isOrdersSelected, setIsOrdersSelected] = useState(false);
   const [isProductsSelected, setIsProductsSelected] = useState(false);
   const [isUsersSelected, setIsUsersSelected] = useState(false);
+  const [isdoctorSelected, setIsdoctorSelected] = useState(false);
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
@@ -381,10 +382,119 @@ const AdminSidebar = () => {
             )}
             Users
           </NavLink>
-
-
-
-          
+          <NavLink
+            to="/doctorAdmin/doctor"
+            onClick={() => {
+              setIsdoctorSelected(true);
+              // setIsOrdersSelected(false);
+              // setIsProductsSelected(false);
+              // setIsDashboardSelected(false);
+            }}
+            className={({ isActive }) =>
+              isActive
+                ? "flex justify-start items-center font-poppins font-normal w-[172px] text-white h-[44px] bg-[#001D58] rounded-[8px] py-[16px] px-[12px] gap-[10px] text-[14px] leading-[21px]"
+                : "flex justify-start items-center font-poppins font-normal w-[172px] h-[44px] py-[16px] px-[12px] gap-[10px] text-[#949494] text-[14px] leading-[21px]"
+            }
+          >
+            {isdoctorSelected ? (
+              <svg
+                width="20"
+                height="21"
+                viewBox="0 0 20 21"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="10.0001"
+                  cy="5.49984"
+                  r="3.33333"
+                  stroke="white"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M15 8.00016C16.3807 8.00016 17.5 7.06742 17.5 5.91683C17.5 4.76624 16.3807 3.8335 15 3.8335"
+                  stroke="white"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M5 8.00016C3.61929 8.00016 2.5 7.06742 2.5 5.91683C2.5 4.76624 3.61929 3.8335 5 3.8335"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <ellipse
+                  cx="10"
+                  cy="14.6668"
+                  rx="5"
+                  ry="3.33333"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M16.6667 16.3332C18.1286 16.0126 19.1667 15.2007 19.1667 14.2498C19.1667 13.2989 18.1286 12.4871 16.6667 12.1665"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M3.33325 16.3332C1.87138 16.0126 0.833252 15.2007 0.833252 14.2498C0.833252 13.2989 1.87138 12.4871 3.33325 12.1665"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            ) : (
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="10.0001"
+                  cy="5"
+                  r="3.33333"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M15 7.5C16.3807 7.5 17.5 6.56726 17.5 5.41666C17.5 4.26607 16.3807 3.33333 15 3.33333"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M5 7.5C3.61929 7.5 2.5 6.56726 2.5 5.41666C2.5 4.26607 3.61929 3.33333 5 3.33333"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <ellipse
+                  cx="10"
+                  cy="14.1667"
+                  rx="5"
+                  ry="3.33333"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M16.6667 15.8333C18.1286 15.5128 19.1667 14.7009 19.1667 13.75C19.1667 12.7991 18.1286 11.9873 16.6667 11.6667"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M3.33325 15.8333C1.87138 15.5128 0.833252 14.7009 0.833252 13.75C0.833252 12.7991 1.87138 11.9873 3.33325 11.6667"
+                  stroke="#949494"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            )}
+            Doctor
+          </NavLink>
         </div>
       </div>
     </div>

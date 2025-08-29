@@ -8,6 +8,7 @@ import ListProduct from "./ListProduct";
 import OrderDetails from "./OrderDetails";
 import ProductDetails from "./ProductDetails";
 import UpdateProduct from "./UpdateProduct";
+import DoctorOrder from "../doctorAdmin/OrderStep/RestorationDesignForm";
 
 const Admin = () => {
 
@@ -24,6 +25,9 @@ const Admin = () => {
         <Route path="/list-product" element={<ListProduct />} />
         <Route path="/update-product/:productId" element={<UpdateProduct />} />
         <Route path="/orders/:id" element={<OrderDetails />} />
+        {/* <Route path="/doctorAdmin/doctor" element={<DoctorOrder />} /> */}
+        <Route path="/doctor" element={<DoctorOrder />} />
+
       </Routes>
 
 
