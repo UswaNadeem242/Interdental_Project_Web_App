@@ -47,6 +47,7 @@ const Signup = () => {
       setToastMessage("User Registered Successfully !");
       setToastType("success");
       setToastVisible(true);
+      navigate("/login");
       console.log("response", response);
     } catch (error) {
       console.log(error);

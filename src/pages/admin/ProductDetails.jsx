@@ -158,7 +158,7 @@ const ProductDetails = () => {
                 <div className="flex flex-col justify-center items-start w-[440.97px] h-auto space-y-[19.18px]">
                   <div className="flex justify-start items-center w-[440.97px] h-[35px] gap-[6.39px]">
                     <h1 className="font-poppins font-semibold text-[28.78px] w-[365px] h-[35px] leading-[34.53px] text-[#1A1A1A]">
-                      {product.name}
+                      {product?.name}
                     </h1>
                     <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-[8px] px-[12.79px] gap-[7.99px] bg-[#001D580D]">
                       <h1 className="font-poppins font-normal text-secondaryBrand text-[11.19px] leading-[16.79px] w-[44px] h-[17px]">
@@ -185,14 +185,14 @@ const ProductDetails = () => {
                     </h1>
                   </div>
                   <h1 className="font-poppins font-semibold text-[19.18px] leading-[28.78px] text-secondaryBrand">
-                    ${product.price}
+                    ${product?.price}
                   </h1>
                 </div>
 
                 {/* <div className="w-[454px] h-[1px] border-[1px] border-[##E6E6E6]"></div> */}
                 <div className="w-[454.03px] h-auto">
                   <h1 className="font-poppins font-normal text-[11.19px] leading-[16.79px] text-[#808080]">
-                    {product.description}
+                    {product?.description}
                   </h1>
                 </div>
               </div>
@@ -211,7 +211,7 @@ const ProductDetails = () => {
                     In Stock
                   </p>
                   <p className="font-poppins font-semibold text-[18px] leading-[27px] text-[#434343]">
-                    {product.stockQuantity}
+                    {product?.stockQuantity}
                   </p>
                 </div>
               </div>
@@ -240,21 +240,6 @@ const ProductDetails = () => {
                     Add Stock
                   </h1>
                 </div>
-                {/* <div className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]">
-                  <svg
-                    width="27"
-                    height="27"
-                    viewBox="0 0 27 27"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
-                      stroke="#001D58"
-                      stroke-width="1.92211"
-                    />
-                  </svg>
-                </div> */}
               </div>
               <div className="flex justify-start items-center w-full h-[18px] gap-[4.8px]">
                 <h1 className="font-poppins font-semibold text-[12px] leading-[18px] text-[#1A1A1A]">
@@ -271,21 +256,27 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-start items-start w-full h-auto py-[20px] px-[24px] space-y-[25.58px] rounded-[16px] bg-white">
-          <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-[#434343]">
-            Customer Feedback
-          </h1>
-          <div className="w-[1108px] h-[276.71px] space-y-[15.99px]">
-            <CustomerFeedback />
-            <CustomerFeedback />
-            <CustomerFeedback />
-            <div className="w-[110.16px] h-[35.38px] py-[11.19px] px-[25.58px] gap-[9.59px] rounded-[34.37px] bg-[#001D580D]">
-              <h1 className="font-poppins font-semibold text-[11.19px] leading-[13.43px] text-secondaryBrand">
-                Load More
-              </h1>
+        {product && (
+          <div className="flex flex-col justify-start items-start w-full h-auto py-[20px] px-[24px] space-y-[25.58px] rounded-[16px] bg-white">
+            <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-[#434343]">
+              Customer Feedback
+            </h1>
+            <div className="w-[1108px] h-[276.71px] space-y-[15.99px] overflow-y-scroll">
+              {product &&
+                product?.ratings &&
+                product?.ratings.length > 0 &&
+                product?.ratings.map((item) => (
+                  <CustomerFeedback item={item} />
+                ))}
+
+              {/* <div className="w-[110.16px] h-[35.38px] py-[11.19px] px-[25.58px] gap-[9.59px] rounded-[34.37px] bg-[#001D580D]">
+                <h1 className="font-poppins font-semibold text-[11.19px] leading-[13.43px] text-secondaryBrand">
+                  Load More
+                </h1>
+              </div> */}
             </div>
           </div>
-        </div>
+        )}
       </div>
       {isQuantityModalOpen && (
         <AddQuantityModal
