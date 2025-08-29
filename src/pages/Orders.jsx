@@ -12,7 +12,7 @@ const Orders = () => {
 
   const getAllOrders = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/orders/getAllOrders`, {
+      const response = await axios.get(`${BASE_URL}/orders/getAllOrdersByUser`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

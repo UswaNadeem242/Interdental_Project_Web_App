@@ -4,7 +4,6 @@ import Footer from "../../components/Footer";
 const Contact = ({ isLanding }) => {
   return (
     <>
-      {!isLanding && <Header />}
       <section className="bg-white py-16 px-0 lg:px-8 ">
         <div className="w-full lg:max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-1 gap-0 lg:gap-8 lg:shadow-lg rounded-xl">
           {/* Contact Details */}

@@ -45,7 +45,6 @@ const Brands = () => {
 
       setBrandsList(response.data.content);
     } catch (error) {
-      console.log(error);
     }
   };
   useEffect(() => {

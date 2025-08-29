@@ -34,14 +34,15 @@ jobs:
           sudo mkdir -p "$BACKUP_DIR"
 
           echo "📤 Backing up current deployment from $TARGET_DIR"
-          if [ -d "$TARGET_DIR" ]; then
+          if [ -d "$TARGET_DIR" ] && [ "$(ls -A $TARGET_DIR 2>/dev/null)" ]; then
             sudo cp -r "$TARGET_DIR"/* "$BACKUP_DIR"/
             echo "✅ Backup completed"
           else
-            echo "⚠️ Target directory does not exist. Skipping backup."
+            echo "⚠️ No existing deployment found. Skipping backup."
           fi
 
           echo "🧹 Cleaning target directory"
+          sudo mkdir -p "$TARGET_DIR"
           sudo rm -rf "$TARGET_DIR"/*
 
           echo "📁 Copying build files to $TARGET_DIR"
