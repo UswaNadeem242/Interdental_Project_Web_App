@@ -1,5 +1,3 @@
-
-
 // import { useMemo, useState } from "react";
 
 // export default function StepperTabs({ steps = [] }) {
@@ -89,7 +87,6 @@
 
 //             {/* Active content */}
 
-
 //             {/* Controls */}
 //             <div className="mt-6 flex items-center justify-between">
 //                 <button
@@ -123,8 +120,6 @@
 //         </div>
 //     );
 // }
-
-
 
 // import { useMemo, useState } from "react";
 
@@ -248,69 +243,66 @@
 //     );
 // }
 
-
-
 // src/components/StepperTabs.jsx
 import { useState } from "react";
 
-export default function StepperTabs({ steps }) {
-    const [activeIndex, setActiveIndex] = useState(0);
+export default function StepperTabs({
+  steps,
+  setActiveIndex,
+  activeIndex,
+  back,
+  next,
+}) {
+  return (
+    <div className="w-full max-w-2xl mx-auto">
+      {/* --- Tabs Header --- */}
+      <div className="flex justify-between border-b mb-4">
+        {steps.map((step, idx) => (
+          <div
+            key={step.id}
+            className={`flex-1 text-center py-2 cursor-pointer ${
+              idx === activeIndex
+                ? "font-bold text-blue-600 border-b-2 border-blue-600"
+                : "text-gray-500"
+            }`}
+            onClick={() => setActiveIndex(idx)}
+          >
+            {step.title}
+          </div>
+        ))}
+      </div>
 
-    const next = () => {
-        if (activeIndex < steps.length - 1) setActiveIndex(activeIndex + 1);
-    };
+      {/* --- Active Content --- */}
+      {/* <div className="p-4 border rounded-lg shadow bg-white min-h-[200px]">
+        {steps[activeIndex].content}
+      </div> */}
 
-    const back = () => {
-        if (activeIndex > 0) setActiveIndex(activeIndex - 1);
-    };
+      {/* --- Controls --- */}
+      {/* <div className="flex justify-between mt-4">
+        <button
+          onClick={back}
+          disabled={activeIndex === 0}
+          className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50"
+        >
+          Back
+        </button>
 
-    return (
-        <div className="w-full max-w-2xl mx-auto">
-            {/* --- Tabs Header --- */}
-            <div className="flex justify-between border-b mb-4">
-                {steps.map((step, idx) => (
-                    <div
-                        key={step.id}
-                        className={`flex-1 text-center py-2 cursor-pointer ${idx === activeIndex ? "font-bold text-blue-600 border-b-2 border-blue-600" : "text-gray-500"
-                            }`}
-                        onClick={() => setActiveIndex(idx)}
-                    >
-                        {step.title}
-                    </div>
-                ))}
-            </div>
-
-            {/* --- Active Content --- */}
-            <div className="p-4 border rounded-lg shadow bg-white min-h-[200px]">
-                {steps[activeIndex].content}
-            </div>
-
-            {/* --- Controls --- */}
-            <div className="flex justify-between mt-4">
-                <button
-                    onClick={back}
-                    disabled={activeIndex === 0}
-                    className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50"
-                >
-                    Back
-                </button>
-
-                {activeIndex < steps.length - 1 ? (
-                    <button
-                        onClick={next}
-                        className="px-4 py-2 rounded bg-blue-600 text-white"
-                    >
-                        Next
-                    </button>
-                ) : (
-                    <button
-                        onClick={() => alert("All steps completed!")}
-                        className="px-4 py-2 rounded bg-green-600 text-white"
-                    >
-                        Finish
-                    </button>
-                )}
-            </div>
-        </div>
-    );
+        {activeIndex < steps.length - 1 ? (
+          <button
+            onClick={next}
+            className="px-4 py-2 rounded bg-blue-600 text-white"
+          >
+            Next
+          </button>
+        ) : (
+          <button
+            onClick={() => alert("All steps completed!")}
+            className="px-4 py-2 rounded bg-green-600 text-white"
+          >
+            Finish
+          </button>
+        )}
+      </div> */}
+    </div>
+  );
 }
