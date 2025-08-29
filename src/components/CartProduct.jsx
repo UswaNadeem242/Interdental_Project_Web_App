@@ -20,7 +20,6 @@ const CartProduct = ({ item, getCart }) => {
       alert("Item removed from cart");
       getCart();
     } catch (error) {
-      console.log(error);
     }
   };
   const handleUpdateItem = async (status) => {
@@ -48,9 +47,7 @@ const CartProduct = ({ item, getCart }) => {
         }
       );
       getCart();
-      console.log(response);
     } catch (error) {
-      console.log(error);
     }
   };
   return (

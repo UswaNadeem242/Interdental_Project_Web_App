@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Route, Routes } from "react-router-dom";
+import { json, NavLink, Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Orders from "./Orders";
 import Users from "./Users";
@@ -10,7 +10,10 @@ import ProductDetails from "./ProductDetails";
 import UpdateProduct from "./UpdateProduct";
 
 const Admin = () => {
+
+
   return (
+
     <div className="flex justify-start items-start w-full h-[982px]">
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
@@ -22,7 +25,11 @@ const Admin = () => {
         <Route path="/update-product/:productId" element={<UpdateProduct />} />
         <Route path="/orders/:id" element={<OrderDetails />} />
       </Routes>
+
+
     </div>
+
+    
   );
 };
 

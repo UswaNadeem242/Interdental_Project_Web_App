@@ -30,7 +30,6 @@ const Header = () => {
   const [activeMenu, setActiveMenu] = useState("");
   const [brandsDropdown, setBrandsDropdown] = useState(false);
   const [categories, setCategories] = useState(false);
-  console.log("active", activeMenu);
   const { user } = useAuth();
   console.log("header", user);
 
