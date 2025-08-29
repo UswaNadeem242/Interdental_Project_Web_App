@@ -152,37 +152,10 @@ const SingleProduct = () => {
   };
   return (
     <div className="flex justify-center items-center bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
-      {console.log("=-=-=-=productId-==-=-=--=", productId)}
       <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
           <div className="flex justify-center items-center w-[1131px] h-[501px]">
-            {/* <div className="flex flex-col justify-start items-center w-[94px] h-[503px] space-y-[8px]">
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-            </div> */}
+            
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
                 spaceBetween={30}
