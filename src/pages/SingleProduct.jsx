@@ -313,15 +313,17 @@ const SingleProduct = () => {
           <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-[#434343]">
             Customer Feedback
           </h1>
-          <div className="w-[1264px] h-[276.71px] space-y-[15.99px]">
-            <CustomerFeedback />
-            <CustomerFeedback />
-            <CustomerFeedback />
-            <div className="w-[110.16px] h-[35.38px] py-[11.19px] px-[25.58px] gap-[9.59px] rounded-[34.37px] bg-[#001D580D]">
+          <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll">
+            {product &&
+              product?.ratings &&
+              product?.ratings.length > 0 &&
+              product?.ratings.map((item) => <CustomerFeedback item={item} />)}
+
+            {/* <div className="w-[110.16px] h-[35.38px] py-[11.19px] px-[25.58px] gap-[9.59px] rounded-[34.37px] bg-[#001D580D]">
               <h1 className="font-poppins font-semibold text-[11.19px] leading-[13.43px] text-secondaryBrand">
                 Load More
               </h1>
-            </div>
+            </div> */}
           </div>
         </div>
         {relatedProducts?.length > 0 ? (

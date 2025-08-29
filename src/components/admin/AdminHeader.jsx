@@ -38,20 +38,7 @@ const AdminHeader = ({ title, subTitle }) => {
           </>
         )}
       </div>
-      {/* {addingProduct ? (
-        <div className="flex justify-start items-center gap-[24px]">
-          <div className="flex justify-center items-center w-[145px] h-[53px] rounded-[32px] border-[1px] border-[#013764] py-[16px] px-[45px] gap-[8px]">
-            <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#013764]">
-              Discard
-            </p>
-          </div>
-          <div className="flex justify-center items-center w-[145px] h-[53px] rounded-[32px] bg-[#001D58] border-[1px] border-[#013764] py-[16px] px-[45px] gap-[8px]">
-            <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#F8F8F8]">
-              Save
-            </p>
-          </div>
-        </div>
-      ) : ( */}
+     
       <div className="flex justify-start items-center gap-[8px]">
         <svg
           width="56"
