@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../auth/AuthContext";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ const Header = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+  const { user } = useAuth();
 
   return (
     <header className="sticky top-4 sm:top-6 md:top-8 z-50 w-full max-w-[95%] sm:max-w-[90%] mx-auto rounded-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-white shadow-md">
@@ -106,18 +108,82 @@ const Header = () => {
 
       {/* Desktop buttons */}
       <div className="hidden lg:flex space-x-3 lg:space-x-4">
-        <button
-          onClick={() => navigate("/login")}
-          className="hidden md:inline-block px-3 sm:px-4 py-1 sm:py-2 font-semibold border bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100 text-sm sm:text-base"
-        >
-          Log In
-        </button>
-        <button
-          onClick={() => navigate("/signup")}
-          className="px-3 sm:px-4 py-1 sm:py-2 bg-blue-900 text-white font-semibold rounded-full hover:bg-blue-600 text-sm sm:text-base"
-        >
-          Register Now
-        </button>
+        {user && user?.email ? (
+          <div className="flex flex-col relative">
+            <div
+              // onClick={() => setProfileDropdown(!profileDropdown)}
+              className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-[4px]"
+            >
+              <svg
+                width="38"
+                height="38"
+                viewBox="0 0 38 38"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="38" height="38" rx="19" fill="#F8F8F8" />
+                <ellipse
+                  cx="18.9997"
+                  cy="14.2502"
+                  rx="3.16667"
+                  ry="3.16667"
+                  stroke="#001D58"
+                  stroke-width="1.1875"
+                />
+                <ellipse
+                  cx="18.9997"
+                  cy="22.9582"
+                  rx="5.54167"
+                  ry="3.16667"
+                  stroke="#001D58"
+                  stroke-width="1.1875"
+                />
+              </svg>
+
+              <p className="font-poppins font-normal text-[14px] w-[80px] leading-[21px] text-[#393A44]">
+                {user?.email.split("@")[0].charAt(0).toUpperCase() +
+                  user.email.split("@")[0].slice(1)}
+              </p>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.33301 6L7.99967 10L12.6663 6"
+                  stroke="#001D58"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            {/* {profileDropdown && (
+              <div className="absolute right-0 top-12 mt-2 z-10">
+                <ProfileDropdown
+                  isModalOpen={profileDropdown}
+                  setIsModalOpen={setProfileDropdown}
+                />
+              </div>
+            )} */}
+          </div>
+        ) : (
+          <>
+            <button
+              onClick={() => navigate("/login")}
+              className="hidden md:inline-block px-3 sm:px-4 py-1 sm:py-2 font-semibold border bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100 text-sm sm:text-base"
+            >
+              Log In
+            </button>
+            <button
+              onClick={() => navigate("/signup")}
+              className="px-3 sm:px-4 py-1 sm:py-2 bg-blue-900 text-white font-semibold rounded-full hover:bg-blue-600 text-sm sm:text-base"
+            >
+              Register Now
+            </button>
+          </>
+        )}
       </div>
 
       {/* Mobile Menu */}
