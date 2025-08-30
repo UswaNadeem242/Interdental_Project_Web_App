@@ -234,7 +234,7 @@ const ListProduct = () => {
       <div className="w-[1108px] h-[60px] flex justify-between items-center">
         <div className="w-[344px] h-[60px] flex flex-col justify-start items-start">
           <h1 className="font-poppins font-bold text-[26px] leading-[39px] text-[#434343]">
-            List Product
+            Add Product
           </h1>
         </div>
         <div className="flex justify-start items-center gap-[24px]">
@@ -488,32 +488,34 @@ const ListProduct = () => {
                         Add Category
                       </p>
                     </div>
-                    {categoriesList?.map((category) => (
-                      <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
-                        <div
-                          onClick={() => {
-                            setCategoryId(category.categoryId);
-                            setIsCategoryOpen(false);
-                          }}
-                          className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
-                            categoriesList.indexOf(category) ===
-                            categoriesList.length - 1
-                              ? ""
-                              : "border-b-[1px] border-[#0000000D]"
-                          }`}
-                        >
-                          <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
-                            {category.name}
-                          </p>
-                          <input
-                            type="radio"
-                            name=""
-                            id=""
-                            className="w-[16px] h-[16px] accent-[#D2D4DA]"
-                          />
+                    <div className="h-[295px] overflow-y-scroll ">
+                      {categoriesList?.map((category) => (
+                        <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
+                          <div
+                            onClick={() => {
+                              setCategoryId(category.categoryId);
+                              setIsCategoryOpen(false);
+                            }}
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
+                              categoriesList.indexOf(category) ===
+                              categoriesList.length - 1
+                                ? ""
+                                : "border-b-[1px] border-[#0000000D]"
+                            }`}
+                          >
+                            <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
+                              {category.name}
+                            </p>
+                            <input
+                              type="radio"
+                              name=""
+                              id=""
+                              className="w-[16px] h-[16px] accent-[#D2D4DA]"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -573,31 +575,34 @@ const ListProduct = () => {
                         Add Brand
                       </p>
                     </div>
-                    {brandsList?.map((brand) => (
-                      <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
-                        <div
-                          onClick={() => {
-                            setBrandId(brand.id);
-                            setIsBrandOpen(false);
-                          }}
-                          className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
-                            brandsList.indexOf(brand) === brandsList.length - 1
-                              ? ""
-                              : "border-b-[1px] border-[#0000000D]"
-                          }`}
-                        >
-                          <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
-                            {brand.name}
-                          </p>
-                          <input
-                            type="radio"
-                            name=""
-                            id=""
-                            className="w-[16px] h-[16px] accent-[#D2D4DA]"
-                          />
+                    <div className="h-[295px] overflow-y-scroll ">
+                      {brandsList?.map((brand) => (
+                        <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
+                          <div
+                            onClick={() => {
+                              setBrandId(brand.id);
+                              setIsBrandOpen(false);
+                            }}
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
+                              brandsList.indexOf(brand) ===
+                              brandsList.length - 1
+                                ? ""
+                                : "border-b-[1px] border-[#0000000D]"
+                            }`}
+                          >
+                            <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
+                              {brand.name}
+                            </p>
+                            <input
+                              type="radio"
+                              name=""
+                              id=""
+                              className="w-[16px] h-[16px] accent-[#D2D4DA]"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -661,6 +666,7 @@ const ListProduct = () => {
         <AddBrandModal
           isModalOpen={isAddBrandModal}
           setIsModalOpen={setIsAddBrandModal}
+          getAllBrands={getAllBrands}
         />
       )}
       {isAddCategoryModal && (
@@ -668,6 +674,7 @@ const ListProduct = () => {
           isModalOpen={isAddCategoryModal}
           setIsModalOpen={setIsAddCategoryModal}
           categoriesList={categoriesList}
+          getAllCategories={getAllCategories}
         />
       )}
       <Toast

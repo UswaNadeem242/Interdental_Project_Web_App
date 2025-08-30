@@ -10,137 +10,8 @@ const Orders = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [orders, setOrders] = useState([]);
-  const tabs = ["All", "Pending", "In Progress", "Shipped", "Completed"];
-  const recentOrders = [
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-    {
-      id: 1235,
-      buyer: "Miles Esther",
-      status: "Pending",
-      date: "11/22/2026",
-      total: "$23",
-      items: 8,
-    },
-  ];
+  const [searchTerm, setSearchTerm] = useState("");
+  const tabs = ["All", "Pending", "Shipped", "Completed"];
 
   const getAllOrders = async () => {
     try {
@@ -160,10 +31,23 @@ const Orders = () => {
     getAllOrders();
   }, []);
 
-  const filteredOrders =
-    selectedIndex === 0
-      ? orders
-      : orders.filter((order) => order.orderStatus === tabs[selectedIndex]);
+  const filteredOrders = orders
+    // 1️⃣ Tab filter
+    .filter((order) => {
+      if (selectedIndex === 0) return true; // All
+      if (selectedIndex === 1) return order.orderStatus === "PENDING";
+      if (selectedIndex === 2) return order.orderStatus === "SHIPED";
+      if (selectedIndex === 3) return order.orderStatus === "DELIVERD";
+      return true;
+    })
+    // 2️⃣ Search filter
+    .filter((order) => {
+      if (!searchTerm) return true;
+      return (
+        order?.name &&
+        order?.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
 
   return (
     <div className="flex flex-col justify-center items-start">
@@ -193,9 +77,11 @@ const Orders = () => {
             type="text"
             placeholder="Search here..."
             className="w-[918px] h-[18px] py-4 bg-[#F8F8F8] outline-none"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <div className="flex flex-col relative">
-            <div
+            {/* <div
               onClick={() => setIsFilterOpen(!isFilterOpen)}
               className="flex w-[77px] h-[33px] bg-[#FFFFFF] rounded-[8px] py-[6px] px-[8px] gap-[8px]"
             >
@@ -217,7 +103,7 @@ const Orders = () => {
               <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#344054]">
                 Filter
               </p>
-            </div>
+            </div> */}
             {isFilterOpen && <FilterOptionsDropdown />}
           </div>
         </div>
@@ -272,7 +158,7 @@ const Orders = () => {
                     #{order?.orderId}
                   </h1>
                   <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                    {order?.buyer}
+                    {order?.name}
                   </h1>
                   <div className="w-[116.84px] h-[88px] font-poppins font-semibold text-[12px] leading-[18px] text-[#949494]">
                     <div className="w-[57px] h-[23px] py-[4px] px-[8px] gap-[8px] bg-[#FF57570D] rounded-[33px]">
