@@ -8,7 +8,9 @@ import TeethChart from "../../../components/doctorAdmin/TeethComponent";
 import StepperTabs from "../../../components/doctorAdmin/StepperTab";
 import ReviewOrder from "./Review";
 import DoctorHeader from "../../../components/doctorAdmin/doctorHeader";
-import CheckoutOrder from "./Checkout";
+import CheckoutForm from "./Checkout";
+import { DIGITAL_DENTURE, LAB_OPTIONS, MATERIAL_OPTIONS, PHOTOGRAMMETRY_FILES, SCANNER_TYPE, SURGICAL_GUIDE } from "../../../Constant";
+import SmileDesignPicker from "../../../components/doctorAdmin/DoctorModel/smile";
 
 const DoctorOrder = () => {
     // form states
@@ -20,45 +22,67 @@ const DoctorOrder = () => {
     const [patientLast, setPatientLast] = useState("");
     const [subscriptionId, setSubscriptionId] = useState("");
     const [smileDesign, setSmileDesign] = useState("");
-    const [scannerType, setScannerType] = useState("");
+    const [showSmilePicker, setShowSmilePicker] = useState(false);
 
     // tooth & dropdown logic
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [toothSelections, setToothSelections] = useState({});
-    // { 11: { denture: "Trios", guide: "iTero", material: "emax" } }
 
-    const MATERIAL_OPTIONS = [
-        { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
-        { value: "argen-ht", label: "Argen HT", price: 45 },
-        { value: "argen-st", label: "Argen ST", price: 50 },
-        { value: "emax", label: "Emax", price: 95 },
-        { value: "aidite", label: "Aidite", price: 85 },
-        { value: "pmma", label: "PMMA", price: 35 },
-        { value: "multilayer", label: "Multilayer Pro", price: 75 },
-    ];
 
-    // helpers
     const currentValues = selectedTooth
         ? toothSelections[selectedTooth] || {}
         : {};
+    // const handleDropdownChange = (field, value) => {
+    //     if (!selectedTooth) return; // require a tooth to be selected first
+
+    //     // handle both material & lab with one handler
+    //     const selectedOption =
+    //         field === "material"
+    //             ? MATERIAL_OPTIONS.find(opt => opt.value === value)
+    //             : field === "lab"
+    //                 ? LAB_OPTIONS.find(opt => opt.value === value)
+    //                 : field === "digital_denture"
+    //                     ? DIGITAL_DENTURE.find(opt => opt.value === value)
+    //                     : null;
+
+    //     setToothSelections((prev) => ({
+    //         ...prev,
+    //         [selectedTooth]: {
+    //             ...prev[selectedTooth],
+    //             [field]: value,
+    //             ...(field === "material" || field === "digital_denture"
+    //                 ? { materialPrice: selectedOption?.price || 0 }
+    //                 : {}),
+    //         },
+    //     }));
+    // };
     const handleDropdownChange = (field, value) => {
-        if (!selectedTooth) return; // require a tooth to be selected first
+        if (!selectedTooth) return;
 
-        const selectedOption = MATERIAL_OPTIONS.find((opt) => opt.value === value);
+        // Map field to the corresponding options array
+        const OPTIONS_MAP = {
+            material: MATERIAL_OPTIONS,
+            lab: LAB_OPTIONS,
+            digital_denture: DIGITAL_DENTURE,
+            surgical_guide: SURGICAL_GUIDE,
+            Photogrammetry_files: PHOTOGRAMMETRY_FILES,
+            scannerType: SCANNER_TYPE
+        };
 
-        setToothSelections((prev) => ({
+        const selectedOption = OPTIONS_MAP[field]?.find(opt => opt.value === value) || null;
+
+        setToothSelections(prev => ({
             ...prev,
             [selectedTooth]: {
                 ...prev[selectedTooth],
                 [field]: value,
-                ...(field === "material" && {
-                    materialPrice: selectedOption?.price || 0,
-                }),
+                // Only material and digital denture have price (optional)
+                ...(field === "material" || field === "digital_denture"
+                    ? { materialPrice: selectedOption?.price || 0 }
+                    : {}),
             },
         }));
     };
-
-
 
     const handleSave = () => {
         const data = {
@@ -111,15 +135,12 @@ const DoctorOrder = () => {
         if (activeIndex > 0) setActiveIndex(activeIndex - 1);
     };
 
+
     return (
         <>
-
             <div className="flex flex-col  rounded-3xl bg-white justify-center items-start min-h-screen">
                 <DoctorHeader />
                 <main className="flex-1 bg-white  p-4 sm:p-6">
-
-                    {/* <StepperTabs steps={steps} /> */}
-                    {/* <TabStepperComponents/> */}
                     <div className="mx-auto max-w-7xl h-full">
                         <div className="w-[100%]">
                             <StepperTabs
@@ -164,7 +185,6 @@ const DoctorOrder = () => {
                                                 onChange={setDueDate}
                                             />
                                         </FormSection>
-
                                         <FormSection
                                             title="Patient Info"
                                             color="text-xs font-semibold"
@@ -186,8 +206,8 @@ const DoctorOrder = () => {
                                                 onChange={setSubscriptionId}
                                             />
                                         </FormSection>
-
                                         <LabeledSelect
+                                            onClick={() => setShowSmilePicker(true)}
                                             design="pill"
                                             value={smileDesign}
                                             onChange={setSmileDesign}
@@ -198,16 +218,13 @@ const DoctorOrder = () => {
                                             ]}
                                             placeholder="Pick Your Smile Design"
                                             className="bg-[#F8F8F8] "
-                                            disabled={true}
+                                            // disabled={true}
                                         />
-
-                                        <LabeledSelect
-                                            value={scannerType}
-                                            onChange={setScannerType}
-                                            options={["iTero", "Trios", "Medit", "Other"]}
-                                            placeholder="Select scanner"
-                                            className="bg-[#F8F8F8]"
-                                            disabled={true}
+                                        <MaterialDropdown className=' w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-[#828386] outline-none transition-shadow'
+                                            options={SCANNER_TYPE}
+                                            value={toothSelections[selectedTooth]?.scannerType || ""}
+                                            onChange={(val) => handleDropdownChange("scannerType", val)}
+                                            label="Scanner Type" storageKey="scannerType"
                                         />
                                         <FormSection
                                             title={
@@ -235,36 +252,29 @@ const DoctorOrder = () => {
                                             />
                                         </FormSection>
                                     </aside>
-
-                                    {/* Center 6 (SVG tooth selection + dropdowns) */}
                                     <section className="col-span-12 sm:col-span-6">
                                         <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
-                                            {/* Example SVG teeth */}
-
-                                            {/* Dropdowns - disabled until tooth selected */}
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <LabeledSelect
-                                                    value={currentValues.denture || ""}
-                                                    onChange={(val) => handleDropdownChange("denture", val)}
-                                                    options={["iTero", "Trios", "Medit", "Other"]}
-                                                    placeholder="Digital Denture"
-                                                    disabled={true}
+                                            <div className="grid grid-cols-2 gap-4 mb-10">
+                                                <MaterialDropdown className=' w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-[#828386] outline-none transition-shadow'
+                                                    options={DIGITAL_DENTURE}
+                                                    value={toothSelections[selectedTooth]?.digital_denture || ""}
+                                                    onChange={(val) => handleDropdownChange("digital_denture", val)}
+                                                    label="Digital Denture" storageKey="digital_denture"
                                                 />
-                                                <LabeledSelect
-                                                    value={currentValues.guide || ""}
-                                                    onChange={(val) => handleDropdownChange("guide", val)}
-                                                    options={["iTero", "Trios", "Medit", "Other"]}
-                                                    placeholder="Surgical Guide"
-                                                    disabled={true}
+
+                                                <MaterialDropdown className='w-full rounded-xl border bg-white border-gray-200   px-4 py-3 text-sm text-[#828386] outline-none transition-shadow'
+                                                    options={SURGICAL_GUIDE}
+                                                    value={toothSelections[selectedTooth]?.surgical_guide || ""}
+                                                    onChange={(val) => handleDropdownChange("surgical_guide", val)}
+                                                    label="Surgical guide" storageKey="surgical_guide"
                                                 />
                                             </div>
-                                            <div className="flex flex-wrap gap-2 mt-20">
+                                            <div className="flex flex-wrap gap-2  justify-center">
                                                 <TeethChart
                                                     sizePx={480}
                                                     initialSelectedIds={[3, 14, 30]}
                                                     onSelect={(arr) => {
-                                                        console.table(arr); // existing logging
-                                                        // Set the currently selected tooth to the **last clicked one**
+                                                        console.table(arr);
                                                         if (arr.length > 0) {
                                                             setSelectedTooth(arr[arr.length - 1].id);
                                                         } else {
@@ -275,7 +285,6 @@ const DoctorOrder = () => {
                                             </div>
                                         </div>
                                     </section>
-
                                     {/* Right 3 */}
                                     <aside className="col-span-12 sm:col-span-3 space-y-4">
                                         <div className="flex  flex-col justify-between">
@@ -283,11 +292,9 @@ const DoctorOrder = () => {
                                                 <FormSection className='p-0'>
                                                     <MaterialDropdown
                                                         options={MATERIAL_OPTIONS}
-                                                        value={currentValues.material || ""} // stays empty
-                                                        onChange={(val) =>
-                                                            handleDropdownChange("material", val)
-                                                        }
-                                                        label="Material"
+                                                        value={toothSelections[selectedTooth]?.material || ""}
+                                                        onChange={(val) => handleDropdownChange("material", val)}
+                                                        label="Material" storageKey="material"
                                                     />
 
                                                     <MaterialDropdown
@@ -296,9 +303,9 @@ const DoctorOrder = () => {
                                                         onChange={(val) =>
                                                             handleDropdownChange("material", val)
                                                         }
-                                                        label="color"
+                                                        label="Color"
                                                         disabled={false}
-                                                    // selectedTooth={selectedTooth}
+
                                                     />
                                                     <MaterialDropdown
                                                         options={[]}
@@ -308,17 +315,22 @@ const DoctorOrder = () => {
                                                         }
                                                         label=" Digital Model type"
 
-                                                    // selectedTooth={selectedTooth}
+                                                    />
+
+
+                                                    <MaterialDropdown
+                                                        options={LAB_OPTIONS}
+                                                        value={toothSelections[selectedTooth]?.lab || ""}
+                                                        onChange={(val) => handleDropdownChange("lab", val)}
+                                                        label="Participating Lab"
+                                                        storageKey="Participating Lab"
                                                     />
                                                     <MaterialDropdown
-                                                        options={[]}
-                                                        value={currentValues.material || ""}
-                                                        onChange={(val) =>
-                                                            handleDropdownChange("material", val)
-                                                        }
-                                                        label="Participating Lab"
-
-                                                    // selectedTooth={selectedTooth}
+                                                        options={PHOTOGRAMMETRY_FILES}
+                                                        value={toothSelections[selectedTooth]?.Photogrammetry_files || ""}
+                                                        onChange={(val) => handleDropdownChange("Photogrammetry_files", val)}
+                                                        label="Photogrammetry files"
+                                                        storageKey="Photogrammetry files"
                                                     />
                                                 </FormSection>
                                             </div>
@@ -373,13 +385,22 @@ const DoctorOrder = () => {
                                             Checkout
                                         </button>
                                     </aside>
+
+
+                                    {/* Conditionally render the Smile Picker */}
+                                    {showSmilePicker && (
+                                        <SmileDesignPicker onClose={() => setShowSmilePicker(false)} />
+                                    )}
                                 </div>
+
+
+
                             )}
                             {activeIndex === 1 && (
                                 <ReviewOrder next={next} />
                             )}
                             {activeIndex === 2 && (
-                                <CheckoutOrder next={next} />
+                                <CheckoutForm next={next} />
                             )}
 
                         </div>

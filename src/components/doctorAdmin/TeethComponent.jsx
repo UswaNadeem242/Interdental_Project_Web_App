@@ -18,7 +18,6 @@ const defaultTeeth = [
     { id: 29, name: "LR 2nd Premolar" }, { id: 30, name: "LR 1st Molar" },
     { id: 31, name: "LR 2nd Molar" }, { id: 32, name: "LR 3rd Molar (Wisdom)" },
 ];
-
 const FDI_BY_UNIVERSAL = [
     18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28,
     38, 37, 36, 35, 34, 33, 32, 31, 41, 42, 43, 44, 45, 46, 47, 48
@@ -31,28 +30,33 @@ const toPalmerFromFDI = fdi => {
     const q = Math.floor(fdi / 10);
     return `${PALMER_QTXT[q]} ${fdi % 10} ${PALMER_SYMBOL[PALMER_QTXT[q]]}`;
 };
-
 export default function TeethChart({
     teeth = defaultTeeth,
     onSelect,
     initialSelectedIds = [],
-    sizePx = 420,
-    showIds = true,
+    sizePx = 500,
+    showIds = false,
 }) {
-    const [selectedIds, setSelectedIds] = useState(initialSelectedIds);
+    const [selectedIds, setSelectedIds] = useState([]);
 
-    const toothSize = Math.max(22, Math.floor(sizePx * 0.07));
+    const toothSize = Math.max(40, Math.floor(sizePx * 0.1));
     const centerX = sizePx / 2;
     const centerY = sizePx / 2;
-
     const upper = teeth.slice(0, 16);
     const lower = teeth.slice(16);
-
-    const upperPos = useMemo(() => arcPositions(upper.length, -160, -20, centerX, centerY, sizePx * 0.42, 1), [upper.length, sizePx]);
-    const lowerPos = useMemo(() => arcPositions(lower.length, 200, 340, centerX, centerY, sizePx * 0.42, 17), [lower.length, sizePx]);
+    const upperPos = useMemo(
+        () => arcPositions(upper.length, -180, 0, centerX, centerY - 80, sizePx * 0.42, 1),
+        [upper.length, sizePx]
+    );
+    const lowerPos = useMemo(
+        () => arcPositions(lower.length, 0, 180, centerX, centerY + 80, sizePx * 0.42, 17),
+        [lower.length, sizePx]
+    );
 
     const toggle = tooth => {
-        const next = selectedIds.includes(tooth.id) ? selectedIds.filter(id => id !== tooth.id) : [...selectedIds, tooth.id];
+        const next = selectedIds.includes(tooth.id)
+            ? selectedIds.filter(id => id !== tooth.id)
+            : [...selectedIds, tooth.id];
         setSelectedIds(next);
         if (onSelect) {
             onSelect(next.map(id => {
@@ -64,14 +68,16 @@ export default function TeethChart({
     };
 
     return (
-        <div className="relative w-full max-w-[480px] aspect-square mx-auto">
+        <div className="relative top-14 left-14  w-full max-w-[600px] aspect-square mx-auto">
             {upper.map((t, i) => (
                 <ToothButton key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
-                    size={toothSize} x={upperPos[i].x} y={upperPos[i].y} selected={selectedIds.includes(t.id)} onClick={() => toggle(t)} showId={showIds} />
+                    size={toothSize} x={upperPos[i].x} y={upperPos[i].y}
+                    selected={selectedIds.includes(t.id)} onClick={() => toggle(t)} showId={showIds} />
             ))}
             {lower.map((t, i) => (
                 <ToothButton key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
-                    size={toothSize} x={lowerPos[i].x} y={lowerPos[i].y} selected={selectedIds.includes(t.id)} onClick={() => toggle(t)} showId={showIds} />
+                    size={toothSize} x={lowerPos[i].x} y={lowerPos[i].y}
+                    selected={selectedIds.includes(t.id)} onClick={() => toggle(t)} showId={showIds} />
             ))}
         </div>
     );
@@ -82,29 +88,42 @@ function arcPositions(count, degStart, degEnd, cx, cy, r, startId) {
     return Array.from({ length: count }, (_, i) => {
         const t = count === 1 ? 0.5 : i / (count - 1);
         const deg = degStart + (degEnd - degStart) * t;
-
-        // Custom Y-direction logic
-        // Teeth 1–16 → downward (Y+), Teeth 17–32 → upward (Y-)
-        const toothId = startId + i;
-        const yOffset = Math.sin(toRad(deg)) * r * (toothId <= 16 ? 1 : -1);
-
         return {
             x: cx + Math.cos(toRad(deg)) * r,
-            y: cy + yOffset
+            y: cy + Math.sin(toRad(deg)) * r,
         };
     });
 }
 
 function ToothButton({ tooth, fdi, palmer, size, x, y, selected, onClick, showId }) {
     return (
-        <button title={`${tooth.name} • FDI ${fdi} • Palmer ${palmer}`} onClick={onClick}
-            className={`absolute rounded-full flex items-center justify-center text-[11px] font-semibold
-        bg-zinc-200 hover:bg-amber-200 active:scale-95 transition shadow-sm ring-1 ring-zinc-300/60
-        ${selected ? "bg-amber-400 ring-amber-600 shadow-md" : ""}`}
-            style={{ width: size, height: size, left: x - size / 2, top: y - size / 2 }}>
-            {showId ? tooth.id : null}
-            <span className="absolute -top-1 -left-1 text-[9px] px-1 rounded bg-white/90 ring-1 ring-zinc-300 shadow">{fdi}</span>
-            <span className="absolute -bottom-1 -right-1 text-[9px] px-1 rounded bg-white/90 ring-1 ring-zinc-300 shadow">{palmer}</span>
+        <button
+            title={`${tooth.name} • FDI ${fdi} • Palmer ${palmer}`}
+            onClick={onClick}
+            className={`absolute flex items-center justify-center transition-all duration-200
+        ${selected ? "scale-110 z-10 ring-2 ring-red-600" : ""}
+      `}
+            style={{
+                width: size,
+                height: size,
+                left: x - size / 2,
+                top: y - size / 2,
+            }}
+        >
+            {/* Tooth image */}
+            <img
+                src={`/teeth/${tooth.id}.png`}
+                alt={tooth.name}
+                className={`object-contain  mx-auto my-auto ${selected ? "drop-shadow-[0_0_6px_red]" : ""}`}
+                style={{ width: "100%", height: "100%" }}
+            />
+
+            {/* Optional ID */}
+            {showId && (
+                <span className="absolute top-0 left-0 text-[9px] bg-white/90 px-1 rounded shadow ring-1 ring-zinc-300">
+                    {fdi}
+                </span>
+            )}
         </button>
     );
 }

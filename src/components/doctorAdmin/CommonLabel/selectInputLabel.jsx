@@ -30,7 +30,7 @@ export function LabeledSelect({ label, options = [], value, onChange, required, 
 
 }
 
-export default function MaterialDropdown({ options = [], value, onChange, label = label, selectedTooth }) {
+export default function MaterialDropdown({ options = [], value, onChange, label = label, selectedTooth, className }) {
     const [open, setOpen] = useState(false);
     const wrapperRef = useRef(null);
     useEffect(() => {
@@ -47,20 +47,13 @@ export default function MaterialDropdown({ options = [], value, onChange, label 
 
 
     const select = (val) => {
-        // Call the onChange handler with the selected value
         onChange?.(val);
-
-        // Close the dropdown
         setOpen(false);
-
-        // Save the selected value in localStorage
         try {
             localStorage.setItem("restorationForm.material", val);
         } catch (e) {
             console.error(e);
         }
-
-        // Optional: log for debugging
         console.log("Selected material:", val);
     };
 
@@ -73,7 +66,7 @@ export default function MaterialDropdown({ options = [], value, onChange, label 
                 type="button"
 
                 onClick={() => setOpen((o) => !o)}
-                className="flex w-full items-center justify-between  border border-gray-100  px-2 py-2 text-left text-sm font-semibold text-secondaryBrand"
+                className={`${className}  flex w-full items-center justify-between shadow-md  bg-grey-500  border border-gray-300  px-2 py-3 rounded-xl text-left text-sm font-semibold text-secondaryBrand`}
             >
                 <span>{selected?.label ?? label}</span>
 
@@ -93,7 +86,7 @@ export default function MaterialDropdown({ options = [], value, onChange, label 
 
             {/* Panel */}
             {open && (
-                <div className="absolute z-20 mt-2 w-full rounded-b-2xl border border-gray-200 bg-white  shadow-lg">
+                <div className="absolute z-20 w-full rounded-b-2xl border border-gray-200 bg-white  shadow-lg">
                     <div className=" space-y-1">
                         {options.map((opt) => {
                             const val = opt.value ?? opt.label;
@@ -103,7 +96,7 @@ export default function MaterialDropdown({ options = [], value, onChange, label 
                                     key={val}
                                     type="button"
                                     onClick={() => select(val)}
-                                    className={`flex w-full items-center justify-between border-b-2 border-[#D2D4DA]  px-3 py-3 text-sm transition-colors ${active ? "bg-indigo-50   " : "hover:bg-gray-50 "
+                                    className={`flex w-full items-center justify-between border-b-2 border-[#D2D4DA]  px-3 py-3 text-sm transition-colors ${active ? "bg-indigo-50" : "hover:bg-gray-50"
                                         }`}
                                 >
                                     <span className="flex justify-between items-center gap-1">

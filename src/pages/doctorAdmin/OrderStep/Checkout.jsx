@@ -1,139 +1,295 @@
-import { useState } from "react";
-export default function CheckoutOrder() {
-    const [selectedTeeth, setSelectedTeeth] = useState([3, 4, 12, 30]);
-    return (
-        <div className="min-h-screen bg-gray-50 p-6">
-            <div className="w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Left Panel */}
-                <div className="lg:col-span-2 w-full bg-white shadow-md rounded-xl border border-gray-200 p-6 space-y-6">
-                    <h2 className="text-lg font-semibold text-[rgba(67,67,67,1)]">
-                       Buyer’s Details
-                    </h2>
+import React, { useState } from "react";
 
-                    {/* <div className="border border-gray-200 rounded-lg p-4 mt-4">
-                        <h3 className="font-semibold text-[rgba(67,67,67,1)] mb-3">
-                            Doctor Info
-                        </h3>
-                        <hr className="border-gray-200 my-2" />
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-                            <div>
-                                <p className="text-gray-500">Doctor’s Name</p>
-                                <p className="font-bold text-blue-900">Steff Anri</p>
-                            </div>
-                            <div>
-                                <p className="text-gray-500">Office Registration No#</p>
-                                <p className="font-bold text-blue-900">031 56 475 432</p>
-                            </div>
-                            <div>
-                                <p className="text-gray-500">Create Date</p>
-                                <p className="font-bold text-blue-900">16/22/2026</p>
-                            </div>
-                        </div>
-                    </div> */}
-                    {/* <div className="border border-gray-200 rounded-lg p-4 mt-4">
-                        <h3 className="font-semibold text-[rgba(67,67,67,1)]">
-                            Patient Information
-                        </h3>
-                        <hr className="border-gray-200 my-2" />
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-                            <div>
-                                <p className="text-gray-500">First Name</p>
-                                <p className="font-bold text-blue-900">Miles</p>
-                            </div>
-                            <div>
-                                <p className="text-gray-500">Last Name</p>
-                                <p className="font-bold text-blue-900">Esther</p>
-                            </div>
-                            <div>
-                                <p className="text-gray-500">Subscription ID</p>
-                                <p className="font-bold text-blue-900">466437#</p>
-                            </div>
-                        </div>
-                    </div> */}
+const CheckoutForm = () => {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    contactNumber: "",
+    email: "",
+    country: "America",
+    state: "",
+    city: "",
+    street: "",
+    recipientName: "",
+    paypalUsername: "",
+    paypalEmailPhone: "",
+    paymentMethod: "", // added
+  });
 
-                    {/* Selected Teeth */}
-                  
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-                    {/* <div className="border border-gray-200 rounded-lg p-4">
-                        <h3 className="font-semibold text-[rgba(0, 0, 0, 1)] mb-3">
-                            Customization Details
-                        </h3>
-                        <hr className="border-gray-200 my-2" />
-                        <div className="space-y-2">
-                            <div className="grid grid-cols-3 gap-4 text-sm">
-                                <div>
-                                    <p className="text-gray-500 text-xs">Material:</p>
-                                    <p className="font-bold text-blue-900">Miles</p>
-                                </div>
-                                <div>
-                                    <p className="text-gray-500 text-xs">Colour:</p>
-                                    <p className="font-bold text-blue-900">Esther</p>
-                                </div>
-                                <div>
-                                    <p className="text-gray-500 text-xs">Type:</p>
-                                    <p className="font-bold text-blue-900">466437#</p>
-                                </div>
-                            </div>
-                            <hr className="border-gray-200 my-2" />
-                            <div className="grid grid-cols-2 gap-4 text-sm">
-                                <div>
-                                    <p className="text-gray-500 text-xs">Manufacturer</p>
-                                    <p className="font-bold text-blue-900">Miles</p>
-                                </div>
-                                <div>
-                                    <p className="text-gray-500 text-xs">Manufacture Process</p>
-                                    <p className="font-bold text-blue-900">Esther</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form Submitted:", formData);
+  };
 
-                    {/* Notes */}
-                    {/* <div className="border border-gray-200 rounded-lg p-4">
-                        <h3 className="font-semibold text-gray-700 mb-2">Notes</h3>
-                        <hr className="border-gray-200 my-2" />
-                        <p className="text-gray-500 mb-1">Dr. Weed bran</p>
-                        <p className="text-sm text-blue-900 underline">
-                            Kindly use strong material for the upper teeth for better
-                        </p>
-                    </div> */}
+  return (
+    <div className="min-h-screen bg-gray-100 flex justify-center py-10 ">
+      <div className="w-[1200px] mx-auto ">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-grey rounded-xl shadow-lg w-full max-w-6xl grid md:grid-cols-2 gap-6 p-6 font-poppins"
+        >
+          {/* Left Section - Form */}
+          <div className="space-y-6">
+            {/* Buyer’s Details */}
+            <div>
+              <h2 className="text-lg  mb-3 font-inter font-medium">
+                Buyer’s Details
+              </h2>
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="Full Name"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  className="border rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                />
+                <input
+                  type="text"
+                  name="contactNumber"
+                  placeholder="Contact Number"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
+                  className="border  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                />
+              </div>
+              <input
+                type="email"
+                name="email"
+                placeholder="E-Mail Address"
+                value={formData.email}
+                onChange={handleChange}
+                className="border  rounded-lg px-3 py-2 w-full mt-3 bg-white text-gray-700"
+              />
+            </div>
+
+            {/* Shipping */}
+            <div>
+              <h2 className="text-lg font-medium mb-3 font-inter">Shipping</h2>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                    <img
+                      src="/assets/usFlag.jpeg" // Replace with actual flag image path
+                      alt="US Flag"
+                      className="w-5 h-5 rounded-sm"
+                    />
+                  </span>
+                  <input
+                    type="text"
+                    name="country"
+                    placeholder="Country"
+                    value={formData.country}
+                    readOnly
+                    className="border rounded-lg pl-10 px-3 py-2 w-full bg-gray-50 text-gray-700"
+                  />
+                </div>
+                <input
+                  type="text"
+                  name="state"
+                  placeholder="State/Province"
+                  value={formData.state}
+                  onChange={handleChange}
+                  className="border  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                />
+                <input
+                  type="text"
+                  name="city"
+                  placeholder="City"
+                  value={formData.city}
+                  onChange={handleChange}
+                  className="border  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                />
+                <input
+                  type="text"
+                  name="street"
+                  placeholder="Street"
+                  value={formData.street}
+                  onChange={handleChange}
+                  className="border  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                />
+              </div>
+            </div>
+
+            {/* Payment Method */}
+            <div className="border rounded-lg p-4 bg-white">
+              <h2 className="text-lg font-semibold mb-3 font-poppins">
+                Payment Method
+              </h2>
+
+              {/* Dropdown */}
+              <select
+                name="paymentMethod"
+                value={formData.paymentMethod || ""}
+                onChange={handleChange}
+                className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700 mb-4"
+              >
+                <option value="" disabled>
+                  Please Select
+                </option>
+                <option value="paypal">PayPal</option>
+                <option value="creditCard">Credit Card</option>
+                <option value="bankTransfer">Bank Transfer</option>
+              </select>
+
+              {/* PayPal Section */}
+              {formData.paymentMethod === "paypal" && (
+                <div className="border rounded-lg p-4 ">
+                  <div className="flex items-center mb-3">
+                    <img
+                      src="/assets/paypal.jpeg"
+                      alt="Paypal Logo"
+                      className="w-5 h-5 rounded-sm"
+                    />
+                    <span className="font-medium ml-2">Paypal</span>
+                  </div>
+                  <hr className="border-t my-3" />
+
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                      Recipient's Name
+                    </label>
+                    <input
+                      type="text"
+                      name="recipientName"
+                      placeholder="Enter Recipient's Name"
+                      value={formData.recipientName}
+                      onChange={handleChange}
+                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium mb-1 text-gray-700">
+                        Paypal Username
+                      </label>
+                      <input
+                        type="text"
+                        name="paypalUsername"
+                        placeholder="Enter Paypal Username"
+                        value={formData.paypalUsername}
+                        onChange={handleChange}
+                        className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1 text-gray-700">
+                        E-mail/Phone number
+                      </label>
+                      <input
+                        type="text"
+                        name="paypalEmailPhone"
+                        placeholder="Enter E-mail/Phone number"
+                        value={formData.paypalEmailPhone}
+                        onChange={handleChange}
+                        className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Credit Card Section */}
+              {formData.paymentMethod === "creditCard" && (
+                <div className="border rounded-lg p-4 space-y-3">
+                  <label className="block text-sm font-medium mb-1 text-gray-700">
+                    Card Number
+                  </label>
+                  <input
+                    type="text"
+                    name="cardNumber"
+                    placeholder="Enter Card Number"
+                    value={formData.cardNumber || ""}
+                    onChange={handleChange}
+                    className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                  />
+                  <label className="block text-sm font-medium mb-1 text-gray-700">
+                    Expiry Date
+                  </label>
+                  <input
+                    type="text"
+                    name="expiryDate"
+                    placeholder="MM/YY"
+                    value={formData.expiryDate || ""}
+                    onChange={handleChange}
+                    className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                  />
+                </div>
+              )}
+
+              {/* Bank Transfer Section */}
+              {formData.paymentMethod === "bankTransfer" && (
+                <div className="border rounded-lg p-4 space-y-3">
+                  <label className="block text-sm font-medium mb-1 text-gray-700">
+                    Account Number
+                  </label>
+                  <input
+                    type="text"
+                    name="accountNumber"
+                    placeholder="Enter Account Number"
+                    value={formData.accountNumber || ""}
+                    onChange={handleChange}
+                    className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                  />
+                  <label className="block text-sm font-medium mb-1 text-gray-700">
+                    Bank Name
+                  </label>
+                  <input
+                    type="text"
+                    name="bankName"
+                    placeholder="Enter Bank Name"
+                    value={formData.bankName || ""}
+                    onChange={handleChange}
+                    className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Section - Order Summary */}
+          <div className="bg-white shadow-md rounded-xl border border-gray-200 p-6 flex flex-col justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Order Summary
+              </h2>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span>Emax x4</span>
+                  <span>$80.00</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Argen ST x3</span>
+                  <span>$90.00</span>
                 </div>
 
-                {/* Right Panel */}
-                {/* <div className="bg-white shadow-md rounded-xl border border-gray-200 p-6 flex flex-col justify-between">
-                    <div>
-                        <h2 className="text-lg font-semibold text-[rgba(26,26,26,1)] mb-4">
-                            Order Summary
-                        </h2>
-                        <div className="space-y-3 text-sm">
-                            <div className="flex justify-between">
-                                <span>Emax x4</span>
-                                <span>$80.00</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span>Argen ST x3</span>
-                                <span>$90.00</span>
-                            </div>
-                            <hr className="my-2 border-gray-200" />
-                            <div className="flex justify-between font-semibold">
-                                <span>Subtotal</span>
-                                <span>$180.00</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span>Shipping</span>
-                                <span className="text-green-600">Free</span>
-                            </div>
-                            <div className="flex justify-between font-bold text-blue-700 text-lg mt-4 border-t border-gray-200 pt-2">
-                                <span>Total</span>
-                                <span>$180.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="mt-6 w-full py-3 rounded-3xl bg-blue-900 hover:bg-blue-800 text-white font-medium">
-                        Checkout
-                    </button>
-                </div> */}
+                <div className="flex justify-between ">
+                  <span>Subtotal</span>
+                  <span className="font-semibold">$180.00</span>
+                </div>
+                <hr />
+                <div className="flex justify-between">
+                  <span>Shipping</span>
+                  <span className="text-green-600">Free</span>
+                </div>
+                <div className="flex justify-between  text-[rgba(0, 29, 88, 1)] text-lg mt-4  pt-2">
+                  <span>Total</span>
+                  <span className="font-bold">$180.00</span>
+                </div>
+              </div>
             </div>
-        </div>
-    );
-}
+            <button className="mt-6 w-full py-4 rounded-3xl bg-[rgba(0,29,88,1)] hover:bg-blue-800 text-white font-medium">
+              Place Order
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default CheckoutForm;
