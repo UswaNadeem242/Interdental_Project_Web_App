@@ -22,18 +22,17 @@ const AddQuantityModal = ({
     setIsModalOpen(false);
   };
 
-  const handleAddCategory = async () => {
-    if (!name) {
-      alert("Please fill all the fields");
-      return;
-    }
+  const handleAddQuantity = async () => {
     try {
-      const payload = {
-        name,
-        parentCategoryId,
-      };
-      const response = await axios.post(
-        `${BASE_URL}/category/addCategory`,
+      const payload = Object.entries(productQuantities).map(
+        ([productId, quantityToAdd]) => ({
+          productId: Number(productId),
+          quantityToAdd: Number(quantityToAdd),
+        })
+      );
+      console.log('=--===-=-=-==--=payload--=-=-==-=',payload)
+      const response = await axios.put(
+        `${BASE_URL}/api/admin/products/add-stock`,
         payload,
         {
           headers: {
@@ -44,7 +43,7 @@ const AddQuantityModal = ({
         }
       );
       console.log(response);
-      alert("Categroy added successfully");
+      alert("Quantity added successfully");
       setIsModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -66,6 +65,7 @@ const AddQuantityModal = ({
   };
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+      {console.log("-=-=-=-=productQuantities-===", productQuantities)}
       <div className="w-[572px] h-[541px] gap-[32px]">
         <div className="flex flex-col justify-center items-center space-y-[32px]  bg-white p-[44px] rounded-[24px] shadow-lg w-[572px] h-auto relative">
           <h1 className="w-[508px] h-[36px] font-poppins font-bold text-[24px] leading-[36px] text-[#434343]">
@@ -122,7 +122,7 @@ const AddQuantityModal = ({
               Cancel
             </button>
             <button
-              onClick={handleAddCategory}
+              onClick={handleAddQuantity}
               className="flex justify-center items-center w-[230px] h-[56px] gap-[10px] rounded-[28px] py-[17px] px-[4px] bg-secondaryBrand font-poppins font-semibold text-white text-[14px] leading-[21px]"
             >
               Done
