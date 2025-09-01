@@ -15,6 +15,7 @@ import { BASE_URL } from "../../config";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import AddQuantityModal from "../../modals/AddQuantityModal";
+import AreYouSureModel from "../../modals/AreYouSureModel";
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -23,6 +24,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [categoriesList, setCategoriesList] = useState([]);
   const [isQuantityModalOpen, setIsQuantityModalOpen] = useState(false);
+  const [isModelShow, setIsmodelShow] = useState(false);
 
   const getProductDetails = async () => {
     try {
@@ -217,7 +219,7 @@ const ProductDetails = () => {
               </div>
               <div className="flex justify-center items-center w-[441px] h-[48px] gap-[9.59px]">
                 <div
-                  onClick={() => handleDelete()}
+                  onClick={() => setIsmodelShow(true)}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-[#E134341A]  py-[17px] px-[24px] rounded-[28px]"
                 >
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#E13434]">
@@ -283,6 +285,15 @@ const ProductDetails = () => {
           isModalOpen={isQuantityModalOpen}
           setIsModalOpen={setIsQuantityModalOpen}
           selectedProducts={[product]}
+        />
+      )}
+
+      {isModelShow && (
+        <AreYouSureModel
+          title=" Are You Sure"
+          desc="All data related to the employee will be deleted from the web. You won't be able to undo these changes."
+          setIsModalOpen={setIsmodelShow}
+          handleUpdateStatus={handleDelete}
         />
       )}
     </div>
