@@ -28,6 +28,7 @@ const ListProduct = () => {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
+  const [inputs, setInputs] = useState([""]);
 
   const handleFileUpload = (event) => {
     // const files = Array.from(event.target.files);
@@ -228,6 +229,21 @@ const ListProduct = () => {
       setToastVisible(true);
     }
   };
+
+  const handleAddInput = () => {
+    setInputs([...inputs, ""]); // add new empty input
+  };
+
+  const handleInputChange = (value, index) => {
+    const updatedInputs = [...inputs];
+    updatedInputs[index] = value;
+    setInputs(updatedInputs);
+  };
+    const handleRemove = (index) => {
+    const updatedSizes = inputs.filter((_, i) => i !== index);
+    setInputs(updatedSizes);
+  };
+
   return (
     <div className="flex flex-col justify-center items-start">
       {/* <AdminHeader title="List Product" /> */}
@@ -608,19 +624,15 @@ const ListProduct = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col justify-start items-start p-[32px] space-y-[16px] w-[507px] h-[295px] bg-white rounded-[16px]">
+          <div className="flex flex-col justify-start items-start p-[32px] space-y-[16px] w-[507px] bg-white rounded-[16px]">
+            {/* Checkbox */}
             <div className="w-[282px] h-[53px] flex flex-col justify-start items-start space-y-[10px]">
-              <label
-                htmlFor=""
-                className="font-poppins font-semibold text-[14px] leading-[21px] text-black"
-              >
+              <label className="font-poppins font-semibold text-[14px] leading-[21px] text-black">
                 Options
               </label>
               <div className="flex justify-start items-center w-[282px] h-[24px] gap-[8px]">
                 <input
                   type="checkbox"
-                  name=""
-                  id=""
                   className="w-[20px] h-[20px] border-[1px] border-[#001D58]"
                 />
                 <p className="font-poppins font-normal text-[14px] leading-[21px] text-black">
@@ -628,17 +640,48 @@ const ListProduct = () => {
                 </p>
               </div>
             </div>
-            <input
-              type="text"
-              placeholder="Total Stock"
-              className="w-[443px] h-[53px] rounded-[8px] border-[1px] p-[16px] gap-[8px] border-[#E5E5E5]"
-            />
-            <input
-              type="text"
-              placeholder="Total Stock"
-              className="w-[443px] h-[53px] rounded-[8px] border-[1px] p-[16px] gap-[8px] border-[#E5E5E5]"
-            />
-            <div className="flex justify-start items-center gap-[4px]">
+
+            {/* Dynamic Inputs */}
+            {inputs.map((value, index) => (
+              <div  className="w-[443px] flex flex-row h-[53px] rounded-[8px] border-[1px] items-center px-[16px] gap-[8px] border-[#E5E5E5]">
+                <input
+                  key={index}
+                  type="text"
+                  placeholder={`Size ${index + 1}`}
+                  value={value}
+                  onChange={(e) => handleInputChange(e.target.value, index)}
+                  className="w-[95%]"
+                 
+                />
+                <svg
+                  width="23"
+                  height="23"
+                  viewBox="0 0 23 23"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                   onClick={() => handleRemove(index)}
+                >
+                  <path
+                    d="M15.3334 7.66675L7.66675 15.3334"
+                    stroke="#1C274C"
+                    stroke-width="2.875"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M7.66659 7.66675L15.3333 15.3334"
+                    stroke="#1C274C"
+                    stroke-width="2.875"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+            ))}
+
+            {/* Add Another Button */}
+            <div
+              onClick={handleAddInput}
+              className="flex justify-start items-center gap-[4px] cursor-pointer"
+            >
               <div className="w-[24px] h-[24px] flex justify-center items-center">
                 <div className="flex justify-center items-center w-[20px] h-[20px] rounded-[4px] p-[4px] bg-[#F5FBFC]">
                   <svg
