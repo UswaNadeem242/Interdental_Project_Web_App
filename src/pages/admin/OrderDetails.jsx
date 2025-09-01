@@ -383,6 +383,8 @@ const OrderDetails = () => {
       )}
       {isModelShow && (
         <AreYouSureModel
+          title=" Are You Sure"
+          desc=" You can not undo the action"
           setIsModalOpen={setIsmodelShow}
           handleUpdateStatus={handleUpdateStatus}
         />

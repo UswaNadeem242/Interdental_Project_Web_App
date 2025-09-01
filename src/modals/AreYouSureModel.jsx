@@ -3,11 +3,16 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { BASE_URL } from "../config";
 
-const AreYouSureModel = ({ handleUpdateStatus, setIsModalOpen }) => {
+const AreYouSureModel = ({
+  title,
+  desc,
+  handleUpdateStatus,
+  setIsModalOpen,
+}) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div className="w-[383px] h-[295px] gap-[16px]">
-        <div className="flex flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg w-[303px] h-auto relative">
+        <div className="flex w-[383px] flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg w-[303px] h-auto relative">
           <svg
             width="120"
             height="120"
@@ -32,14 +37,14 @@ const AreYouSureModel = ({ handleUpdateStatus, setIsModalOpen }) => {
             />
           </svg>
 
-          <p className="font-poppins font-bold text-[24px] leading-[18px]">
-            Are You Sure
+          <p className="font-poppins font-bold text-[24px] px-[16px] mt-[12px] leading-[18px]">
+            {title}
           </p>
-          <p className="font-poppins text-[#98A0A0] font-[400] text-[14px] leading-[18px]">
-            You can not undo the action
+          <p className="font-poppins text-[#98A0A0] px-[16px] mt-[12px] text-center font-[400] text-[14px] leading-[18px]">
+            {desc}
           </p>
 
-          <div className="flex justify-center items-center w-[271px] h-[57px] gap-[24px]">
+          <div className="flex justify-center items-center mt-[24px] w-[271px] h-[57px] gap-[24px]">
             <button
               onClick={() => {
                 setIsModalOpen(false);

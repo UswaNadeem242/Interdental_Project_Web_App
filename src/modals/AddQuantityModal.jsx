@@ -13,7 +13,12 @@ const AddQuantityModal = ({
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [categoryId, setCategoryId] = useState(0);
   const [quantity, setQuantity] = useState(0);
-
+  const [productQuantities, setProductQuantities] = useState(
+    selectedProducts.reduce((acc, product) => {
+      acc[product.productId] = 0;
+      return acc;
+    }, {})
+  );
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -23,6 +28,14 @@ const AddQuantityModal = ({
   };
 
   const handleAddQuantity = async () => {
+    const emptyProducts = Object.entries(productQuantities).filter(
+      ([productId, quantity]) => !quantity || Number(quantity) <= 0
+    );
+
+    if (emptyProducts.length > 0) {
+      alert("Please enter quantity for all products");
+      return; // Stop execution
+    }
     try {
       const payload = Object.entries(productQuantities).map(
         ([productId, quantityToAdd]) => ({
@@ -30,7 +43,6 @@ const AddQuantityModal = ({
           quantityToAdd: Number(quantityToAdd),
         })
       );
-      console.log('=--===-=-=-==--=payload--=-=-==-=',payload)
       const response = await axios.put(
         `${BASE_URL}/api/admin/products/add-stock`,
         payload,
@@ -49,12 +61,6 @@ const AddQuantityModal = ({
       console.log(error);
     }
   };
-  const [productQuantities, setProductQuantities] = useState(
-    selectedProducts.reduce((acc, product) => {
-      acc[product.productId] = 0;
-      return acc;
-    }, {})
-  );
 
   const handleQuantityChange = (productId, value) => {
     setQuantity(value);

@@ -70,14 +70,14 @@ const ListProduct = () => {
 
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/brands`, {
+      const response = await axios.get(`${BASE_URL}/api/brands/getAll`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       console.log(response.data);
-      setBrandsList(response.data.content);
+      setBrandsList(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -178,6 +178,14 @@ const ListProduct = () => {
       return;
     }
 
+    // Check numeric values
+    if (Number(price) <= 0 || Number(stockQuantity) <= 0) {
+      setToastMessage("Price and stock quantity must be greater than 0!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
     try {
       const formData = new FormData();
 
@@ -239,7 +247,7 @@ const ListProduct = () => {
     updatedInputs[index] = value;
     setInputs(updatedInputs);
   };
-    const handleRemove = (index) => {
+  const handleRemove = (index) => {
     const updatedSizes = inputs.filter((_, i) => i !== index);
     setInputs(updatedSizes);
   };
@@ -307,40 +315,7 @@ const ListProduct = () => {
               />
             </div>
           </div>
-          {/* <div className="w-[566px] h-[231px] flex flex-col justify-start items-start bg-white rounded-[16px] p-[32px] space-y-[16px]">
-            <label
-              htmlFor=""
-              className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]"
-            >
-              Media
-            </label>
-            <div className="flex justify-center items-center w-[502px] h-[130px] rounded-[8px] border-[1px] gap-[4px] border-[#00000014] bg-white">
-              <div className="flex flex-col justify-start items-center space-y-[2px] w-[140px] h-[44px]">
-                <div className="flex justify-start items-center w-full h-[24px] gap-[4px]">
-                  <div className="flex justify-center items-center p-[4px] rounded-[4px] w-[20px] h-[20px] bg-[#1FA4EF1A]">
-                    <svg
-                      width="8"
-                      height="8"
-                      viewBox="0 0 8 8"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M4 0.25C4.4142 0.25 4.75 0.58579 4.75 1V3.25H7C7.4142 3.25 7.75 3.5858 7.75 4C7.75 4.4142 7.4142 4.75 7 4.75H4.75V7C4.75 7.4142 4.4142 7.75 4 7.75C3.5858 7.75 3.25 7.4142 3.25 7V4.75H1C0.58579 4.75 0.25 4.4142 0.25 4C0.25 3.5858 0.58579 3.25 1 3.25H3.25V1C3.25 0.58579 3.5858 0.25 4 0.25Z"
-                        fill="#001D58"
-                      />
-                    </svg>
-                  </div>
-                  <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#001D58]">
-                    upload file / uRL
-                  </p>
-                </div>
-                <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#949494]">
-                  accept image,3d, JPG
-                </p>
-              </div>
-            </div>
-          </div> */}
+
           <div className="w-[566px] flex flex-col justify-start items-start bg-white rounded-[16px] p-[32px] space-y-[16px]">
             <label
               htmlFor="productImageUpload"
@@ -643,7 +618,7 @@ const ListProduct = () => {
 
             {/* Dynamic Inputs */}
             {inputs.map((value, index) => (
-              <div  className="w-[443px] flex flex-row h-[53px] rounded-[8px] border-[1px] items-center px-[16px] gap-[8px] border-[#E5E5E5]">
+              <div className="w-[443px] flex flex-row h-[53px] rounded-[8px] border-[1px] items-center px-[16px] gap-[8px] border-[#E5E5E5]">
                 <input
                   key={index}
                   type="text"
@@ -651,7 +626,6 @@ const ListProduct = () => {
                   value={value}
                   onChange={(e) => handleInputChange(e.target.value, index)}
                   className="w-[95%]"
-                 
                 />
                 <svg
                   width="23"
@@ -659,7 +633,7 @@ const ListProduct = () => {
                   viewBox="0 0 23 23"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                   onClick={() => handleRemove(index)}
+                  onClick={() => handleRemove(index)}
                 >
                   <path
                     d="M15.3334 7.66675L7.66675 15.3334"
