@@ -4,6 +4,7 @@ import AdminHeader from "../../components/admin/AdminHeader";
 import axios from "axios";
 import { BASE_URL } from "../../config";
 import Toast from "../../components/Toast";
+import AreYouSureModel from "../../modals/AreYouSureModel";
 
 const Users = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -57,6 +58,37 @@ const Users = () => {
       );
       console.log(response);
       setToastMessage("User De-Activated successfully!");
+      setToastType("success");
+      setToastVisible(true);
+      // alert("User De-Activated successfully");
+      setActionsModal(false);
+      getAllUsers();
+    } catch (error) {
+      console.log(error);
+      setToastMessage(`Error: ${error}`);
+      setToastType("success");
+      setToastVisible(true);
+    }
+  };
+
+  const handleActivatedUser = async (id) => {
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/api/admin/users/changeuserstatus`,
+        {
+          userId: id,
+          status: true,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log(response);
+      setToastMessage("User Activated successfully!");
       setToastType("success");
       setToastVisible(true);
       // alert("User De-Activated successfully");
@@ -223,7 +255,7 @@ const Users = () => {
                     >
                       <h1
                         className={`font-poppins font-normal text-[10px] leading-[15px] ${
-                          user.status === "active"
+                          user.status === "active" || user.status === "ACTIVE"
                             ? "text-[#4ECC53]"
                             : "text-[#FF5757]"
                         }`}
@@ -270,7 +302,11 @@ const Users = () => {
                     </svg>
                     {actionsModal && (
                       <div
-                        onClick={() => handleDeactivateUser(user.id)}
+                        onClick={() => {
+                          user.status === "active" || user.status === "ACTIVE"
+                            ? handleDeactivateUser(user.id)
+                            : handleActivatedUser(user.id);
+                        }}
                         className={`absolute top-0 right-10 flex justify-center items-center cursor-pointer w-[136px] h-[54px] rounded-[8px] py-[8px] px-[16px] gap-[8px] bg-white shadow-[0_0_10px_#00000017] ${
                           actionsModal && selectedUser === index
                             ? "block"
@@ -278,7 +314,9 @@ const Users = () => {
                         }`}
                       >
                         <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
-                          Deactivate User
+                          {user.status === "active" || user.status === "ACTIVE"
+                            ? "Deactivate User"
+                            : "Activate User"}
                         </p>
                       </div>
                     )}
@@ -294,6 +332,7 @@ const Users = () => {
         onClose={closeToast}
         type={toastType}
       />
+      
     </div>
   );
 };

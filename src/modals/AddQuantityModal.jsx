@@ -7,6 +7,7 @@ const AddQuantityModal = ({
   isModalOpen,
   setIsModalOpen,
   selectedProducts,
+  getAllProducts
 }) => {
   const [name, setName] = useState("");
   const [parentCategoryId, setParentCategoryId] = useState(null);
@@ -56,6 +57,7 @@ const AddQuantityModal = ({
       );
       console.log(response);
       alert("Quantity added successfully");
+      getAllProducts();
       setIsModalOpen(false);
     } catch (error) {
       console.log(error);
