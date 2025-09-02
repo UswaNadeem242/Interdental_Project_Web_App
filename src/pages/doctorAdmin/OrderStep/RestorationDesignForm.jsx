@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import FormSection from "../../../components/doctorAdmin/CommonLabel/FormSelection";
 import LabeledInput from "../../../components/doctorAdmin/CommonLabel/inputLable";
-import MaterialDropdown, {
-    LabeledSelect,
-} from "../../../components/doctorAdmin/CommonLabel/selectInputLabel";
+import MaterialDropdown from "../../../components/doctorAdmin/CommonLabel/selectInputLabel";
 import TeethChart from "../../../components/doctorAdmin/TeethComponent";
 import StepperTabs from "../../../components/doctorAdmin/StepperTab";
 import ReviewOrder from "./Review";
-import DoctorHeader from "../../../components/doctorAdmin/doctorHeader";
 import CheckoutForm from "./Checkout";
 import { DIGITAL_DENTURE, LAB_OPTIONS, MATERIAL_OPTIONS, PHOTOGRAMMETRY_FILES, SCANNER_TYPE, SURGICAL_GUIDE } from "../../../Constant";
 import SmileDesignPicker from "../../../components/doctorAdmin/DoctorModel/Smile";
@@ -123,7 +120,7 @@ const DoctorOrder = () => {
     return (
         <>
             <div className="flex flex-col  rounded-3xl   justify-center items-start ">
-                {/* <DoctorHeader /> */}
+                {/* <DoctorHeader/> */}
                 <main className="flex-1 bg-white max-w-7xl rounded-3xl p-4 sm:p-6">
                     <div className="mx-auto">
                         {/* max-w-6xl h-full */}

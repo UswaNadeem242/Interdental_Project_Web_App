@@ -1,3 +1,8 @@
+import { DashboardIcon } from "../icon/dashboard";
+import OrderIcon from "../icon/OrderIcon";
+import PatienIcon from "../icon/PatienIcon";
+import ClaimIcon from "../icon/claimIcon";
+
 export const MATERIAL_OPTIONS = [
     { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
     { value: "argen-ht", label: "Argen HT", price: 45 },
@@ -47,3 +52,11 @@ export const SCANNER_TYPE = [
 ];
 
 
+
+export const menuItems = [
+    { name: "Dashboard", path: "/admin/dashboard", icon: DashboardIcon },
+    { name: "Orders", path: "/admin/orders", icon: OrderIcon },
+    { name: "Products", path: "/admin/products", icon: PatienIcon },
+    { name: "Doctor", path: "/doctorAdmin/doctor", icon: ClaimIcon },
+
+];

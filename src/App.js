@@ -26,6 +26,10 @@ import LandingPage from "./pages/landing-page/landing-page";
 import Patients from "./pages/landing-page/patient";
 import Doctor from "./pages/landing-page/doctor";
 import Contact from "./pages/landing-page/contact";
+import DoctorAdmin from "./pages/doctorAdmin/Doctor";
+import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
+import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
+import DoctorHeader from "./components/doctorAdmin/doctorHeader";
 // const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
 
 const MainLayout = ({ children }) => (
@@ -38,12 +42,45 @@ const MainLayout = ({ children }) => (
   // </ProtectedRoute>
 );
 
-const PlainLayout = ({ children }) => (
-  <div className="flex absolute pt-[16px] pl-[16px] pb-[16px] gap-8 bg-gray-200 w-full">
-    <AdminSidebar />
-    {children}
-  </div>
-);
+// const PlainLayout = ({ children }) => (
+//   <div className="  ">
+//     {/* flex absolute pt-[16px] pl-[16px] pb-[16px] gap-8 bg-gray-200 w-full */}
+//     {/* <AdminSidebar /> */}
+//     <DoctorSidebar />
+//     <DoctorHeader/>
+//     {/* {children} */}
+//   </div>
+// );
+
+const PlainLayout = ({ children }) => {
+  return (
+    <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
+      {/* Sidebar */}
+      <div className="w-52 flex-shrink-0  hidden md:block">
+        <DoctorSidebar />
+      </div>
+
+      <div className="flex-1 flex flex-col relative">
+        {/* Header */}
+        <header className="fixed top-4 md:left-64 left-4 right-4    md:rounded-none  h-16 md:block  flex items-center md:px-6 px-6   z-50">
+          <div className="md:hidden mr-4"><MobileSidebar /></div>
+          <DoctorHeader />
+        </header>
+
+        {/* Main Content */}
+        <main className="bg-gray-100 flex-1 p-6 mt-28 md:ml-4  rounded-xl overflow-auto">
+          {children}
+        </main>
+      </div>
+    </div>
+
+  );
+};
+
+
+
+
+
 const SimpleLayout = ({ children }) => <div className="">{children}</div>;
 
 function App() {
@@ -167,12 +204,12 @@ function App() {
                 </PlainLayout>
               }
             />
-             <Route
+            <Route
               path="/doctorAdmin/*"
               element={
                 <PlainLayout>
                   <ProtectedRoute>
-                    <Admin />
+                    <DoctorAdmin />
                   </ProtectedRoute>
                 </PlainLayout>
               }
