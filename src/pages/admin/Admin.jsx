@@ -11,10 +11,7 @@ import UpdateProduct from "./UpdateProduct";
 import DoctorOrder from "../doctorAdmin/OrderStep/RestorationDesignForm";
 
 const Admin = () => {
-
-
   return (
-
     <div className="flex justify-start items-start w-full h-[982px]">
       {/*  */}
       <Routes>
@@ -28,13 +25,8 @@ const Admin = () => {
         <Route path="/orders/:id" element={<OrderDetails />} />
         {/* <Route path="/doctorAdmin/doctor" element={<DoctorOrder />} /> */}
         <Route path="/doctor" element={<DoctorOrder />} />
-
       </Routes>
-
-
     </div>
-
-
   );
 };
 

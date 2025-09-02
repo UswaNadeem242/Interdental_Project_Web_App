@@ -39,7 +39,7 @@ const MainLayout = ({ children }) => (
 );
 
 const PlainLayout = ({ children }) => (
-  <div className="flex absolute pt-[16px] pl-[16px] pb-[16px] gap-8 bg-gray-200 w-full">
+  <div className="flex absolute pt-[16px] pl-[16px] pb-[16px] gap-8 bg-[#F8F8F8] w-full">
     <AdminSidebar />
     {children}
   </div>
@@ -167,7 +167,7 @@ function App() {
                 </PlainLayout>
               }
             />
-             <Route
+            <Route
               path="/doctorAdmin/*"
               element={
                 <PlainLayout>
