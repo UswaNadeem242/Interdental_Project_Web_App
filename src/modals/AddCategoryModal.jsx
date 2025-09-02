@@ -53,17 +53,13 @@ const AddCategoryModal = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-      <div className="gap-4">
-        {/* w-[303px] h-[295px] */}
-        {/* <div className="fl
-        ex flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg w-[303px] h-auto relative"> */}
-        <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl bg-white rounded-[16px] shadow-lg p-6 sm:p-8 relative">
+    <div className="fixed inset-0 flex md:items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+      <div className="w-[303px]  gap-4 m-32">
+        <div className="flex flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg w-[303px] h-auto relative">
           <h1 className="font-poppins font-semibold text-[16px] leading-[21px] text-[#434343]">
             Add New Category
           </h1>
-          <div className=" flex flex-col space-y-[8px]">
-            {/* w-[271px] h-[82px] */}
+          <div className="w-[271px] h-[82px] flex flex-col space-y-[8px]">
             <label
               htmlFor=""
               className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]"
@@ -136,7 +132,7 @@ const AddCategoryModal = ({
                       Add Category
                     </p>
                   </div>
-                  <div className=" h-[295px]  overflow-y-scroll">
+                  <div className=" h-[190px]  overflow-y-scroll">
                     {categoriesList?.map((category) => (
                       <div className="w-[271px] flex flex-col  justify-start items-start space-y-[8px]">
                         <div
@@ -144,11 +140,12 @@ const AddCategoryModal = ({
                             setParentCategoryId(category.categoryId);
                             setIsCategoryOpen(false);
                           }}
-                          className={`w-[245px] h-[28px] py-[10px] flex justify-start items-center gap-[2px] bg-white cursor-pointer ${categoriesList.indexOf(category) ===
+                          className={`w-[245px] h-[28px] py-[10px] flex justify-start items-center gap-[2px] bg-white cursor-pointer ${
+                            categoriesList.indexOf(category) ===
                             categoriesList.length - 1
-                            ? ""
-                            : "border-b-[1px] border-[#0000000D]"
-                            }`}
+                              ? ""
+                              : "border-b-[1px] border-[#0000000D]"
+                          }`}
                         >
                           <p className="w-[271px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
                             {category.name}

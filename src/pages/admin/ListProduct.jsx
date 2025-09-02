@@ -438,7 +438,7 @@ const ListProduct = () => {
                   <p className="w-[389.56px] h-[21px] font-poppins font-normal text-[14px] leading-[21px] text-[#949494]">
                     {categoriesList?.find(
                       (category) => category.categoryId === categoryId
-                    )?.name || "Select Brand"}
+                    )?.name || "Select Category"}
                   </p>
                   <svg
                     width="14"
@@ -487,12 +487,11 @@ const ListProduct = () => {
                               setCategoryId(category.categoryId);
                               setIsCategoryOpen(false);
                             }}
-                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
-                              categoriesList.indexOf(category) ===
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${categoriesList.indexOf(category) ===
                               categoriesList.length - 1
-                                ? ""
-                                : "border-b-[1px] border-[#0000000D]"
-                            }`}
+                              ? ""
+                              : "border-b-[1px] border-[#0000000D]"
+                              }`}
                           >
                             <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
                               {category.name}
@@ -574,12 +573,11 @@ const ListProduct = () => {
                               setBrandId(brand.id);
                               setIsBrandOpen(false);
                             }}
-                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
-                              brandsList.indexOf(brand) ===
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${brandsList.indexOf(brand) ===
                               brandsList.length - 1
-                                ? ""
-                                : "border-b-[1px] border-[#0000000D]"
-                            }`}
+                              ? ""
+                              : "border-b-[1px] border-[#0000000D]"
+                              }`}
                           >
                             <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
                               {brand.name}
