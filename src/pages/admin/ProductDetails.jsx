@@ -25,8 +25,10 @@ const ProductDetails = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [isQuantityModalOpen, setIsQuantityModalOpen] = useState(false);
   const [isModelShow, setIsmodelShow] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const getProductDetails = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `${BASE_URL}/api/product/get/${productId}`,
@@ -41,6 +43,8 @@ const ProductDetails = () => {
       setProduct(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // stop loading after request finishes
     }
   };
   const getAllCategories = async () => {
@@ -89,34 +93,7 @@ const ProductDetails = () => {
       <div className="flex flex-col justify-start items-start w-[1108px] h-auto space-y-[32px] mt-0 pt-[8px] ">
         <AdminHeader title="Product Detail" />
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
-          <div className="flex justify-center items-center w-[1108px] h-[501px]">
-            {/* <div className="flex flex-col justify-start items-center w-[94px] h-[503px] space-y-[8px]">
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-            </div> */}
+          <div className="flex justify-center items-center w-[1108px] h-[501px] gap-8">
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
                 spaceBetween={30}
@@ -132,13 +109,17 @@ const ProductDetails = () => {
                 modules={[Autoplay, Pagination, Navigation]}
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
-                {product &&
-                product.imageUrls &&
-                product.imageUrls.length > 0 ? (
+                {loading ? (
+                  <SwiperSlide>
+                    <div className="h-[300px] w-[100%]   animate-pulse rounded-[16px] flex items-center justify-center">
+                      <p className="text-secondaryBrand text-lg font-medium">Loading...</p>
+                    </div>
+                  </SwiperSlide>
+                ) : product && product.imageUrls && product.imageUrls.length > 0 ? (
                   product.imageUrls.map((url, index) => (
                     <SwiperSlide key={index}>
                       <img
-                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px] "
                         src={url}
                         alt={`product-${index}`}
                       />
@@ -148,7 +129,7 @@ const ProductDetails = () => {
                   <SwiperSlide>
                     <img
                       className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
-                      src="/assets/product6.png" // fallback
+                      src="/assets/product6.png"
                       alt="default product"
                     />
                   </SwiperSlide>
@@ -191,7 +172,6 @@ const ProductDetails = () => {
                   </h1>
                 </div>
 
-                {/* <div className="w-[454px] h-[1px] border-[1px] border-[##E6E6E6]"></div> */}
                 <div className="w-[454.03px] h-auto">
                   <h1 className="font-poppins font-normal text-[11.19px] leading-[16.79px] text-[#808080]">
                     {product?.description}
@@ -270,12 +250,6 @@ const ProductDetails = () => {
                 product?.ratings.map((item) => (
                   <CustomerFeedback item={item} />
                 ))}
-
-              {/* <div className="w-[110.16px] h-[35.38px] py-[11.19px] px-[25.58px] gap-[9.59px] rounded-[34.37px] bg-[#001D580D]">
-                <h1 className="font-poppins font-semibold text-[11.19px] leading-[13.43px] text-secondaryBrand">
-                  Load More
-                </h1>
-              </div> */}
             </div>
           </div>
         )}

@@ -71,8 +71,7 @@ const AddQuantityModal = ({
   };
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-      {console.log("-=-=-=-=productQuantities-===", productQuantities)}
-      <div className="w-[572px] h-[541px] gap-[32px]">
+       <div className="w-[572px] h-[541px] gap-[32px]">
         <div className="flex flex-col justify-center items-center space-y-[32px]  bg-white p-[44px] rounded-[24px] shadow-lg w-[572px] h-auto relative">
           <h1 className="w-[508px] h-[36px] font-poppins font-bold text-[24px] leading-[36px] text-[#434343]">
             Update Product Quantities
