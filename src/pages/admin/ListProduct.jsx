@@ -28,6 +28,7 @@ const ListProduct = () => {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
+  const [inputs, setInputs] = useState([""]);
 
   const handleFileUpload = (event) => {
     // const files = Array.from(event.target.files);
@@ -69,14 +70,14 @@ const ListProduct = () => {
 
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/brands`, {
+      const response = await axios.get(`${BASE_URL}/api/brands/getAll`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       console.log(response.data);
-      setBrandsList(response.data.content);
+      setBrandsList(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -177,6 +178,14 @@ const ListProduct = () => {
       return;
     }
 
+    // Check numeric values
+    if (Number(price) <= 0 || Number(stockQuantity) <= 0) {
+      setToastMessage("Price and stock quantity must be greater than 0!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
     try {
       const formData = new FormData();
 
@@ -228,13 +237,28 @@ const ListProduct = () => {
       setToastVisible(true);
     }
   };
+
+  const handleAddInput = () => {
+    setInputs([...inputs, ""]); // add new empty input
+  };
+
+  const handleInputChange = (value, index) => {
+    const updatedInputs = [...inputs];
+    updatedInputs[index] = value;
+    setInputs(updatedInputs);
+  };
+  const handleRemove = (index) => {
+    const updatedSizes = inputs.filter((_, i) => i !== index);
+    setInputs(updatedSizes);
+  };
+
   return (
     <div className="flex flex-col justify-center items-start">
       {/* <AdminHeader title="List Product" /> */}
       <div className="w-[1108px] h-[60px] flex justify-between items-center">
         <div className="w-[344px] h-[60px] flex flex-col justify-start items-start">
           <h1 className="font-poppins font-bold text-[26px] leading-[39px] text-[#434343]">
-            List Product
+            Add Product
           </h1>
         </div>
         <div className="flex justify-start items-center gap-[24px]">
@@ -291,40 +315,7 @@ const ListProduct = () => {
               />
             </div>
           </div>
-          {/* <div className="w-[566px] h-[231px] flex flex-col justify-start items-start bg-white rounded-[16px] p-[32px] space-y-[16px]">
-            <label
-              htmlFor=""
-              className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]"
-            >
-              Media
-            </label>
-            <div className="flex justify-center items-center w-[502px] h-[130px] rounded-[8px] border-[1px] gap-[4px] border-[#00000014] bg-white">
-              <div className="flex flex-col justify-start items-center space-y-[2px] w-[140px] h-[44px]">
-                <div className="flex justify-start items-center w-full h-[24px] gap-[4px]">
-                  <div className="flex justify-center items-center p-[4px] rounded-[4px] w-[20px] h-[20px] bg-[#1FA4EF1A]">
-                    <svg
-                      width="8"
-                      height="8"
-                      viewBox="0 0 8 8"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M4 0.25C4.4142 0.25 4.75 0.58579 4.75 1V3.25H7C7.4142 3.25 7.75 3.5858 7.75 4C7.75 4.4142 7.4142 4.75 7 4.75H4.75V7C4.75 7.4142 4.4142 7.75 4 7.75C3.5858 7.75 3.25 7.4142 3.25 7V4.75H1C0.58579 4.75 0.25 4.4142 0.25 4C0.25 3.5858 0.58579 3.25 1 3.25H3.25V1C3.25 0.58579 3.5858 0.25 4 0.25Z"
-                        fill="#001D58"
-                      />
-                    </svg>
-                  </div>
-                  <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#001D58]">
-                    upload file / uRL
-                  </p>
-                </div>
-                <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#949494]">
-                  accept image,3d, JPG
-                </p>
-              </div>
-            </div>
-          </div> */}
+
           <div className="w-[566px] flex flex-col justify-start items-start bg-white rounded-[16px] p-[32px] space-y-[16px]">
             <label
               htmlFor="productImageUpload"
@@ -488,32 +479,34 @@ const ListProduct = () => {
                         Add Category
                       </p>
                     </div>
-                    {categoriesList?.map((category) => (
-                      <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
-                        <div
-                          onClick={() => {
-                            setCategoryId(category.categoryId);
-                            setIsCategoryOpen(false);
-                          }}
-                          className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
-                            categoriesList.indexOf(category) ===
-                            categoriesList.length - 1
-                              ? ""
-                              : "border-b-[1px] border-[#0000000D]"
-                          }`}
-                        >
-                          <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
-                            {category.name}
-                          </p>
-                          <input
-                            type="radio"
-                            name=""
-                            id=""
-                            className="w-[16px] h-[16px] accent-[#D2D4DA]"
-                          />
+                    <div className="h-[295px] overflow-y-scroll ">
+                      {categoriesList?.map((category) => (
+                        <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
+                          <div
+                            onClick={() => {
+                              setCategoryId(category.categoryId);
+                              setIsCategoryOpen(false);
+                            }}
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
+                              categoriesList.indexOf(category) ===
+                              categoriesList.length - 1
+                                ? ""
+                                : "border-b-[1px] border-[#0000000D]"
+                            }`}
+                          >
+                            <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
+                              {category.name}
+                            </p>
+                            <input
+                              type="radio"
+                              name=""
+                              id=""
+                              className="w-[16px] h-[16px] accent-[#D2D4DA]"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -573,49 +566,48 @@ const ListProduct = () => {
                         Add Brand
                       </p>
                     </div>
-                    {brandsList?.map((brand) => (
-                      <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
-                        <div
-                          onClick={() => {
-                            setBrandId(brand.id);
-                            setIsBrandOpen(false);
-                          }}
-                          className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
-                            brandsList.indexOf(brand) === brandsList.length - 1
-                              ? ""
-                              : "border-b-[1px] border-[#0000000D]"
-                          }`}
-                        >
-                          <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
-                            {brand.name}
-                          </p>
-                          <input
-                            type="radio"
-                            name=""
-                            id=""
-                            className="w-[16px] h-[16px] accent-[#D2D4DA]"
-                          />
+                    <div className="h-[295px] overflow-y-scroll ">
+                      {brandsList?.map((brand) => (
+                        <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
+                          <div
+                            onClick={() => {
+                              setBrandId(brand.id);
+                              setIsBrandOpen(false);
+                            }}
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
+                              brandsList.indexOf(brand) ===
+                              brandsList.length - 1
+                                ? ""
+                                : "border-b-[1px] border-[#0000000D]"
+                            }`}
+                          >
+                            <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
+                              {brand.name}
+                            </p>
+                            <input
+                              type="radio"
+                              name=""
+                              id=""
+                              className="w-[16px] h-[16px] accent-[#D2D4DA]"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
             </div>
           </div>
-          <div className="flex flex-col justify-start items-start p-[32px] space-y-[16px] w-[507px] h-[295px] bg-white rounded-[16px]">
+          <div className="flex flex-col justify-start items-start p-[32px] space-y-[16px] w-[507px] bg-white rounded-[16px]">
+            {/* Checkbox */}
             <div className="w-[282px] h-[53px] flex flex-col justify-start items-start space-y-[10px]">
-              <label
-                htmlFor=""
-                className="font-poppins font-semibold text-[14px] leading-[21px] text-black"
-              >
+              <label className="font-poppins font-semibold text-[14px] leading-[21px] text-black">
                 Options
               </label>
               <div className="flex justify-start items-center w-[282px] h-[24px] gap-[8px]">
                 <input
                   type="checkbox"
-                  name=""
-                  id=""
                   className="w-[20px] h-[20px] border-[1px] border-[#001D58]"
                 />
                 <p className="font-poppins font-normal text-[14px] leading-[21px] text-black">
@@ -623,17 +615,47 @@ const ListProduct = () => {
                 </p>
               </div>
             </div>
-            <input
-              type="text"
-              placeholder="Total Stock"
-              className="w-[443px] h-[53px] rounded-[8px] border-[1px] p-[16px] gap-[8px] border-[#E5E5E5]"
-            />
-            <input
-              type="text"
-              placeholder="Total Stock"
-              className="w-[443px] h-[53px] rounded-[8px] border-[1px] p-[16px] gap-[8px] border-[#E5E5E5]"
-            />
-            <div className="flex justify-start items-center gap-[4px]">
+
+            {/* Dynamic Inputs */}
+            {inputs.map((value, index) => (
+              <div className="w-[443px] flex flex-row h-[53px] rounded-[8px] border-[1px] items-center px-[16px] gap-[8px] border-[#E5E5E5]">
+                <input
+                  key={index}
+                  type="text"
+                  placeholder={`Size ${index + 1}`}
+                  value={value}
+                  onChange={(e) => handleInputChange(e.target.value, index)}
+                  className="w-[95%]"
+                />
+                <svg
+                  width="23"
+                  height="23"
+                  viewBox="0 0 23 23"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={() => handleRemove(index)}
+                >
+                  <path
+                    d="M15.3334 7.66675L7.66675 15.3334"
+                    stroke="#1C274C"
+                    stroke-width="2.875"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M7.66659 7.66675L15.3333 15.3334"
+                    stroke="#1C274C"
+                    stroke-width="2.875"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+            ))}
+
+            {/* Add Another Button */}
+            <div
+              onClick={handleAddInput}
+              className="flex justify-start items-center gap-[4px] cursor-pointer"
+            >
               <div className="w-[24px] h-[24px] flex justify-center items-center">
                 <div className="flex justify-center items-center w-[20px] h-[20px] rounded-[4px] p-[4px] bg-[#F5FBFC]">
                   <svg
@@ -661,6 +683,7 @@ const ListProduct = () => {
         <AddBrandModal
           isModalOpen={isAddBrandModal}
           setIsModalOpen={setIsAddBrandModal}
+          getAllBrands={getAllBrands}
         />
       )}
       {isAddCategoryModal && (
@@ -668,6 +691,7 @@ const ListProduct = () => {
           isModalOpen={isAddCategoryModal}
           setIsModalOpen={setIsAddCategoryModal}
           categoriesList={categoriesList}
+          getAllCategories={getAllCategories}
         />
       )}
       <Toast

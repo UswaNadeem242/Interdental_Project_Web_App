@@ -56,76 +56,6 @@ const AddCategoryModal = ({
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div className="w-[303px] h-[295px] gap-[16px]">
         <div className="flex flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg w-[303px] h-auto relative">
-          {/* <div className="w-[114px] h-[121px] flex flex-col justify-center items-center space-y-[8px]">
-            {uploadedImage ? (
-              <img
-                src={uploadedImage}
-                alt="Uploaded Brand Logo"
-                className="w-[95px] h-[95px] object-cover rounded-full"
-              />
-            ) : (
-              <label htmlFor="fileUpload" className="cursor-pointer">
-                <svg
-                  width="95"
-                  height="95"
-                  viewBox="0 0 95 95"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clipPath="url(#clip0_14178_12766)">
-                    <rect
-                      width="95"
-                      height="95"
-                      rx="47.5"
-                      fill="#EF6A1F"
-                      fillOpacity="0.05"
-                    />
-                    <circle cx="47.5" cy="47.5" r="47.5" fill="#F8F8F8" />
-                    <path
-                      d="M59.1245 51.3748V56.5414C59.1245 57.2266 58.8523 57.8836 58.3679 58.3681C57.8834 58.8526 57.2263 59.1248 56.5412 59.1248H38.4578C37.7727 59.1248 37.1156 58.8526 36.6312 58.3681C36.1467 57.8836 35.8745 57.2266 35.8745 56.5414V51.3748"
-                      stroke="#001D58"
-                      strokeWidth="2.58333"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M53.9596 42.3328L47.5013 35.8745L41.043 42.3328"
-                      stroke="#001D58"
-                      strokeWidth="2.58333"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M47.5 35.8745V51.3745"
-                      stroke="#001D58"
-                      strokeWidth="2.58333"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_14178_12766">
-                      <rect width="95" height="95" rx="47.5" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </label>
-            )}
-            <input
-              id="fileUpload"
-              type="file"
-              accept="image/*"
-              onChange={handleFileUpload}
-              className="hidden"
-              ref={fileInputRef}
-            />
-            <p
-              onClick={triggerFileUpload}
-              className="font-poppins font-normal text-[12px] leading-[18px] text-[#001D58]"
-            >
-              {uploadedImage ? "Change Logo" : "Upload Brand Logo"}
-            </p>
-          </div> */}
           <h1 className="font-poppins font-semibold text-[16px] leading-[21px] text-[#434343]">
             Add New Category
           </h1>
@@ -202,32 +132,34 @@ const AddCategoryModal = ({
                       Add Category
                     </p>
                   </div>
-                  {categoriesList?.map((category) => (
-                    <div className="w-[271px] h-auto flex flex-col justify-start items-start space-y-[8px]">
-                      <div
-                        onClick={() => {
-                          setParentCategoryId(category.categoryId);
-                          setIsCategoryOpen(false);
-                        }}
-                        className={`w-[245px] h-[28px] py-[10px] flex justify-start items-center gap-[2px] bg-white cursor-pointer ${
-                          categoriesList.indexOf(category) ===
-                          categoriesList.length - 1
-                            ? ""
-                            : "border-b-[1px] border-[#0000000D]"
-                        }`}
-                      >
-                        <p className="w-[271px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
-                          {category.name}
-                        </p>
-                        <input
-                          type="radio"
-                          name=""
-                          id=""
-                          className="w-[16px] h-[16px] accent-[#D2D4DA]"
-                        />
+                  <div className=" h-[295px]  overflow-y-scroll">
+                    {categoriesList?.map((category) => (
+                      <div className="w-[271px] flex flex-col  justify-start items-start space-y-[8px]">
+                        <div
+                          onClick={() => {
+                            setParentCategoryId(category.categoryId);
+                            setIsCategoryOpen(false);
+                          }}
+                          className={`w-[245px] h-[28px] py-[10px] flex justify-start items-center gap-[2px] bg-white cursor-pointer ${
+                            categoriesList.indexOf(category) ===
+                            categoriesList.length - 1
+                              ? ""
+                              : "border-b-[1px] border-[#0000000D]"
+                          }`}
+                        >
+                          <p className="w-[271px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
+                            {category.name}
+                          </p>
+                          <input
+                            type="radio"
+                            name=""
+                            id=""
+                            className="w-[16px] h-[16px] accent-[#D2D4DA]"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

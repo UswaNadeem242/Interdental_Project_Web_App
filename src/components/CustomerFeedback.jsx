@@ -10,7 +10,7 @@ const CustomerFeedback = ({ item }) => {
           className="w-[33.98px] h-[31.97px]"
         />
         <div className="flex flex-col justify-start items-start w-[198.96px] h-[33.99px] space-y-[1.6px]">
-          <h1>{item.name}</h1>
+          <h1>{item?.name}</h1>
           <div className="flex w-fit h-[12.79px]">
             {[...Array(item.rating)].map((_, index) => (
               <img
@@ -28,7 +28,7 @@ const CustomerFeedback = ({ item }) => {
         </div>
       </div>
       <h1 className="font-poppins font-normal text-[12px] leading-[18px] text-[#808080]">
-        {item.review}
+        {item?.review}
       </h1>
     </div>
   );

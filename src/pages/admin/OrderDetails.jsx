@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../config";
 import axios from "axios";
 import ProductOrder from "./ProductOrder";
+import AreYouSureModel from "../../modals/AreYouSureModel";
 
 const OrderDetails = () => {
   const params = useParams();
@@ -55,8 +56,10 @@ const OrderDetails = () => {
         }
       );
       getAllOrders();
+      setIsmodelShow();
     } catch (error) {}
   };
+  const [isModelShow, setIsmodelShow] = useState(false);
   return (
     <div className="flex flex-col justify-center items-start space-y-6">
       <AdminHeader title="Order" subTitle={params.id} />
@@ -146,9 +149,9 @@ const OrderDetails = () => {
               >
                 <path
                   d="M9.00019 5.34523e-06C11.3002 5.34523e-06 13.6001 0.878755 15.3604 2.63764C16.197 3.4724 16.8607 4.46397 17.3136 5.55558C17.7665 6.6472 17.9996 7.81742 17.9996 8.99924C17.9996 10.1811 17.7665 11.3513 17.3136 12.4429C16.8607 13.5345 16.197 14.5261 15.3604 15.3608C14.5257 16.1974 13.5341 16.8612 12.4425 17.314C11.3509 17.7669 10.1806 18 8.99881 18C7.81698 18 6.64676 17.7669 5.55515 17.314C4.46353 16.8612 3.47196 16.1974 2.63721 15.3608C1.80061 14.5261 1.13688 13.5345 0.684018 12.4429C0.231153 11.3513 -0.00195312 10.1811 -0.00195312 8.99924C-0.00195312 7.81742 0.231153 6.6472 0.684018 5.55558C1.13688 4.46397 1.80061 3.4724 2.63721 2.63764C3.47171 1.80042 4.46345 1.13639 5.55544 0.683736C6.64742 0.231078 7.8181 -0.00128506 9.00019 5.34523e-06ZM13.0964 6.23014C12.9654 6.24268 12.8407 6.29211 12.7366 6.37268L7.67999 10.1644L5.33712 7.82296C4.82924 7.29433 3.82871 8.29347 4.35873 8.80135L7.12645 11.5691C7.24643 11.6825 7.40196 11.751 7.56667 11.7628C7.73138 11.7747 7.89511 11.7292 8.03011 11.6341L13.5655 7.48253C14.0305 7.14349 13.7441 6.23982 13.1684 6.23152C13.1449 6.23032 13.1213 6.23032 13.0978 6.23152L13.0964 6.23014Z"
-                  fill={orders.orderStatus === "DELIVERD"
-                    ? "#94D3DD"
-                    : "#DDDDDD"}
+                  fill={
+                    orders.orderStatus === "DELIVERD" ? "#94D3DD" : "#DDDDDD"
+                  }
                 />
               </svg>
             </div>
@@ -375,7 +378,17 @@ const OrderDetails = () => {
           </div>
         </div>
       )}
-      {orders && <ProductOrder orders={orders} handleUpdateStatus={handleUpdateStatus}/>}
+      {orders && (
+        <ProductOrder orders={orders} setIsmodelShow={setIsmodelShow} />
+      )}
+      {isModelShow && (
+        <AreYouSureModel
+          title=" Are You Sure"
+          desc=" You can not undo the action"
+          setIsModalOpen={setIsmodelShow}
+          handleUpdateStatus={handleUpdateStatus}
+        />
+      )}
     </div>
   );
 };

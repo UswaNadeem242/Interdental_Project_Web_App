@@ -63,28 +63,17 @@ const AddBrandModal = ({ isModalOpen, getAllBrands, setIsModalOpen }) => {
 
       console.log("✅ Success:", response.data);
       getAllBrands();
-      alert("Brand added successfully");
-
       setIsModalOpen(false);
+      alert("Brand added successfully");
     } catch (error) {
       console.error("❌ Error:", error);
     }
   };
 
-  //   useEffect(() => {
-  //     if (isModalOpen) {
-  //       document.body.classList.add("overflow-hidden");
-  //     } else {
-  //       document.body.classList.remove("overflow-hidden");
-  //     }
-  //     return () => document.body.classList.remove("overflow-hidden");
-  //   }, [isModalOpen]);
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div className="w-[303px] h-[295px] gap-[16px]">
         <div className="flex flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg w-[303px] h-auto relative">
-          {console.log("=--=-=--==--uploadedImage=-=-=-==--=", uploadedImage)}
           <div className="w-[114px] h-[121px] flex flex-col justify-center items-center space-y-[8px]">
             {uploadedImage ? (
               <img
