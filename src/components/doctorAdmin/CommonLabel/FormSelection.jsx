@@ -1,7 +1,7 @@
 
 export default function FormSection({ title, children, action, color, className }) {
     return (
-        <section className={`${className} rounded-lg   bg-white   p-4 `}>
+        <section className={`${className} rounded-lg bg-white p-4 `}>
             {/* border border-gray-200 */}
             <div className="flex items-center justify-between">
                 {title && (

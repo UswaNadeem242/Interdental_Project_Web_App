@@ -25,8 +25,10 @@ const ProductDetails = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [isQuantityModalOpen, setIsQuantityModalOpen] = useState(false);
   const [isModelShow, setIsmodelShow] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const getProductDetails = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `${BASE_URL}/api/product/get/${productId}`,
@@ -41,6 +43,8 @@ const ProductDetails = () => {
       setProduct(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // stop loading after request finishes
     }
   };
   const getAllCategories = async () => {
@@ -85,38 +89,10 @@ const ProductDetails = () => {
   };
   return (
     <div className="flex justify-center items-center">
-      {console.log("-=-=-==--=productId=-=-==-=-=", productId)}
-      <div className="flex flex-col justify-start items-start w-[1108px] h-auto space-y-[32px] mt-0 pt-[8px] ">
+      <div className="flex flex-col justify-start items-start w-[1108px] h-auto space-y-[32px] mt-0 pt-2 ">
         <AdminHeader title="Product Detail" />
-        <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
-          <div className="flex justify-center items-center w-[1108px] h-[501px]">
-            {/* <div className="flex flex-col justify-start items-center w-[94px] h-[503px] space-y-[8px]">
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-              <img
-                src="/assets/product6.png"
-                alt="product"
-                className="w-[94px] h-[95px] rounded-[16px] border-[1px] border-[#0000000D] "
-              />
-            </div> */}
+        <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-2xl bg-white">
+          <div className="flex justify-center items-center w-[1108px] h-[501px] gap-8">
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
                 spaceBetween={30}
@@ -130,15 +106,19 @@ const ProductDetails = () => {
                 }}
                 navigation={false}
                 modules={[Autoplay, Pagination, Navigation]}
-                className="w-[100%] h-[100%] flex justify-center items-center text-center"
+                className="w-full h-full flex justify-center items-center text-center"
               >
-                {product &&
-                product.imageUrls &&
-                product.imageUrls.length > 0 ? (
+                {loading ? (
+                  <SwiperSlide>
+                    <div className="h-[300px] w-full animate-pulse rounded-2xl flex items-center justify-center">
+                      <p className="text-secondaryBrand text-lg font-medium">Loading...</p>
+                    </div>
+                  </SwiperSlide>
+                ) : product && product.imageUrls && product.imageUrls.length > 0 ? (
                   product.imageUrls.map((url, index) => (
                     <SwiperSlide key={index}>
                       <img
-                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                        className="object-cover h-[90%]  w-full overflow-hidden rounded-2xl "
                         src={url}
                         alt={`product-${index}`}
                       />
@@ -147,8 +127,8 @@ const ProductDetails = () => {
                 ) : (
                   <SwiperSlide>
                     <img
-                      className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
-                      src="/assets/product6.png" // fallback
+                      className="object-cover h-[90%] w-full overflow-hidden rounded-2xl"
+                      src="/assets/product6.png"
                       alt="default product"
                     />
                   </SwiperSlide>
@@ -162,7 +142,7 @@ const ProductDetails = () => {
                     <h1 className="font-poppins font-semibold text-[28.78px] w-[365px] h-[35px] leading-[34.53px] text-[#1A1A1A]">
                       {product?.name}
                     </h1>
-                    <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-[8px] px-[12.79px] gap-[7.99px] bg-[#001D580D]">
+                    <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-2 px-[12.79px] gap-[7.99px] bg-[#001D580D]">
                       <h1 className="font-poppins font-normal text-secondaryBrand text-[11.19px] leading-[16.79px] w-[44px] h-[17px]">
                         In Stock
                       </h1>
@@ -191,7 +171,6 @@ const ProductDetails = () => {
                   </h1>
                 </div>
 
-                {/* <div className="w-[454px] h-[1px] border-[1px] border-[##E6E6E6]"></div> */}
                 <div className="w-[454.03px] h-auto">
                   <h1 className="font-poppins font-normal text-[11.19px] leading-[16.79px] text-[#808080]">
                     {product?.description}
@@ -200,19 +179,19 @@ const ProductDetails = () => {
               </div>
               <div className="w-[182px] h-[56px] flex justify-start items-start gap-[32px]">
                 <div className="flex flex-col justify-start items-start space-y-[8px] w-auto">
-                  <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
+                  <p className="font-poppins font-normal text-sm leading-[21px] text-[#434343]">
                     Sold
                   </p>
-                  <p className="font-poppins font-semibold text-[18px] leading-[27px] text-[#434343]">
+                  <p className="font-poppins font-semibold text-lg leading-[27px] text-[#434343]">
                     200
                   </p>
                 </div>
                 <div className="h-full border-[1px] border-[#0000000D]"></div>
                 <div className="flex flex-col justify-start items-start space-y-[8px] w-[58px]">
-                  <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
+                  <p className="font-poppins font-normal text-sm leading-[21px] text-[#434343]">
                     In Stock
                   </p>
-                  <p className="font-poppins font-semibold text-[18px] leading-[27px] text-[#434343]">
+                  <p className="font-poppins font-semibold text-lg leading-[27px] text-[#434343]">
                     {product?.stockQuantity}
                   </p>
                 </div>
@@ -222,7 +201,7 @@ const ProductDetails = () => {
                   onClick={() => setIsmodelShow(true)}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-[#E134341A]  py-[17px] px-[24px] rounded-[28px]"
                 >
-                  <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#E13434]">
+                  <h1 className="font-poppins font-semibold text-sm leading-[21px] text-[#E13434]">
                     Delete
                   </h1>
                 </div>
@@ -230,7 +209,7 @@ const ProductDetails = () => {
                   onClick={() => navigate(`/admin/update-product/${productId}`)}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
                 >
-                  <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
+                  <h1 className="font-poppins font-semibold text-sm leading-[21px] text-secondaryBrand">
                     Edit
                   </h1>
                 </div>
@@ -238,16 +217,16 @@ const ProductDetails = () => {
                   onClick={() => setIsQuantityModalOpen(true)}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
                 >
-                  <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-white">
+                  <h1 className="font-poppins font-semibold text-sm leading-[21px] text-white">
                     Add Stock
                   </h1>
                 </div>
               </div>
               <div className="flex justify-start items-center w-full h-[18px] gap-[4.8px]">
-                <h1 className="font-poppins font-semibold text-[12px] leading-[18px] text-[#1A1A1A]">
+                <h1 className="font-poppins font-semibold text-xs leading-[18px] text-[#1A1A1A]">
                   Category:
                 </h1>
-                <h1 className="font-poppins font-normal text-[12px] leading-[18px] text-[#808080]">
+                <h1 className="font-poppins font-normal text-xs leading-[18px] text-[#808080]">
                   {
                     categoriesList.find(
                       (category) => category.categoryId === product.categoryId
@@ -260,7 +239,7 @@ const ProductDetails = () => {
         </div>
         {product && (
           <div className="flex flex-col justify-start items-start w-full h-auto py-[20px] px-[24px] space-y-[25.58px] rounded-[16px] bg-white">
-            <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-[#434343]">
+            <h1 className="font-poppins font-semibold text-lg leading-[27px] text-[#434343]">
               Customer Feedback
             </h1>
             <div className="w-[1108px] h-[276.71px] space-y-[15.99px] overflow-y-scroll">
@@ -270,12 +249,6 @@ const ProductDetails = () => {
                 product?.ratings.map((item) => (
                   <CustomerFeedback item={item} />
                 ))}
-
-              {/* <div className="w-[110.16px] h-[35.38px] py-[11.19px] px-[25.58px] gap-[9.59px] rounded-[34.37px] bg-[#001D580D]">
-                <h1 className="font-poppins font-semibold text-[11.19px] leading-[13.43px] text-secondaryBrand">
-                  Load More
-                </h1>
-              </div> */}
             </div>
           </div>
         )}

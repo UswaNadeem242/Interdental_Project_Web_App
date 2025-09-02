@@ -1,14 +1,15 @@
 import React from "react";
-import {  Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import DoctorOrder from "./doctorPage";
 
 
 const DoctorAdmin = () => {
   return (
-    <div className="flex justify-start items-start w-full h-[982px]">
+    <div className="flex justify-start items-start w-screen min-h-screen">
+      {/* w-full h-[982px]  */}
       <Routes>
-        <Route path="/doctor" element={<DoctorOrder/>} />
+        <Route path="/doctor" element={<DoctorOrder />} />
       </Routes>
     </div>
   );
