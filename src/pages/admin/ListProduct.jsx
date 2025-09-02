@@ -229,9 +229,9 @@ const ListProduct = () => {
     }
   };
   return (
-    <div className="flex flex-col justify-center items-start">
+    <div className="flex flex-col justify-center items-start bg-[#F8F8F8]">
       {/* <AdminHeader title="List Product" /> */}
-      <div className="w-[1108px] h-[60px] flex justify-between items-center">
+      <div className="w-[1108px] h-[60px] flex justify-between items-center ">
         <div className="w-[344px] h-[60px] flex flex-col justify-start items-start">
           <h1 className="font-poppins font-bold text-[26px] leading-[39px] text-[#434343]">
             Add Product
@@ -257,7 +257,7 @@ const ListProduct = () => {
         </div>
       </div>
 
-      <div className="w-[1108px] h-[725px] gap-[32px] flex justify-start items-start mt-8">
+      <div className="w-[1108px] h-[725px] gap-[32px] flex justify-start items-start mt-8x">
         <div className="w-[566px] h-auto flex flex-col justify-start items-center space-y-[20px]">
           <div className="w-[566px] h-[270px] bg-white flex flex-col space-y-[16px] p-[32px] rounded-[16px]">
             <div className="w-[502px] h-[82px] flex flex-col space-y-[8px]">
