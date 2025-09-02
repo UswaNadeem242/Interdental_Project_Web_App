@@ -53,8 +53,8 @@ const AddCategoryModal = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-      <div className="w-[303px] h-[295px] gap-[16px]">
+    <div className="fixed inset-0 flex md:items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+      <div className="w-[303px]  gap-4 m-32">
         <div className="flex flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg w-[303px] h-auto relative">
           <h1 className="font-poppins font-semibold text-[16px] leading-[21px] text-[#434343]">
             Add New Category
@@ -132,7 +132,7 @@ const AddCategoryModal = ({
                       Add Category
                     </p>
                   </div>
-                  <div className=" h-[295px]  overflow-y-scroll">
+                  <div className=" h-[190px]  overflow-y-scroll">
                     {categoriesList?.map((category) => (
                       <div className="w-[271px] flex flex-col  justify-start items-start space-y-[8px]">
                         <div

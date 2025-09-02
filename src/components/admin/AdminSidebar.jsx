@@ -16,8 +16,9 @@ const AdminSidebar = () => {
     navigate("/");
   };
   return (
-    <div className="flex flex-col justify-start items-start rounded-[16px] space-y-[32px] w-[220px] h-[1105px] bg-[#FFFFFF]">
-      <div className="flex flex-col justify-start items-start gap-[32px] space-y-[28px] w-[220px] h-[1105px] rounded-[16px] bg-[#FFFFFF]">
+
+    <div className="flex flex-col justify-start items-start rounded-[16px] space-y-[32px] w-[220px] h-[1105px] bg-[#FFFFFF] md:block hidden">
+      <div className="flex flex-col justify-start items-start gap-[32px] space-y-[28px] w-[220px] h-[1105px] rounded-[16px] bg-[#FFFFFF] ">
         <div className="w-[220px] h-[72px] py-[16px] px-[24px] gap-[12px]">
           <img
             src="/assets/logo.png"

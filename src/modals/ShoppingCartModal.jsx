@@ -4,6 +4,7 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import Toast from "../components/Toast";
 // import product2 from "../assets/product2.png";
 
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
@@ -25,6 +26,11 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [state, setState] = useState("");
   const [street, setStreet] = useState("");
   const { user } = useAuth();
+
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+  const [toastVisible, setToastVisible] = useState(false);
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -34,11 +40,6 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     console.log("=--=-==--=user=--=-===-", user);
 
     try {
-      // const payload = {
-      //   userId: ,
-      //   orderItems: cart.items,
-      // };
-
       const payload = {
         userId: user.id,
         name: name,
@@ -131,6 +132,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const handleInputChange = (e) => {
     setCountry(e);
     setShowCoutries(true);
+  };
+
+  const closeToast = () => {
+    setToastVisible(false);
   };
 
   return (
@@ -433,6 +438,19 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </div>
                 </div>
               </div>
+              {!name ||
+                !email ||
+                !phone ||
+                !country ||
+                !state ||
+                !city ||
+                (!street && (
+                  <div className="w-[261.5] h-[60px] flex flex-col justify-start items-start space-y-[8px]">
+                    <p className="font-poppins font-medium text-[14px] leading-[18px] text-[#B71212]">
+                      Please fill all required fields
+                    </p>
+                  </div>
+                ))}
               {/* Confirm order */}
               <div className="flex justify-start items-center bg-[#FAFAFA] fixed bottom-0 w-[523px] h-[57px] gap-[20px] pb-[24px]">
                 <div
@@ -444,7 +462,22 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </h1>
                 </div>
                 <div
-                  onClick={() => setActiveTab("review")}
+                  onClick={() => {
+                    if (
+                      !name ||
+                      !email ||
+                      !phone ||
+                      !country ||
+                      !state ||
+                      !city ||
+                      !street
+                    ) {
+                      setToastMessage("Please fill all required fields");
+                      return; // Stop execution if validation fails
+                    }
+
+                    setActiveTab("review");
+                  }}
                   className="flex justify-center items-center cursor-pointer w-[251.5px] h-[55px] rounded-[32px] gap-[8px] bg-secondaryBrand"
                 >
                   <h1 className="flex justify-center items-center leading-[21px] font-poppins font-semibold text-white text-[14px] w-full">
@@ -494,7 +527,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     cart?.items?.map((item) => (
                       <div className="flex justify-center items-center w-[555px] h-[103.33px] gap-[16px]">
                         <img
-                          src="/assets/product2.png"
+                          src={item?.imageUrl[0]}
                           alt="product"
                           className="w-[98px] h-[103.33px]"
                         />
@@ -764,6 +797,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
           </div>
         )}
       </div>
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
     </div>
   );
 };

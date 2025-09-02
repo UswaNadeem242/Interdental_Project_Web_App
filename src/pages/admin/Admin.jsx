@@ -13,6 +13,7 @@ import DoctorOrder from "../doctorAdmin/OrderStep/RestorationDesignForm";
 const Admin = () => {
   return (
     <div className="flex justify-start items-start w-full h-[982px]">
+      {/*  */}
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/orders" element={<Orders />} />
@@ -26,6 +27,11 @@ const Admin = () => {
         <Route path="/doctor" element={<DoctorOrder />} />
       </Routes>
     </div>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 2e6e48dafee1c7a5b35201ecac1cc1ad742631ea
   );
 };
 
