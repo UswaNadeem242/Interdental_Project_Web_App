@@ -16,6 +16,7 @@ const Admin = () => {
   return (
 
     <div className="flex justify-start items-start w-full h-[982px]">
+      {/*  */}
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/orders" element={<Orders />} />
@@ -33,7 +34,7 @@ const Admin = () => {
 
     </div>
 
-    
+
   );
 };
 

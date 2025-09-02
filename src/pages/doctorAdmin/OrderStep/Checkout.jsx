@@ -25,27 +25,27 @@ const CheckoutForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center py-10 ">
-      <div className="w-[1200px] mx-auto ">
+    <div className=" bg-gray-100 flex justify-center py-10 ">
+      <div className=" px-4">
         <form
           onSubmit={handleSubmit}
-          className="bg-grey rounded-xl shadow-lg w-full max-w-6xl grid md:grid-cols-2 gap-6 p-6 font-poppins"
+          className="grid gap-8 grid-cols-1 lg:grid-cols-12  font-poppins"
         >
           {/* Left Section - Form */}
-          <div className="space-y-6">
+          <div className="lg:col-span-8 bg-white rounded-xl shadow-lg p-6 space-y-6">
             {/* Buyer’s Details */}
             <div>
               <h2 className="text-lg  mb-3 font-inter font-medium">
                 Buyer’s Details
               </h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className=" grid grid-cols-1  gap-4  sm:grid-cols-12">
                 <input
                   type="text"
                   name="fullName"
                   placeholder="Full Name"
                   value={formData.fullName}
                   onChange={handleChange}
-                  className="border rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                  className="border sm:col-span-6   rounded-lg px-3 py-2 w-full bg-white text-gray-700"
                 />
                 <input
                   type="text"
@@ -53,7 +53,7 @@ const CheckoutForm = () => {
                   placeholder="Contact Number"
                   value={formData.contactNumber}
                   onChange={handleChange}
-                  className="border  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                  className="border sm:col-span-6   rounded-lg px-3 py-2 w-full bg-white text-gray-700"
                 />
               </div>
               <input
@@ -252,7 +252,7 @@ const CheckoutForm = () => {
           </div>
 
           {/* Right Section - Order Summary */}
-          <div className="bg-white shadow-md rounded-xl border border-gray-200 p-6 flex flex-col justify-between">
+          <div className="md:col-span-4 bg-white shadow-md rounded-xl border border-gray-200 p-6 flex flex-col justify-between">
             <div>
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Order Summary
