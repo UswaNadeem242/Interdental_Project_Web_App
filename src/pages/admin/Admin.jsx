@@ -27,11 +27,6 @@ const Admin = () => {
         <Route path="/doctor" element={<DoctorOrder />} />
       </Routes>
     </div>
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 2e6e48dafee1c7a5b35201ecac1cc1ad742631ea
   );
 };
 
