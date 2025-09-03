@@ -24,7 +24,7 @@ const MobileSidebar = () => {
             {/* Mobile Side Panel */}
             <div
                 className={`
-          fixed top-0 left-0 h-screen w-[220px] bg-white rounded-2xl shadow-lg transition-transform duration-300 z-40 md:hidden
+          fixed top-0 left-0 h-screen w-[220px] bg-white  rounded-r-2xl shadow-lg transition-transform duration-300 z-40 md:hidden
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}
             >

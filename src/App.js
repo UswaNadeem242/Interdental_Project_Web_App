@@ -30,7 +30,7 @@ import DoctorAdmin from "./pages/doctorAdmin/Doctor";
 import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
 import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
 import DoctorHeader from "./components/doctorAdmin/doctorHeader";
- 
+
 const MainLayout = ({ children }) => (
   <>
     <Header />
@@ -65,7 +65,7 @@ const PlainLayout = ({ children }) => {
         </header>
 
         {/* Main Content */}
-        <main className="bg-gray-100 flex-1 p-6 mt-28 md:ml-4  rounded-xl overflow-auto">
+        <main className="flex-1 md:p-6 p-0 mt-20 md:ml-4  rounded-xl overflow-auto">
           {children}
         </main>
       </div>
