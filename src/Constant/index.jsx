@@ -52,7 +52,7 @@ export const SCANNER_TYPE = [
 ];
 
 export const menuItems = [
-    { name: "Dashboard", path: "/doctorAdmin/dashboard", icon: DashboardIcon },
+    { name: "Dashboard", path: "/doctorAdmin/doctordashboard", icon: DashboardIcon },
     { name: "Orders", path: "/doctorAdmin/orders", icon: OrderIcon },
     { name: "Patient", path: "/doctorAdmin/patientDoctor", icon: PatienIcon },
     { name: "Doctor", path: "/doctorAdmin/doctor", icon: ClaimIcon },
