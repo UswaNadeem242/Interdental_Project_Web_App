@@ -7,8 +7,8 @@ import StepperTabs from "../../../components/doctorAdmin/StepperTab";
 import ReviewOrder from "./Review";
 import CheckoutForm from "./Checkout";
 import { DIGITAL_DENTURE, LAB_OPTIONS, MATERIAL_OPTIONS, PHOTOGRAMMETRY_FILES, SCANNER_TYPE, SURGICAL_GUIDE } from "../../../Constant";
-import SmileDesignPicker from "../../../components/doctorAdmin/DoctorModel/Smile";
-import DonePage from "./DonePage";
+ import DonePage from "./DonePage";
+import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/Smile";
 
 const DoctorOrder = () => {
     // form states
