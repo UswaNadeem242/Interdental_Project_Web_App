@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OrderIcon = () => {
+export const OrderIcon = () => {
     return (
         <svg
             width="20"
@@ -34,4 +34,4 @@ const OrderIcon = () => {
     )
 }
 
-export default OrderIcon
+ 

@@ -30,18 +30,15 @@ import DoctorAdmin from "./pages/doctorAdmin/Doctor";
 import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
 import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
 import DoctorHeader from "./components/doctorAdmin/doctorHeader";
-// const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
-
+ 
 const MainLayout = ({ children }) => (
-  // <ProtectedRoute>
   <>
     <Header />
     {children}
     <Footer />
   </>
-  // </ProtectedRoute>
-);
 
+);
 // const PlainLayout = ({ children }) => (
 //   <div className="  ">
 //     {/* flex absolute pt-[16px] pl-[16px] pb-[16px] gap-8 bg-gray-200 w-full */}
@@ -76,11 +73,6 @@ const PlainLayout = ({ children }) => {
 
   );
 };
-
-
-
-
-
 const SimpleLayout = ({ children }) => <div className="">{children}</div>;
 
 function App() {

@@ -1,7 +1,7 @@
 import { DashboardIcon } from "../icon/dashboard";
-import OrderIcon from "../icon/OrderIcon";
-import PatienIcon from "../icon/PatienIcon";
-import ClaimIcon from "../icon/claimIcon";
+import { OrderIcon } from "../icon/OrderIcon";
+import { PatienIcon } from "../icon/PatienIcon";
+import { ClaimIcon } from "../icon/claimIcon";
 
 export const MATERIAL_OPTIONS = [
     { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
@@ -51,12 +51,10 @@ export const SCANNER_TYPE = [
     { value: "other", label: "Other" }
 ];
 
-
-
 export const menuItems = [
-    { name: "Dashboard", path: "/admin/dashboard", icon: DashboardIcon },
-    { name: "Orders", path: "/admin/orders", icon: OrderIcon },
-    { name: "Products", path: "/admin/products", icon: PatienIcon },
+    { name: "Dashboard", path: "/doctorAdmin/dashboard", icon: DashboardIcon },
+    { name: "Orders", path: "/doctorAdmin/orders", icon: OrderIcon },
+    { name: "Patient", path: "/doctorAdmin/patientDoctor", icon: PatienIcon },
     { name: "Doctor", path: "/doctorAdmin/doctor", icon: ClaimIcon },
 
 ];

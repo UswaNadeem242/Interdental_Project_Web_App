@@ -1,22 +1,12 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { menuItems } from "../../../Constant";
- 
+
 export default function DoctorSidebar() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <>
-            {/* Hamburger for mobile */}
-            {/* <div className="md:hidden fixed top-4 left-4 z-50"> */}
-            {/* <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="p-2   text-black rounded-md"
-                >
-                    {isOpen ? <Xmark /> : <Hamburger />}
-                </button> */}
-            {/* <MobileSidebar /> */}
-            {/* </div> */}
             <div
                 className={`fixed top-0 left-0 bottom-3 h-[calc(100vh-30px)]  mt-4 mb-4 ml-4  w-56 bg-white rounded-2xl transition-transform duration-300 z-40  
           ${isOpen ? "translate-x-0" : "-translate-x-full"} 

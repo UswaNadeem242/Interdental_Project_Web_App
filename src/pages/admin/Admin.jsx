@@ -15,7 +15,7 @@ const Admin = () => {
     <div className="flex justify-start items-start w-full h-[982px]">
       {/*  */}
       <Routes>
-        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/users" element={<Users />} />
         <Route path="/products" element={<Products />} />
@@ -23,8 +23,6 @@ const Admin = () => {
         <Route path="/list-product" element={<ListProduct />} />
         <Route path="/update-product/:productId" element={<UpdateProduct />} />
         <Route path="/orders/:id" element={<OrderDetails />} />
-       
-
       </Routes>
     </div>
 

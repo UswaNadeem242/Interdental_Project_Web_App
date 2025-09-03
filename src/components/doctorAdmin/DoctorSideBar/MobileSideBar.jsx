@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { menuItems } from "../../../Constant";
-import Xmark from "../../../icon/xmark";
-import Hamburger from "../../../icon/hamburger";
+import {Xmark} from "../../../icon/xmark";
+import {Hamburger} from "../../../icon/hamburger";
 
 const MobileSidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
