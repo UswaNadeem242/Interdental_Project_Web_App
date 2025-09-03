@@ -99,3 +99,38 @@ export const PatientDashboard = [
     icon: <UserIcon />,
   },
 ];
+
+export const Orders = [
+  {
+    id: "#1235",
+    scanDate: "16/22/2026",
+    doctor: "Miles, Esther",
+    patient: "6tedtfy6",
+    shoppingDate: "16/22/2026",
+    status: "In Progress",
+  },
+  {
+    id: "#1235",
+    scanDate: "16/22/2026",
+    doctor: "Miles, Esther",
+    patient: "6tedtfy6",
+    shoppingDate: "16/22/2026",
+    status: "Pending",
+  },
+  {
+    id: "#1235",
+    scanDate: "16/22/2026",
+    doctor: "Miles, Esther",
+    patient: "6tedtfy6",
+    shoppingDate: "16/22/2026",
+    status: "Pending",
+  },
+  {
+    id: "#1235",
+    scanDate: "16/22/2026",
+    doctor: "Miles, Esther",
+    patient: "6tedtfy6",
+    shoppingDate: "16/22/2026",
+    status: "In Progress",
+  },
+];

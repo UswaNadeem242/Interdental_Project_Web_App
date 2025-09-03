@@ -15,7 +15,7 @@ export const PatientCard = ({
         <h2 className="font-poppins text-sm font-medium text-gray-700">
           Patients
         </h2>
-        <button className="font-poppins text-xs bor font-medium text-gray-700 border-2 border-[#013764] px-3 py-1 rounded-lg">
+        <button className="py-1 px-4 font-poppins font-light text-xs border border-[#013764] bg-[#FFFFFF] text-[#013764]  rounded-lg shadow hover:bg-blue-800">
           View All
         </button>
       </div>
@@ -37,9 +37,12 @@ export const PatientCard = ({
                 </div>
               </div>
             </div>
-            <div className="text-[#278AE5] text-xs mt-2 font-poppins">
+            <a
+              href="#"
+              className="text-[#278AE5] font-normal text-xs   mt-2 font-poppins"
+            >
               {item?.linkName}
-            </div>
+            </a>
           </div>
         );
       })}
