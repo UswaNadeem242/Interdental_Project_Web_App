@@ -1,5 +1,6 @@
 import React from "react";
 import { PatientDashboard } from "../../Constant";
+import { TiltedArrowBlue } from "../../icon/TiltedArrowBlue";
 
 export const PatientCard = ({
   heading,
@@ -39,9 +40,10 @@ export const PatientCard = ({
             </div>
             <a
               href="#"
-              className="text-[#278AE5] font-normal text-xs   mt-2 font-poppins"
+              className="text-[#278AE5] font-normal text-xs   mt-2 font-poppins flex items-center "
             >
-              {item?.linkName}
+              <span className="mr-2">{item?.linkName}</span>
+              <TiltedArrowBlue />
             </a>
           </div>
         );
