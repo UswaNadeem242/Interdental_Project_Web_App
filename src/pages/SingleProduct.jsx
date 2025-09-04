@@ -155,7 +155,6 @@ const SingleProduct = () => {
       <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
           <div className="flex justify-center items-center w-[1131px] h-[501px]">
-            
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
                 spaceBetween={30}
@@ -203,7 +202,7 @@ const SingleProduct = () => {
                     </h1>
                     <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-[8px] px-[12.79px] gap-[7.99px] bg-[#001D580D]">
                       <h1 className="font-poppins font-normal text-secondaryBrand text-[11.19px] leading-[16.79px] w-[44px] h-[17px]">
-                        In Stock
+                        {product.stockQuantity > 0 && "In Stock"}
                       </h1>
                     </div>
                   </div>
@@ -270,12 +269,10 @@ const SingleProduct = () => {
                   Category:
                 </h1>
                 <h1 className="font-poppins font-normal text-[12px] leading-[18px] text-[#808080]">
-                  {
+                  {product?.categoryId &&
                     categoriesList.find(
-                      (category) =>
-                        category.categoryId === product && product.categoryId
-                    )?.name
-                  }
+                      (category) => category.categoryId === product.categoryId
+                    )?.name}
                 </h1>
               </div>
             </div>
