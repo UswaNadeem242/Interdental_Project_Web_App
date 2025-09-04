@@ -50,7 +50,7 @@ const Orders = () => {
     });
 
   return (
-    <div className="flex flex-col justify-center items-start">
+    <div className="flex flex-col justify-center items-start ">
       <AdminHeader title="Orders" />
       <div className="flex flex-col justify-start items-start mt-6 w-full h-[887px] rounded-[20px] p-[24px] gap-[20px] bg-[#FFFFFF]">
         <div className="flex justify-between items-center w-full h-[49px] bg-[#F8F8F8] rounded-[8px] py-[8px] pl-[16px] pr-[8px] gap-[8px]">
@@ -162,7 +162,7 @@ const Orders = () => {
                   </h1>
                   <div className="w-[116.84px] h-[88px] font-poppins font-semibold text-[12px] leading-[18px] text-[#949494]">
                     <div className="w-[57px] h-[23px] py-[4px] px-[8px] gap-[8px] bg-[#FF57570D] rounded-[33px]">
-                      <h1 className="font-poppins font-normal text-[10px] leading-[15px] text-[#FF5757]">
+                      <h1 className="font-poppins font-normal text-[10px] leading-[15px] text-[#EF6A1F]">
                         {order?.orderStatus}
                       </h1>
                     </div>

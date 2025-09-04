@@ -100,7 +100,7 @@ const Header = () => {
     // } else {
     //   setIsActionModalOpen(true);
     // }
-     setIsModalOpen(true);
+    setIsModalOpen(true);
   };
   const handleWishlist = () => {
     if (user) {
@@ -116,6 +116,24 @@ const Header = () => {
       setIsActionModalOpen(true);
     }
   };
+
+  const [wishlistCount, setWishlistCount] = useState(0);
+  useEffect(() => {
+    const fetchWishlistCount = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/api/wishlist/count`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setWishlistCount(response.data.count);
+      } catch (err) {
+        console.log("Error fetching wishlist count:", err);
+      }
+    };
+    fetchWishlistCount();
+  }, []);
+
 
   return (
     <div className="flex flex-col justify-center items-center h-[110.77px] w-full bg-[#FFFFFF] rounded-[8px] gap-[8px] pt-[20px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
@@ -398,11 +416,10 @@ const Header = () => {
           <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[83px] h-[21px]">
             <label
               onClick={() => setBrandsDropdown(true)}
-              className={`${
-                brandsDropdown
+              className={`${brandsDropdown
                   ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
                   : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-              }`}
+                }`}
             >
               Brands
             </label>
@@ -412,9 +429,8 @@ const Header = () => {
               viewBox="0 0 10 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`${
-                brandsDropdown ? " text-secondaryBrand" : " text-tertiaryBrand"
-              }`}
+              className={`${brandsDropdown ? " text-secondaryBrand" : " text-tertiaryBrand"
+                }`}
             >
               <path
                 d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"
@@ -436,11 +452,10 @@ const Header = () => {
           <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[113px] h-[21px]">
             <label
               onClick={() => setCategories(true)}
-              className={`${
-                categories
+              className={`${categories
                   ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
                   : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-              }`}
+                }`}
             >
               Categories
             </label>
@@ -450,9 +465,8 @@ const Header = () => {
               viewBox="0 0 10 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`${
-                categories ? " text-secondaryBrand" : " text-tertiaryBrand"
-              }`}
+              className={`${categories ? " text-secondaryBrand" : " text-tertiaryBrand"
+                }`}
             >
               <path
                 d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"

@@ -253,9 +253,9 @@ const ListProduct = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-start">
+    <div className="flex flex-col justify-center items-start bg-[#F8F8F8]">
       {/* <AdminHeader title="List Product" /> */}
-      <div className="w-[1108px] h-[60px] flex justify-between items-center">
+      <div className="w-[1108px] h-[60px] flex justify-between items-center ">
         <div className="w-[344px] h-[60px] flex flex-col justify-start items-start">
           <h1 className="font-poppins font-bold text-[26px] leading-[39px] text-[#434343]">
             Add Product
@@ -487,11 +487,12 @@ const ListProduct = () => {
                               setCategoryId(category.categoryId);
                               setIsCategoryOpen(false);
                             }}
-                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${categoriesList.indexOf(category) ===
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
+                              categoriesList.indexOf(category) ===
                               categoriesList.length - 1
-                              ? ""
-                              : "border-b-[1px] border-[#0000000D]"
-                              }`}
+                                ? ""
+                                : "border-b-[1px] border-[#0000000D]"
+                            }`}
                           >
                             <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
                               {category.name}
@@ -573,11 +574,12 @@ const ListProduct = () => {
                               setBrandId(brand.id);
                               setIsBrandOpen(false);
                             }}
-                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${brandsList.indexOf(brand) ===
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
+                              brandsList.indexOf(brand) ===
                               brandsList.length - 1
-                              ? ""
-                              : "border-b-[1px] border-[#0000000D]"
-                              }`}
+                                ? ""
+                                : "border-b-[1px] border-[#0000000D]"
+                            }`}
                           >
                             <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
                               {brand.name}
