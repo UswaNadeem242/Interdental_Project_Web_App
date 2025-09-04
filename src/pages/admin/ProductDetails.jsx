@@ -142,11 +142,7 @@ const ProductDetails = () => {
                     <h1 className="font-poppins font-semibold text-[28.78px] w-[365px] h-[35px] leading-[34.53px] text-[#1A1A1A]">
                       {product?.name}
                     </h1>
-                    <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-2 px-[12.79px] gap-[7.99px] bg-[#001D580D]">
-                      <h1 className="font-poppins font-normal text-secondaryBrand text-[11.19px] leading-[16.79px] w-[44px] h-[17px]">
-                        In Stock
-                      </h1>
-                    </div>
+                   
                   </div>
                   <div className="flex justify-center items-center w-[129.03px] h-[24px] gap-[6.39px]">
                     <div className="flex w-[97.64px] h-[15.19px] gap-[5.42px]">

@@ -636,7 +636,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       Shipping Address
                     </p>
                     <p className="font-poppins font-normal h-[40px] text-[14px] leading-[21px] text-[##434343]">
-                      {street} {city} {state}, {selectedCountry?.name}
+                   {selectedCountry?.name} , {street}  , {city} , {state}
                     </p>
                   </div>
                 </div>
