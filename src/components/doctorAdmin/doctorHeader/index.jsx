@@ -36,7 +36,6 @@ const DoctorHeader = ({ title, subTitle }) => {
 
 
     </>
-
   );
 };
 
