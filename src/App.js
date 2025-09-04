@@ -59,7 +59,7 @@ const PlainLayout = ({ children }) => {
 
       <div className="flex-1 flex flex-col relative">
         {/* Header */}
-        <header className="fixed top-4 md:left-64 left-4 right-4    md:rounded-none  h-16 md:block  flex items-center md:px-6 px-6   z-50">
+        <header className="fixed top-4 md:left-64 left-4 right-4    md:rounded-none  h-16 md:block  flex items-center md:px-6 px-6   z-10">
           <div className="md:hidden mr-4"><MobileSidebar /></div>
           <DoctorHeader />
         </header>

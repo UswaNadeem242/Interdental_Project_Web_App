@@ -154,8 +154,8 @@ const SingleProduct = () => {
     <div className="flex justify-center items-center bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
       <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
-          <div className="flex justify-center items-center w-[1131px] h-[501px]">
-            
+          <div className="flex justify-center items-center w-[1131px] h-[501px] gap-8">
+
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
                 spaceBetween={30}
@@ -172,12 +172,12 @@ const SingleProduct = () => {
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
                 {product &&
-                product.imageUrls &&
-                product.imageUrls.length > 0 ? (
+                  product.imageUrls &&
+                  product.imageUrls.length > 0 ? (
                   product.imageUrls.map((url, index) => (
                     <SwiperSlide key={index}>
                       <img
-                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-2xl"
                         src={url}
                         alt={`product-${index}`}
                       />
@@ -186,7 +186,7 @@ const SingleProduct = () => {
                 ) : (
                   <SwiperSlide>
                     <img
-                      className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                      className="object-cover h-[100%] w-[100%] overflow-hidden rounded-2xl"
                       src="/assets/product6.png" // fallback
                       alt="default product"
                     />

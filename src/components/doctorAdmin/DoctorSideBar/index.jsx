@@ -8,7 +8,7 @@ export default function DoctorSidebar() {
     return (
         <>
             <div
-                className={`fixed top-0 left-0 bottom-3 h-[calc(100vh-30px)]  mt-4 mb-4 ml-4  w-56 bg-white rounded-2xl transition-transform duration-300 z-40  
+                className={`fixed top-0 left-0 bottom-3 h-[calc(100vh-30px)]  mt-4 mb-4 ml-4  w-56 bg-white rounded-2xl transition-transform duration-300 z-10  
           ${isOpen ? "translate-x-0" : "-translate-x-full"} 
           md:translate-x-0 md:block hidden`} 
             >

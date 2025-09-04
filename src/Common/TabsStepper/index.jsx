@@ -2,7 +2,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import { categories } from '../../Constant'
 
 
-export default function TabsStepper() {
+export default function TabsStepper({ tabPanel }) {
     return (
         <div className="h-screen  px-4">
             <div className="">
@@ -29,8 +29,9 @@ export default function TabsStepper() {
                     </TabList>
                     <TabPanels className="mt-3">
                         {categories.map(({ name, posts }) => (
-                            <TabPanel key={name} className="rounded-xl bg-black/5 p-3">
+                            <TabPanel key={name} className="rounded-xl  p-3">
                                 <ul>
+                                    {tabPanel}
                                     {/* {posts.map((post) => (
                                         <li key={post.id} className="relative rounded-md p-3 text-sm/6 transition hover:bg-black/5">
                                             <a href="#" className="font-semibold text-black">
