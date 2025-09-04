@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config";
 import axios from "axios";
 import Header from "./landing-page/header";
+import Footer from "../components/Footer";
 const featureProducts = [
   {
     id: 1,
@@ -121,14 +122,14 @@ const Shop = () => {
 
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/brands`, {
+      const response = await axios.get(`${BASE_URL}/api/brands/getAll`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      setBrandsList(response.data.content);
+      setBrandsList(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -184,7 +185,7 @@ const Shop = () => {
   return (
     <>
       <Header />
-      <div className="flex justify-center items-start gap-8 px-28 pt-8 pb-[240px] bg-white">
+      <div className="flex justify-center overflow-scroll mb-[50px] items-start gap-8 px-28 pt-8 pb-[240px] bg-white">
         <div className="flex flex-col justify-start items-center w-[290px] h-auto py-[16px] px-[32px] gap-[16px] rounded-[12px] bg-[#FFFFFF] top-[143px] left-[109px]">
           <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
             Filter
@@ -394,6 +395,7 @@ const Shop = () => {
           </div>
         </div>
       </div>
+       <Footer />
     </>
   );
 };
