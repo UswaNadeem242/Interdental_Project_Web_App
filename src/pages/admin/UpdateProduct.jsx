@@ -31,21 +31,24 @@ const UpdateProduct = () => {
 
   const getProductDetails = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/product/get/${productId}`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      console.log("-=-=-=-=");
+      const response = await axios.get(
+        `${BASE_URL}/api/product/get/${productId}`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log("-=-response.data=-=-=", response.data);
 
-      setProduct(response.data);
-      setName(response.data.name);
-      setDescription(response.data.description);
-      setStockQuantity(response.data.stockQuantity);
-      setPrice(response.data.price);
-      setCategoryId(response.data.categoryId);
-      setBrandId(response.data.brandId);
+      setProduct(response.data.data);
+      setName(response.data.data.name);
+      setDescription(response.data.data.description);
+      setStockQuantity(response.data.data.stockQuantity);
+      setPrice(response.data.data.price);
+      setCategoryId(response.data.data.categoryId);
+      setBrandId(response.data.data.brandId);
     } catch (error) {
       console.log(error);
     }
@@ -85,14 +88,14 @@ const UpdateProduct = () => {
   };
   const getAllBrands = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/brands`, {
+      const response = await axios.get(`${BASE_URL}/api/brands/getAll`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       console.log("-=-=-=-=--=response.data=--==-=-=", response.data);
-      setBrandsList(response.data.content);
+      setBrandsList(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -104,6 +107,17 @@ const UpdateProduct = () => {
   }, []);
 
   const handleUpdate = async () => {
+    const payloasd = {
+      name,
+      description,
+      price,
+      stockQuantity,
+      categoryId,
+      images,
+      brandId,
+      sku,
+    };
+    console.log("-=-=-=-=-=-==--=--==-==-papp=--=-==-=-==-", payloasd);
     if (
       !name ||
       !description ||
@@ -193,6 +207,10 @@ const UpdateProduct = () => {
                 className="w-[502px] h-[53px] rounded-[8px] border-[1px] p-[16px] gap-[8px] border-[#E5E5E5]"
               />
             </div>
+            {console.log(
+              "-=-==--=-=-==--product.description=-=-=-=-==-=-=-=--==--=",
+              product.description
+            )}
             <div className="w-[502px] h-[82px] flex flex-col space-y-[8px]">
               <label
                 htmlFor=""
@@ -203,7 +221,7 @@ const UpdateProduct = () => {
               <input
                 type="text"
                 placeholder="Brainsim"
-                value={description}
+                value={description ?? product.description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="w-[502px] h-[53px] rounded-[8px] border-[1px] p-[16px] gap-[8px] border-[#E5E5E5]"
               />
@@ -405,32 +423,34 @@ const UpdateProduct = () => {
                         Add Category
                       </p>
                     </div>
-                    {categoriesList?.map((category) => (
-                      <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
-                        <div
-                          onClick={() => {
-                            setCategoryId(category.categoryId);
-                            setIsCategoryOpen(false);
-                          }}
-                          className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${categoriesList.indexOf(category) ===
+                    <div className="h-[250px] overflow-scroll">
+                      {categoriesList?.map((category) => (
+                        <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
+                          <div
+                            onClick={() => {
+                              setCategoryId(category.categoryId);
+                              setIsCategoryOpen(false);
+                            }}
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
+                              categoriesList.indexOf(category) ===
                               categoriesList.length - 1
-                              ? ""
-                              : "border-b-[1px] border-[#0000000D]"
+                                ? ""
+                                : "border-b-[1px] border-[#0000000D]"
                             }`}
-                        >
-                          <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
-                            {category.name}
-                          </p>
-                          <input
-                            type="radio"
-                            name=""
-                            id=""
-                            className="w-[16px] h-[16px] accent-[#D2D4DA]"
-
-                          />
+                          >
+                            <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
+                              {category.name}
+                            </p>
+                            <input
+                              type="radio"
+                              name=""
+                              id=""
+                              className="w-[16px] h-[16px] accent-[#D2D4DA]"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -490,30 +510,34 @@ const UpdateProduct = () => {
                         Add Brand
                       </p>
                     </div>
-                    {brandsList?.map((brand) => (
-                      <div className="w-[411px] h-auto flex flex-col justify-start items-start space-y-[8px]">
-                        <div
-                          onClick={() => {
-                            setBrandId(brand.id);
-                            setIsBrandOpen(false);
-                          }}
-                          className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${brandsList.indexOf(brand) === brandsList.length - 1
-                              ? ""
-                              : "border-b-[1px] border-[#0000000D]"
+                    <div className="h-[250px] overflow-scroll">
+                      {brandsList?.map((brand) => (
+                        <div className="w-[411px]  h-auto flex flex-col justify-start items-start space-y-[8px]">
+                          <div
+                            onClick={() => {
+                              setBrandId(brand.id);
+                              setIsBrandOpen(false);
+                            }}
+                            className={`w-full h-[38px] py-[10px] flex justify-start items-center gap-[8px] bg-white cursor-pointer ${
+                              brandsList.indexOf(brand) ===
+                              brandsList.length - 1
+                                ? ""
+                                : "border-b-[1px] border-[#0000000D]"
                             }`}
-                        >
-                          <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
-                            {brand.name}
-                          </p>
-                          <input
-                            type="radio"
-                            name=""
-                            id=""
-                            className="w-[16px] h-[16px] accent-[#D2D4DA]"
-                          />
+                          >
+                            <p className="w-[387px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
+                              {brand.name}
+                            </p>
+                            <input
+                              type="radio"
+                              name=""
+                              id=""
+                              className="w-[16px] h-[16px] accent-[#D2D4DA]"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

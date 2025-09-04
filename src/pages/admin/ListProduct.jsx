@@ -223,13 +223,20 @@ const ListProduct = () => {
         }
       );
 
-      setToastMessage("Product added successfully!");
-      setToastType("success");
-      setToastVisible(true);
+      if (response.data.responseCode === "0000") {
+        setToastMessage("Product added successfully!");
+        setToastType("success");
+        setToastVisible(true);
 
-      setTimeout(() => {
-        navigate("/admin/products");
-      }, 2000);
+        setTimeout(() => {
+          navigate("/admin/products");
+        }, 2000);
+      } else if (response.data.responseCode === "1500") {
+        console.log('==-=-==-=--=-==--=-=dsfsafsdfsdfsfdsfdsffs')
+        setToastMessage("Product Already Exsist");
+        setToastType("error");
+        setToastVisible(true);
+      }
     } catch (error) {
       console.error("Error while adding product:", error);
       setToastMessage("Error while adding product!");
