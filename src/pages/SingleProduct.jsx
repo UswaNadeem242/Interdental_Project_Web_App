@@ -15,6 +15,7 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 import Toast from "../components/Toast";
 import { useAuth } from "../auth/AuthContext";
+import ShoppingCart from "../modals/ShoppingCartModal";
 
 const SingleProduct = () => {
   const { productId } = useParams();
@@ -90,6 +91,8 @@ const SingleProduct = () => {
     setToastVisible(false);
   };
 
+  const [isOpenCart, setIsOpenCart] = useState(false);
+
   const handleAddtoCart = async () => {
     try {
       setLoading(true);
@@ -110,9 +113,13 @@ const SingleProduct = () => {
         },
       });
       console.log(response);
+      if (isOpenCart === true) {
+        setIsModalOpen(true);
+      }
       setToastMessage("Added to Cart !");
       setToastType("success");
       setToastVisible(true);
+
       // alert("Added to cart");
       setLoading(false);
     } catch (error) {
@@ -150,6 +157,8 @@ const SingleProduct = () => {
       setToastVisible(true);
     }
   };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="flex justify-center items-center bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
       <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
@@ -230,10 +239,19 @@ const SingleProduct = () => {
                   {product && product.description}
                 </h1>
               </div>
-              <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-[9.59px]">
+              <div
+                onClick={() => {
+                  setIsOpenCart(true);
+                  setLoading(true);
+                  setTimeout(() => {
+                    handleAddtoCart();
+                  }, [3000]);
+                }}
+                className="flex justify-center items-center w-[441px] h-[51.28px] gap-[9.59px]"
+              >
                 <div className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]">
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
-                    Buy Now
+                    {loading ? "Loading..." : "  Buy Now"}
                   </h1>
                 </div>
                 <div
@@ -308,6 +326,12 @@ const SingleProduct = () => {
         onClose={closeToast}
         type={toastType}
       />
+      {isModalOpen && (
+        <ShoppingCart
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </div>
   );
 };
