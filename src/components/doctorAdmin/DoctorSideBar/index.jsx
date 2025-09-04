@@ -10,8 +10,7 @@ export default function DoctorSidebar() {
             <div
                 className={`fixed top-0 left-0 bottom-3 h-[calc(100vh-30px)]  mt-4 mb-4 ml-4  w-56 bg-white rounded-2xl transition-transform duration-300 z-40  
           ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-          md:translate-x-0 md:block hidden`}
-            //   shadow-2xl 
+          md:translate-x-0 md:block hidden`} 
             >
 
                 <div className="w-full h-[72px] py-4 px-6 flex items-center">

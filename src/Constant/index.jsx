@@ -58,3 +58,26 @@ export const menuItems = [
     { name: "Doctor", path: "/doctorAdmin/doctor", icon: ClaimIcon },
 
 ];
+
+export const categories = [
+    {
+        name: 'All',
+
+    },
+    {
+        name: 'panding',
+
+    },
+    {
+        name: 'in progress',
+
+    }, {
+        name: 'shipped',
+
+    },
+    {
+        name: 'completed',
+
+    },
+
+]

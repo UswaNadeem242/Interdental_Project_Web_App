@@ -1,11 +1,15 @@
 import React from 'react'
+import TabsStepper from '../../../Common/TabsStepper'
 
-const PatientDoctor = () => {
+const PatientPage = () => {
   return (
     <div>
-      hellp
+      <div className='bg-white rounded-e-2xl py-6 px-6'>
+        <TabsStepper />
+      </div>
+
     </div>
   )
 }
 
-export default PatientDoctor
+export default PatientPage
