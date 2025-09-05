@@ -27,8 +27,8 @@ export default function TableComponent({ headings, data, actions }) {
       </div> */}
 
       {/* Table */}
-      <div className="w-full overflow-x-auto">
-        <table className="min-w-full  w-full text-left text-sm">
+      <div className="w-full max-w-full overflow-x-auto sm:overflow-x-visible">
+        <table className="w-full min-w-[960px] md:min-w-0 text-left text-sm border-collapse">
           <thead>
             <tr className="font-poppins font-medium text-xs text-secondaryText capitalize">
               {headings.map((col, idx) => (
@@ -36,9 +36,9 @@ export default function TableComponent({ headings, data, actions }) {
                   {col.label}
                 </th>
               ))}
-              {actions?.length > 0 && (
+              {/* {actions?.length > 0 && (
                 <th className="px-4 py-2 text-[#949494]">Actions</th>
-              )}
+              )} */}
             </tr>
           </thead>
 

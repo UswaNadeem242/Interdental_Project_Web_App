@@ -153,6 +153,27 @@ export const headings = [
   { label: "Patient Name", key: "name" },
   { label: "Product Name", key: "product" },
   { label: "Status", key: "status" },
-  { label: "Submission Date", key: "submission" },  
-  { label: "Action", key: "action" },  
+  { label: "Submission Date", key: "submission" },
+  { label: "Action", key: "action" },
+];
+
+
+export const headingsPateint = [
+  // { label: "Claim ID", key: "id" },
+  { label: "Name", key: "name" },
+  { label: "Email", key: "email" },
+  { label: "Phone Number", key: "phone" },
+  { label: "Address", key: "address" },
+  { label: "Account Status", key: "status" },
+  { label: "Action", key: "action" },
+];
+
+
+export const dataPatient = [
+  { name: "Varga Dóra", email: "varga@example.com", status: "active" ,phone:'123456789',address:'abc....'},
+  { name: "John Doe", email: "john@example.com", status: "pending" ,phone:'123456789',address:'abc....'},
+  { name: "Jane Smith", email: "jane@example.com", status: "inactive",phone:'123456789',address:'abc....' },
+  { name: "Alice Brown", email: "alice@example.com", status: "active",phone:'123456789',address:'abc....' },
+  { name: "Bob Johnson", email: "bob@example.com", status: "pending" ,phone:'123456789',address:'abc....'},
+  // ...more rows
 ];

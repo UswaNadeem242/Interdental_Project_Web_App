@@ -3,7 +3,7 @@ import { useState } from 'react';
 export default function TabsStepper({ steps }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     return (
-        <div className="px-4">
+        <div className="px-2 sm:px-4 w-full">
             <div>
                 <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
                     <TabList className="flex gap-4 mb-8">

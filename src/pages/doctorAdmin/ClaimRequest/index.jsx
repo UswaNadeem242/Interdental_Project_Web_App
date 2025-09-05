@@ -8,19 +8,16 @@ const ClaimRequest = () => {
     {
       name: "All", content: <TableComponent headings={headings}
         data={data}
-
       />
     },
     {
       name: "Active", content: <TableComponent headings={headings}
         data={data}
-
       />
     },
     {
       name: "Expired", content: <TableComponent headings={headings}
         data={data}
-
       />
     },
   ];
@@ -32,6 +29,16 @@ const ClaimRequest = () => {
         </div>
       </div>
     </div>
+
+    // <div className="w-full">
+    //   <div className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-md overflow-x-auto">
+    //     <div className="">
+    //       <TabsStepper steps={steps} />
+    //     </div>
+    //   </div>
+    // </div>
+    
+
   )
 }
 
