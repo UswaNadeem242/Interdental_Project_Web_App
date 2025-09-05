@@ -56,7 +56,7 @@ export const menuItems = [
   { name: "Dashboard", path: "/doctorAdmin/doctordashboard", icon: DashboardIcon },
   { name: "Orders", path: "/doctorAdmin/orders", icon: OrderIcon },
   { name: "Patient", path: "/doctorAdmin/patientDoctor", icon: PatienIcon },
-  { name: "Doctor", path: "/doctorAdmin/doctor", icon: ClaimIcon },
+  { name: "Claim Requests", path: "/doctorAdmin/claim", icon: ClaimIcon },
 ];
 export const CardDashboard = [
   {
@@ -136,25 +136,23 @@ export const Orders = [
 ];
 
 
-export const categories = [
-    {
-        name: 'All',
+export const data = [
+  { id: '#1235', name: "Varga Dóra", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail' },
+  { id: '#1235', name: "John Doe", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
+  { id: '#1235', name: "Jane Smith", product: 'Argen HT', status: "inactive", submission: '16/22/2026', action: 'View Detail' },
+  { id: '#1235', name: "Alice Brown", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail' },
+  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
+  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
+  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
+  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
+  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
+];
 
-    },
-    {
-        name: 'panding',
-
-    },
-    {
-        name: 'in progress',
-
-    }, {
-        name: 'shipped',
-
-    },
-    {
-        name: 'completed',
-
-    },
-
-]
+export const headings = [
+  { label: "Claim ID", key: "id" },
+  { label: "Patient Name", key: "name" },
+  { label: "Product Name", key: "product" },
+  { label: "Status", key: "status" },
+  { label: "Submission Date", key: "submission" },  
+  { label: "Action", key: "action" },  
+];

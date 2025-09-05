@@ -4,6 +4,7 @@ import DoctorDashaboard from "./DoctorDashboard";
 import PatientDoctor from "./PatientDoctor";
 import DoctorProfile from "./DoctorProfile";
 import PatientPage from "./PatientDoctor";
+import ClaimRequest from "./ClaimRequest";
 
 
 const DoctorAdmin = () => {
@@ -13,6 +14,7 @@ const DoctorAdmin = () => {
       <Routes>
         <Route path="/doctordashboard" element={<DoctorDashaboard />} />
         <Route path="/patientDoctor" element={<PatientPage />} />
+        <Route path="/claim" element={<ClaimRequest />} />
         <Route path="/profile" element={<DoctorProfile />} />
 
       </Routes>
