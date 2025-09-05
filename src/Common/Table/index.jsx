@@ -27,12 +27,12 @@ export default function TableComponent({ headings, data, actions }) {
       </div> */}
 
       {/* Table */}
-      <div className="w-full max-w-full overflow-x-auto sm:overflow-x-visible">
-        <table className="w-full min-w-[960px] md:min-w-0 text-left text-sm border-collapse">
+      <div className=" overflow-x-auto">
+        <table className="min-w-full w-full md:min-w-0 text-left text-sm">
           <thead>
             <tr className="font-poppins font-medium text-xs text-secondaryText capitalize">
               {headings.map((col, idx) => (
-                <th key={idx} className="px-4 py-2 text-[#949494]">
+                <th key={idx} className="md:px-4 px-3 py-2 text-[#949494]">
                   {col.label}
                 </th>
               ))}

@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import DoctorDashaboard from "./DoctorDashboard";
-import PatientDoctor from "./PatientDoctor";
 import DoctorProfile from "./DoctorProfile";
 import PatientPage from "./PatientDoctor";
 import ClaimRequest from "./ClaimRequest";
+import DoctorOrder from "./OrderStep/RestorationDesignForm";
 
 
 const DoctorAdmin = () => {
@@ -15,6 +15,7 @@ const DoctorAdmin = () => {
         <Route path="/doctordashboard" element={<DoctorDashaboard />} />
         <Route path="/patientDoctor" element={<PatientPage />} />
         <Route path="/claim" element={<ClaimRequest />} />
+        <Route path="/orders" element={<DoctorOrder />} />
         <Route path="/profile" element={<DoctorProfile />} />
 
       </Routes>

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { menuItems } from "../../../Constant";
+import { Xmark } from "../../../icon/xmark";
+import { Hamburger } from "../../../icon/hamburger";
 
 export default function DoctorSidebar() {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
     return (
         <>
@@ -17,33 +19,42 @@ export default function DoctorSidebar() {
                     <img src="/assets/logo.png" alt="logo" className="w-[180px]" />
                 </div>
 
-                <div className="flex flex-col gap-4 p-4">
-                    {menuItems.map((item) => {
-                        const Icon = item.icon;
-                        return (
-                            <NavLink
-                                key={item.path}
-                                to={item.path}
-                                className={({ isActive }) =>
-                                    `flex items-center gap-3 px-3 h-11  rounded-lg text-sm font-poppins ${isActive
-                                        ? "bg-secondaryBrand text-white font-semibold"
-                                        : "text-[#949494] hover:bg-gray-100 font-normal"
-                                    }`
-                                }
-                            >
-                                {Icon && <Icon color={({ isActive }) => (isActive ? "white" : "#949494")} />}
-                                {item.name}
-                            </NavLink>
-                        )
-                    })}
-                </div>
-            </div>
-            {isOpen && (
-                <div
-                    className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-                    onClick={() => setIsOpen(false)}
-                ></div>
-            )}
-        </>
-    );
+        {/* Menu items */}
+        <div className="flex flex-col gap-4 p-4">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 h-11 rounded-lg text-sm font-poppins ${
+                    isActive
+                      ? "bg-secondaryBrand text-white font-semibold"
+                      : "text-[#949494] hover:bg-gray-100 font-normal"
+                  }`
+                }
+                onClick={() => setIsOpen(false)}
+              >
+                {Icon && (
+                  <Icon
+                    color={({ isActive }) => (isActive ? "white" : "#949494")}
+                  />
+                )}
+                {item.name}
+              </NavLink>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Overlay for sm & md */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+    </>
+  );
 }
