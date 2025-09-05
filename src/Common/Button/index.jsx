@@ -8,10 +8,10 @@ export function PrimaryButtonUI({ title, onClick, className }) {
     )
 }
 
-export function SecondaryButton({ title, onClick, className }) {
+export function SecondaryButton({ title, onClick, className, icon }) {
     return (
         <button onClick={onClick} className={`${className}   font-semibold font-poppins text-sm  whitespace-nowrap`}>
-            {title}
+            {icon}     {title}
         </button>
     )
 }
