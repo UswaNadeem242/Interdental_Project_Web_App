@@ -51,20 +51,20 @@ const OrderDoctorPage = () => {
                     <div className='flex flex-col  md:flex-row items-start md:items-center gap-2 '>
                         <div className='md:block hidden'>
 
-                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-4' />
+                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-4'   />
                         </div>
                         <div className='md:hidden block w-full'>
 
                             <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-4' />
                         </div>
 
-                        {/* <div>
-                            <Drawers
+                        <div>
+                            {/* <Drawers
                                 isOpen={isOpen}
                                 onClose={() => setIsOpen(false)}
                                 title='Add Patient'
-                            />
-                        </div> */}
+                            /> */}
+                        </div>
 
                     </div>
 

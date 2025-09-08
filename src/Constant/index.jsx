@@ -57,7 +57,7 @@ export const menuItems = [
   { name: "Orders", path: "/doctorAdmin/Orders", icon: OrderIcon },
   { name: "Patient", path: "/doctorAdmin/Patient", icon: PatienIcon },
   { name: "Claim Requests", path: "/doctorAdmin/Claim-Request", icon: ClaimIcon },
-  { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
+  // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
   // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];
 export const CardDashboard = [
