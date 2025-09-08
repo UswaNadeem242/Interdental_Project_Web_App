@@ -12,12 +12,15 @@ const Orders = () => {
 
   const getAllOrders = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/orders/getAllOrdersByUser`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.get(
+        `${BASE_URL}/orders/getAllOrdersByUser`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setOrders(response.data.orders);
       console.log(response.data.orders);
     } catch (error) {
