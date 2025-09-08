@@ -15,6 +15,9 @@ import {
   SURGICAL_GUIDE,
 } from "../../../Constant";
 import DonePage from "./DonePage";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/Smile";
+import { FileUploadSection } from "../../../components/doctorAdmin/OrderFileSelection";
 // import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/Smile";
 
 const DoctorOrder = () => {
@@ -124,6 +127,7 @@ const DoctorOrder = () => {
 
     return () => window.removeEventListener("resize", updateSize);
   }, []);
+  const [selected, setSelected] = useState([]);
 
   return (
     <>
@@ -145,7 +149,7 @@ const DoctorOrder = () => {
                     <FormSection
                       title="Doctor Info"
                       color="text-xs font-semibold"
-                      className=" border-gray-200"
+                      className=" border-gray-200 "
                     >
                       <LabeledInput
                         label="Doctors Name / office Name"
@@ -173,9 +177,9 @@ const DoctorOrder = () => {
                       />
                     </FormSection>
                     <FormSection
-                      title="Patient Info"
+                      title="Patient ID"
                       color="text-xs font-semibold"
-                      className="border border-gray-200"
+                      className="border border-gray-200 "
                     >
                       <LabeledInput
                         placeholder="Name"
@@ -193,31 +197,24 @@ const DoctorOrder = () => {
                         onChange={setSubscriptionId}
                       />
                     </FormSection>
+                    <div className="bg-textField  rounded-md ">
+                      <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="w-full bg-textField  font-poppins text-secondaryBrand rounded-lg px-4 py-3 text-left cursor-pointer border text-sm font-normal flex justify-between"
+                      >
+                        Select Smile Design
+                        <span>
+                          <ChevronDownIcon className="w-5 h-5" />
+                        </span>
+                      </button>
+                      {
+                        selected > 0 && <p className="py-2 px-2 text-sm text-secondaryBrand">
+                          Smile Design  :  {selected.length > 0 ? selected.join(", ") : ""}
+                        </p>
+                      }
 
-                    <button
-                      onClick={() => setIsModalOpen(true)}
-                      className="w-full bg-[#F8F8F8]  text-secondaryBrand rounded-lg px-4 py-3 text-left cursor-pointer border text-xs font-normal flex justify-between"
-                    >
-                      Pick Your Smile Design
-                      <span>
-                        {" "}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          className={`h-5 w-5 text-[#949494] transition-transform duration-200 ${
-                            isModalOpen ? "" : ""
-                          }`}
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M6 9l6 6 6-6" />
-                        </svg>
-                      </span>
-                    </button>
 
+                    </div>
                     <MaterialDropdown
                       className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-[#828386] outline-none transition-shadow"
                       options={SCANNER_TYPE}
@@ -228,24 +225,14 @@ const DoctorOrder = () => {
                       label="Scanner Type"
                       storageKey="scannerType"
                     />
+
+                    <div>
+
+                      <FileUploadSection />
+                    </div>
                     <FormSection
-                      title={
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="text-xs font-poppins font-normal">
-                            Upload photo and patient picture files
-                          </span>
-                          <button
-                            disabled
-                            className="rounded-full px-3 py-1 text-xs font-semibold text-[#4640FF] cursor-pointer"
-                          >
-                            +
-                          </button>
-                        </div>
-                      }
-                    ></FormSection>
-                    <FormSection
-                      title="Comments / Notes"
-                      className="border border-gray-200"
+                      title="Additional Notes"
+                      className="border border-gray-200 "
                     >
                       <textarea
                         rows={2}
@@ -417,6 +404,14 @@ const DoctorOrder = () => {
             </div>
           </div>
         </main>
+        {isModalOpen && (
+          <SmileDesignPicker
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            selected={selected}
+            setSelected={setSelected}
+          />
+        )}
       </div>
     </>
   );

@@ -12,26 +12,31 @@ const OrderDoctorPage = () => {
         {
             name: "All", content: <TableComponent headings={headingsOrder}
                 data={dataOrder}
+                actionHrefKey="detailUrl"
             />
         },
         {
             name: "Pending", content: <TableComponent headings={headingsOrder}
                 data={dataOrder}
+                actionHrefKey="detailUrl"
             />
         },
         {
             name: "in Progress", content: <TableComponent headings={headings}
                 data={dataOrder}
+                actionHrefKey="detailUrl"
             />
         },
         {
             name: "shipped", content: <TableComponent headings={headingsOrder}
                 data={dataOrder}
+                actionHrefKey="detailUrl"
             />
         },
         {
             name: "completed", content: <TableComponent headings={headings}
                 data={dataOrder}
+                actionHrefKey="detailUrl"
             />
         },
     ];
@@ -47,35 +52,20 @@ const OrderDoctorPage = () => {
                             onSort={() => console.log("Sort clicked")}
                         />
                     </div>
-
                     <div className='flex flex-col  md:flex-row items-start md:items-center gap-2 '>
                         <div className='md:block hidden'>
 
-                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-4'   />
+                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-4' href='/doctorAdmin/Orders-Details' />
                         </div>
                         <div className='md:hidden block w-full'>
 
                             <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-4' />
                         </div>
-
-                        <div>
-                            {/* <Drawers
-                                isOpen={isOpen}
-                                onClose={() => setIsOpen(false)}
-                                title='Add Patient'
-                            /> */}
-                        </div>
-
                     </div>
-
                 </div>
-
                 <div className=''>
                     <TabsStepper steps={steps} />
                 </div>
-                {/* <TableComponent headings={headingsOrder}
-                    data={dataOrder}
-                /> */}
             </div>
 
         </div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const SmileDesignPicker = ({ isModalOpen, setIsModalOpen }) => {
+export const SmileDesignPicker = ({ isModalOpen, setIsModalOpen, selected, setSelected }) => {
     const navigate = useNavigate();
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -10,7 +10,7 @@ export const SmileDesignPicker = ({ isModalOpen, setIsModalOpen }) => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-    const [selected, setSelected] = useState([]);
+    // const [selected, setSelected] = useState([]);
 
     // Generate 16 designs dynamically
     const smileDesigns = Array.from({ length: 16 }, (_, i) => i + 1);
@@ -104,10 +104,10 @@ export const SmileDesignPicker = ({ isModalOpen, setIsModalOpen }) => {
                     </button>
                     <button
                         onClick={() => {
-                            alert(
-                                `Smile Design(s) confirmed: ${selected.length > 0 ? selected.join(", ") : "None"
-                                }`
-                            );
+                            // alert(
+                            //     `Smile Design(s) confirmed: ${selected.length > 0 ? selected.join(", ") : "None"
+                            //     }`
+                            // );
                             setIsModalOpen(false)
 
                         }}
@@ -121,4 +121,4 @@ export const SmileDesignPicker = ({ isModalOpen, setIsModalOpen }) => {
     );
 };
 
- 
+

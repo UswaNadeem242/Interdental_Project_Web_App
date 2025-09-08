@@ -1,16 +1,12 @@
-import React from "react";
 import { CardComponet } from "../../../Common/Card";
-import { UserIcon } from "../../../icon/UserIcon";
-import { CardDashboard, dataOrder, headingsOrder, PatientDashboard } from "../../../Constant";
+import { CardDashboard, dataOrder, headingsOrder } from "../../../Constant";
 import { PatientCard } from "../../../Common/PatientCard/index.jsx";
-import OrdersTable from "../../../Common/OrdersTable/index.jsx";
 import TableComponent from "../../../Common/Table/index.jsx";
 import { PrimaryButtonUI, SecondaryButton } from "../../../Common/Button/index.jsx";
 
 const DoctorDashaboard = () => {
   return (
     <div>
-      {/* Card Component Section */}
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-3 md:gap-3 lg:gap-4 ">
         <div className="col-span-1 md:col-span-1 lg:col-span-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-4">
@@ -25,7 +21,6 @@ const DoctorDashaboard = () => {
               />
             ))}
           </div>
-
           {/* Order Overview */}
           <div className="col-span-1 md:col-span-1 lg:col-span-8 bg-[#FFFFFF] mt-3 md:mt-4 lg:mt-5 rounded-lg p-3 md:p-4 lg:p-4 ">
             <div className="flex flex-row items-center md:flex-row lg:flex-row justify-between ">
@@ -71,7 +66,6 @@ const DoctorDashaboard = () => {
             </div>
           </div>
         </div>
-
         <div className="col-span-1 md:col-span-1 lg:col-span-4 bg-white rounded-xl shadow-md flex flex-col">
           <PatientCard title='Patients' />
         </div>
@@ -82,15 +76,18 @@ const DoctorDashaboard = () => {
             </h2>
 
             <div className="flex flex-wrap gap-2 md:gap-4">
-              <PrimaryButtonUI title='  Place New Order' className='py-1 px-4 md:px-6 font-poppins font-light text-xs bg-secondaryBrand text-white rounded-lg shadow ' href='/doctorAdmin/Details' />
-              <SecondaryButton title='View All' className='py-1 px-3 md:px-4 font-poppins font-light text-xs border border-brand bg-white text-brand rounded-lg shadow' href='/doctorAdmin/Orders-Details' />
+              <PrimaryButtonUI title='  Place New Order' className='py-1 px-4 md:px-6 font-poppins font-light text-xs bg-secondaryBrand text-white rounded-lg shadow ' />
+              <SecondaryButton title='View All' className='py-1 px-3 md:px-4 font-poppins font-light text-xs border border-brand bg-white text-brand rounded-lg shadow' href='/doctorAdmin/Orders' />
 
             </div>
           </div>
+          {/* <div className="overflow-x-auto"> */}
           <TableComponent headings={headingsOrder}
             data={dataOrder}
+            actionHrefKey="detailUrl"
           />
-          {/* <OrdersTable /> */}
+          {/* </div> */}
+
         </div>
       </div>
     </div>

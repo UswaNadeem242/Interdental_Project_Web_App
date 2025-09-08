@@ -46,7 +46,7 @@ const CheckoutForm = () => {
                     placeholder="Full Name"
                     value={formData.fullName}
                     onChange={handleChange}
-                    className="border sm:col-span-6   rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                    className="border sm:col-span-6  outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700"
                   />
                   <input
                     type="text"
@@ -54,7 +54,7 @@ const CheckoutForm = () => {
                     placeholder="Contact Number"
                     value={formData.contactNumber}
                     onChange={handleChange}
-                    className="border sm:col-span-6   rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                    className="border sm:col-span-6  outline-none  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
                   />
                 </div>
                 <input
@@ -63,7 +63,7 @@ const CheckoutForm = () => {
                   placeholder="E-Mail Address"
                   value={formData.email}
                   onChange={handleChange}
-                  className="border  rounded-lg px-3 py-2 w-full mt-3 bg-white text-gray-700"
+                  className="border outline-none  rounded-lg px-3 py-2 w-full mt-3 bg-white text-gray-700"
                 />
               </div>
 
@@ -87,7 +87,7 @@ const CheckoutForm = () => {
                       placeholder="Country"
                       value={formData.country}
                       readOnly
-                      className="border rounded-lg pl-10 px-3 py-2 w-full bg-gray-50 text-gray-700"
+                      className="border rounded-lg pl-10 px-3 py-2 w-full outline-none text-gray-700"
                     />
                   </div>
                   <input
@@ -96,7 +96,7 @@ const CheckoutForm = () => {
                     placeholder="State/Province"
                     value={formData.state}
                     onChange={handleChange}
-                    className="border  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                    className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700"
                   />
                   <input
                     type="text"
@@ -104,7 +104,7 @@ const CheckoutForm = () => {
                     placeholder="City"
                     value={formData.city}
                     onChange={handleChange}
-                    className="border  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                    className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700"
                   />
                   <input
                     type="text"
@@ -112,7 +112,7 @@ const CheckoutForm = () => {
                     placeholder="Street"
                     value={formData.street}
                     onChange={handleChange}
-                    className="border  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                    className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700"
                   />
                 </div>
               </div>
@@ -128,7 +128,7 @@ const CheckoutForm = () => {
                   name="paymentMethod"
                   value={formData.paymentMethod || ""}
                   onChange={handleChange}
-                  className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700 mb-4"
+                  className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700 mb-4 outline-none"
                 >
                   <option value="" disabled>
                     Please Select
@@ -161,7 +161,7 @@ const CheckoutForm = () => {
                         placeholder="Enter Recipient's Name"
                         value={formData.recipientName}
                         onChange={handleChange}
-                        className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                        className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-gray-700"
                       />
                     </div>
 
@@ -176,7 +176,7 @@ const CheckoutForm = () => {
                           placeholder="Enter Paypal Username"
                           value={formData.paypalUsername}
                           onChange={handleChange}
-                          className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                          className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-gray-700"
                         />
                       </div>
                       <div>
@@ -189,7 +189,7 @@ const CheckoutForm = () => {
                           placeholder="Enter E-mail/Phone number"
                           value={formData.paypalEmailPhone}
                           onChange={handleChange}
-                          className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                          className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-gray-700"
                         />
                       </div>
                     </div>
@@ -208,7 +208,7 @@ const CheckoutForm = () => {
                       placeholder="Enter Card Number"
                       value={formData.cardNumber || ""}
                       onChange={handleChange}
-                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-gray-700"
                     />
                     <label className="block text-sm font-medium mb-1 text-gray-700">
                       Expiry Date
@@ -219,7 +219,7 @@ const CheckoutForm = () => {
                       placeholder="MM/YY"
                       value={formData.expiryDate || ""}
                       onChange={handleChange}
-                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                      className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-gray-700"
                     />
                   </div>
                 )}
@@ -236,9 +236,9 @@ const CheckoutForm = () => {
                       placeholder="Enter Account Number"
                       value={formData.accountNumber || ""}
                       onChange={handleChange}
-                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-gray-700"
                     />
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                    <label className="block text-sm font-medium mb-1 outline-none text-gray-700">
                       Bank Name
                     </label>
                     <input
@@ -247,7 +247,7 @@ const CheckoutForm = () => {
                       placeholder="Enter Bank Name"
                       value={formData.bankName || ""}
                       onChange={handleChange}
-                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700"
+                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-gray-700"
                     />
                   </div>
                 )}

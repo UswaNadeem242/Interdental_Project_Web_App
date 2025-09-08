@@ -17,9 +17,9 @@ const DoctorAdmin = () => {
         <Route path="/doctordashboard" element={<DoctorDashaboard />} />
         <Route path="/Patient" element={<PatientPage />} />
         <Route path="/Claim-Request" element={<ClaimRequest />} />
-        <Route path="/Orders" element={<DoctorOrder />} />
+        <Route path="/Orders-Details" element={<DoctorOrder />} />
         <Route path="/Profile" element={<DoctorProfile />} />
-        <Route path="/Orders-Details" element={<OrderDoctorPage />} />
+        <Route path="/Orders" element={<OrderDoctorPage />} />
         <Route path="/Details" element={<DoctorDeailsPage />} />
 
       </Routes>

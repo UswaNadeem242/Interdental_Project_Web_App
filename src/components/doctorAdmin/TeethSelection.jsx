@@ -4,16 +4,16 @@ import React, { useState } from "react";
 const upperTeeth = Array.from({ length: 16 }, (_, i) => i + 1);  // 1–16
 const lowerTeeth = Array.from({ length: 16 }, (_, i) => i + 17); // 17–32
 
-export const DentalChart = () => {
-    const [selectedTeeth, setSelectedTeeth] = useState([]);
+export const TeethSelection = ({ selectedTeeth, setSelectedTeeth, toggleTooth }) => {
+    // const [selectedTeeth, setSelectedTeeth] = useState([]);
 
-    const toggleTooth = (id) => {
-        setSelectedTeeth((prev) =>
-            prev.includes(id)
-                ? prev.filter((tooth) => tooth !== id) // unselect
-                : [...prev, id] // select
-        );
-    };
+    // const toggleTooth = (id) => {
+    //     setSelectedTeeth((prev) =>
+    //         prev.includes(id)
+    //             ? prev.filter((tooth) => tooth !== id) // unselect
+    //             : [...prev, id] // select
+    //     );
+    // };
 
     const Tooth = ({ id }) => (
         <div

@@ -10,7 +10,7 @@ export default function DropDownComponent({ label, options, onSelect, selected, 
   `}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex justify-between items-center   p-4 rounded-lg"
+                className="w-full flex justify-between items-center p-4 rounded-lg"
             >
                 <span className="text-[#1A1A1A] text-lg font-semibold font-poppins capitalize">{selected || label}</span>
 
@@ -19,9 +19,9 @@ export default function DropDownComponent({ label, options, onSelect, selected, 
             </button>
 
             {isOpen && (
-                <ul className="  w-full bg-white  rounded-bl-2xl  rounded-br-2xl shadow-lg  max-h-60 overflow-auto">
+                <ul className="  w-full bg-white  rounded-bl-2xl  rounded-br-2xl shadow-md  max-h-60 overflow-auto">
                     {options.map((option, index) => (
-                        <li>
+                        <li className="">
                             <li className="flex justify-between">
                                 <li
                                     key={option[optionValue] || index}
@@ -54,7 +54,7 @@ export default function DropDownComponent({ label, options, onSelect, selected, 
 
                     ))}
                     {label === "Cart Total" && (
-                        <li className="flex justify-between px-4 py-4 text-gray-700 font-poppins border-t border-borderPrimary text-sm">
+                        <li className="flex justify-between px-4 py-3 text-gray-700 font-poppins border-t border-borderPrimary text-sm">
                             <p>Total:</p>
                             <p>$350.00</p>
                         </li>

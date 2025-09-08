@@ -237,13 +237,15 @@ export const headingsOrder = [
 ];
 
 export const dataOrder = [
-  { id: '#1235', pName: "Varga Dóra", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "John Doe", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Jane Smith", product: 'Argen HT', status: "inactive", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Alice Brown", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  {
+    id: '#1235', pName: "Varga Dóra", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026', detailUrl: "/doctorAdmin/Details"
+  },
+  { id: '#1235', pName: "John Doe", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026', detailUrl: "/doctorAdmin/Details" },
+  { id: '#1235', pName: "Jane Smith", product: 'Argen HT', status: "inactive", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026', detailUrl: "/doctorAdmin/Details" },
+  { id: '#1235', pName: "Alice Brown", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026', detailUrl: "/doctorAdmin/Details" },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', dName: 'Miles, Esther', shipping: '16/22/2026', detailUrl: "/doctorAdmin/Details" },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026', detailUrl: "/doctorAdmin/Details" },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026', detailUrl: "/doctorAdmin/Details" },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026', detailUrl: "/doctorAdmin/Details" },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026', detailUrl: "/doctorAdmin/Details" },
 ];

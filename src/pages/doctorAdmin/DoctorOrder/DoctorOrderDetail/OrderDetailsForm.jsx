@@ -1,16 +1,25 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { SecondaryButton } from '../../../../Common/Button'
 import DropDownComponent from '../../../../Common/DropDown'
-import { options, Paymentoptions, ShippingDetail } from '../../../../Constant';
-import { CreditCardIcon } from '@heroicons/react/16/solid';
+import { options, ShippingDetail } from '../../../../Constant';
 import CardIcon from '../../../../icon/CardIcon';
-import { DentalChart, ToothSelector } from '../../../../components/doctorAdmin/TeethSelection';
+import { TeethSelection } from '../../../../components/doctorAdmin/TeethSelection';
 
 export default function OrderDetailsForm() {
     const [selected, setSelected] = useState("");
 
     const handleSelect = (option) => {
         setSelected(option);
+    };
+
+    const [selectedTeeth, setSelectedTeeth] = useState([]);
+
+    const toggleTooth = (id) => {
+        setSelectedTeeth((prev) =>
+            prev.includes(id)
+                ? prev.filter((tooth) => tooth !== id) // unselect
+                : [...prev, id] // select
+        );
     };
 
     return (
@@ -77,8 +86,6 @@ export default function OrderDetailsForm() {
                 </div>
 
 
-
-
                 <div className='mt-4'>
                     <div className="border border-gray-200  rounded-lg p-4 sm:p-6">
                         <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-[#434343]">Tooth Selection</h3>
@@ -102,12 +109,10 @@ export default function OrderDetailsForm() {
                     </div>
 
 
-
-
                     {/* tooth selection  */}
                     <div className="border border-gray-200  rounded-lg p-4 mt-4">
                         <p className="text-sm font-medium font-poppins text-black">
-                            Tooth Selection
+                            Tooth Selection : {selectedTeeth.sort((a, b) => a - b).join(", ")}
                         </p>
                         <div className="py-4">
                             {/* <img
@@ -115,7 +120,7 @@ export default function OrderDetailsForm() {
                                 alt="Teeth Chart"
                                 className="w-full h-auto rounded-md border border-gray-300"
                             /> */}
-                            <DentalChart />
+                            <TeethSelection selectedTeeth={selectedTeeth} setSelectedTeeth={setSelectedTeeth} toggleTooth={toggleTooth} />
                         </div>
 
 
