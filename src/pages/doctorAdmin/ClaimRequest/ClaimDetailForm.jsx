@@ -2,6 +2,7 @@ import React from 'react'
 import FileIcon from '../../../icon/FileIcon'
 
 export default function ClaimDetailForm() {
+ 
     return (
         <div>
 

@@ -54,11 +54,11 @@ export const SCANNER_TYPE = [
 
 export const menuItems = [
   { name: "Dashboard", path: "/doctorAdmin/doctordashboard", icon: DashboardIcon },
-  { name: "Orders", path: "/doctorAdmin/orders", icon: OrderIcon },
+  { name: "Orders", path: "/doctorAdmin/Orders", icon: OrderIcon },
   { name: "Patient", path: "/doctorAdmin/Patient", icon: PatienIcon },
   { name: "Claim Requests", path: "/doctorAdmin/Claim-Request", icon: ClaimIcon },
-  { name: "Order", path: "/doctorAdmin/Orders", icon: ClaimIcon },
-  { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
+  { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
+  // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];
 export const CardDashboard = [
   {
@@ -141,19 +141,8 @@ export const PatientDashboard = [
     email: "smallpaul@me.com",
     linkName: "View Detail",
     icon: <UserIcon />,
-  }, 
-  {
-    name: "Kathryn",
-    email: "smallpaul@me.com",
-    linkName: "View Detail",
-    icon: <UserIcon />,
   },
-  {
-    name: "Kathryn",
-    email: "smallpaul@me.com",
-    linkName: "View Detail",
-    icon: <UserIcon />,
-  },
+
 
 
 ];
@@ -223,7 +212,7 @@ export const headingsPateint = [
   { label: "Phone Number", key: "phone" },
   { label: "Address", key: "address" },
   { label: "Account Status", key: "status" },
-  { label: "Action", key: "action" },
+  // { label: "Action", key: "action" },
 ];
 
 
