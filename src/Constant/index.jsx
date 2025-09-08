@@ -53,10 +53,18 @@ export const SCANNER_TYPE = [
 ];
 
 export const menuItems = [
-  { name: "Dashboard", path: "/doctorAdmin/doctordashboard", icon: DashboardIcon },
+  {
+    name: "Dashboard",
+    path: "/doctorAdmin/doctordashboard",
+    icon: DashboardIcon,
+  },
   { name: "Orders", path: "/doctorAdmin/Orders", icon: OrderIcon },
   { name: "Patient", path: "/doctorAdmin/Patient", icon: PatienIcon },
-  { name: "Claim Requests", path: "/doctorAdmin/Claim-Request", icon: ClaimIcon },
+  {
+    name: "Claim Requests",
+    path: "/doctorAdmin/Claim-Request",
+    icon: ClaimIcon,
+  },
   // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
   // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];
@@ -91,9 +99,7 @@ export const options = [
   { label: "Subtotal:", value: "$350.00" },
   { label: "Shipping:", value: "Free" },
 ];
-export const Paymentoptions = [
-  { label: "Credit or debit card" },
-];
+export const Paymentoptions = [{ label: "Credit or debit card" }];
 
 export const ShippingDetail = [
   { label: "Shipping Address" },
@@ -142,9 +148,6 @@ export const PatientDashboard = [
     linkName: "View Detail",
     icon: <UserIcon />,
   },
-
-
-
 ];
 
 export const Orders = [
@@ -182,17 +185,79 @@ export const Orders = [
   },
 ];
 
-
 export const data = [
-  { id: '#1235', name: "Varga Dóra", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail' },
-  { id: '#1235', name: "John Doe", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
-  { id: '#1235', name: "Jane Smith", product: 'Argen HT', status: "inactive", submission: '16/22/2026', action: 'View Detail' },
-  { id: '#1235', name: "Alice Brown", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail' },
-  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
-  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
-  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
-  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
-  { id: '#1235', name: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail' },
+  {
+    id: "#1235",
+    name: "Varga Dóra",
+    product: "Argen HT",
+    status: "active",
+    submission: "16/22/2026",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    name: "John Doe",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    name: "Jane Smith",
+    product: "Argen HT",
+    status: "inactive",
+    submission: "16/22/2026",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    name: "Alice Brown",
+    product: "Argen HT",
+    status: "active",
+    submission: "16/22/2026",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    name: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    name: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    name: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    name: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    name: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+  },
 ];
 
 export const headings = [
@@ -204,7 +269,6 @@ export const headings = [
   { label: "Action", key: "action" },
 ];
 
-
 export const headingsPateint = [
   // { label: "Claim ID", key: "id" },
   { label: "Name", key: "name" },
@@ -215,16 +279,44 @@ export const headingsPateint = [
   // { label: "Action", key: "action" },
 ];
 
-
 export const dataPatient = [
-  { name: "Varga Dóra", email: "varga@example.com", status: "active", phone: '123456789', address: 'abc....' },
-  { name: "John Doe", email: "john@example.com", status: "pending", phone: '123456789', address: 'abc....' },
-  { name: "Jane Smith", email: "jane@example.com", status: "inactive", phone: '123456789', address: 'abc....' },
-  { name: "Alice Brown", email: "alice@example.com", status: "active", phone: '123456789', address: 'abc....' },
-  { name: "Bob Johnson", email: "bob@example.com", status: "pending", phone: '123456789', address: 'abc....' },
+  {
+    name: "Varga Dóra",
+    email: "varga@example.com",
+    status: "active",
+    phone: "123456789",
+    address: "abc....",
+  },
+  {
+    name: "John Doe",
+    email: "john@example.com",
+    status: "pending",
+    phone: "123456789",
+    address: "abc....",
+  },
+  {
+    name: "Jane Smith",
+    email: "jane@example.com",
+    status: "inactive",
+    phone: "123456789",
+    address: "abc....",
+  },
+  {
+    name: "Alice Brown",
+    email: "alice@example.com",
+    status: "active",
+    phone: "123456789",
+    address: "abc....",
+  },
+  {
+    name: "Bob Johnson",
+    email: "bob@example.com",
+    status: "pending",
+    phone: "123456789",
+    address: "abc....",
+  },
   // ...more rows
 ];
-
 
 export const headingsOrder = [
   { label: "order ID", key: "id" },
@@ -237,13 +329,116 @@ export const headingsOrder = [
 ];
 
 export const dataOrder = [
-  { id: '#1235', pName: "Varga Dóra", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "John Doe", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Jane Smith", product: 'Argen HT', status: "inactive", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Alice Brown", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
-  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  {
+    id: "#1235",
+    pName: "Varga Dóra",
+    product: "Argen HT",
+    status: "active",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+  },
+  {
+    id: "#1235",
+    pName: "John Doe",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+  },
+  {
+    id: "#1235",
+    pName: "Jane Smith",
+    product: "Argen HT",
+    status: "inactive",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+  },
+  {
+    id: "#1235",
+    pName: "Alice Brown",
+    product: "Argen HT",
+    status: "active",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+  },
+  {
+    id: "#1235",
+    pName: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+  },
+  {
+    id: "#1235",
+    pName: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+  },
+  {
+    id: "#1235",
+    pName: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+  },
+  {
+    id: "#1235",
+    pName: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+  },
+  {
+    id: "#1235",
+    pName: "Bob Johnson",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+  },
+];
+
+export const Chartdata = [
+  { month: "Jan", total: 0, completed: 0, inProgress: 0, pending: 0 },
+  { month: "Feb", total: 5, completed: 3, inProgress: 1, pending: 1 },
+  { month: "Mar", total: 10, completed: 6, inProgress: 2, pending: 2 },
+  { month: "Apr", total: 15, completed: 9, inProgress: 3, pending: 3 },
+  { month: "May", total: 20, completed: 12, inProgress: 4, pending: 4 },
+  { month: "Jun", total: 25, completed: 15, inProgress: 5, pending: 5 },
+  { month: "Jul", total: 30, completed: 18, inProgress: 6, pending: 6 },
+  { month: "Aug", total: 35, completed: 21, inProgress: 7, pending: 7 },
+  { month: "Sep", total: 40, completed: 24, inProgress: 8, pending: 8 },
+  { month: "Oct", total: 45, completed: 27, inProgress: 9, pending: 9 },
+  { month: "Nov", total: 50, completed: 30, inProgress: 10, pending: 10 },
+  { month: "Dec", total: 55, completed: 33, inProgress: 11, pending: 11 },
+];
+
+export const ChartStatusLines = [
+  { dataKey: "pending", stroke: "#3B82F6", name: "Pending" },
+  { dataKey: "inProgress", stroke: "#E13434", name: "In Progress" },
+  { dataKey: "completed", stroke: "#4FAD2E", name: "Completed" },
 ];
