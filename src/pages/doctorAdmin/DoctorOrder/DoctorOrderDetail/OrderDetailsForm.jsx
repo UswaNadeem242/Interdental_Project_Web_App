@@ -4,6 +4,7 @@ import DropDownComponent from '../../../../Common/DropDown'
 import { options, Paymentoptions, ShippingDetail } from '../../../../Constant';
 import { CreditCardIcon } from '@heroicons/react/16/solid';
 import CardIcon from '../../../../icon/CardIcon';
+import { DentalChart, ToothSelector } from '../../../../components/doctorAdmin/TeethSelection';
 
 export default function OrderDetailsForm() {
     const [selected, setSelected] = useState("");
@@ -109,11 +110,12 @@ export default function OrderDetailsForm() {
                             Tooth Selection
                         </p>
                         <div className="py-4">
-                            <img
+                            {/* <img
                                 src="/assets/doctor/teeth.png"
                                 alt="Teeth Chart"
                                 className="w-full h-auto rounded-md border border-gray-300"
-                            />
+                            /> */}
+                            <DentalChart />
                         </div>
 
 

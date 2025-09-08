@@ -28,11 +28,11 @@ export default function TableComponent({ headings, data, actions }) {
 
       {/* Table */}
       <div className=" overflow-x-auto">
-        <table className="min-w-full w-full md:min-w-0 text-left text-sm">
+        <table className="min-w-full text-left text-xs md:text-sm">
           <thead>
             <tr className="font-poppins font-medium text-xs text-secondaryText capitalize">
               {headings.map((col, idx) => (
-                <th key={idx} className="md:px-4 px-3 py-2 text-[#949494]">
+                <th key={idx} className="py-2 px-3 font-medium text-secondaryText]">
                   {col.label}
                 </th>
               ))}
@@ -85,7 +85,7 @@ export default function TableComponent({ headings, data, actions }) {
                       </span>
                     ) : col.key === "action" ? (
                       <NavLink
-                        onClick={() => setIsOpen(true)}
+                        // onClick={() => setIsOpen(true)}
                         href="#"
                         className="text-secondaryBrand flex gap-1 items-center"
                       >

@@ -5,5 +5,5 @@ export const PatientvalidationSchema = Yup.object().shape({
     username: Yup.string().required("First Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     phone: Yup.string().required("Phone Number is required"),
-    password: Yup.string().required("Password is required"),
+    // password: Yup.string().required("Password is required"),
 });

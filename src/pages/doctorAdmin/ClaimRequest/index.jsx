@@ -6,7 +6,8 @@ const ClaimRequest = () => {
 
   const steps = [
     {
-      name: "All", content: <TableComponent headings={headings}
+      name: "All",
+      content: <TableComponent headings={headings}
         data={data}
       />
     },
