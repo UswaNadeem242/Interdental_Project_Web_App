@@ -1,6 +1,8 @@
 import React from "react";
 import { PatientDashboard } from "../../Constant";
 import { TiltedArrowBlue } from "../../icon/TiltedArrowBlue";
+import { SecondaryButton } from "../Button";
+import { NavLink } from "react-router-dom";
 
 export const PatientCard = ({
   heading,
@@ -16,9 +18,10 @@ export const PatientCard = ({
         <h2 className="font-poppins text-sm font-medium text-gray-700">
           Patients
         </h2>
-        <button className="py-1 px-4 font-poppins font-light text-xs border border-[#013764] bg-[#FFFFFF] text-[#013764]  rounded-lg shadow hover:bg-blue-800">
-          View All
-        </button>
+        <NavLink to='/doctorAdmin/Patient'>
+          <SecondaryButton title='View All' className='py-1 px-4 font-poppins font-light text-xs border border-brand bg-white text-brand  rounded-lg' />
+        </NavLink>
+
       </div>
       {PatientDashboard?.map((item) => {
         return (

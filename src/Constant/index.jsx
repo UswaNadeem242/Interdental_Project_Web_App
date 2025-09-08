@@ -55,8 +55,10 @@ export const SCANNER_TYPE = [
 export const menuItems = [
   { name: "Dashboard", path: "/doctorAdmin/doctordashboard", icon: DashboardIcon },
   { name: "Orders", path: "/doctorAdmin/orders", icon: OrderIcon },
-  { name: "Patient", path: "/doctorAdmin/patientDoctor", icon: PatienIcon },
-  { name: "Claim Requests", path: "/doctorAdmin/claim", icon: ClaimIcon },
+  { name: "Patient", path: "/doctorAdmin/Patient", icon: PatienIcon },
+  { name: "Claim Requests", path: "/doctorAdmin/Claim-Request", icon: ClaimIcon },
+  { name: "Order", path: "/doctorAdmin/Orders", icon: ClaimIcon },
+  { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];
 export const CardDashboard = [
   {
@@ -85,6 +87,18 @@ export const CardDashboard = [
   },
 ];
 
+export const options = [
+  { label: "Subtotal:", value: "$350.00" },
+  { label: "Shipping:", value: "Free" },
+];
+export const Paymentoptions = [
+  { label: "Credit or debit card" },
+];
+
+export const ShippingDetail = [
+  { label: "Shipping Address" },
+  { label: "1901 Thornridge Cir. Shiloh, Hawaii 81063" },
+];
 export const PatientDashboard = [
   {
     name: "Kathryn",
@@ -98,6 +112,50 @@ export const PatientDashboard = [
     linkName: "View Detail",
     icon: <UserIcon />,
   },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  }, 
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
+
+
 ];
 
 export const Orders = [
@@ -170,10 +228,33 @@ export const headingsPateint = [
 
 
 export const dataPatient = [
-  { name: "Varga Dóra", email: "varga@example.com", status: "active" ,phone:'123456789',address:'abc....'},
-  { name: "John Doe", email: "john@example.com", status: "pending" ,phone:'123456789',address:'abc....'},
-  { name: "Jane Smith", email: "jane@example.com", status: "inactive",phone:'123456789',address:'abc....' },
-  { name: "Alice Brown", email: "alice@example.com", status: "active",phone:'123456789',address:'abc....' },
-  { name: "Bob Johnson", email: "bob@example.com", status: "pending" ,phone:'123456789',address:'abc....'},
+  { name: "Varga Dóra", email: "varga@example.com", status: "active", phone: '123456789', address: 'abc....' },
+  { name: "John Doe", email: "john@example.com", status: "pending", phone: '123456789', address: 'abc....' },
+  { name: "Jane Smith", email: "jane@example.com", status: "inactive", phone: '123456789', address: 'abc....' },
+  { name: "Alice Brown", email: "alice@example.com", status: "active", phone: '123456789', address: 'abc....' },
+  { name: "Bob Johnson", email: "bob@example.com", status: "pending", phone: '123456789', address: 'abc....' },
   // ...more rows
+];
+
+
+export const headingsOrder = [
+  { label: "order ID", key: "id" },
+  { label: "Scan Date", key: "submission" },
+  { label: "Doctor Name", key: "dName" },
+  { label: "Patient Name", key: "pName" },
+  { label: "Shopping Date", key: "shipping" },
+  { label: "Account Status", key: "status" },
+  { label: "Action", key: "action" },
+];
+
+export const dataOrder = [
+  { id: '#1235', pName: "Varga Dóra", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  { id: '#1235', pName: "John Doe", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  { id: '#1235', pName: "Jane Smith", product: 'Argen HT', status: "inactive", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  { id: '#1235', pName: "Alice Brown", product: 'Argen HT', status: "active", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
+  { id: '#1235', pName: "Bob Johnson", product: 'Argen HT', status: "pending", submission: '16/22/2026', action: 'View Detail', dName: 'Miles, Esther', shipping: '16/22/2026' },
 ];

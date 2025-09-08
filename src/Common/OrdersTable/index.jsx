@@ -10,10 +10,10 @@ export default function OrdersTable() {
         </h2>
 
         <div className="flex flex-wrap gap-2 md:gap-4">
-          <button className="py-1 px-4 md:px-6 font-poppins font-light text-xs bg-[#001D58] text-white rounded-lg shadow hover:bg-blue-800">
+          <button className="py-1 px-4 md:px-6 font-poppins font-light text-xs bg-[#001D58] text-white rounded-lg shadow  ">
             Place New Order
           </button>
-          <button className="py-1 px-3 md:px-4 font-poppins font-light text-xs border border-[#013764] bg-white text-[#013764] rounded-lg shadow hover:bg-blue-800 hover:text-white">
+          <button className="py-1 px-3 md:px-4 font-poppins font-light text-xs border border-brand bg-white text-brand rounded-lg shadow hover:bg-blue-800 hover:text-white">
             View All
           </button>
         </div>

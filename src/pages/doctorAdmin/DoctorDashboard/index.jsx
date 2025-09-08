@@ -70,7 +70,7 @@ const DoctorDashaboard = () => {
           </div>
         </div>
 
-        <div className="col-span-1 md:col-span-1 lg:col-span-4 bg-[#FFFFFF] rounded-lg md:rounded-xl lg:rounded-xl">
+        <div className="col-span-1 md:col-span-1 lg:col-span-4 bg-[#FFFFFF] rounded-lg md:rounded-xl lg:rounded-xl h-[660px] overflow-auto ">
           <PatientCard />
         </div>
         <div className="col-span-1 md:col-span-1 lg:col-span-12">

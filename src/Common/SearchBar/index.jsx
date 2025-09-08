@@ -3,7 +3,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { PrimaryButtonUI, SecondaryButton } from "../Button";
 import FilterIcon from "../../icon/FilterIcon";
 
-export default function SearchBar({ onSearch, onSort, placeholder = "Search..." }) {
+export default function SearchBar({ onSearch, onSort, placeholder = "Search...", title }) {
     const [query, setQuery] = useState("");
 
     const handleSearch = (e) => {
@@ -28,14 +28,14 @@ export default function SearchBar({ onSearch, onSort, placeholder = "Search..." 
 
             {/* Sort Button */}
             <SecondaryButton
-                title='Sort By'
+                title={title}
                 variant="outline"
                 size="sm"
                 onClick={onSort}
                 className="rounded-md px-2 py-2 bg-white text-[#344054] flex gap-2"
                 icon={<FilterIcon className="w-4 h-4" />}
             >
-                Sort By
+                {title}
 
             </SecondaryButton>
         </div>

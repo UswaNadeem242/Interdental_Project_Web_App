@@ -5,6 +5,8 @@ import DoctorProfile from "./DoctorProfile";
 import PatientPage from "./PatientDoctor";
 import ClaimRequest from "./ClaimRequest";
 import DoctorOrder from "./OrderStep/RestorationDesignForm";
+import OrderDoctorPage from "./DoctorOrder";
+import DoctorDeailsPage from "./DoctorOrder/DoctorOrderDetail";
 
 
 const DoctorAdmin = () => {
@@ -13,10 +15,12 @@ const DoctorAdmin = () => {
       {/* w-full h-[982px]    w-screen min-h-screen flex justify-start items-start*/}
       <Routes>
         <Route path="/doctordashboard" element={<DoctorDashaboard />} />
-        <Route path="/patientDoctor" element={<PatientPage />} />
-        <Route path="/claim" element={<ClaimRequest />} />
-        <Route path="/orders" element={<DoctorOrder />} />
-        <Route path="/profile" element={<DoctorProfile />} />
+        <Route path="/Patient" element={<PatientPage />} />
+        <Route path="/Claim-Request" element={<ClaimRequest />} />
+        <Route path="/Orders" element={<DoctorOrder />} />
+        <Route path="/Profile" element={<DoctorProfile />} />
+        <Route path="/Order" element={<OrderDoctorPage />} />
+        <Route path="/Details" element={<DoctorDeailsPage />} />
 
       </Routes>
     </div>

@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../auth/AuthContext";
 import { BellIcon } from "../../../icon/Bell";
 import { LogoutIcon } from "../../../icon/LogoutIcon";
+import usePageTitle from "../../../Hooks/usePageTitle";
 
 const DoctorHeader = ({ title, subTitle }) => {
   const navigate = useNavigate();
@@ -9,12 +10,16 @@ const DoctorHeader = ({ title, subTitle }) => {
   const handleLogout = () => {
     logout();
     navigate("/login");
+
   };
+  const pageTitle = usePageTitle();
+  console.log('pageTitle:', pageTitle);
+
   return (
     <>
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">
         <h1 className="text-[#1A2D33] font-poppins text-lg md:text-2xl capitalize font-bold">
-          Place Order
+          {pageTitle}
         </h1>
         <div className="hidden md:flex flex-1"></div>
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">

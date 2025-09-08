@@ -28,18 +28,7 @@ const ClaimRequest = () => {
           <TabsStepper steps={steps} />
         </div>
       </div>
-    </div>
-
-    // <div className="w-full">
-    //   <div className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-md overflow-x-auto">
-    //     <div className="">
-    //       <TabsStepper steps={steps} />
-    //     </div>
-    //   </div>
-    // </div>
-    
-
-  )
+    </div>)
 }
 
 export default ClaimRequest

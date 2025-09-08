@@ -15,6 +15,7 @@ const PatientPage = () => {
         <div className='flex flex-col md:flex-row justify-between gap-2 pb-3'>
           <div className='md:flex-1 '>
             <SearchBar
+              title='Sort By'
               onSearch={(value) => console.log("Searching here:", value)}
               onSort={() => console.log("Sort clicked")}
             />
