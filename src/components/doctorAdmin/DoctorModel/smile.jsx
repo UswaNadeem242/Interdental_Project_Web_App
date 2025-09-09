@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CheckBox, SmileCheckBox } from "../../../icon/SmileCheckBox";
+
+import { CheckIcon } from "@heroicons/react/24/solid";
 
 export const SmileDesignPicker = ({
   isModalOpen,
@@ -70,13 +71,19 @@ export const SmileDesignPicker = ({
                 value={design}
                 checked={selected.includes(design)}
                 onChange={() => toggleDesign(design)}
-                className="hidden peer"
+                className="hidden peer "
               />
 
               <div className="flex gap-1 items-center justify-center">
-                <div className=" top-2 left-2 w-4 h-4  text-center border border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-600">
-                  <SmileCheckBox selected={selected} design={design} />
+                <div className="top-2 left-2 w-4 h-4  text-center border border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-600">
+                  {/* <SmileCheckBox selected={selected} design={design} /> */}
+                  <CheckIcon
+                    className={`w-8 h-8 text-blue-600 ${
+                      selected.includes(design) ? "block" : "hidden"
+                    }`}
+                  />
                 </div>
+
                 {/* Label text */}
                 <span className="text-sm font-poppins">
                   Smile Design {design}
