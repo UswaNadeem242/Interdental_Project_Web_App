@@ -23,7 +23,7 @@ const ListProduct = () => {
   const [isAddCategoryModal, setIsAddCategoryModal] = useState(false);
   const [images, setImages] = useState([]);
   const [sku, setSku] = useState(
-    () => `SKU-${Math.floor(Math.random() * 1000000)}`
+    () => `SKU-${Math.floor(Math.random() * 100000000)}`
   );
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
