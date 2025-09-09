@@ -148,6 +148,30 @@ export const PatientDashboard = [
     linkName: "View Detail",
     icon: <UserIcon />,
   },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
+  {
+    name: "Kathryn",
+    email: "smallpaul@me.com",
+    linkName: "View Detail",
+    icon: <UserIcon />,
+  },
 ];
 
 export const Orders = [
