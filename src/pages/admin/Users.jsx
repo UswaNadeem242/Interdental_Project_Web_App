@@ -71,13 +71,13 @@ const Users = () => {
     }
   };
 
-  const handleActivatedUser = async (id) => {
+  const handleActivatedUser = async (id, status) => {
     try {
       const response = await axios.put(
         `${BASE_URL}/api/admin/users/changeuserstatus`,
         {
           userId: id,
-          status: true,
+          status: status,
         },
         {
           headers: {
@@ -304,8 +304,8 @@ const Users = () => {
                       <div
                         onClick={() => {
                           user.status === "active" || user.status === "ACTIVE"
-                            ? handleDeactivateUser(user.id)
-                            : handleActivatedUser(user.id);
+                            ? handleActivatedUser(user.id, false)
+                            : handleActivatedUser(user.id, true);
                         }}
                         className={`absolute top-0 right-10 flex justify-center items-center cursor-pointer w-[136px] h-[54px] rounded-[8px] py-[8px] px-[16px] gap-[8px] bg-white shadow-[0_0_10px_#00000017] ${
                           actionsModal && selectedUser === index
@@ -332,7 +332,6 @@ const Users = () => {
         onClose={closeToast}
         type={toastType}
       />
-      
     </div>
   );
 };

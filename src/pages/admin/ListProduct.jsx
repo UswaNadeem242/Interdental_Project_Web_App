@@ -23,7 +23,7 @@ const ListProduct = () => {
   const [isAddCategoryModal, setIsAddCategoryModal] = useState(false);
   const [images, setImages] = useState([]);
   const [sku, setSku] = useState(
-    () => `SKU-${Math.floor(Math.random() * 1000000)}`
+    () => `SKU-${Math.floor(Math.random() * 100000000)}`
   );
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -178,6 +178,22 @@ const ListProduct = () => {
       return;
     }
 
+    // ✅ Check if price and stock are numbers
+    if (isNaN(price) || isNaN(stockQuantity)) {
+      setToastMessage("Price and Stock must be valid numbers!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    // ✅ Check for max 10 digits
+    if (price.toString().length > 10 || stockQuantity.toString().length > 10) {
+      setToastMessage("Price and Stock cannot exceed 10 digits!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
     // Check numeric values
     if (Number(price) <= 0 || Number(stockQuantity) <= 0) {
       setToastMessage("Price and stock quantity must be greater than 0!");
@@ -232,7 +248,7 @@ const ListProduct = () => {
           navigate("/admin/products");
         }, 2000);
       } else if (response.data.responseCode === "1500") {
-        console.log('==-=-==-=--=-==--=-=dsfsafsdfsdfsfdsfdsffs')
+        console.log("==-=-==-=--=-==--=-=dsfsafsdfsdfsfdsfdsffs");
         setToastMessage("Product Already Exsist");
         setToastType("error");
         setToastVisible(true);
