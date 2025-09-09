@@ -16,7 +16,7 @@ import {
 } from "../../../Constant";
 import DonePage from "./DonePage";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/Smile";
+import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import { FileUploadSection } from "../../../components/doctorAdmin/OrderFileSelection";
 import { ShadeDropdown } from "../../../Common/DropDown/NestedDropdown";
 

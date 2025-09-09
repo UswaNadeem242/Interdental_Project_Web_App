@@ -1,4 +1,3 @@
-
 export default function FormSection({ title, children, action, color, className }) {
     return (
         <section className={` ${className} rounded-lg border border-gray-200 p-4`}>
