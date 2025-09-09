@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import { useAuth } from "../auth/AuthContext";
+import AccountDeactivate from "../modals/AccountDeactivateModal";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -37,6 +39,12 @@ const Login = () => {
         }
       );
       setLoading(false);
+      if (
+        response.data.responseCode === "003" ||
+        response.data.responseMessage === "User is not active"
+      ) {
+        setIsModalOpen(true);
+      }
       login(response.data.data.users, response.data.data.accessToken);
       console.log("test", response);
       if (response.data.data.users.roles[0] === "ADMIN") {
@@ -257,6 +265,12 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <AccountDeactivate
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </div>
   );
 };
