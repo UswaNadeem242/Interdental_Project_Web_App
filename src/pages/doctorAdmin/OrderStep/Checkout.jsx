@@ -76,7 +76,7 @@ const CheckoutForm = () => {
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
                       <img
-                        src="/assets/usFlag.jpeg" // Replace with actual flag image path
+                        src="/assets/doctor/flag.png" // Replace with actual flag image path
                         alt="US Flag"
                         className="w-5 h-5 rounded-sm"
                       />

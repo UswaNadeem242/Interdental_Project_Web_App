@@ -132,8 +132,10 @@ const DoctorOrder = () => {
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
-        <main className="flex-1 bg-white max-w-7xl mx-auto rounded-3xl p-4 sm:p-6 w-full">
-          <div className="mx-auto">
+        <main className="flex-1 bg-white  rounded-3xl p-4 sm:p-6 w-full">
+          {/* md:max-w-7xl md:mx-auto */}
+          <div className="">
+            {/* md:mx-auto */}
             <StepperTabs
               steps={steps}
               setActiveIndex={setActiveIndex}
@@ -141,7 +143,8 @@ const DoctorOrder = () => {
               back={back}
               next={next}
             />
-            <div className="max-w-7xl mx-auto">
+            <div className="">
+              {/* md:max-w-7xl md:mx-auto */}
               {activeIndex === 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4 min-h-screen">
                   {/* Left 3 */}
