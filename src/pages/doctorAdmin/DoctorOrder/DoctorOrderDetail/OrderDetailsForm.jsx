@@ -111,7 +111,7 @@ export default function OrderDetailsForm() {
 
                     {/* tooth selection  */}
                     <div className="border border-gray-200  rounded-lg p-4 mt-4">
-                        <p className="text-sm font-medium font-poppins text-black">
+                        <p className="text-sm font-medium font-poppins text-[#434343]">
                             Tooth Selection : {selectedTeeth.sort((a, b) => a - b).join(", ")}
                         </p>
                         <div className="py-4">
@@ -192,7 +192,7 @@ export default function OrderDetailsForm() {
                 </div>
 
                 <div className="relative mt-4">
-                    <div className='bg-white p-4 rounded-lg'>
+                    <div className='bg-white p-4 rounded-lg shadow-lg'>
                         <h1 className='text-[#1A1A1A] text-lg font-semibold font-poppins capitalize pb-4'>Payment Detail</h1>
                         <div className='flex  items-center gap-2'>
                             <CardIcon className='w-3 h-3' />

@@ -76,16 +76,15 @@ export default function MaterialDropdown({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`${className}  flex w-full items-center justify-between  bg-grey-500  border border-gray-300  px-2 py-3 rounded-xl text-left text-sm  text-secondaryBrand`}
+        className={`${className}  flex w-full items-center justify-between  bg-grey-500  border border-gray-300  px-2 py-3 rounded-xl text-left text-sm  text-textFieldHeading`}
       >
         <span>{selected?.label ?? label}</span>
 
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          className={`h-5 w-5 text-[#949494] transition-transform duration-200 ${
-            open ? "" : ""
-          }`}
+          className={`h-5 w-5 text-[#949494] transition-transform duration-200 ${open ? "" : ""
+            }`}
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -100,23 +99,27 @@ export default function MaterialDropdown({
       {open && (
         <div className="absolute z-20 w-full rounded-b-2xl border border-gray-200 bg-white shadow-lg">
           <div className=" space-y-1">
-            {options.map((opt) => {
+            {options.map((opt, idx) => {
               const val = opt.value ?? opt.label;
               const active = val === value;
+
+              const isLast = idx === options.length - 1;
               return (
                 <button
                   key={val}
                   type="button"
                   onClick={() => select(val)}
-                  className={`flex w-full items-center justify-between border-b-2 border-[#D2D4DA]  px-3 py-3 text-sm transition-colors ${
-                    active ? "bg-indigo-50" : "hover:bg-gray-50"
-                  }`}
+                  className={`flex w-full items-center justify-between    px-3 py-3 text-sm transition-colors 
+                    ${active ? "bg-indigo-50" : "hover:bg-gray-50"
+                    }
+                    
+                      ${!isLast ? "border-b-2 border-[#D2D4DA]" : ""}
+                    `}
                 >
                   <span className="flex justify-between items-center gap-1">
                     <span
-                      className={`grid h-4 w-4 place-items-center rounded-full border ${
-                        active ? "text-[#4640FF]" : "border-gray-300"
-                      }`}
+                      className={`grid h-4 w-4 place-items-center rounded-full border ${active ? "text-[#4640FF]" : "border-gray-300"
+                        }`}
                     >
                       {active && (
                         <span className="h-2 w-2 rounded-full text-[#4640FF]  bg-secondaryBrand" />

@@ -9,6 +9,7 @@ export const PatientCard = ({
   email,
   linkName,
   icon,
+  
 
 }) => {
   return (

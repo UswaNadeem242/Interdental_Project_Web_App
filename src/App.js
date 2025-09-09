@@ -30,6 +30,7 @@ import DoctorAdmin from "./pages/doctorAdmin/Doctor";
 import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
 import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
 import DoctorHeader from "./components/doctorAdmin/DoctorHeader";
+import ScrollToTop from "./Hooks/UseScroll";
 
 const MainLayout = ({ children }) => (
   <>
@@ -203,6 +204,7 @@ function App() {
               element={
                 <PlainLayout>
                   <ProtectedRoute>
+                    <ScrollToTop />
                     <DoctorAdmin />
                   </ProtectedRoute>
                 </PlainLayout>

@@ -18,7 +18,7 @@ import DonePage from "./DonePage";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/Smile";
 import { FileUploadSection } from "../../../components/doctorAdmin/OrderFileSelection";
-// import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/Smile";
+import { ShadeDropdown } from "../../../Common/DropDown/NestedDropdown";
 
 const DoctorOrder = () => {
   // form states
@@ -304,7 +304,7 @@ const DoctorOrder = () => {
                             storageKey="material"
                           />
 
-                          <MaterialDropdown
+                          {/* <MaterialDropdown
                             options={[]}
                             value={currentValues.material || ""}
                             onChange={(val) =>
@@ -312,7 +312,8 @@ const DoctorOrder = () => {
                             }
                             label="Color"
                             disabled={false}
-                          />
+                          /> */}
+                          <ShadeDropdown />
                           <MaterialDropdown
                             options={[]}
                             value={currentValues.material || ""}
