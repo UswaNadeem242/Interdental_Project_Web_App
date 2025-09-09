@@ -150,11 +150,34 @@ const Shop = () => {
     setBrandName(name);
   };
 
+  // const filteredProducts = products.filter((product) => {
+  //   // Price filter
+  //   const isInPriceRange =
+  //     !minPrice && !maxPrice
+  //       ? true // if no price range is selected → show all
+  //       : product.price >= minPrice && product.price <= maxPrice;
+
+  //   // Category filter
+  //   const isInCategory = selectedCategory
+  //     ? product.categoryId === selectedCategory
+  //     : true;
+
+  //   // Brand filter
+  //   const isInBrand = selectedbrand ? product.brandId === selectedbrand : true;
+
+  //   // Search filter
+  //   const matchesSearch = searchTerm
+  //     ? product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  //     : true;
+
+  //   return isInPriceRange && isInCategory && isInBrand && matchesSearch;
+  // });
+
   const filteredProducts = products.filter((product) => {
     // Price filter
     const isInPriceRange =
       !minPrice && !maxPrice
-        ? true // if no price range is selected → show all
+        ? true
         : product.price >= minPrice && product.price <= maxPrice;
 
     // Category filter
@@ -170,16 +193,36 @@ const Shop = () => {
       ? product.name.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
 
-    return isInPriceRange && isInCategory && isInBrand && matchesSearch;
+    // Availability filter
+    let matchesAvailability = true;
+    if (checked === "inStock") {
+      matchesAvailability = product.stockQuantity > 0;
+    } else if (checked === "outOfStock") {
+      matchesAvailability = product.stockQuantity === 0;
+    }
+
+    return (
+      isInPriceRange &&
+      isInCategory &&
+      isInBrand &&
+      matchesSearch &&
+      matchesAvailability
+    );
   });
 
+  // const handleCheckboxChange = (e) => {
+  //   const { id, checked } = e.target;
+  //   if (checked) {
+  //     setChecked(id);
+  //   } else {
+  //     setChecked(null);
+  //   }
+  // };
+
   const handleCheckboxChange = (e) => {
-    const { id, checked } = e.target;
-    if (checked) {
-      setChecked(id);
-    } else {
-      setChecked(null);
-    }
+    const { id } = e.target;
+    setChecked((prev) => (prev === id ? null : id));
+    // if same clicked again → uncheck
   };
 
   return (
@@ -271,7 +314,7 @@ const Shop = () => {
             </div>
           </div>
           {/* Availability filter */}
-          <div className="flex flex-col justify-center items-start w-[258px] h-[97px] rounded-[17px] p-[12px] space-y-[16px]">
+          {/* <div className="flex flex-col justify-center items-start w-[258px] h-[97px] rounded-[17px] p-[12px] space-y-[16px]">
             <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
               Avalibility
             </h1>
@@ -306,6 +349,53 @@ const Shop = () => {
                   className={`mr-2 cursor-pointer rounded-[4.43px] border-[0.74px] border-[#949494] w-[14.77px] h-[14.77px] ${
                     checked && "accent-secondaryBrand"
                   }`}
+                />
+                <label
+                  htmlFor="outOfStock"
+                  className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
+                    checked === "outOfStock"
+                      ? "text-secondaryBrand"
+                      : "text-[#949494]"
+                  }`}
+                >
+                  Out of Stock
+                </label>
+              </div>
+            </div>
+          </div> */}
+
+          <div className="flex flex-col justify-center items-start w-[258px] h-[97px] rounded-[17px] p-[12px] space-y-[16px]">
+            <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
+              Availability
+            </h1>
+            <div className="flex flex-col justify-start items-start space-y-[8px] h-[44px] w-[142px] ">
+              <div className="flex items-center gap-[5px] h-[18px]">
+                <input
+                  type="checkbox"
+                  id="inStock"
+                  checked={checked === "inStock"}
+                  onChange={handleCheckboxChange}
+                  className="mr-2 cursor-pointer rounded-[4.43px] border-[0.74px] border-[#949494] w-[14.77px] h-[14.77px]"
+                />
+                <label
+                  htmlFor="inStock"
+                  className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
+                    checked === "inStock"
+                      ? "text-secondaryBrand"
+                      : "text-[#949494]"
+                  }`}
+                >
+                  In Stock
+                </label>
+              </div>
+
+              <div className="flex items-center gap-[5px]">
+                <input
+                  type="checkbox"
+                  id="outOfStock"
+                  checked={checked === "outOfStock"}
+                  onChange={handleCheckboxChange}
+                  className="mr-2 cursor-pointer rounded-[4.43px] border-[0.74px] border-[#949494] w-[14.77px] h-[14.77px]"
                 />
                 <label
                   htmlFor="outOfStock"
@@ -395,7 +485,7 @@ const Shop = () => {
           </div>
         </div>
       </div>
-       <Footer />
+      <Footer />
     </>
   );
 };

@@ -61,7 +61,10 @@ const AddBrandModal = ({ isModalOpen, getAllBrands, setIsModalOpen }) => {
         }
       );
 
-      if (response.data.data.responseCode === "0000") {
+      if (
+        response.data.data.responseCode === "0000" ||
+        response.data.responseCode === "200"
+      ) {
         console.log("✅ Success:", response.data);
         getAllBrands();
         setIsModalOpen(false);
