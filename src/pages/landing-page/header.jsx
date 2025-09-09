@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../auth/AuthContext";
+import ProfileDropdown from "../../components/dropdowns/ProfileDropdown";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Header = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   const { user } = useAuth();
+  const [profileDropdown, setProfileDropdown] = useState(false);
 
   return (
     <header className="sticky top-4 sm:top-6 md:top-8 z-50 w-full max-w-[95%] sm:max-w-[90%] mx-auto rounded-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-white shadow-md">
@@ -111,7 +113,7 @@ const Header = () => {
         {user && user?.email ? (
           <div className="flex flex-col relative">
             <div
-              // onClick={() => setProfileDropdown(!profileDropdown)}
+              onClick={() => setProfileDropdown(!profileDropdown)}
               className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-[4px]"
             >
               <svg
@@ -159,14 +161,14 @@ const Header = () => {
                 />
               </svg>
             </div>
-            {/* {profileDropdown && (
+            {profileDropdown && (
               <div className="absolute right-0 top-12 mt-2 z-10">
                 <ProfileDropdown
                   isModalOpen={profileDropdown}
                   setIsModalOpen={setProfileDropdown}
                 />
               </div>
-            )} */}
+            )}
           </div>
         ) : (
           <>

@@ -1,11 +1,16 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { BASE_URL } from "../config";
+import { useAuth } from "../auth/AuthContext";
+import Toast from "./Toast";
 // import product1 from "../assets/product1.png";
 
 const CartProduct = ({ item, getCart }) => {
   const [count, setCount] = useState(item.quantity);
-
+  const { fetchCartCount } = useAuth();
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
   const handleDeleteItem = async () => {
     try {
       const response = await axios.delete(
@@ -17,9 +22,17 @@ const CartProduct = ({ item, getCart }) => {
           },
         }
       );
-      alert("Item removed from cart");
+      // alert("Item removed from cart");
+      setToastMessage("Item removed from cart");
+      fetchCartCount()
+      setToastType("success");
+      setToastVisible(true);
       getCart();
     } catch (error) {
+        setToastMessage(`Error: ${error}`);
+      setToastType("error");
+      setToastVisible(true);
+
     }
   };
   const handleUpdateItem = async (status) => {
@@ -49,6 +62,8 @@ const CartProduct = ({ item, getCart }) => {
       getCart();
     } catch (error) {
     }
+  };const closeToast = () => {
+    setToastVisible(false);
   };
   return (
     <div className="flex justify-center items-center w-[587px] h-[188px] rounded-[16px] border-[1px] border-[#0000000D] space-y-[24px] p-[16px] bg-[#FFFFFF]">
@@ -160,6 +175,12 @@ const CartProduct = ({ item, getCart }) => {
           </defs>
         </svg>
       </div>
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
     </div>
   );
 };

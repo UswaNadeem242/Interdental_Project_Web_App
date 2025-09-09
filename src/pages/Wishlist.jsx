@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../config";
 import Toast from "../components/Toast";
+import { useAuth } from "../auth/AuthContext";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
@@ -9,6 +10,8 @@ const Wishlist = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [loading, setLoading] = useState(false);
+  const { fetchWishlistCount  } = useAuth();
+
 
   const getWishlist = async () => {
     try {
@@ -45,6 +48,7 @@ const Wishlist = () => {
       setToastMessage("Product Removed From Wishlist !");
       setToastType("success");
       setToastVisible(true);
+      fetchWishlistCount();
       getWishlist();
     } catch (error) {
       console.log(error);
