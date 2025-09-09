@@ -66,7 +66,6 @@ const PlainLayout = ({ children }) => {
           <DoctorHeader />
         </header>
 
-
         {/* Main Content */}
         <main className="flex-1 md:p-6 p-0 mt-16 md:ml-4  rounded-xl overflow-auto">
           {children}

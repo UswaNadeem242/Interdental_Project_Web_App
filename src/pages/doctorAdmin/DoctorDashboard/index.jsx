@@ -4,10 +4,17 @@ import {
   CardDashboard,
   Chartdata,
   ChartStatusLines,
+  dataOrder,
+  headingsOrder,
   PatientDashboard,
 } from "../../../Constant";
 import { PatientCard } from "../../../Common/PatientCard/index.jsx";
 import { ChartLegend, MultiLineChart } from "../../../Common/Chart/index.jsx";
+import {
+  PrimaryButtonUI,
+  SecondaryButton,
+} from "../../../Common/Button/index.jsx";
+import TableComponent from "../../../Common/Table/index.jsx";
 const DoctorDashaboard = () => {
   return (
     <div>
@@ -40,7 +47,7 @@ const DoctorDashaboard = () => {
         </div>
 
         <div className="col-span-1 md:col-span-1 lg:col-span-4 bg-[#FFFFFF] rounded-lg md:rounded-xl lg:rounded-xl">
-          <PatientCard />
+          <PatientCard title={"Pateints"} />
         </div>
         <div className="col-span-1 md:col-span-1 lg:col-span-12 bg-white p-6 rounded-2xl">
           <div className="flex flex-row md:flex-row items-start md:items-center justify-between gap-3 mb-4">
@@ -49,18 +56,24 @@ const DoctorDashaboard = () => {
             </h2>
 
             <div className="flex flex-wrap gap-2 md:gap-4">
-              <PrimaryButtonUI title='  Place New Order' className='py-1 px-4 md:px-6 font-poppins font-light text-xs bg-secondaryBrand text-white rounded-lg shadow ' />
-              <SecondaryButton title='View All' className='py-1 px-3 md:px-4 font-poppins font-light text-xs border border-brand bg-white text-brand rounded-lg shadow' href='/doctorAdmin/Orders' />
-
+              <PrimaryButtonUI
+                title="  Place New Order"
+                className="py-1 px-4 md:px-6 font-poppins font-light text-xs bg-secondaryBrand text-white rounded-lg shadow "
+              />
+              <SecondaryButton
+                title="View All"
+                className="py-1 px-3 md:px-4 font-poppins font-light text-xs border border-brand bg-white text-brand rounded-lg shadow"
+                href="/doctorAdmin/Orders"
+              />
             </div>
           </div>
           {/* <div className="overflow-x-auto"> */}
-          <TableComponent headings={headingsOrder}
+          <TableComponent
+            headings={headingsOrder}
             data={dataOrder}
             actionHrefKey="detailUrl"
           />
           {/* </div> */}
-
         </div>
       </div>
     </div>
