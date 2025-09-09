@@ -193,7 +193,7 @@ const Signup = () => {
                 </defs>
               </svg>
               <h1
-                onClick={() => setIsModalOpen(true)}
+              
                 className="hidden lg:block"
               >
                 Login with Google
