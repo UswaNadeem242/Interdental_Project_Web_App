@@ -5,8 +5,7 @@ import Footer from "../components/Footer";
 
 const About = ({ isLanding }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //  const [isModalPassword, setIsModalPassword] = useState(false);
-
+ 
   return (
     <>
       <Header />

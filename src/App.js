@@ -26,16 +26,18 @@ import LandingPage from "./pages/landing-page/landing-page";
 import Patients from "./pages/landing-page/patient";
 import Doctor from "./pages/landing-page/doctor";
 import Contact from "./pages/landing-page/contact";
-// const SingleProduct = React.lazy(() => import("./pages/SingleProduct"));
-
+import DoctorAdmin from "./pages/doctorAdmin/Doctor";
+// import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
+// import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
+// import DoctorHeader from "./components/doctorAdmin/doctorHeader";
+import ScrollToTop from "./components/ScrollTop";
 const MainLayout = ({ children }) => (
-  // <ProtectedRoute>
   <>
     <Header />
     {children}
     <Footer />
   </>
-  // </ProtectedRoute>
+
 );
 
 const PlainLayout = ({ children }) => (
@@ -51,6 +53,7 @@ function App() {
     <div>
       <AuthProvider>
         <BrowserRouter basename="/">
+          <ScrollToTop />
           {/* <Header /> */}
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -172,7 +175,7 @@ function App() {
               element={
                 <PlainLayout>
                   <ProtectedRoute>
-                    <Admin />
+                    <DoctorAdmin />
                   </ProtectedRoute>
                 </PlainLayout>
               }

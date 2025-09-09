@@ -82,7 +82,7 @@ const Dashboard = () => {
                   <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
                     Total Sales
                   </p>
-                  <p className="font-poppins font-bold text-[28px] leading-[42px] text-[#001D58]">
+                  <p className="font-poppins font-bold text-[28px]  leading-[42px] text-[#001D58]">
                     $2.5M
                   </p>
                 </div>

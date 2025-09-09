@@ -13,7 +13,10 @@ module.exports = {
         card: "#F8F8F8",
         bgWhite: "#FFFFFF",
         bgBlack: "#000000",
-      },
+        docText: '#737791',
+        textFieldColor: '#F8F8F8',
+        borderPrimary: '#E5E5E5',
+       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         workSans: ["Work Sans", "sans-serif"],

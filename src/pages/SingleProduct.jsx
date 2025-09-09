@@ -19,8 +19,8 @@ import ShoppingCart from "../modals/ShoppingCartModal";
 
 const SingleProduct = () => {
   const { productId } = useParams();
-  const { user } = useAuth();
-  console.log("single product", user);
+  const { user, fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } = useAuth();
+  console.log("single product", cartCount);
 
   const [product, setProduct] = useState({});
   const [categoriesList, setCategoriesList] = useState([]);
@@ -119,9 +119,8 @@ const SingleProduct = () => {
       setToastMessage("Added to Cart !");
       setToastType("success");
       setToastVisible(true);
-
-      // alert("Added to cart");
-      setLoading(false);
+      fetchCartCount();
+       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -147,7 +146,8 @@ const SingleProduct = () => {
           },
         }
       );
-
+      console.log('respons whishlist::', response);
+      fetchWishlistCount()
       setToastMessage("Added to Wishlist !");
       setToastType("success");
       setToastVisible(true);
@@ -159,11 +159,11 @@ const SingleProduct = () => {
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  return (
-    <div className="flex justify-center items-center bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
+   return (
+    <div className="flex justify-center items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
       <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
-        <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
-          <div className="flex justify-center items-center w-[1131px] h-[501px]">
+        <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-2xl bg-white">
+          <div className="flex justify-center items-center w-[1131px] h-[501px] gap-5">
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
                 spaceBetween={30}
@@ -180,12 +180,12 @@ const SingleProduct = () => {
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
                 {product &&
-                product.imageUrls &&
-                product.imageUrls.length > 0 ? (
+                  product.imageUrls &&
+                  product.imageUrls.length > 0 ? (
                   product.imageUrls.map((url, index) => (
                     <SwiperSlide key={index}>
                       <img
-                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-2xl"
                         src={url}
                         alt={`product-${index}`}
                       />
@@ -194,7 +194,7 @@ const SingleProduct = () => {
                 ) : (
                   <SwiperSlide>
                     <img
-                      className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
+                      className="object-cover h-[100%] w-[100%] overflow-hidden rounded-2xl"
                       src="/assets/product6.png" // fallback
                       alt="default product"
                     />
@@ -211,7 +211,7 @@ const SingleProduct = () => {
                     </h1>
                     <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-[8px] px-[12.79px] gap-[7.99px] bg-[#001D580D]">
                       <h1 className="font-poppins font-normal text-secondaryBrand text-[11.19px] leading-[16.79px] w-[44px] h-[17px]">
-                        {product.stockQuantity > 0 && "In Stock"}
+                        {product?.stockQuantity > 0 && "In Stock"}
                       </h1>
                     </div>
                   </div>
@@ -240,13 +240,13 @@ const SingleProduct = () => {
                 </h1>
               </div>
               <div
-                onClick={() => {
-                  setIsOpenCart(true);
-                  setLoading(true);
-                  setTimeout(() => {
-                    handleAddtoCart();
-                  }, [3000]);
-                }}
+                // onClick={() => {
+                //   setIsOpenCart(true);
+                //   setLoading(true);
+                //   setTimeout(() => {
+                //     handleAddtoCart();
+                //   }, [3000]);
+                // }}
                 className="flex justify-center items-center w-[441px] h-[51.28px] gap-[9.59px]"
               >
                 <div className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]">

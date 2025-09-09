@@ -19,18 +19,6 @@ const ChangePasswordModel = ({
     const [showConfirm, setShowConfirm] = useState(false);
     const inputRef = useRef(null);
     const [value, setValue] = useState("");
-
-    // useEffect(() => {
-    //     if (isModalPassword) {
-    //         const t = setTimeout(() => inputRef.current?.focus(), 50);
-    //         return () => clearTimeout(t);
-    //     } else {
-    //         setValue("");
-    //     }
-    // }, [isModalPassword]);
-
-    // if (!isModalPassword) return null;
-
     const [formData, setFormData] = useState({
         oldPassword: "",
         newPassword: "",
@@ -60,62 +48,13 @@ const ChangePasswordModel = ({
             alert("New password and confirm password do not match!");
             return;
         }
-
         console.log("Submitted data:", formData);
-
-
     };
-
-
-
-
-
-    //     if (!name) {
-    //       alert("Please fill all the fields");
-    //       return;
-    //     }
-    //     try {
-    //       const payload = {
-    //         name,
-    //         parentCategoryId,
-    //       };
-    //       const response = await axios.post(
-    //         `${BASE_URL}/category/addCategory`,
-    //         payload,
-    //         {
-    //           headers: {
-    //             "Content-Type": "application/json",
-    //             Accept: "*/*",
-    //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //           },
-    //         }
-    //       );
-    //       console.log(response);
-    //       alert("Categroy added successfully");
-    //       setIsModalOpen(false);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   };
-    //   const [productQuantities, setProductQuantities] = useState(
-    //     selectedProducts.reduce((acc, product) => {
-    //       acc[product.productId] = 0;
-    //       return acc;
-    //     }, {})
-    //   );
-
-    //   const handleQuantityChange = (productId, value) => {
-    //     setQuantity(value);
-    //     setProductQuantities((prev) => ({
-    //       ...prev,
-    //       [productId]: value,
-    //     }));
-    //   };
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-            <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg  w-auto relative">
-                <div className=" w-[350px]  ">
-                    <div className="flex  justify-between items-center gap-[4px]  border-b  outline-offset-[-0.50px] outline-black/10">
+            <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg  md:w-auto w-96 relative">
+                <div className=" w-[350px] ">
+                    <div className="flex  justify-between items-center gap-[4px] pb-4 border-b  outline-offset-[-0.50px] outline-black/10">
                         <p className="font-poppins font-medium text-[20px] leading-[30px] text-[#0D4041]">
                             Change Password
                         </p>
@@ -128,148 +67,9 @@ const ChangePasswordModel = ({
                         </button>
                     </div>
                 </div>
-
-                {/* <div className="mx-4 w-full max-w-md rounded-3xl">
-                    <div className="relative  ">
-                        <input
-                            ref={inputRef}
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
-                            placeholder="Old Password"
-                            type={show ? "text" : "password"} // 👈 show/hide effect
-                            className="w-full rounded-full border border-[#949494] bg-red px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
-                        />
-
-                         <button
-                            type="button"
-                            onClick={() => setShow(!show)}
-                            className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
-                        >
-                            {show ? (
-                                // Eye Open Icon
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z" />
-                                    <circle cx="12" cy="12" r="3" />
-                                </svg>
-                            ) : (
-                                // Eye Closed Icon
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path d="M3 3l18 18M10.58 10.58a3 3 0 004.24 4.24" />
-                                    <path d="M9.88 4.12A9.77 9.77 0 0121 12c-1.5 2.5-4.5 6-9 6-1.67 0-3.23-.48-4.56-1.29" />
-                                </svg>
-                            )}
-                        </button>
-                    </div>
-                    <div className="relative mt-3">
-                        <input
-                            ref={inputRef}
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
-                            placeholder="New Password"
-                            type={showNew ? "text" : "password"} // 👈 show/hide effect
-                            className="w-full rounded-full  border border-[#949494] bg-white px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 "
-                        />
-
-                        
-                        <button
-                            type="button"
-                            onClick={() => setShowNew(!showNew)}
-                            className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
-                        >
-                            {showNew ? (
-                                // Eye Open Icon
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z" />
-                                    <circle cx="12" cy="12" r="3" />
-                                </svg>
-                            ) : (
-                                
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path d="M3 3l18 18M10.58 10.58a3 3 0 004.24 4.24" />
-                                    <path d="M9.88 4.12A9.77 9.77 0 0121 12c-1.5 2.5-4.5 6-9 6-1.67 0-3.23-.48-4.56-1.29" />
-                                </svg>
-                            )}
-                        </button>
-                    </div>
-                    <div className="relative mt-3">
-                        <input
-                            ref={inputRef}
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
-                            placeholder="Confirm Password"
-                            type={showConfirm ? "text" : "password"} // 👈 show/hide effect
-                            className="w-full rounded-full border border-[#949494] bg-white px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
-                        />
-
-                      
-                        <button
-                            type="button"
-                            onClick={() => setShowConfirm(!showConfirm)}
-                            className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
-                        >
-                            {showConfirm ? (
-                              
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z" />
-                                    <circle cx="12" cy="12" r="3" />
-                                </svg>
-                            ) : (
-                             
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path d="M3 3l18 18M10.58 10.58a3 3 0 004.24 4.24" />
-                                    <path d="M9.88 4.12A9.77 9.77 0 0121 12c-1.5 2.5-4.5 6-9 6-1.67 0-3.23-.48-4.56-1.29" />
-                                </svg>
-                            )}
-                        </button>
-                    </div>
-                </div> */}
-
-
                 <form
                     onSubmit={handleSubmit}
-                    className="mx-4 w-full rounded-3xl bg-white   shadow-md"
+                    className="mx-4 w-full rounded-3xl bg-white"
                 >
                     {/* Old Password */}
                     <div className="relative mb-4">
@@ -279,7 +79,7 @@ const ChangePasswordModel = ({
                             onChange={handleChange}
                             placeholder="Old Password"
                             type={show.old ? "text" : "password"}
-                            className="w-full rounded-full border border-[#949494] bg-red px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
+                            className="w-full rounded-full border border-secondaryText bg-red px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
                         />
                         <button
                             type="button"
@@ -324,7 +124,7 @@ const ChangePasswordModel = ({
                             onChange={handleChange}
                             placeholder="New Password"
                             type={show.new ? "text" : "password"}
-                            className="w-full rounded-full border border-[#949494] px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
+                            className="w-full rounded-full border border-secondaryText px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
                         />
                         <button
                             type="button"
@@ -369,7 +169,7 @@ const ChangePasswordModel = ({
                             onChange={handleChange}
                             placeholder="Confirm Password"
                             type={show.confirm ? "text" : "password"}
-                            className="w-full rounded-full border border-[#949494] px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
+                            className="w-full rounded-full border border-secondaryText px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
                         />
                         <button
                             type="button"
@@ -408,7 +208,7 @@ const ChangePasswordModel = ({
 
                     <button
                         type="submit"
-                        className=" w-full flex justify-center items-center bg-[#001D58] text-white   h-[40px] rounded-full border-[1px] border-[#001D58] gap-[8px] py-[19px] px-[10px] text-[12px] font-poppins font-normal leading-[18px]"
+                        className=" w-full flex justify-center items-center bg-secondaryBrand text-white  h-10  rounded-full  border-[1px] border-secondaryBrand gap-2 py-5   px-2  text-xs font-poppins font-normal leading-[18px]"
                     >
                         Confirm
 
