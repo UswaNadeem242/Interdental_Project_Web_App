@@ -330,6 +330,7 @@ export const headingsOrder = [
 
 export const dataOrder = [
   {
+   
     id: "#1235",
     pName: "Varga Dóra",
     product: "Argen HT",
@@ -338,7 +339,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctorAdmin/Details"
   },
   {
     id: "#1235",
@@ -348,8 +349,7 @@ export const dataOrder = [
     submission: "16/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
-    shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    shipping: "16/22/2026", detailUrl: "/doctorAdmin/Details"
   },
   {
     id: "#1235",
@@ -359,8 +359,7 @@ export const dataOrder = [
     submission: "16/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
-    shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    shipping: "16/22/2026", detailUrl: "/doctorAdmin/Details"
   },
   {
     id: "#1235",
@@ -370,8 +369,7 @@ export const dataOrder = [
     submission: "16/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
-    shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    shipping: "16/22/2026", detailUrl: "/doctorAdmin/Details"
   },
   {
     id: "#1235",
@@ -383,7 +381,7 @@ export const dataOrder = [
     dName: "Miles, Esther",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctorAdmin/Details"
   },
   {
     id: "#1235",
@@ -394,7 +392,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctorAdmin/Details"
   },
   {
     id: "#1235",
@@ -405,7 +403,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctorAdmin/Details"
   },
   {
     id: "#1235",
@@ -416,7 +414,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctorAdmin/Details"
   },
   {
     id: "#1235",
@@ -427,8 +425,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
-  },
+ , detailUrl: "/doctorAdmin/Details" },
 ];
 
 export const Chartdata = [

@@ -47,7 +47,7 @@ const DoctorDashaboard = () => {
         </div>
 
         <div className="col-span-1 md:col-span-1 lg:col-span-4 bg-[#FFFFFF] rounded-lg md:rounded-xl lg:rounded-xl">
-          <PatientCard title={"Pateints"} />
+          <PatientCard title="Patients" />
         </div>
         <div className="col-span-1 md:col-span-1 lg:col-span-12 bg-white p-6 rounded-2xl">
           <div className="flex flex-row md:flex-row items-start md:items-center justify-between gap-3 mb-4">
