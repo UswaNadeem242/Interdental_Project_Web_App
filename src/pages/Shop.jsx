@@ -226,13 +226,15 @@ const Shop = () => {
   };
 
   return (
-    <>
+    <div className="bg-gradient-to-b from-cyan-50 to-emerald-50/0">
       <Header />
-      <div className="flex justify-center overflow-scroll mb-[50px] items-start gap-8 px-28 pt-8 pb-[240px] bg-white">
-        <div className="flex flex-col justify-start items-center w-[290px] h-auto py-[16px] px-[32px] gap-[16px] rounded-[12px] bg-[#FFFFFF] top-[143px] left-[109px]">
+
+      <div className="flex justify-center overflow-y-scroll mb-[50px] items-start gap-8 px-28 pt-8 pb-[240px]">
+        <div className="flex flex-col justify-start items-center w-[290px] h-auto py-[16px] px-[32px] gap-[16px] rounded-[12px] bg-[#FFFFFF] top-[143px] left-[109px] mt-20">
           <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
             Filter
           </h1>
+
           <div className="rounded-[53px] pl-[16px] py-[4px] border h-[44px] w-[234px] items-center flex flex-row pr-[8px]">
             <input
               type="text"
@@ -313,56 +315,6 @@ const Shop = () => {
               </div>
             </div>
           </div>
-          {/* Availability filter */}
-          {/* <div className="flex flex-col justify-center items-start w-[258px] h-[97px] rounded-[17px] p-[12px] space-y-[16px]">
-            <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
-              Avalibility
-            </h1>
-            <div className="flex flex-col justify-start items-start space-y-[8px] h-[44px] w-[142px] ">
-              <div className="flex items-center gap-[5px] h-[18px]">
-                <input
-                  type="checkbox"
-                  id="inStock"
-                  checked={checked === "inStock"}
-                  onChange={handleCheckboxChange}
-                  className={`mr-2 cursor-pointer rounded-[4.43px] border-[0.74px] border-[#949494] w-[14.77px] h-[14.77px] ${
-                    checked && "accent-secondaryBrand"
-                  }`}
-                />
-                <label
-                  htmlFor="inStock"
-                  className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
-                    checked === "inStock"
-                      ? "text-secondaryBrand"
-                      : "text-[#949494]"
-                  }`}
-                >
-                  In Stock
-                </label>
-              </div>
-              <div className="flex items-center gap-[5px]">
-                <input
-                  type="checkbox"
-                  id="outOfStock"
-                  checked={checked === "outOfStock"}
-                  onChange={handleCheckboxChange}
-                  className={`mr-2 cursor-pointer rounded-[4.43px] border-[0.74px] border-[#949494] w-[14.77px] h-[14.77px] ${
-                    checked && "accent-secondaryBrand"
-                  }`}
-                />
-                <label
-                  htmlFor="outOfStock"
-                  className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
-                    checked === "outOfStock"
-                      ? "text-secondaryBrand"
-                      : "text-[#949494]"
-                  }`}
-                >
-                  Out of Stock
-                </label>
-              </div>
-            </div>
-          </div> */}
 
           <div className="flex flex-col justify-center items-start w-[258px] h-[97px] rounded-[17px] p-[12px] space-y-[16px]">
             <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
@@ -379,11 +331,10 @@ const Shop = () => {
                 />
                 <label
                   htmlFor="inStock"
-                  className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
-                    checked === "inStock"
-                      ? "text-secondaryBrand"
-                      : "text-[#949494]"
-                  }`}
+                  className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${checked === "inStock"
+                    ? "text-secondaryBrand"
+                    : "text-[#949494]"
+                    }`}
                 >
                   In Stock
                 </label>
@@ -399,11 +350,10 @@ const Shop = () => {
                 />
                 <label
                   htmlFor="outOfStock"
-                  className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
-                    checked === "outOfStock"
-                      ? "text-secondaryBrand"
-                      : "text-[#949494]"
-                  }`}
+                  className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${checked === "outOfStock"
+                    ? "text-secondaryBrand"
+                    : "text-[#949494]"
+                    }`}
                 >
                   Out of Stock
                 </label>
@@ -411,20 +361,19 @@ const Shop = () => {
             </div>
           </div>
           <div className="w-[258px] h-[1px] border-[1px] border-[#0000001A]"></div>
-          <div className="w-[258px] h-auto space-y-[16px]">
+          <div className="w-[258px] h-auto space-y-[16px] ">
             <h1 className="w-[150px] h-[21px] font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
               Categories
             </h1>
-            <div className="w-[142px] h-auto space-y-[8px]">
+            <div className=" max-h-[200px] overflow-y-auto pr-2 space-y-[8px] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
               {filteredProducts.map((c) => (
                 <h1
                   key={c.categoryId}
                   onClick={() => handleCategoryChange(c.categoryId, c.name)}
-                  className={`font-poppins text-[12px] leading-[18px] ${
-                    selectedCategory === c.categoryId
-                      ? "text-secondaryBrand  font-medium"
-                      : "text-secondaryText cursor-pointer font-normal"
-                  }`}
+                  className={`font-poppins text-[12px] leading-[18px] ${selectedCategory === c.categoryId
+                    ? "text-secondaryBrand  font-medium"
+                    : "text-secondaryText cursor-pointer font-normal"
+                    }`}
                 >
                   {c.name}
                 </h1>
@@ -435,17 +384,16 @@ const Shop = () => {
             <h1 className="w-[150px] h-[21px] font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
               Brands
             </h1>
-            <div className="w-[142px] h-[148px] space-y-[8px]">
+            <div className=" max-h-[150px] overflow-y-auto pr-2 space-y-[8px] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
               {brandsList.map((b) => (
                 <h1
                   key={b.id}
                   onClick={() => handleBrandChange(b.id, b.name)}
                   // className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
-                  className={`font-poppins text-[12px] leading-[18px] ${
-                    selectedbrand === b.id
-                      ? "text-secondaryBrand  font-medium"
-                      : "text-secondaryText cursor-pointer font-normal"
-                  }`}
+                  className={`font-poppins text-[12px] leading-[18px] ${selectedbrand === b.id
+                    ? "text-secondaryBrand  font-medium"
+                    : "text-secondaryText cursor-pointer font-normal"
+                    }`}
                 >
                   {b.name}
                 </h1>
@@ -453,7 +401,7 @@ const Shop = () => {
             </div>
           </div>
         </div>
-        <div className="w-[1224px] h-[971.44px] gap-[32px] top-[143px] left-[431px]">
+        <div className="w-[1224px] h-[971.44px] gap-[32px] top-[143px] left-[431px] mt-20">
           <div className="flex flex-wrap w-full h-[386px] gap-[31px]">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
@@ -485,8 +433,10 @@ const Shop = () => {
           </div>
         </div>
       </div>
+
+
       <Footer />
-    </>
+    </div>
   );
 };
 

@@ -10,7 +10,7 @@ const Wishlist = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [loading, setLoading] = useState(false);
-  const { fetchWishlistCount  } = useAuth();
+  const { fetchWishlistCount } = useAuth();
 
 
   const getWishlist = async () => {
@@ -55,6 +55,7 @@ const Wishlist = () => {
       setToastMessage(`Error: ${error}`);
       setToastType("error");
       setToastVisible(true);
+
     }
   };
 

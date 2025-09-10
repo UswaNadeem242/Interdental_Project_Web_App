@@ -12,7 +12,7 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
 
   const handleLogout = () => {
     logout();
-    // navigate("/login");
+    navigate("/");
   };
 
   return (
