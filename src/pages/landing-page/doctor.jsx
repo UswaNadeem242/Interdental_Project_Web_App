@@ -373,15 +373,15 @@ const Doctor = ({ isLanding }) => {
 
         {/* Right Side: Text */}
         <div className="mt-6 sm:mt-8 md:mt-0 md:ml-8 lg:ml-16 w-full md:w-1/2 text-gray-800">
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900">
+          <h3 className="text-sm md:text-lg font-bold text-blue-900">
             DOCTOR
           </h3>
-          <p className="mt-4 text-sm sm:text-base md:text-lg text-gray-600">
+          <p className="mt-4 text-sm md:text-lg text-gray-600">
             Our team of experienced technicians uses the latest technology and
             highest quality materials to ensure the best results for your
             patients.
           </p>
-          <button className="mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition transition-all duration-300 flex items-center group text-sm sm:text-base">
+          <button className="mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition transition-all duration-300 flex items-center group text-sm sm:text-base">
             <span className="mr-2 sm:mr-4">Register</span>
             <span className="w-8 h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
               <svg
@@ -411,13 +411,13 @@ const Doctor = ({ isLanding }) => {
 
       <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
         {/* Section Header */}
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-900 uppercase text-center">
+        <h2 className="text-sm md:text-2xl font-bold text-blue-900 uppercase text-center">
           DOCTOR ENROLLMENT
         </h2>
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-300 text-center mt-2">
+        <h3 className="text-sm md:text-2xl font-bold text-blue-300 text-center mt-2">
           PRICING PLANS
         </h3>
-        <p className="mt-4 text-sm sm:text-base md:text-lg text-gray-600 text-center max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
+        <p className="mt-4 text-sm md:text-lg text-gray-600 text-center max-w-md sm:max-w-lg md:max-w-2xl   mx-auto">
           "Interdental Lab" together with "Make Me Smile" a subscription bases
           limited extended warranty program for both patients and dentists with
           quarterly and monthly maintenance fees. By being a participating
@@ -435,13 +435,13 @@ const Doctor = ({ isLanding }) => {
             >
               {/* Plan Header */}
               <div
-                className={`text-center py-3 sm:py-4 font-bold text-lg sm:text-xl md:text-2xl rounded ${plan.bgColor}`}
+                className={`text-center py-3 sm:py-4 font-bold text-sm md:text-lg rounded ${plan.bgColor}`}
               >
                 {plan.title}
               </div>
 
               {/* Plan Content */}
-              <ul className="mt-4 text-gray-600 space-y-2 text-sm sm:text-base">
+              <ul className="mt-4 text-gray-600 space-y-2 text-sm md:text-lg">
                 {plan.content.map((item, index) => (
                   <li key={index} className="flex items-start space-x-2">
                     <span className="text-blue-500 font-bold">•</span>
@@ -456,10 +456,10 @@ const Doctor = ({ isLanding }) => {
 
       <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
         {/* Section Header */}
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-300 uppercase text-center">
+        <h2 className="text-sm md:text-lg font-bold text-blue-300 uppercase text-center">
           DOCTOR PRICING PLAN
         </h2>
-        <p className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-gray-600 text-center max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
+        <p className="mt-4 sm:mt-6 text-sm md:text-base text-gray-600 text-center max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
           If you do not see what you want, don't worry{" "}
           <a
             href="#"
@@ -480,19 +480,19 @@ const Doctor = ({ isLanding }) => {
             >
               {/* Card Content */}
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+                <h3 className="text-sm md:text-xl font-bold text-gray-900">
                   {plan.name}
                 </h3>
-                <p className="mt-4 text-xl sm:text-2xl md:text-3xl font-extrabold text-blue-900">
+                <p className="mt-4 text-sm md:text-xl font-extrabold text-blue-900">
                   {plan.price}
                 </p>
-                <p className="mt-2 text-sm sm:text-base font-bold text-blue-300">
+                <p className="mt-2 text-sm sm:text-xl font-bold text-blue-300">
                   {plan.duration}
                 </p>
-                <p className="mt-2 text-sm sm:text-base text-gray-500">
+                <p className="mt-2 text-sm sm:text-sm text-gray-500">
                   {plan.enrollmentFee}
                 </p>
-                <ul className="mt-4 text-gray-600 space-y-2 flex flex-col items-center text-sm sm:text-base">
+                <ul className="mt-4 text-gray-600 space-y-2 flex flex-col items-center text-sm sm:text-sm">
                   {plan.description.map((item, index) => (
                     <li key={index} className="flex items-center space-x-2">
                       <span>{item}</span>
@@ -525,7 +525,7 @@ const Doctor = ({ isLanding }) => {
 
             {/* Right Section: Form */}
             <div className="w-full md:w-1/2 mt-6 sm:mt-8 md:mt-0 md:ml-8 lg:ml-12">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-900 mb-4 sm:mb-6 text-center md:text-left">
+              <h2 className="text-sm md:text-lg font-bold text-blue-900 mb-4 sm:mb-6 text-center md:text-left">
                 Doctor Registration
               </h2>
               <form className="space-y-4">
@@ -533,52 +533,52 @@ const Doctor = ({ isLanding }) => {
                   <input
                     type="text"
                     placeholder="First Name"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
                   />
                   <input
                     type="text"
                     placeholder="Company Name"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
                   />
                 </div>
                 <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <input
                     type="email"
                     placeholder="Email"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
                   />
                   <input
                     type="tel"
                     placeholder="Phone"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
                   />
                 </div>
                 <input
                   type="text"
                   placeholder="Address"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
                 />
                 <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <input
                     type="text"
                     placeholder="City"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  placeholder:text-sm"
                   />
                   <input
                     type="text"
                     placeholder="ZIP"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  placeholder:text-sm"
                   />
                 </div>
                 <input
                   type="text"
                   placeholder="Doctor's License Number"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  placeholder:text-sm"
                 />
                 <input
                   type="text"
                   placeholder="Office Reference Number"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  placeholder:text-sm"
                 />
                 <div className="mt-4">
                   <h3 className="text-base sm:text-lg font-semibold text-blue-900 mb-2">
@@ -592,7 +592,7 @@ const Doctor = ({ isLanding }) => {
                         value="Trial 3 Months"
                         className="form-checkbox text-blue-900"
                       />
-                      <span className="text-sm sm:text-base">
+                      <span className="text-sm md:text-base">
                         Trial 3 Months
                       </span>
                     </label>
@@ -603,7 +603,7 @@ const Doctor = ({ isLanding }) => {
                         value="$175 Basic Plan"
                         className="form-checkbox text-blue-900"
                       />
-                      <span className="text-sm sm:text-base">
+                      <span className="text-sm md:text-base">
                         $175 Basic Plan
                       </span>
                     </label>
@@ -614,7 +614,7 @@ const Doctor = ({ isLanding }) => {
                         value="$275 Basic Plan"
                         className="form-checkbox text-blue-900"
                       />
-                      <span className="text-sm sm:text-base">
+                      <span className="text-sm md:text-base">
                         $275 Basic Plan
                       </span>
                     </label>
@@ -625,7 +625,7 @@ const Doctor = ({ isLanding }) => {
                         value="$475 Basic Plan"
                         className="form-checkbox text-blue-900"
                       />
-                      <span className="text-sm sm:text-base">
+                      <span className="text-sm md:text-base">
                         $475 Basic Plan
                       </span>
                     </label>
@@ -633,7 +633,7 @@ const Doctor = ({ isLanding }) => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2 sm:py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-700 transition text-sm sm:text-base"
+                  className="w-full py-2 sm:py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-700 transition text-sm md:text-base"
                 >
                   Submit
                 </button>

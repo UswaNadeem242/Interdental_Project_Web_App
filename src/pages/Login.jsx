@@ -62,13 +62,12 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row justify-start items-center lg:gap-24 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
+    <div className="flex flex-col lg:flex-row justify-start items-center lg:gap-20 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
       {/* Image div - hidden on mobile, shown on lg screens and above */}
       <div className="hidden lg:flex flex-col items-start justify-start -space-y-12">
         <img src="/assets/logo.png" alt="logo" />
         <img
-          className="w-[777px] h-[874px] rounded-[124px]"
-          src="/assets/loginrectangle.png"
+          className="w-[777px] h-[874px] rounded-[124px]" src="/assets/loginrectangle.png"
           alt="login rectangle image"
         />
         <svg
@@ -133,10 +132,10 @@ const Login = () => {
       <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[581px] gap-6 lg:gap-[32px]">
         <img src="/assets/logo.png" alt="logo" className="block md:hidden" />
         <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[103px] gap-4 lg:gap-[32px]">
-          <h1 className="font-poppins font-bold text-3xl lg:text-[44px] leading-[66px] text-secondaryBrand">
+          <h1 className="font-poppins font-bold md:text-3xl text-sm leading-[66px] text-secondaryBrand ">
             Log in
           </h1>
-          <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#949494]">
+          <p className="font-poppins font-normal text-sm md:text-xs leading-[21px] text-[#949494]">
             Welcome back! Please enter your credentials to continue.
           </p>
         </div>
@@ -144,7 +143,7 @@ const Login = () => {
         <div className="flex flex-col justify-center items-center w-full px-4 lg:w-[494px] h-auto lg:h-[144px] gap-4 lg:gap-[16px]">
           <input
             type="text"
-            className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
+            className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px] placeholder:text-sm  placeholder:font-poppins"
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -152,7 +151,7 @@ const Login = () => {
           <div className="relative w-full lg:w-[494px]">
             <input
               type={showPassword ? "text" : "password"}
-              className="w-full h-[51px] rounded-[32px] border border-[#FFFFFF] px-[24px] py-[17px] pr-12 outline-none"
+              className="w-full h-[51px] rounded-[32px] border border-[#FFFFFF] px-[24px] py-[17px] pr-12 outline-none  placeholder:text-sm placeholder:font-poppins"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -256,7 +255,7 @@ const Login = () => {
                   </clipPath>
                 </defs>
               </svg>
-              <h1 className="hidden lg:block">Login with Google</h1>
+              <h1 className="hidden lg:block text-sm font-poppins">Login with Google</h1>
             </div>
             <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center">
               <svg
@@ -273,12 +272,12 @@ const Login = () => {
                   fill="#1976D2"
                 />
               </svg>
-              <h1 className="hidden lg:block">Login with Facebook</h1>
+              <h1 className="hidden lg:block text-sm font-poppins">Login with Facebook</h1>
             </div>
           </div>
 
           <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
-            <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">
+            <p className="font-poppins font-normal text-sm leading-[21px] text-[#808080]">
               Don't Have account
             </p>
             <button
