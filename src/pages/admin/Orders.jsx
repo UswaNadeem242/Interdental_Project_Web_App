@@ -146,6 +146,9 @@ const Orders = () => {
               <h1 className="w-[116.84px] h-[88px] font-poppins font-semibold text-[12px] leading-[18px] text-[#949494]">
                 Items
               </h1>
+              <h1 className="w-[116.84px] h-[88px] font-poppins font-semibold text-[12px] leading-[18px] text-[#949494]">
+                Action
+              </h1>
             </div>
             {/* Orders Listing */}
             {filteredOrders.length > 0 ? (
@@ -183,6 +186,26 @@ const Orders = () => {
                   <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
                     {order.orderItems.length}
                   </h1>
+                  <div className="flex flex-row w-[116.84px]">
+                    <h1 className=" h-[88px] mr-[12px] font-poppins font-normal text-[12px] leading-[18px] text-[#285772]">
+                      View Detail
+                    </h1>
+                    <svg
+                      width="8"
+                      height="8"
+                      viewBox="0 0 8 8"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0.999878 7L6.99988 1M6.99988 1H2.49988M6.99988 1V5.5"
+                        stroke="#285772"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
                 </div>
               ))
             ) : (

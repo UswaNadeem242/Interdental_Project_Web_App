@@ -35,6 +35,55 @@ const Signup = () => {
       setToastVisible(true);
       return;
     }
+    if (!firstName || !lastName || !email || !password || !cPassword) {
+      setToastMessage("Please fill in all the fields!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    // Validate First Name & Last Name (only letters, min 2 chars)
+    const nameRegex = /^[A-Za-z]{2,}$/;
+    if (!nameRegex.test(firstName)) {
+      setToastMessage("Enter a valid First Name (letters only)");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+    if (!nameRegex.test(lastName)) {
+      setToastMessage("Enter a valid Last Name (letters only)");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    // Validate Email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setToastMessage("Enter a valid Email Address");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    // Validate Password Strength (min 8 chars, at least one letter & one number)
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setToastMessage(
+        "Password must be at least 8 characters long and include letters & numbers"
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    // Confirm Password
+    if (password !== cPassword) {
+      setToastMessage("Passwords do not match!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
     try {
       const response = await axios.post(
         `${BASE_URL}/api/users/sign-up?email=${email}&password=${password}&firstName=${firstName}&lastName=${lastName}`,
@@ -192,12 +241,7 @@ const Signup = () => {
                   </clipPath>
                 </defs>
               </svg>
-              <h1
-              
-                className="hidden lg:block"
-              >
-                Login with Google
-              </h1>
+              <h1 className="hidden lg:block">Login with Google</h1>
             </div>
             <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center items-center cursor-pointer">
               <svg

@@ -15,6 +15,7 @@ import { useAuth } from "../auth/AuthContext";
 import AccountRequiredModal from "../modals/AccountRequiredModal";
 import BrandsDropdown from "./dropdowns/BrandsDropdown";
 import CategoriesMenu from "./dropdowns/CategoriesMenu";
+import Toast from "./Toast";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -31,7 +32,13 @@ const Header = () => {
   const [categories, setCategories] = useState(false);
   const { user, wishlistCount, cartCount } = useAuth();
 
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
   const [products, setProducts] = useState([]);
+  const closeToast = () => {
+    setToastVisible(false);
+  };
   const getAllProducts = async () => {
     try {
       const response = await axios.get(
@@ -69,10 +76,7 @@ const Header = () => {
     getAllProducts();
   }, []);
 
-
-
   const handleCart = () => {
-
     setIsModalOpen(true);
   };
   const handleWishlist = () => {
@@ -89,9 +93,6 @@ const Header = () => {
       setIsActionModalOpen(true);
     }
   };
-
-
-
 
   return (
     <div className="flex flex-col justify-center items-center h-[110.77px] w-full bg-[#FFFFFF] rounded-[8px] gap-[8px] pt-[20px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
@@ -199,7 +200,7 @@ const Header = () => {
         </div>
         <div className="flex justify-between items-center w-[258.17px] h-[34px] gap-[20.39px]">
           <div className="flex gap-[20.39px]">
-            <div className="relative" >
+            <div className="relative">
               <svg
                 width="26"
                 height="25"
@@ -207,7 +208,19 @@ const Header = () => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
-                onClick={() => handleCart()}
+                onClick={() => {
+                  if (user && user?.email) {
+                    handleCart();
+                  } else {
+                    setToastMessage("Access denied! Please log in first");
+
+                    setToastType("error");
+                    setToastVisible(true);
+                    console.log(
+                      "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
+                    );
+                  }
+                }}
               >
                 <path
                   d="M20.1654 17.2964H11.5597C10.7765 17.2908 10.018 17.022 9.40607 16.5333C8.79415 16.0445 8.36441 15.3641 8.18594 14.6015L6.81452 9.02667C6.68834 8.50903 6.68187 7.96943 6.7956 7.44891C6.90933 6.92839 7.14027 6.44066 7.47084 6.02282C7.80142 5.60497 8.22292 5.26802 8.70331 5.03757C9.18369 4.80713 9.7103 4.68927 10.2431 4.69295H21.5574C22.0902 4.68927 22.6168 4.80713 23.0972 5.03757C23.5775 5.26802 23.999 5.60497 24.3296 6.02282C24.6602 6.44066 24.8911 6.92839 25.0049 7.44891C25.1186 7.96943 25.1121 8.50903 24.9859 9.02667L23.6145 14.6152C23.4293 15.3873 22.9869 16.0734 22.3601 16.5606C21.7333 17.0479 20.9593 17.3074 20.1654 17.2964ZM10.2019 6.40724C9.9309 6.40807 9.66356 6.47021 9.41995 6.58902C9.17633 6.70782 8.96275 6.88021 8.79521 7.09326C8.62766 7.30632 8.5105 7.55452 8.45249 7.81929C8.39448 8.08405 8.39712 8.3585 8.46023 8.6221L9.83166 14.2107C9.92454 14.6023 10.1472 14.951 10.4634 15.2C10.7797 15.449 11.1709 15.5837 11.5734 15.5821H20.1654C20.5679 15.5837 20.9591 15.449 21.2753 15.2C21.5915 14.951 21.8142 14.6023 21.9071 14.2107L23.2785 8.6221C23.343 8.35839 23.3467 8.08347 23.2892 7.81815C23.2317 7.55282 23.1147 7.30405 22.9469 7.09065C22.7791 6.87725 22.5649 6.70483 22.3206 6.58643C22.0763 6.46803 21.8083 6.40675 21.5368 6.40724H10.2019Z"
@@ -237,7 +250,19 @@ const Header = () => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
-                onClick={() => handleWishlist()}
+                onClick={() => {
+                  if (user && user?.email) {
+                    handleWishlist();
+                  } else {
+                    setToastMessage("Access denied! Please log in first");
+
+                    setToastType("error");
+                    setToastVisible(true);
+                    console.log(
+                      "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
+                    );
+                  }
+                }}
               >
                 <path
                   d="M12.8407 21.6973C12.5007 21.8173 11.9407 21.8173 11.6007 21.6973C8.7007 20.7073 2.2207 16.5773 2.2207 9.5773C2.2207 6.4873 4.7107 3.9873 7.7807 3.9873C9.6007 3.9873 11.2107 4.8673 12.2207 6.2273C13.2307 4.8673 14.8507 3.9873 16.6607 3.9873C19.7307 3.9873 22.2207 6.4873 22.2207 9.5773C22.2207 16.5773 15.7407 20.7073 12.8407 21.6973Z"
@@ -390,10 +415,11 @@ const Header = () => {
           <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[83px] h-[21px]">
             <label
               onClick={() => setBrandsDropdown(true)}
-              className={`${brandsDropdown
-                ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
-                : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-                }`}
+              className={`${
+                brandsDropdown
+                  ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
+                  : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
+              }`}
             >
               Brands
             </label>
@@ -403,8 +429,9 @@ const Header = () => {
               viewBox="0 0 10 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`${brandsDropdown ? " text-secondaryBrand" : " text-tertiaryBrand"
-                }`}
+              className={`${
+                brandsDropdown ? " text-secondaryBrand" : " text-tertiaryBrand"
+              }`}
             >
               <path
                 d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"
@@ -426,10 +453,11 @@ const Header = () => {
           <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[113px] h-[21px]">
             <label
               onClick={() => setCategories(true)}
-              className={`${categories
-                ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
-                : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-                }`}
+              className={`${
+                categories
+                  ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
+                  : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
+              }`}
             >
               Categories
             </label>
@@ -439,8 +467,9 @@ const Header = () => {
               viewBox="0 0 10 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`${categories ? " text-secondaryBrand" : " text-tertiaryBrand"
-                }`}
+              className={`${
+                categories ? " text-secondaryBrand" : " text-tertiaryBrand"
+              }`}
             >
               <path
                 d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"
@@ -507,6 +536,12 @@ const Header = () => {
           setIsModalOpen={setIsActionModalOpen}
         />
       )}
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
     </div>
   );
 };

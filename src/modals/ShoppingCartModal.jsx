@@ -57,18 +57,6 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
       return false;
     }
 
-    // ✅ Email
-    if (
-      !email ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
-      email.length > 50
-    ) {
-      setToastMessage("Enter a valid Email (max 50 characters).");
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
     // ✅ Country
     if (!country) {
       setToastMessage("Please select a Country.");
@@ -150,7 +138,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         userId: user.id,
         name: name,
         address: `${country},${state},${city},${street}`,
-        email: email,
+        email: user.email,
         phone: phone,
         orderItems: cart.items,
       };
@@ -167,7 +155,11 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
           },
         }
       );
-      if (response.status === 200) {
+      if (response.data.responseCode === "1500") {
+        setToastMessage(response.data.responseMessage);
+        setToastType("error");
+        setToastVisible(true);
+      } else if (response.data.responseCode === "0000") {
         setActiveTab("order");
       }
       console.log(response);
@@ -255,50 +247,53 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     setToastVisible(false);
   };
 
-
-
   return (
     <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div
         ref={modalRef}
         className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative"
       >
+        {console.log("-=-=-=-=---=user-=-=-=-=-=-==", user.email)}
         {/* Tabs */}
         <div className="flex justify-around w-[587px] h-[68.69px] mb-[16px] pb-[16px] pt-[8px]">
           <div className="flex justify-around w-[539.02px] h-[44.69px]">
             <div
               onClick={() => setActiveTab("cart")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${activeTab === "cart"
-                ? "border-b-[4.69px] border-secondaryBrand font-semibold"
-                : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
-                }`}
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
+                activeTab === "cart"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold"
+                  : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
+              }`}
             >
               Cart
             </div>
             <div
               // onClick={() => setActiveTab("checkout")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${activeTab === "checkout"
-                ? "border-b-[4.69px] border-secondaryBrand font-semibold"
-                : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
-                }`}
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
+                activeTab === "checkout"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold"
+                  : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
+              }`}
             >
               Checkout
             </div>
             <div
               // onClick={() => setActiveTab("checkout")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${activeTab === "review"
-                ? "border-b-[4.69px] border-secondaryBrand font-semibold"
-                : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
-                }`}
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
+                activeTab === "review"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold"
+                  : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
+              }`}
             >
               Review
             </div>
             <div
               // onClick={() => setActiveTab("order")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${activeTab === "order"
-                ? "border-b-[4.69px] border-secondaryBrand font-semibold"
-                : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
-                }`}
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
+                activeTab === "order"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold"
+                  : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
+              }`}
             >
               Completion
             </div>
@@ -381,8 +376,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     placeholder="Email Address"
                     name=""
                     id=""
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={user.email}
+                    // onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -479,8 +474,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   Payment Method
                 </h1>
                 <div
-                  className={`flex flex-col justify-start items-center bg-white w-[587px] ${openPaymentMethod ? "h-[252px]" : ""
-                    } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
+                  className={`flex flex-col justify-start items-center bg-white w-[587px] ${
+                    openPaymentMethod ? "h-[322px]" : ""
+                  } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
                 >
                   <div className="flex justify-center items-center w-[587px] h-[53px] border-b-[1px] border-[#0000000D] py-[8px] px-[16px] gap-[8px]">
                     <img src="/assets/paypal.png" alt="paypal" />
@@ -502,11 +498,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     </svg>
                   </div>
                   <div
-
                     className={`${
                       openPaymentMethod ? "block" : "hidden"
                     } flex flex-col justify-start items-start w-full h-auto p-[16px] space-y-[16px]`}
-
                   >
                     {/* Recipient Name */}
                     <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
@@ -524,38 +518,33 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       </div>
                     </div>
 
-                    {/* PayPal Username + Contact */}
-                    <div className="flex justify-start items-center gap-[16px] w-full">
-                      {/* PayPal Username */}
-                      <div className="w-[261.5px] flex flex-col space-y-[8px]">
-                        <p className="font-poppins font-medium text-[12px] text-[#434343]">
-                          PayPal Username
-                        </p>
-                        <div className="flex justify-center items-center w-full h-[44px] bg-[#F8F8F8] p-[12px]">
-                          <input
-                            type="text"
-                            value={paypalUsername}
-                            onChange={(e) => setPaypalUsername(e.target.value)}
-                            placeholder="Enter PayPal Username"
-                            className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
-                          />
-                        </div>
+                    <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
+                      <p className="font-poppins font-medium text-[12px] text-[#434343]">
+                        PayPal Username
+                      </p>
+                      <div className="flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px]">
+                        <input
+                          type="text"
+                          value={paypalUsername}
+                          onChange={(e) => setPaypalUsername(e.target.value)}
+                          placeholder="Enter PayPal Username"
+                          className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
+                        />
                       </div>
+                    </div>
 
-                      {/* PayPal Email/Phone */}
-                      <div className="w-[261.5px] flex flex-col space-y-[8px]">
-                        <p className="font-poppins font-medium text-[12px] text-[#434343]">
-                          E-mail / Phone Number
-                        </p>
-                        <div className="flex justify-center items-center w-full h-[44px] bg-[#F8F8F8] p-[12px]">
-                          <input
-                            type="text"
-                            value={paypalContact}
-                            onChange={(e) => setPaypalContact(e.target.value)}
-                            placeholder="Enter E-mail / Phone Number"
-                            className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
-                          />
-                        </div>
+                    <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
+                      <p className="font-poppins font-medium text-[12px] text-[#434343]">
+                        E-mail / Phone Number
+                      </p>
+                      <div className="flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px]">
+                        <input
+                          type="text"
+                          value={paypalContact}
+                          onChange={(e) => setPaypalContact(e.target.value)}
+                          placeholder="Enter E-mail / Phone Number"
+                          className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
+                        />
                       </div>
                     </div>
                   </div>
@@ -598,12 +587,14 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div className="flex flex-col justify-start items-start space-y-[16px] w-full h-auto">
               {/* Your Orders */}
               <div
-                className={`flex flex-col w-full ${openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
-                  } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${
+                  openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
+                } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${openOrders && "border-b-[1px] border-[#0000000D]"
-                    }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
+                    openOrders && "border-b-[1px] border-[#0000000D]"
+                  }`}
                 >
                   <h1 className="w-[538px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Your Orders
@@ -624,8 +615,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </svg>
                 </div>
                 <div
-                  className={`${openOrders ? "block" : "hidden"
-                    } flex flex-col justify-center items-center w-[587px] h-auto gap-[24px] p-[16px] rounded-[16px]`}
+                  className={`${
+                    openOrders ? "block" : "hidden"
+                  } flex flex-col justify-center items-center w-[587px] h-auto gap-[24px] p-[16px] rounded-[16px]`}
                 >
                   {cart &&
                     cart?.items?.map((item) => (
@@ -653,12 +645,14 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               {/* Payment method */}
               <div
-                className={`flex flex-col w-full ${openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
-                  } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${
+                  openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
+                } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${openPaymentMethod && "border-b-[1px] border-[#0000000D]"
-                    }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
+                    openPaymentMethod && "border-b-[1px] border-[#0000000D]"
+                  }`}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Payment Method
@@ -679,8 +673,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </svg>
                 </div>
                 <div
-                  className={`${openPaymentMethod ? "block" : "hidden"
-                    } flex justify-start items-start w-[587px] h-[52px] gap-[8px] p-[16px] rounded-[16px]`}
+                  className={`${
+                    openPaymentMethod ? "block" : "hidden"
+                  } flex justify-start items-start w-[587px] h-[52px] gap-[8px] p-[16px] rounded-[16px]`}
                 >
                   <img
                     src="/assets/paypal.png"
@@ -694,14 +689,16 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               {/* Buyer's Details */}
               <div
-                className={`flex flex-col w-full ${openBuyerDetail
-                  ? "h-auto border-[1px] border-[#FFFFFF0D]"
-                  : ""
-                  } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${
+                  openBuyerDetail
+                    ? "h-auto border-[1px] border-[#FFFFFF0D]"
+                    : ""
+                } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${openBuyerDetail && "border-b-[1px] border-[#0000000D]"
-                    }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
+                    openBuyerDetail && "border-b-[1px] border-[#0000000D]"
+                  }`}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Buyer's Details
@@ -722,8 +719,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </svg>
                 </div>
                 <div
-                  className={`${openBuyerDetail ? "block" : "hidden"
-                    } flex flex-col justify-start items-start w-[587px] h-[328px] gap-[16px] p-[16px] rounded-[16px]`}
+                  className={`${
+                    openBuyerDetail ? "block" : "hidden"
+                  } flex flex-col justify-start items-start w-[587px] h-[328px] gap-[16px] p-[16px] rounded-[16px]`}
                 >
                   <div className="w-[555px] h-[62px] flex flex-col justify-start items-start space-y-[6px]">
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
@@ -733,6 +731,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       {name}
                     </p>
                   </div>
+
                   <div className="w-[555px] h-[62px] flex flex-col justify-start items-start space-y-[6px]">
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
                       Email Address
@@ -741,6 +740,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       {email}
                     </p>
                   </div>
+
                   <div className="w-[555px] h-[62px] flex flex-col justify-start items-start space-y-[6px]">
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
                       Contact Number
@@ -749,6 +749,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       {phone}
                     </p>
                   </div>
+
                   <div className="w-[555px] h-[62px] flex flex-col justify-start items-start space-y-[6px]">
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
                       Shipping Address
@@ -761,12 +762,14 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               {/* Cart Total */}
               <div
-                className={`flex flex-col w-full ${openCartTotal ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
-                  } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${
+                  openCartTotal ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
+                } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${openCartTotal && "border-b-[1px] border-[#0000000D]"
-                    }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
+                    openCartTotal && "border-b-[1px] border-[#0000000D]"
+                  }`}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Cart Total
@@ -787,8 +790,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </svg>
                 </div>
                 <div
-                  className={`${openCartTotal ? "block" : "hidden"
-                    } flex flex-col justify-start items-start w-[555px] h-[138px] gap-[9px]`}
+                  className={`${
+                    openCartTotal ? "block" : "hidden"
+                  } flex flex-col justify-start items-start w-[555px] h-[138px] gap-[9px]`}
                 >
                   <div className="flex justify-start items-start w-[425px] h-[37px] py-[8px] px-[16px] gap-[10px]">
                     <p className="font-poppins font-normal text-[14px] w-[300px] leading-[21px] tet-[#434343]">
@@ -879,7 +883,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             </div>
           )}
         </div>
-        {activeTab === "completion" && (
+        {activeTab === "review" && (
           <div className="flex justify-center items-center w-[587px] h-[105px] rounded-[32px] py-[24px] px-[32px] gap-[24px]">
             <button
               onClick={() => {
