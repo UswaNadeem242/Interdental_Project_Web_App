@@ -67,7 +67,9 @@ const Signup = () => {
     }
 
     // Validate Password Strength (min 8 chars, at least one letter & one number)
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
     if (!passwordRegex.test(password)) {
       setToastMessage(
         "Password must be at least 8 characters long and include letters & numbers"
@@ -203,7 +205,7 @@ const Signup = () => {
           </button>
 
           {/* Social login buttons - stack vertically on mobile */}
-          <div className="flex flex-row justify-center items-center w-full gap-4 lg:gap-[16px] h-auto lg:h-[56px]">
+          {/* <div className="flex flex-row justify-center items-center w-full gap-4 lg:gap-[16px] h-auto lg:h-[56px]">
             <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center items-center cursor-pointer">
               <svg
                 width="25"
@@ -260,7 +262,7 @@ const Signup = () => {
               </svg>
               <h1 className="hidden lg:block">Log in with Facebook</h1>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
             <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">

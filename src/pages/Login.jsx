@@ -193,7 +193,7 @@ const Login = () => {
             Login
           </button>
 
-          <div className="flex flex-row justify-center items-center w-full lg:w-[494px] h-auto lg:h-[56px] gap-4 lg:gap-[16px]">
+          {/* <div className="flex flex-row justify-center items-center w-full lg:w-[494px] h-auto lg:h-[56px] gap-4 lg:gap-[16px]">
             <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center">
               <svg
                 width="25"
@@ -250,7 +250,7 @@ const Login = () => {
               </svg>
               <h1 className="hidden lg:block">Login with Facebook</h1>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
             <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">
