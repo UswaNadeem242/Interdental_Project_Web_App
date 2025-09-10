@@ -10,8 +10,20 @@ const Header = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const [profileDropdown, setProfileDropdown] = useState(false);
+
+  // Retrieve user data from localStorage
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
+
+  // Debugging logs
+  console.log(user, "parsed user data");
+
+  // Safely log firstName only if user exists
+  if (user && user.firstName) {
+    console.log(user.firstName, "sarhey de oghai");
+  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full max-w-[95%] sm:max-w-[90%] mx-auto rounded-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-white shadow-md">
@@ -114,7 +126,7 @@ const Header = () => {
           <div className="flex flex-col relative">
             <div
               onClick={() => setProfileDropdown(!profileDropdown)}
-              className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-4"
+              className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-3"
             >
               <svg
                 width="38"

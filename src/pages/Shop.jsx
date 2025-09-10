@@ -4,6 +4,7 @@ import { BASE_URL } from "../config";
 import axios from "axios";
 import Header from "./landing-page/header";
 import Footer from "../components/Footer";
+import { useAuth } from "../auth/AuthContext";
 const featureProducts = [
   {
     id: 1,
@@ -68,6 +69,8 @@ const Shop = () => {
   const [brandName, setBrandName] = useState("");
   const [checked, setChecked] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+    const {  fetchWishlistCount, fetchCartCount } = useAuth();
+
 
   const handleMinChange = (e) => {
     const value = Math.min(Number(e.target.value), maxPrice - 1);
@@ -138,6 +141,9 @@ const Shop = () => {
     getAllProducts();
     getAllCategories();
     getAllBrands();
+    fetchCartCount()
+    fetchWishlistCount()
+
   }, []);
 
   const handleCategoryChange = (id, name) => {
