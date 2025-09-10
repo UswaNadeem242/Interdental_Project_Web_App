@@ -17,7 +17,7 @@ const FeaturedProducts = ({ products }) => {
       <div className="flex justify-center items-center w-[1305px] h-[63px] gap-[41px]">
         <div className="w-[376px] h-[1px] border-[1px] border-[#0000001A]"></div>
         <div className="flex flex-col justify-center items-center w-[219px] h-[63px] space-y-[8px]">
-          <h1 className="font-workSans font-semibold text-[20px] leading-[23.46px] text-black">
+          <h1 className="font-workSans font-semibold md:text-lg text-sm leading-[23.46px] text-black">
             FEATURED PRODUCTS
           </h1>
           <div className="flex justify-center items-center w-[119px] h-[32px] gap-[8px] px-[12px] py-[8px] text-secondaryBrand rounded-[16px] border-[1px] border-secondaryBrand">
@@ -41,10 +41,10 @@ const FeaturedProducts = ({ products }) => {
                 className="w-[263.15px] h-[260.45px]"
               />
               <div className="flex flex-col justify-center items-center space-y-[7.55px]">
-                <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
+                <h1 className="font-poppins font-semibold md:text-base leading-[24px] text-black">
                   {product.name}
                 </h1>
-                <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
+                <h1 className="font-poppins font-bold  md:text-sm  text-[#94D3DD]">
                   ${product.price}
                 </h1>
               </div>
