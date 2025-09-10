@@ -26,7 +26,7 @@ const Header = () => {
   }
 
   return (
-    <header className="sticky top-4 sm:top-6 md:top-8 z-50 w-full max-w-[95%] sm:max-w-[90%] mx-auto rounded-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-white shadow-md">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full max-w-[95%] sm:max-w-[90%] mx-auto rounded-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-white shadow-md">
       {/* Hamburger menu for mobile */}
       <svg
         width="22"
@@ -126,7 +126,7 @@ const Header = () => {
           <div className="flex flex-col relative">
             <div
               onClick={() => setProfileDropdown(!profileDropdown)}
-              className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-[4px]"
+              className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-3"
             >
               <svg
                 width="38"

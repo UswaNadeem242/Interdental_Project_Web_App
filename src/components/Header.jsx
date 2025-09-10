@@ -30,7 +30,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [brandsDropdown, setBrandsDropdown] = useState(false);
   const [categories, setCategories] = useState(false);
-  const { user, wishlistCount, cartCount } = useAuth();
+  const {  wishlistCount, cartCount } = useAuth();
 
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -39,6 +39,17 @@ const Header = () => {
   const closeToast = () => {
     setToastVisible(false);
   };
+  // Retrieve user data from localStorage
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
+
+  // Debugging logs
+  console.log(user, "parsed user data");
+
+  // Safely log firstName only if user exists
+  if (user && user.firstName) {
+    console.log(user.firstName, "sarhey de oghai");
+  }
   const getAllProducts = async () => {
     try {
       const response = await axios.get(
@@ -95,7 +106,7 @@ const Header = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-[110.77px] w-full bg-[#FFFFFF] rounded-[8px] gap-[8px] pt-[20px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
+    <div className="flex flex-col justify-center items-center h-[110.77px] w-full bg-white rounded-[8px] gap-[8px] pt-[20px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
       <div className="flex w-full h-[45.77px] px-[100px] gap-[94px]">
         <img
           src="/assets/logo.png"
@@ -199,8 +210,8 @@ const Header = () => {
           </div>
         </div>
         <div className="flex justify-between items-center w-[258.17px] h-[34px] gap-[20.39px]">
-          <div className="flex gap-[20.39px]">
-            <div className="relative">
+          <div className="flex gap-[20.39px] items-center">
+            <div className="relative" >
               <svg
                 width="26"
                 height="25"
@@ -266,14 +277,15 @@ const Header = () => {
               >
                 <path
                   d="M12.8407 21.6973C12.5007 21.8173 11.9407 21.8173 11.6007 21.6973C8.7007 20.7073 2.2207 16.5773 2.2207 9.5773C2.2207 6.4873 4.7107 3.9873 7.7807 3.9873C9.6007 3.9873 11.2107 4.8673 12.2207 6.2273C13.2307 4.8673 14.8507 3.9873 16.6607 3.9873C19.7307 3.9873 22.2207 6.4873 22.2207 9.5773C22.2207 16.5773 15.7407 20.7073 12.8407 21.6973Z"
-                  stroke="#292D32"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  stroke={wishlistCount ? "#001D58" : "#292D32"} // outline color
+                  fill={wishlistCount ? "#001D58" : "none"}      // fill when active
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 w-5 h-5 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center">
+                <span className=" absolute right-0 top-12  w-5 h-5 text-xs font-bold text-white d rounded-full flex items-center justify-center">
                   {wishlistCount}
                 </span>
               )}
@@ -314,7 +326,7 @@ const Header = () => {
             <div className="flex flex-col relative">
               <div
                 onClick={() => setProfileDropdown(!profileDropdown)}
-                className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-[4px]"
+                className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
               >
                 <svg
                   width="38"
@@ -342,7 +354,7 @@ const Header = () => {
                   />
                 </svg>
 
-                <p className="font-poppins font-normal text-[14px] w-[80px] leading-[21px] text-[#393A44]">
+                <p className="font-poppins font-normal text-[14px]  leading-[21px] text-[#393A44]">
                   {user?.email.split("@")[0].charAt(0).toUpperCase() +
                     user.email.split("@")[0].slice(1)}
                 </p>

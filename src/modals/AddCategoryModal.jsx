@@ -83,28 +83,25 @@ const AddCategoryModal = ({
               className="w-[271px] h-[53px] gap-[8px] rounded-[8px] border-[1px] border-[#E5E5E5] p-[16px] bg-white font-poppins font-normal text-[14px] leading-[21px] text-[#949494] outline-none "
             />
           </div>
-          <div className="w-[271px] h-[82px] flex flex-col space-y-[8px]">
-            <label
-              htmlFor=""
-              className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]"
-            >
+          <div className="w-[271px] flex flex-col space-y-2">
+            <label className="font-poppins font-semibold text-[14px] text-[#434343]">
               Parent Category
             </label>
+
             <div className="relative w-full">
+              {/* Dropdown Toggle */}
               <div
-                onClick={() => {
-                  setIsCategoryOpen(!isCategoryOpen);
-                }}
-                className="flex justify-start items-center w-[271px] h-[53px] cursor-pointer outline-none rounded-[8px] border-[1px] px-[16px] gap-[8px] border-[#E5E5E5]"
+                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                className="flex justify-between items-center w-full h-[53px] cursor-pointer rounded-[8px] border border-[#E5E5E5] px-4"
               >
-                <p className="w-[271px] h-[21px] font-poppins font-normal text-[14px] leading-[21px] text-[#949494]">
+                <p className="text-[14px] text-[#949494]  placeholder:font-poppins">
                   {categoriesList?.find(
                     (category) => category.categoryId === parentCategoryId
-                  )?.name || "Select Parent Category"}
+                  )?.name || "Enter Parent Category"}
                 </p>
                 <svg
                   width="14"
-                  height="9"
+                  height="7"
                   viewBox="0 0 14 9"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -115,64 +112,34 @@ const AddCategoryModal = ({
                   />
                 </svg>
               </div>
+
+              {/* Dropdown List */}
               {isCategoryOpen && (
-                <div className="absolute w-[271px] h-auto bg-white rounded-[8px] p-[16px] flex flex-col justify-start items-start space-y-[16px] z-50 shadow-[0_4px_4px_0_#00000017]">
-                  <div
-                    //   onClick={() => setIsAddCategoryModal(true)}
-                    className="w-[132px] h-[24px] flex justify-start items-center gap-[4px] cursor-pointer"
-                  >
-                    <div className="w-[24px] h-[24px] flex justify-center items-center">
-                      <div className="w-[20px] h-[20px] flex justify-center items-center bg-[#F5FBFC">
-                        <svg
-                          width="8"
-                          height="8"
-                          viewBox="0 0 8 8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M4 0.25C4.4142 0.25 4.75 0.58579 4.75 1V3.25H7C7.4142 3.25 7.75 3.5858 7.75 4C7.75 4.4142 7.4142 4.75 7 4.75H4.75V7C4.75 7.4142 4.4142 7.75 4 7.75C3.5858 7.75 3.25 7.4142 3.25 7V4.75H1C0.58579 4.75 0.25 4.4142 0.25 4C0.25 3.5858 0.58579 3.25 1 3.25H3.25V1C3.25 0.58579 3.5858 0.25 4 0.25Z"
-                            fill="#001D58"
-                          />
-                        </svg>
-                      </div>
+                <div className="absolute top-[60px] left-0 w-full max-h-[200px] bg-white rounded-[8px] shadow-md overflow-y-auto z-50">
+                  {categoriesList?.map((category, index) => (
+                    <div
+                      key={category.categoryId}
+                      onClick={() => {
+                        setParentCategoryId(category.categoryId);
+                        setIsCategoryOpen(false);
+                      }}
+                      className={`flex justify-between items-center px-4 py-2 cursor-pointer text-[12px] text-[#828386] ${index < categoriesList.length - 1 ? "border-b border-[#E5E5E5]" : ""
+                        }`}
+                    >
+                      <span>{category.name}</span>
+                      <input
+                        type="radio"
+                        checked={parentCategoryId === category.categoryId}
+                        readOnly
+                        className="w-4 h-4 accent-[#D2D4DA]"
+                      />
                     </div>
-                    <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#001D58]">
-                      Add Category
-                    </p>
-                  </div>
-                  <div className=" h-[190px]  overflow-y-scroll">
-                    {categoriesList?.map((category) => (
-                      <div className="w-[271px] flex flex-col  justify-start items-start space-y-[8px]">
-                        <div
-                          onClick={() => {
-                            setParentCategoryId(category.categoryId);
-                            setIsCategoryOpen(false);
-                          }}
-                          className={`w-[245px] h-[28px] py-[10px] flex justify-start items-center gap-[2px] bg-white cursor-pointer ${
-                            categoriesList.indexOf(category) ===
-                            categoriesList.length - 1
-                              ? ""
-                              : "border-b-[1px] border-[#0000000D]"
-                          }`}
-                        >
-                          <p className="w-[271px] h-[18px] font-poppins font-normal text-[12px] leading-[18px] text-[#828386]">
-                            {category.name}
-                          </p>
-                          <input
-                            type="radio"
-                            name=""
-                            id=""
-                            className="w-[16px] h-[16px] accent-[#D2D4DA]"
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  ))}
                 </div>
               )}
             </div>
           </div>
+
 
           <div className="flex justify-center items-center w-[271px] h-[57px] gap-[24px]">
             <button

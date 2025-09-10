@@ -181,9 +181,8 @@ if (user && user.firstName) {
 }
 
 
-  return (
-    <div className="flex justify-center items-center bg-gradient-to-b overflow-scroll h-[780px] pt-[400px] from-cyan-50 to-emerald-50/0">
-      <div className="h-[10px] bg-slate-900"></div>
+   return (
+    <div className="flex justify-center items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
       <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-2xl bg-white">
           <div className="flex justify-center items-center w-[1131px] h-[501px] gap-5">

@@ -40,6 +40,11 @@ const Orders = () => {
 
       return true;
     });
+  const statusNames = {
+    SHIPPED: "SHIPPED",
+    PENDING: "PENDING",
+    DELIVERED: "DELIVERED",
+  };
 
   return (
     <div className="flex justify-center items-center w-full h-auto py-8 bg-[#F8F8F8]">
@@ -106,7 +111,10 @@ const Orders = () => {
                     <div className="w-[403px] h-[89px] space-y-[4px] flex flex-col justify-center items-start">
                       <div className="w-[60px] h-[23px] py-[4px] px-[8px] rounded-[32px] bg-[#1F27EF0D]">
                         <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#1F27EF]">
-                          {order.orderStatus}
+                          {/* {order.orderStatus} */}
+                          {/* {statusNames[order?.orderStatus] || order.orderStatus} */}
+                          {order?.orderStatus === 'SHIPED' ? 'SHIPPED' : order?.orderStatus === 'PENDING' ? 'PENDING' : order?.orderStatus === 'DELIVERD' && 'DELIVERD'}
+
                         </p>
                       </div>
                       <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">

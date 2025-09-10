@@ -78,6 +78,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("users");
     localStorage.setItem("users", null);
     setUser(null);
+    fetchWishlistCount()
+    fetchCartCount()
   };
 
   return (

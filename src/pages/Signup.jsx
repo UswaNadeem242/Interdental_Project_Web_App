@@ -180,6 +180,46 @@ const Signup = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             {/* Password visibility toggle icon */}
+            <div
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                // Eye Open
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#808080"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              ) : (
+                // Eye Closed
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#808080"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
+                  <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
+                  <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              )}
+            </div>
           </div>
 
           <div className="relative w-full lg:w-[494px]">
@@ -190,7 +230,46 @@ const Signup = () => {
               value={cPassword}
               onChange={(e) => setCPassword(e.target.value)}
             />
+            <div
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+              onClick={() => setShowCPassword(!showCPassword)} // ✅ fix here
+            >  {showCPassword ? (
+              // Eye Open
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#808080"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            ) : (
+              // Eye Closed
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#808080"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
+                <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
+                <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            )}</div>
             {/* Confirm password visibility toggle icon */}
+
           </div>
         </div>
 

@@ -25,7 +25,6 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [street, setStreet] = useState("");
-  const { user } = useAuth();
 
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
@@ -247,15 +246,27 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     setToastVisible(false);
   };
 
+  // Retrieve user data from localStorage
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
+
+  // Debugging logs
+  console.log(user, "parsed user data");
+
+  // Safely log firstName only if user exists
+  if (user && user.firstName) {
+    console.log(user.firstName, "sarhey de oghai");
+  }
+
   return (
-    <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50">
+    <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50 ">
       <div
         ref={modalRef}
-        className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative"
+        className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative "
       >
         {console.log("-=-=-=-=---=user-=-=-=-=-=-==", user.email)}
         {/* Tabs */}
-        <div className="flex justify-around w-[587px] h-[68.69px] mb-[16px] pb-[16px] pt-[8px]">
+        <div className="flex justify-around w-[587px] h-[68.69px]  pb-[16px] pt-[8px]">
           <div className="flex justify-around w-[539.02px] h-[44.69px]">
             <div
               onClick={() => setActiveTab("cart")}
@@ -311,7 +322,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
           {activeTab === "cart" && (
             <div className="flex flex-col justify-start items-start space-y-8">
               {cart?.items?.length > 0 ? (
-                <div className="flex flex-col justify-start items-start gap-4 overflow-y-auto h-[calc(100vh-320px)]">
+                <div className="flex flex-col justify-start items-start gap-4 ">
                   {cart?.items?.map((item) => (
                     <CartProduct item={item} getCart={getCart} />
                   ))}
@@ -473,6 +484,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                 <h1 className="font-inter font-medium text-[14px] leading-[16.94px] text-[#000000]">
                   Payment Method
                 </h1>
+                {/* <div
+                  className={`flex flex-col justify-start items-center bg-white w-[587px] ${openPaymentMethod ? "h-[252px]" : ""
+                    } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
+                > */}
                 <div
                   className={`flex flex-col justify-start items-center bg-white w-[587px] ${
                     openPaymentMethod ? "h-[322px]" : ""
