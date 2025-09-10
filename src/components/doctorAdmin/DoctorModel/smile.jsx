@@ -78,7 +78,7 @@ export const SmileDesignPicker = ({
                 <div className="top-2 left-2 w-4 h-4  text-center border border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-600">
                   {/* <SmileCheckBox selected={selected} design={design} /> */}
                   <CheckIcon
-                    className={`w-8 h-8 text-blue-600 ${
+                    className={`w-8 h-8 text-[#001D58] ${
                       selected.includes(design) ? "block" : "hidden"
                     }`}
                   />
