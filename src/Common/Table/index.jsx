@@ -1,29 +1,52 @@
 import { useState } from "react";
-import { ArrowUpRightIcon } from '@heroicons/react/24/solid';
+import { ArrowUpRightIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
+import Pagination from "../Pagination";
 
-export default function TableComponent({ headings, data, actions, actionHrefKey, onActionClick }) {
+export default function TableComponent({
+  headings,
+  data,
+  actions,
+  actionHrefKey,
+  onActionClick,
+}) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 15;
+
+  const totalResults = data.length;
+  const totalPages = Math.ceil(totalResults / pageSize);
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const currentData = data.slice(startIndex, startIndex + pageSize);
+
   return (
-
     <div className="grid col-span-1 md:col-span-1 lg:col-span-12">
-      <div className="overflow-x-auto rounded-xl">
-        <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm">
-          <thead>
-            <tr className="font-poppins font-medium text-xs text-secondaryText capitalize">
+      <div className="overflow-x-auto  max-h-[400px] scrollbar-hidden ">
+        <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
+          <thead className="sticky top-0 bg-gray-100 z-10 ">
+            <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
               {headings.map((col, idx) => (
-                <th key={idx} className="py-2 px-3 font-medium text-secondaryText whitespace-nowrap">
+                <th
+                  key={idx}
+                  className="py-2  px-3 font-medium text-secondaryText whitespace-nowrap"
+                >
                   {col.label}
                 </th>
               ))}
             </tr>
-          </thead>  <tbody>
-            {data.map((row, idx) => (
-              <tr key={idx} className="border-b border-gray-200 transition-all">
+          </thead>{" "}
+          <tbody>
+            {currentData.map((row, idx) => (
+              <tr
+                key={idx}
+                className="border-b border-gray-200  transition-all font-poppins  "
+              >
                 {headings.map((col, i) => (
                   <td
                     key={i}
-                    className={`px-4 py-3 text-[#333333] text-sm ${col.key === "name" ? "font-semibold" : "font-normal"
-                      }`}
+                    className={`px-4 py-5 text-[#333333] text-xs   ${
+                      col.key === "name" ? "font-semibold" : "font-normal"
+                    }`}
                   >
                     {/* Name column */}
                     {col.key === "name" ? (
@@ -57,12 +80,13 @@ export default function TableComponent({ headings, data, actions, actionHrefKey,
                       </div>
                     ) : col.key === "status" ? (
                       <span
-                        className={`px-3 py-2 rounded-full text-xs font-semibold ${row[col.key] === "active"
-                          ? "bg-green-500/5 text-[#4ECC53]"
-                          : row[col.key] === "pending"
+                        className={`px-3 py-2 rounded-full text-xs font-semibold ${
+                          row[col.key] === "active"
+                            ? "bg-green-500/5 text-[#4ECC53]"
+                            : row[col.key] === "pending"
                             ? "bg-blue-700/5 text-[#1F27EF]"
                             : "bg-rose-500/5 text-[#FF5757]"
-                          }`}
+                        }`}
                       >
                         {row[col.key]}
                       </span>
@@ -70,7 +94,7 @@ export default function TableComponent({ headings, data, actions, actionHrefKey,
                       onActionClick ? (
                         <button
                           onClick={() => onActionClick(row)}
-                          className="text-secondaryBrand flex gap-1 items-center"
+                          className="text-secondaryBrand flex gap-1 items-center "
                         >
                           {row[col.key]}
                           <ArrowUpRightIcon className="w-4 h-4 text-secondaryBrand" />
@@ -96,8 +120,13 @@ export default function TableComponent({ headings, data, actions, actionHrefKey,
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalResults={totalResults}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
     </div>
-
-
   );
 }
