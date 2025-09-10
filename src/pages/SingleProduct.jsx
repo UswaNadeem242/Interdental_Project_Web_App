@@ -19,7 +19,7 @@ import ShoppingCart from "../modals/ShoppingCartModal";
 
 const SingleProduct = () => {
   const { productId } = useParams();
-  const { user, fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } =
+  const {  fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } =
     useAuth();
   console.log("single product", cartCount);
 
@@ -166,6 +166,20 @@ const SingleProduct = () => {
     }
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+    // Retrieve user data from localStorage
+const userData = localStorage.getItem("users");
+const user = userData ? JSON.parse(userData) : null;
+
+// Debugging logs
+console.log(user, "parsed user data");
+
+// Safely log firstName only if user exists
+if (user && user.firstName) {
+  console.log(user.firstName, "sarhey de oghai");
+}
+
 
   return (
     <div className="flex justify-center items-center bg-gradient-to-b overflow-scroll h-[780px] pt-[400px] from-cyan-50 to-emerald-50/0">
