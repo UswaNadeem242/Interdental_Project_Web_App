@@ -19,7 +19,8 @@ import ShoppingCart from "../modals/ShoppingCartModal";
 
 const SingleProduct = () => {
   const { productId } = useParams();
-  const { user, fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } = useAuth();
+  const { user, fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } =
+    useAuth();
   console.log("single product", cartCount);
 
   const [product, setProduct] = useState({});
@@ -94,6 +95,13 @@ const SingleProduct = () => {
   const [isOpenCart, setIsOpenCart] = useState(false);
 
   const handleAddtoCart = async () => {
+    console.log("==-=-=--=-product=--=-==--=-", product);
+    if (product.stockQuantity <= 0) {
+      setToastMessage("This item is currently out of stock.");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
     try {
       setLoading(true);
       const payload = {
@@ -120,7 +128,7 @@ const SingleProduct = () => {
       setToastType("success");
       setToastVisible(true);
       fetchCartCount();
-       setLoading(false);
+      setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -146,8 +154,8 @@ const SingleProduct = () => {
           },
         }
       );
-      console.log('respons whishlist::', response);
-      fetchWishlistCount()
+      console.log("respons whishlist::", response);
+      fetchWishlistCount();
       setToastMessage("Added to Wishlist !");
       setToastType("success");
       setToastVisible(true);
@@ -159,8 +167,9 @@ const SingleProduct = () => {
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-   return (
-    <div className="flex justify-center items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
+  return (
+    <div className="flex justify-center items-center bg-gradient-to-b overflow-scroll h-[780px] pt-[400px] from-cyan-50 to-emerald-50/0">
+      <div className="h-[10px] bg-slate-900"></div>
       <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-2xl bg-white">
           <div className="flex justify-center items-center w-[1131px] h-[501px] gap-5">
@@ -180,8 +189,8 @@ const SingleProduct = () => {
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
                 {product &&
-                  product.imageUrls &&
-                  product.imageUrls.length > 0 ? (
+                product.imageUrls &&
+                product.imageUrls.length > 0 ? (
                   product.imageUrls.map((url, index) => (
                     <SwiperSlide key={index}>
                       <img
@@ -239,23 +248,52 @@ const SingleProduct = () => {
                   {product && product.description}
                 </h1>
               </div>
-              <div
-                // onClick={() => {
-                //   setIsOpenCart(true);
-                //   setLoading(true);
-                //   setTimeout(() => {
-                //     handleAddtoCart();
-                //   }, [3000]);
-                // }}
-                className="flex justify-center items-center w-[441px] h-[51.28px] gap-[9.59px]"
-              >
-                <div className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]">
+              <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-[9.59px]">
+                <div
+                  onClick={() => {
+                    if (user && user?.email) {
+                      if (product.stockQuantity <= 0) {
+                        setToastMessage("This item is currently out of stock.");
+                        setToastType("error");
+                        setToastVisible(true);
+                        return;
+                      } else {
+                        setIsOpenCart(true);
+                        setLoading(true);
+                        setTimeout(() => {
+                          handleAddtoCart();
+                        }, [3000]);
+                      }
+                    } else {
+                      setToastMessage("Access denied! Please log in first");
+
+                      setToastType("error");
+                      setToastVisible(true);
+                      console.log(
+                        "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
+                      );
+                    }
+                  }}
+                  className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
+                >
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
                     {loading ? "Loading..." : "  Buy Now"}
                   </h1>
                 </div>
                 <div
-                  onClick={() => handleAddtoCart()}
+                  onClick={() => {
+                    if (user && user?.email) {
+                      handleAddtoCart();
+                    } else {
+                      setToastMessage("Access denied! Please log in first");
+
+                      setToastType("error");
+                      setToastVisible(true);
+                      console.log(
+                        "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
+                      );
+                    }
+                  }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
                 >
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-white">
@@ -263,7 +301,19 @@ const SingleProduct = () => {
                   </h1>
                 </div>
                 <div
-                  onClick={() => handleAddtoWishlist()}
+                  onClick={() => {
+                    if (user && user?.email) {
+                      handleAddtoWishlist();
+                    } else {
+                      setToastMessage("Access denied! Please log in first");
+
+                      setToastType("error");
+                      setToastVisible(true);
+                      console.log(
+                        "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
+                      );
+                    }
+                  }}
                   className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]"
                 >
                   <svg

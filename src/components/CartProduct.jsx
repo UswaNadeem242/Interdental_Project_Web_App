@@ -24,19 +24,24 @@ const CartProduct = ({ item, getCart }) => {
       );
       // alert("Item removed from cart");
       setToastMessage("Item removed from cart");
-      fetchCartCount()
+      fetchCartCount();
       setToastType("success");
       setToastVisible(true);
       getCart();
     } catch (error) {
-        setToastMessage(`Error: ${error}`);
+      setToastMessage(`Error: ${error}`);
       setToastType("error");
       setToastVisible(true);
-
     }
   };
-  const handleUpdateItem = async (status) => {
-    if (status === "add") {
+  const handleUpdateItem = async (status, items) => {
+    console.log("=--==--==-=-items=-=-==--==--==--=-=");
+    if (status === "add" && items.stockItem <= count) {
+      setToastMessage("This item is currently out of stock.");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    } else if (status === "add") {
       setCount(count + 1);
     } else if (status === "subtract") {
       if (count === 1) {
@@ -60,9 +65,9 @@ const CartProduct = ({ item, getCart }) => {
         }
       );
       getCart();
-    } catch (error) {
-    }
-  };const closeToast = () => {
+    } catch (error) {}
+  };
+  const closeToast = () => {
     setToastVisible(false);
   };
   return (
@@ -86,7 +91,7 @@ const CartProduct = ({ item, getCart }) => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
-                onClick={() => handleUpdateItem("subtract")}
+                onClick={() => handleUpdateItem("subtract", item)}
               >
                 <rect
                   x="0.134766"
@@ -112,7 +117,7 @@ const CartProduct = ({ item, getCart }) => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
-                onClick={() => handleUpdateItem("add")}
+                onClick={() => handleUpdateItem("add", item)}
               >
                 <rect
                   x="0.134766"

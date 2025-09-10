@@ -11,19 +11,10 @@ export const AuthProvider = ({ children }) => {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
 
-
-  // useEffect(() => {
-  //   const storedRole = localStorage.getItem("role");
-  //   if (storedRole) {
-  //     setUserRole(storedRole);
-  //   }
-  // }, []);
-
   const login = (user, token) => {
     localStorage.setItem("token", token);
     setUser(user);
   };
-
 
   const fetchWishlistCount = async () => {
     try {
@@ -38,7 +29,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
   const fetchCartCount = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/cart`, {
@@ -46,11 +36,10 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-          const count = response?.data?.items?.length ?? 0;
+      const count = response?.data?.items?.length ?? 0;
 
       setCartCount(count); // fallback to 0
-      console.log('resposne: datta:', response);
-
+      console.log("resposne: datta:", response);
     } catch (error) {
       console.error("Failed to fetch cart count:", error);
       setCartCount(0);
@@ -63,8 +52,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, fetchWishlistCount, wishlistCount, cartCount, fetchCartCount }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        fetchWishlistCount,
+        wishlistCount,
+        cartCount,
+        fetchCartCount,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
+
