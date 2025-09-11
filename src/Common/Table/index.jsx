@@ -28,7 +28,7 @@ export default function TableComponent({
               {headings.map((col, idx) => (
                 <th
                   key={idx}
-                  className="py-2  px-3 font-medium text-secondaryText whitespace-nowrap"
+                  className="py-5  px-3 font-medium text-secondaryText whitespace-nowrap"
                 >
                   {col.label}
                 </th>

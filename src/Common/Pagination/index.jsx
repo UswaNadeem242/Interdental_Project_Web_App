@@ -15,7 +15,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             className="text-[#001D58] relative inline-flex items-center rounded-l-md rounded-lg px-2 py-2  inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0 disabled:opacity-50"
           >
             <span className="sr-only">Previous</span>
-            <ChevronLeftIcon aria-hidden="true" className="size-5" />
+            <ChevronLeftIcon aria-hidden="true" className="size-3" />
           </button>
 
           {/* Page numbers */}
@@ -28,7 +28,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
                 aria-current={pageNum === currentPage ? "page" : undefined}
                 className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 ${
                   pageNum === currentPage
-                    ? "z-10 rounded-lg bg-indigo-500 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                    ? "z-10 rounded-md bg-secondaryBrand text-white focus-visible:outline-2 focus-visible:outline-offset-2 "
                     : "text-[#001D58] inset-ring inset-ring-gray-700 hover:bg-white/5 focus:outline-offset-0"
                 }`}
               >
@@ -44,7 +44,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             className="relative inline-flex items-center rounded-r-md px-2 py-2 text-blue-900 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0 disabled:opacity-50"
           >
             <span className="sr-only">Next</span>
-            <ChevronRightIcon aria-hidden="true" className="size-5" />
+            <ChevronRightIcon aria-hidden="true" className="size-3" />
           </button>
         </nav>
       </div>
