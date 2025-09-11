@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../auth/AuthContext";
+import ProfileDropdown from "../../components/dropdowns/ProfileDropdown";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -9,10 +10,23 @@ const Header = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const [profileDropdown, setProfileDropdown] = useState(false);
+
+  // Retrieve user data from localStorage
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
+
+  // Debugging logs
+  console.log(user, "parsed user data");
+
+  // Safely log firstName only if user exists
+  if (user && user.firstName) {
+    console.log(user.firstName, "sarhey de oghai");
+  }
 
   return (
-    <header className="sticky top-4 sm:top-6 md:top-8 z-50 w-full max-w-[95%] sm:max-w-[90%] mx-auto rounded-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-white shadow-md">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full max-w-[95%] sm:max-w-[90%] mx-auto rounded-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-white shadow-md">
       {/* Hamburger menu for mobile */}
       <svg
         width="22"
@@ -43,7 +57,7 @@ const Header = () => {
       </div>
 
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex space-x-4 lg:space-x-6 text-base lg:text-lg">
+      <nav className="hidden lg:flex space-x-2 lg:space-x-3 text-base lg:text-lg">
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -111,8 +125,8 @@ const Header = () => {
         {user && user?.email ? (
           <div className="flex flex-col relative">
             <div
-              // onClick={() => setProfileDropdown(!profileDropdown)}
-              className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-[4px]"
+              onClick={() => setProfileDropdown(!profileDropdown)}
+              className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-3"
             >
               <svg
                 width="38"
@@ -159,20 +173,20 @@ const Header = () => {
                 />
               </svg>
             </div>
-            {/* {profileDropdown && (
+            {profileDropdown && (
               <div className="absolute right-0 top-12 mt-2 z-10">
                 <ProfileDropdown
                   isModalOpen={profileDropdown}
                   setIsModalOpen={setProfileDropdown}
                 />
               </div>
-            )} */}
+            )}
           </div>
         ) : (
           <>
             <button
               onClick={() => navigate("/login")}
-              className="hidden md:inline-block px-3 sm:px-4 py-1 sm:py-2 font-semibold border bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100 text-sm sm:text-base"
+              className="hidden md:inline-block px-3 sm:px-4 py-1 sm:py-2 font-semibold  bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100 text-sm sm:text-base"
             >
               Log In
             </button>

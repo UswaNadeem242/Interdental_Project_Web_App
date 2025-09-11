@@ -14,9 +14,9 @@ import {
   SCANNER_TYPE,
   SURGICAL_GUIDE,
 } from "../../../Constant";
+import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import DonePage from "./DonePage";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/Smile";
 import { FileUploadSection } from "../../../components/doctorAdmin/OrderFileSelection";
 import { ShadeDropdown } from "../../../Common/DropDown/NestedDropdown";
 
@@ -210,13 +210,12 @@ const DoctorOrder = () => {
                           <ChevronDownIcon className="w-5 h-5" />
                         </span>
                       </button>
-                      {
-                        selected > 0 && <p className="py-2 px-2 text-sm text-secondaryBrand">
-                          Smile Design  :  {selected.length > 0 ? selected.join(", ") : ""}
+                      {selected > 0 && (
+                        <p className="py-2 px-2 text-sm text-secondaryBrand">
+                          Smile Design :{" "}
+                          {selected.length > 0 ? selected.join(", ") : ""}
                         </p>
-                      }
-
-
+                      )}
                     </div>
                     <MaterialDropdown
                       className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-[#828386] outline-none transition-shadow"
@@ -230,7 +229,6 @@ const DoctorOrder = () => {
                     />
 
                     <div>
-
                       <FileUploadSection />
                     </div>
                     <FormSection

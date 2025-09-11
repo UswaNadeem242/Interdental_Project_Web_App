@@ -15,11 +15,13 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 import Toast from "../components/Toast";
 import { useAuth } from "../auth/AuthContext";
+import ShoppingCart from "../modals/ShoppingCartModal";
 
 const SingleProduct = () => {
   const { productId } = useParams();
-  const { user } = useAuth();
-  console.log("single product", user);
+  const {  fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } =
+    useAuth();
+  console.log("single product", cartCount);
 
   const [product, setProduct] = useState({});
   const [categoriesList, setCategoriesList] = useState([]);
@@ -90,7 +92,16 @@ const SingleProduct = () => {
     setToastVisible(false);
   };
 
+  const [isOpenCart, setIsOpenCart] = useState(false);
+
   const handleAddtoCart = async () => {
+    console.log("==-=-=--=-product=--=-==--=-", product);
+    if (product.stockQuantity <= 0) {
+      setToastMessage("This item is currently out of stock.");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
     try {
       setLoading(true);
       const payload = {
@@ -110,10 +121,13 @@ const SingleProduct = () => {
         },
       });
       console.log(response);
+      if (isOpenCart === true) {
+        setIsModalOpen(true);
+      }
       setToastMessage("Added to Cart !");
       setToastType("success");
       setToastVisible(true);
-      // alert("Added to cart");
+      fetchCartCount();
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -140,7 +154,8 @@ const SingleProduct = () => {
           },
         }
       );
-
+      console.log("respons whishlist::", response);
+      fetchWishlistCount();
       setToastMessage("Added to Wishlist !");
       setToastType("success");
       setToastVisible(true);
@@ -150,12 +165,27 @@ const SingleProduct = () => {
       setToastVisible(true);
     }
   };
-  return (
-    <div className="flex justify-center items-center bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
-      <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
-        <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-[16px] bg-white">
-          <div className="flex justify-center items-center w-[1131px] h-[501px] gap-8">
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+    // Retrieve user data from localStorage
+const userData = localStorage.getItem("users");
+const user = userData ? JSON.parse(userData) : null;
+
+// Debugging logs
+console.log(user, "parsed user data");
+
+// Safely log firstName only if user exists
+if (user && user.firstName) {
+  console.log(user.firstName, "sarhey de oghai");
+}
+
+
+   return (
+    <div className="flex justify-center items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
+      <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
+        <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-2xl bg-white">
+          <div className="flex justify-center items-center w-[1131px] h-[501px] gap-5">
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
                 spaceBetween={30}
@@ -172,8 +202,8 @@ const SingleProduct = () => {
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
                 {product &&
-                  product.imageUrls &&
-                  product.imageUrls.length > 0 ? (
+                product.imageUrls &&
+                product.imageUrls.length > 0 ? (
                   product.imageUrls.map((url, index) => (
                     <SwiperSlide key={index}>
                       <img
@@ -203,7 +233,7 @@ const SingleProduct = () => {
                     </h1>
                     <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-[8px] px-[12.79px] gap-[7.99px] bg-[#001D580D]">
                       <h1 className="font-poppins font-normal text-secondaryBrand text-[11.19px] leading-[16.79px] w-[44px] h-[17px]">
-                        In Stock
+                        {product?.stockQuantity > 0 && "In Stock"}
                       </h1>
                     </div>
                   </div>
@@ -232,13 +262,51 @@ const SingleProduct = () => {
                 </h1>
               </div>
               <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-[9.59px]">
-                <div className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]">
+                <div
+                  onClick={() => {
+                    if (user && user?.email) {
+                      if (product.stockQuantity <= 0) {
+                        setToastMessage("This item is currently out of stock.");
+                        setToastType("error");
+                        setToastVisible(true);
+                        return;
+                      } else {
+                        setIsOpenCart(true);
+                        setLoading(true);
+                        setTimeout(() => {
+                          handleAddtoCart();
+                        }, [3000]);
+                      }
+                    } else {
+                      setToastMessage("Access denied! Please log in first");
+
+                      setToastType("error");
+                      setToastVisible(true);
+                      console.log(
+                        "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
+                      );
+                    }
+                  }}
+                  className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
+                >
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
-                    Buy Now
+                    {loading ? "Loading..." : "  Buy Now"}
                   </h1>
                 </div>
                 <div
-                  onClick={() => handleAddtoCart()}
+                  onClick={() => {
+                    if (user && user?.email) {
+                      handleAddtoCart();
+                    } else {
+                      setToastMessage("Access denied! Please log in first");
+
+                      setToastType("error");
+                      setToastVisible(true);
+                      console.log(
+                        "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
+                      );
+                    }
+                  }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
                 >
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-white">
@@ -246,7 +314,19 @@ const SingleProduct = () => {
                   </h1>
                 </div>
                 <div
-                  onClick={() => handleAddtoWishlist()}
+                  onClick={() => {
+                    if (user && user?.email) {
+                      handleAddtoWishlist();
+                    } else {
+                      setToastMessage("Access denied! Please log in first");
+
+                      setToastType("error");
+                      setToastVisible(true);
+                      console.log(
+                        "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
+                      );
+                    }
+                  }}
                   className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]"
                 >
                   <svg
@@ -270,12 +350,10 @@ const SingleProduct = () => {
                   Category:
                 </h1>
                 <h1 className="font-poppins font-normal text-[12px] leading-[18px] text-[#808080]">
-                  {
+                  {product?.categoryId &&
                     categoriesList.find(
-                      (category) =>
-                        category.categoryId === product && product.categoryId
-                    )?.name
-                  }
+                      (category) => category.categoryId === product.categoryId
+                    )?.name}
                 </h1>
               </div>
             </div>
@@ -311,6 +389,12 @@ const SingleProduct = () => {
         onClose={closeToast}
         type={toastType}
       />
+      {isModalOpen && (
+        <ShoppingCart
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </div>
   );
 };

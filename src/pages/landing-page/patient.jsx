@@ -98,18 +98,15 @@ const Patients = ({ isLanding }) => {
       <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:mx-12 xl:mx-24 2xl:mx-48 flex flex-col md:flex-row items-center justify-between">
         {/* Left Side: Text */}
         <div className="w-full md:w-1/2 text-gray-800">
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900">
+          <h3 className="text-sm md:text-2xl font-bold text-blue-900">
             PATIENT
           </h3>
-          <p className="mt-4 text-sm sm:text-base md:text-lg text-gray-600">
+          <p className="mt-4 text-sm md:text-lg text-gray-600">
             Our team of experts is committed to delivering exceptional results
             and ensuring your satisfaction. Whether you need a crown, bridge, or
             denture, we are here to help.
           </p>
-          <button
-            onClick={() => navigate("/patient")}
-            className="mt-6 px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300 flex items-center group text-sm sm:text-base"
-          >
+          <button className="mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white  transition-all duration-300 flex items-center group text-sm sm:text-base" onClick={() => navigate("/signup")}>
             <span className="mr-2 sm:mr-4">Register</span>
             <span className="w-6 sm:w-8 h-6 sm:h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
               <svg
@@ -149,10 +146,10 @@ const Patients = ({ isLanding }) => {
 
       <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
         {/* Section Header */}
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-400">
+        <h2 className="text-sm md:text-lg font-bold text-blue-400">
           PATIENT YEARLY PLAN
         </h2>
-        <p className="mt-6 sm:mt-8 md:mt-12 text-sm sm:text-base md:text-lg text-gray-600">
+        <p className="mt-4 md:mt-4 text-sm  text-gray-600">
           Our warranty gives you the comfort and reassurance you deserve
         </p>
 
@@ -163,20 +160,20 @@ const Patients = ({ isLanding }) => {
               key={plan.id}
               className="bg-white border rounded-lg shadow-md p-4 sm:p-6 text-center hover:shadow-lg transition"
             >
-              <h3 className="text-lg sm:text-xl font-bold text-blue-900">
+              <h3 className="text-lg md:text-xl font-bold text-blue-900">
                 {plan.title}
               </h3>
-              <p className="mt-2 text-sm sm:text-base text-blue-400 font-semibold">
+              <p className="mt-2 text-sm md:text-lg text-blue-400 font-semibold">
                 {plan.duration}
               </p>
-              <p className="mt-2 sm:mt-4 text-base sm:text-lg text-gray-800 font-bold">
+              <p className="mt-2 sm:mt-4 text-sm md:text-lg text-gray-800 font-bold">
                 {plan.price}
               </p>
-              <p className="mt-2 text-sm sm:text-base text-gray-600">
+              <p className="mt-2 text-sm md:text-lg text-gray-600">
                 {plan.description}
               </p>
               <button
-                className={`mt-8 sm:mt-12 md:mt-16 px-4 sm:px-6 py-2 sm:py-3 w-full border transition rounded-lg text-sm sm:text-base ${plan.buttonStyle}`}
+                className={`mt-8 sm:mt-12 md:mt-16 px-4 sm:px-6 py-2 sm:py-3 w-full border transition rounded-lg text-sm md:text-lg ${plan.buttonStyle}`}
               >
                 GET IT NOW
               </button>
@@ -188,10 +185,10 @@ const Patients = ({ isLanding }) => {
         <>
           <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
             <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-blue-900">
+              <h2 className="text-sm md:text-2xl font-semibold text-blue-900">
                 Common Concerns
               </h2>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 mt-4">
+              <p className="text-sm md:text-xl text-gray-600 mt-4">
                 Our warranty gives you the comfort and reassurance you deserve
               </p>
             </div>
@@ -201,10 +198,10 @@ const Patients = ({ isLanding }) => {
                   key={index}
                   className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition"
                 >
-                  <h3 className="text-lg sm:text-xl font-semibold text-blue-800 mb-4">
+                  <h3 className="text-sm md:text-lg font-semibold text-blue-800 mb-4">
                     {concern.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600">
+                  <p className="text-sm md:text-sm text-gray-600">
                     {concern.description}
                   </p>
                 </div>
@@ -213,7 +210,7 @@ const Patients = ({ isLanding }) => {
           </div>
           <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
             <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-blue-900">
+              <h2 className=" text-sm md:text-2xl font-semibold text-blue-900">
                 Get Started
               </h2>
             </div>
@@ -226,10 +223,10 @@ const Patients = ({ isLanding }) => {
                   <div className="flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-blue-100 text-blue-900 font-bold rounded-full mx-auto mb-4 sm:mb-6">
                     {step.id}
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-center text-gray-800 mb-4">
+                  <h3 className="text-sm md:text-lg font-poppins font-bold text-center text-gray-800 mb-4">
                     {step.title}
                   </h3>
-                  <ul className="list-disc list-inside text-gray-600 text-sm sm:text-base space-y-2">
+                  <ul className="list-disc list-inside text-gray-600 text-sm md:text-sm font-poppins space-y-2">
                     {step.description.map((desc, index) => (
                       <li key={index}>{desc}</li>
                     ))}
@@ -250,7 +247,7 @@ const Patients = ({ isLanding }) => {
 
             {/* Right Section: Form */}
             <div className="w-full md:w-1/2 mt-6 sm:mt-8 md:mt-0 md:ml-6 lg:ml-12">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-900 mb-6 text-center md:text-left">
+              <h2 className=" text-xl md:text-2xl font-poppins font-bold text-blue-900 mb-6 text-center md:text-left">
                 Patient Registration
               </h2>
               <form className="space-y-4">
@@ -258,41 +255,41 @@ const Patients = ({ isLanding }) => {
                   <input
                     type="text"
                     placeholder="First Name"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
                   />
                   <input
                     type="text"
                     placeholder="Last Name"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
                   />
                 </div>
                 <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <input
                     type="tel"
                     placeholder="Phone"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
                   />
                   <input
                     type="email"
                     placeholder="Email"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
                   />
                 </div>
                 <input
                   type="text"
                   placeholder="Address"
-                  className="w-full px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
                 />
                 <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <input
                     type="text"
                     placeholder="City"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
                   />
                   <input
                     type="text"
                     placeholder="ZIP"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
                   />
                 </div>
                 <button
