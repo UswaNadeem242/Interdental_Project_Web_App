@@ -5,8 +5,8 @@ const HeroSection = () => {
   return (
     <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc] flex flex-col md:flex-row justify-around items-center h-auto sm:h-screen min-h-[600px] py-8 sm:py-12 md:py-16">
       {/* Left Section: Text Content */}
-      <section className="text-left md:text-left px-4 sm:px-8 md:px-12 lg:px-16">
-        <h2 className="text-2xl mb-8 sm:text-3xl md:text-4xl lg:text-5xl font-normal text-gray-900 leading-tight space-y-2 sm:space-y-3 md:space-y-4">
+      <section className="text-left md:text-left px-4 sm:px-8 md:px-12 lg:px-16 mt-9">
+        <h2 className="md:text-4xl mb-8 text-base  font-normal text-gray-900 leading-tight space-y-2 sm:space-y-3 md:space-y-4">
           <span className="block font-normal">
             Crafting
             <span className="text-gray-600 font-bold"> Smiles</span>
@@ -19,7 +19,7 @@ const HeroSection = () => {
             <span className="text-blue-400 font-bold"> Artistry</span>
           </span>
         </h2>
-        <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto md:mx-0">
+        <p className="mt-3 sm:mt-4 text-sm   md:text-base text-gray-700 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto md:mx-0">
           Blending cutting-edge technology with expert craftsmanship, we create
           durable and aesthetically refined dental solutions that are built to
           last.

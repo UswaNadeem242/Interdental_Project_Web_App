@@ -120,7 +120,9 @@ const ForgetPassword = () => {
                 stroke-linejoin="round"
               />
             </svg>
-            <p className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
+            <p
+            onClick={() => navigate("/login")}
+            className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
               Go back
             </p>
           </div>

@@ -74,6 +74,23 @@ export const menuItems = [
   // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
   // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];
+
+export const menuItemsUser = [
+  {
+    name: "Dashboard",
+    path: "/admin/dashboard",
+    icon: DashboardIcon,
+  },
+  { name: "Orders", path: "/admin/orders", icon: OrderIcon },
+  { name: "Product", path: "/admin/products", icon: PatienIcon },
+
+  {
+    name: "user",
+    path: "/admin/users",
+    icon: ClaimIcon,
+  },
+];
+
 export const CardDashboard = [
   {
     title: "Total Patients",

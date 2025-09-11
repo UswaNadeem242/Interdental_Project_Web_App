@@ -7,6 +7,7 @@ import HeroSection from "../components/HeroSection";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import { useAuth } from "../auth/AuthContext";
+import Header from "./landing-page/header";
 
 const Home = () => {
   const { user } = useAuth();
@@ -35,6 +36,7 @@ const Home = () => {
   console.log("products", products);
   return (
     <div className="flex flex-col justify-start items-center space-y-[65px] bg-gray-100 pb-16">
+
       <HeroSection />
       {/* <Brands /> */}
       <FeaturedProducts products={products} />

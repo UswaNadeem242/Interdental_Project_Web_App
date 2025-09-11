@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { CheckIcon } from "@heroicons/react/24/solid";
 
-export const SmileDesignPicker = ({
+export  const SmileDesignPicker = ({
   isModalOpen,
   setIsModalOpen,
   selected,

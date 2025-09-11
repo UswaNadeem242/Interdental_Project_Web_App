@@ -4,7 +4,7 @@ import { menuItems } from "../../../Constant";
 import { Xmark } from "../../../icon/xmark";
 import { Hamburger } from "../../../icon/hamburger";
 
-const MobileSidebar = () => {
+const MobileSidebar = ({ items }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -38,7 +38,7 @@ const MobileSidebar = () => {
 
         {/* Menu Items */}
         <div className="flex flex-col gap-4 p-4">
-          {menuItems?.map((item) => {
+          {items?.map((item) => {
             const Icon = item.icon;
             return (
               <NavLink
