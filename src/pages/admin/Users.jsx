@@ -110,7 +110,7 @@ const Users = () => {
 
   return (
     <div className="flex flex-col justify-center items-start">
-      <AdminHeader title="Users" />
+      {/* <AdminHeader title="Users" /> */}
       <div className="flex flex-col justify-start items-start mt-6 w-full h-[887px] rounded-[20px] p-[24px] gap-[20px] bg-[#FFFFFF]">
         <div className="flex justify-between items-center w-full h-[49px] bg-[#F8F8F8] rounded-[8px] py-[8px] pl-[16px] pr-[8px] gap-[8px]">
           <svg

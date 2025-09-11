@@ -16,6 +16,7 @@ module.exports = {
         docText: '#737791',
         textFieldColor: '#F8F8F8',
         borderPrimary: '#E5E5E5',
+        textFieldHeading:'#828386'
        },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],

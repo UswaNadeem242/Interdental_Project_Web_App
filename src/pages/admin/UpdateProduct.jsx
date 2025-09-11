@@ -175,7 +175,7 @@ const UpdateProduct = () => {
             className="flex justify-center items-center w-[145px] h-[53px] rounded-[32px] border-[1px] border-[#013764] py-[16px] px-[45px] gap-[8px]"
           >
             <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#013764]">
-              Discard
+              DiscarD
             </p>
           </button>
           <button

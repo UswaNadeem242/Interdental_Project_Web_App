@@ -90,7 +90,7 @@ const ProductDetails = () => {
   return (
     <div className="flex justify-center items-center">
       <div className="flex flex-col justify-start items-start w-[1108px] h-auto space-y-[32px] mt-0 pt-2 ">
-        <AdminHeader title="Product Detail" />
+        {/* <AdminHeader title="Product Detail" /> */}
         <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-2xl bg-white">
           <div className="flex justify-center items-center w-[1108px] h-[501px] gap-8">
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">

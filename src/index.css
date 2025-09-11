@@ -64,3 +64,12 @@
   color: black;
   font-size: 2px;
 }
+
+/* index.css or globals.css */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

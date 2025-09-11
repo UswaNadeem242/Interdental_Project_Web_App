@@ -148,7 +148,7 @@ const Signup = () => {
 
         <div className="px-3 flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[252px] gap-4 lg:gap-[16px]">
           {/* Name fields - stack vertically on mobile */}
-          <div className="flex flex-col lg:flex-row justify-between items-center w-full gap-4 lg:gap-0 h-auto lg:h-[51px]">
+          <div className="flex flex-col gap-4 lg:flex-row justify-between items-center w-full    h-auto lg:h-[51px]">
             <input
               type="text"
               className="w-full lg:w-[239px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
@@ -275,7 +275,7 @@ const Signup = () => {
           </div>
         </div>
 
-        <div className="px-4 flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
+        <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
           <button
             onClick={() => handleSignup()}
             className="w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px]"

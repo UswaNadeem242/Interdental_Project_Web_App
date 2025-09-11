@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config";
 import axios from "axios";
 import Header from "./landing-page/header";
@@ -239,7 +239,7 @@ const Shop = () => {
       <div className="px-4 md:px-10 lg:px-20 py-6 ">
         {/* Header */}
         <div className="flex justify-between items-center  mt-24">
-          
+
           <button
             className="md:hidden flex items-center gap-2 border px-3 py-2 rounded-lg text-sm"
             onClick={() => setIsFilterOpen(true)}
@@ -446,21 +446,25 @@ const Shop = () => {
                   <div
                     key={idx}
                     className="flex flex-col items-center bg-white rounded-lg shadow-sm p-4 cursor-pointer"
+                       onClick={() => handleProduct(product)}
                   >
-                    <img
-                      src={product.imageUrls[0]}
-                      alt="product"
-                      className="w-[263.15px] h-[260.45px]"
-                    />
+                     
+                      <img
+                        src={product.imageUrls[0]}
+                        alt="product"
+                        className="w-[263.15px] h-[260.45px]"
+                      />
 
-                    <div className="text-center mt-3">
-                      <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
-                        {product.name}
-                      </h1>
-                      <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
-                        ${product.price}
-                      </h1>
-                    </div>
+                      <div className="text-center mt-3">
+                        <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
+                          {product.name}
+                        </h1>
+                        <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
+                          ${product.price}
+                        </h1>
+                      </div>
+                   
+
                   </div>
                 ))
               ) : (

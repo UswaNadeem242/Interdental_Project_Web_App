@@ -62,7 +62,7 @@ const OrderDetails = () => {
   const [isModelShow, setIsmodelShow] = useState(false);
   return (
     <div className="flex flex-col justify-center items-start space-y-6">
-      <AdminHeader title="Order" subTitle={params.id} />
+      {/* <AdminHeader title="Order" subTitle={params.id} /> */}
       {/* Shipping Status */}
       {orders && (
         <div className="flex flex-col justify-start items-start space-y-[8px] w-[1136px] h-[148px] rounded-[8px] border-[1px] border-[#0000000D] py-[8px] px-[16px] bg-white">

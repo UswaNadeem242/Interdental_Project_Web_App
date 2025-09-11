@@ -1,76 +1,82 @@
-import React from "react";
 import { CardComponet } from "../../../Common/Card";
 import { UserIcon } from "../../../icon/UserIcon";
-import { CardDashboard, PatientDashboard } from "../../../Constant";
+import {
+  CardDashboard,
+  Chartdata,
+  ChartStatusLines,
+  dataOrder,
+  headingsOrder,
+  PatientDashboard,
+} from "../../../Constant";
 import { PatientCard } from "../../../Common/PatientCard/index.jsx";
-import OrdersTable from "../../../Common/OrdersTable/index.jsx";
-
+import { ChartLegend, MultiLineChart } from "../../../Common/Chart/index.jsx";
+import {
+  PrimaryButtonUI,
+  SecondaryButton,
+} from "../../../Common/Button/index.jsx";
+import TableComponent from "../../../Common/Table/index.jsx";
 const DoctorDashaboard = () => {
   return (
-    <>
-      <div className="grid grid-cols-12 gap-4 ">
-        <div className="col-span-8">
-          <div className="flex gap-4">
-            {CardDashboard?.map((item, id) => {
-              return (
-                <CardComponet
-                  key={id}
-                  title={item?.title}
-                  count={item?.count}
-                  fromDate={item?.date}
-                  toDate={item?.duedate}
-                  icon={item?.icon}
-                />
-              );
-            })}
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-3 md:gap-3 lg:gap-4 ">
+        <div className="col-span-1 md:col-span-1 lg:col-span-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-4">
+            {CardDashboard?.map((item, id) => (
+              <CardComponet
+                key={id}
+                title={item?.title}
+                count={item?.count}
+                fromDate={item?.date}
+                toDate={item?.duedate}
+                icon={item?.icon}
+              />
+            ))}
           </div>
-          <div className="cols-span-8 bg-[#FFFFFF] mt-5 rounded-lg p-4">
-            <div className="flex justify-between">
-              <h3 className="font-poppins text-sm font-semibold text-[#434343] ">
-                Order Overview
-              </h3>
-              <div className="flex justify-between items-center gap-5 font-poppins text-xs text-[#434343] mr-3 ">
-                <div className="flex items-center">
-                  <span className="w-3 h-3 mr-1 bg-[#94D3DD] rounded-full inline-block"></span>
-                  <label className="text-sm text-[#434343]">Total Orders</label>
-                </div>
-                {/* <p>Total Orders</p> */}
-
-                {/* <p>Completed</p> */}
-                <div className="flex items-center">
-                  <span className="w-3 h-3 mr-1 bg-[#4FAD2E] rounded-full inline-block"></span>
-                  <label className="text-sm text-[#434343]">Completed</label>
-                </div>
-                {/* <p>In Progress</p> */}
-                <div className="flex items-center">
-                  <span className="w-3 h-3 mr-1 bg-[#E13434] rounded-full inline-block"></span>
-                  <label className="text-sm text-[##434343]">In progress</label>
-                </div>
-                {/* <p>Pending</p> */}
-                <div className="flex items-center">
-                  <span className="w-3 h-3 mr-1 bg-blue-500 rounded-full inline-block"></span>
-                  <label className="text-sm text-gray-700">Pending</label>
-                </div>
-              </div>
-            </div>
-            <div className="mt-5 ">
-              <img
-                className="w-full h-full object-cover"
-                src="/assets/Months.jpg"
-                alt="image"
+          {/* Order Overview */}
+          <div className="col-span-1 md:col-span-1 lg:col-span-8 bg-[#FFFFFF] mt-3 md:mt-4 lg:mt-5 rounded-lg p-3 md:p-4 lg:p-4">
+            <div className="mt-3 md:mt-4 lg:mt-5">
+              <MultiLineChart
+                data={Chartdata}
+                lines={ChartStatusLines}
+                // height={300}
+                title="Order Overview"
+                showLegend={true}
               />
             </div>
           </div>
         </div>
 
-        <div className="col-span-4 bg-[#FFFFFF] rounded-xl">
-          <PatientCard />
+        <div className="col-span-1 md:col-span-1 lg:col-span-4 bg-[#FFFFFF] rounded-lg md:rounded-xl lg:rounded-xl">
+          <PatientCard title="Patients" />
         </div>
-        <div className="col-span-12">
-          <OrdersTable />
+        <div className="col-span-1 md:col-span-1 lg:col-span-12 bg-white p-6 rounded-2xl">
+          <div className="flex flex-row md:flex-row items-start md:items-center justify-between gap-3 mb-4">
+            <h2 className="text-sm md:text-base font-poppins font-semibold text-[#434343]">
+              Recent Orders
+            </h2>
+
+            <div className="flex flex-wrap gap-2 md:gap-4">
+              <PrimaryButtonUI
+                title="  Place New Order"
+                className="py-1 px-4 md:px-6 font-poppins  font-normal text-xs bg-secondaryBrand text-white rounded-lg shadow "
+              />
+              <SecondaryButton
+                title="View All"
+                className="py-1 px-3 md:px-4 font-poppins font-normal text-xs border border-brand bg-white text-brand rounded-lg shadow"
+                href="/doctorAdmin/Orders"
+              />
+            </div>
+          </div>
+          {/* <div className="overflow-x-auto"> */}
+          <TableComponent
+            headings={headingsOrder}
+            data={dataOrder}
+            actionHrefKey="detailUrl"
+          />
+          {/* </div> */}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
