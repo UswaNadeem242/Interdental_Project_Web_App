@@ -22,7 +22,7 @@ const About = ({ isLanding }) => {
               About Us
             </h1>
             <div className="flex justify-start items-center gap-2 sm:gap-4 font-poppins font-bold  sm:text-sm md:text-3xl leading-8 sm:leading-9 md:leading-10 lg:leading-[81px]">
-              <h1 className="text-secondaryBrand">interdental</h1>
+              <h1 className="text-secondaryBrand capitalize">interdental</h1>
               <h1 className="text-[#94D3DD]">Lab</h1>
             </div>
             <h1 className="w-full max-w-[432px] h-auto sm:h-[180px] font-poppins font-normal  text-sm md:text-lg text-[#949494] leading-5 sm:leading-6 md:leading-7 lg:leading-[30px]">
@@ -31,11 +31,11 @@ const About = ({ isLanding }) => {
               passion to every case, crafting beautiful, functional smiles with
               a commitment to excellence.
             </h1>
-            <div
-              onClick={() => setIsModalOpen(true)}
-              className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-[1.81px] border-[#94D3DD] gap-4 sm:gap-[24px] p-2 sm:p-[8px]"
+            <button
+              // onClick={() => setIsModalOpen(true)}
+              className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px]  border-2 border-blue-500 gap-4 sm:gap-[24px] p-2 sm:p-[8px]"
             >
-              <h1 className="font-poppins font-semibold text-sm md:text-lg leading-4 sm:leading-5 lg:leading-[21px] text-[#434343]">
+              <h1 className="font-poppins font-semibold text-base  text-[#434343]">
                 View More
               </h1>
               <svg
@@ -58,7 +58,7 @@ const About = ({ isLanding }) => {
                   fill="white"
                 />
               </svg>
-            </div>
+            </button>
 
           </div>
         </div>
@@ -66,13 +66,13 @@ const About = ({ isLanding }) => {
         <div className="flex justify-center items-center w-full max-w-[1512px] h-auto sm:h-[818px] border-t-[1px] border-[#0000001A] bg-[#F8F8F8] py-8 sm:py-12 md:py-16 lg:py-[124px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-6 lg:gap-[32px]">
           <div className="flex flex-col justify-start items-start w-full max-w-[1312px] h-auto sm:h-[570px] gap-6 sm:gap-8 lg:gap-[64px]">
             <div className="flex justify-center items-center gap-2 sm:gap-4">
-              <h1 className="font-poppins font-normal text-sm md:text-base leading-8 sm:leading-9 md:leading-10 lg:leading-[72px]">
+              <h1 className="font-poppins font-normal text-sm md:text-2xl leading-8 sm:leading-9 md:leading-10 lg:leading-[72px]">
                 Why
               </h1>
-              <h1 className="font-poppins font-bold text-sm md:text-base leading-8 sm:leading-9 md:leading-10 lg:leading-[72px] text-secondaryBrand">
+              <h1 className="font-poppins font-bold text-sm md:text-2xl leading-8 sm:leading-9 md:leading-10 lg:leading-[72px] text-secondaryBrand">
                 Interdental
               </h1>
-              <h1 className="font-poppins font-bold text-sm md:text-base leading-8 sm:leading-9 md:leading-10 lg:leading-[72px] text-[#94D3DD]">
+              <h1 className="font-poppins font-bold text-sm md:text-2xl leading-8 sm:leading-9 md:leading-10 lg:leading-[72px] text-[#94D3DD]">
                 lab
               </h1>
             </div>

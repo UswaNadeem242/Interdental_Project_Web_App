@@ -56,7 +56,7 @@ export default function OrdersTable() {
                 <td className="py-3 px-3  text-sm text-[#434343]">
                   <a
                     href="#"
-                    className="text-[#001D58] font-normal hover:underline font-medium"
+                    className="text-[#001D58] font-normal hover:underline"
                   >
                     View Detail ↗
                   </a>
