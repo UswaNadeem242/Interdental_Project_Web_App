@@ -74,7 +74,7 @@ const PlainLayout = ({ children }) => {
 
 const PlainLayoutUser = ({ children }) => (
   // <div className="flex absolute pt-[16px] pl-[16px] pb-[16px] gap-8 bg-[#F8F8F8] w-full">
-  //   <AdminSidebar />
+    // <AdminSidebar />
   //   {children}
   // </div>
 

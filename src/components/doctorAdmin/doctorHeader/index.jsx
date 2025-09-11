@@ -14,7 +14,7 @@ const DoctorHeader = ({ title, subTitle }) => {
   };
   const pageTitle = usePageTitle();
   console.log('pageTitle:', pageTitle);
-
+ 
   return (
     <>
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">
@@ -36,7 +36,7 @@ const DoctorHeader = ({ title, subTitle }) => {
           </button>
         </div>
         <div className="hidden md:flex">
-          <button className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center">
+          <button className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center" onClick={() => handleLogout()}>
             <LogoutIcon />
           </button>
         </div>

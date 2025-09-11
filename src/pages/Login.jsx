@@ -62,7 +62,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row justify-start items-center lg:gap-20 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
+    <div className="flex    flex-col lg:flex-row justify-start items-center lg:gap-20 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
       {/* Image div - hidden on mobile, shown on lg screens and above */}
       <div className="hidden lg:flex flex-col items-start justify-start -space-y-12">
         <img src="/assets/logo.png" alt="logo" />
@@ -207,7 +207,7 @@ const Login = () => {
           </p>
         </div>
 
-        <div className="flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 px-6 lg:gap-[32px]">
+        <div className="flex items-center flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 px-6 lg:gap-[32px]">
           <button
             onClick={() => handleLogin()}
             disabled={loading}
