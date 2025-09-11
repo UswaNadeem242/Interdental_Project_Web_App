@@ -199,7 +199,6 @@ const Products = () => {
                         }
                         className="w-[20px] h-[20px] rounded-[6px] border-[1px] border-[#D0D5DD]"
                       />
-                      {console.log('-==-=--=-=-=pppppp-=--=-=--=-=-=-=',p)}
                       <img
                         src={p?.imageUrls[0]}
                         alt="product image"
