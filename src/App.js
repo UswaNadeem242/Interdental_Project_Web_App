@@ -29,7 +29,7 @@ import Contact from "./pages/landing-page/contact";
 import DoctorAdmin from "./pages/doctorAdmin/Doctor";
 import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
 import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
-import DoctorHeader from "./components/doctorAdmin/DoctorHeader";
+import DoctorHeader from "./components/doctorAdmin/doctorHeader";
 import ScrollToTop from "./Hooks/UseScroll";
 import { menuItems, menuItemsUser } from "./Constant";
 
