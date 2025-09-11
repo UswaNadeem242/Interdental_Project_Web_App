@@ -106,10 +106,7 @@ const Patients = ({ isLanding }) => {
             and ensuring your satisfaction. Whether you need a crown, bridge, or
             denture, we are here to help.
           </p>
-          <button
-            onClick={() => navigate("/patient")}
-            className="mt-6 px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300 flex items-center group text-sm "
-          >
+          <button className="mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white  transition-all duration-300 flex items-center group text-sm sm:text-base" onClick={() => navigate("/signup")}>
             <span className="mr-2 sm:mr-4">Register</span>
             <span className="w-6 sm:w-8 h-6 sm:h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
               <svg

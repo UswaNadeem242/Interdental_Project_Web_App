@@ -57,7 +57,7 @@ const Header = () => {
       </div>
 
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex space-x-4 lg:space-x-6 text-base lg:text-lg">
+      <nav className="hidden lg:flex space-x-2 lg:space-x-3 text-base lg:text-lg">
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -186,7 +186,7 @@ const Header = () => {
           <>
             <button
               onClick={() => navigate("/login")}
-              className="hidden md:inline-block px-3 sm:px-4 py-1 sm:py-2 font-semibold border bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100 text-sm sm:text-base"
+              className="hidden md:inline-block px-3 sm:px-4 py-1 sm:py-2 font-semibold  bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100 text-sm sm:text-base"
             >
               Log In
             </button>
