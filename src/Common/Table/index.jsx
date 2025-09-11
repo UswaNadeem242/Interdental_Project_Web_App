@@ -78,11 +78,18 @@ export default function TableComponent({
                       </div>
                     ) : col.key === "status" ? (
                       <span
-                        className={`px-3 py-2 rounded-full text-xs font-semibold ${row[col.key] === "active"
+                        className={`px-3 py-2 rounded-full text-xs font-semibold capitalize ${row[col.key] === "active"
                           ? "bg-green-500/5 text-[#4ECC53]"
                           : row[col.key] === "pending"
                             ? "bg-blue-700/5 text-[#1F27EF]"
-                            : "bg-rose-500/5 text-[#FF5757]"
+                            : "bg-orange-500/10 text-[#EF6A1F]"
+                          }`}
+                      >
+                        {row[col.key]}
+                      </span>
+                    ) : col.key === "id" ? (
+                      <span
+                        className={`px-3 py-2 rounded-full text-xs font-semibold capitalize  
                           }`}
                       >
                         {row[col.key]}

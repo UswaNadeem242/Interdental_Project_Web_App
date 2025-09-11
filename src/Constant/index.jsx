@@ -4,6 +4,7 @@ import { PatienIcon } from "../icon/PatienIcon";
 import { ClaimIcon } from "../icon/claimIcon";
 import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
+import ProfileIcon from "../icon/ProfileIcon";
 export const MATERIAL_OPTIONS = [
   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
   { value: "argen-ht", label: "Argen HT", price: 45 },
@@ -80,6 +81,7 @@ export const CardDashboard = [
     date: "Jan 01, 2024",
     path: "/doctorAdmin/dashboard",
     duedate: "Mar 30, 2024",
+    // From jan 01,2024  March 30,2024
     icon: <UserIcon />,
   },
   {
@@ -96,7 +98,7 @@ export const CardDashboard = [
     date: "Jan 01, 2024",
     path: "/doctorAdmin/dashboard",
     duedate: "Mar 30, 2024",
-    icon: <UserIcon />,
+    icon: <ProfileIcon />,
   },
 ];
 

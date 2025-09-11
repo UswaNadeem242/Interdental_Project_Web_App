@@ -49,11 +49,11 @@ const PatientPage = () => {
           <div className='flex flex-col  md:flex-row items-start md:items-center gap-2 '>
             <div className='md:block hidden'>
 
-              <PrimaryButtonUI title='Add Patient' onClick={() => setIsOpen(true)} className='rounded-md px-8 py-4 ' />
+              <PrimaryButtonUI title='Add Patient' onClick={() => setIsOpen(true)} className='rounded-md px-8 py-4  font-semibold ' />
             </div>
             <div className='md:hidden block w-full'>
 
-              <PrimaryButtonUI title='Add Patient' onClick={() => setIsOpen(true)} className='rounded-md px-8 py-4 w-full' />
+              <PrimaryButtonUI title='Add Patient' onClick={() => setIsOpen(true)} className='rounded-md px-8 py-4 w-full font-semibold ' />
             </div>
 
             <div>

@@ -146,7 +146,7 @@ export default function AddPatientForm() {
                             <PrimaryButtonUI
                                 type="submit"
                                 title="Add Patient"
-                                className="px-20 py-5 rounded-full capitalize w-full"
+                                className="px-20 py-5 rounded-full capitalize w-full font-semibold "
                             />
                         </div>
                     </Form>
