@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import Drawers from '../../../Common/Drawers'
 import { PrimaryButtonUI } from '../../../Common/Button';
 import AddPatientForm from './AddPatientForm';
@@ -8,6 +8,31 @@ import SearchBar from '../../../Common/SearchBar';
 
 const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("");  
+ 
+  const filteredData = useMemo(() => {
+    let filtered = dataPatient;
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((row) =>
+        Object.values(row).some((val) =>
+          String(val).toLowerCase().includes(query)
+        )
+      );
+    }
+    if (sortOrder) {
+      filtered = [...filtered].sort((a, b) => {
+        const aVal = Object.values(a)[0]?.toString().toLowerCase() || "";
+        const bVal = Object.values(b)[0]?.toString().toLowerCase() || "";
+
+        return sortOrder === "asc"
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      });
+    }
+    return filtered;
+  }, [searchQuery, sortOrder]);
 
   return (
     <div>
@@ -16,19 +41,19 @@ const PatientPage = () => {
           <div className='md:flex-1 '>
             <SearchBar
               title='Sort By'
-              onSearch={(value) => console.log("Searching here:", value)}
-              onSort={() => console.log("Sort clicked")}
+              onSearch={setSearchQuery} // ✅ live search
+              onSort={setSortOrder} // ✅ "asc" | "desc"
             />
           </div>
 
           <div className='flex flex-col  md:flex-row items-start md:items-center gap-2 '>
             <div className='md:block hidden'>
 
-              <PrimaryButtonUI title='Add Patient' onClick={() => setIsOpen(true)} className='rounded-md px-8 py-4' />
+              <PrimaryButtonUI title='Add Patient' onClick={() => setIsOpen(true)} className='rounded-md px-8 py-4 ' />
             </div>
             <div className='md:hidden block w-full'>
 
-              <PrimaryButtonUI title='Add Patient' onClick={() => setIsOpen(true)} className='rounded-md px-8 py-4' />
+              <PrimaryButtonUI title='Add Patient' onClick={() => setIsOpen(true)} className='rounded-md px-8 py-4 w-full' />
             </div>
 
             <div>
@@ -44,7 +69,7 @@ const PatientPage = () => {
 
         </div>
         <TableComponent headings={headingsPateint}
-          data={dataPatient}
+          data={filteredData}
         />
       </div>
 

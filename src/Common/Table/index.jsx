@@ -11,14 +11,13 @@ export default function TableComponent({
   onActionClick,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 15;
+  const pageSize = 10;
 
   const totalResults = data.length;
   const totalPages = Math.ceil(totalResults / pageSize);
 
   const startIndex = (currentPage - 1) * pageSize;
   const currentData = data.slice(startIndex, startIndex + pageSize);
-
   return (
     <div className="grid col-span-1 md:col-span-1 lg:col-span-12">
       <div className="overflow-x-auto  max-h-[400px] scrollbar-hidden ">
@@ -44,13 +43,12 @@ export default function TableComponent({
                 {headings.map((col, i) => (
                   <td
                     key={i}
-                    className={`px-4 py-5 text-[#333333] text-xs   ${
-                      col.key === "name" ? "font-semibold" : "font-normal"
-                    }`}
+                    className={`px-4 py-3 text-[#333333] text-xs   ${col.key === "name" ? "font-semibold" : "font-normal"
+                      }`}
                   >
                     {/* Name column */}
                     {col.key === "name" ? (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 md:flex-row  flex-col">
                         <img
                           src={row.image || "/assets/user.png"}
                           alt={row.name}
@@ -80,13 +78,12 @@ export default function TableComponent({
                       </div>
                     ) : col.key === "status" ? (
                       <span
-                        className={`px-3 py-2 rounded-full text-xs font-semibold ${
-                          row[col.key] === "active"
-                            ? "bg-green-500/5 text-[#4ECC53]"
-                            : row[col.key] === "pending"
+                        className={`px-3 py-2 rounded-full text-xs font-semibold ${row[col.key] === "active"
+                          ? "bg-green-500/5 text-[#4ECC53]"
+                          : row[col.key] === "pending"
                             ? "bg-blue-700/5 text-[#1F27EF]"
                             : "bg-rose-500/5 text-[#FF5757]"
-                        }`}
+                          }`}
                       >
                         {row[col.key]}
                       </span>

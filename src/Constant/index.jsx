@@ -337,7 +337,7 @@ export const dataPatient = [
     name: "Varga Dóra",
     email: "varga@example.com",
     status: "active",
-    phone: "123456789",
+    phone: "12345678910",
     address: "abc....",
   },
   {
@@ -351,7 +351,7 @@ export const dataPatient = [
     name: "Varga Dóra",
     email: "varga@example.com",
     status: "active",
-    phone: "123456789",
+    phone: "12345678910",
     address: "abc....",
   },
   {
@@ -365,7 +365,7 @@ export const dataPatient = [
     name: "Varga Dóra",
     email: "varga@example.com",
     status: "active",
-    phone: "123456789",
+    phone: "12345678910",
     address: "abc....",
   },
   {
@@ -438,7 +438,28 @@ export const dataPatient = [
     phone: "123456789",
     address: "abc....",
   },
-  // ...more rows
+  {
+    id: "#1235",
+    name: "John Doe",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+    detailUrl: "/doctorAdmin/Details",
+  },
+  {
+    id: "#1235",
+    name: "Jane Smith",
+    product: "Argen HT",
+    status: "inactive",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+    detailUrl: "/doctorAdmin/Details",
+  },
 ];
 
 export const headingsOrder = [
@@ -457,18 +478,18 @@ export const dataOrder = [
     pName: "Varga Dóra",
     product: "Argen HT",
     status: "active",
-    submission: "16/22/2026",
+    submission: "17/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
     detailUrl: "/doctorAdmin/Details",
   },
   {
-    id: "#1235",
+    id: "#123588",
     pName: "John Doe",
     product: "Argen HT",
     status: "pending",
-    submission: "16/22/2026",
+    submission: "17/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",

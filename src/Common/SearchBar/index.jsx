@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { PrimaryButtonUI, SecondaryButton } from "../Button";
+import { SecondaryButton } from "../Button";
 import FilterIcon from "../../icon/FilterIcon";
 
 export default function SearchBar({ onSearch, onSort, placeholder = "Search...", title }) {
+
+
+
     const [query, setQuery] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleSearch = (e) => {
         const value = e.target.value;
@@ -12,6 +16,10 @@ export default function SearchBar({ onSearch, onSort, placeholder = "Search...",
         if (onSearch) onSearch(value); // live search
     };
 
+    const handleSort = (order) => {
+        setIsOpen(false);
+        if (onSort) onSort(order); // 🚀 send "asc" | "desc" to parent
+    };
     return (
         <div className="flex items-center gap-3 w-full border  bg-[#F8F8F8] rounded-md shadow-sm px-3 py-2">
             {/* Search Icon */}
@@ -27,7 +35,7 @@ export default function SearchBar({ onSearch, onSort, placeholder = "Search...",
             />
 
             {/* Sort Button */}
-            <SecondaryButton
+            {/* <SecondaryButton
                 title={title}
                 variant="outline"
                 size="sm"
@@ -37,7 +45,53 @@ export default function SearchBar({ onSearch, onSort, placeholder = "Search...",
             >
                 {title}
 
-            </SecondaryButton>
+            </SecondaryButton> */}
+
+
+            {/* Input Field */}
+             
+            {/* Sort Dropdown */}
+            <div className="relative">
+                <SecondaryButton
+                    title={title}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsOpen((prev) => !prev)}
+                    className="rounded-md px-2 py-2 bg-white text-[#344054] flex gap-2"
+                    icon={<FilterIcon className="w-4 h-4" />}
+                >
+                    {title}
+                </SecondaryButton>
+
+                {isOpen && (
+                    <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow-lg z-20">
+                        <button
+                            onClick={() => handleSort("asc")}
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                            Ascending
+                        </button>
+                        <button
+                            onClick={() => handleSort("desc")}
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                            Descending
+                        </button>
+                    </div>
+                )}
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
         </div>
     );
 }
