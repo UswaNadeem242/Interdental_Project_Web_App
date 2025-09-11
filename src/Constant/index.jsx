@@ -66,11 +66,11 @@ export const menuItems = [
     path: "/doctorAdmin/Claim-Request",
     icon: ClaimIcon,
   },
-  {
-    name: "Patient Dashboard",
-    path: "/doctorAdmin/Patientdashboard",
-    icon: ClaimIcon,
-  },
+  // {
+  //   name: "Patient Dashboard",
+  //   path: "/doctorAdmin/Patientdashboard",
+  //   icon: ClaimIcon,
+  // },
   // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
   // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];

@@ -22,7 +22,7 @@ const DoctorAdmin = () => {
         <Route path="/Profile" element={<DoctorProfile />} />
         <Route path="/Orders" element={<OrderDoctorPage />} />
         <Route path="/Details" element={<DoctorDeailsPage />} />
-        <Route path="/Patientdashboard" element={<PatientDashboardPage />} />
+        {/* <Route path="/Patientdashboard" element={<PatientDashboardPage />} /> */}
       </Routes>
     </div>
   );
