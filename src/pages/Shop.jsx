@@ -239,7 +239,7 @@ const Shop = () => {
       <div className="px-4 md:px-10 lg:px-20 py-6 ">
         {/* Header */}
         <div className="flex justify-between items-center  mt-24">
-          <h1 className="text-lg md:text-xl font-bold">Shop</h1>
+          
           <button
             className="md:hidden flex items-center gap-2 border px-3 py-2 rounded-lg text-sm"
             onClick={() => setIsFilterOpen(true)}
