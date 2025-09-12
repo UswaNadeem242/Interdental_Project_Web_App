@@ -108,7 +108,7 @@ export default function AddPatientForm() {
                         </div>
 
                         {/* Password */}
-                        {/* <div className="col-span-12">
+                        <div className="col-span-12">
                             <label
                                 htmlFor="password"
                                 className="block mb-2 text-sm font-medium text-gray-700"
@@ -126,7 +126,7 @@ export default function AddPatientForm() {
                                     className="w-full rounded border borderPrimary py-2 px-3 pr-10 outline-none"
                                 />
 
-                              
+
                                 <span
                                     className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
                                     onClick={() => setShowPassword(!showPassword)}
@@ -140,7 +140,7 @@ export default function AddPatientForm() {
                                 component="div"
                                 className="text-red-700 text-sm"
                             />
-                        </div> */}
+                        </div>
                         {/* Submit Button */}
                         <div className="col-span-12 mt-32">
                             <PrimaryButtonUI
