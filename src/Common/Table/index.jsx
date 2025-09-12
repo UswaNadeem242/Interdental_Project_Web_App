@@ -22,7 +22,7 @@ export default function TableComponent({
     <div className="grid col-span-1 md:col-span-1 lg:col-span-12">
       <div className="overflow-x-auto  max-h-[400px] scrollbar-hidden ">
         <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
-          <thead className="sticky top-0 bg-gray-100 z-10 ">
+          <thead className="sticky top-0 bg-[#F8F8F8] z-10 ">
             <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
               {headings.map((col, idx) => (
                 <th
