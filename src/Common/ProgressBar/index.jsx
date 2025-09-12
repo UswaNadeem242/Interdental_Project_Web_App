@@ -18,7 +18,7 @@ export const ProgressBar = ({ steps = stepsDefault }) => {
                 const Icon = step.icon;
                 return (
 
-                    <div key={idx} className="flex-1 flex items-center">
+                    <div key={idx} className="flex-1  flex items-center">
                         {/* Line before step */}
                         {idx !== 0 && (
                             <div

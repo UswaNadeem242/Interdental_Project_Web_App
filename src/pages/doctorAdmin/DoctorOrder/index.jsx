@@ -84,7 +84,7 @@ const OrderDoctorPage = () => {
                         </div>
                         <div className='md:hidden block w-full'>
 
-                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-4 w-full font-semibold ' />
+                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-4 w-full font-semibold ' href='/doctorAdmin/Orders-Details'  />
                         </div>
                     </div>
                 </div>
