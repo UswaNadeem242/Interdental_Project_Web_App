@@ -32,7 +32,7 @@ const OrderDoctorPage = () => {
             });
         }
         return filtered;
-    }, [searchQuery, sortOrder]); 
+    }, [searchQuery, sortOrder]);
     const steps = [
         {
             name: "All", content: <TableComponent headings={headingsOrder}
@@ -73,8 +73,8 @@ const OrderDoctorPage = () => {
                     <div className='md:flex-1 '>
                         <SearchBar
                             title='Sort By'
-                            onSearch={setSearchQuery} 
-                            onSort={setSortOrder} 
+                            onSearch={setSearchQuery}
+                            onSort={setSortOrder}
                         />
                     </div>
                     <div className='flex flex-col  md:flex-row items-start md:items-center gap-2 '>

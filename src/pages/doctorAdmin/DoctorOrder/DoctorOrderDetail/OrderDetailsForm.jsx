@@ -115,12 +115,12 @@ export default function OrderDetailsForm() {
                             Tooth Selection : {selectedTeeth.sort((a, b) => a - b).join(", ")}
                         </p>
                         <div className="py-4">
-                            {/* <img
+                            <img
                                 src="/assets/doctor/teeth.png"
                                 alt="Teeth Chart"
                                 className="w-full h-auto rounded-md border border-gray-300"
-                            /> */}
-                            <TeethSelection selectedTeeth={selectedTeeth} setSelectedTeeth={setSelectedTeeth} toggleTooth={toggleTooth} />
+                            />
+                            {/* <TeethSelection selectedTeeth={selectedTeeth} setSelectedTeeth={setSelectedTeeth} toggleTooth={toggleTooth} /> */}
                         </div>
 
 

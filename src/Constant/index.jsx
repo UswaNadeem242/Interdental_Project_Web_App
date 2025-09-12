@@ -56,7 +56,7 @@ export const SCANNER_TYPE = [
 export const menuItems = [
   {
     name: "Dashboard",
-    path: "/doctorAdmin/doctordashboard",
+    path: "/doctorAdmin/doctor-dashboard",
     icon: DashboardIcon,
   },
   { name: "Orders", path: "/doctorAdmin/Orders", icon: OrderIcon },

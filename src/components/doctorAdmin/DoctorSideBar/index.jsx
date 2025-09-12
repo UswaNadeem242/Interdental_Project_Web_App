@@ -27,17 +27,16 @@ export default function DoctorSidebar({ items }) {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 h-11 rounded-lg text-sm font-poppins ${
-                    isActive
-                      ? "bg-secondaryBrand text-white font-semibold"
-                      : "text-[#949494] hover:bg-gray-100 font-normal"
+                  `flex items-center gap-3 px-3 h-11 rounded-lg text-sm font-poppins ${isActive
+                    ? "bg-secondaryBrand text-white font-semibold"
+                    : "text-[#949494] hover:bg-gray-100 font-normal"
                   }`
                 }
                 onClick={() => setIsOpen(false)}
               >
                 {Icon && (
                   <Icon
-                    color={({ isActive }) => (isActive ? "white" : "#949494")}
+                    color={({ isActive }) => (isActive ? "#949494" : "#949494")}
                   />
                 )}
                 {item.name}
