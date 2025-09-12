@@ -273,7 +273,8 @@ const DoctorOrder = () => {
                         />
                       </div>
                       <div className="flex flex-wrap gap-2  justify-center ">
-                        <TeethChart
+                        <img src='/assets/doctor/image.png' />
+                        {/* <TeethChart
                           sizePx={chartSize}
                           initialSelectedIds={[3, 14, 30]}
                           onSelect={(arr) => {
@@ -284,7 +285,7 @@ const DoctorOrder = () => {
                               setSelectedTooth(null);
                             }
                           }}
-                        />
+                        /> */}
                       </div>
                     </div>
                   </section>

@@ -15,7 +15,7 @@ const DoctorAdmin = () => {
     <div className="">
       {/* w-full h-[982px]    w-screen min-h-screen flex justify-start items-start*/}
       <Routes>
-        <Route path="/doctordashboard" element={<DoctorDashaboard />} />
+        <Route path="/doctor-dashboard" element={<DoctorDashaboard />} />
         <Route path="/Patient" element={<PatientPage />} />
         <Route path="/Claim-Request" element={<ClaimRequest />} />
         <Route path="/Orders-Details" element={<DoctorOrder />} />

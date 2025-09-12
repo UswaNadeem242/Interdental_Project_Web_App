@@ -49,7 +49,7 @@ export default function SearchBar({ onSearch, onSort, placeholder = "Search...",
 
 
             {/* Input Field */}
-             
+
             {/* Sort Dropdown */}
             <div className="relative">
                 <SecondaryButton
