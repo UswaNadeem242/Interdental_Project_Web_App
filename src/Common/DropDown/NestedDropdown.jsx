@@ -8,11 +8,11 @@ const SubDropdown = ({ label, options, selected, onSelect }) => {
         <div className="border-b border-gray-200 py-2">
             {/* Sub-dropdown header */}
             <button
-                className="flex items-center justify-between w-full text-sm font-medium text-[#828386]"
+                className="flex items-center justify-between w-full text-sm font-normal text-textFieldHeading font-poppins "
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {label}
-                <span>{isOpen ? <ChevronUpIcon className="w-4 h4 " /> : <ChevronDownIcon className="w-4 h-4" />}</span>
+                <span>{isOpen ? <ChevronUpIcon className="w-3 h-3 " /> : <ChevronDownIcon className="w-3 h-3" />}</span>
             </button>
 
             {/* Options list */}
@@ -47,14 +47,14 @@ export const ShadeDropdown = () => {
     const [selected3D2, setSelected3D2] = useState(null);
 
     return (
-        <div className=" border rounded-lg shadow-sm bg-white">
+        <div className=" border border-gray-300 shadow-sm bg-white rounded-xl">
             {/* Main dropdown header */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between p-2 text-textFieldHeading font-normal"
+                className="w-full flex items-center justify-between p-2   rounded-xl bg-white  px-4 py-3 text-sm   outline-none transition-shadow   text-textFieldHeading font-normal"
             >
                 Shade
-                <span>{isOpen ? <ChevronUpIcon className="w-4 h-4" /> : <ChevronDownIcon className="w-4 h-4" />}</span>
+                <span>{isOpen ? <ChevronUpIcon className="w-3 h-3" /> : <ChevronDownIcon className="w-3 h-3" />}</span>
             </button>
 
             {isOpen && (

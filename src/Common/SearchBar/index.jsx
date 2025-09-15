@@ -21,7 +21,7 @@ export default function SearchBar({ onSearch, onSort, placeholder = "Search...",
         if (onSort) onSort(order); // 🚀 send "asc" | "desc" to parent
     };
     return (
-        <div className="flex items-center gap-3 w-full border  bg-[#F8F8F8] rounded-md shadow-sm px-3 py-2">
+        <div className="flex items-center gap-3 w-full border  bg-[#F8F8F8] rounded-md shadow-sm px-3 py-1">
             {/* Search Icon */}
             <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
 

@@ -15,7 +15,7 @@ export function PrimaryButtonUI({ title, onClick, className, href }) {
 export function SecondaryButton({ title, onClick, className, icon, href }) {
     return (
         <NavLink to={href}>
-            <button onClick={onClick} className={`${className}     font-poppins text-sm  whitespace-nowrap`}>
+            <button onClick={onClick} className={`${className} font-poppins text-sm  whitespace-nowrap`}>
                 {icon}     {title}
             </button>
         </NavLink>
