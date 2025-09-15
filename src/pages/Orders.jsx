@@ -99,7 +99,7 @@ const Orders = () => {
                         fill="#949494"
                       />
                     </svg>
-                    <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#434343]">
+                    <p className="font-poppins font-normal text-xs leading-[15px] text-[#434343]">
                       {new Date(order.createdAt).toDateString()}
                     </p>
                   </div>
