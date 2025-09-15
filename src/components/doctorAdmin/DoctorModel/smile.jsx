@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { CheckIcon } from "@heroicons/react/24/solid";
 
-export  const SmileDesignPicker = ({
+export const SmileDesignPicker = ({
   isModalOpen,
   setIsModalOpen,
   selected,
@@ -34,8 +34,9 @@ export  const SmileDesignPicker = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
-      <div className="bg-white rounded-2xl   p-6 shadow-lg w-[80%] max-w-3xl h-auto min-h-[90vh]  ">
+      <div className="bg-white rounded-2xl   p-6 shadow-lg w-[80%] max-w-3xl  h-auto max-h-[95vh] overflow-y-auto  scrollbar-hidden ">
         {/* Header */}
+
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-[rgba(0,29,88,1)]">
             Pick Your Perfect Smile Design
@@ -58,11 +59,10 @@ export  const SmileDesignPicker = ({
           {smileDesigns.map((design) => (
             <label
               key={design}
-              className={`relative border rounded-lg p-2  flex flex-col items-center cursor-pointer transition ${
-                selected.includes(design)
-                  ? "border-blue-600 ring-1 ring-blue-600"
-                  : "border-gray-200"
-              }`}
+              className={`relative border rounded-lg p-2  flex flex-col items-center cursor-pointer transition ${selected.includes(design)
+                ? "border-blue-600 ring-1 ring-blue-600"
+                : "border-gray-200"
+                }`}
             >
               {/* Custom checkbox */}
 
@@ -78,14 +78,13 @@ export  const SmileDesignPicker = ({
                 <div className="top-2 left-2 w-4 h-4  text-center border border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-600">
                   {/* <SmileCheckBox selected={selected} design={design} /> */}
                   <CheckIcon
-                    className={`w-8 h-8 text-[#001D58] ${
-                      selected.includes(design) ? "block" : "hidden"
-                    }`}
+                    className={`w-8 h-8 text-[#001D58] ${selected.includes(design) ? "block" : "hidden"
+                      }`}
                   />
                 </div>
 
                 {/* Label text */}
-                <span className="text-sm font-poppins">
+                <span className="md:text-sm  text-xs  font-poppins">
                   Smile Design {design}
                 </span>
               </div>
