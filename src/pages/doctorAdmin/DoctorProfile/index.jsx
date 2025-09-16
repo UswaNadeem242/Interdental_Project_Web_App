@@ -92,7 +92,7 @@ const DoctorProfile = () => {
               label="Email"
               placeholder="hanry463@gmail.com"
               type="email"
-              icon={<PenIcon size={18} />}
+            
             />
           </div>
           <div className="md:col-span-6 col-span-12">

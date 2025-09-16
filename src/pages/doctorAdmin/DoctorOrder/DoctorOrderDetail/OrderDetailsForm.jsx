@@ -39,7 +39,7 @@ export default function OrderDetailsForm() {
                     <div className="border border-gray-200  rounded-lg p-4 sm:p-5">
                         <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-[#434343]">Doctor Info</h3>
                         <hr className="border-gray-200 my-2" />
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm sm:text-base">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm sm:text-base text-center">
                             <div>
                                 <p className="text-[#949494] mb-2  font-normal md:text-sm text-xs font-poppins">Contact Info</p>
                                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins ">Doctor</p>
@@ -168,6 +168,7 @@ export default function OrderDetailsForm() {
                         selected={selected}
                         optionValue="value"
                         onSelect={handleSelect}
+                        className='text-xs'
                     />
                 </div>
 
@@ -189,6 +190,7 @@ export default function OrderDetailsForm() {
                         selected={selected}
                         optionValue="value"
                         onSelect={handleSelect}
+                        className='text-[10px]'
                     />
                 </div>
             </div>

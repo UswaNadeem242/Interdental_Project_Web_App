@@ -45,7 +45,7 @@ const ReviewOrder = () => {
               </div>
               <div>
                 <p className="text-[#949494]  font-normal md:text-sm text-xs font-poppins  ">
-                  Office Registration
+                  Office Registration#
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
                   {formData.doctor.officeReg}
@@ -116,15 +116,15 @@ const ReviewOrder = () => {
 
             <div className="grid grid-cols-2 sm:grid-cols-2   gap-4 md:text-sm text-base">
               <div>
-                <p className="text-[#949494]  font-normal   text-xs font-poppins">
+                <p className="text-[#949494]  font-normal   text-xs font-poppins pb-2">
                   Abutment Type
                 </p>
-                <p className="font-medium text-secondaryBrand  text-xs  font-poppins ">
+                <p className="font-medium text-secondaryBrand  text-xs  font-poppins">
                   Titanium Standard Abutment
                 </p>
               </div>
               <div>
-                <p className="text-[#949494]  font-normal text-xs font-poppins">
+                <p className="text-[#949494]  font-normal text-xs font-poppins pb-2">
                   Crown Type
                 </p>
                 <p className="font-medium text-secondaryBrand  text-xs  font-poppins">
@@ -185,7 +185,7 @@ const ReviewOrder = () => {
             <hr className="border-gray-200 my-2" />
             <div className="grid grid-cols-1   gap-4 text-sm sm:text-base">
               <div>
-                <p className="text-[#949494]  font-normal text-xs font-poppins">
+                <p className="text-[#949494]  font-normal text-xs font-poppins pb-2">
                   Dr,weed bran
                 </p>
                 <p className="font-normal text-secondaryBrand  text-xs font-poppins ">

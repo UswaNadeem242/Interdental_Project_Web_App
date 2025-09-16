@@ -88,41 +88,43 @@ export const ProgressBar = ({ steps = stepsDefault }) => {
         // </div>
 
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-start">
             {steps.map((step, idx) => {
                 const Icon = step.icon;
                 return (
 
                     <div
                         key={step.id}
-                        className={`flex flex-col items-center  flex-1 relative ${idx === steps.length - 1 ? "mr-40" : "" 
+                        className={`flex flex-col w-[25%] relative ${idx === steps.length - 1 ? "mr-40" : ""
                             }`}
                     >
                         {/* --- Circle with Check --- */}
-                        <div
-                            className={`flex items-center justify-center w-6 h-6 rounded-full z-10
-          ${step.status === "completed"
-                                    ? "bg-[#001D58] text-white"
-                                    : step.status === "current"
-                                        ? "bg-[#94D3DD] text-white"
-                                        : "bg-gray-300 text-gray-500"
-                                }`}
-                        >
-                            <CheckIcon className="w-4 h-4" />
-                        </div>
-
-                        {/* --- Connector line (skip for last step) --- */}
-                        {idx !== steps.length - 1 && (
+                        <div className="flex items-center">
                             <div
-                                className={`absolute top-3 left-1/2 w-full h-0.5 -translate-y-1/2
-            ${step.status === "completed"
-                                        ? "bg-[#001D58]"
+                                className={`flex items-center justify-center w-6 h-6 rounded-full z-10
+          ${step.status === "completed"
+                                        ? "bg-[#001D58] text-white"
                                         : step.status === "current"
-                                            ? "bg-[#94D3DD]"
-                                            : "bg-gray-300"
+                                            ? "bg-[#94D3DD] text-white"
+                                            : "bg-gray-300 text-gray-500"
                                     }`}
-                            ></div>
-                        )}
+                            >
+                                <CheckIcon className="w-4 h-4" />
+                            </div>
+
+                            {/* --- Connector line (skip for last step) --- */}
+                            {idx !== steps.length - 1 && (
+                                <div
+                                    className={`flex-1 absolute w-full h-0.5 
+            ${step.status === "completed"
+                                            ? "bg-[#001D58]"
+                                            : step.status === "current"
+                                                ? "bg-[#94D3DD]"
+                                                : "bg-gray-300"
+                                        }`}
+                                ></div>
+                            )}
+                        </div>
 
                         {/* --- Step Text --- */}
                         <div className="flex gap-2 mt-3 ">
