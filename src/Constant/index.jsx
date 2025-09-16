@@ -5,6 +5,7 @@ import { ClaimIcon } from "../icon/claimIcon";
 import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
+import UserProfileIcon from "../icon/UserProfileIcon";
 export const MATERIAL_OPTIONS = [
   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
   { value: "argen-ht", label: "Argen HT", price: 45 },
@@ -14,7 +15,11 @@ export const MATERIAL_OPTIONS = [
   { value: "multilayer", label: "Multilayer Pro", price: 75 },
   { value: "pmma", label: "PMMA", price: 35 },
 ];
+export const Digital_Option = [
+  { value: "quad", label: "Quadrant" },
+  { value: "fullarch", label: "Full Arch" },
 
+];
 export const LAB_OPTIONS = [
   { value: "in-house", label: "In-House" },
   { value: "partner", label: "Partner Lab" },
@@ -67,13 +72,25 @@ export const menuItems = [
     path: "/doctorAdmin/Claim-Request",
     icon: ClaimIcon,
   },
-  // {
-  //   name: "Patient Dashboard",
-  //   path: "/doctorAdmin/Patientdashboard",
-  //   icon: ClaimIcon,
-  // },
-  // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
-  // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
+
+];
+
+export const menuPatientItem = [
+  {
+    name: "warranty mGMT",
+    path: "/patientAdmin/Patient-dashboard",
+    icon: DashboardIcon,
+  },
+  {
+    name: "Claim Requests",
+    path: "/patientAdmin/PatientClaim-Requests",
+    icon: ClaimIcon,
+  },
+  {
+    name: "Profile settings",
+    path: "/patientAdmin/Profile-Settings",
+    icon: UserProfileIcon,
+  },
 ];
 
 export const menuItemsUser = [
@@ -90,6 +107,24 @@ export const menuItemsUser = [
     path: "/admin/users",
     icon: ClaimIcon,
   },
+  {
+    name: "Patient Claim Req",
+    path: "/doctorAdmin/PatientClaim-Requests",
+    icon: ClaimIcon,
+  },
+  {
+    name: "Profile Settings",
+    path: "/doctorAdmin/Profile-Settings",
+    icon: ClaimIcon,
+  },
+  {
+    name: "Patient-Form",
+    path: "/doctorAdmin/Patient-Form",
+    icon: ClaimIcon,
+  },
+
+  // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
+  // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];
 
 export const CardDashboard = [
@@ -1056,6 +1091,45 @@ export const PatientDashTabledata = [
     ShoppingDate: "16/22/2026",
     quantity: "134",
     status: "pending",
+    action: "View Detail",
+  },
+];
+
+export const headingsPatientClaimReq = [
+  { label: "Claim ID", key: "id" },
+  { label: "Product Name", key: "cName" },
+  { label: "Status", key: "status" },
+  { label: "Date Submitted", key: "DateSubmitted" },
+
+  { label: "Action", key: "action" },
+];
+export const PatientClaimReqData = [
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
     action: "View Detail",
   },
 ];

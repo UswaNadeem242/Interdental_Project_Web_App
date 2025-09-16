@@ -19,8 +19,7 @@ import Orders from "./pages/Orders";
 import OrderInfo from "./pages/OrderInfo";
 import Admin from "./pages/admin/Admin";
 import ProtectedRoute from "./components/ProtectRoute";
-import AdminSidebar from "./components/admin/AdminSidebar";
-import { AuthProvider } from "./auth/AuthContext";
+ import { AuthProvider } from "./auth/AuthContext";
 import Wishlist from "./pages/Wishlist";
 import LandingPage from "./pages/landing-page/landing-page";
 import Patients from "./pages/landing-page/patient";
@@ -29,13 +28,10 @@ import Contact from "./pages/landing-page/contact";
 import DoctorAdmin from "./pages/doctorAdmin/Doctor";
 import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
 import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
-import DoctorHeader from "./components/doctorAdmin/doctorHeader";
+import DoctorHeader from "./components/doctorAdmin/DoctorHeader";
 import ScrollToTop from "./Hooks/UseScroll";
-import { menuItems, menuItemsUser } from "./Constant";
-
-// import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
-// import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
-// import DoctorHeader from "./components/doctorAdmin/doctorHeader";
+import { menuItems, menuItemsUser, menuPatientItem } from "./Constant";
+import PatientAdmin from "./pages/PatientAdmin/Patient";
 
 const MainLayout = ({ children }) => (
   <>
@@ -58,7 +54,7 @@ const PlainLayout = ({ children }) => {
         <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
           {/* left-4 right-4  top-4*/}
           <div className="md:hidden mr-4">
-            <MobileSidebar items={menuItems}/>
+            <MobileSidebar items={menuItems} />
           </div>
           <DoctorHeader />
         </header>
@@ -74,7 +70,7 @@ const PlainLayout = ({ children }) => {
 
 const PlainLayoutUser = ({ children }) => (
   // <div className="flex absolute pt-[16px] pl-[16px] pb-[16px] gap-8 bg-[#F8F8F8] w-full">
-    // <AdminSidebar />
+  // <AdminSidebar />
   //   {children}
   // </div>
 
@@ -90,6 +86,33 @@ const PlainLayoutUser = ({ children }) => (
         {/* left-4 right-4  top-4*/}
         <div className="md:hidden mr-4">
           <MobileSidebar items={menuItemsUser} />
+        </div>
+        <DoctorHeader />
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 md:p-6 p-0 mt-16 md:ml-4  rounded-xl overflow-auto">
+        {children}
+      </main>
+    </div>
+  </div>
+);
+// Patient Admin
+const PlainLayoutPatient = ({ children }) => (
+ 
+
+  <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
+    {/* Sidebar */}
+    <div className="w-52 flex-shrink-0  hidden md:block">
+      <DoctorSidebar items={menuPatientItem} />
+    </div>
+    <div className="flex-1 flex flex-col relative">
+      {/* Header */}
+
+      <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
+        {/* left-4 right-4  top-4*/}
+        <div className="md:hidden mr-4">
+          <MobileSidebar items={menuPatientItem} />
         </div>
         <DoctorHeader />
       </header>
@@ -235,6 +258,17 @@ function App() {
                     <DoctorAdmin />
                   </ProtectedRoute>
                 </PlainLayout>
+              }
+            />
+            <Route
+              path="/patientAdmin/*"
+              element={
+                <PlainLayoutPatient>
+                  <ProtectedRoute>
+                    <ScrollToTop />
+                    <PatientAdmin/>
+                  </ProtectedRoute>
+                </PlainLayoutPatient>
               }
             />
           </Routes>

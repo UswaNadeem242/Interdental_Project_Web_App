@@ -5,7 +5,7 @@
 // import ChevronRightIcon from "../../../icon/ChevronRight";
 // import LockIcon from "../../../icon/LockIcon";
 
-// const DoctorProfile = () => {
+// const ProfileSettings = () => {
 //   const [isModalPassword, setIsModalPassword] = useState(false);
 //   return (
 //     <>
@@ -41,39 +41,6 @@
 //             </label>
 //           </div>
 //         </div>
-
-//         {/* seccond part */}
-//         <div className="bg-textField py-4 px-6 col-span-12 rounded-2xl ">
-//           <div className="pb-4">
-//             <h3 className="text-black text-sm font-semibold font-poppins">
-//               Subscription Plan
-//             </h3>
-//           </div>
-//           <div className="pb-4">
-//             <p className="text-primaryText text-xs font-medium font-poppins capitalize">
-//               will be expired on 23 march 2023
-//             </p>
-//           </div>
-//           <div className="pb-4">
-//             <div className="w-full bg-white rounded-full h-2.5 ">
-//               <div
-//                 className="bg-secondaryBrand h-2.5 rounded-full"
-//                 style={{ width: `45%` }}
-//               ></div>
-//             </div>
-//           </div>
-//           <div className="flex bg-white  justify-between px-3 py-2 rounded-lg">
-//             <p className="font-poppins text-primary text-xs font-normal">
-//               Number of patients
-//             </p>
-//             <p className="text-secondaryBrand text-xs font-poppins capitalize font-medium">
-//               10/20
-//             </p>
-//           </div>
-//         </div>
-//         <button className="bg-secondaryBrand text-white rounded-full md:col-span-2 col-span-4 py-4 px-4 whitespace-nowrap">
-//           Update Plan
-//         </button>
 //       </div>
 //       <div className="bg-white rounded-2xl md:p-8 p-4   mt-10">
 //         <div className="grid md:grid-cols-12 grid-cols-6 gap-4  items-center">
@@ -84,7 +51,7 @@
 //           </div>
 //           <div className="md:col-span-6 col-span-3  md:flex  md:justify-end">
 //             <button className="bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full">
-//               Save Change
+//               Save Changes
 //             </button>
 //           </div>
 //         </div>
@@ -119,37 +86,6 @@
 //               icon={<PenIcon size={18} />}
 //             />
 //           </div>
-//           <div className="md:col-span-6 col-span-12">
-//             <TextInput
-//               id="license"
-//               name="license"
-//               label="Doctor's License Number"
-//               placeholder="658756RFTYT7"
-//               type="text"
-//               icon={<PenIcon size={18} />}
-//             />
-//           </div>
-//           <div className="md:col-span-6 col-span-12">
-//             <TextInput
-//               id="reference"
-//               name="reference"
-//               label="Office Reference number"
-//               placeholder="76A8SDH75"
-//               type="text"
-//               icon={<PenIcon size={18} />}
-//             />
-//           </div>
-
-//           <div className="col-span-12 ">
-//             <TextInput
-//               id="address"
-//               name="address"
-//               label="Address"
-//               placeholder="76A8SDH75"
-//               type="text"
-//               icon={<PenIcon size={18} />}
-//             />
-//           </div>
 //         </form>
 //         <button
 //           onClick={() => setIsModalPassword(true)}
@@ -176,7 +112,7 @@
 //   );
 // };
 
-// export default DoctorProfile;
+// export default ProfileSettings;
 import { useState } from "react";
 import TextInput from "../../../Common/Input";
 import PenIcon from "../../../icon/PenIcon";
@@ -184,85 +120,83 @@ import ChangePasswordModel from "../../../modals/ChangePasswordModel";
 import ChevronRightIcon from "../../../icon/ChevronRight";
 import LockIcon from "../../../icon/LockIcon";
 
-const DoctorProfile = () => {
-  const [isModalPassword, setIsModalPassword] = useState(false);
-
-  // State for input values
-  const [formData, setFormData] = useState({
+const ProfileSettings = () => {
+  const initialState = {
     username: "",
     email: "",
     phone: "",
-    license: "",
-    reference: "",
-    address: "",
-  });
+  };
 
-  // State for input errors
+  const [form, setForm] = useState(initialState);
   const [errors, setErrors] = useState({});
-
-  // Validation function
+  const [isModalPassword, setIsModalPassword] = useState(false);
   const validateField = (name, value) => {
-    switch (name) {
-      case "username":
-        if (!value.trim()) return "First Name is required";
-        else return "";
-      case "email":
-        if (!value.trim()) return "Email is required";
-        else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
-          return "Invalid email address";
-        else return "";
-      case "phone":
-        if (!value.trim()) return "Phone number is required";
-        else if (!/^\+?\d{7,15}$/.test(value)) return "Invalid phone number";
-        else return "";
-      case "license":
-        if (!value.trim()) return "License number is required";
-        else return "";
-      case "reference":
-        if (!value.trim()) return "Office reference number is required";
-        else return "";
-      case "address":
-        if (!value.trim()) return "Address is required";
-        else return "";
-      default:
-        return "";
+    let errorMsg = "";
+
+    if (name === "username") {
+      if (!value.trim()) errorMsg = "First name is required.";
+      else if (value.length < 2) errorMsg = "Must be at least 2 characters.";
     }
+
+    if (name === "email") {
+      if (!value.trim()) errorMsg = "Email is required.";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        errorMsg = "Invalid email address.";
+    }
+
+    if (name === "phone") {
+      if (!value.trim()) errorMsg = "Phone number is required.";
+      else if (!/^\+?\d{10,15}$/.test(value))
+        errorMsg = "Invalid phone number. Include country code.";
+    }
+
+    return errorMsg;
   };
-
-  // Handle input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-
-    // Optional: validate on change
-    setErrors({ ...errors, [name]: validateField(name, value) });
-  };
-
-  // Handle onBlur for immediate validation
   const handleBlur = (e) => {
     const { name, value } = e.target;
-    setErrors({ ...errors, [name]: validateField(name, value) });
+    const errorMsg = validateField(name, value);
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: errorMsg,
+    }));
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    let newValue = value;
+
+    if (name === "username") {
+      newValue = newValue.replace(/[^a-zA-Z ]/g, "");
+    }
+
+    if (name === "phone") {
+      newValue = newValue.replace(/[^0-9+]/g, "").slice(0, 15);
+    }
+
+    if (name === "email") {
+      newValue = newValue.slice(0, 50);
+    }
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: newValue,
+    }));
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Validate all fields before submit
-    const newErrors = {};
-    Object.keys(formData).forEach((key) => {
-      const error = validateField(key, formData[key]);
-      if (error) newErrors[key] = error;
-    });
+  const handleSave = () => {
+    const newErrors = {
+      username: validateField("username", form.username),
+      email: validateField("email", form.email),
+      phone: validateField("phone", form.phone),
+    };
 
     setErrors(newErrors);
+    const hasErrors = Object.values(newErrors).some((err) => err);
+    if (hasErrors) return;
 
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Form Data:", formData);
-      // Submit form logic here
-    }
+    // Submit form logic here
+    console.log("Form submitted successfully", form);
   };
-
   return (
     <>
       <div className="grid md:grid-cols-12 grid-cols-1 gap-4 bg-white md:p-8 p-4 rounded-2xl items-center ">
@@ -297,39 +231,6 @@ const DoctorProfile = () => {
             </label>
           </div>
         </div>
-
-        {/* seccond part */}
-        <div className="bg-textField py-4 px-6 col-span-12 rounded-2xl ">
-          <div className="pb-4">
-            <h3 className="text-black text-sm font-semibold font-poppins">
-              Subscription Plan
-            </h3>
-          </div>
-          <div className="pb-4">
-            <p className="text-primaryText text-xs font-medium font-poppins capitalize">
-              will be expired on 23 march 2023
-            </p>
-          </div>
-          <div className="pb-4">
-            <div className="w-full bg-white rounded-full h-2.5 ">
-              <div
-                className="bg-secondaryBrand h-2.5 rounded-full"
-                style={{ width: `45%` }}
-              ></div>
-            </div>
-          </div>
-          <div className="flex bg-white  justify-between px-3 py-2 rounded-lg">
-            <p className="font-poppins text-primary text-xs font-normal">
-              Number of patients
-            </p>
-            <p className="text-secondaryBrand text-xs font-poppins capitalize font-medium">
-              10/20
-            </p>
-          </div>
-        </div>
-        <button className="bg-secondaryBrand text-white rounded-full md:col-span-2 col-span-4 py-4 px-4 whitespace-nowrap">
-          Update Plan
-        </button>
       </div>
       <div className="bg-white rounded-2xl md:p-8 p-4   mt-10">
         <div className="grid md:grid-cols-12 grid-cols-6 gap-4  items-center">
@@ -340,7 +241,7 @@ const DoctorProfile = () => {
           </div>
           <div className="md:col-span-6 col-span-3  md:flex  md:justify-end">
             <button className="bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full">
-              Save Change
+              Save Changes
             </button>
           </div>
         </div>
@@ -352,7 +253,7 @@ const DoctorProfile = () => {
               label="First Name"
               placeholder="Bransim"
               icon={<PenIcon size={18} />}
-              value={formData.username}
+              value={form.username}
               onChange={handleChange}
               onBlur={handleBlur}
             />
@@ -368,8 +269,8 @@ const DoctorProfile = () => {
               label="Email"
               placeholder="hanry463@gmail.com"
               type="email"
-            
-              value={formData.email}
+              icon={<PenIcon size={18} />}
+              value={form.email}
               onChange={handleChange}
               onBlur={handleBlur}
             />
@@ -385,61 +286,12 @@ const DoctorProfile = () => {
               placeholder="+92 457 765 456"
               type="text"
               icon={<PenIcon size={18} />}
-              value={formData.phone}
+              value={form.phone}
               onChange={handleChange}
               onBlur={handleBlur}
             />
             {errors.phone && (
               <p className="text-red-500 text-sm">{errors.phone}</p>
-            )}
-          </div>
-          <div className="md:col-span-6 col-span-12">
-            <TextInput
-              id="license"
-              name="license"
-              label="Doctor's License Number"
-              placeholder="658756RFTYT7"
-              type="text"
-              icon={<PenIcon size={18} />}
-              value={formData.license}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.license && (
-              <p className="text-red-500 text-sm">{errors.license}</p>
-            )}
-          </div>
-          <div className="md:col-span-6 col-span-12">
-            <TextInput
-              id="reference"
-              name="reference"
-              label="Office Reference number"
-              placeholder="76A8SDH75"
-              type="text"
-              icon={<PenIcon size={18} />}
-              value={formData.reference}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.reference && (
-              <p className="text-red-500 text-sm">{errors.reference}</p>
-            )}
-          </div>
-
-          <div className="col-span-12 ">
-            <TextInput
-              id="address"
-              name="address"
-              label="Address"
-              placeholder="76A8SDH75"
-              type="text"
-              icon={<PenIcon size={18} />}
-              value={formData.address}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.address && (
-              <p className="text-red-500 text-sm">{errors.address}</p>
             )}
           </div>
         </form>
@@ -468,4 +320,4 @@ const DoctorProfile = () => {
   );
 };
 
-export default DoctorProfile;
+export default ProfileSettings;
