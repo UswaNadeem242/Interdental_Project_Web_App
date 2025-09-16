@@ -4,17 +4,20 @@ import { BellIcon } from "../../../icon/Bell";
 import { LogoutIcon } from "../../../icon/LogoutIcon";
 import usePageTitle from "../../../Hooks/usePageTitle";
 
-const DoctorHeader = ({ title, subTitle }) => {
+const DoctorHeader = ({ title, subTitle, role }) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const handleLogout = () => {
     logout();
     navigate("/login");
-
   };
   const pageTitle = usePageTitle();
-  console.log('pageTitle:', pageTitle);
- 
+  const roleLink =
+    role === "doctor"
+      ? "/doctorAdmin/profile"
+      : "/patientAdmin/Profile-Settings";
+  console.log("pageTitle:", pageTitle);
+
   return (
     <>
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">
@@ -23,11 +26,12 @@ const DoctorHeader = ({ title, subTitle }) => {
         </h1>
         <div className="hidden md:flex flex-1"></div>
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
-          <img src="/assets/user.png" className="w-10 h-10 rounded-full" />
-          <NavLink
-            to="/doctorAdmin/profile"
-            className="flex flex-col justify-center"
-          >
+          <img
+            src="/assets/user.png"
+            alt="userImg"
+            className="w-10 h-10 rounded-full"
+          />
+          <NavLink to={roleLink} className="flex flex-col justify-center">
             <p className="text-sm font-semibold">Bransim Hanry</p>
             <p className="text-xs text-gray-500">hanry463@gmail.com</p>
           </NavLink>
@@ -36,7 +40,10 @@ const DoctorHeader = ({ title, subTitle }) => {
           </button>
         </div>
         <div className="hidden md:flex">
-          <button className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center" onClick={() => handleLogout()}>
+          <button
+            className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center"
+            onClick={() => handleLogout()}
+          >
             <LogoutIcon />
           </button>
         </div>

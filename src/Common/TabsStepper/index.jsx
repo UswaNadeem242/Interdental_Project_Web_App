@@ -14,7 +14,7 @@ export default function TabsStepper({ steps, newClaimBtn }) {
                 <Tab
                   key={name}
                   className={({ selected }) =>
-                    `rounded-full py-4 px-6 text-xs font-semibold border border-textField
+                    `rounded-full py-3 px-6 text-xs font-semibold border border-textField
                                         focus:outline-none transition-colors duration-200 font-poppins capitalize
                                         ${
                                           selected
