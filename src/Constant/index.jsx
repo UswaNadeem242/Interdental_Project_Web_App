@@ -11,8 +11,8 @@ export const MATERIAL_OPTIONS = [
   { value: "argen-st", label: "Argen ST", price: 50 },
   { value: "emax", label: "Emax", price: 95 },
   { value: "aidite", label: "Aidite", price: 85 },
-  { value: "pmma", label: "PMMA", price: 35 },
   { value: "multilayer", label: "Multilayer Pro", price: 75 },
+  { value: "pmma", label: "PMMA", price: 35 },
 ];
 
 export const LAB_OPTIONS = [
@@ -33,6 +33,7 @@ export const SURGICAL_GUIDE = [
   { value: "single_implant_guide", label: "Single Implant Guide" },
   { value: "multiple_implant_guide", label: "Multiple Implant Guide" },
   { value: "full_arch", label: "Full Arch Surgical Guide" },
+  { value: "tooth-supported", label: "Tooth-Supported Guide" },
   { value: "partial_denture", label: "Partial Denture" },
 ];
 

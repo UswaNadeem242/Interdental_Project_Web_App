@@ -52,7 +52,7 @@ export default function TableComponent({
                         <img
                           src={row.image || "/assets/user.png"}
                           alt={row.name}
-                          className="w-9 h-9 rounded-full object-cover"
+                          className="w-9 h-9 rounded-full object-cover border border-[#285772]"
                         />
                         <div className="flex flex-col">
                           <span>{row.name}</span>
@@ -60,7 +60,7 @@ export default function TableComponent({
                           {onActionClick ? (
                             <button
                               // onClick={() => onActionClick(row)}
-                              className="text-secondaryBrand flex items-center gap-1 cursor-pointer text-xs font-normal font-poppins"
+                              className="text-secondaryBrand flex items-center gap-1 cursor-pointer text-xs font-normal font-poppins pt-2"
                             >
                               View profile
                               <ArrowUpRightIcon className="w-3 h-3 text-secondaryBrand" />

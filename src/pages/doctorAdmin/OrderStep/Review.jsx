@@ -24,9 +24,9 @@ const ReviewOrder = () => {
   );
   return (
     <div className=" ">
-      <div className="mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Left Panel */}
-        <div className="lg:col-span-7 bg-white rounded-xl border border-gray-200 p-4 sm:p-6 space-y-6">
+        <div className="md:col-span-7 bg-white rounded-xl border border-gray-200 p-4 sm:p-6 space-y-6">
           <h2 className="text-sm font-poppins text-primaryText">Implant Design Details: </h2>
           {/* Doctor Info */}
           <div className="border border-gray-200  p-4 sm:p-6">
@@ -34,9 +34,9 @@ const ReviewOrder = () => {
               Doctor Info
             </h3>
             <hr className="border-gray-200 my-2" />
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm sm:text-base">
+            <div className="grid grid-cols-2   md:grid-cols-4 gap-4 text-sm sm:text-base">
               <div>
-                <p className="text-[#949494]  font-normal md:text-sm text-xs font-poppins">
+                <p className="text-[#949494]  font-normal md:text-sm text-xs font-poppins ">
                   Doctor’s Name
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins ">
@@ -44,8 +44,8 @@ const ReviewOrder = () => {
                 </p>
               </div>
               <div>
-                <p className="text-[#949494]  font-normal md:text-sm text-xs font-poppins whitespace-nowrap">
-                  Office Registration
+                <p className="text-[#949494]  font-normal md:text-sm text-xs font-poppins  ">
+                  Office Registration#
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
                   {formData.doctor.officeReg}
@@ -116,15 +116,15 @@ const ReviewOrder = () => {
 
             <div className="grid grid-cols-2 sm:grid-cols-2   gap-4 md:text-sm text-base">
               <div>
-                <p className="text-[#949494]  font-normal   text-xs font-poppins">
+                <p className="text-[#949494]  font-normal   text-xs font-poppins pb-2">
                   Abutment Type
                 </p>
-                <p className="font-medium text-secondaryBrand  text-xs  font-poppins ">
+                <p className="font-medium text-secondaryBrand  text-xs  font-poppins">
                   Titanium Standard Abutment
                 </p>
               </div>
               <div>
-                <p className="text-[#949494]  font-normal text-xs font-poppins">
+                <p className="text-[#949494]  font-normal text-xs font-poppins pb-2">
                   Crown Type
                 </p>
                 <p className="font-medium text-secondaryBrand  text-xs  font-poppins">
@@ -185,7 +185,7 @@ const ReviewOrder = () => {
             <hr className="border-gray-200 my-2" />
             <div className="grid grid-cols-1   gap-4 text-sm sm:text-base">
               <div>
-                <p className="text-[#949494]  font-normal text-xs font-poppins">
+                <p className="text-[#949494]  font-normal text-xs font-poppins pb-2">
                   Dr,weed bran
                 </p>
                 <p className="font-normal text-secondaryBrand  text-xs font-poppins ">

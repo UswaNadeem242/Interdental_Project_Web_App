@@ -79,7 +79,7 @@ const ChangePasswordModel = ({
                             onChange={handleChange}
                             placeholder="Old Password"
                             type={show.old ? "text" : "password"}
-                            className="w-full rounded-full border border-secondaryText bg-red px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
+                            className="w-full rounded-full border border-borderPrimary bg-red px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
                         />
                         <button
                             type="button"
@@ -105,21 +105,21 @@ const ChangePasswordModel = ({
                             ) : (
                                 // Eye Closed Icon
                                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#808080"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
-                  <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                  <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#808080"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
+                                    <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
+                                    <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
                             )}
                         </button>
                     </div>
@@ -132,7 +132,7 @@ const ChangePasswordModel = ({
                             onChange={handleChange}
                             placeholder="New Password"
                             type={show.new ? "text" : "password"}
-                            className="w-full rounded-full border border-secondaryText px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
+                            className="w-full rounded-full border border-borderPrimary px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
                         />
                         <button
                             type="button"
@@ -141,60 +141,7 @@ const ChangePasswordModel = ({
                         >
                             {show.new ? (
                                 // Eye Open Icon
-                               <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="#808080"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                    <circle cx="12" cy="12" r="3" />
-                                </svg>
-                            ) : (
-                                // Eye Closed Icon
-                               <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#808080"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
-                  <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                  <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                            )}
-                        </button>
-                    </div>
-
-                    {/* Confirm Password */}
-                    <div className="relative mb-4">
-                        <input
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            placeholder="Confirm Password"
-                            type={show.confirm ? "text" : "password"}
-                            className="w-full rounded-full border border-secondaryText px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShow({ ...show, confirm: !show.confirm })}
-                            className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
-                        >
-                            {show.confirm ? (
-                                // Eye Open Icon
-                               <svg
+                                <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="20"
                                     height="20"
@@ -211,21 +158,74 @@ const ChangePasswordModel = ({
                             ) : (
                                 // Eye Closed Icon
                                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#808080"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
-                  <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                  <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#808080"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
+                                    <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
+                                    <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            )}
+                        </button>
+                    </div>
+
+                    {/* Confirm Password */}
+                    <div className="relative mb-4">
+                        <input
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            placeholder="Confirm Password"
+                            type={show.confirm ? "text" : "password"}
+                            className="w-full rounded-full border border-borderPrimary px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShow({ ...show, confirm: !show.confirm })}
+                            className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
+                        >
+                            {show.confirm ? (
+                                // Eye Open Icon
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#808080"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            ) : (
+                                // Eye Closed Icon
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#808080"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
+                                    <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
+                                    <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
                             )}
                         </button>
                     </div>

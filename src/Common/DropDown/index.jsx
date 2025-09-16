@@ -1,7 +1,7 @@
 import { ChevronUpIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 
-export default function DropDownComponent({ label, options, onSelect, selected, optionLabel = "label", optionValue = "value" }) {
+export default function DropDownComponent({ label, options, onSelect, selected, optionLabel = "label", optionValue = "value", className }) {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
@@ -29,7 +29,8 @@ export default function DropDownComponent({ label, options, onSelect, selected, 
                                         onSelect(option);
                                         setIsOpen(false);
                                     }}
-                                    className="px-4 py-2 text-gray-700 cursor-pointer font-poppins text-xs"
+                                    // className=""
+                                    className={`${className} px-4 py-2 text-gray-700 cursor-pointer font-poppins  `}
                                 >
                                     {option[optionLabel]}
 

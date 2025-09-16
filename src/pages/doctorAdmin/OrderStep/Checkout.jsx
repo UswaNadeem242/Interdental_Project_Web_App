@@ -131,7 +131,7 @@ const CheckoutForm = () => {
                   onChange={handleChange}
                   className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700 mb-4 outline-none text-xs font-normal  font-poppins"
                 >
-
+                  <option value="" className="text-xs font-normal  font-poppins">Select the Option</option>
                   <option value="paypal" className="text-xs font-normal  font-poppins">PayPal</option>
                   <option value="creditCard" className="text-xs font-normal  font-poppins">Credit Card</option>
                   <option value="bankTransfer" className="text-xs font-normal  font-poppins">Bank Transfer</option>
