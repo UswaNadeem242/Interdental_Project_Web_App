@@ -8,6 +8,7 @@ import ReviewOrder from "./Review";
 import CheckoutForm from "./Checkout";
 import {
   DIGITAL_DENTURE,
+  Digital_Option,
   LAB_OPTIONS,
   MATERIAL_OPTIONS,
   PHOTOGRAMMETRY_FILES,
@@ -45,6 +46,7 @@ const DoctorOrder = () => {
       surgical_guide: SURGICAL_GUIDE,
       Photogrammetry_files: PHOTOGRAMMETRY_FILES,
       scannerType: SCANNER_TYPE,
+      digital_option: Digital_Option
     };
     const selectedOption =
       OPTIONS_MAP[field]?.find((opt) => opt.value === value) || null;
@@ -190,12 +192,12 @@ const DoctorOrder = () => {
                         onChange={setPatientFirst}
                       />
                       <LabeledInput
-                        placeholder="last name"
+                        placeholder="Last name"
                         value={patientLast}
                         onChange={setPatientLast}
                       />
                       <LabeledInput
-                        placeholder="subscription id"
+                        placeholder="Subscription id"
                         value={subscriptionId}
                         onChange={setSubscriptionId}
                       />
@@ -314,10 +316,13 @@ const DoctorOrder = () => {
 
                           <ShadeDropdown />
                           <MaterialDropdown
-                            options={[]}
-                            value={currentValues.material || ""}
+                            options={Digital_Option}
+
+                            value={
+                              toothSelections[selectedTooth]?.digital_option || ""
+                            }
                             onChange={(val) =>
-                              handleDropdownChange("material", val)
+                              handleDropdownChange("digital_option", val)
                             }
                             label=" Digital Model type"
                             className="w-full rounded-xl  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
@@ -386,7 +391,7 @@ const DoctorOrder = () => {
                           <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
                             Total:
                           </p>
-                          <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                          <p className="text-[#1A1A1A] font-medium text-xs font- border border-grey-400">
                             ${total.toFixed(2)}
                           </p>
                         </div>

@@ -5,6 +5,7 @@ import { ClaimIcon } from "../icon/claimIcon";
 import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
+import UserProfileIcon from "../icon/UserProfileIcon";
 export const MATERIAL_OPTIONS = [
   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
   { value: "argen-ht", label: "Argen HT", price: 45 },
@@ -14,7 +15,11 @@ export const MATERIAL_OPTIONS = [
   { value: "multilayer", label: "Multilayer Pro", price: 75 },
   { value: "pmma", label: "PMMA", price: 35 },
 ];
+export const Digital_Option = [
+  { value: "quad", label: "Quadrant" },
+  { value: "fullarch", label: "Full Arch" },
 
+];
 export const LAB_OPTIONS = [
   { value: "in-house", label: "In-House" },
   { value: "partner", label: "Partner Lab" },
@@ -57,23 +62,37 @@ export const SCANNER_TYPE = [
 export const menuItems = [
   {
     name: "Dashboard",
-    path: "/doctorAdmin/doctor-dashboard",
+    path: "/doctor-admin/doctor-dashboard",
     icon: DashboardIcon,
   },
-  { name: "Orders", path: "/doctorAdmin/Orders", icon: OrderIcon },
-  { name: "Patient", path: "/doctorAdmin/Patient", icon: PatienIcon },
+  { name: "Orders", path: "/doctor-admin/orders", icon: OrderIcon },
+  { name: "Patient", path: "/doctor-admin/patient", icon: PatienIcon },
   {
     name: "Claim Requests",
-    path: "/doctorAdmin/Claim-Request",
+    path: "/doctor-admin/claim-request",
     icon: ClaimIcon,
   },
-  // {
-  //   name: "Patient Dashboard",
-  //   path: "/doctorAdmin/Patientdashboard",
-  //   icon: ClaimIcon,
-  // },
-  // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
-  // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
+
+];
+
+export const menuPatientItem = [
+  {
+    name: "warranty mGMT",
+    path: "/patient-admin/dashboard",
+    icon: DashboardIcon,
+  },
+  {
+    name: "Claim Requests",
+    path: "/patient-admin/claim-requests",
+    icon: ClaimIcon,
+  },
+  {
+    name: "Profile settings",
+    path: "/patient-admin/profile-settings",
+    icon: UserProfileIcon,
+  },
+ 
+
 ];
 
 export const menuItemsUser = [
@@ -467,7 +486,7 @@ export const dataPatient = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -478,7 +497,7 @@ export const dataPatient = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
 ];
 
@@ -502,7 +521,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#123588",
@@ -513,7 +532,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -524,7 +543,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -535,7 +554,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -547,7 +566,7 @@ export const dataOrder = [
     dName: "Miles, Esther",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -558,7 +577,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -569,7 +588,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -580,7 +599,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -591,7 +610,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
 ];
 
@@ -1056,6 +1075,45 @@ export const PatientDashTabledata = [
     ShoppingDate: "16/22/2026",
     quantity: "134",
     status: "pending",
+    action: "View Detail",
+  },
+];
+
+export const headingsPatientClaimReq = [
+  { label: "Claim ID", key: "id" },
+  { label: "Product Name", key: "cName" },
+  { label: "Status", key: "status" },
+  { label: "Date Submitted", key: "DateSubmitted" },
+
+  { label: "Action", key: "action" },
+];
+export const PatientClaimReqData = [
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
     action: "View Detail",
   },
 ];

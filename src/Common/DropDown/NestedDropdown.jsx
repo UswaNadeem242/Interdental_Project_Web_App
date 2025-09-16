@@ -76,14 +76,14 @@ export const ShadeDropdown = () => {
 
                     <SubDropdown
                         label="Vita 3D-Master Shades"
-                        options={["1m1", "1m2", "2L1.5", "2L2.5", "2R 1.5", "2R 2.5 ", "2m1", "2m2", "2m3", "3L 1.5", "3L 2.5", "3R1.5", '3R2.5', '3L1.5', '3L2.5', '3M1', '3M2', '3M3', '4L1.5', '4L2.5', '4M1', '4M2', '4M3', '4R2.5', '5M1', '5M2', '5M3']}
+                        options={["1m1", "1m2", "2L1.5", "2L2.5", "2R 1.5", "2R 2.5 ", "2m1", "2m2", "2m3", "3L 1.5", "3L 2.5", "3R1.5", '3R2.5', '3L1.5', '3L2.5', '3M1', '3M2', '3M3', '4L1.5', '4L2.5', '4M1', '4M2', '4M3', '4R1.5', '4R2.5', '5M1', '5M2', '5M3']}
                         selected={selected3D1}
                         onSelect={setSelected3D1}
                     />
 
                     <SubDropdown
                         label="Vita 3D-Master Shades (Extra)"
-                        options={["0M1", "0M2", "0M3", "0.5m1", "1m1", "1m2", "1.4m2", "2m2", '2.5m2', '3.5m2', '4m2', '4.5m2', '5m2', '5m2.5', '5m3']}
+                        options={["0M1", "0M2", "0M3", "0.5m1", "1m1", "1m2", "1.5m2", "2m2", '2.5m2', '3.5m2', '4m2', '4.5m2', '5m2', '5m2.5', '5m3']}
                         selected={selected3D2}
                         onSelect={setSelected3D2}
                     />

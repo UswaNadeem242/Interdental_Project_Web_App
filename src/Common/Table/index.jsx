@@ -43,8 +43,9 @@ export default function TableComponent({
                 {headings.map((col, i) => (
                   <td
                     key={i}
-                    className={`px-4 py-3 text-[#333333] text-xs   ${col.key === "name" ? "font-semibold" : "font-normal"
-                      }`}
+                    className={`px-4 py-4 text-[#333333] text-xs   ${
+                      col.key === "name" ? "font-semibold" : "font-normal"
+                    }`}
                   >
                     {/* Name column */}
                     {col.key === "name" ? (
@@ -78,12 +79,13 @@ export default function TableComponent({
                       </div>
                     ) : col.key === "status" ? (
                       <span
-                        className={`px-3 py-2 rounded-full text-xs font-semibold capitalize ${row[col.key] === "active"
-                          ? "bg-green-500/5 text-[#4ECC53]"
-                          : row[col.key] === "pending"
+                        className={` px-3 py-2 rounded-full text-xs font-semibold capitalize ${
+                          row[col.key] === "active"
+                            ? "bg-green-500/5 text-[#4ECC53]"
+                            : row[col.key] === "pending"
                             ? "bg-blue-700/5 text-[#1F27EF]"
                             : "bg-orange-500/10 text-[#EF6A1F]"
-                          }`}
+                        }`}
                       >
                         {row[col.key]}
                       </span>

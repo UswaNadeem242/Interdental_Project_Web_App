@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import Drawers from '../../../Common/Drawers'
-import { PrimaryButtonUI } from '../../../Common/Button';
+ import { PrimaryButtonUI } from '../../../Common/Button';
 import TableComponent from '../../../Common/Table';
 import { data, dataOrder, dataPatient, headings, headingsOrder, headingsPateint } from '../../../Constant';
 import SearchBar from '../../../Common/SearchBar';
@@ -80,11 +79,11 @@ const OrderDoctorPage = () => {
                     <div className='flex flex-col  md:flex-row items-start md:items-center gap-2 '>
                         <div className='md:block hidden'>
 
-                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-3 font-semibold ' href='/doctorAdmin/Orders-Details' />
+                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-3 font-semibold ' href='/doctor-admin/orders-details' />
                         </div>
                         <div className='md:hidden block w-full'>
 
-                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-3 w-full font-semibold ' href='/doctorAdmin/Orders-Details'  />
+                            <PrimaryButtonUI title='Place New Order' className='rounded-md px-8 py-3 w-full font-semibold ' href='/doctor-admin/orders-details'  />
                         </div>
                     </div>
                 </div>

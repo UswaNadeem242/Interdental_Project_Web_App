@@ -43,29 +43,9 @@ const MobileSidebar = ({ items }) => {
             const Icon = item.icon;
             const isActive =
               location.pathname.startsWith(item.path) ||
-              (item.name === "Orders" && location.pathname.includes("/Details"));
-            console.log('isActive:', isActive);
+              (item.name === "Orders" && location.pathname.includes("/details") || item.name === "Claim Requests" && location.pathname.includes("/patient-form") || item.name === "Claim Requests" && location.pathname.includes("/term-condition"));
+
             return (
-              // <NavLink
-              //   key={item.path}
-              //   to={item.path}
-              //   onClick={() => setIsOpen(false)}
-              // >
-              //   {({ isActive }) => (
-              //     <div
-              //       className={`
-              //         flex items-center gap-3 px-3 h-[44px] rounded-lg text-sm font-poppins
-              //         ${isActive
-              //           ? "bg-secondaryBrand text-white"
-              //           : "text-[#949494] hover:bg-gray-100"
-              //         }
-              //       `}
-              //     >
-              //       {Icon && <Icon color={isActive ? "white" : "#949494"} />}
-              //       {item.name}
-              //     </div>
-              //   )}
-              // </NavLink>
               <NavLink
                 key={item.path}
                 to={item.path}

@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import DoctorDashaboard from "./DoctorDashboard";
 import DoctorProfile from "./DoctorProfile";
@@ -7,22 +6,21 @@ import ClaimRequest from "./ClaimRequest";
 import DoctorOrder from "./OrderStep/RestorationDesignForm";
 import OrderDoctorPage from "./DoctorOrder";
 import DoctorDeailsPage from "./DoctorOrder/DoctorOrderDetail";
-import PatientDashboard from "../PatientAdmin/PatientDashboard";
-import PatientDashboardPage from "../PatientAdmin/PatientDashboard";
+
 
 const DoctorAdmin = () => {
   return (
     <div className="">
-      {/* w-full h-[982px]    w-screen min-h-screen flex justify-start items-start*/}
       <Routes>
         <Route path="/doctor-dashboard" element={<DoctorDashaboard />} />
-        <Route path="/Patient" element={<PatientPage />} />
-        <Route path="/Claim-Request" element={<ClaimRequest />} />
-        <Route path="/Orders-Details" element={<DoctorOrder />} />
-        <Route path="/Profile" element={<DoctorProfile />} />
-        <Route path="/Orders" element={<OrderDoctorPage />} />
-        <Route path="/Details" element={<DoctorDeailsPage />} />
-        {/* <Route path="/Patientdashboard" element={<PatientDashboardPage />} /> */}
+        <Route path="/patient" element={<PatientPage />} />
+        <Route path="/claim-request" element={<ClaimRequest />} />
+        <Route path="/orders-details" element={<DoctorOrder />} />
+        <Route path="/profile" element={<DoctorProfile />} />
+        <Route path="/orders" element={<OrderDoctorPage />} />
+        <Route path="/details" element={<DoctorDeailsPage />} />
+
+
       </Routes>
     </div>
   );
