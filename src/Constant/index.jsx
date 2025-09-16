@@ -91,6 +91,9 @@ export const menuPatientItem = [
     path: "/patientAdmin/Profile-Settings",
     icon: UserProfileIcon,
   },
+
+ 
+  
 ];
 
 export const menuItemsUser = [
@@ -107,24 +110,6 @@ export const menuItemsUser = [
     path: "/admin/users",
     icon: ClaimIcon,
   },
-  {
-    name: "Patient Claim Req",
-    path: "/doctorAdmin/PatientClaim-Requests",
-    icon: ClaimIcon,
-  },
-  {
-    name: "Profile Settings",
-    path: "/doctorAdmin/Profile-Settings",
-    icon: ClaimIcon,
-  },
-  {
-    name: "Patient-Form",
-    path: "/doctorAdmin/Patient-Form",
-    icon: ClaimIcon,
-  },
-
-  // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
-  // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];
 
 export const CardDashboard = [

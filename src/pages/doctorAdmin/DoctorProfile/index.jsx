@@ -368,7 +368,6 @@ const DoctorProfile = () => {
               label="Email"
               placeholder="hanry463@gmail.com"
               type="email"
-            
               value={formData.email}
               onChange={handleChange}
               onBlur={handleBlur}

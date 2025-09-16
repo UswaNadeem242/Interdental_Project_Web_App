@@ -7,7 +7,8 @@ import { Hamburger } from "../../../icon/hamburger";
 export default function DoctorSidebar({ items }) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
- 
+
+  console.log('location:', location);
 
 
   return (

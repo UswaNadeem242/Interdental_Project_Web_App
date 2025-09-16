@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { InputField } from "../../../Common/FormInputField";
 import { FormSection } from "../../../Common/FormSection";
-// import TeethChart from "../../../../public/assets/TeethChart.png";
+
 export const PatientForm = () => {
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [selectedImplants, setSelectedImplants] = useState([]);
@@ -21,8 +21,8 @@ export const PatientForm = () => {
 
   const InputLabeStyle = `grid grid-cols-1 lg:grid-cols-4 gap-4`;
   return (
-    <div className="p-4 bg-bgWhite ">
-      <div className="p-2  font-poppins font-medium text-sm bg-bgWhite">
+    <div className="bg-bgWhite rounded-2xl ">
+      <div className="p-4  font-poppins font-medium text-sm ">
         {/* Patient Info */}
         <FormSection title="Patient Information">
           <div className={InputLabeStyle}>
@@ -41,32 +41,34 @@ export const PatientForm = () => {
         </FormSection>
 
         {/* Doctor Info */}
-        <FormSection title="Doctor Information">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <InputField label="Dr. Name" />
-            <InputField label="Telephone" />
-            <InputField label="Email Address" type="email" />
-          </div>
+        <div className="mt-6">
+          <FormSection title="Doctor Information">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <InputField label="Dr. Name" />
+              <InputField label="Telephone" />
+              <InputField label="Email Address" type="email" />
+            </div>
 
-          <div className="grid grid-cols-4 gap-4">
-            <InputField label="Address" className="w-full" />
-            <InputField label="City" className="w-full" />
-            <InputField label="State" className="w-full" />
-            <InputField label="Zip" className="w-full" />
-          </div>
+            <div className="grid grid-cols-4 gap-4">
+              <InputField label="Address" className="w-full" />
+              <InputField label="City" className="w-full" />
+              <InputField label="State" className="w-full" />
+              <InputField label="Zip" className="w-full" />
+            </div>
 
-          <div className={InputLabeStyle}>
-            <InputField label="License #" />
-            <InputField label="Total # of units" type="number" />
-            <InputField label="Type of restoration" />
-            <InputField label="Shade" />
-          </div>
+            <div className={InputLabeStyle}>
+              <InputField label="License #" />
+              <InputField label="Total # of units" type="number" />
+              <InputField label="Type of restoration" className="w-full" />
+              <InputField label="Shade" className="w-full" />
+            </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <InputField label="Email Address" type="email" />
-            <InputField label="Dr. Signature" />
-          </div>
-        </FormSection>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <InputField label="Email Address" type="email" />
+              <InputField label="Dr. Signature" />
+            </div>
+          </FormSection>
+        </div>
       </div>
 
       {/* Warranty Options */}
@@ -95,11 +97,10 @@ export const PatientForm = () => {
                   key={num}
                   onClick={() => toggleSelection(num, "teeth")}
                   className={`w-8 h-8 rounded-md border text-sm flex items-center justify-center 
-                  ${
-                    selectedTeeth.includes(num)
+                  ${selectedTeeth.includes(num)
                       ? "bg-[#94D3DD] text-secondaryBrand"
                       : "bg-gray-100 hover:bg-gray-200"
-                  }`}
+                    }`}
                 >
                   {num}
                 </button>
@@ -117,11 +118,10 @@ export const PatientForm = () => {
                   key={num}
                   onClick={() => toggleSelection(num, "implants")}
                   className={`w-8 h-8 rounded-md border text-sm flex items-center justify-center 
-                  ${
-                    selectedImplants.includes(num)
+                  ${selectedImplants.includes(num)
                       ? "bg-[#94D3DD] text-secondaryBrand"
                       : "bg-gray-100 hover:bg-gray-200"
-                  }`}
+                    }`}
                 >
                   {num}
                 </button>
@@ -138,11 +138,10 @@ export const PatientForm = () => {
                   key={option}
                   onClick={() => setSelectedDenture(option)}
                   className={`px-4 py-2 border rounded-md shadow-sm 
-                  ${
-                    selectedDenture === option
+                  ${selectedDenture === option
                       ? "bg-[#94D3DD] text-secondaryBrand"
                       : "bg-white hover:bg-gray-100"
-                  }`}
+                    }`}
                 >
                   {option}
                 </button>
@@ -163,65 +162,6 @@ export const PatientForm = () => {
       {/* Select From Options Form */}
       <div className="p-6  bg-bgWhite font-poppins text-secondaryBrand">
         <h4>Please select from the following options:</h4>
-
-        {/* <div className="flex gap-6 md:flex-row flex-col ">
-          <div className="text-[#949494]">
-            <InputField label="Total Crown/Bridges" />
-            <div className="flex gap-3 mt-4   ">
-              <span className="flex flex-1">
-                <input type="radio" value="3 Years" name="warranty"></input>
-                <h1 className="ml-2">3 Years</h1>
-              </span>
-
-              <span className="flex flex-1 ">
-                <input type="radio" value="6 Years" name="warranty"></input>
-                <h1 className="ml-2">6 Years</h1>
-              </span>
-
-              <span className="flex flex-1 ">
-                <input type="radio" value="12 Years" name="warranty"></input>
-                <h1 className="ml-2">12 Years</h1>
-              </span>
-            </div>
-          </div>
-
-          <div className="text-[#949494]">
-            <InputField label="Total Implant Relate" />
-            <div className="flex gap-3 mt-4">
-              <span className="flex flex-1">
-                <input type="radio" value="3 Years" name="warranty"></input>
-                <h1 className="ml-2">3 Years</h1>
-              </span>
-              <span className="flex flex-1">
-                <input type="radio" value="6 Years" name="warranty"></input>
-                <h1 className="ml-2">6 Years</h1>
-              </span>
-              <span className="flex flex-1">
-                <input type="radio" value="12 Years" name="warranty"></input>
-                <h1 className="ml-2">12 Years</h1>
-              </span>
-            </div>
-          </div>
-
-          <div className="text-[#949494]">
-            <InputField label="Total Denture/Partials" />
-            <div className="flex gap-3 mt-4">
-              <span className="flex flex-1">
-                <input type="radio" value="3 Years" name="warranty"></input>
-                <h1 className="ml-2">3 Years</h1>
-              </span>
-              <span className="flex flex-1">
-                <input type="radio" value="6 Years" name="warranty"></input>
-                <h1 className="ml-2">6 Years</h1>
-              </span>
-              <span className="flex flex-1">
-                <input type="radio" value="12 Years" name="warranty"></input>
-                <h1 className="ml-2">12 Years</h1>
-              </span>
-            </div>
-          </div>
-        </div> */}
-
         <div className="flex gap-10 md:flex-row flex-col">
           {[
             "Total Crown/Bridges",
@@ -255,7 +195,7 @@ export const PatientForm = () => {
       </div>
 
       {/*Patient Participation Enrollment Agreement*/}
-      <div className="p-2 bg-bgWhite text-[#949494] border border-[#0000000D] font-poppins">
+      <div className="p-2 m-4 bg-bgWhite text-[#949494] border border-[#0000000D] font-poppins">
         {/* Heading */}
         <div className="border-b border-[#0000000D] pt-3 pl-2 pr-2 ">
           <h2 className="text-sm font-semibold mb-4 text-secondaryBrand">
@@ -304,7 +244,7 @@ export const PatientForm = () => {
 
       {/* Footer */}
 
-      <div>
+      <div className="pb-4">
         <div className="flex items-center justify-center gap-2 mt-12 font-poppins">
           <input
             id="terms"
@@ -325,7 +265,7 @@ export const PatientForm = () => {
           <button className="px-12 py-4 bg-card rounded-full text-primaryText font-medium">
             Go Back
           </button>
-          <button className="px-12 py-4 bg-secondaryBrand text-bgWhite rounded-full ">
+          <button className="px-8 py-4 bg-secondaryBrand text-bgWhite rounded-full ">
             Send Claim Request
           </button>
         </div>

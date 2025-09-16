@@ -37,15 +37,7 @@ const PatientClaimrequests = () => {
         />
       ),
     },
-    // {
-    //   name: "Expired",
-    //   content: (
-    //     <TableComponent
-    //       headings={headingsPatientClaimReq}
-    //       data={PatientClaimReqData}
-    //     />
-    //   ),
-    // },
+
   ];
   return (
     <div>
@@ -56,6 +48,9 @@ const PatientClaimrequests = () => {
             <PrimaryButtonUI
               title="New Claim Request"
               // onClick={() => setIsOpen(true)}
+              href='/patientAdmin/Patient-Form'
+              // <Route path="/Patient-Form" element={<PatientForm/>} />
+
               className=" w-full md:w-auto rounded-md px-6 py-3  font-poppins"
             />
           }
