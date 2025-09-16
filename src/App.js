@@ -29,9 +29,10 @@ import DoctorAdmin from "./pages/doctorAdmin/Doctor";
 import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
 import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
 import ScrollToTop from "./Hooks/UseScroll";
-import { menuItems, menuItemsUser, menuPatientItem } from "./Constant";
+import { menuAdminPanelItem, menuItems, menuItemsUser, menuPatientItem } from "./Constant";
 import PatientAdmin from "./pages/PatientAdmin/Patient";
 import DoctorHeader from "./components/doctorAdmin/doctorHeader";
+import AdminPanel from "./pages/admin-panel/admin-panel";
 
 const MainLayout = ({ children }) => (
   <>
@@ -117,6 +118,35 @@ const PlainLayoutPatient = ({ children }) => (
     </div>
   </div>
 );
+
+// admin-panel
+
+const PlainLayoutAdminPanel = ({ children }) => (
+  <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
+    {/* Sidebar */}
+    <div className="w-52 flex-shrink-0  hidden md:block">
+      <DoctorSidebar items={menuAdminPanelItem} />
+    </div>
+    <div className="flex-1 flex flex-col relative">
+      {/* Header */}
+
+      <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
+        {/* left-4 right-4  top-4*/}
+        <div className="md:hidden mr-4">
+          <MobileSidebar items={menuAdminPanelItem} />
+        </div>
+        <DoctorHeader />
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 md:p-6 p-0 mt-16 md:ml-4  rounded-xl overflow-auto">
+        {children}
+      </main>
+    </div>
+  </div>
+);
+
+
 
 const SimpleLayout = ({ children }) => <div className="">{children}</div>;
 
@@ -264,7 +294,21 @@ function App() {
                 </PlainLayoutPatient>
               }
             />
+
+            <Route
+              path="/admin-panel/*"
+              element={
+                <PlainLayoutAdminPanel>
+                  <ProtectedRoute>
+                    <ScrollToTop />
+                    <AdminPanel />
+                  </ProtectedRoute>
+                </PlainLayoutAdminPanel>
+              }
+            />
           </Routes>
+
+
           {/* <Footer /> */}
         </BrowserRouter>
       </AuthProvider>
