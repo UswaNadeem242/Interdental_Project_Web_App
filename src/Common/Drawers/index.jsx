@@ -10,7 +10,7 @@ import { Xmark } from "../../icon/xmark";
 
 export default function Drawers({
   isOpen = false,
-  onClose = () => {},
+  onClose = () => { },
   title,
   Content,
 }) {
@@ -53,7 +53,14 @@ export default function Drawers({
                 <div className="relative flex h-full flex-col overflow-y-auto bg-white rounded-tl-2xl py-6 shadow-xl">
                   <div className="px-4 sm:px-6 flex justify-between item-center">
                     <DialogTitle className="text-xl font-bold font-poppins text-[#0F153E]">
-                      {title}
+                      <div className="flex justify-between items-center gap-3">
+                        {title}{title === "Claim Details" && (
+                          <span className="bg-rose-500/5 text-[#FF5757] text-xs px-2 py-1 rounded-full">
+                            Pending
+                          </span>
+                        )}
+                      </div>
+
                     </DialogTitle>
                     <button onClick={onClose}>
                       <Xmark className="w-8 h-8" />

@@ -72,7 +72,7 @@ const Dashboard = () => {
   ];
   return (
     <div className="flex flex-col justify-center items-start">
-      <AdminHeader />
+      {/* <AdminHeader /> */}
       <div className="flex justify-between items-start mt-6 w-full">
         <div className="flex flex-col justify-center items-center w-[698px] h-auto space-y-[12px]">
           <div className="flex justify-between items-start w-[698px] h-[153px] gap-[20px]">

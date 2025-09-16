@@ -19,8 +19,10 @@ export const CardComponet = ({ title, count, icon, fromDate, toDate }) => {
       <hr className="border-gray-200 w-full" />
 
       {/* Date */}
-      <p className="font-poppins text-xs   text-gray-400 mt-2">
-        From {fromDate} {toDate}
+      <p className="font-poppins text-[10px] whitespace-nowrap  tracking-tight
+ text-gray-400 mt-2">
+        From {fromDate}&emsp;{toDate}
+
       </p>
     </div>
   );

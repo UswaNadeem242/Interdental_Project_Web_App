@@ -368,7 +368,6 @@ const DoctorProfile = () => {
               label="Email"
               placeholder="hanry463@gmail.com"
               type="email"
-              icon={<PenIcon size={18} />}
               value={formData.email}
               onChange={handleChange}
               onBlur={handleBlur}

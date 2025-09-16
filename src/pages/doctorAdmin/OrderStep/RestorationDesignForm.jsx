@@ -14,9 +14,9 @@ import {
   SCANNER_TYPE,
   SURGICAL_GUIDE,
 } from "../../../Constant";
+import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import DonePage from "./DonePage";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/Smile";
 import { FileUploadSection } from "../../../components/doctorAdmin/OrderFileSelection";
 import { ShadeDropdown } from "../../../Common/DropDown/NestedDropdown";
 
@@ -97,7 +97,7 @@ const DoctorOrder = () => {
     { id: "s1", title: "Restoration Design Form" },
     { id: "s2", title: "Review" },
     { id: "s3", title: "Checkout" },
-    { id: "s4", title: "Done" },
+    { id: "s4", title: "Completion" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const next = () => {
@@ -152,7 +152,7 @@ const DoctorOrder = () => {
                     <FormSection
                       title="Doctor Info"
                       color="text-xs font-semibold"
-                      className=" border-gray-200 "
+                      className="border border-gray-200 p-4"
                     >
                       <LabeledInput
                         label="Doctors Name / office Name"
@@ -182,7 +182,7 @@ const DoctorOrder = () => {
                     <FormSection
                       title="Patient ID"
                       color="text-xs font-semibold"
-                      className="border border-gray-200 "
+                      className="border border-gray-200 p-4"
                     >
                       <LabeledInput
                         placeholder="Name"
@@ -207,19 +207,18 @@ const DoctorOrder = () => {
                       >
                         Select Smile Design
                         <span>
-                          <ChevronDownIcon className="w-5 h-5" />
+                          <ChevronDownIcon className="w-3 h-3" />
                         </span>
                       </button>
-                      {
-                        selected > 0 && <p className="py-2 px-2 text-sm text-secondaryBrand">
-                          Smile Design  :  {selected.length > 0 ? selected.join(", ") : ""}
+                      {selected > 0 && (
+                        <p className="py-2 px-2 text-sm text-secondaryBrand">
+                          Smile Design :{" "}
+                          {selected.length > 0 ? selected.join(", ") : ""}
                         </p>
-                      }
-
-
+                      )}
                     </div>
                     <MaterialDropdown
-                      className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-[#828386] outline-none transition-shadow"
+                      className=" w-full rounded-md  bg-textField  px-4 py-3 text-sm text-secondaryBrand  outline-none transition-shadow"
                       options={SCANNER_TYPE}
                       value={toothSelections[selectedTooth]?.scannerType || ""}
                       onChange={(val) =>
@@ -227,15 +226,15 @@ const DoctorOrder = () => {
                       }
                       label="Scanner Type"
                       storageKey="scannerType"
+                      dropdownClass=' text-secondaryBrand'
                     />
 
                     <div>
-
                       <FileUploadSection />
                     </div>
                     <FormSection
                       title="Additional Notes"
-                      className="border border-gray-200 "
+                      className="border border-gray-200 p-4"
                     >
                       <textarea
                         rows={2}
@@ -246,9 +245,9 @@ const DoctorOrder = () => {
                   </aside>
                   <section className="col-span-12 md:col-span-6 space-y-4">
                     <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
-                      <div className="grid grid-cols-2 gap-4 mb-10">
+                      <div className="grid grid-cols-2 gap-4 mt-5 mb-10">
                         <MaterialDropdown
-                          className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-[#828386] outline-none transition-shadow"
+                          className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                           options={DIGITAL_DENTURE}
                           value={
                             toothSelections[selectedTooth]?.digital_denture ||
@@ -262,7 +261,7 @@ const DoctorOrder = () => {
                         />
 
                         <MaterialDropdown
-                          className="w-full rounded-xl border bg-white border-gray-200   px-4 py-3 text-sm text-[#828386] outline-none transition-shadow"
+                          className="w-full rounded-xl  bg-white     px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                           options={SURGICAL_GUIDE}
                           value={
                             toothSelections[selectedTooth]?.surgical_guide || ""
@@ -274,8 +273,12 @@ const DoctorOrder = () => {
                           storageKey="surgical_guide"
                         />
                       </div>
-                      <div className="flex flex-wrap gap-2  justify-center ">
-                        <TeethChart
+                      <div className="flex flex-wrap gap-2  justify-center flex-col">
+                        <button className="text-[#949494] text-sm font-normal  font-poppins">upper Arch</button>
+                        <img src='/assets/doctor/image.png' />
+                        <button className="text-[#949494] text-sm font-normal  font-poppins">Lower Arch</button>
+
+                        {/* <TeethChart
                           sizePx={chartSize}
                           initialSelectedIds={[3, 14, 30]}
                           onSelect={(arr) => {
@@ -286,7 +289,7 @@ const DoctorOrder = () => {
                               setSelectedTooth(null);
                             }
                           }}
-                        />
+                        /> */}
                       </div>
                     </div>
                   </section>
@@ -305,17 +308,10 @@ const DoctorOrder = () => {
                             }
                             label="Material"
                             storageKey="material"
+                            className="w-full rounded-xl  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                           />
 
-                          {/* <MaterialDropdown
-                            options={[]}
-                            value={currentValues.material || ""}
-                            onChange={(val) =>
-                              handleDropdownChange("material", val)
-                            }
-                            label="Color"
-                            disabled={false}
-                          /> */}
+
                           <ShadeDropdown />
                           <MaterialDropdown
                             options={[]}
@@ -324,14 +320,16 @@ const DoctorOrder = () => {
                               handleDropdownChange("material", val)
                             }
                             label=" Digital Model type"
+                            className="w-full rounded-xl  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                           />
 
                           <MaterialDropdown
                             options={LAB_OPTIONS}
                             value={toothSelections[selectedTooth]?.lab || ""}
                             onChange={(val) => handleDropdownChange("lab", val)}
-                            label="Participating Lab"
+                            label="Select Laboratory"
                             storageKey="Participating Lab"
+                            className="w-full rounded-xl  bg-white     px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                           />
                           <MaterialDropdown
                             options={PHOTOGRAMMETRY_FILES}
@@ -344,6 +342,8 @@ const DoctorOrder = () => {
                             }
                             label="Photogrammetry files"
                             storageKey="Photogrammetry files"
+                            className="w-full rounded-xl  bg-[#F8F8F8] border-none    px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
+                            dropdownClass=' text-secondaryBrand'
                           />
                         </FormSection>
                       </div>
@@ -356,7 +356,7 @@ const DoctorOrder = () => {
                                 key={toothId}
                                 className="flex justify-between items-center py-1"
                               >
-                                <p className="text-xs text-[#828386]">
+                                <p className="text-xs text-textFieldHeading">
                                   {values.material || "No Material"} x1
                                 </p>
                                 <p className="text-xs font-medium">
@@ -367,7 +367,7 @@ const DoctorOrder = () => {
                           )}
                         </div>
                         <div className="flex justify-between items-center py-3">
-                          <p className="text-[#828386] text-xs font-poppins">
+                          <p className="text-textFieldHeading text-xs font-poppins">
                             Subtotal:
                           </p>
                           <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
@@ -375,7 +375,7 @@ const DoctorOrder = () => {
                           </p>
                         </div>
                         <div className="flex justify-between items-center py-3">
-                          <p className="text-[#828386] text-xs font-poppins">
+                          <p className="text-textFieldHeading text-xs font-poppins">
                             Shipping:
                           </p>
                           <p className="text-[#1A1A1A] font-medium text-xs font-poppins">

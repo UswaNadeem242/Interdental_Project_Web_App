@@ -24,7 +24,7 @@ const Toast = ({ message, isVisible, onClose, type }) => {
   return (
     isVisible && (
       <div
-        className={`flex justify-start items-center fixed top-5 left-1/2 transform -translate-x-1/2 w-[447px] h-[63px]  gap-[10px] p-[10px] bg-[#FFFFFF] shadow-lg ${getToastStyles()} transition-opacity duration-300 ease-in-out`}
+        className={`flex justify-start items-center fixed z-[9999999999999] top-5 left-1/2 transform -translate-x-1/2 w-[447px] h-[63px]  gap-[10px] p-[10px] bg-[#FFFFFF] shadow-lg ${getToastStyles()} transition-opacity duration-300 ease-in-out`}
       >
         {type === "success" && (
           <svg

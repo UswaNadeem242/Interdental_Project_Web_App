@@ -26,7 +26,7 @@ const DonePage = () => {
         {/* Text */}
         <div className="text-center px-2">
           <h1 className="text-black text-lg sm:text-xl font-semibold font-poppins capitalize">
-            Your Order Has Been Successfully Placed!
+            Your Order Has Been Successfully <br className="" />Placed!
           </h1>
           <p className="text-neutral-400 text-xs sm:text-sm font-normal font-poppins capitalize mt-2">
             Thank you for shopping with us. Your order is being processed, and

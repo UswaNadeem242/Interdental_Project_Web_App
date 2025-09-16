@@ -10,15 +10,15 @@ export default function StepperTabs({
   return (
     <div className="w-full  mx-auto">
       {/* --- Tabs Header --- */}
-      <div className="flex flex-wrap  justify-between border-b mb-4 font-poppins">
+      <div className="flex flex-wrap  gap-4 justify-between  mb-4 font-poppins">
         {steps.map((step, idx) => (
           <div
             key={step.id}
-            className={`flex-1 text-center py-2 cursor-pointer md:text-md text-xs  ${
-              idx === activeIndex
+            className={`flex-1 text-center  py-2 cursor-pointer md:text-md text-xs 
+               ${idx === activeIndex
                 ? "font-bold text-[#001D58] border-b-2 border-[#001D58]"
-                : "text-[#B1B1B1] border-[#94D3DD]"
-            }`}
+                : "text-[#B1B1B1] border-[#B1B1B1] border-b-2"
+              }`}
             onClick={() => setActiveIndex(idx)}
           >
             {step.title}

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AddQuantityModal from "../../modals/AddQuantityModal";
 import { BASE_URL } from "../../config";
+import AreYouSureModel from "../../modals/AreYouSureModel";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const Products = () => {
   const [addedProducts, setAddedProducts] = useState([]);
   const [isQuantityModalOpen, setIsQuantityModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isModelShow, setIsmodelShow] = useState(false);
+  const [productId, setproductId] = useState('');
 
   const handleCheckboxChange = (productId, isChecked) => {
     setSelectedProducts((prevSelected) =>
@@ -50,7 +53,7 @@ const Products = () => {
     getAllProducts();
   }, []);
 
-  const handleDelete = async (productId) => {
+  const handleDelete = async () => {
     try {
       const response = await axios.delete(
         `${BASE_URL}/api/product/delete/${productId}`,
@@ -63,13 +66,14 @@ const Products = () => {
       );
       alert("Product deleted successfully");
       getAllProducts();
+      setIsmodelShow(false)
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <div className="flex flex-col justify-center items-start">
-      <AdminHeader title="Products" />
+      {/* <AdminHeader title="Products" /> */}
       <div className="flex flex-col justify-start items-start mt-6 w-full h-[887px] rounded-[20px] p-[24px] gap-[20px] bg-[#FFFFFF]">
         <div className="flex justify-start items-center gap-8">
           <div className="flex justify-between items-center w-[868px] h-[49px] bg-[#F8F8F8] rounded-[8px] py-[8px] pl-[16px] pr-[8px] gap-[16px]">
@@ -195,7 +199,6 @@ const Products = () => {
                         }
                         className="w-[20px] h-[20px] rounded-[6px] border-[1px] border-[#D0D5DD]"
                       />
-                      {console.log('-==-=--=-=-=pppppp-=--=-=--=-=-=-=',p)}
                       <img
                         src={p?.imageUrls[0]}
                         alt="product image"
@@ -226,7 +229,11 @@ const Products = () => {
                       {selectedProducts.includes(p.productId) && (
                         <div className="absolute -top-4 -right-12 z-50 flex justify-center items-center gap-[16px] w-[287px] h-[46px] rounded-[12px] border-[1px] border-[#001D58] bg-white py-[20px] px-[16px]">
                           <button
-                            onClick={() => handleDelete(p.productId)}
+                            onClick={() => 
+                              {setIsmodelShow(true)
+
+                                setproductId(p.productId)
+                              }}
                             className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[148px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]"
                           >
                             Delete Product
@@ -264,6 +271,16 @@ const Products = () => {
           isModalOpen={isQuantityModalOpen}
           setIsModalOpen={setIsQuantityModalOpen}
           selectedProducts={addedProducts}
+          getAllProducts={getAllProducts}
+        />
+      )}
+
+       {isModelShow && (
+        <AreYouSureModel
+          title=" Are You Sure"
+          desc="Product will be deleted from the web. You won't be able to undo these changes."
+          setIsModalOpen={setIsmodelShow}
+          handleUpdateStatus={handleDelete}
         />
       )}
     </div>

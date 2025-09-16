@@ -1,13 +1,12 @@
-
 export default function FormSection({ title, children, action, color, className }) {
     return (
-        <section className={` ${className} rounded-lg border border-gray-200 p-4`}>
+        <section className={` ${className} rounded-lg `}>
 
             {/* border border-gray-200 */}
             <div className="flex items-center justify-between gap-4">
 
                 {title && (
-                    <h3 className={`${color} text-primaryText text-xs font-normal font-poppins capitalize pb-2`}>
+                    <h3 className={`${color} text-primaryText text-xs font-normal font-poppins capitalize `}>
                         {title}
                     </h3>
                 )}

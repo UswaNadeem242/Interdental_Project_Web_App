@@ -11,7 +11,7 @@ export default function Stepper({ steps }) {
                             <Tab
                                 key={name}
                                 className={({ selected }) =>
-                                    `rounded-xl py-4 px-6 my-2 mx-2 text-xs font-semibold border w-1/2 border-textField
+                                    `rounded-xl py-4 px-6 my-2 mx-2 text-xs font-normal border w-1/2 border-textField
                                         focus:outline-none transition-colors duration-200 font-poppins capitalize 
                                         ${selected
                                         ? "bg-white text-primary font-bold "

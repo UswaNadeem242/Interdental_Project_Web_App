@@ -35,6 +35,57 @@ const Signup = () => {
       setToastVisible(true);
       return;
     }
+    if (!firstName || !lastName || !email || !password || !cPassword) {
+      setToastMessage("Please fill in all the fields!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    // Validate First Name & Last Name (only letters, min 2 chars)
+    const nameRegex = /^[A-Za-z]{2,}$/;
+    if (!nameRegex.test(firstName)) {
+      setToastMessage("Enter a valid First Name (letters only)");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+    if (!nameRegex.test(lastName)) {
+      setToastMessage("Enter a valid Last Name (letters only)");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    // Validate Email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setToastMessage("Enter a valid Email Address");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    // Validate Password Strength (min 8 chars, at least one letter & one number)
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      setToastMessage(
+        "Password must be at least 8 characters long and include letters & numbers"
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    // Confirm Password
+    if (password !== cPassword) {
+      setToastMessage("Passwords do not match!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
     try {
       const response = await axios.post(
         `${BASE_URL}/api/users/sign-up?email=${email}&password=${password}&firstName=${firstName}&lastName=${lastName}`,
@@ -97,7 +148,7 @@ const Signup = () => {
 
         <div className="px-3 flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[252px] gap-4 lg:gap-[16px]">
           {/* Name fields - stack vertically on mobile */}
-          <div className="flex flex-col lg:flex-row justify-between items-center w-full gap-4 lg:gap-0 h-auto lg:h-[51px]">
+          <div className="flex flex-col gap-4 lg:flex-row justify-between items-center w-full    h-auto lg:h-[51px]">
             <input
               type="text"
               className="w-full lg:w-[239px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
@@ -131,6 +182,46 @@ const Signup = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             {/* Password visibility toggle icon */}
+            <div
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                // Eye Open
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#808080"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              ) : (
+                // Eye Closed
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#808080"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
+                  <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
+                  <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              )}
+            </div>
           </div>
 
           <div className="relative w-full lg:w-[494px]">
@@ -141,11 +232,50 @@ const Signup = () => {
               value={cPassword}
               onChange={(e) => setCPassword(e.target.value)}
             />
+            <div
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+              onClick={() => setShowCPassword(!showCPassword)} // ✅ fix here
+            >  {showCPassword ? (
+              // Eye Open
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#808080"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            ) : (
+              // Eye Closed
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#808080"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
+                <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
+                <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            )}</div>
             {/* Confirm password visibility toggle icon */}
+
           </div>
         </div>
 
-        <div className="px-4 flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
+        <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
           <button
             onClick={() => handleSignup()}
             className="w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px]"
@@ -154,7 +284,7 @@ const Signup = () => {
           </button>
 
           {/* Social login buttons - stack vertically on mobile */}
-          <div className="flex flex-row justify-center items-center w-full gap-4 lg:gap-[16px] h-auto lg:h-[56px]">
+          {/* <div className="flex flex-row justify-center items-center w-full gap-4 lg:gap-[16px] h-auto lg:h-[56px]">
             <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center items-center cursor-pointer">
               <svg
                 width="25"
@@ -192,12 +322,7 @@ const Signup = () => {
                   </clipPath>
                 </defs>
               </svg>
-              <h1
-                onClick={() => setIsModalOpen(true)}
-                className="hidden lg:block"
-              >
-                Login with Google
-              </h1>
+              <h1 className="hidden lg:block">Login with Google</h1>
             </div>
             <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center items-center cursor-pointer">
               <svg
@@ -216,7 +341,7 @@ const Signup = () => {
               </svg>
               <h1 className="hidden lg:block">Log in with Facebook</h1>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
             <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">

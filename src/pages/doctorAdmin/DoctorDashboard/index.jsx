@@ -58,11 +58,11 @@ const DoctorDashaboard = () => {
             <div className="flex flex-wrap gap-2 md:gap-4">
               <PrimaryButtonUI
                 title="  Place New Order"
-                className="py-1 px-4 md:px-6 font-poppins font-light text-xs bg-secondaryBrand text-white rounded-lg shadow "
+                className="py-1 px-4 md:px-6 font-poppins  font-normal text-xs bg-secondaryBrand text-white rounded-lg shadow "
               />
               <SecondaryButton
                 title="View All"
-                className="py-1 px-3 md:px-4 font-poppins font-light text-xs border border-brand bg-white text-brand rounded-lg shadow"
+                className="py-1 px-3 md:px-4 font-poppins font-normal text-xs border border-brand bg-white text-brand rounded-lg shadow"
                 href="/doctorAdmin/Orders"
               />
             </div>

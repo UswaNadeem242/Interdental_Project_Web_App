@@ -24,9 +24,10 @@ const CheckoutForm = () => {
     console.log("Form Submitted:", formData);
   };
 
+
   return (
     <div className="min-h-screen bg-bgWhite">
-      <div className=" py-10 ">
+      <div className=" pt-5  pb-10">
         <div className=" px-4">
           <form
             onSubmit={handleSubmit}
@@ -36,7 +37,7 @@ const CheckoutForm = () => {
             <div className="lg:col-span-8 bg-white rounded-xl border border-gray-200 p-6 space-y-6">
               {/* Buyer’s Details */}
               <div>
-                <h2 className="text-lg  mb-3 font-inter font-medium">
+                <h2 className="text-sm  mb-3 font-medium  font-poppins">
                   Buyer’s Details
                 </h2>
                 <div className=" grid grid-cols-1  gap-4  sm:grid-cols-12">
@@ -46,7 +47,7 @@ const CheckoutForm = () => {
                     placeholder="Full Name"
                     value={formData.fullName}
                     onChange={handleChange}
-                    className="border sm:col-span-6  outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                    className='border sm:col-span-6 space-y-4  outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal'
                   />
                   <input
                     type="text"
@@ -54,7 +55,7 @@ const CheckoutForm = () => {
                     placeholder="Contact Number"
                     value={formData.contactNumber}
                     onChange={handleChange}
-                    className="border sm:col-span-6  outline-none  rounded-lg px-3 py-2 w-full bg-white text-gray-700"
+                    className='border sm:col-span-6 space-y-4  outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal'
                   />
                 </div>
                 <input
@@ -63,13 +64,13 @@ const CheckoutForm = () => {
                   placeholder="E-Mail Address"
                   value={formData.email}
                   onChange={handleChange}
-                  className="border outline-none  rounded-lg px-3 py-2 w-full mt-3 bg-white text-gray-700"
+                  className={"border outline-none  rounded-lg px-3 py-2 w-full mt-3 bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"}
                 />
               </div>
 
               {/* Shipping */}
               <div>
-                <h2 className="text-lg font-medium mb-3 font-inter">
+                <h2 className="text-sm font-medium mb-3 font-inter">
                   Shipping
                 </h2>
                 <div className="grid grid-cols-2 gap-3">
@@ -87,7 +88,7 @@ const CheckoutForm = () => {
                       placeholder="Country"
                       value={formData.country}
                       readOnly
-                      className="border rounded-lg pl-10 px-3 py-2 w-full outline-none text-gray-700"
+                      className="border rounded-lg pl-10 px-3 py-2 w-full outline-none text-gray-700  placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
                     />
                   </div>
                   <input
@@ -96,7 +97,7 @@ const CheckoutForm = () => {
                     placeholder="State/Province"
                     value={formData.state}
                     onChange={handleChange}
-                    className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700"
+                    className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700  placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
                   />
                   <input
                     type="text"
@@ -104,7 +105,7 @@ const CheckoutForm = () => {
                     placeholder="City"
                     value={formData.city}
                     onChange={handleChange}
-                    className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700"
+                    className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700  placeholder:text-sm placeholder:font-poppins placeholder:font-normal "
                   />
                   <input
                     type="text"
@@ -112,14 +113,14 @@ const CheckoutForm = () => {
                     placeholder="Street"
                     value={formData.street}
                     onChange={handleChange}
-                    className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700"
+                    className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700   placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
                   />
                 </div>
               </div>
 
               {/* Payment Method */}
               <div className="border rounded-lg p-4 bg-white">
-                <h2 className="text-lg font-semibold mb-3 font-poppins">
+                <h2 className="text-sm font-semibold mb-3 font-poppins">
                   Payment Method
                 </h2>
 
@@ -128,14 +129,12 @@ const CheckoutForm = () => {
                   name="paymentMethod"
                   value={formData.paymentMethod || ""}
                   onChange={handleChange}
-                  className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700 mb-4 outline-none"
+                  className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700 mb-4 outline-none text-xs font-normal  font-poppins"
                 >
-                  <option value="" disabled>
-                    Please Select
-                  </option>
-                  <option value="paypal">PayPal</option>
-                  <option value="creditCard">Credit Card</option>
-                  <option value="bankTransfer">Bank Transfer</option>
+                  <option value="" className="text-xs font-normal  font-poppins">Select the Option</option>
+                  <option value="paypal" className="text-xs font-normal  font-poppins">PayPal</option>
+                  <option value="creditCard" className="text-xs font-normal  font-poppins">Credit Card</option>
+                  <option value="bankTransfer" className="text-xs font-normal  font-poppins">Bank Transfer</option>
                 </select>
 
                 {/* PayPal Section */}
@@ -143,7 +142,7 @@ const CheckoutForm = () => {
                   <div className="border rounded-lg p-4 ">
                     <div className="flex items-center mb-3">
                       <img
-                        src="/assets/paypal.jpeg"
+                        src="/assets/doctor/paypal.png"
                         alt="Paypal Logo"
                         className="w-5 h-5 rounded-sm"
                       />
@@ -152,7 +151,7 @@ const CheckoutForm = () => {
                     <hr className="border-t my-3" />
 
                     <div className="mb-3">
-                      <label className="block text-sm font-medium mb-1 text-gray-700">
+                      <label className="block text-xs font-medium mb-1 text-primaryText  ">
                         Recipient's Name
                       </label>
                       <input
@@ -161,13 +160,13 @@ const CheckoutForm = () => {
                         placeholder="Enter Recipient's Name"
                         value={formData.recipientName}
                         onChange={handleChange}
-                        className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-gray-700"
+                        className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText  placeholder:text-xs placeholder:font-poppins"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                        <label className="block text-xs font-medium mb-1  ">
                           Paypal Username
                         </label>
                         <input
@@ -176,11 +175,11 @@ const CheckoutForm = () => {
                           placeholder="Enter Paypal Username"
                           value={formData.paypalUsername}
                           onChange={handleChange}
-                          className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-gray-700"
+                          className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                        <label className="block text-xs font-medium mb-1  ">
                           E-mail/Phone number
                         </label>
                         <input
@@ -189,7 +188,7 @@ const CheckoutForm = () => {
                           placeholder="Enter E-mail/Phone number"
                           value={formData.paypalEmailPhone}
                           onChange={handleChange}
-                          className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-gray-700"
+                          className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
                         />
                       </div>
                     </div>
@@ -199,7 +198,7 @@ const CheckoutForm = () => {
                 {/* Credit Card Section */}
                 {formData.paymentMethod === "creditCard" && (
                   <div className="border rounded-lg p-4 space-y-3">
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                    <label className="block text-sm font-medium mb-1 text-primaryText">
                       Card Number
                     </label>
                     <input
@@ -208,9 +207,9 @@ const CheckoutForm = () => {
                       placeholder="Enter Card Number"
                       value={formData.cardNumber || ""}
                       onChange={handleChange}
-                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-gray-700"
+                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-primaryText placeholder:text-xs placeholder:font-poppins"
                     />
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                    <label className="block text-sm font-medium mb-1 text-primaryText ">
                       Expiry Date
                     </label>
                     <input
@@ -219,7 +218,7 @@ const CheckoutForm = () => {
                       placeholder="MM/YY"
                       value={formData.expiryDate || ""}
                       onChange={handleChange}
-                      className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-gray-700"
+                      className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
                     />
                   </div>
                 )}
@@ -236,7 +235,8 @@ const CheckoutForm = () => {
                       placeholder="Enter Account Number"
                       value={formData.accountNumber || ""}
                       onChange={handleChange}
-                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-gray-700"
+                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-primaryText placeholder:text-xs placeholder:font-poppins
+"
                     />
                     <label className="block text-sm font-medium mb-1 outline-none text-gray-700">
                       Bank Name
@@ -247,7 +247,7 @@ const CheckoutForm = () => {
                       placeholder="Enter Bank Name"
                       value={formData.bankName || ""}
                       onChange={handleChange}
-                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-gray-700"
+                      className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-primaryText placeholder:text-xs placeholder:font-poppins"
                     />
                   </div>
                 )}
@@ -257,31 +257,31 @@ const CheckoutForm = () => {
             {/* Right Section - Order Summary */}
             <div className="md:col-span-4 bg-white rounded-xl border border-gray-200 p-6 flex flex-col justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                <h2 className="text-xl font-medium text-gray-800 mb-4">
                   Order Summary
                 </h2>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span>Emax x4</span>
-                    <span>$80.00</span>
+                    <span className="text-xs text-[#828386] font-normal ">Emax <span className="text-[#1A1A1A] text-xs font-poppins font-normal">x4</span></span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">$80.00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Argen ST x3</span>
-                    <span>$90.00</span>
+                    <span className="text-xs text-[#828386] font-normal">Argen ST <span className="text-[#1A1A1A] text-xs font-poppins font-normal">x3</span></span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">$90.00</span>
                   </div>
 
                   <div className="flex justify-between ">
-                    <span>Subtotal</span>
-                    <span className="font-semibold">$180.00</span>
+                    <span className="text-xs text-[#828386] font-normal">Subtotal</span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">$180.00</span>
                   </div>
                   <hr />
                   <div className="flex justify-between">
-                    <span>Shipping</span>
-                    <span className="text-green-600">Free</span>
+                    <span className="text-xs text-[#828386] font-normal">Shipping</span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">Free</span>
                   </div>
                   <div className="flex justify-between  text-[rgba(0, 29, 88, 1)] text-base mt-4  pt-2 text-secondaryBrand">
-                    <span>Total</span>
-                    <span className="font-bold">$180.00</span>
+                    <span className="text-secondaryBrand text-base font-normal font-poppins">Total</span>
+                    <span className="text-secondaryBrand text-base font-semibold font-poppins">$180.00</span>
                   </div>
                 </div>
               </div>

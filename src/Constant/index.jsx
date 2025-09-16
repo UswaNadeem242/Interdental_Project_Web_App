@@ -4,14 +4,15 @@ import { PatienIcon } from "../icon/PatienIcon";
 import { ClaimIcon } from "../icon/claimIcon";
 import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
+import ProfileIcon from "../icon/ProfileIcon";
 export const MATERIAL_OPTIONS = [
   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
   { value: "argen-ht", label: "Argen HT", price: 45 },
   { value: "argen-st", label: "Argen ST", price: 50 },
   { value: "emax", label: "Emax", price: 95 },
   { value: "aidite", label: "Aidite", price: 85 },
-  { value: "pmma", label: "PMMA", price: 35 },
   { value: "multilayer", label: "Multilayer Pro", price: 75 },
+  { value: "pmma", label: "PMMA", price: 35 },
 ];
 
 export const LAB_OPTIONS = [
@@ -32,6 +33,7 @@ export const SURGICAL_GUIDE = [
   { value: "single_implant_guide", label: "Single Implant Guide" },
   { value: "multiple_implant_guide", label: "Multiple Implant Guide" },
   { value: "full_arch", label: "Full Arch Surgical Guide" },
+  { value: "tooth-supported", label: "Tooth-Supported Guide" },
   { value: "partial_denture", label: "Partial Denture" },
 ];
 
@@ -55,7 +57,7 @@ export const SCANNER_TYPE = [
 export const menuItems = [
   {
     name: "Dashboard",
-    path: "/doctorAdmin/doctordashboard",
+    path: "/doctorAdmin/doctor-dashboard",
     icon: DashboardIcon,
   },
   { name: "Orders", path: "/doctorAdmin/Orders", icon: OrderIcon },
@@ -65,9 +67,27 @@ export const menuItems = [
     path: "/doctorAdmin/Claim-Request",
     icon: ClaimIcon,
   },
+  // {
+  //   name: "Patient Dashboard",
+  //   path: "/doctorAdmin/Patientdashboard",
+  //   icon: ClaimIcon,
+  // },
+  // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
+  // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
+];
+
+export const menuItemsUser = [
   {
-    name: "Patient Dashboard",
-    path: "/doctorAdmin/Patientdashboard",
+    name: "Dashboard",
+    path: "/admin/dashboard",
+    icon: DashboardIcon,
+  },
+  { name: "Orders", path: "/admin/orders", icon: OrderIcon },
+  { name: "Product", path: "/admin/products", icon: PatienIcon },
+
+  {
+    name: "user",
+    path: "/admin/users",
     icon: ClaimIcon,
   },
   {
@@ -89,6 +109,7 @@ export const menuItems = [
   // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
   // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];
+
 export const CardDashboard = [
   {
     title: "Total Patients",
@@ -96,6 +117,7 @@ export const CardDashboard = [
     date: "Jan 01, 2024",
     path: "/doctorAdmin/dashboard",
     duedate: "Mar 30, 2024",
+    // From jan 01,2024  March 30,2024
     icon: <UserIcon />,
   },
   {
@@ -112,7 +134,7 @@ export const CardDashboard = [
     date: "Jan 01, 2024",
     path: "/doctorAdmin/dashboard",
     duedate: "Mar 30, 2024",
-    icon: <UserIcon />,
+    icon: <ProfileIcon />,
   },
 ];
 
@@ -353,7 +375,7 @@ export const dataPatient = [
     name: "Varga Dóra",
     email: "varga@example.com",
     status: "active",
-    phone: "123456789",
+    phone: "12345678910",
     address: "abc....",
   },
   {
@@ -367,7 +389,7 @@ export const dataPatient = [
     name: "Varga Dóra",
     email: "varga@example.com",
     status: "active",
-    phone: "123456789",
+    phone: "12345678910",
     address: "abc....",
   },
   {
@@ -381,7 +403,7 @@ export const dataPatient = [
     name: "Varga Dóra",
     email: "varga@example.com",
     status: "active",
-    phone: "123456789",
+    phone: "12345678910",
     address: "abc....",
   },
   {
@@ -454,7 +476,28 @@ export const dataPatient = [
     phone: "123456789",
     address: "abc....",
   },
-  // ...more rows
+  {
+    id: "#1235",
+    name: "John Doe",
+    product: "Argen HT",
+    status: "pending",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+    detailUrl: "/doctorAdmin/Details",
+  },
+  {
+    id: "#1235",
+    name: "Jane Smith",
+    product: "Argen HT",
+    status: "inactive",
+    submission: "16/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shipping: "16/22/2026",
+    detailUrl: "/doctorAdmin/Details",
+  },
 ];
 
 export const headingsOrder = [
@@ -473,18 +516,18 @@ export const dataOrder = [
     pName: "Varga Dóra",
     product: "Argen HT",
     status: "active",
-    submission: "16/22/2026",
+    submission: "17/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
     detailUrl: "/doctorAdmin/Details",
   },
   {
-    id: "#1235",
+    id: "#123588",
     pName: "John Doe",
     product: "Argen HT",
     status: "pending",
-    submission: "16/22/2026",
+    submission: "17/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",

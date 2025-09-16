@@ -25,7 +25,6 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [street, setStreet] = useState("");
-  const { user } = useAuth();
 
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
@@ -33,6 +32,100 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+  };
+  const [recipientName, setRecipientName] = useState("");
+  const [paypalUsername, setPaypalUsername] = useState("");
+  const [paypalContact, setPaypalContact] = useState("");
+
+  const validateForm = () => {
+    // ✅ Full Name
+    if (!name || !/^[A-Za-z ]{2,50}$/.test(name)) {
+      setToastMessage(
+        "Full Name must be 2–50 characters (alphabets & spaces only)."
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    // ✅ Contact Number
+    if (!phone || !/^\+?[0-9]{10,15}$/.test(phone)) {
+      setToastMessage("Contact Number must be 10–15 digits (with optional +).");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    // ✅ Country
+    if (!country) {
+      setToastMessage("Please select a Country.");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    // ✅ State/Province
+    if (!state) {
+      setToastMessage("Please select a State/Province.");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    // ✅ City
+    if (!city || !/^[A-Za-z ]{2,30}$/.test(city)) {
+      setToastMessage("City must be 2–30 characters (alphabets only).");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    // ✅ Street
+    if (!street || !/^[A-Za-z0-9 ]{5,100}$/.test(street)) {
+      setToastMessage(
+        "Street must be 5–100 characters (alphanumeric & spaces)."
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    // ✅ Receptionist Name (PayPal)
+    if (!recipientName || !/^[A-Za-z ]{2,50}$/.test(recipientName)) {
+      setToastMessage("Receptionist Name must be 2–50 alphabets only.");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    // ✅ PayPal Username
+    if (!paypalUsername || !/^[A-Za-z0-9]{5,30}$/.test(paypalUsername)) {
+      setToastMessage("PayPal Username must be 5–30 alphanumeric characters.");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    // ✅ PayPal Email/Phone
+    if (!paypalContact) {
+      setToastMessage("PayPal Email/Phone is required.");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paypalContact);
+    const isPhone = /^\+?[0-9]{10,15}$/.test(paypalContact);
+
+    if (!isEmail && !isPhone) {
+      setToastMessage("PayPal Contact must be a valid Email or Phone.");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    // ✅ If all checks pass
+    return true;
   };
 
   const createOrder = async () => {
@@ -44,7 +137,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         userId: user.id,
         name: name,
         address: `${country},${state},${city},${street}`,
-        email: email,
+        email: user.email,
         phone: phone,
         orderItems: cart.items,
       };
@@ -61,7 +154,11 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
           },
         }
       );
-      if (response.status === 200) {
+      if (response.data.responseCode === "1500") {
+        setToastMessage(response.data.responseMessage);
+        setToastType("error");
+        setToastVisible(true);
+      } else if (response.data.responseCode === "0000") {
         setActiveTab("order");
       }
       console.log(response);
@@ -108,18 +205,29 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("https://restcountries.com/v3.1/all")
-      .then((response) => {
-        const countryData = response.data.map((country) => ({
-          code: country.cca2,
-          name: country.name.common,
-          flag: country.flags.png,
+    const loadCountries = async () => {
+      try {
+        const { data } = await axios.get(
+          "https://restcountries.com/v3.1/all?fields=cca2,name,flags"
+        );
+        const countryData = data.map((c) => ({
+          code: c.cca2,
+          name: c.name.common,
+          flag: c.flags.png,
         }));
-        // countryData.sort((a, b) => a.name.localeCompare(b.name));
         setCountries(countryData);
-      })
-      .catch((error) => console.error("Error fetching country data:", error));
+      } catch (err) {
+        console.error("REST Countries failed, using fallback…", err);
+
+        // Fallback: Build flag URL with FlagCDN
+        const fallbackList = [
+          /* Hardcoded or minimal list if needed */
+        ];
+        setCountries(fallbackList);
+      }
+    };
+
+    loadCountries();
   }, []);
   console.log(countries);
 
@@ -138,17 +246,30 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     setToastVisible(false);
   };
 
+  // Retrieve user data from localStorage
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
+
+  // Debugging logs
+  console.log(user, "parsed user data");
+
+  // Safely log firstName only if user exists
+  if (user && user.firstName) {
+    console.log(user.firstName, "sarhey de oghai");
+  }
+
   return (
-    <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50">
+    <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50 ">
       <div
         ref={modalRef}
-        className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative"
+        className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative "
       >
+        {console.log("-=-=-=-=---=user-=-=-=-=-=-==", user.email)}
         {/* Tabs */}
-        <div className="flex justify-around w-[587px] h-[68.69px] mb-[16px] pb-[16px] pt-[8px]">
+        <div className="flex justify-around w-[587px] h-[68.69px]  pb-[16px] pt-[8px]">
           <div className="flex justify-around w-[539.02px] h-[44.69px]">
             <div
-              // onClick={() => setActiveTab("cart")}
+              onClick={() => setActiveTab("cart")}
               className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
                 activeTab === "cart"
                   ? "border-b-[4.69px] border-secondaryBrand font-semibold"
@@ -201,7 +322,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
           {activeTab === "cart" && (
             <div className="flex flex-col justify-start items-start space-y-8">
               {cart?.items?.length > 0 ? (
-                <div className="flex flex-col justify-start items-start gap-4 overflow-y-auto h-[calc(100vh-320px)]">
+                <div className="flex flex-col justify-start items-start gap-4 ">
                   {cart?.items?.map((item) => (
                     <CartProduct item={item} getCart={getCart} />
                   ))}
@@ -215,14 +336,6 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       </h1>
                     </div>
                     <div className="flex justify-between items-center w-[523px] h-[57px] gap-[20px]">
-                      {/* <div
-                        onClick={() => setIsModalOpen(false)}
-                        className="flex justify-center items-center cursor-pointer w-[251.5px] h-[55px] rounded-[32px] gap-[8px] bg-[#0137641A]"
-                      >
-                        <h1 className="flex justify-center items-center leading-[21px] font-poppins font-semibold text-secondayBrand text-[14px] w-full">
-                          Go Back
-                        </h1>
-                      </div> */}
                       <div
                         onClick={() => setActiveTab("checkout")}
                         className="flex justify-center items-center cursor-pointer w-[523px] h-[57px] rounded-[32px] gap-[20px] bg-secondaryBrand"
@@ -256,6 +369,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       id=""
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      required
                     />
                     <input
                       type="text"
@@ -273,8 +387,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     placeholder="Email Address"
                     name=""
                     id=""
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={user.email}
+                    // onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -287,11 +401,13 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   <div className="flex justify-start items-center w-[587px] h-[53px] gap-[16px]">
                     <div className="relative flex flex-col justify-start items-start space-y-2">
                       <div className="flex justify-start items-center w-[285.5px] h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white">
-                        <img
-                          src={selectedCountry?.flag}
-                          alt="flags"
-                          className="w-[21px] h-[12.25px]"
-                        />
+                        {selectedCountry && (
+                          <img
+                            src={selectedCountry?.flag}
+                            alt="flags"
+                            className="w-[21px] h-[12.25px]"
+                          />
+                        )}
                         <input
                           type="text"
                           value={country}
@@ -368,9 +484,13 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                 <h1 className="font-inter font-medium text-[14px] leading-[16.94px] text-[#000000]">
                   Payment Method
                 </h1>
+                {/* <div
+                  className={`flex flex-col justify-start items-center bg-white w-[587px] ${openPaymentMethod ? "h-[252px]" : ""
+                    } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
+                > */}
                 <div
                   className={`flex flex-col justify-start items-center bg-white w-[587px] ${
-                    openPaymentMethod ? "h-[252px]" : ""
+                    openPaymentMethod ? "h-[322px]" : ""
                   } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
                 >
                   <div className="flex justify-center items-center w-[587px] h-[53px] border-b-[1px] border-[#0000000D] py-[8px] px-[16px] gap-[8px]">
@@ -395,66 +515,67 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   <div
                     className={`${
                       openPaymentMethod ? "block" : "hidden"
-                    } flex flex-col justify-start items-start w-full h-[160px] p-[16px] space-y-[8px]`}
+                    } flex flex-col justify-start items-start w-full h-auto p-[16px] space-y-[16px]`}
                   >
-                    <div className="w-full h-[60px] flex flex-col justify-start items-start space-y-[8px]">
-                      <p className="font-poppins font-medium text-[12px] leading-[18px] text-[#434343]">
-                        Recepients Name
+                    {/* Recipient Name */}
+                    <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
+                      <p className="font-poppins font-medium text-[12px] text-[#434343]">
+                        Recipient's Name
                       </p>
-                      <div className="flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] gap-[10px]">
+                      <div className="flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px]">
                         <input
                           type="text"
-                          placeholder="Enter Recepient's Name"
-                          className="bg-transparent w-full h-full outline-none font-poppins font-normal text-[12px] leading-[18px] text-[#949494]"
+                          value={recipientName}
+                          onChange={(e) => setRecipientName(e.target.value)}
+                          placeholder="Enter Recipient's Name"
+                          className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
                       </div>
                     </div>
-                    <div className="flex justify-start items-center gap-[16px] pt-12 w-full h-[60px]">
-                      <div className="w-[261.5] h-[60px] flex flex-col justify-start items-start space-y-[8px]">
-                        <p className="font-poppins font-medium text-[12px] leading-[18px] text-[#434343]">
-                          Paypal Username
-                        </p>
-                        <div className="flex justify-center items-center w-[261.5px] h-[44px] bg-[#F8F8F8] p-[12px] gap-[10px]">
-                          <input
-                            type="text"
-                            placeholder="Enter Paypal Username"
-                            className="bg-transparent w-full h-full outline-none font-poppins font-normal text-[12px] leading-[18px] text-[#949494]"
-                          />
-                        </div>
+
+                    <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
+                      <p className="font-poppins font-medium text-[12px] text-[#434343]">
+                        PayPal Username
+                      </p>
+                      <div className="flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px]">
+                        <input
+                          type="text"
+                          value={paypalUsername}
+                          onChange={(e) => setPaypalUsername(e.target.value)}
+                          placeholder="Enter PayPal Username"
+                          className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
+                        />
                       </div>
-                      <div className="w-[261.5] h-[60px] flex flex-col justify-start items-start space-y-[8px]">
-                        <p className="font-poppins font-medium text-[12px] leading-[18px] text-[#434343]">
-                          E-mail / Phone Number
-                        </p>
-                        <div className="flex justify-center items-center w-[261.5px] h-[44px] bg-[#F8F8F8] p-[12px] gap-[10px]">
-                          <input
-                            type="text"
-                            placeholder="Enter E-mail / Phone Number"
-                            className="bg-transparent w-full h-full outline-none font-poppins font-normal text-[12px] leading-[18px] text-[#949494]"
-                          />
-                        </div>
+                    </div>
+
+                    <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
+                      <p className="font-poppins font-medium text-[12px] text-[#434343]">
+                        E-mail / Phone Number
+                      </p>
+                      <div className="flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px]">
+                        <input
+                          type="text"
+                          value={paypalContact}
+                          onChange={(e) => setPaypalContact(e.target.value)}
+                          placeholder="Enter E-mail / Phone Number"
+                          className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              {!name ||
-                !email ||
-                !phone ||
-                !country ||
-                !state ||
-                !city ||
-                (!street && (
-                  <div className="w-[261.5] h-[60px] flex flex-col justify-start items-start space-y-[8px]">
-                    <p className="font-poppins font-medium text-[14px] leading-[18px] text-[#B71212]">
-                      Please fill all required fields
-                    </p>
-                  </div>
-                ))}
+              {!!validateForm && (
+                <div className="w-[261.5] h-[60px] flex flex-col justify-start items-start space-y-[8px]">
+                  <p className="font-poppins font-medium text-[14px] leading-[18px] text-[#B71212]">
+                    Please fill all required fields
+                  </p>
+                </div>
+              )}
               {/* Confirm order */}
               <div className="flex justify-start items-center bg-[#FAFAFA] fixed bottom-0 w-[523px] h-[57px] gap-[20px] pb-[24px]">
                 <div
-                  onClick={() => setActiveTab("order")}
+                  onClick={() => setActiveTab("cart")}
                   className="flex justify-center items-center cursor-pointer w-[251.5px] h-[55px] rounded-[32px] gap-[8px] bg-[#0137641A]"
                 >
                   <h1 className="flex justify-center items-center leading-[21px] font-poppins font-semibold text-[#013764] text-[14px] w-full">
@@ -463,19 +584,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                 </div>
                 <div
                   onClick={() => {
-                    if (
-                      !name ||
-                      !email ||
-                      !phone ||
-                      !country ||
-                      !state ||
-                      !city ||
-                      !street
-                    ) {
-                      setToastMessage("Please fill all required fields");
-                      return; // Stop execution if validation fails
-                    }
+                    if (!validateForm()) return;
 
+                    // ✅ All validations passed
                     setActiveTab("review");
                   }}
                   className="flex justify-center items-center cursor-pointer w-[251.5px] h-[55px] rounded-[32px] gap-[8px] bg-secondaryBrand"
@@ -635,6 +746,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       {name}
                     </p>
                   </div>
+
                   <div className="w-[555px] h-[62px] flex flex-col justify-start items-start space-y-[6px]">
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
                       Email Address
@@ -643,6 +755,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       {email}
                     </p>
                   </div>
+
                   <div className="w-[555px] h-[62px] flex flex-col justify-start items-start space-y-[6px]">
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
                       Contact Number
@@ -651,12 +764,13 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       {phone}
                     </p>
                   </div>
+
                   <div className="w-[555px] h-[62px] flex flex-col justify-start items-start space-y-[6px]">
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
                       Shipping Address
                     </p>
                     <p className="font-poppins font-normal h-[40px] text-[14px] leading-[21px] text-[##434343]">
-                      {street} {city} {state}, {selectedCountry?.name}
+                      {selectedCountry?.name} , {street} , {city} , {state}
                     </p>
                   </div>
                 </div>

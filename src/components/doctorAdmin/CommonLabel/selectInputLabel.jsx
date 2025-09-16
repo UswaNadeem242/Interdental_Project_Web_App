@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useEffect, useRef, useState } from "react";
 
 export function LabeledSelect({
@@ -45,6 +46,7 @@ export default function MaterialDropdown({
   label = label,
   selectedTooth,
   className,
+  dropdownClass
 }) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -76,23 +78,13 @@ export default function MaterialDropdown({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`${className}  flex w-full items-center justify-between  bg-grey-500  border border-gray-300  px-2 py-3 rounded-xl text-left text-sm  text-textFieldHeading`}
+        className={`${className || ""} flex w-full items-center justify-between bg-grey-500 border border-gray-300 px-2 py-3 text-left text-sm font-normal`}
       >
         <span>{selected?.label ?? label}</span>
 
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          className={`h-5 w-5 text-[#949494] transition-transform duration-200 ${open ? "" : ""
-            }`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M6 9l6 6 6-6" />
-        </svg>
+      
+
+        <ChevronDownIcon className={`h-3 w-3 text-[#949494] transition-transform duration-200 ${open ? "" : ""} ${dropdownClass}`}/>
       </button>
 
       {/* Panel */}

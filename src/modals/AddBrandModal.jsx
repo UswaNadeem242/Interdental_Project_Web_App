@@ -61,12 +61,19 @@ const AddBrandModal = ({ isModalOpen, getAllBrands, setIsModalOpen }) => {
         }
       );
 
-      console.log("✅ Success:", response.data);
-      getAllBrands();
-      setIsModalOpen(false);
-      alert("Brand added successfully");
+      if (
+        response.data.data.responseCode === "0000" ||
+        response.data.responseCode === "200"
+      ) {
+        console.log("✅ Success:", response.data);
+        getAllBrands();
+        setIsModalOpen(false);
+        alert("Brand added successfully");
+      }
     } catch (error) {
-      console.error("❌ Error:", error);
+      alert(error.response.data.responseDesc);
+      console.error("❌ Error:");
+      setIsModalOpen(false);
     }
   };
 

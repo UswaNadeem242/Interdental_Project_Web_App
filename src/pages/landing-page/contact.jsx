@@ -11,7 +11,7 @@ const Contact = ({ isLanding }) => {
             <h3 className="text-2xl font-extrabold text-black-900">
               CONTACT US
             </h3>
-            <p className="mt-4 text-gray-600">
+            <p className="mt-4 text-gray-600 text-sm">
               Contact us by email, phone, or simply drop your message here. Let
               us know if you have any questions.
             </p>
@@ -38,7 +38,7 @@ const Contact = ({ isLanding }) => {
                 <input
                   type="number"
                   placeholder="+92 345 346 543"
-                  className="ml-4 h-10 w-full text-gray-800 placeholder-gray-500 bg-gray-100 border-none focus:outline-none"
+                  className="ml-4 h-10 w-full text-gray-800 placeholder-gray-500 bg-gray-100 border-none focus:outline-none placeholder:text-sm placeholder:font-poppins"
                 />
               </div>
 
@@ -69,7 +69,7 @@ const Contact = ({ isLanding }) => {
                 <input
                   type="email"
                   placeholder="eventfulcae@gmail.com"
-                  className="ml-4 h-10 w-full text-gray-800 placeholder-gray-500 bg-gray-100 border-none focus:outline-none"
+                  className="ml-4 h-10 w-full text-gray-800 placeholder-gray-500 bg-gray-100 border-none focus:outline-none placeholder:text-sm placeholder:font-poppins"
                 />
               </div>
 
@@ -174,23 +174,23 @@ const Contact = ({ isLanding }) => {
                 <input
                   type="text"
                   placeholder="First Name"
-                  className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
                 />
                 <input
                   type="text"
                   placeholder="Last Name"
-                  className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
                 />
               </div>
               <input
                 type="email"
                 placeholder="E-Mail Address"
-                className="mt-4 w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-4 w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
               />
               <textarea
                 placeholder="Message"
                 rows="4"
-                className="mt-4 w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-4 w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
               ></textarea>
               <button
                 type="submit"

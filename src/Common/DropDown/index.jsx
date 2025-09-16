@@ -1,7 +1,7 @@
 import { ChevronUpIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 
-export default function DropDownComponent({ label, options, onSelect, selected, optionLabel = "label", optionValue = "value" }) {
+export default function DropDownComponent({ label, options, onSelect, selected, optionLabel = "label", optionValue = "value", className }) {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
@@ -12,7 +12,7 @@ export default function DropDownComponent({ label, options, onSelect, selected, 
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex justify-between items-center p-4 rounded-lg"
             >
-                <span className="text-[#1A1A1A] text-lg font-semibold font-poppins capitalize">{selected || label}</span>
+                <span className="text-[#1A1A1A] text-base font-semibold font-poppins capitalize">{selected || label}</span>
 
                 <ChevronUpIcon className={`w-5 h-5 ml-2 transition-transform duration-200 ${isOpen ? "rotate-180" : "rotate-0"
                     }`} />
@@ -29,7 +29,8 @@ export default function DropDownComponent({ label, options, onSelect, selected, 
                                         onSelect(option);
                                         setIsOpen(false);
                                     }}
-                                    className="px-4 py-2 text-gray-700 cursor-pointer font-poppins text-sm"
+                                    // className=""
+                                    className={`${className} px-4 py-2 text-gray-700 cursor-pointer font-poppins  `}
                                 >
                                     {option[optionLabel]}
 
@@ -41,7 +42,7 @@ export default function DropDownComponent({ label, options, onSelect, selected, 
                                         onSelect(option);
                                         setIsOpen(false);
                                     }}
-                                    className="px-4 py-2 text-gray-700 cursor-pointer font-poppins text-sm"
+                                    className="px-4 py-2 text-gray-700 cursor-pointer font-poppins text-xs"
                                 >
                                     {option[optionValue]}
 
