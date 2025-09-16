@@ -13,7 +13,6 @@ const DoctorHeader = ({ title, subTitle }) => {
 
   };
   const pageTitle = usePageTitle();
-  console.log('pageTitle:', pageTitle);
  
   return (
     <>
@@ -25,7 +24,7 @@ const DoctorHeader = ({ title, subTitle }) => {
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
           <img src="/assets/user.png" className="w-10 h-10 rounded-full" />
           <NavLink
-            to="/doctorAdmin/profile"
+            to="/doctor-admin/profile"
             className="flex flex-col justify-center"
           >
             <p className="text-sm font-semibold">Bransim Hanry</p>

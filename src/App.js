@@ -28,7 +28,7 @@ import Contact from "./pages/landing-page/contact";
 import DoctorAdmin from "./pages/doctorAdmin/Doctor";
 import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
 import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
-import DoctorHeader from "./components/doctorAdmin/doctorHeader";
+import DoctorHeader from "./components/doctorAdmin/DoctorHeader";
 import ScrollToTop from "./Hooks/UseScroll";
 import { menuItems, menuItemsUser, menuPatientItem } from "./Constant";
 import PatientAdmin from "./pages/PatientAdmin/Patient";
@@ -250,7 +250,7 @@ function App() {
               }
             />
             <Route
-              path="/doctorAdmin/*"
+              path="/doctor-admin/*"
               element={
                 <PlainLayout>
                   <ProtectedRoute>
@@ -261,7 +261,7 @@ function App() {
               }
             />
             <Route
-              path="/patientAdmin/*"
+              path="/patient-admin/*"
               element={
                 <PlainLayoutPatient>
                   <ProtectedRoute>

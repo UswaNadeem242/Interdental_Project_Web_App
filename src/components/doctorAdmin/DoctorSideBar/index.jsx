@@ -28,7 +28,7 @@ export default function DoctorSidebar({ items }) {
             const Icon = item.icon;
             const isActive =
               location.pathname.startsWith(item.path) ||
-              (item.name === "Orders" && location.pathname.includes("/Details"));
+              (item.name === "Orders" && location.pathname.includes("/details") || item.name === "Claim Requests" && location.pathname.includes("/patient-form") || item.name === "Claim Requests" && location.pathname.includes("/term-condition"));
             console.log('isActive:', isActive);
 
             return (

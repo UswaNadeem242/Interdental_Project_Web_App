@@ -9,12 +9,11 @@ const PatientAdmin = () => {
     return (
         <div>
             <Routes>
-                <Route path="/Patient-dashboard" element={<PatientDashboardPage />} />
-                <Route path="/PatientClaim-Requests" element={<PatientClaimrequests />} />
-                <Route path="/Profile-Settings" element={<ProfileSettings />} />
-                <Route path="/Patient-Form" element={<PatientForm />} />
-                <Route path="/Term-Condition" element={<PatientTermCondition />} />
-
+                <Route path="/dashboard" element={<PatientDashboardPage />} />
+                <Route path="/claim-requests" element={<PatientClaimrequests />} />
+                <Route path="/profile-settings" element={<ProfileSettings />} />
+                <Route path="/patient-form" element={<PatientForm />} />
+                <Route path="/term-condition" element={<PatientTermCondition />} />
             </Routes>
         </div>
     );

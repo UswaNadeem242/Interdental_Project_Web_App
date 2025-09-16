@@ -11,16 +11,16 @@ import DoctorDeailsPage from "./DoctorOrder/DoctorOrderDetail";
 const DoctorAdmin = () => {
   return (
     <div className="">
-       <Routes>
+      <Routes>
         <Route path="/doctor-dashboard" element={<DoctorDashaboard />} />
-        <Route path="/Patient" element={<PatientPage />} />
-        <Route path="/Claim-Request" element={<ClaimRequest />} />
-        <Route path="/Orders-Details" element={<DoctorOrder />} />
-        <Route path="/Profile" element={<DoctorProfile />} />
-        <Route path="/Orders" element={<OrderDoctorPage />} />
-        <Route path="/Details" element={<DoctorDeailsPage />} />
-      
-      
+        <Route path="/patient" element={<PatientPage />} />
+        <Route path="/claim-request" element={<ClaimRequest />} />
+        <Route path="/orders-details" element={<DoctorOrder />} />
+        <Route path="/profile" element={<DoctorProfile />} />
+        <Route path="/orders" element={<OrderDoctorPage />} />
+        <Route path="/details" element={<DoctorDeailsPage />} />
+
+
       </Routes>
     </div>
   );

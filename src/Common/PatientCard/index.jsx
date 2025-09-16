@@ -13,7 +13,7 @@ export const PatientCard = ({ title, name, email, linkName, icon }) => {
         <SecondaryButton
           title="View All"
           className="py-1 px-4 font-poppins font-light text-xs border border-brand bg-white text-brand  rounded-lg"
-          href="/doctorAdmin/Patient"
+          href="/doctor-admin/patient"
         />
       </div>
       <div className="flex-1 overflow-y-auto mt-3 space-y-4  max-h-[550px] scrollbar-hide">

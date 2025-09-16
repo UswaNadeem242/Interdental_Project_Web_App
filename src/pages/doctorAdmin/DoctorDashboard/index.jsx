@@ -63,7 +63,7 @@ const DoctorDashaboard = () => {
               <SecondaryButton
                 title="View All"
                 className="py-1 px-3 md:px-4 font-poppins font-normal text-xs border border-brand bg-white text-brand rounded-lg shadow"
-                href="/doctorAdmin/Orders"
+                href="/doctor-admin/orders"
               />
             </div>
           </div>

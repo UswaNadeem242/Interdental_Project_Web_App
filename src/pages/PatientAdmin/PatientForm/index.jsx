@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { InputField } from "../../../Common/FormInputField";
 import { FormSection } from "../../../Common/FormSection";
+import { NavLink } from "react-router-dom";
 
 export const PatientForm = () => {
   const [selectedTeeth, setSelectedTeeth] = useState([]);
@@ -20,6 +21,7 @@ export const PatientForm = () => {
   };
 
   const InputLabeStyle = `grid grid-cols-1 lg:grid-cols-4 gap-4`;
+
   return (
     <div className="bg-bgWhite rounded-2xl ">
       <div className="p-4  font-poppins font-medium text-sm ">
@@ -254,9 +256,9 @@ export const PatientForm = () => {
           <p className="text-[#8E8E8E] text-sm font-light">
             Yes, I understand and agree to the
             <span className="text-secondaryBrand ">
-              <a href="#" className="underline">
+              <NavLink to="/patientadmin/term-condition" className="underline">
                 Terms of Service.
-              </a>
+              </NavLink>
             </span>
           </p>
         </div>
