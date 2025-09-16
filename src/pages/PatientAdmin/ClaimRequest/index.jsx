@@ -48,7 +48,7 @@ const PatientClaimrequests = () => {
             <PrimaryButtonUI
               title="New Claim Request"
               // onClick={() => setIsOpen(true)}
-              href='/patientadmin/patient-form'
+              href='/patient-admin/patient-form'
               // <Route path="/Patient-Form" element={<PatientForm/>} />
 
               className=" w-full md:w-auto rounded-md px-6 py-3  font-poppins"

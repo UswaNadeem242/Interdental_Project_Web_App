@@ -14,8 +14,8 @@ const DoctorHeader = ({ title, subTitle, role }) => {
   const pageTitle = usePageTitle();
   const roleLink =
     role === "doctor"
-      ? "/doctorAdmin/profile"
-      : "/patientAdmin/Profile-Settings";
+      ? "/doctor-admin/profile"
+      : "/patient-admin/profile-settings";
   console.log("pageTitle:", pageTitle);
 
   return (

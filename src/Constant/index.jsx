@@ -486,7 +486,7 @@ export const dataPatient = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -497,7 +497,7 @@ export const dataPatient = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctorAdmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
 ];
 
@@ -521,7 +521,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctoradmin/details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#123588",
@@ -532,7 +532,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctoradmin/details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -543,7 +543,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctoradmin/details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -554,7 +554,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctoradmin/details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -566,7 +566,7 @@ export const dataOrder = [
     dName: "Miles, Esther",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctoradmin/details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -577,7 +577,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctoradmin/Details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -588,7 +588,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctoradmin/details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -599,7 +599,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctoradmin/details",
+    detailUrl: "/doctor-admin/details",
   },
   {
     id: "#1235",
@@ -610,7 +610,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctoradmin/details",
+    detailUrl: "/doctor-admin/details",
   },
 ];
 
