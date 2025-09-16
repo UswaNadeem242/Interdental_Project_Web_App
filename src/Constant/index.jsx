@@ -91,10 +91,16 @@ export const menuPatientItem = [
     path: "/patient-admin/profile-settings",
     icon: UserProfileIcon,
   },
- 
-
 ];
 
+
+export const menuAdminPanelItem = [
+  {
+    name: "Dashboard",
+    path: "/admin-panel/dashboard",
+    icon: DashboardIcon,
+  },
+];
 export const menuItemsUser = [
   {
     name: "Dashboard",
