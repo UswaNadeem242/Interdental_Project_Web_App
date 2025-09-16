@@ -97,10 +97,11 @@ export const PatientForm = () => {
                   key={num}
                   onClick={() => toggleSelection(num, "teeth")}
                   className={`w-8 h-8 rounded-md border text-sm flex items-center justify-center 
-                  ${selectedTeeth.includes(num)
+                  ${
+                    selectedTeeth.includes(num)
                       ? "bg-[#94D3DD] text-secondaryBrand"
                       : "bg-gray-100 hover:bg-gray-200"
-                    }`}
+                  }`}
                 >
                   {num}
                 </button>
@@ -118,10 +119,11 @@ export const PatientForm = () => {
                   key={num}
                   onClick={() => toggleSelection(num, "implants")}
                   className={`w-8 h-8 rounded-md border text-sm flex items-center justify-center 
-                  ${selectedImplants.includes(num)
+                  ${
+                    selectedImplants.includes(num)
                       ? "bg-[#94D3DD] text-secondaryBrand"
                       : "bg-gray-100 hover:bg-gray-200"
-                    }`}
+                  }`}
                 >
                   {num}
                 </button>
@@ -138,10 +140,11 @@ export const PatientForm = () => {
                   key={option}
                   onClick={() => setSelectedDenture(option)}
                   className={`px-4 py-2 border rounded-md shadow-sm 
-                  ${selectedDenture === option
+                  ${
+                    selectedDenture === option
                       ? "bg-[#94D3DD] text-secondaryBrand"
                       : "bg-white hover:bg-gray-100"
-                    }`}
+                  }`}
                 >
                   {option}
                 </button>
@@ -162,13 +165,13 @@ export const PatientForm = () => {
       {/* Select From Options Form */}
       <div className="p-6  bg-bgWhite font-poppins text-secondaryBrand">
         <h4>Please select from the following options:</h4>
-        <div className="flex gap-10 md:flex-row flex-col">
+        <div className="flex gap-10 md:flex-row flex-col ">
           {[
             "Total Crown/Bridges",
             "Total Implant Relate",
             "Total Denture/Partials",
           ].map((section, id) => (
-            <div key={id} className="text-[#949494]">
+            <div key={id} className="text-[#949494] justify-between">
               <InputField label={section} />
               <div className="flex gap-3 mt-4">
                 {["3 Years", "6 Years", "12 Years"].map((option, id) => (
