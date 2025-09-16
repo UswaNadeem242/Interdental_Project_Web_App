@@ -19,7 +19,7 @@ import Orders from "./pages/Orders";
 import OrderInfo from "./pages/OrderInfo";
 import Admin from "./pages/admin/Admin";
 import ProtectedRoute from "./components/ProtectRoute";
- import { AuthProvider } from "./auth/AuthContext";
+import { AuthProvider } from "./auth/AuthContext";
 import Wishlist from "./pages/Wishlist";
 import LandingPage from "./pages/landing-page/landing-page";
 import Patients from "./pages/landing-page/patient";
@@ -56,7 +56,7 @@ const PlainLayout = ({ children }) => {
           <div className="md:hidden mr-4">
             <MobileSidebar items={menuItems} />
           </div>
-          <DoctorHeader />
+          <DoctorHeader role={"doctor"} />
         </header>
 
         {/* Main Content */}
@@ -69,11 +69,6 @@ const PlainLayout = ({ children }) => {
 };
 
 const PlainLayoutUser = ({ children }) => (
-  // <div className="flex absolute pt-[16px] pl-[16px] pb-[16px] gap-8 bg-[#F8F8F8] w-full">
-  // <AdminSidebar />
-  //   {children}
-  // </div>
-
   <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
     {/* Sidebar */}
     <div className="w-52 flex-shrink-0  hidden md:block">
@@ -87,7 +82,7 @@ const PlainLayoutUser = ({ children }) => (
         <div className="md:hidden mr-4">
           <MobileSidebar items={menuItemsUser} />
         </div>
-        <DoctorHeader />
+        <DoctorHeader role={"patient"} />
       </header>
 
       {/* Main Content */}
@@ -99,8 +94,6 @@ const PlainLayoutUser = ({ children }) => (
 );
 // Patient Admin
 const PlainLayoutPatient = ({ children }) => (
- 
-
   <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
     {/* Sidebar */}
     <div className="w-52 flex-shrink-0  hidden md:block">
@@ -266,7 +259,7 @@ function App() {
                 <PlainLayoutPatient>
                   <ProtectedRoute>
                     <ScrollToTop />
-                    <PatientAdmin/>
+                    <PatientAdmin />
                   </ProtectedRoute>
                 </PlainLayoutPatient>
               }
