@@ -90,6 +90,24 @@ export const menuItemsUser = [
     path: "/admin/users",
     icon: ClaimIcon,
   },
+  {
+    name: "Patient Claim Req",
+    path: "/doctorAdmin/PatientClaim-Requests",
+    icon: ClaimIcon,
+  },
+  {
+    name: "Profile Settings",
+    path: "/doctorAdmin/Profile-Settings",
+    icon: ClaimIcon,
+  },
+  {
+    name: "Patient-Form",
+    path: "/doctorAdmin/Patient-Form",
+    icon: ClaimIcon,
+  },
+
+  // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
+  // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
 ];
 
 export const CardDashboard = [
@@ -1056,6 +1074,45 @@ export const PatientDashTabledata = [
     ShoppingDate: "16/22/2026",
     quantity: "134",
     status: "pending",
+    action: "View Detail",
+  },
+];
+
+export const headingsPatientClaimReq = [
+  { label: "Claim ID", key: "id" },
+  { label: "Product Name", key: "cName" },
+  { label: "Status", key: "status" },
+  { label: "Date Submitted", key: "DateSubmitted" },
+
+  { label: "Action", key: "action" },
+];
+export const PatientClaimReqData = [
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
+    action: "View Detail",
+  },
+  {
+    id: "#1235",
+    cName: "Argen HT",
+    DateSubmitted: "2025-01-10",
+    status: "active",
     action: "View Detail",
   },
 ];

@@ -9,6 +9,9 @@ import OrderDoctorPage from "./DoctorOrder";
 import DoctorDeailsPage from "./DoctorOrder/DoctorOrderDetail";
 import PatientDashboard from "../PatientAdmin/PatientDashboard";
 import PatientDashboardPage from "../PatientAdmin/PatientDashboard";
+import PatientClaimrequests from "../PatientAdmin/ClaimRequest";
+import ProfileSettings from "../PatientAdmin/ProfileSettings";
+import { PatientForm } from "../PatientAdmin/PatientForm";
 
 const DoctorAdmin = () => {
   return (
@@ -22,7 +25,13 @@ const DoctorAdmin = () => {
         <Route path="/Profile" element={<DoctorProfile />} />
         <Route path="/Orders" element={<OrderDoctorPage />} />
         <Route path="/Details" element={<DoctorDeailsPage />} />
-        {/* <Route path="/Patientdashboard" element={<PatientDashboardPage />} /> */}
+        <Route path="/Patientdashboard" element={<PatientDashboardPage />} />
+        <Route
+          path="/PatientClaim-Requests"
+          element={<PatientClaimrequests />}
+        />
+        <Route path="/Profile-Settings" element={<ProfileSettings />} />
+        <Route path="/Patient-Form" element={<PatientForm />} />
       </Routes>
     </div>
   );
