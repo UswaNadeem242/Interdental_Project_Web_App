@@ -56,7 +56,7 @@ const PatientClaimrequests = () => {
             <PrimaryButtonUI
               title="New Claim Request"
               // onClick={() => setIsOpen(true)}
-              className="text-[#434344] w-full md:w-auto rounded-md px-6 py-3 bg-textField font-poppins"
+              className=" w-full md:w-auto rounded-md px-6 py-3  font-poppins"
             />
           }
         />

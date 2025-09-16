@@ -11,6 +11,7 @@ import PatientDashboard from "../PatientAdmin/PatientDashboard";
 import PatientDashboardPage from "../PatientAdmin/PatientDashboard";
 import PatientClaimrequests from "../PatientAdmin/ClaimRequest";
 import ProfileSettings from "../PatientAdmin/ProfileSettings";
+import { PatientForm } from "../PatientAdmin/PatientForm";
 
 const DoctorAdmin = () => {
   return (
@@ -30,6 +31,7 @@ const DoctorAdmin = () => {
           element={<PatientClaimrequests />}
         />
         <Route path="/Profile-Settings" element={<ProfileSettings />} />
+        <Route path="/Patient-Form" element={<PatientForm />} />
       </Routes>
     </div>
   );

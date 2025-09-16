@@ -80,6 +80,11 @@ export const menuItems = [
     path: "/doctorAdmin/Profile-Settings",
     icon: ClaimIcon,
   },
+  {
+    name: "Patient-Form",
+    path: "/doctorAdmin/Patient-Form",
+    icon: ClaimIcon,
+  },
 
   // { name: "Order", path: "/doctorAdmin/Orders-Details", icon: ClaimIcon },
   // { name: "details", path: "/doctorAdmin/Details", icon: ClaimIcon },
