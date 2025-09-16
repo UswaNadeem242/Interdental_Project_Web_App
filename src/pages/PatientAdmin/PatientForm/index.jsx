@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { InputField } from "../../../Common/FormInputField";
 import { FormSection } from "../../../Common/FormSection";
-// import TeethChart from "../../../../public/assets/TeethChart.png";
+
 export const PatientForm = () => {
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [selectedImplants, setSelectedImplants] = useState([]);
@@ -21,8 +21,8 @@ export const PatientForm = () => {
 
   const InputLabeStyle = `grid grid-cols-1 lg:grid-cols-4 gap-4`;
   return (
-    <div className="p-4 bg-bgWhite ">
-      <div className="p-2  font-poppins font-medium text-sm bg-bgWhite">
+    <div className="bg-bgWhite rounded-2xl ">
+      <div className="p-4  font-poppins font-medium text-sm ">
         {/* Patient Info */}
         <FormSection title="Patient Information">
           <div className={InputLabeStyle}>
@@ -41,32 +41,34 @@ export const PatientForm = () => {
         </FormSection>
 
         {/* Doctor Info */}
-        <FormSection title="Doctor Information">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <InputField label="Dr. Name" />
-            <InputField label="Telephone" />
-            <InputField label="Email Address" type="email" />
-          </div>
+        <div className="mt-6">
+          <FormSection title="Doctor Information">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <InputField label="Dr. Name" />
+              <InputField label="Telephone" />
+              <InputField label="Email Address" type="email" />
+            </div>
 
-          <div className="grid grid-cols-4 gap-4">
-            <InputField label="Address" className="w-full" />
-            <InputField label="City" className="w-full" />
-            <InputField label="State" className="w-full" />
-            <InputField label="Zip" className="w-full" />
-          </div>
+            <div className="grid grid-cols-4 gap-4">
+              <InputField label="Address" className="w-full" />
+              <InputField label="City" className="w-full" />
+              <InputField label="State" className="w-full" />
+              <InputField label="Zip" className="w-full" />
+            </div>
 
-          <div className={InputLabeStyle}>
-            <InputField label="License #" />
-            <InputField label="Total # of units" type="number" />
-            <InputField label="Type of restoration" />
-            <InputField label="Shade" />
-          </div>
+            <div className={InputLabeStyle}>
+              <InputField label="License #" />
+              <InputField label="Total # of units" type="number" />
+              <InputField label="Type of restoration" className="w-full" />
+              <InputField label="Shade" className="w-full" />
+            </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <InputField label="Email Address" type="email" />
-            <InputField label="Dr. Signature" />
-          </div>
-        </FormSection>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <InputField label="Email Address" type="email" />
+              <InputField label="Dr. Signature" />
+            </div>
+          </FormSection>
+        </div>
       </div>
 
       {/* Warranty Options */}
@@ -255,7 +257,7 @@ export const PatientForm = () => {
       </div>
 
       {/*Patient Participation Enrollment Agreement*/}
-      <div className="p-2 bg-bgWhite text-[#949494] border border-[#0000000D] font-poppins">
+      <div className="p-2 m-4 bg-bgWhite text-[#949494] border border-[#0000000D] font-poppins">
         {/* Heading */}
         <div className="border-b border-[#0000000D] pt-3 pl-2 pr-2 ">
           <h2 className="text-sm font-semibold mb-4 text-secondaryBrand">
@@ -304,7 +306,7 @@ export const PatientForm = () => {
 
       {/* Footer */}
 
-      <div>
+      <div className="pb-4">
         <div className="flex items-center justify-center gap-2 mt-12 font-poppins">
           <input
             id="terms"
@@ -325,7 +327,7 @@ export const PatientForm = () => {
           <button className="px-12 py-4 bg-card rounded-full text-primaryText font-medium">
             Go Back
           </button>
-          <button className="px-12 py-4 bg-secondaryBrand text-bgWhite rounded-full ">
+          <button className="px-8 py-4 bg-secondaryBrand text-bgWhite rounded-full ">
             Send Claim Request
           </button>
         </div>
