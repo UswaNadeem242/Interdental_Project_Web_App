@@ -18,19 +18,21 @@ const SubDropdown = ({ label, options, selected, onSelect }) => {
             {/* Options list */}
             {isOpen && (
                 <div className="mt-2 flex flex-wrap gap-2">
-                    {options.map((opt) => (
-                        <button
-                            key={opt}
-                            onClick={() => onSelect(opt)}
-                            className={`px-3 py-1 rounded-full border text-sm 
-                ${selected === opt
-                                    ? "bg-secondaryBrand text-white border-blue-600"
-                                    : " text-gray-700 border border-textField"
-                                }`}
-                        >
-                            {opt}
-                        </button>
-                    ))}
+                    {options.map((opt) => {
+                        const optionLabel = opt?.label ?? String(opt);
+                        const optionValue = opt?.value ?? String(opt);
+                        const selectedValue = selected?.value ?? selected;
+                        const isActive = selectedValue === optionValue;
+                        return (
+                            <button
+                                key={String(optionValue)}
+                                onClick={() => onSelect(opt)}
+                                className={`px-3 py-1 rounded-full border text-sm ${isActive ? "bg-secondaryBrand text-white border-blue-600" : " text-gray-700 border border-textField"}`}
+                            >
+                                {optionLabel}
+                            </button>
+                        );
+                    })}
                 </div>
             )}
         </div>
@@ -38,7 +40,7 @@ const SubDropdown = ({ label, options, selected, onSelect }) => {
 };
 
 // --- Main Dropdown Component ---
-export const ShadeDropdown = () => {
+export const ShadeDropdown = ({ shades = [], onChange = () => { } }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     // State for each sub-dropdown
@@ -46,6 +48,22 @@ export const ShadeDropdown = () => {
     const [selected3D1, setSelected3D1] = useState(null);
     const [selected3D2, setSelected3D2] = useState(null);
 
+    // Keep track of selections from all groups
+    const [selectedShades, setSelectedShades] = useState({});
+
+    // helper → convert children into dropdown options
+    const makeOptions = (parent) =>
+        (parent.children || []).map((child) => ({
+            label: child.name,
+            value: child.id,
+            parent: parent.name,
+        }));
+
+    const handleSelect = (parentName, option) => {
+        const updated = { ...selectedShades, [parentName]: option };
+        setSelectedShades(updated);
+        onChange?.(updated); // ✅ send to parent
+    };
     return (
         <div className=" border border-gray-300 shadow-sm bg-white rounded-xl">
             {/* Main dropdown header */}
@@ -57,17 +75,16 @@ export const ShadeDropdown = () => {
                 <span>{isOpen ? <ChevronUpIcon className="w-3 h-3" /> : <ChevronDownIcon className="w-3 h-3" />}</span>
             </button>
 
-            {isOpen && (
+            {/* {isOpen && (
                 <div className="p-3 space-y-3">
-                    {/* Search input */}
+                   
                     <input
                         type="text"
                         placeholder="Search here..."
                         className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none "
                     />
 
-                    {/* Sub-dropdowns */}
-                    <SubDropdown
+                     <SubDropdown
                         label="Vita Classic Shades"
                         options={["A1", "A2", "A3", "A3.5", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", 'D2', 'D3', 'D4']}
                         selected={selectedClassic}
@@ -87,6 +104,27 @@ export const ShadeDropdown = () => {
                         selected={selected3D2}
                         onSelect={setSelected3D2}
                     />
+                </div>
+            )} */}
+            {isOpen && (
+                <div className="p-3 space-y-3">
+                    {/* Search (optional) */}
+                    <input
+                        type="text"
+                        placeholder="Search here..."
+                        className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none"
+                    />
+
+                    {/* Dynamically render sub-groups from API */}
+                    {Array.isArray(shades) && shades.map((group) => (
+                        <SubDropdown
+                            key={group.id}
+                            label={group.name}
+                            options={makeOptions(group)}
+                            selected={selectedShades[group.name] || null}
+                            onSelect={(opt) => handleSelect(group.name, opt)}
+                        />
+                    ))}
                 </div>
             )}
         </div>

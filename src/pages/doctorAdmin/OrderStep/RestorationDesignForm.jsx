@@ -7,19 +7,18 @@ import StepperTabs from "../../../components/doctorAdmin/StepperTab";
 import ReviewOrder from "./Review";
 import CheckoutForm from "./Checkout";
 import {
-  DIGITAL_DENTURE,
+  // DIGITAL_DENTURE,
   Digital_Option,
-  LAB_OPTIONS,
-  MATERIAL_OPTIONS,
+
   PHOTOGRAMMETRY_FILES,
-  SCANNER_TYPE,
-  SURGICAL_GUIDE,
+
 } from "../../../Constant";
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import DonePage from "./DonePage";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { FileUploadSection } from "../../../components/doctorAdmin/OrderFileSelection";
 import { ShadeDropdown } from "../../../Common/DropDown/NestedDropdown";
+import { orderService } from "../../../services/orderService";
 
 const DoctorOrder = () => {
   // form states
@@ -30,35 +29,46 @@ const DoctorOrder = () => {
   const [patientFirst, setPatientFirst] = useState("");
   const [patientLast, setPatientLast] = useState("");
   const [subscriptionId, setSubscriptionId] = useState("");
-  // tooth & dropdown logic
+  const [selected, setSelected] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [shadeGroups, setShadeGroups] = useState([]);
+
+  const [teethData, setTeethData] = useState([]);       // API ka data
   const [selectedTooth, setSelectedTooth] = useState(null);
+  const [selectedTeeth, setSelectedTeeth] = useState([]); // Array of all selected teeth
   const [toothSelections, setToothSelections] = useState({});
   const currentValues = selectedTooth
     ? toothSelections[selectedTooth] || {}
     : {};
   const handleDropdownChange = (field, value) => {
     if (!selectedTooth) return;
-    // Map field to the corresponding options array
-    const OPTIONS_MAP = {
-      material: MATERIAL_OPTIONS,
-      lab: LAB_OPTIONS,
-      digital_denture: DIGITAL_DENTURE,
-      surgical_guide: SURGICAL_GUIDE,
-      Photogrammetry_files: PHOTOGRAMMETRY_FILES,
-      scannerType: SCANNER_TYPE,
-      digital_option: Digital_Option
-    };
-    const selectedOption =
-      OPTIONS_MAP[field]?.find((opt) => opt.value === value) || null;
+    
+    // Find the selected option to get price
+    let selectedOption = null;
+    let price = 0;
+    
+    // Search in orders for the selected option
+    for (const order of orders) {
+      if (order.children) {
+        const option = order.children.find(child => child.value === value);
+        if (option) {
+          selectedOption = option;
+          price = option.price || 0;
+          break;
+        }
+      }
+    }
+    
     setToothSelections((prev) => ({
       ...prev,
       [selectedTooth]: {
         ...prev[selectedTooth],
         [field]: value,
-        // Only material and digital denture have price (optional)
-        ...(field === "material" || field === "digital_denture"
-          ? { materialPrice: selectedOption?.price || 0 }
-          : {}),
+        // Store price for material field
+        ...(field === "material" ? { materialPrice: price } : {}),
+        // Store option details for reference
+        [`${field}Option`]: selectedOption,
       },
     }));
   };
@@ -72,6 +82,7 @@ const DoctorOrder = () => {
         subscriptionId,
       },
       teeth: toothSelections,
+      selectedTeeth: selectedTeeth,
     };
 
     try {
@@ -129,7 +140,104 @@ const DoctorOrder = () => {
 
     return () => window.removeEventListener("resize", updateSize);
   }, []);
-  const [selected, setSelected] = useState([]);
+  ;
+
+  useEffect(() => {
+    orderService.getOrders()
+      .then((data) => {
+        const raw = data?.data?.data || [];
+
+        const mapped = raw.map((parent) => ({
+          id: parent.id,
+          name: parent.name,
+          type: parent.type,
+          price: parent.price,
+          discountedPrice: parent.discountedPrice,
+          children: parent.name === "Shade"
+            ? (parent.children || []) // keep nested structure for Shade
+            : (parent.children?.map((child) => ({
+                label: child.name,
+                value: child.id,
+                parentId: parent.id,
+                price: child.price,
+              })) || [])
+        }));
+
+        setOrders(mapped);
+
+        // Extract shade groups with grandchildren (codes)
+        const shadeRoot = raw.find((p) => p.name === "Shade");
+        if (shadeRoot && Array.isArray(shadeRoot.children)) {
+          setShadeGroups(shadeRoot.children);
+        } else {
+          setShadeGroups([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching orders:", err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+
+  useEffect(() => {
+    orderService.getTooth()
+      .then((res) => {
+        const raw = res?.data?.data || res?.data || [];
+        const mapped = Array.isArray(raw)
+          ? raw.map((t, idx) => ({
+              id: Number(t.toothNumber) || t.id || (idx + 1),
+              name: t.toothName || `Tooth ${idx + 1}`,
+              fdiNumber: t.fdiNumber,
+              quadrant: t.quadrant,
+              type: t.type,
+              isPermanent: t.isPermanent,
+            }))
+          : [];
+        setTeethData(mapped);
+      })
+      .catch((err) => {
+        console.error("❌ Error fetching teeth:", err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+
+
+
+
+
+
+  console.log('teeth', teethData);
+
+
+  // useEffect(() => {
+  //   orderService.getOrders()
+  //     .then((data) => {
+  //       const raw = data?.data?.data || [];
+
+  //       // Transform into { Scanner: [...], Crown: [...], etc. }
+  //       const mapped = raw.reduce((acc, item) => {
+  //         acc[item.type] = item.children?.map((child) => ({
+  //           label: child.name,
+  //           value: child.id,   // or child.name if you prefer
+  //         })) || [];
+  //         return acc;
+  //       }, {});
+
+  //       setOrders(mapped);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error fetching orders:", err);
+  //     })
+  //     .finally(() => setLoading(false));
+  // }, []);
+  // console.log('order:', orders);
+  // useEffect(() => {
+  //   orderService.getOrders().then((data) => { setOrders(data?.data?.data || []); })
+  //     .catch((err) => { console.error("Error fetching orders:", err); }).finally(() => setLoading(false));
+  // }, []);
+  console.log(' Order:', orders);
 
   return (
     <>
@@ -219,17 +327,40 @@ const DoctorOrder = () => {
                         </p>
                       )}
                     </div>
-                    <MaterialDropdown
+                    {/* <MaterialDropdown
                       className=" w-full rounded-md  bg-textField  px-4 py-3 text-sm text-secondaryBrand  outline-none transition-shadow"
-                      options={SCANNER_TYPE}
+                      // options={SCANNER_TYPE}
+                      // value={toothSelections[selectedTooth]?.scannerType || ""}
+                      // onChange={(val) =>
+                      //   handleDropdownChange("scannerType", val)
+                      // }
+
+                      options={orders.Scanner || []}  // dropdown gets only Scanner children
                       value={toothSelections[selectedTooth]?.scannerType || ""}
-                      onChange={(val) =>
-                        handleDropdownChange("scannerType", val)
-                      }
+
+                      onChange={(val) => { handleDropdownChange("scannerType", val); console.log("Selected Scanner:", val); }}
                       label="Scanner Type"
                       storageKey="scannerType"
                       dropdownClass=' text-secondaryBrand'
+                    /> */}
+
+                    <MaterialDropdown
+                      className=" w-full rounded-md  bg-textField  px-4 py-3 text-sm text-secondaryBrand  outline-none transition-shadow"
+                      options={
+                        (orders.find((p) => p.name === "Scanner")?.children) || []
+                      }
+                      value={toothSelections[selectedTooth]?.scannerType || ""}
+                      onChange={(val) => {
+                        handleDropdownChange("scannerType", val);
+                        console.log("Selected Scanner :", val);
+                      }}
+                      label="Scanner Type"
+                      storageKey="scannerType"
+                      dropdownClass="text-secondaryBrand"
                     />
+
+
+
 
                     <div>
                       <FileUploadSection />
@@ -250,48 +381,70 @@ const DoctorOrder = () => {
                       <div className="grid grid-cols-2 gap-4 mt-5 mb-10">
                         <MaterialDropdown
                           className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                          options={DIGITAL_DENTURE}
-                          value={
-                            toothSelections[selectedTooth]?.digital_denture ||
-                            ""
+                          options={
+                            (orders.find((p) => p.name === "Digital Denture")?.children) || []
                           }
+                          value={
+                            toothSelections[selectedTooth]?.digitalOptions || ""}
                           onChange={(val) =>
-                            handleDropdownChange("digital_denture", val)
+                            handleDropdownChange("digitalOptions", val)
                           }
                           label="Digital Denture"
-                          storageKey="digital_denture"
+                          storageKey="digitalOptions"
                         />
 
+
                         <MaterialDropdown
-                          className="w-full rounded-xl  bg-white     px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                          options={SURGICAL_GUIDE}
-                          value={
-                            toothSelections[selectedTooth]?.surgical_guide || ""
+                          className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                          options={
+                            (orders.find((p) => p.name === "Surgical Guide")?.children) || []
                           }
-                          onChange={(val) =>
-                            handleDropdownChange("surgical_guide", val)
-                          }
-                          label="Surgical guide"
+                          value={toothSelections[selectedTooth]?.surgical_guide || ""}
+                          onChange={(val) => {
+                            handleDropdownChange("surgical_guide", val);
+                            console.log("Selected Surgical Guide:", val);
+                          }}
+                          label="Surgical Guide"
                           storageKey="surgical_guide"
                         />
+
                       </div>
                       <div className="flex flex-wrap gap-2  justify-center flex-col">
                         <button className="text-[#949494] text-sm font-normal  font-poppins">upper Arch</button>
-                        <img src='/assets/doctor/image.png' />
-                        <button className="text-[#949494] text-sm font-normal  font-poppins">Lower Arch</button>
-
-                        {/* <TeethChart
+                        {/* <img src='/assets/doctor/image.png' /> */}
+                        <TeethChart
+                          teeth={teethData && teethData.length ? teethData : undefined}
                           sizePx={chartSize}
-                          initialSelectedIds={[3, 14, 30]}
+                          initialSelectedIds={selectedTeeth}
+                          currentToothId={selectedTooth}
                           onSelect={(arr) => {
                             console.table(arr);
+                            const toothIds = arr.map(t => t.id);
+                            setSelectedTeeth(toothIds);
+                            
                             if (arr.length > 0) {
                               setSelectedTooth(arr[arr.length - 1].id);
                             } else {
                               setSelectedTooth(null);
                             }
                           }}
+                        />
+                        {/* <TeethChart
+                          teeth={teethData}   // ✅ API data pass kar rahe
+                          sizePx={500}
+                          initialSelectedIds={[3, 14, 30]}
+                          onSelect={(arr) => {
+                            console.log("🔵 Selected teeth:", arr);
+
+                            if (arr.length > 0) {
+                              // last selected
+                              setSelectedTooth(arr[arr.length - 1]);
+                            } else {
+                              setSelectedTooth(null);
+                            }
+                          }}
                         /> */}
+                        <button className="text-[#949494] text-sm font-normal  font-poppins">Lower Arch</button>
                       </div>
                     </div>
                   </section>
@@ -301,10 +454,10 @@ const DoctorOrder = () => {
                       <div>
                         <FormSection className="p-0">
                           <MaterialDropdown
-                            options={MATERIAL_OPTIONS}
-                            value={
-                              toothSelections[selectedTooth]?.material || ""
+                            options={
+                              (orders.find((p) => p.name === "Material")?.children) || []
                             }
+                            value={toothSelections[selectedTooth]?.material || ""}
                             onChange={(val) =>
                               handleDropdownChange("material", val)
                             }
@@ -314,7 +467,13 @@ const DoctorOrder = () => {
                           />
 
 
-                          <ShadeDropdown />
+                          <ShadeDropdown
+                            shades={shadeGroups}
+                            onChange={(selected) => {
+                              console.log("Selected Shades:", selected);
+                              // You can persist into state if needed
+                            }}
+                          />
                           <MaterialDropdown
                             options={Digital_Option}
 
@@ -329,9 +488,13 @@ const DoctorOrder = () => {
                           />
 
                           <MaterialDropdown
-                            options={LAB_OPTIONS}
-                            value={toothSelections[selectedTooth]?.lab || ""}
-                            onChange={(val) => handleDropdownChange("lab", val)}
+                            options={
+                              (orders.find((p) => p.name === "Participating Lab")?.children) || []
+                            }
+                            value={toothSelections[selectedTooth]?.Lab || ""} // ✅ selected value
+                            onChange={(val) => {
+                              handleDropdownChange("Lab", val); console.log(' Lab:', val);
+                            }}
                             label="Select Laboratory"
                             storageKey="Participating Lab"
                             className="w-full rounded-xl  bg-white     px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"

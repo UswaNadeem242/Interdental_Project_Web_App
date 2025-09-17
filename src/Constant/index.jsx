@@ -6,15 +6,15 @@ import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
 import UserProfileIcon from "../icon/UserProfileIcon";
-export const MATERIAL_OPTIONS = [
-  { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
-  { value: "argen-ht", label: "Argen HT", price: 45 },
-  { value: "argen-st", label: "Argen ST", price: 50 },
-  { value: "emax", label: "Emax", price: 95 },
-  { value: "aidite", label: "Aidite", price: 85 },
-  { value: "multilayer", label: "Multilayer Pro", price: 75 },
-  { value: "pmma", label: "PMMA", price: 35 },
-];
+// export const MATERIAL_OPTIONS = [
+//   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
+//   { value: "argen-ht", label: "Argen HT", price: 45 },
+//   { value: "argen-st", label: "Argen ST", price: 50 },
+//   { value: "emax", label: "Emax", price: 95 },
+//   { value: "aidite", label: "Aidite", price: 85 },
+//   { value: "multilayer", label: "Multilayer Pro", price: 75 },
+//   { value: "pmma", label: "PMMA", price: 35 },
+// ];
 export const Digital_Option = [
   { value: "quad", label: "Quadrant" },
   { value: "fullarch", label: "Full Arch" },
@@ -27,20 +27,20 @@ export const LAB_OPTIONS = [
   { value: "modern", label: "Modern Dental" },
 ];
 
-export const DIGITAL_DENTURE = [
-  { value: "crown", label: "Crown" },
-  { value: "bridge", label: "Bridge" },
-  { value: "full_denture", label: "Full Denture" },
-  { value: "partial_denture", label: "Partial Denture" },
-];
+// export const DIGITAL_DENTURE = [
+//   { value: "crown", label: "Crown" },
+//   { value: "bridge", label: "Bridge" },
+//   { value: "full_denture", label: "Full Denture" },
+//   { value: "partial_denture", label: "Partial Denture" },
+// ];
 
-export const SURGICAL_GUIDE = [
-  { value: "single_implant_guide", label: "Single Implant Guide" },
-  { value: "multiple_implant_guide", label: "Multiple Implant Guide" },
-  { value: "full_arch", label: "Full Arch Surgical Guide" },
-  { value: "tooth-supported", label: "Tooth-Supported Guide" },
-  { value: "partial_denture", label: "Partial Denture" },
-];
+// export const SURGICAL_GUIDE = [
+//   { value: "single_implant_guide", label: "Single Implant Guide" },
+//   { value: "multiple_implant_guide", label: "Multiple Implant Guide" },
+//   { value: "full_arch", label: "Full Arch Surgical Guide" },
+//   { value: "tooth-supported", label: "Tooth-Supported Guide" },
+//   { value: "partial_denture", label: "Partial Denture" },
+// ];
 
 export const PHOTOGRAMMETRY_FILES = [
   { value: "STL", label: "STL" },
@@ -52,12 +52,12 @@ export const PHOTOGRAMMETRY_FILES = [
   { value: "OrthoCAD", label: "OrthoCAD" },
 ];
 
-export const SCANNER_TYPE = [
-  { value: "3shap", label: "3Shape" },
-  { value: "dentsply_sirona", label: "Dentsply Sirona" },
-  { value: "itero", label: "Itero" },
-  { value: "other", label: "Other" },
-];
+// export const SCANNER_TYPE = [
+//   { value: "3shap", label: "3Shape" },
+//   { value: "dentsply_sirona", label: "Dentsply Sirona" },
+//   { value: "itero", label: "Itero" },
+//   { value: "other", label: "Other" },
+// ];
 
 export const menuItems = [
   {
