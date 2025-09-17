@@ -43,8 +43,7 @@ const MobileSidebar = ({ items }) => {
             const Icon = item.icon;
             const isActive =
               location.pathname.startsWith(item.path) ||
-              (item.name === "Orders" && location.pathname.includes("/details") || item.name === "Claim Requests" && location.pathname.includes("/patient-form") || item.name === "Claim Requests" && location.pathname.includes("/term-condition"));
-
+              (item.name === "Orders" && location.pathname.includes("/order-details") || item.name === "Claim Requests" && location.pathname.includes("/patient-form") || item.name === "Claim Requests" && location.pathname.includes("/term-condition") || item.name === "Orders" && location.pathname.includes("/place-order"));
             return (
               <NavLink
                 key={item.path}

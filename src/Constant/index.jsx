@@ -64,7 +64,7 @@ export const SCANNER_TYPE = [
 export const menuItems = [
   {
     name: "Dashboard",
-    path: "/doctor-admin/doctor-dashboard",
+    path: "/doctor-admin/dashboard",
     icon: DashboardIcon,
   },
   { name: "Orders", path: "/doctor-admin/orders", icon: OrderIcon },
@@ -122,7 +122,7 @@ export const CardDashboard = [
     title: "Total Patients",
     count: "300",
     date: "Jan 01, 2024",
-    path: "/doctorAdmin/dashboard",
+    path: "/doctor-admin/dashboard",
     duedate: "Mar 30, 2024",
     // From jan 01,2024  March 30,2024
     icon: <UserIcon />,
@@ -131,7 +131,7 @@ export const CardDashboard = [
     title: "Orders In Progress",
     count: "36",
     date: "Jan 01, 2024",
-    path: "/doctorAdmin/dashboard",
+    path: "/doctor-admin/dashboard",
     duedate: "Mar 30, 2024",
     icon: <CartIcon />,
   },
@@ -139,7 +139,7 @@ export const CardDashboard = [
     title: "Orders Completed",
     count: "30",
     date: "Jan 01, 2024",
-    path: "/doctorAdmin/dashboard",
+    path: "/doctor-admin/dashboard",
     duedate: "Mar 30, 2024",
     icon: <ProfileIcon />,
   },
@@ -492,7 +492,7 @@ export const dataPatient = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
   {
     id: "#1235",
@@ -503,7 +503,7 @@ export const dataPatient = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
 ];
 
@@ -527,7 +527,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
   {
     id: "#123588",
@@ -538,7 +538,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
   {
     id: "#1235",
@@ -549,7 +549,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
   {
     id: "#1235",
@@ -560,7 +560,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
   {
     id: "#1235",
@@ -572,7 +572,7 @@ export const dataOrder = [
     dName: "Miles, Esther",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
   {
     id: "#1235",
@@ -583,7 +583,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
   {
     id: "#1235",
@@ -594,7 +594,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
   {
     id: "#1235",
@@ -605,7 +605,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
   {
     id: "#1235",
@@ -616,7 +616,7 @@ export const dataOrder = [
     action: "View Detail",
     dName: "Miles, Esther",
     shipping: "16/22/2026",
-    detailUrl: "/doctor-admin/details",
+    detailUrl: "/doctor-admin/order-details",
   },
 ];
 
