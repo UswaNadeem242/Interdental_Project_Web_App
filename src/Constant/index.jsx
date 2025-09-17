@@ -6,6 +6,9 @@ import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
 import UserProfileIcon from "../icon/UserProfileIcon";
+import { DoctorIcon } from "../icon/DoctorIcon";
+import { Crown } from "../icon/Crown";
+import { Revenue } from "../icon/Revenue";
 export const MATERIAL_OPTIONS = [
   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
   { value: "argen-ht", label: "Argen HT", price: 45 },
@@ -18,7 +21,6 @@ export const MATERIAL_OPTIONS = [
 export const Digital_Option = [
   { value: "quad", label: "Quadrant" },
   { value: "fullarch", label: "Full Arch" },
-
 ];
 export const LAB_OPTIONS = [
   { value: "in-house", label: "In-House" },
@@ -72,7 +74,6 @@ export const menuItems = [
     path: "/doctor-admin/claim-request",
     icon: ClaimIcon,
   },
-
 ];
 
 export const menuPatientItem = [
@@ -92,7 +93,6 @@ export const menuPatientItem = [
     icon: UserProfileIcon,
   },
 ];
-
 
 export const menuAdminPanelItem = [
   {
@@ -1121,5 +1121,34 @@ export const PatientClaimReqData = [
     DateSubmitted: "2025-01-10",
     status: "active",
     action: "View Detail",
+  },
+];
+
+//
+
+export const CardAdminPanelDashboard = [
+  {
+    title: "Registered Doctors",
+    count: "500",
+    date: "Jan 01, 2024",
+    path: "/admin-panel/dashboard",
+    duedate: "Mar 30, 2024",
+    icon: <DoctorIcon />,
+  },
+  {
+    title: "Active Subscriptions",
+    count: "300",
+    date: "Jan 01, 2024",
+    path: "/admin-panel/dashboard",
+    duedate: "Mar 30, 2024",
+    icon: <Crown />,
+  },
+  {
+    title: "Revenue",
+    count: "300",
+    date: "Jan 01, 2024",
+    path: "/admin-panel/dashboard",
+    duedate: "Mar 30, 2024",
+    icon: <Revenue />,
   },
 ];
