@@ -40,13 +40,14 @@ export default function TextInput({
   value,
   onChange,
   onBlur,
+  className,
 }) {
   return (
     <div className="w-full">
       {label && (
         <label
           htmlFor={id}
-          className="block md:text-sm text-xs font-medium text-primaryText mb-2"
+          className={`block md:text-sm text-xs font-medium text-primaryText mb-2 ${className}`}
         >
           {label}
         </label>

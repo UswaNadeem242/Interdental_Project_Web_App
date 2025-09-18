@@ -11,8 +11,8 @@ export default function PatientClaimForm() {
           <label className="block text-sm mb-1  text-[#333A44]  font-semibold">
             Product Name
           </label>
-          <select className="w-full rounded-md border  border-borderPrimary px-3 py-2 text-sm focus:outline-none">
-            <option>Select Product</option>
+          <select className="w-full rounded-md border text-[#737791]  border-borderPrimary px-3 py-2 text-sm focus:outline-none">
+            <option className="">Select Product</option>
           </select>
         </div>
 
@@ -23,7 +23,7 @@ export default function PatientClaimForm() {
           </label>
           <input
             type="date"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none"
+            className="w-full rounded-md border text-[#737791] border-gray-300 px-3 py-2 text-sm focus:outline-none"
           />
         </div>
 

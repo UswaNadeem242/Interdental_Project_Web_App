@@ -24,7 +24,7 @@ export const PatientForm = () => {
 
   return (
     <div className="bg-bgWhite rounded-2xl ">
-      <div className="p-4  font-poppins font-medium text-sm ">
+      <div className="p-4  font-poppins font-medium text-sm  ">
         {/* Patient Info */}
         <FormSection title="Patient Information">
           <div className={InputLabeStyle}>
@@ -34,8 +34,8 @@ export const PatientForm = () => {
             <InputField label="Date of Birth" />
           </div>
 
-          <div className={InputLabeStyle}>
-            <InputField label="Address" />
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+            <InputField label="Address" className="lg:col-span-2" />
             <InputField label="City" />
             <InputField label="State" />
             <InputField label="Zip" />
@@ -46,23 +46,23 @@ export const PatientForm = () => {
         <div className="mt-6">
           <FormSection title="Doctor Information">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <InputField label="Dr. Name" />
-              <InputField label="Telephone" />
+              <InputField label="Dr. Name:" />
+              <InputField label="Telephone:" />
               <InputField label="Email Address" type="email" />
             </div>
 
-            <div className="grid grid-cols-4 gap-4">
-              <InputField label="Address" className="w-full" />
-              <InputField label="City" className="w-full" />
-              <InputField label="State" className="w-full" />
-              <InputField label="Zip" className="w-full" />
+            <div className={InputLabeStyle}>
+              <InputField label="Address" className="" />
+              <InputField label="City" className="" />
+              <InputField label="State" className="" />
+              <InputField label="Zip" className="" />
             </div>
 
             <div className={InputLabeStyle}>
               <InputField label="License #" />
               <InputField label="Total # of units" type="number" />
-              <InputField label="Type of restoration" className="w-full" />
-              <InputField label="Shade" className="w-full" />
+              <InputField label="Type of restoration" className="" />
+              <InputField label="Shade" className="ml-8" />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -75,34 +75,34 @@ export const PatientForm = () => {
 
       {/* Warranty Options */}
 
-      <div className="pl-6 pr-6 pb-6  bg-bgWhite font-poppins ">
+      <div className="pl-6 pr-6 pb-6 ml-2  bg-bgWhite font-poppins ">
         <div className=" mt-6 grid grid-cols-1 lg:grid-cols-2 ">
           {/* Left Side */}
           <div className="">
             <div className="pb-3 mb-4">
-              <h2 className="text-sm font-semibold text-[#434343]">
+              <h2 className="text-base font-semibold mb-2 text-[#434343]">
                 Warranty Options
               </h2>
             </div>
             {/* Crown */}
-            <h3 className="mb-4 text-secondaryBrand font-semibold">
+            <h3 className="mb-5 text-secondaryBrand  font-semibold">
               Schedule A
             </h3>
-            <h4 className="font-medium text-secondaryBrand mb-2">
+            <h4 className="font-medium text-secondaryBrand mb-4">
               Crown And Bridges, Onlays/Inlays And Veneers:
               <span className="ml-5">{` ${selectedTeeth}`}</span>
             </h4>
 
-            <div className="grid grid-cols-12 gap-2 mb-6">
+            <div className="flex flex-row flex-wrap gap-2 mb-6 ">
               {Array.from({ length: 32 }, (_, i) => i + 1).map((num) => (
                 <button
                   key={num}
                   onClick={() => toggleSelection(num, "teeth")}
-                  className={`w-8 h-8 rounded-md border text-sm flex items-center justify-center 
+                  className={`w-8 h-8 px-5 py-4 rounded-lg border text-sm font-medium flex items-center justify-center 
                   ${
                     selectedTeeth.includes(num)
                       ? "bg-[#94D3DD] text-secondaryBrand"
-                      : "bg-gray-100 hover:bg-gray-200"
+                      : " "
                   }`}
                 >
                   {num}
@@ -111,20 +111,20 @@ export const PatientForm = () => {
             </div>
 
             {/* Implant */}
-            <h4 className="font-medium text-secondaryBrand mb-2">
+            <h4 className="font-medium text-secondaryBrand mb-4">
               Implant Related Crown And Bridges:
               <span className="ml-6">{` ${selectedImplants}`}</span>
             </h4>
-            <div className="grid grid-cols-12 gap-2 mb-6">
+            <div className="flex flex-row flex-wrap gap-2 mb-6">
               {Array.from({ length: 32 }, (_, i) => i + 1).map((num) => (
                 <button
                   key={num}
                   onClick={() => toggleSelection(num, "implants")}
-                  className={`w-8 h-8 rounded-md border text-sm flex items-center justify-center 
+                  className={`w-8 h-8 px-5 py-4  rounded-lg border font-medium text-sm flex items-center justify-center 
                   ${
                     selectedImplants.includes(num)
                       ? "bg-[#94D3DD] text-secondaryBrand"
-                      : "bg-gray-100 hover:bg-gray-200"
+                      : ""
                   }`}
                 >
                   {num}
@@ -133,24 +133,26 @@ export const PatientForm = () => {
             </div>
 
             {/* Dentures */}
-            <h4 className="font-medium text-secondaryBrand mb-2">
-              Dentures And Partials
-            </h4>
-            <div className="flex gap-4 mb-6 font-semibold text-medium">
-              {["Full Upper", "Full Lower", "Partial"].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => setSelectedDenture(option)}
-                  className={`px-4 py-2 border rounded-md shadow-sm 
+            <div className="mt-4">
+              <h4 className="font-medium text-secondaryBrand mb-4 mt-8">
+                Dentures And Partials
+              </h4>
+              <div className="flex gap-4  font-semibold text-medium">
+                {["Full Upper", "Full Lower", "Partial"].map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setSelectedDenture(option)}
+                    className={`px-4 py-2 border rounded-md shadow-sm font-medium 
                   ${
                     selectedDenture === option
                       ? "bg-[#94D3DD] text-secondaryBrand"
                       : "bg-white hover:bg-gray-100"
                   }`}
-                >
-                  {option}
-                </button>
-              ))}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -165,8 +167,10 @@ export const PatientForm = () => {
       </div>
 
       {/* Select From Options Form */}
-      <div className="p-6  bg-bgWhite font-poppins text-secondaryBrand">
-        <h4>Please select from the following options:</h4>
+      <div className="p-6 ml-2  bg-bgWhite font-poppins text-secondaryBrand">
+        <h4 className="mb-8 font-medium">
+          Please select from the following options:
+        </h4>
         <div className="flex gap-10 md:flex-row flex-col ">
           {[
             "Total Crown/Bridges",
@@ -187,7 +191,7 @@ export const PatientForm = () => {
           ))}
         </div>
 
-        <div className="mt-6 font-light text-xs italic">
+        <div className="mt-6  font-normal text-xs italic">
           <h4>
             Crown/Bridges/Onlays/Inlays/Veneers: $9 per month for 36 months- $6
             per month for 72 months- $5 per month for 144 monthsImplant Related
@@ -200,10 +204,10 @@ export const PatientForm = () => {
       </div>
 
       {/*Patient Participation Enrollment Agreement*/}
-      <div className="p-2 m-4 bg-bgWhite text-[#949494] border border-[#0000000D] font-poppins">
+      <div className="p-2 mx-4 bg-bgWhite text-[#949494] border border-[#0000000D] font-poppins">
         {/* Heading */}
         <div className="border-b border-[#0000000D] pt-3 pl-2 pr-2 ">
-          <h2 className="text-sm font-semibold mb-4 text-secondaryBrand">
+          <h2 className="text-sm font-semibold mb-4 text-primaryText">
             Patient Participation Enrollment Agreements
           </h2>
         </div>
@@ -256,10 +260,11 @@ export const PatientForm = () => {
             type="checkbox"
             className="h-4 w-4 text-[#00538F] border-gray-300 rounded-lg focus:ring-blue-500 "
           />
-          <p className="text-[#8E8E8E] text-sm font-light">
+          <p className="text-[#8E8E8E] text-sm font-normal">
             Yes, I understand and agree to the
             <span className="text-secondaryBrand ">
-              <NavLink to="/patientadmin/term-condition" className="underline">
+              <NavLink to="/patient-admin/term-condition" className="underline">
+                <span className="ml-1" />
                 Terms of Service.
               </NavLink>
             </span>
@@ -267,10 +272,10 @@ export const PatientForm = () => {
         </div>
 
         <div className="flex gap-4 pt-10 items-center justify-center font-poppins ">
-          <button className="px-12 py-4 bg-card rounded-full text-primaryText font-medium">
+          <button className="px-16 py-4 bg-card rounded-full text-primaryText font-medium">
             Go Back
           </button>
-          <button className="px-8 py-4 bg-secondaryBrand text-bgWhite rounded-full ">
+          <button className="px-16 py-4 bg-secondaryBrand text-bgWhite rounded-full ">
             Send Claim Request
           </button>
         </div>
