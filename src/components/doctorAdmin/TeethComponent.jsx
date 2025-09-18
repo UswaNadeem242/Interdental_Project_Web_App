@@ -39,10 +39,10 @@ export default function TeethChart({
     currentToothId = null,
 }) {
     const [selectedIds, setSelectedIds] = useState([]);
-    
+
     // Use API data if provided, otherwise fall back to default teeth
     const teethData = teeth && teeth.length > 0 ? teeth : defaultTeeth;
-     const toothSize = Math.max(40, Math.floor(sizePx * 0.1));
+    const toothSize = Math.max(40, Math.floor(sizePx * 0.1));
     const centerX = sizePx / 2;
     const centerY = sizePx / 2;
     const upper = teethData.slice(0, 16);
@@ -56,17 +56,38 @@ export default function TeethChart({
         [lower.length, sizePx]
     );
 
-    const toggle = tooth => {
+    // const toggle = tooth => {
+    //     const next = selectedIds.includes(tooth.id)
+    //         ? selectedIds.filter(id => id !== tooth.id)
+    //         : [...selectedIds, tooth.id];
+    //     setSelectedIds(next);
+    //     if (onSelect) {
+    //         onSelect(next.map(id => {
+    //             const t = teethData.find(x => x.id === id);
+    //             const fdi = toFDI(id);
+    //             return { ...t, fdi, palmer: toPalmerFromFDI(fdi) };
+    //         }));
+    //     }
+    // };
+    // const [selectedIds, setSelectedIds] = useState([]);
+    const [currentTooth, setCurrentTooth] = useState(null);
+
+    const toggle = (tooth) => {
         const next = selectedIds.includes(tooth.id)
-            ? selectedIds.filter(id => id !== tooth.id)
+            ? selectedIds.filter((id) => id !== tooth.id)
             : [...selectedIds, tooth.id];
+
         setSelectedIds(next);
+        setCurrentTooth(tooth.id); // ✅ keep the latest as "current"
+
         if (onSelect) {
-            onSelect(next.map(id => {
-                const t = teethData.find(x => x.id === id);
-                const fdi = toFDI(id);
-                return { ...t, fdi, palmer: toPalmerFromFDI(fdi) };
-            }));
+            onSelect(
+                next.map((id) => {
+                    const t = teethData.find((x) => x.id === id);
+                    const fdi = toFDI(id);
+                    return { ...t, fdi, palmer: toPalmerFromFDI(fdi) };
+                })
+            );
         }
     };
 
@@ -75,14 +96,14 @@ export default function TeethChart({
             {upper.map((t, i) => (
                 <ToothButton key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
                     size={toothSize} x={upperPos[i].x} y={upperPos[i].y}
-                    selected={selectedIds.includes(t.id)} 
+                    selected={selectedIds.includes(t.id)}
                     isCurrent={currentToothId === t.id}
                     onClick={() => toggle(t)} showId={showIds} />
             ))}
             {lower.map((t, i) => (
                 <ToothButton key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
                     size={toothSize} x={lowerPos[i].x} y={lowerPos[i].y}
-                    selected={selectedIds.includes(t.id)} 
+                    selected={selectedIds.includes(t.id)}
                     isCurrent={currentToothId === t.id}
                     onClick={() => toggle(t)} showId={showIds} />
             ))}
@@ -130,12 +151,25 @@ function ToothButton({ tooth, fdi, palmer, size, x, y, selected, isCurrent, onCl
             }}
         >
             {/* Tooth image */}
-            <img
+
+
+            {tooth.id}
+
+            {/* <img
                 src={`/teeth/${tooth.id}.png`}
-                alt={tooth.name}
+                alt={tooth.id}
                 className={`object-contain mx-auto my-auto ${getShadowColor()}`}
                 style={{ width: "100%", height: "100%" }}
-            />
+            /> */}
+
+
+            {selected && !isCurrent && (
+                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-xs px-2 py-1 rounded shadow-md border">
+                    <p className="font-semibold">{tooth.name}</p>
+                    <p>FDI: {fdi}</p>
+                    <p>Palmer: {palmer}</p>
+                </div>
+            )}
 
             {/* Optional ID */}
             {showId && (

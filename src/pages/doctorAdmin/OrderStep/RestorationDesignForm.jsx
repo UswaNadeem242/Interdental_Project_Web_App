@@ -39,10 +39,6 @@ const DoctorOrder = () => {
   const [selectedTooth, setSelectedTooth] = useState(null);
   const [selectedTeeth, setSelectedTeeth] = useState([]); // Array of all selected teeth
   const [toothSelections, setToothSelections] = useState({});
-  // const [activeIndex, setActiveIndex] = useState(0);
-
-  // const next = () => setActiveIndex((prev) => Math.min(prev + 1, 3)); // max 3 steps
-  // const prev = () => setActiveIndex((prev) => Math.max(prev - 1, 0));
 
   const currentValues = selectedTooth
     ? toothSelections[selectedTooth] || {}
@@ -147,7 +143,7 @@ const DoctorOrder = () => {
   ;
 
   useEffect(() => {
-    orderService.getOrders()
+    orderService.getDropDown()
       .then((data) => {
         const raw = data?.data?.data || [];
 
@@ -182,8 +178,6 @@ const DoctorOrder = () => {
       })
       .finally(() => setLoading(false));
   }, []);
-
-
   useEffect(() => {
     orderService.getTooth()
       .then((res) => {
@@ -214,8 +208,6 @@ const DoctorOrder = () => {
   const selectedMaterial = materialOptions.find(
     (opt) => opt.value === selectedMaterialValue
   );
-
-
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -253,12 +245,14 @@ const DoctorOrder = () => {
                         onChange={setOfficeReg}
                         placeholder="Office registration number"
                       />
+                      <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Create Date</lable>
                       <LabeledInput
                         label="Create Date"
                         type="date"
                         value={createDate}
                         onChange={setCreateDate}
                       />
+                      <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Case expected due date</lable>
                       <LabeledInput
                         label="Case expected due date"
                         type="date"
@@ -304,23 +298,6 @@ const DoctorOrder = () => {
                         </p>
                       )}
                     </div>
-                    {/* <MaterialDropdown
-                      className=" w-full rounded-md  bg-textField  px-4 py-3 text-sm text-secondaryBrand  outline-none transition-shadow"
-                      // options={SCANNER_TYPE}
-                      // value={toothSelections[selectedTooth]?.scannerType || ""}
-                      // onChange={(val) =>
-                      //   handleDropdownChange("scannerType", val)
-                      // }
-
-                      options={orders.Scanner || []}  // dropdown gets only Scanner children
-                      value={toothSelections[selectedTooth]?.scannerType || ""}
-
-                      onChange={(val) => { handleDropdownChange("scannerType", val); console.log("Selected Scanner:", val); }}
-                      label="Scanner Type"
-                      storageKey="scannerType"
-                      dropdownClass=' text-secondaryBrand'
-                    /> */}
-
                     <MaterialDropdown
                       className=" w-full rounded-md  bg-textField  px-4 py-3 text-sm text-secondaryBrand  outline-none transition-shadow"
                       options={
@@ -335,10 +312,6 @@ const DoctorOrder = () => {
                       storageKey="scannerType"
                       dropdownClass="text-secondaryBrand"
                     />
-
-
-
-
                     <div>
                       <FileUploadSection />
                     </div>
