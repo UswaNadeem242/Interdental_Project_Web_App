@@ -18,10 +18,11 @@ const ReviewOrder = ({ next }) => {
     }
   }, []);
 
-  const totalPrice = Object.values(formData.teeth).reduce(
-    (sum, tooth) => sum + (tooth.materialPrice || 0),
-    0
-  );
+
+  // const totalPrice = Object.values(formData.teeth).reduce(
+  //   (sum, tooth) => sum + (tooth.materialPrice || 0),
+  //   0
+  // );
   return (
     <div className=" ">
       <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -40,7 +41,7 @@ const ReviewOrder = ({ next }) => {
                   Doctor’s Name
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins ">
-                  {formData.doctor.doctorName}
+                  {formData?.doctor?.doctorName || "N/A"}
                 </p>
               </div>
               <div>
@@ -48,7 +49,7 @@ const ReviewOrder = ({ next }) => {
                   Office Registration#
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {formData.doctor.officeReg}
+                  {formData?.doctor?.officeReg || "N/A"}
                 </p>
               </div>
               <div>
@@ -56,7 +57,7 @@ const ReviewOrder = ({ next }) => {
                   Create Date
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {formData.doctor.createDate}
+                  {formData?.doctor?.createDate || "N/A"}
                 </p>
               </div>
               <div>
@@ -64,7 +65,7 @@ const ReviewOrder = ({ next }) => {
                   Due Date
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {formData.doctor.dueDate}
+                  {formData?.doctor?.dueDate || "N/A"}
                 </p>
               </div>
             </div>
@@ -79,19 +80,19 @@ const ReviewOrder = ({ next }) => {
               <div>
                 <p className="text-[#949494]">First Name</p>
                 <p className="font-normal text-secondaryBrand  md:text-sm text-base font-poppins">
-                  {formData.patient.firstName}
+                  {formData?.patient?.firstName || "N/A"}
                 </p>
               </div>
               <div>
                 <p className="text-[#949494]">Last Name</p>
                 <p className="font-normal text-secondaryBrand  md:text-sm text-base font-poppins">
-                  {formData.patient.lastName}
+                  {formData?.patient?.lastName || "N/A"}
                 </p>
               </div>
               <div>
                 <p className="text-[#949494]">Subscription ID</p>
                 <p className="font-normal text-secondaryBrand  md:text-sm text-base font-poppins">
-                  {formData.patient.subscriptionId}
+                  {formData?.patient?.subscriptionId || "N/A"}
                 </p>
               </div>
             </div>
@@ -141,8 +142,8 @@ const ReviewOrder = ({ next }) => {
             </h3>
             <hr className="border-gray-200 my-2" />
             <div className="space-y-4">
-              {selectedTeeth.map((toothId) => {
-                const tooth = formData.teeth[toothId] || {};
+              {selectedTeeth?.map((toothId) => {
+                const tooth = formData?.teeth?.[toothId] || {};
                 return (
                   <div key={toothId} className="border border-gray-200 p-3 rounded-lg">
                     <h4 className="font-semibold text-sm mb-2 text-secondaryBrand">
@@ -228,7 +229,7 @@ const ReviewOrder = ({ next }) => {
             <div className="grid grid-cols-1   gap-4 text-sm sm:text-base">
               <div>
                 <p className="text-[#949494]  font-normal text-xs font-poppins pb-2">
-                  {formData.doctor.doctorName}
+                  {formData?.doctor?.doctorName}
                 </p>
                 <p className="font-normal text-secondaryBrand  text-xs font-poppins ">
                   {formData?.note}
@@ -246,14 +247,14 @@ const ReviewOrder = ({ next }) => {
             </h2>
             <div className="space-y-3 text-sm">
               {selectedTeeth.map((toothId) => {
-                const tooth = formData.teeth[toothId] || {};
+                const tooth = formData?.teeth?.[toothId] || {};
                 return (
                   <div key={toothId} className="flex justify-between ">
                     <span className="text-[#828386] font-poppins text-sm">
-                      {tooth.material ? `${tooth.material} x1` : "N/A"}
+                      {tooth?.material ? `${tooth?.material} x1` : "N/A"}
                     </span>
                     <span className="text-[#1A1A1A] font-poppins text-sm">
-                      ${tooth.materialPrice || 0}
+                      ${tooth?.materialPrice || 0}
                     </span>
                   </div>
                 );
@@ -264,7 +265,7 @@ const ReviewOrder = ({ next }) => {
                   Subtotal :
                 </span>
                 <span className=" font-semibold text-[#1A1A1A]">
-                  ${totalPrice}
+                  {/* ${totalPrice} */}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -275,7 +276,7 @@ const ReviewOrder = ({ next }) => {
               </div>
               <div className="flex justify-between font-normal text-secondaryBrand text-lg mt-4 border-t border-gray-200 pt-2">
                 <span>Total</span>
-                <span>${totalPrice}</span>
+                {/* <span>${totalPrice}</span> */}
               </div>
             </div>
           </div>

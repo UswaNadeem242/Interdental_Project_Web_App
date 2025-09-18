@@ -1,6 +1,6 @@
 // import api from "./lib/api";
 
-import api from "./lib";
+import api from "../lib/index";
 
 export const orderService = {
   getDropDown: () => api.get("/api/dropdown/getAll"),
@@ -11,8 +11,6 @@ export const orderService = {
         "Content-Type": "multipart/form-data" 
       },
     }),
-  // getOrderDetails: (id) => api.get(`/orders/${id}`),
-  // createOrder: (payload) => api.post("/orders", payload),
 };
 
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { orderService } from "../../../services/orderService";
+import { orderService } from "../../../services/order-service/index";
 
 const CheckoutForm = ({ next }) => {
   const [loading, setLoading] = useState(false);
