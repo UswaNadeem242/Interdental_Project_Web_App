@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({next}) => {
   const [formData, setFormData] = useState({
     fullName: "",
     contactNumber: "",
@@ -285,7 +285,7 @@ const CheckoutForm = () => {
                   </div>
                 </div>
               </div>
-              <button className="mt-6 w-full py-4 rounded-3xl bg-[rgba(0,29,88,1)] hover:bg-blue-800 text-white font-medium">
+              <button className="mt-6 w-full py-4 rounded-3xl bg-[rgba(0,29,88,1)] hover:bg-blue-800 text-white font-medium" onClick={next}>
                 Place Order
               </button>
             </div>

@@ -26,6 +26,7 @@ const DoctorOrder = () => {
   const [officeReg, setOfficeReg] = useState("");
   const [createDate, setCreateDate] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [note, setNote] = useState("");
   const [patientFirst, setPatientFirst] = useState("");
   const [patientLast, setPatientLast] = useState("");
   const [subscriptionId, setSubscriptionId] = useState("");
@@ -38,16 +39,21 @@ const DoctorOrder = () => {
   const [selectedTooth, setSelectedTooth] = useState(null);
   const [selectedTeeth, setSelectedTeeth] = useState([]); // Array of all selected teeth
   const [toothSelections, setToothSelections] = useState({});
+  // const [activeIndex, setActiveIndex] = useState(0);
+
+  // const next = () => setActiveIndex((prev) => Math.min(prev + 1, 3)); // max 3 steps
+  // const prev = () => setActiveIndex((prev) => Math.max(prev - 1, 0));
+
   const currentValues = selectedTooth
     ? toothSelections[selectedTooth] || {}
     : {};
   const handleDropdownChange = (field, value) => {
     if (!selectedTooth) return;
-    
+
     // Find the selected option to get price
     let selectedOption = null;
     let price = 0;
-    
+
     // Search in orders for the selected option
     for (const order of orders) {
       if (order.children) {
@@ -59,7 +65,7 @@ const DoctorOrder = () => {
         }
       }
     }
-    
+
     setToothSelections((prev) => ({
       ...prev,
       [selectedTooth]: {
@@ -83,17 +89,14 @@ const DoctorOrder = () => {
       },
       teeth: toothSelections,
       selectedTeeth: selectedTeeth,
+      note: note
     };
-
     try {
       localStorage.setItem("restorationForm", JSON.stringify(data));
       next();
     } catch (e) {
       console.error(e);
     }
-
-    console.log("Restoration form saved:", data);
-
     const totalMaterialPrice = Object.values(toothSelections).reduce(
       (sum, tooth) => sum + (tooth.materialPrice || 0),
       0
@@ -113,9 +116,10 @@ const DoctorOrder = () => {
     { id: "s4", title: "Completion" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
-  const next = () => {
-    if (activeIndex < steps.length - 1) setActiveIndex(activeIndex + 1);
-  };
+  // const next = () => {
+  //   if (activeIndex < steps.length - 1) setActiveIndex(activeIndex + 1);
+  // };
+  const next = () => setActiveIndex((prev) => Math.min(prev + 1, 3))
   const back = () => {
     if (activeIndex > 0) setActiveIndex(activeIndex - 1);
   };
@@ -156,11 +160,11 @@ const DoctorOrder = () => {
           children: parent.name === "Shade"
             ? (parent.children || []) // keep nested structure for Shade
             : (parent.children?.map((child) => ({
-                label: child.name,
-                value: child.id,
-                parentId: parent.id,
-                price: child.price,
-              })) || [])
+              label: child.name,
+              value: child.id,
+              parentId: parent.id,
+              price: child.price,
+            })) || [])
         }));
 
         setOrders(mapped);
@@ -186,13 +190,13 @@ const DoctorOrder = () => {
         const raw = res?.data?.data || res?.data || [];
         const mapped = Array.isArray(raw)
           ? raw.map((t, idx) => ({
-              id: Number(t.toothNumber) || t.id || (idx + 1),
-              name: t.toothName || `Tooth ${idx + 1}`,
-              fdiNumber: t.fdiNumber,
-              quadrant: t.quadrant,
-              type: t.type,
-              isPermanent: t.isPermanent,
-            }))
+            id: Number(t.toothNumber) || t.id || (idx + 1),
+            name: t.toothName || `Tooth ${idx + 1}`,
+            fdiNumber: t.fdiNumber,
+            quadrant: t.quadrant,
+            type: t.type,
+            isPermanent: t.isPermanent,
+          }))
           : [];
         setTeethData(mapped);
       })
@@ -201,43 +205,16 @@ const DoctorOrder = () => {
       })
       .finally(() => setLoading(false));
   }, []);
+  const materialOptions =
+    orders.find((p) => p.name === "Material")?.children || [];
 
+  const selectedMaterialValue = toothSelections[selectedTooth]?.material || "";
 
+  // find the label of the selected material
+  const selectedMaterial = materialOptions.find(
+    (opt) => opt.value === selectedMaterialValue
+  );
 
-
-
-
-
-  console.log('teeth', teethData);
-
-
-  // useEffect(() => {
-  //   orderService.getOrders()
-  //     .then((data) => {
-  //       const raw = data?.data?.data || [];
-
-  //       // Transform into { Scanner: [...], Crown: [...], etc. }
-  //       const mapped = raw.reduce((acc, item) => {
-  //         acc[item.type] = item.children?.map((child) => ({
-  //           label: child.name,
-  //           value: child.id,   // or child.name if you prefer
-  //         })) || [];
-  //         return acc;
-  //       }, {});
-
-  //       setOrders(mapped);
-  //     })
-  //     .catch((err) => {
-  //       console.error("Error fetching orders:", err);
-  //     })
-  //     .finally(() => setLoading(false));
-  // }, []);
-  // console.log('order:', orders);
-  // useEffect(() => {
-  //   orderService.getOrders().then((data) => { setOrders(data?.data?.data || []); })
-  //     .catch((err) => { console.error("Error fetching orders:", err); }).finally(() => setLoading(false));
-  // }, []);
-  console.log(' Order:', orders);
 
   return (
     <>
@@ -372,6 +349,7 @@ const DoctorOrder = () => {
                       <textarea
                         rows={2}
                         placeholder="Write here"
+                        onChange={(e) => setNote(e.target.value)}
                         className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none  "
                       />
                     </FormSection>
@@ -421,7 +399,7 @@ const DoctorOrder = () => {
                             console.table(arr);
                             const toothIds = arr.map(t => t.id);
                             setSelectedTeeth(toothIds);
-                            
+
                             if (arr.length > 0) {
                               setSelectedTooth(arr[arr.length - 1].id);
                             } else {
@@ -429,21 +407,6 @@ const DoctorOrder = () => {
                             }
                           }}
                         />
-                        {/* <TeethChart
-                          teeth={teethData}   // ✅ API data pass kar rahe
-                          sizePx={500}
-                          initialSelectedIds={[3, 14, 30]}
-                          onSelect={(arr) => {
-                            console.log("🔵 Selected teeth:", arr);
-
-                            if (arr.length > 0) {
-                              // last selected
-                              setSelectedTooth(arr[arr.length - 1]);
-                            } else {
-                              setSelectedTooth(null);
-                            }
-                          }}
-                        /> */}
                         <button className="text-[#949494] text-sm font-normal  font-poppins">Lower Arch</button>
                       </div>
                     </div>
@@ -453,7 +416,7 @@ const DoctorOrder = () => {
                     <div className="flex  flex-col justify-between">
                       <div>
                         <FormSection className="p-0">
-                          <MaterialDropdown
+                          {/* <MaterialDropdown
                             options={
                               (orders.find((p) => p.name === "Material")?.children) || []
                             }
@@ -464,6 +427,16 @@ const DoctorOrder = () => {
                             label="Material"
                             storageKey="material"
                             className="w-full rounded-xl  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                          /> */}
+
+
+                          <MaterialDropdown
+                            options={materialOptions}
+                            value={selectedMaterialValue}
+                            onChange={(val) => handleDropdownChange("material", val)}
+                            label="Material"
+                            storageKey="material"
+                            className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                           />
 
 
@@ -524,8 +497,11 @@ const DoctorOrder = () => {
                                 key={toothId}
                                 className="flex justify-between items-center py-1"
                               >
-                                <p className="text-xs text-textFieldHeading">
+                                {/* <p className="text-xs text-textFieldHeading">
                                   {values.material || "No Material"} x1
+                                </p> */}
+                                <p className="text-xs text-textFieldHeading">
+                                  {selectedMaterial?.label || "No Material"} x1
                                 </p>
                                 <p className="text-xs font-medium">
                                   ${values.materialPrice || 0}

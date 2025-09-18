@@ -42,8 +42,7 @@ export default function TeethChart({
     
     // Use API data if provided, otherwise fall back to default teeth
     const teethData = teeth && teeth.length > 0 ? teeth : defaultTeeth;
-    console.log("uswa teethData",teethData);
-    const toothSize = Math.max(40, Math.floor(sizePx * 0.1));
+     const toothSize = Math.max(40, Math.floor(sizePx * 0.1));
     const centerX = sizePx / 2;
     const centerY = sizePx / 2;
     const upper = teethData.slice(0, 16);

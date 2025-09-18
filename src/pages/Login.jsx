@@ -48,7 +48,7 @@ const Login = () => {
       login(response.data.data.users, response.data.data.accessToken);
       console.log("test", response);
       if (response.data.data.users.roles[0] === "ADMIN") {
-        navigate("/doctoradmin/doctordashboard");
+        navigate("/doctor-admin/dashboard");
       } else if (response.data.data.users.roles[0] === "PATIENT") {
         navigate("/");
       } else {

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 
-const ReviewOrder = () => {
+const ReviewOrder = ({ next }) => {
   const [formData, setFormData] = useState({
     doctor: {},
     patient: {},
     teeth: {},
     selectedTeeth: [],
   });
-
   const [selectedTeeth, setSelectedTeeth] = useState([]);
 
   useEffect(() => {
@@ -229,10 +228,10 @@ const ReviewOrder = () => {
             <div className="grid grid-cols-1   gap-4 text-sm sm:text-base">
               <div>
                 <p className="text-[#949494]  font-normal text-xs font-poppins pb-2">
-                  Dr,weed bran
+                  {formData.doctor.doctorName}
                 </p>
                 <p className="font-normal text-secondaryBrand  text-xs font-poppins ">
-                  kindly Use strong material for the upper teeth for better{" "}
+                  {formData?.note}
                 </p>
               </div>
             </div>
@@ -280,7 +279,7 @@ const ReviewOrder = () => {
               </div>
             </div>
           </div>
-          <button className="mt-6 w-full py-3 rounded-3xl bg-secondaryBrand  text-white font-medium">
+          <button className="mt-6 w-full py-3 rounded-3xl bg-secondaryBrand  text-white font-medium" onClick={next}>
             Checkout
           </button>
         </div>
