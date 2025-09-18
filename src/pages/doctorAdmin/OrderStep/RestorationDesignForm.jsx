@@ -38,11 +38,7 @@ const DoctorOrder = () => {
   const [teethData, setTeethData] = useState([]);       // API ka data
   const [selectedTooth, setSelectedTooth] = useState(null);
   const [selectedTeeth, setSelectedTeeth] = useState([]); // Array of all selected teeth
-  const [toothSelections, setToothSelections] = useState({});
-  // const [activeIndex, setActiveIndex] = useState(0);
-
-  // const next = () => setActiveIndex((prev) => Math.min(prev + 1, 3)); // max 3 steps
-  // const prev = () => setActiveIndex((prev) => Math.max(prev - 1, 0));
+  const [toothSelections, setToothSelections] = useState({}); 
 
   const currentValues = selectedTooth
     ? toothSelections[selectedTooth] || {}
@@ -303,24 +299,7 @@ const DoctorOrder = () => {
                           {selected.length > 0 ? selected.join(", ") : ""}
                         </p>
                       )}
-                    </div>
-                    {/* <MaterialDropdown
-                      className=" w-full rounded-md  bg-textField  px-4 py-3 text-sm text-secondaryBrand  outline-none transition-shadow"
-                      // options={SCANNER_TYPE}
-                      // value={toothSelections[selectedTooth]?.scannerType || ""}
-                      // onChange={(val) =>
-                      //   handleDropdownChange("scannerType", val)
-                      // }
-
-                      options={orders.Scanner || []}  // dropdown gets only Scanner children
-                      value={toothSelections[selectedTooth]?.scannerType || ""}
-
-                      onChange={(val) => { handleDropdownChange("scannerType", val); console.log("Selected Scanner:", val); }}
-                      label="Scanner Type"
-                      storageKey="scannerType"
-                      dropdownClass=' text-secondaryBrand'
-                    /> */}
-
+                    </div> 
                     <MaterialDropdown
                       className=" w-full rounded-md  bg-textField  px-4 py-3 text-sm text-secondaryBrand  outline-none transition-shadow"
                       options={
@@ -335,10 +314,6 @@ const DoctorOrder = () => {
                       storageKey="scannerType"
                       dropdownClass="text-secondaryBrand"
                     />
-
-
-
-
                     <div>
                       <FileUploadSection />
                     </div>
