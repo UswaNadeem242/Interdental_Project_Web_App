@@ -1,125 +1,24 @@
-// import React from "react";
-// import { CardComponet } from "../../../Common/Card";
-// import { DoctorIcon } from "../../../icon/DoctorIcon";
-// import {
-//   CardAdminPanelDashboard,
-//   Chartdata,
-//   ChartStatusLines,
-// } from "../../../Constant";
-// import { SingleLineChart } from "../../../Common/SingleLineChart";
-// import { MultiLineChart } from "../../../Common/Chart";
-
-// const sampleData = [
-//   { day: "Jan", earnings: 1200 },
-//   { day: "Feb", earnings: 1800 },
-//   { day: "Mar", earnings: 1500 },
-//   { day: "Apr", earnings: 2200 },
-//   { day: "May", earnings: 2800 },
-//   { day: "Jun", earnings: 3200 },
-//   { day: "Jul", earnings: 4000 },
-//   { day: "Aug", earnings: 3700 },
-//   { day: "Sep", earnings: 3100 },
-//   { day: "Oct", earnings: 4500 },
-//   { day: "Nov", earnings: 4800 },
-//   { day: "Dec", earnings: 5200 },
-// ];
-
-// function AdminPanelDashboard() {
-//   return (
-//     <div className="p-6">
-//       {/* <div className="p-2 mb-4">
-//         <h1>AdminPanelDashboard</h1>
-//       </div> */}
-//       <div className="flex justify-center items-center gap-4">
-//         {CardAdminPanelDashboard.map((item, id) => (
-//           <CardComponet
-//             key={id}
-//             title={item?.title}
-//             count={item?.count}
-//             fromDate={item?.date}
-//             toDate={item?.duedate}
-//             icon={item?.icon}
-//           />
-//         ))}
-//       </div>
-//       <div className=" mt-8  w-3/6  flex flex-col gap-4">
-//         <div className="p-6 bg-bgWhite rounded-2xl">
-//           <SingleLineChart
-//             data={sampleData}
-//             dataKey="earnings"
-//             height={250}
-//             showLegend={true}
-//             showXAxis={true}
-//             showYAxis={true}
-//             showDots={false}
-//             showGrid={true}
-//           />
-//         </div>
-//         <div className="p-6 rounded-2xl bg-bgWhite">
-//           <MultiLineChart
-//             data={Chartdata}
-//             lines={ChartStatusLines}
-//             // height={300}
-//             title="Order Overview"
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default AdminPanelDashboard;
-
-//
-//
-
 import React, { useState } from "react";
 import { CardComponet } from "../../../Common/Card";
 import {
   CardAdminPanelDashboard,
   Chartdata,
   ChartStatusLines,
+  ChartStatusLines2,
+  monthlyData,
+  plans,
+  productDataAdminPanel,
+  weeklyData,
+  yearlyData,
 } from "../../../Constant";
 import { SingleLineChart } from "../../../Common/SingleLineChart";
 import { MultiLineChart } from "../../../Common/Chart";
-
-// Static datasets
-const weeklyData = [
-  { day: "Mon", earnings: 200 },
-  { day: "Tue", earnings: 300 },
-  { day: "Wed", earnings: 250 },
-  { day: "Thu", earnings: 400 },
-  { day: "Fri", earnings: 350 },
-  { day: "Sat", earnings: 500 },
-  { day: "Sun", earnings: 450 },
-];
-
-const monthlyData = [
-  { day: "Week 1", earnings: 1200 },
-  { day: "Week 2", earnings: 1800 },
-  { day: "Week 3", earnings: 1500 },
-  { day: "Week 4", earnings: 2000 },
-];
-
-const yearlyData = [
-  { day: "Jan", earnings: 1200 },
-  { day: "Feb", earnings: 1800 },
-  { day: "Mar", earnings: 1500 },
-  { day: "Apr", earnings: 2200 },
-  { day: "May", earnings: 2800 },
-  { day: "Jun", earnings: 3200 },
-  { day: "Jul", earnings: 4000 },
-  { day: "Aug", earnings: 3700 },
-  { day: "Sep", earnings: 3100 },
-  { day: "Oct", earnings: 4500 },
-  { day: "Nov", earnings: 4800 },
-  { day: "Dec", earnings: 5200 },
-];
+import { ChartDropDown } from "../../../Common/ChartDropDown";
+import { AdminPanelProductCard } from "../../../Common/AdminPanelProductCard";
 
 function AdminPanelDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState("yearly");
 
-  // Map period -> dataset
   const chartDataMap = {
     weekly: weeklyData,
     monthly: monthlyData,
@@ -127,7 +26,7 @@ function AdminPanelDashboard() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-2">
       {/* Top stats cards */}
       <div className="flex justify-center items-center gap-4">
         {CardAdminPanelDashboard.map((item, id) => (
@@ -142,43 +41,100 @@ function AdminPanelDashboard() {
         ))}
       </div>
 
-      {/* Charts Section */}
-      <div className="mt-8 w-3/6 flex flex-col gap-4">
-        {/* Line Chart with dropdown */}
-        <div className="p-6 bg-bgWhite rounded-2xl">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">
-              Earnings Overview
-            </h2>
-            <select
-              value={selectedPeriod}
-              onChange={(e) => setSelectedPeriod(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-1 text-sm"
-            >
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
-              <option value="yearly">Yearly</option>
-            </select>
+      <div className="flex flex-row gap-6">
+        {/* Left Side */}
+        <div className="mt-8  w-4/6 flex flex-col gap-4 ">
+          <div>
+            <div className="p-6 bg-bgWhite rounded-2xl">
+              <ChartDropDown
+                title={"Revenue Graph: 100k"}
+                selectedPeriod={selectedPeriod}
+                setSelectedPeriod={setSelectedPeriod}
+                onChange={(e) => setSelectedPeriod(e.target.value)}
+              />
+
+              <SingleLineChart
+                data={chartDataMap[selectedPeriod]}
+                dataKey="earnings"
+                height={400}
+                showLegend={true}
+                showXAxis={true}
+                showYAxis={true}
+                showDots={false}
+                showGrid={true}
+              />
+            </div>
           </div>
 
-          <SingleLineChart
-            data={chartDataMap[selectedPeriod]}
-            dataKey="earnings"
-            height={250}
-            showLegend={true}
-            showXAxis={true}
-            showYAxis={true}
-            showDots={false}
-            showGrid={true}
-          />
+          {/* Multi Line Chart */}
+          <div className="p-6 rounded-2xl bg-bgWhite mt-4  ">
+            <MultiLineChart
+              data={Chartdata}
+              lines={ChartStatusLines2}
+              title="Engaged Users"
+              titleClassName="xl:text-lg lg:text-lg " // overwrites A
+              legendTextClassName="xl:font-normal xl:text-sm xl:text-primaryText  font-poppins"
+            />
+          </div>
         </div>
 
-        {/* Multi Line Chart */}
-        <div className="p-6 rounded-2xl bg-bgWhite">
-          <MultiLineChart
-            data={Chartdata}
-            lines={ChartStatusLines}
-            title="Order Overview"
+        {/* Right Side */}
+        <div className="mt-8 gap-4   w-1/3 font-poppins">
+          {/* Table Header */}
+          <div className="bg-white rounded-2xl p-4">
+            <ChartDropDown title={"Plan Usage"} />
+            <div className="flex p-4 gap-4 justify-center">
+              <button className="px-6 py-3 bg-[#F8F8F8] rounded-3xl w-full font-semibold text-primaryText">
+                Doctor
+              </button>
+              <button className="px-6 py-3 border border-[#0000000D] rounded-3xl w-full text-secondaryText">
+                Patient
+              </button>
+            </div>
+            <div className="flex  text-sm font-semibold text-primaryText pb-2 mb-4 items-end">
+              <span className="w-10 font-normal text-xs ">#</span>
+              <span className="w-24 font-normal text-xs">Name</span>
+
+              {/* empty space for progress bar */}
+              <span className="ml-36 text-center font-light text-xs text-primaryText  whitespace-nowrap ">
+                Sales Percentage
+              </span>
+            </div>
+            {plans.map((plan, key) => (
+              <div
+                key={key}
+                className="flex items-center justify-center text-sm text-gray-700 border-b border-t pt-4 pb-4 "
+              >
+                {/* ID */}
+                <span className="w-10">{plan.id}</span>
+
+                {/* Name */}
+                <span className="w-24">{plan.name}</span>
+
+                {/* Progress + % */}
+                <div className="flex items-center flex-1">
+                  {/* Progress bar container */}
+                  <div className="relative flex-1 h-1 bg-textFieldColor rounded-full overflow-hidden">
+                    <div
+                      className={`h-1 rounded-full ${plan.color}`}
+                      style={{ width: plan.percentage }}
+                    ></div>
+                  </div>
+                  {/* Percentage badge */}
+                  <span
+                    className={`ml-3  px-6 py-2 rounded-md bg-[#94C5221A] text-sm font-medium ${plan.badge}`}
+                  >
+                    {plan.percentage}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Product Rankinge */}
+          <AdminPanelProductCard
+            cardData={productDataAdminPanel}
+            title={"Product Rankinge"}
           />
         </div>
       </div>

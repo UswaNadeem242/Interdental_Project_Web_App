@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -8,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import clsx from "clsx"; // <-- helper for merging classes
 
 // Tooltip component
 const CustomTooltip = ({ active, payload, label }) => {
@@ -46,6 +46,8 @@ export function MultiLineChart({
   showGrid = false,
   showLegend = true,
   title = "",
+  titleClassName = "", //custom override for A
+  legendTextClassName = "", //custom override for B
 }) {
   return (
     <div className="bg-white w-full h-full">
@@ -53,11 +55,21 @@ export function MultiLineChart({
       {(title || showLegend) && (
         <div className="flex justify-between items-center mb-2">
           {title && (
-            <h3 className="text-sm lg:text-sm   md:text-base font-poppins font-semibold text-[#434343]">
+            <h3
+              className={clsx(
+                "text-sm lg:text-sm md:text-base font-poppins font-semibold text-[#434343]", // default
+                titleClassName // overrides if provided
+              )}
+            >
               {title}
             </h3>
           )}
-          {showLegend && <ChartLegend lines={lines} />}
+          {showLegend && (
+            <ChartLegend
+              lines={lines}
+              legendTextClassName={legendTextClassName} // pass down
+            />
+          )}
         </div>
       )}
 
@@ -134,7 +146,7 @@ export function MultiLineChart({
 }
 
 // Legend component
-export const ChartLegend = ({ lines }) => (
+export const ChartLegend = ({ lines, legendTextClassName = "" }) => (
   <div className="flex items-center gap-4 text-sm">
     {lines.map((line, index) => (
       <div key={index} className="flex items-center gap-1.5">
@@ -142,7 +154,12 @@ export const ChartLegend = ({ lines }) => (
           className="lg:w-3 lg:h-3 w-2 h-2 rounded-full"
           style={{ backgroundColor: line.stroke }}
         />
-        <span className="text-gray-600 lg:text-sm text-xs font-semibold">
+        <span
+          className={clsx(
+            "text-gray-600 lg:text-sm text-xs font-semibold", // default
+            legendTextClassName // overrides if provided
+          )}
+        >
           {line.name}
         </span>
       </div>

@@ -16,7 +16,7 @@ export const PatientCard = ({ title, name, email, linkName, icon }) => {
           href="/doctor-admin/patient"
         />
       </div>
-      <div className="flex-1 overflow-y-auto mt-3 space-y-4  max-h-[550px] scrollbar-hide">
+      <div className="flex-1 overflow-y-auto mt-3 space-y-4  max-h-[550px] hide-scrollbar">
         {PatientDashboard?.map((item) => {
           return (
             <div className="flex gap-4 p-3 rounded-md border border-black/5 mb-5 items-center">

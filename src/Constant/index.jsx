@@ -621,17 +621,17 @@ export const dataOrder = [
 ];
 
 export const Chartdata = [
-  { month: "Jan", total: 0, completed: 0, inProgress: 0, pending: 0 },
   { month: "Feb", total: 5, completed: 3, inProgress: 1, pending: 1 },
-  { month: "Mar", total: 10, completed: 6, inProgress: 2, pending: 2 },
-  { month: "Apr", total: 15, completed: 9, inProgress: 3, pending: 3 },
+  { month: "Jan", total: 0, completed: 0, inProgress: 0, pending: 9 },
+  { month: "Mar", total: 10, completed: 6, inProgress: 2, pending: 10 },
+  { month: "Apr", total: 15, completed: 9, inProgress: 3, pending: 8 },
   { month: "May", total: 20, completed: 12, inProgress: 4, pending: 4 },
   { month: "Jun", total: 25, completed: 15, inProgress: 5, pending: 5 },
   { month: "Jul", total: 30, completed: 18, inProgress: 6, pending: 6 },
   { month: "Aug", total: 35, completed: 21, inProgress: 7, pending: 7 },
-  { month: "Sep", total: 40, completed: 24, inProgress: 8, pending: 8 },
-  { month: "Oct", total: 45, completed: 27, inProgress: 9, pending: 9 },
-  { month: "Nov", total: 50, completed: 30, inProgress: 10, pending: 10 },
+  { month: "Sep", total: 40, completed: 24, inProgress: 8, pending: 2 },
+  { month: "Oct", total: 45, completed: 27, inProgress: 9, pending: 1 },
+  { month: "Nov", total: 50, completed: 30, inProgress: 10, pending: 1 },
   { month: "Dec", total: 55, completed: 33, inProgress: 11, pending: 11 },
 ];
 
@@ -639,6 +639,10 @@ export const ChartStatusLines = [
   { dataKey: "pending", stroke: "#3B82F6", name: "Pending" },
   { dataKey: "inProgress", stroke: "#E13434", name: "In Progress" },
   { dataKey: "completed", stroke: "#4FAD2E", name: "Completed" },
+];
+export const ChartStatusLines2 = [
+  { dataKey: "pending", stroke: "#001D58", name: "Doctor" },
+  { dataKey: "inProgress", stroke: "#94D3DD", name: "Patient" },
 ];
 
 export const headingsPatientDashboardTable = [
@@ -1150,5 +1154,158 @@ export const CardAdminPanelDashboard = [
     path: "/admin-panel/dashboard",
     duedate: "Mar 30, 2024",
     icon: <Revenue />,
+  },
+];
+
+//
+// Static datasets for Single Line Chart
+export const weeklyData = [
+  { day: "Mon", earnings: 200 },
+  { day: "Tue", earnings: 300 },
+  { day: "Wed", earnings: 250 },
+  { day: "Thu", earnings: 400 },
+  { day: "Fri", earnings: 350 },
+  { day: "Sat", earnings: 500 },
+  { day: "Sun", earnings: 450 },
+];
+
+export const monthlyData = [
+  { day: "Week 1", earnings: 1200 },
+  { day: "Week 2", earnings: 1800 },
+  { day: "Week 3", earnings: 1500 },
+  { day: "Week 4", earnings: 2000 },
+];
+
+export const yearlyData = [
+  { day: "Jan", earnings: 1200 },
+  { day: "Feb", earnings: 1800 },
+  { day: "Mar", earnings: 1500 },
+  { day: "Apr", earnings: 2200 },
+  { day: "May", earnings: 2800 },
+  { day: "Jun", earnings: 3200 },
+  { day: "Jul", earnings: 4000 },
+  { day: "Aug", earnings: 3700 },
+  { day: "Sep", earnings: 3100 },
+  { day: "Oct", earnings: 4500 },
+  { day: "Nov", earnings: 4800 },
+  { day: "Dec", earnings: 5200 },
+];
+
+//Admin Panel Data
+
+export const plans = [
+  {
+    id: "01",
+    name: "Gold",
+    percentage: "75%",
+    color: "bg-[#94C522]",
+    badge: "text-[#94C522]",
+  },
+  {
+    id: "02",
+    name: "Platinum",
+    percentage: "75%",
+    color: "bg-[#4ECCA3]",
+    badge: "text-[#4ECCA3]",
+  },
+  {
+    id: "03",
+    name: "Diamond",
+    percentage: "75%",
+    color: "bg-[#2734C6]",
+    badge: "text-[#2734C6]",
+  },
+];
+
+export const productDataAdminPanel = [
+  {
+    id: "01",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "02",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
   },
 ];

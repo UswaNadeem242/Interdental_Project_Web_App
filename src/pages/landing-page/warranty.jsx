@@ -34,7 +34,7 @@ const Warranty = () => {
       </p>
 
       {/* Warranty Cards */}
-      <div className="mx-auto mt-4 sm:mt-6 flex md:grid flex-row md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-full sm:max-w-4xl md:max-w-5xl lg:max-w-6xl overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scrollbar-hide">
+      <div className="mx-auto mt-4 sm:mt-6 flex md:grid flex-row md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-full sm:max-w-4xl md:max-w-5xl lg:max-w-6xl overflow-x-auto md:overflow-x-visible snap-x snap-mandatory hide-scrollbar">
         {warranties.map((warranty, index) => (
           <div
             key={warranty.id}
