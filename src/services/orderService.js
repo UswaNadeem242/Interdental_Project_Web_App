@@ -3,9 +3,12 @@
 import api from "./lib";
 
 export const orderService = {
-  getOrders: () => api.get("/api/dropdown/getAll"),
+  getDropDown: () => api.get("/api/dropdown/getAll"),
   getTooth: () => api.get('/api/tooth/getAll'),
-
+  createOrder: (formData) =>
+    api.post("/api/doctororder", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
   // getOrderDetails: (id) => api.get(`/orders/${id}`),
   // createOrder: (payload) => api.post("/orders", payload),
 };

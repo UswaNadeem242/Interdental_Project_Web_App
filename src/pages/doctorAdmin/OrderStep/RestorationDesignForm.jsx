@@ -38,7 +38,7 @@ const DoctorOrder = () => {
   const [teethData, setTeethData] = useState([]);       // API ka data
   const [selectedTooth, setSelectedTooth] = useState(null);
   const [selectedTeeth, setSelectedTeeth] = useState([]); // Array of all selected teeth
-  const [toothSelections, setToothSelections] = useState({}); 
+  const [toothSelections, setToothSelections] = useState({});
 
   const currentValues = selectedTooth
     ? toothSelections[selectedTooth] || {}
@@ -143,7 +143,7 @@ const DoctorOrder = () => {
   ;
 
   useEffect(() => {
-    orderService.getOrders()
+    orderService.getDropDown()
       .then((data) => {
         const raw = data?.data?.data || [];
 
@@ -178,8 +178,6 @@ const DoctorOrder = () => {
       })
       .finally(() => setLoading(false));
   }, []);
-
-
   useEffect(() => {
     orderService.getTooth()
       .then((res) => {
@@ -210,8 +208,6 @@ const DoctorOrder = () => {
   const selectedMaterial = materialOptions.find(
     (opt) => opt.value === selectedMaterialValue
   );
-
-
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -249,12 +245,14 @@ const DoctorOrder = () => {
                         onChange={setOfficeReg}
                         placeholder="Office registration number"
                       />
+                      <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Create Date</lable>
                       <LabeledInput
                         label="Create Date"
                         type="date"
                         value={createDate}
                         onChange={setCreateDate}
                       />
+                      <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Case expected due date</lable>
                       <LabeledInput
                         label="Case expected due date"
                         type="date"
@@ -299,7 +297,7 @@ const DoctorOrder = () => {
                           {selected.length > 0 ? selected.join(", ") : ""}
                         </p>
                       )}
-                    </div> 
+                    </div>
                     <MaterialDropdown
                       className=" w-full rounded-md  bg-textField  px-4 py-3 text-sm text-secondaryBrand  outline-none transition-shadow"
                       options={
