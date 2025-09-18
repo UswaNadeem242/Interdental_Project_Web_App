@@ -201,13 +201,14 @@ const DoctorOrder = () => {
   }, []);
   const materialOptions =
     orders.find((p) => p.name === "Material")?.children || [];
-
   const selectedMaterialValue = toothSelections[selectedTooth]?.material || "";
-
   // find the label of the selected material
   const selectedMaterial = materialOptions.find(
     (opt) => opt.value === selectedMaterialValue
   );
+
+
+
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -422,7 +423,6 @@ const DoctorOrder = () => {
                           />
                           <MaterialDropdown
                             options={Digital_Option}
-
                             value={
                               toothSelections[selectedTooth]?.digital_option || ""
                             }

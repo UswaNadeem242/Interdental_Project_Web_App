@@ -2,19 +2,7 @@ import React, { useState } from "react";
 import { orderService } from "../../../services/orderService";
 
 const CheckoutForm = ({ next }) => {
-  // const [formData, setFormData] = useState({
-  //   fullName: "",
-  //   contactNumber: "",
-  //   email: "",
-  //   country: "America",
-  //   state: "",
-  //   city: "",
-  //   street: "",
-  //   recipientName: "",
-  //   paypalUsername: "",
-  //   paypalEmailPhone: "",
-  //   paymentMethod: "",
-  // });
+
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -45,37 +33,36 @@ const CheckoutForm = ({ next }) => {
 
   const buildRequestData = () => {
     const saved = localStorage.getItem("restorationForm");
+
     const storedData = saved ? JSON.parse(saved) : {};
+    const doctor = storedData.doctor || {};
+    const patient = storedData.patient || {};
+    const selectedTeeth = storedData?.selectedTooths?.length
+      ? storedData.selectedTooths
+      : [12, 13];
 
     return {
       userId: 5,
       totalAmount: 200,
-      transactionId: Date.now(),
+      transactionId: null,
       expectedDeliveryDate: "2025-09-30T00:00:00",
-
-      // 🟢 localStorage data
-      doctorName: storedData?.doctorName || "Dr. Default",
-      doctorRegNumber: storedData?.doctorRegNumber || "REG-0000",
+      doctorName: doctor?.doctorName || "Dr. Default",
+      doctorRegNumber: doctor?.doctorRegNumber || "REG-0000",
       patientLastName:
         storedData?.patientLastName ||
         formData.fullName.split(" ").slice(-1)[0] ||
         "Doe",
       patientFirstName:
-        storedData?.patientFirstName ||
+        patient?.patientFirstName ||
         formData.fullName.split(" ")[0] ||
         "John",
-      subscriptionId: storedData?.subscriptionId || "SUB-0000",
+      subscriptionId: patient?.subscriptionId || "SUB-0000",
       additionalNotes: storedData?.additionalNotes || "Checkout order",
-      selectedTooths: storedData?.selectedTooths || [],
-
-      // 🟢 example order items
-      doctorOrderItems: [
-        { id: 1, doctorOrderId: 1, dropdownMasterId: 10, quantity: 2, unitPrice: 50 },
-        { id: 2, doctorOrderId: 1, dropdownMasterId: 12, quantity: 3, unitPrice: 50 },
-      ],
-      // 🟢 payment (static for now)
+      selectedTooths: selectedTeeth?.selectedTeeth || [],
+      doctorOrderItems: storedData?.teeth || [],
+    
       paymentId: 8,
-      // 🟢 buyer details
+    
       name: formData.fullName,
       address: `${formData.street}, ${formData.city}, ${formData.state}, ${formData.country}`,
       email: formData.email,
@@ -84,6 +71,29 @@ const CheckoutForm = ({ next }) => {
   };
 
   // ✅ submit handler
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setError(null);
+
+  //   try {
+  //     const requestData = buildRequestData();
+  //     console.log("🟢 Final requestData:", requestData);
+  //     const apiFormData = new FormData();
+  //     apiFormData.append("request", JSON.stringify(requestData));
+  //     // ✅ API CALL
+  //     const res = await orderService.createOrder(apiFormData);
+  //     console.log("✅ Order created successfully:", res.data);
+  //     if (next) next(); // move to next step
+  //   } catch (err) {
+  //     console.error("❌ Error creating order:", err.response?.data || err.message);
+  //     setError(err.response?.data || "Something went wrong");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -92,12 +102,20 @@ const CheckoutForm = ({ next }) => {
     try {
       const requestData = buildRequestData();
       console.log("🟢 Final requestData:", requestData);
+
+      // 👇 This is the FormData object
       const apiFormData = new FormData();
+      
+
+      // 👇 Backend wants the request as a JSON string under "request"
       apiFormData.append("request", JSON.stringify(requestData));
-      // ✅ API CALL
+      console.log('apiformdata:', apiFormData);
+
+      // 👇 API call (multipart/form-data)
       const res = await orderService.createOrder(apiFormData);
       console.log("✅ Order created successfully:", res.data);
-      if (next) next(); // move to next step
+
+      // if (next) next();
     } catch (err) {
       console.error("❌ Error creating order:", err.response?.data || err.message);
       setError(err.response?.data || "Something went wrong");
@@ -105,6 +123,24 @@ const CheckoutForm = ({ next }) => {
       setLoading(false);
     }
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // const handleChange = (e) => {
   //   setFormData({ ...formData, [e.target.name]: e.target.value });
