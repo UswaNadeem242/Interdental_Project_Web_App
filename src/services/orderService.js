@@ -7,8 +7,13 @@ export const orderService = {
   getTooth: () => api.get('/api/tooth/getAll'),
   createOrder: (formData) =>
     api.post("/api/doctororder", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 
+        "Content-Type": "multipart/form-data" 
+      },
     }),
   // getOrderDetails: (id) => api.get(`/orders/${id}`),
   // createOrder: (payload) => api.post("/orders", payload),
 };
+
+
+

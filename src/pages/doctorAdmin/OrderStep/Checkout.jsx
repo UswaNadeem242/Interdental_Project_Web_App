@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { orderService } from "../../../services/orderService";
 
 const CheckoutForm = ({ next }) => {
-
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
@@ -30,15 +28,14 @@ const CheckoutForm = ({ next }) => {
     }));
   };
 
-
   const buildRequestData = () => {
     const saved = localStorage.getItem("restorationForm");
 
     const storedData = saved ? JSON.parse(saved) : {};
     const doctor = storedData.doctor || {};
     const patient = storedData.patient || {};
-    const selectedTeeth = storedData?.selectedTooths?.length
-      ? storedData.selectedTooths
+    const selectedTeeth = storedData?.selectedTeeth?.length
+      ? storedData?.selectedTeeth
       : [12, 13];
 
     return {
@@ -53,16 +50,14 @@ const CheckoutForm = ({ next }) => {
         formData.fullName.split(" ").slice(-1)[0] ||
         "Doe",
       patientFirstName:
-        patient?.patientFirstName ||
-        formData.fullName.split(" ")[0] ||
-        "John",
+        patient?.patientFirstName || formData.fullName.split(" ")[0] || "John",
       subscriptionId: patient?.subscriptionId || "SUB-0000",
       additionalNotes: storedData?.additionalNotes || "Checkout order",
-      selectedTooths: selectedTeeth?.selectedTeeth || [],
+      selectedTooths: selectedTeeth || [],
       doctorOrderItems: storedData?.teeth || [],
-    
+
       paymentId: 8,
-    
+
       name: formData.fullName,
       address: `${formData.street}, ${formData.city}, ${formData.state}, ${formData.country}`,
       email: formData.email,
@@ -93,23 +88,47 @@ const CheckoutForm = ({ next }) => {
   //   }
   // };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
+    // try {
+    //   const requestData = buildRequestData();
+    //   console.log("🟢 Final requestData:", requestData);
+
+    //   // 👇 This is the FormData object
+    //   const apiFormData = new FormData();
+
+    //   // 👇 Backend wants the request as a JSON string under "request"
+    //   apiFormData.append("request", JSON.stringify(requestData));
+    //   console.log('apiformdata:', apiFormData);
+
+    //   // 👇 API call (multipart/form-data)
+    //   const res = await orderService.createOrder(apiFormData);
+    //   console.log("✅ Order created successfully:", res.data);
+
+    //   if (next) next();
+    // } catch (err) {
+    //   console.error("❌ Error creating order:", err.response?.data || err.message);
+    //   setError(err.response?.data || "Something went wrong");
+    // } finally {
+    //   setLoading(false);
+    // }
+
+
     try {
       const requestData = buildRequestData();
       console.log("🟢 Final requestData:", requestData);
 
-      // 👇 This is the FormData object
+      // 👇 Create FormData
       const apiFormData = new FormData();
-      
-
-      // 👇 Backend wants the request as a JSON string under "request"
       apiFormData.append("request", JSON.stringify(requestData));
-      console.log('apiformdata:', apiFormData);
+
+      // 👇 Debugging FormData (looping through entries)
+      for (let pair of apiFormData.entries()) {
+        console.log("📦 FormData entry:", pair[0], "=>", pair[1]);
+      }
 
       // 👇 API call (multipart/form-data)
       const res = await orderService.createOrder(apiFormData);
@@ -117,30 +136,15 @@ const CheckoutForm = ({ next }) => {
 
       // if (next) next();
     } catch (err) {
-      console.error("❌ Error creating order:", err.response?.data || err.message);
+      console.error(
+        "❌ Error creating order:",
+        err.response?.data || err.message
+      );
       setError(err.response?.data || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   // const handleChange = (e) => {
   //   setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -209,9 +213,6 @@ const CheckoutForm = ({ next }) => {
   //   }
   // };
 
-
-
-
   // const handleSubmit = async () => {
   //   try {
   //     const saved = localStorage.getItem("restorationForm");
@@ -263,11 +264,8 @@ const CheckoutForm = ({ next }) => {
   //   }
   // };
 
-
-
-
   return (
-    <div className="min-h-screen bg-bgWhite" >
+    <div className="min-h-screen bg-bgWhite">
       <div className=" pt-5  pb-10">
         <div className=" px-4">
           <form
@@ -288,7 +286,7 @@ const CheckoutForm = ({ next }) => {
                     placeholder="Full Name"
                     value={formData.fullName}
                     onChange={handleChange}
-                    className='border sm:col-span-6 space-y-4  outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal'
+                    className="border sm:col-span-6 space-y-4  outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
                   />
                   <input
                     type="text"
@@ -296,7 +294,7 @@ const CheckoutForm = ({ next }) => {
                     placeholder="Contact Number"
                     value={formData.contactNumber}
                     onChange={handleChange}
-                    className='border sm:col-span-6 space-y-4  outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal'
+                    className="border sm:col-span-6 space-y-4  outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
                   />
                 </div>
                 <input
@@ -305,7 +303,9 @@ const CheckoutForm = ({ next }) => {
                   placeholder="E-Mail Address"
                   value={formData.email}
                   onChange={handleChange}
-                  className={"border outline-none  rounded-lg px-3 py-2 w-full mt-3 bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"}
+                  className={
+                    "border outline-none  rounded-lg px-3 py-2 w-full mt-3 bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
+                  }
                 />
               </div>
 
@@ -372,10 +372,30 @@ const CheckoutForm = ({ next }) => {
                   onChange={handleChange}
                   className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700 mb-4 outline-none text-xs font-normal  font-poppins"
                 >
-                  <option value="" className="text-xs font-normal  font-poppins">Select the Option</option>
-                  <option value="paypal" className="text-xs font-normal  font-poppins">PayPal</option>
-                  <option value="creditCard" className="text-xs font-normal  font-poppins">Credit Card</option>
-                  <option value="bankTransfer" className="text-xs font-normal  font-poppins">Bank Transfer</option>
+                  <option
+                    value=""
+                    className="text-xs font-normal  font-poppins"
+                  >
+                    Select the Option
+                  </option>
+                  <option
+                    value="paypal"
+                    className="text-xs font-normal  font-poppins"
+                  >
+                    PayPal
+                  </option>
+                  <option
+                    value="creditCard"
+                    className="text-xs font-normal  font-poppins"
+                  >
+                    Credit Card
+                  </option>
+                  <option
+                    value="bankTransfer"
+                    className="text-xs font-normal  font-poppins"
+                  >
+                    Bank Transfer
+                  </option>
                 </select>
 
                 {/* PayPal Section */}
@@ -503,37 +523,66 @@ const CheckoutForm = ({ next }) => {
                 </h2>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-xs text-[#828386] font-normal ">Emax <span className="text-[#1A1A1A] text-xs font-poppins font-normal">x4</span></span>
-                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">$80.00</span>
+                    <span className="text-xs text-[#828386] font-normal ">
+                      Emax{" "}
+                      <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
+                        x4
+                      </span>
+                    </span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
+                      $80.00
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-xs text-[#828386] font-normal">Argen ST <span className="text-[#1A1A1A] text-xs font-poppins font-normal">x3</span></span>
-                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">$90.00</span>
+                    <span className="text-xs text-[#828386] font-normal">
+                      Argen ST{" "}
+                      <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
+                        x3
+                      </span>
+                    </span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
+                      $90.00
+                    </span>
                   </div>
 
                   <div className="flex justify-between ">
-                    <span className="text-xs text-[#828386] font-normal">Subtotal</span>
-                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">$180.00</span>
+                    <span className="text-xs text-[#828386] font-normal">
+                      Subtotal
+                    </span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
+                      $180.00
+                    </span>
                   </div>
                   <hr />
                   <div className="flex justify-between">
-                    <span className="text-xs text-[#828386] font-normal">Shipping</span>
-                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">Free</span>
+                    <span className="text-xs text-[#828386] font-normal">
+                      Shipping
+                    </span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
+                      Free
+                    </span>
                   </div>
                   <div className="flex justify-between  text-[rgba(0, 29, 88, 1)] text-base mt-4  pt-2 text-secondaryBrand">
-                    <span className="text-secondaryBrand text-base font-normal font-poppins">Total</span>
-                    <span className="text-secondaryBrand text-base font-semibold font-poppins">$180.00</span>
+                    <span className="text-secondaryBrand text-base font-normal font-poppins">
+                      Total
+                    </span>
+                    <span className="text-secondaryBrand text-base font-semibold font-poppins">
+                      $180.00
+                    </span>
                   </div>
                 </div>
               </div>
-              <button type="submit" className="mt-6 w-full py-4 rounded-3xl bg-[rgba(0,29,88,1)] hover:bg-blue-800 text-white font-medium" >
+              <button
+                type="submit"
+                className="mt-6 w-full py-4 rounded-3xl bg-[rgba(0,29,88,1)] hover:bg-blue-800 text-white font-medium"
+              >
                 Place Order
               </button>
             </div>
           </form>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

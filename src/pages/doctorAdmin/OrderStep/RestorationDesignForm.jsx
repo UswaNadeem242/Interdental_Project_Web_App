@@ -178,6 +178,7 @@ const DoctorOrder = () => {
       })
       .finally(() => setLoading(false));
   }, []);
+
   useEffect(() => {
     orderService.getTooth()
       .then((res) => {
@@ -206,8 +207,6 @@ const DoctorOrder = () => {
   const selectedMaterial = materialOptions.find(
     (opt) => opt.value === selectedMaterialValue
   );
-
-
 
   return (
     <>
