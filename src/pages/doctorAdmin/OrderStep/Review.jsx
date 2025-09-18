@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-const ReviewOrder = () => {
+const ReviewOrder = ({ next }) => {
   const [formData, setFormData] = useState({
     doctor: {},
     patient: {},
     teeth: {},
+    selectedTeeth: [],
   });
-
   const [selectedTeeth, setSelectedTeeth] = useState([]);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const ReviewOrder = () => {
     if (savedData) {
       const parsed = JSON.parse(savedData);
       setFormData(parsed);
-      setSelectedTeeth(Object.keys(parsed.teeth || {}));
+      setSelectedTeeth(parsed.selectedTeeth || Object.keys(parsed.teeth || {}));
     }
   }, []);
 
@@ -140,37 +140,79 @@ const ReviewOrder = () => {
               Customization Details
             </h3>
             <hr className="border-gray-200 my-2" />
-            <div className="space-y-2">
+            <div className="space-y-4">
               {selectedTeeth.map((toothId) => {
                 const tooth = formData.teeth[toothId] || {};
                 return (
-                  <div
-                    key={toothId}
-                    className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm"
-                  >
-                    <div>
-                      <p className="text-[#949494] text-xs font-poppins ">
-                        Material:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth.material || "N/A"}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#949494] text-xs font-poppins ">
-                        Colour:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth.color || "N/A"}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#949494] text-xs font-poppins ">
-                        Type:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth.type || "N/A"}
-                      </p>
+                  <div key={toothId} className="border border-gray-200 p-3 rounded-lg">
+                    <h4 className="font-semibold text-sm mb-2 text-secondaryBrand">
+                      Tooth #{toothId}
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Material:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          {tooth.materialOption?.label || tooth.material || "N/A"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Scanner Type:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          {tooth.scannerTypeOption?.label || tooth.scannerType || "N/A"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Digital Denture:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          {tooth.digitalOptionsOption?.label || tooth.digitalOptions || "N/A"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Surgical Guide:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          {tooth.surgical_guideOption?.label || tooth.surgical_guide || "N/A"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Digital Model:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          {tooth.digital_optionOption?.label || tooth.digital_option || "N/A"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Laboratory:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          {tooth.LabOption?.label || tooth.Lab || "N/A"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Photogrammetry:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          {tooth.Photogrammetry_filesOption?.label || tooth.Photogrammetry_files || "N/A"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Price:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          ${tooth.materialPrice || 0}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 );
@@ -186,10 +228,10 @@ const ReviewOrder = () => {
             <div className="grid grid-cols-1   gap-4 text-sm sm:text-base">
               <div>
                 <p className="text-[#949494]  font-normal text-xs font-poppins pb-2">
-                  Dr,weed bran
+                  {formData.doctor.doctorName}
                 </p>
                 <p className="font-normal text-secondaryBrand  text-xs font-poppins ">
-                  kindly Use strong material for the upper teeth for better{" "}
+                  {formData?.note}
                 </p>
               </div>
             </div>
@@ -237,7 +279,7 @@ const ReviewOrder = () => {
               </div>
             </div>
           </div>
-          <button className="mt-6 w-full py-3 rounded-3xl bg-secondaryBrand  text-white font-medium">
+          <button className="mt-6 w-full py-3 rounded-3xl bg-secondaryBrand  text-white font-medium" onClick={next}>
             Checkout
           </button>
         </div>
