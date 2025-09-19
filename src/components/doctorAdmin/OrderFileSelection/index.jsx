@@ -1,14 +1,10 @@
+
 import React, { useState } from "react";
 import FormSection from "../CommonLabel/FormSelection";
-import { ClipboardDocumentListIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { ClipboardDocumentListIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 export const FileUploadSection = () => {
     const [files, setFiles] = useState([]);
-
-    // const handleFileChange = (e) => {
-    //     setFiles(Array.from(e.target.files));
-    // };
-
 
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
@@ -25,13 +21,15 @@ export const FileUploadSection = () => {
         setFiles(allowedFiles);
     };
 
+    const handleRemoveFile = (index) => {
+        setFiles((prev) => prev.filter((_, i) => i !== index));
+    };
 
     return (
         <FormSection
-            className='bg-textField py-3 px-4 border border-gray-200'
+            className="bg-textField py-3 px-4 border border-gray-200"
             title={
-                <div className="flex items-center justify-between gap-5 ">
-
+                <div className="flex items-center justify-between gap-5">
                     <span className="text-sm font-poppins font-normal text-secondaryBrand">
                         Upload Patient Photos/Files
                     </span>
@@ -41,7 +39,6 @@ export const FileUploadSection = () => {
                     >
                         <PlusIcon className="w-5 h-5" />
                     </label>
-
 
                     <input
                         id="file-upload"
@@ -55,21 +52,34 @@ export const FileUploadSection = () => {
         >
             {/* Show selected file names */}
             {files.length > 0 && (
-                <div className="mt-2 space-y-1">
+                <div className="mt-2 space-y-2">
                     {files.map((file, index) => (
-                        <p
+                        <div
                             key={index}
-                            className="py-1 px-2 text-sm text-[#989EC2]  border border-grey-200 rounded-full flex items-center gap-2"
+                            className="flex items-center justify-between py-1 px-2 text-sm text-[#989EC2] border border-gray-200 rounded-full"
                         >
-                            <ClipboardDocumentListIcon className="w-3 h-3 " />
-                            {file.name}
-                        </p>
+                            {/* File name with icon */}
+                            <div className="flex items-center gap-2">
+                                <ClipboardDocumentListIcon className="w-4 h-4" />
+                                <span className="truncate max-w-[200px]">{file.name}</span>
+                            </div>
+
+                            {/* ❌ Remove button */}
+                            <button
+                                type="button"
+                                onClick={() => handleRemoveFile(index)}
+                                className="text-secondaryBrand"
+                            >
+                                <XMarkIcon className="w-4 h-4" />
+                            </button>
+                        </div>
                     ))}
                 </div>
             )}
         </FormSection>
     );
 };
+
 
 
 

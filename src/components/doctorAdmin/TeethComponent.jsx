@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 const defaultTeeth = [
     { id: 1, name: "UR 3rd Molar (Wisdom)" }, { id: 2, name: "UR 2nd Molar" },
@@ -91,8 +91,32 @@ export default function TeethChart({
         }
     };
 
+
+    const [leftOffset, setLeftOffset] = useState("left-0");
+
+    useEffect(() => {
+        const updateOffset = () => {
+            // Get zoom ratio: actual width vs devicePixelRatio
+            const zoom = Math.round((window.outerWidth / window.innerWidth) * 100);
+
+            if (zoom === 100) {
+                setLeftOffset("-left-3"); // 👈 when 100%
+            } else if (zoom <= 80) {
+                setLeftOffset("left-10"); // 👈 when 80% or below
+            } else {
+                setLeftOffset("left-0"); // fallback
+            }
+        };
+
+        updateOffset();
+        window.addEventListener("resize", updateOffset);
+
+        return () => window.removeEventListener("resize", updateOffset);
+    }, []);
+
     return (
-        <div className="relative top-14   w-full max-w-[700px] aspect-square mx-auto">
+        <div className={`relative top-14 w-full max-w-[700px] aspect-square mx-auto transition-all duration-300 ${leftOffset}`}
+        >
             {upper.map((t, i) => (
                 <ToothButton key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
                     size={toothSize} x={upperPos[i].x} y={upperPos[i].y}
@@ -101,14 +125,14 @@ export default function TeethChart({
                     onClick={() => toggle(t)} showId={showIds} />
             ))}
             {lower.map((t, i) => (
-                <ToothButton 
-                key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
+                <ToothButton
+                    key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
                     size={toothSize} x={lowerPos[i].x} y={lowerPos[i].y}
                     selected={selectedIds.includes(t.id)}
                     isCurrent={currentToothId === t.id}
                     onClick={() => toggle(t)} showId={showIds}
-                    
-                    />
+
+                />
             ))}
         </div>
     );
