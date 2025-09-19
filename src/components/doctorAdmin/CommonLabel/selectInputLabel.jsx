@@ -46,7 +46,8 @@ export default function MaterialDropdown({
   label = label,
   selectedTooth,
   className,
-  dropdownClass
+  dropdownClass,
+  error
 }) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -82,9 +83,9 @@ export default function MaterialDropdown({
       >
         <span>{selected?.label ?? label}</span>
 
-      
 
-        <ChevronDownIcon className={`h-3 w-3 text-[#949494] transition-transform duration-200 ${open ? "" : ""} ${dropdownClass}`}/>
+
+        <ChevronDownIcon className={`h-3 w-3 text-[#949494] transition-transform duration-200 ${open ? "" : ""} ${dropdownClass}`} />
       </button>
 
       {/* Panel */}
@@ -129,9 +130,13 @@ export default function MaterialDropdown({
                 </button>
               );
             })}
+
+
           </div>
         </div>
       )}
+      {error && <p className="mt-1 text-xs text-red-800">{error}</p>}
+
     </div>
   );
 }

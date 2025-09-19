@@ -5,9 +5,26 @@ import { ClipboardDocumentListIcon, PlusIcon } from "@heroicons/react/24/solid";
 export const FileUploadSection = () => {
     const [files, setFiles] = useState([]);
 
+    // const handleFileChange = (e) => {
+    //     setFiles(Array.from(e.target.files));
+    // };
+
+
     const handleFileChange = (e) => {
-        setFiles(Array.from(e.target.files));
+        const selectedFiles = Array.from(e.target.files);
+
+        // Filter only allowed file types
+        const allowedFiles = selectedFiles.filter((file) =>
+            ["image/png", "image/jpeg", "image/jpg", "application/pdf"].includes(file.type)
+        );
+
+        if (allowedFiles.length !== selectedFiles.length) {
+            alert("Only PNG, JPG, JPEG, or PDF files are allowed.");
+        }
+
+        setFiles(allowedFiles);
     };
+
 
     return (
         <FormSection
