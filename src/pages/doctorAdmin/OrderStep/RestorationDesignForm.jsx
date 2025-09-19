@@ -79,7 +79,7 @@ const DoctorOrder = () => {
       }));
     }
   };
- 
+
   const handleSave = async (validateForm, values, next) => {
     const currentValues = {
       ...values,
@@ -157,7 +157,7 @@ const DoctorOrder = () => {
 
     next();
   };
- 
+
 
 
 
@@ -187,7 +187,7 @@ const DoctorOrder = () => {
     if (activeIndex > 0) setActiveIndex(activeIndex - 1);
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
- 
+
 
 
 
@@ -217,17 +217,6 @@ const DoctorOrder = () => {
       [small, medium, large].forEach(mq => mq.removeEventListener("change", updateSize));
     };
   }, []);
-
-
-
-
-
-
-
-
-
-
-
 
 
   useEffect(() => {
@@ -294,286 +283,316 @@ const DoctorOrder = () => {
   const selectedMaterial = materialOptions.find(
     (opt) => opt.value === selectedMaterialValue
   );
+  const handleTabChange = async (index, validateForm, values) => {
+    const errors = await validateForm(); // validate current form
+    if (Object.keys(errors).length === 0) {
+      setActiveIndex(index); // move to next tab if no errors
+    } else {
+      // Optionally: scroll to first error or show a toast
+      console.log("Fix validation errors first:", errors);
+    }
+  };
 
 
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
-        <main className="flex-1 bg-white  rounded-3xl p-4 sm:p-6 w-full">
-          {/* md:max-w-7xl md:mx-auto */}
-          <div className="">
-            {/* md:mx-auto */}
-            <StepperTabs
-              steps={steps}
-              setActiveIndex={setActiveIndex}
-              activeIndex={activeIndex}
-              back={back}
-              next={next}
-            />
-            <div className="">
-              {/* md:max-w-7xl md:mx-auto */}
-              {activeIndex === 0 && (
-                <Formik
-                  initialValues={{
-                    doctorName: "",
-                    officeReg: "",
-                    createDate: "",
-                    dueDate: "",
-                    patientFirstName: "",
-                    patientLastName: "",
-                    subscriptionId: "",
-                    scannerType: "",
-                    digitalOptions: "",
-                    surgical_guide: "",
-                    material: "",
-                    lab: "",
-                    selectedTeeth: [], // 🟢 track selected teeth
-                    toothSelections: {},
-                    note: '',
-                    crown: ''
-                  }}
-                  validationSchema={OrderValidationSchema}
-                  validateOnChange={true}  // 🚫 Validation har change pe na chale
-                  validateOnBlur={true}
-                  onSubmit={(values) => {
-                  }}
-                >
-                  {({ values, errors, touched, handleChange, handleSubmit, validateForm, setFieldValue, handleBlur }) => (
-                    <Form onSubmit={handleSubmit} className="space-y-4">
-
-                      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 min-h-screen">
-                        {/* Left 3 */}
-                        <aside className="col-span-12 md:col-span-3 space-y-4">
-                          <FormSection
-                            title="Doctor Info"
-                            color="text-xs font-semibold"
-                            className="border border-gray-200 p-4"
-                          >
-
-                            <LabeledInput
-                              type="text"
-                              label="Doctor Name / Office Name"
-                              placeholder='Doctor Name / Office Name'
-                              name="doctorName"
-                              value={values.doctorName}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {errors.doctorName && (
-                              <p className="text-red-800 text-xs capitalize">{errors.doctorName}</p>
-                            )}
-                            <LabeledInput
-                              type="text"
-                              label="Office registration number"
-                              value={values?.officeReg}
-                              name='officeReg'
-                              placeholder="Office registration number"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {errors.officeReg && (
-                              <p className="text-red-800 text-xs capitalize">{errors.officeReg}</p>
-                            )}
-                            <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Create Date</lable>
-                            <LabeledInput
-                              label="Create Date"
-                              type="date"
-                              name='createDate'
-                              value={values?.createDate}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {errors.createDate && (
-                              <p className="text-red-800 text-xs capitalize">{errors.createDate}</p>
-                            )}
-                            <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Case expected due date</lable>
-                            <LabeledInput
-                              label="Case expected due date"
-                              type="date"
-                              name='dueDate'
-                              value={values?.dueDate}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {errors.dueDate && (
-                              <p className="text-red-800 text-xs capitalize">{errors.dueDate}</p>
-                            )}
-                          </FormSection>
-                          <FormSection
-                            title="Patient ID"
-                            color="text-xs font-semibold"
-                            className="border border-gray-200 p-4"
-                          >
-                            <LabeledInput
-                              type="text"
-                              placeholder="Name"
-                              name='patientFirstName'
-                              value={values?.patientFirstName}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {errors.patientFirstName && (
-                              <p className="text-red-800 text-xs capitalize">{errors.patientFirstName}</p>
-                            )}
-                            <LabeledInput
-                              type="text"
-                              placeholder="Last Name"
-                              name='patientLastName'
-                              value={values?.patientLastName}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {errors.patientLastName && (
-                              <p className="text-red-800 text-xs capitalize">{errors.patientLastName}</p>
-                            )}
-                            <LabeledInput
-
-                              placeholder="Subscription id"
-                              name='subscriptionId'
-                              value={values?.subscriptionId}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {errors.subscriptionId && (
-                              <p className="text-red-800 text-xs capitalize">{errors.subscriptionId}</p>
-                            )}
-                          </FormSection>
-                          <div className="bg-textField  rounded-md ">
-                            <button
-                              onClick={() => setIsModalOpen(true)}
-                              className="w-full bg-textField  font-poppins text-secondaryBrand rounded-lg px-4 py-3 text-left cursor-pointer border text-sm font-normal flex justify-between"
-                            >
-                              Select Smile Design
-                              <span>
-                                <ChevronDownIcon className="w-3 h-3" />
-                              </span>
-                            </button>
-                            {selected > 0 && (
-                              <p className="py-2 px-2 text-sm text-secondaryBrand">
-                                Smile Design :{" "}
-                                {selected.length > 0 ? selected.join(", ") : ""}
-                              </p>
-                            )}
-                          </div>
-                          <MaterialDropdown
-                            className="w-full rounded-md bg-textField px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
-                            options={(orders.find((p) => p.name === "Scanner")?.children) || []}
-                            value={toothSelections[selectedTooth]?.scannerType || ""}
-                            onChange={(val) => {
-                              handleDropdownChange("scannerType", val);
-                              if (val) {
-                                setTouched(prev => ({ ...prev, scannerType: false }));
-                              }
-                            }}
-                            label="Scanner Type"
-                            storageKey="scannerType"
-                            dropdownClass="text-secondaryBrand"
-                            error={touched.scannerType && !toothSelections[selectedTooth]?.scannerType ? "Scanner Type is Required Select the Teeth" : ""}
-
-                          />
-                          <div>
-                            <FileUploadSection />
-                          </div>
-                          <FormSection
-                            title="Additional Notes"
-                            className="border border-gray-200 p-4"
-                          >
-                            <textarea
-                              typeof="text"
-                              rows={2}
-                              name='note'
-                              value={values.note}
-                              placeholder="Write here"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              maxLength={500}
-                              className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none  "
-                            />
-                            {errors.note && (
-                              <p className="text-red-800 text-xs capitalize">{errors.note}</p>
-                            )}
-                          </FormSection>
-                        </aside>
-                        <section className="col-span-12 md:col-span-6 space-y-4">
-                          <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
-                            <div className="grid grid-cols-2 gap-4 mt-5 mb-10">
-                              <MaterialDropdown
-                                className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                options={
-                                  (orders.find((p) => p.name === "Digital Denture")?.children) || []
-                                }
-                                value={
-                                  toothSelections[selectedTooth]?.digitalOptions || ""}
-                                onChange={(val) => {
-                                  handleDropdownChange("digitalOptions", val);
-                                  // Clear error when user selects a value
-                                  if (val) {
-                                    setTouched(prev => ({ ...prev, digitalOptions: false }));
-                                  }
-                                }}
-                                label="Digital Denture"
-                                storageKey="digitalOptions"
-                                error={touched.digitalOptions && !toothSelections[selectedTooth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
-
-                              />
 
 
-                              <MaterialDropdown
-                                className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                options={
-                                  (orders.find((p) => p.name === "Surgical Guide")?.children) || []
-                                }
-                                value={toothSelections[selectedTooth]?.surgical_guide || ""}
 
 
-                                onChange={(val) => {
-                                  handleDropdownChange("surgical_guide", val);
 
-                                  if (val) {
-                                    setTouched(prev => ({ ...prev, surgical_guide: false }));
-                                  }
-                                }}
-                                label="Surgical Guide"
-                                storageKey="surgical_guide"
-                                error={touched.surgical_guide && !toothSelections[selectedTooth]?.surgical_guide ? "Surgical Guide is Required Select the teeth" : ""}
+        <main className="flex-1 bg-white rounded-3xl p-4 sm:p-6 w-full">
+          <Formik
+            initialValues=''
+            validationSchema={OrderValidationSchema}
+            onSubmit=''
+          >
+            {({ validateForm, values, errors, touched, handleChange, handleBlur, setFieldValue }) => {
+              const handleTabClick = async (index) => {
+                if (index === activeIndex) return;
+                const formErrors = await validateForm();
+                if (Object.keys(formErrors).length === 0) {
+                  setActiveIndex(index);
+                } else {
+                  alert("Please fix validation errors before moving tabs.");
+                }
+              };
 
-                              />
+              return (
+                <>
+                  {/* Stepper / Tab Headers */}
+                  <StepperTabs
+                    steps={steps}
+                    setActiveIndex={(i) => handleTabClick(i)}
+                    activeIndex={activeIndex}
+                    back={back}
+                    next={next}
+                  />
 
-                            </div>
-                            <div className="flex flex-wrap gap-2  justify-center flex-col">
-                              <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">upper Arch</button>
-                              {/* <img src='/assets/doctor/image.png' /> */}
-                              <div>
-                                <TeethChart
-                                  teeth={teethData && teethData.length ? teethData : undefined}
-                                  sizePx={chartSize}
-                                  initialSelectedIds={selectedTeeth}
-                                  currentToothId={selectedTooth}
-                                  onSelect={(arr) => {
-                                    
-                                    const toothIds = arr.map(t => t.id);
-                                    setSelectedTeeth(toothIds);
+                  {/* Tab Content */}
+                  {activeIndex === 0 && (
+                    <Formik
+                      initialValues={{
+                        doctorName: "",
+                        officeReg: "",
+                        createDate: "",
+                        dueDate: "",
+                        patientFirstName: "",
+                        patientLastName: "",
+                        subscriptionId: "",
+                        scannerType: "",
+                        digitalOptions: "",
+                        surgical_guide: "",
+                        material: "",
+                        lab: "",
+                        selectedTeeth: [], // 🟢 track selected teeth
+                        toothSelections: {},
+                        note: '',
+                        crown: ''
+                      }}
+                      validationSchema={OrderValidationSchema}
+                      validateOnChange={true}  // 🚫 Validation har change pe na chale
+                      validateOnBlur={true}
+                      onSubmit={(values) => {
+                      }}
+                    >
+                      {({ values, errors, touched, handleChange, handleSubmit, validateForm, setFieldValue, handleBlur }) => (
+                        <Form onSubmit={handleSubmit} className="space-y-4">
 
-                                    if (arr.length > 0) {
-                                      setSelectedTooth(arr[arr.length - 1].id);
-                                    } else {
-                                      setSelectedTooth(null);
-                                    }
-                                  }}
+                          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 min-h-screen">
+                            {/* Left 3 */}
+                            <aside className="col-span-12 md:col-span-3 space-y-4">
+                              <FormSection
+                                title="Doctor Info"
+                                color="text-xs font-semibold"
+                                className="border border-gray-200 p-4"
+                              >
+
+                                <LabeledInput
+                                  type="text"
+                                  label="Doctor Name / Office Name"
+                                  placeholder='Doctor Name / Office Name'
+                                  name="doctorName"
+                                  value={values.doctorName}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
                                 />
+                                {errors.doctorName && (
+                                  <p className="text-red-800 text-xs capitalize">{errors.doctorName}</p>
+                                )}
+                                <LabeledInput
+                                  type="text"
+                                  label="Office registration number"
+                                  value={values?.officeReg}
+                                  name='officeReg'
+                                  placeholder="Office registration number"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {errors.officeReg && (
+                                  <p className="text-red-800 text-xs capitalize">{errors.officeReg}</p>
+                                )}
+                                <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Create Date</lable>
+                                <LabeledInput
+                                  label="Create Date"
+                                  type="date"
+                                  name='createDate'
+                                  value={values?.createDate}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {errors.createDate && (
+                                  <p className="text-red-800 text-xs capitalize">{errors.createDate}</p>
+                                )}
+                                <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Case expected due date</lable>
+                                <LabeledInput
+                                  label="Case expected due date"
+                                  type="date"
+                                  name='dueDate'
+                                  value={values?.dueDate}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {errors.dueDate && (
+                                  <p className="text-red-800 text-xs capitalize">{errors.dueDate}</p>
+                                )}
+                              </FormSection>
+                              <FormSection
+                                title="Patient ID"
+                                color="text-xs font-semibold"
+                                className="border border-gray-200 p-4"
+                              >
+                                <LabeledInput
+                                  type="text"
+                                  placeholder="Name"
+                                  name='patientFirstName'
+                                  value={values?.patientFirstName}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {errors.patientFirstName && (
+                                  <p className="text-red-800 text-xs capitalize">{errors.patientFirstName}</p>
+                                )}
+                                <LabeledInput
+                                  type="text"
+                                  placeholder="Last Name"
+                                  name='patientLastName'
+                                  value={values?.patientLastName}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {errors.patientLastName && (
+                                  <p className="text-red-800 text-xs capitalize">{errors.patientLastName}</p>
+                                )}
+                                <LabeledInput
+
+                                  placeholder="Subscription id"
+                                  name='subscriptionId'
+                                  value={values?.subscriptionId}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {errors.subscriptionId && (
+                                  <p className="text-red-800 text-xs capitalize">{errors.subscriptionId}</p>
+                                )}
+                              </FormSection>
+                              <div className="bg-textField  rounded-md ">
+                                <button
+                                  onClick={() => setIsModalOpen(true)}
+                                  className="w-full bg-textField  font-poppins text-secondaryBrand rounded-lg px-4 py-3 text-left cursor-pointer border text-sm font-normal flex justify-between"
+                                >
+                                  Select Smile Design
+                                  <span>
+                                    <ChevronDownIcon className="w-3 h-3" />
+                                  </span>
+                                </button>
+                                {selected > 0 && (
+                                  <p className="py-2 px-2 text-sm text-secondaryBrand">
+                                    Smile Design :{" "}
+                                    {selected.length > 0 ? selected.join(", ") : ""}
+                                  </p>
+                                )}
                               </div>
+                              <MaterialDropdown
+                                className="w-full rounded-md bg-textField px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
+                                options={(orders.find((p) => p.name === "Scanner")?.children) || []}
+                                value={toothSelections[selectedTooth]?.scannerType || ""}
+                                onChange={(val) => {
+                                  handleDropdownChange("scannerType", val);
+                                  if (val) {
+                                    setTouched(prev => ({ ...prev, scannerType: false }));
+                                  }
+                                }}
+                                label="Scanner Type"
+                                storageKey="scannerType"
+                                dropdownClass="text-secondaryBrand"
+                                error={touched.scannerType && !toothSelections[selectedTooth]?.scannerType ? "Scanner Type is Required Select the Teeth" : ""}
 
-                              {/* <button className="text-[#949494] text-sm font-normal pt-10  font-poppins">Lower Arch</button> */}
-                            </div>
+                              />
+                              <div>
+                                <FileUploadSection />
+                              </div>
+                              <FormSection
+                                title="Additional Notes"
+                                className="border border-gray-200 p-4"
+                              >
+                                <textarea
+                                  typeof="text"
+                                  rows={2}
+                                  name='note'
+                                  value={values.note}
+                                  placeholder="Write here"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  maxLength={500}
+                                  className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none  "
+                                />
+                                {errors.note && (
+                                  <p className="text-red-800 text-xs capitalize">{errors.note}</p>
+                                )}
+                              </FormSection>
+                            </aside>
+                            <section className="col-span-12 md:col-span-6 space-y-4">
+                              <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
+                                <div className="grid grid-cols-2 gap-4 mt-5 mb-10">
+                                  <MaterialDropdown
+                                    className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    options={
+                                      (orders.find((p) => p.name === "Digital Denture")?.children) || []
+                                    }
+                                    value={
+                                      toothSelections[selectedTooth]?.digitalOptions || ""}
+                                    onChange={(val) => {
+                                      handleDropdownChange("digitalOptions", val);
+                                      // Clear error when user selects a value
+                                      if (val) {
+                                        setTouched(prev => ({ ...prev, digitalOptions: false }));
+                                      }
+                                    }}
+                                    label="Digital Denture"
+                                    storageKey="digitalOptions"
+                                    error={touched.digitalOptions && !toothSelections[selectedTooth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
 
-                          </div>
-                        </section>
-                        {/* Right 3 */}
-                        <aside className="col-span-12 md:col-span-3 space-y-4 flex flex-col justify-between">
-                          <div className="flex  flex-col justify-between">
-                            <div>
-                              <FormSection className="p-0">
-                                {/* <MaterialDropdown
+                                  />
+
+
+                                  <MaterialDropdown
+                                    className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    options={
+                                      (orders.find((p) => p.name === "Surgical Guide")?.children) || []
+                                    }
+                                    value={toothSelections[selectedTooth]?.surgical_guide || ""}
+
+
+                                    onChange={(val) => {
+                                      handleDropdownChange("surgical_guide", val);
+
+                                      if (val) {
+                                        setTouched(prev => ({ ...prev, surgical_guide: false }));
+                                      }
+                                    }}
+                                    label="Surgical Guide"
+                                    storageKey="surgical_guide"
+                                    error={touched.surgical_guide && !toothSelections[selectedTooth]?.surgical_guide ? "Surgical Guide is Required Select the teeth" : ""}
+
+                                  />
+
+                                </div>
+                                <div className="flex flex-wrap gap-2  justify-center flex-col">
+                                  <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">upper Arch</button>
+                                  {/* <img src='/assets/doctor/image.png' /> */}
+                                  <div>
+                                    <TeethChart
+                                      teeth={teethData && teethData.length ? teethData : undefined}
+                                      sizePx={chartSize}
+                                      initialSelectedIds={selectedTeeth}
+                                      currentToothId={selectedTooth}
+                                      onSelect={(arr) => {
+
+                                        const toothIds = arr.map(t => t.id);
+                                        setSelectedTeeth(toothIds);
+
+                                        if (arr.length > 0) {
+                                          setSelectedTooth(arr[arr.length - 1].id);
+                                        } else {
+                                          setSelectedTooth(null);
+                                        }
+                                      }}
+                                    />
+                                  </div>
+
+                                  {/* <button className="text-[#949494] text-sm font-normal pt-10  font-poppins">Lower Arch</button> */}
+                                </div>
+
+                              </div>
+                            </section>
+                            {/* Right 3 */}
+                            <aside className="col-span-12 md:col-span-3 space-y-4 flex flex-col justify-between">
+                              <div className="flex  flex-col justify-between">
+                                <div>
+                                  <FormSection className="p-0">
+                                    {/* <MaterialDropdown
                                   options={(orders.find((p) => p.name === "Crown")?.children) || []}
                                   value={toothSelections[selectedTooth]?.crown || ""}   // use lowercase consistently
                                   // onChange={(val) => {
@@ -610,235 +629,250 @@ const DoctorOrder = () => {
 
 
 
-                                <MaterialDropdown
-                                  options={(orders.find((p) => p.name === "Crown")?.children) || []}
-                                  value={toothSelections[selectedTooth]?.crown?.value || ""}   // use .value here
-                                  onChange={(val) => {
-                                    const option = (orders.find((p) => p.name === "Crown")?.children || [])
-                                      .find(c => c.value === val);
+                                    <MaterialDropdown
+                                      options={(orders.find((p) => p.name === "Crown")?.children) || []}
+                                      value={toothSelections[selectedTooth]?.crown?.value || ""}   // use .value here
+                                      onChange={(val) => {
+                                        const option = (orders.find((p) => p.name === "Crown")?.children || [])
+                                          .find(c => c.value === val);
 
-                                    handleDropdownChange("crown", {
-                                      value: val,
-                                      label: option?.label || "",
-                                      price: option?.price || 0,
-                                    });
+                                        handleDropdownChange("crown", {
+                                          value: val,
+                                          label: option?.label || "",
+                                          price: option?.price || 0,
+                                        });
 
-                                    if (val) {
-                                      setTouched(prev => ({ ...prev, crown: false }));
-                                    }
-                                  }}
-                                  label="Crown"
-                                  storageKey="crown"
-                                  className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                  error={
-                                    touched.crown && !toothSelections[selectedTooth]?.crown
-                                      ? "Crown is required. Please select a value."
-                                      : ""
-                                  }
-                                />
+                                        if (val) {
+                                          setTouched(prev => ({ ...prev, crown: false }));
+                                        }
+                                      }}
+                                      label="Crown"
+                                      storageKey="crown"
+                                      className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                      error={
+                                        touched.crown && !toothSelections[selectedTooth]?.crown
+                                          ? "Crown is required. Please select a value."
+                                          : ""
+                                      }
+                                    />
 
-                                <MaterialDropdown
-                                  options={materialOptions}
-                                  value={selectedMaterialValue}
-                                  onChange={(val) => {
+                                    <MaterialDropdown
+                                      options={materialOptions}
+                                      value={selectedMaterialValue}
+                                      onChange={(val) => {
 
-                                    handleDropdownChange("material", val)
-                                    if (val) {
-                                      setTouched(prev => ({ ...prev, material: false }));
-                                    }
-                                  }
-                                  }
-                                  label="Material"
-                                  storageKey="material"
-                                  className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                  error={touched.material && !toothSelections[selectedTooth]?.material ? "Material is Required Select the teeth" : ""}
-                                />
+                                        handleDropdownChange("material", val)
+                                        if (val) {
+                                          setTouched(prev => ({ ...prev, material: false }));
+                                        }
+                                      }
+                                      }
+                                      label="Material"
+                                      storageKey="material"
+                                      className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                      error={touched.material && !toothSelections[selectedTooth]?.material ? "Material is Required Select the teeth" : ""}
+                                    />
 
 
-                                <ShadeDropdown
-                                  shades={shadeGroups}
-                                  onChange={(selected) => { }}
-                                />
-                                <MaterialDropdown
-                                  options={Digital_Option}
-                                  value={
-                                    toothSelections[selectedTooth]?.digital_option || ""
-                                  }
-                                  onChange={(val) =>
-                                    handleDropdownChange("digital_option", val)
-                                  }
-                                  label=" Digital Model type"
-                                  className="w-full rounded-xl  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                />
+                                    <ShadeDropdown
+                                      shades={shadeGroups}
+                                      onChange={(selected) => { }}
+                                    />
+                                    <MaterialDropdown
+                                      options={Digital_Option}
+                                      value={
+                                        toothSelections[selectedTooth]?.digital_option || ""
+                                      }
+                                      onChange={(val) =>
+                                        handleDropdownChange("digital_option", val)
+                                      }
+                                      label=" Digital Model type"
+                                      className="w-full rounded-xl  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    />
 
-                                <MaterialDropdown
-                                  options={
-                                    (orders.find((p) => p.name === "Participating Lab")?.children) || []
-                                  }
-                                  value={toothSelections[selectedTooth]?.lab || ""} // ✅ selected value
-                                  onChange={(val) => {
+                                    <MaterialDropdown
+                                      options={
+                                        (orders.find((p) => p.name === "Participating Lab")?.children) || []
+                                      }
+                                      value={toothSelections[selectedTooth]?.lab || ""} // ✅ selected value
+                                      onChange={(val) => {
 
-                                    // handleDropdownChange("Lab", val)
-                                    handleDropdownChange("lab", val)
-                                    if (val) {
-                                      setTouched(prev => ({ ...prev, lab: false }));
-                                    }
-                                  }}
-                                  label="Select Laboratory"
-                                  storageKey="Select Laboratory"
-                                  className="w-full rounded-xl  bg-white     px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                  error={touched.material && !toothSelections[selectedTooth]?.material ? "Participating Lab is Required Select the teeth" : ""}
-                                />
-                                <MaterialDropdown
-                                  options={PHOTOGRAMMETRY_FILES}
-                                  value={
-                                    toothSelections[selectedTooth]
-                                      ?.Photogrammetry_files || ""
-                                  }
-                                  onChange={(val) =>
-                                    handleDropdownChange("Photogrammetry_files", val)
-                                  }
-                                  label="Photogrammetry files"
-                                  storageKey="Photogrammetry files"
-                                  className="w-full rounded-xl  bg-[#F8F8F8] border-none    px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
-                                  dropdownClass=' text-secondaryBrand'
-                                />
-                              </FormSection>
-                            </div>
+                                        // handleDropdownChange("Lab", val)
+                                        handleDropdownChange("lab", val)
+                                        if (val) {
+                                          setTouched(prev => ({ ...prev, lab: false }));
+                                        }
+                                      }}
+                                      label="Select Laboratory"
+                                      storageKey="Select Laboratory"
+                                      className="w-full rounded-xl  bg-white     px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                      error={touched.material && !toothSelections[selectedTooth]?.material ? "Participating Lab is Required Select the teeth" : ""}
+                                    />
+                                    <MaterialDropdown
+                                      options={PHOTOGRAMMETRY_FILES}
+                                      value={
+                                        toothSelections[selectedTooth]
+                                          ?.Photogrammetry_files || ""
+                                      }
+                                      onChange={(val) =>
+                                        handleDropdownChange("Photogrammetry_files", val)
+                                      }
+                                      label="Photogrammetry files"
+                                      storageKey="Photogrammetry files"
+                                      className="w-full rounded-xl  bg-[#F8F8F8] border-none    px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
+                                      dropdownClass=' text-secondaryBrand'
+                                    />
+                                  </FormSection>
+                                </div>
 
-                            <div className="mt-96">
-                              <div className="flex flex-col space-y-3">
-                                {Object.entries(toothSelections).map(([toothId, values]) => (
-                                  <div key={toothId} className="space-y-1">
-                                    {/* Material */}
-                                    <div className="flex justify-between items-center py-1">
-                                      <p className="text-xs text-textFieldHeading">
-                                        {values.materialOption?.label || "No Material"} x1
-                                      </p>
-                                      <p className="text-xs font-medium">
-                                        ${values.materialPrice || values.materialOption?.price || 0}
-                                      </p>
-                                    </div>
+                                <div className="mt-96">
+                                  <div className="flex flex-col space-y-3">
+                                    {Object.entries(toothSelections).map(([toothId, values]) => (
+                                      <div key={toothId} className="space-y-1">
+                                        {/* Material */}
+                                        <div className="flex justify-between items-center py-1">
+                                          <p className="text-xs text-textFieldHeading">
+                                            {values.materialOption?.label || "No Material"} x1
+                                          </p>
+                                          <p className="text-xs font-medium">
+                                            ${values.materialPrice || values.materialOption?.price || 0}
+                                          </p>
+                                        </div>
 
-                                    {/* Crown */}
-                                    <div className="flex justify-between items-center py-1">
-                                      <p className="text-xs text-textFieldHeading">
-                                        {values.crown?.label || "No Crown"}
-                                      </p>
-                                      <p className="text-xs font-medium">
-                                        ${values.crown?.price || 0}
-                                      </p>
-                                    </div>
+                                        {/* Crown */}
+                                        <div className="flex justify-between items-center py-1">
+                                          <p className="text-xs text-textFieldHeading">
+                                            {values.crown?.label || "No Crown"}
+                                          </p>
+                                          <p className="text-xs font-medium">
+                                            ${values.crown?.price || 0}
+                                          </p>
+                                        </div>
 
-                                    {/* Surgical Guide */}
-                                    <div className="flex justify-between items-center py-1">
-                                      <p className="text-xs text-textFieldHeading">
-                                        {values.surgical_guideOption?.label || "No Surgical Guide"}
-                                      </p>
-                                      <p className="text-xs font-medium">
-                                        {values.surgical_guideOption?.price
-                                          ? `$${values.surgical_guideOption.price}`
-                                          : ""}
-                                      </p>
-                                    </div>
+                                        {/* Surgical Guide */}
+                                        <div className="flex justify-between items-center py-1">
+                                          <p className="text-xs text-textFieldHeading">
+                                            {values.surgical_guideOption?.label || "No Surgical Guide"}
+                                          </p>
+                                          <p className="text-xs font-medium">
+                                            {values.surgical_guideOption?.price
+                                              ? `$${values.surgical_guideOption.price}`
+                                              : ""}
+                                          </p>
+                                        </div>
 
-                                    {/* Digital Denture */}
-                                    <div className="flex justify-between items-center py-1">
-                                      <p className="text-xs text-textFieldHeading">
-                                        {values.digitalOptionsOption?.label || "No Digital Denture selected"}
-                                      </p>
-                                      <p className="text-xs font-medium">
-                                        {values.digitalOptionsOption?.price
-                                          ? `$${values.digitalOptionsOption.price}`
-                                          : ""}
-                                      </p>
-                                    </div>
+                                        {/* Digital Denture */}
+                                        <div className="flex justify-between items-center py-1">
+                                          <p className="text-xs text-textFieldHeading">
+                                            {values.digitalOptionsOption?.label || "No Digital Denture selected"}
+                                          </p>
+                                          <p className="text-xs font-medium">
+                                            {values.digitalOptionsOption?.price
+                                              ? `$${values.digitalOptionsOption.price}`
+                                              : ""}
+                                          </p>
+                                        </div>
 
-                                    {/* Lab */}
-                                    <div className="flex justify-between items-center py-1">
-                                      <p className="text-xs text-textFieldHeading">
-                                        {values.labOption?.label || "Participating Lab"}
-                                      </p>
-                                      <p className="text-xs font-medium">
-                                        {values.labOption?.price ? `$${values.labOption.price}` : ""}
-                                      </p>
-                                    </div>
+                                        {/* Lab */}
+                                        <div className="flex justify-between items-center py-1">
+                                          <p className="text-xs text-textFieldHeading">
+                                            {values.labOption?.label || "Participating Lab"}
+                                          </p>
+                                          <p className="text-xs font-medium">
+                                            {values.labOption?.price ? `$${values.labOption.price}` : ""}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    ))}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                   </div>
-                                ))}
+
+                                  <>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+                                  </>
+                                  <div className="flex justify-between items-center py-3">
+                                    <p className="text-textFieldHeading text-xs font-poppins">
+                                      Subtotal:
+                                    </p>
+                                    <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                      ${subtotal.toFixed(2)}
+                                    </p>
+                                  </div>
+                                  <div className="flex justify-between items-center py-3">
+                                    <p className="text-textFieldHeading text-xs font-poppins">
+                                      Shipping:
+                                    </p>
+                                    <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                      ${shipping.toFixed(2)}
+                                    </p>
+                                  </div>
+                                  <div className="flex justify-between items-center py-3">
+                                    <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
+                                      Total:
+                                    </p>
+                                    <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                      ${total.toFixed(2)}
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
 
-                              <>
-
-
-
-
-                              </>
-                              <div className="flex justify-between items-center py-3">
-                                <p className="text-textFieldHeading text-xs font-poppins">
-                                  Subtotal:
-                                </p>
-                                <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                  ${subtotal.toFixed(2)}
-                                </p>
-                              </div>
-                              <div className="flex justify-between items-center py-3">
-                                <p className="text-textFieldHeading text-xs font-poppins">
-                                  Shipping:
-                                </p>
-                                <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                  ${shipping.toFixed(2)}
-                                </p>
-                              </div>
-                              <div className="flex justify-between items-center py-3">
-                                <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
-                                  Total:
-                                </p>
-                                <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                  ${total.toFixed(2)}
-                                </p>
-                              </div>
-                            </div>
+                              <button
+                                type="submit"
+                                // onClick={handleSave}
+                                onClick={() => handleSave(validateForm, values, next)}
+                                className="w-full rounded-full bg-[#0b2b62] px-6 py-3 text-sm font-semibold text-white hover:bg-[#092b58]"
+                              >
+                                Checkout
+                              </button>
+                            </aside>
                           </div>
 
-                          <button
-                            type="submit"
-                            // onClick={handleSave}
-                            onClick={() => handleSave(validateForm, values, next)}
-                            className="w-full rounded-full bg-[#0b2b62] px-6 py-3 text-sm font-semibold text-white hover:bg-[#092b58]"
-                          >
-                            Checkout
-                          </button>
-                        </aside>
-                      </div>
+                        </Form>
+                      )}
 
-                    </Form>
+
+
+                    </Formik>
                   )}
-
-
-
-                </Formik>
-              )}
-              {activeIndex === 1 && <ReviewOrder next={next} />}
-              {activeIndex === 2 && <CheckoutForm next={next} />}
-              {activeIndex === 3 && <DonePage next={next} />}
-            </div>
-          </div>
+                  {activeIndex === 1 && <ReviewOrder next={next} />}
+                  {activeIndex === 2 && <CheckoutForm next={next} />}
+                  {activeIndex === 3 && <DonePage next={next} />}
+                </>
+              );
+            }}
+          </Formik>
         </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
         {isModalOpen && (
           <SmileDesignPicker
             isModalOpen={isModalOpen}
