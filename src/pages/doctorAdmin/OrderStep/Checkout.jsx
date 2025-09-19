@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { orderService } from "../../../services/order-service/index";
 
 const CheckoutForm = ({ next }) => {
@@ -27,11 +27,16 @@ const CheckoutForm = ({ next }) => {
       [e.target.name]: e.target.value,
     }));
   };
+  const saved = localStorage.getItem("restorationForm");
+  console.log(saved);
 
   const buildRequestData = () => {
-    const saved = localStorage.getItem("restorationForm");
 
+    console.log('----------------helo');
+
+    const saved = localStorage.getItem("restorationForm");
     const storedData = saved ? JSON.parse(saved) : {};
+    console.log('storeData:', storedData);
     const doctor = storedData.doctor || {};
     const patient = storedData.patient || {};
     const selectedTeeth = storedData?.selectedTeeth?.length
@@ -52,16 +57,19 @@ const CheckoutForm = ({ next }) => {
       patientFirstName:
         patient?.patientFirstName || formData.fullName.split(" ")[0] || "John",
       subscriptionId: patient?.subscriptionId || "SUB-0000",
-      additionalNotes: storedData?.additionalNotes || "Checkout order",
+      additionalNotes: storedData?.note || "Checkout order",
       selectedTooths: selectedTeeth || [],
-      doctorOrderItems: storedData?.teeth || [],
-
+      doctorOrderItems: storedData?.doctorOrderItems || [],
       paymentId: 8,
-
       name: formData.fullName,
       address: `${formData.street}, ${formData.city}, ${formData.state}, ${formData.country}`,
       email: formData.email,
-      phone: formData.contactNumber,
+      // phone: formData.contactNumber,
+      phone: "+1-555-123-4567",
+      orderStatus: "PENDING",
+      paymentStatus: "Unpaid",
+      totalAmount: 250.00,
+
     };
   };
   const handleSubmit = async (e) => {
@@ -74,7 +82,7 @@ const CheckoutForm = ({ next }) => {
       // 👇 Create FormData
       const apiFormData = new FormData();
       apiFormData.append("request", JSON.stringify(requestData));
- 
+
       // 👇 Debugging FormData (looping through entries)
       for (let pair of apiFormData.entries()) {
         console.log("📦 FormData entry:", pair[0], "=>", pair[1]);
@@ -92,7 +100,77 @@ const CheckoutForm = ({ next }) => {
     } finally {
       setLoading(false);
     }
+    next()
   };
+
+
+
+  const [formDatas, setFormDatas] = useState({
+    doctor: {},
+    patient: {},
+    teeth: {},
+    selectedTeeth: [],
+    note: "",
+    totalPrice: 0,
+  });
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("restorationForm");
+    if (savedData) {
+      const parsed = JSON.parse(savedData);
+
+      const formattedData = {
+        doctor: {
+          doctorName: parsed.doctorName,
+          officeReg: parsed.officeReg,
+          createDate: parsed.createDate,
+          dueDate: parsed.dueDate,
+        },
+        patient: {
+          firstName: parsed.patientFirstName,
+          lastName: parsed.patientLastName,
+          subscriptionId: parsed.subscriptionId,
+        },
+        teeth: parsed.toothSelections || {},
+        selectedTeeth: parsed.selectedTeeth || [],
+        totalPrice: parsed.totalPrice || 0,
+        note: parsed.note || "",
+      };
+
+      setFormDatas(formattedData);
+    }
+  }, []);
+  console.log('doctorOrderItems', formDatas);
+
+  // const subtotal = (formData?.selectedTeeth || []).reduce((sum, toothId) => {
+  //   const tooth = formData?.teeth?.[toothId] || {};
+  //   return (
+  //     sum +
+  //     (tooth.materialPrice || 0) +
+  //     (tooth.digitalOptionsPrice || 0) +
+  //     (tooth.surgical_guidePrice || 0) +
+  //     (tooth.labPrice || 0)
+  //   );
+  // }, 0);
+
+
+
+  // const subtotal = (formData?.selectedTeeth || []).reduce((sum, toothId) => {
+  //   const tooth = formData?.teeth?.[toothId] || {};
+
+  //   // find all keys ending in "Price"
+  //   const priceFields = Object.keys(tooth).filter((key) =>
+  //     key.endsWith("Price")
+  //   );
+
+  //   const toothTotal = priceFields.reduce(
+  //     (acc, key) => acc + (tooth[key] || 0),
+  //     0
+  //   );
+
+  //   return sum + toothTotal;
+  // }, 0);
+
 
   return (
     <div className="min-h-screen bg-bgWhite">
@@ -351,7 +429,7 @@ const CheckoutForm = ({ next }) => {
                 <h2 className="text-xl font-medium text-gray-800 mb-4">
                   Order Summary
                 </h2>
-                <div className="space-y-3 text-sm">
+                {/* <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-xs text-[#828386] font-normal ">
                       Emax{" "}
@@ -400,10 +478,128 @@ const CheckoutForm = ({ next }) => {
                       $180.00
                     </span>
                   </div>
+                </div> */}
+
+
+
+
+
+
+
+
+
+
+                <div className="space-y-3 text-sm">
+                  {/* Loop through teeth and show material/options */}
+                  {(formDatas?.selectedTeeth || []).map((toothId) => {
+                    const tooth = formDatas?.teeth?.[toothId] || {};
+                    const optionFields = Object.keys(tooth).filter((key) =>
+                      key.endsWith("Option")
+                    );
+
+                    return (
+                      <div key={toothId} className="space-y-2 mb-4">
+                        {optionFields.map((fieldKey) => {
+                          const option = tooth[fieldKey]; // e.g. materialOption, labOption
+                          if (!option) return null; // skip null values
+
+                          const baseKey = fieldKey.replace("Option", ""); // e.g. materialOption -> material
+                          const quantity = tooth.quantity || 1;
+                          const price = tooth[`${baseKey}Price`] || option.price || 0;
+
+                          return (
+                            <div key={fieldKey} className="flex justify-between">
+                              <span className="text-xs text-[#828386] font-normal">
+                                {option.label}
+                                {/* <span className="text-[#1A1A1A] text-xs font-poppins font-normal ml-1">
+                                  x{quantity}
+                                </span> */}
+                              </span>
+                              <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
+                                ${price * quantity}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+
+                  {/* ✅ Subtotal dynamically calculated the same way */}
+                  <div className="flex justify-between">
+                    <span className="text-xs text-[#828386] font-normal">Subtotal</span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
+                      $
+                      {(formDatas?.selectedTeeth || []).reduce((sum, toothId) => {
+                        const tooth = formDatas?.teeth?.[toothId] || {};
+                        const optionFields = Object.keys(tooth).filter((key) =>
+                          key.endsWith("Option")
+                        );
+
+                        const toothTotal = optionFields.reduce((toothSum, fieldKey) => {
+                          const option = tooth[fieldKey];
+                          if (!option) return toothSum;
+
+                          const baseKey = fieldKey.replace("Option", "");
+                          const quantity = tooth.quantity || 1;
+                          const price = tooth[`${baseKey}Price`] || option.price || 0;
+
+                          return toothSum + price * quantity;
+                        }, 0);
+
+                        return sum + toothTotal;
+                      }, 0)}
+                    </span>
+                  </div>
+
+                  <hr />
+
+                  {/* Shipping */}
+                  <div className="flex justify-between">
+                    <span className="text-xs text-[#828386] font-normal">Shipping</span>
+                    <span className="text-[#1A1A1A] text-xs font-poppins font-normal">Free</span>
+                  </div>
+
+                  {/* ✅ Total = Subtotal (since shipping free) */}
+                  <div className="flex justify-between text-secondaryBrand text-base mt-4 pt-2">
+                    <span className="font-poppins">Total</span>
+                    <span className="font-poppins font-semibold">
+                      $
+                      {(formDatas?.selectedTeeth || []).reduce((sum, toothId) => {
+                        const tooth = formDatas?.teeth?.[toothId] || {};
+                        const optionFields = Object.keys(tooth).filter((key) =>
+                          key.endsWith("Option")
+                        );
+
+                        const toothTotal = optionFields.reduce((toothSum, fieldKey) => {
+                          const option = tooth[fieldKey];
+                          if (!option) return toothSum;
+
+                          const baseKey = fieldKey.replace("Option", "");
+                          const quantity = tooth.quantity || 1;
+                          const price = tooth[`${baseKey}Price`] || option.price || 0;
+
+                          return toothSum + price * quantity;
+                        }, 0);
+
+                        return sum + toothTotal;
+                      }, 0)}
+                    </span>
+                  </div>
                 </div>
+
+
+
+
+
+
+
+
+
               </div>
               <button
                 type="submit"
+                
                 className="mt-6 w-full py-4 rounded-3xl bg-[rgba(0,29,88,1)] hover:bg-blue-800 text-white font-medium"
               >
                 Place Order
