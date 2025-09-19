@@ -913,6 +913,36 @@ const DoctorOrder = () => {
                                       : ""
                                   }
                                 /> */}
+
+
+
+                                <MaterialDropdown
+                                  options={(orders.find((p) => p.name === "Crown")?.children) || []}
+                                  value={toothSelections[selectedTooth]?.crown?.value || ""}   // use .value here
+                                  onChange={(val) => {
+                                    const option = (orders.find((p) => p.name === "Crown")?.children || [])
+                                      .find(c => c.value === val);
+
+                                    handleDropdownChange("crown", {
+                                      value: val,
+                                      label: option?.label || "",
+                                      price: option?.price || 0,
+                                    });
+
+                                    if (val) {
+                                      setTouched(prev => ({ ...prev, crown: false }));
+                                    }
+                                  }}
+                                  label="Crown"
+                                  storageKey="crown"
+                                  className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                  error={
+                                    touched.crown && !toothSelections[selectedTooth]?.crown
+                                      ? "Crown is required. Please select a value."
+                                      : ""
+                                  }
+                                />
+
                                 <MaterialDropdown
                                   options={materialOptions}
                                   value={selectedMaterialValue}
