@@ -18,7 +18,7 @@ export const FileUploadSection = () => {
             alert("Only PNG, JPG, JPEG, or PDF files are allowed.");
         }
 
-        setFiles(allowedFiles);
+        setFiles((prev) => [...prev, ...allowedFiles]);
     };
 
     const handleRemoveFile = (index) => {
