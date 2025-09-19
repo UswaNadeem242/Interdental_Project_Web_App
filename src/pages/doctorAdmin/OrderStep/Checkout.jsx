@@ -76,6 +76,23 @@ const CheckoutForm = ({ next }) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    const requiredFields = [
+      "fullName",
+      "contactNumber",
+      "email",
+      "state",
+      "city",
+      "street",
+      "paymentMethod",
+    ];
+
+    // Check main fields
+    for (let field of requiredFields) {
+      if (!formData[field] || formData[field].trim() === "") {
+        alert(`Please fill Form `);
+        return; // Stop submission if missing
+      }
+    }
     try {
       const requestData = buildRequestData();
       console.log("🟢 Final requestData:", requestData);
