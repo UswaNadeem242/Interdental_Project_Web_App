@@ -13,4 +13,5 @@ export const OrderValidationSchema = Yup.object().shape({
     surgical_guide: Yup.string().required("Surgical Guide is required"),
     material: Yup.string().required("Material is required"),
     lab: Yup.string().required("Laboratory is required"),
+    note: Yup.string().nullable(),
 });

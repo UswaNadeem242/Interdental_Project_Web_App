@@ -8,16 +8,6 @@ const ReviewOrder = ({ next }) => {
     selectedTeeth: [],
   });
   const [selectedTeeth, setSelectedTeeth] = useState([]);
-
-  // useEffect(() => {
-  //   const savedData = localStorage.getItem("restorationForm");
-  //   if (savedData) {
-  //     const parsed = JSON.parse(savedData);
-  //     setFormData(parsed);
-  //     setSelectedTeeth(parsed.selectedTeeth || Object.keys(parsed.teeth || {}));
-  //   }
-  // }, []);
-
   useEffect(() => {
     const savedData = localStorage.getItem("restorationForm");
     if (savedData) {
@@ -51,12 +41,6 @@ const ReviewOrder = ({ next }) => {
   const savedData = localStorage.getItem("restorationForm");
   console.log(savedData)
 
-  // ✅ compute subtotal from teeth
-  // const totalPrice = formData.selectedTeeth.reduce((sum, toothId) => {
-  //   const tooth = formData.teeth[toothId] || {};
-  //   return sum + (tooth.materialPrice || 0);
-  // }, 0);
-
   const totalPrice = selectedTeeth.reduce((sum, toothId) => {
     const tooth = formData?.teeth?.[toothId] || {};
     return (
@@ -68,11 +52,6 @@ const ReviewOrder = ({ next }) => {
     );
   }, 0);
 
-
-  // const totalPrice = Object.values(formData.teeth).reduce(
-  //   (sum, tooth) => sum + (tooth.materialPrice || 0),
-  //   0
-  // );
   return (
     <div className=" ">
       <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -296,79 +275,37 @@ const ReviewOrder = ({ next }) => {
               Order Summary
             </h2>
             <div className="space-y-3 text-sm">
-              {/* {selectedTeeth.map((toothId) => {
-                const tooth = formData?.teeth?.[toothId] || {};
-                return (
-                  <div key={toothId} className="flex justify-between ">
-                    <span className="text-[#828386] font-poppins text-sm">
-                      {tooth?.material ? `${tooth?.material} x1` : "N/A"}
-                    </span>
-                    <span className="text-[#1A1A1A] font-poppins text-sm">
-                      ${tooth?.materialPrice || 0}
-                    </span>
-                  </div>
-                );
-              })} */}
-
-
-
-              {/* {selectedTeeth.map((toothId) => {
-                const tooth = formData?.teeth?.[toothId] || {};
-                const toothPrice =
-                  (tooth.materialPrice || 0) +
-                  (tooth.digitalOptionsPrice || 0) +
-                  (tooth.surgical_guidePrice || 0) +
-                  (tooth.labPrice || 0);
-
-                return (
-                  <div key={toothId} className="flex justify-between">
-                    <span className="text-[#828386] font-poppins text-sm">
-                      Tooth #{toothId} x1
-                    </span>
-                    <span className="text-[#1A1A1A] font-poppins text-sm">
-                      ${toothPrice}
-                    </span>
-                  </div>
-                );
-              })} */}
-
-
-
-
-
 
               <div className="space-y-3 text-sm">
                 {selectedTeeth.map((toothId) => {
                   const tooth = formData?.teeth?.[toothId] || {};
+                  console.log('ormData?.teeth:', formData?.teeth);
 
                   return (
                     <div key={toothId} className="border-b border-gray-200 pb-2">
                       <p className="font-semibold text-[#1A1A1A]">Tooth #{toothId}</p>
 
                       <div className="flex justify-between">
-                        <span className="text-[#828386] font-poppins text-sm">Material:</span>
+                        <span className="text-[#828386] font-poppins text-sm">{tooth?.materialOption?.label}</span>
                         <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.materialPrice || 0}</span>
                       </div>
 
                       <div className="flex justify-between">
-                        <span className="text-[#828386] font-poppins text-sm">Digital Options:</span>
+                        <span className="text-[#828386] font-poppins text-sm">{tooth?.digitalOptionsOption?.label}</span>
                         <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.digitalOptionsPrice || 0}</span>
                       </div>
 
                       <div className="flex justify-between">
-                        <span className="text-[#828386] font-poppins text-sm">Surgical Guide:</span>
+                        <span className="text-[#828386] font-poppins text-sm">{tooth?.surgical_guideOption?.label}</span>
                         <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.surgical_guidePrice || 0}</span>
                       </div>
 
                       <div className="flex justify-between">
-                        <span className="text-[#828386] font-poppins text-sm">Lab:</span>
+                        <span className="text-[#828386] font-poppins text-sm">{tooth?.labOption?.label}</span>
                         <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.labPrice || 0}</span>
                       </div>
 
-                      <div className="flex justify-between font-medium mt-1">
-                        <span className="text-[#828386] font-poppins text-sm">Tooth Total:</span>
-                        {/* <span className="text-[#1A1A1A] font-poppins text-sm">${toothTotal}</span> */}
-                      </div>
+                     
                     </div>
                   );
                 })}

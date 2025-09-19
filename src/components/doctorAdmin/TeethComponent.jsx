@@ -92,7 +92,7 @@ export default function TeethChart({
     };
 
     return (
-        <div className="relative top-14 left-14  w-full max-w-[600px] aspect-square mx-auto">
+        <div className="relative top-14   w-full max-w-[700px] aspect-square mx-auto">
             {upper.map((t, i) => (
                 <ToothButton key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
                     size={toothSize} x={upperPos[i].x} y={upperPos[i].y}
@@ -101,11 +101,14 @@ export default function TeethChart({
                     onClick={() => toggle(t)} showId={showIds} />
             ))}
             {lower.map((t, i) => (
-                <ToothButton key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
+                <ToothButton 
+                key={t.id} tooth={t} fdi={toFDI(t.id)} palmer={toPalmerFromFDI(toFDI(t.id))}
                     size={toothSize} x={lowerPos[i].x} y={lowerPos[i].y}
                     selected={selectedIds.includes(t.id)}
                     isCurrent={currentToothId === t.id}
-                    onClick={() => toggle(t)} showId={showIds} />
+                    onClick={() => toggle(t)} showId={showIds}
+                    
+                    />
             ))}
         </div>
     );
