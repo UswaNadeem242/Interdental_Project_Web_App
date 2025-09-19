@@ -289,7 +289,7 @@ const DoctorOrder = () => {
       setActiveIndex(index); // move to next tab if no errors
     } else {
       // Optionally: scroll to first error or show a toast
-      console.log("Fix validation errors first:", errors);
+      console.log("Please Fill the Restoration Design form then move to next ");
     }
   };
 
@@ -315,7 +315,7 @@ const DoctorOrder = () => {
                 if (Object.keys(formErrors).length === 0) {
                   setActiveIndex(index);
                 } else {
-                  alert("Please fix validation errors before moving tabs.");
+                  alert("Please Fill the Restoration Design form then move to next");
                 }
               };
 
