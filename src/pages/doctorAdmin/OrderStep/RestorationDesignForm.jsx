@@ -733,7 +733,7 @@ const DoctorOrder = () => {
                               <p className="text-red-800 text-xs capitalize">{errors.patientLastName}</p>
                             )}
                             <LabeledInput
-                               
+
                               placeholder="Subscription id"
                               name='subscriptionId'
                               value={values?.subscriptionId}
@@ -879,7 +879,7 @@ const DoctorOrder = () => {
                           <div className="flex  flex-col justify-between">
                             <div>
                               <FormSection className="p-0">
-                                <MaterialDropdown
+                                {/* <MaterialDropdown
                                   options={(orders.find((p) => p.name === "Crown")?.children) || []}
                                   value={toothSelections[selectedTooth]?.crown || ""}   // use lowercase consistently
                                   // onChange={(val) => {
@@ -912,7 +912,7 @@ const DoctorOrder = () => {
                                       ? "Crown is required. Please select a value."
                                       : ""
                                   }
-                                />
+                                /> */}
                                 <MaterialDropdown
                                   options={materialOptions}
                                   value={selectedMaterialValue}
