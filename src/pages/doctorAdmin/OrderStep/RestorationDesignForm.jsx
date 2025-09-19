@@ -384,7 +384,7 @@ const DoctorOrder = () => {
     currentValues.selectedTeeth.forEach((toothId) => {
       const tooth = currentValues.toothSelections[toothId];
 
-      ["scannerType", "digitalOptions", "surgical_guide", "material", "lab"].forEach(
+      ["scannerType", "digitalOptions", "surgical_guide", "material", "lab", "crown"].forEach(
         (field) => {
           const selectedValue = tooth?.[field];
           if (!selectedValue) {
@@ -438,15 +438,29 @@ const DoctorOrder = () => {
 
     next();
   };
+  // const subtotal = Object.values(toothSelections).reduce((sum, tooth) => {
+  //   return (
+  //     sum +
+  //     (tooth.materialPrice || 0) +
+  //     (tooth.digitalOptionsOption?.price || 0) +
+  //     (tooth.surgical_guideOption?.price || 0) +
+  //     (tooth.lab?.price || 0)
+  //   );
+  // }, 0);
+
+
+
   const subtotal = Object.values(toothSelections).reduce((sum, tooth) => {
     return (
       sum +
-      (tooth.materialPrice || 0) +
-      (tooth.digitalOptionsOption?.price || 0) +
-      (tooth.surgical_guideOption?.price || 0) +
-      (tooth.lab?.price || 0)
+      (tooth.materialPrice || tooth.materialOption?.price || 0) +
+      (tooth.digitalOptionsPrice || tooth.digitalOptionsOption?.price || 0) +
+      (tooth.surgical_guidePrice || tooth.surgical_guideOption?.price || 0) +
+      (tooth.labPrice || tooth.labOption?.price || tooth.lab?.price || 0)
+      // (tooth.crownPrice || tooth.crownOption?.price || 0) // if you also have Crown
     );
   }, 0);
+
   const shipping = subtotal > 100 ? 0 : 0;
   const total = subtotal + shipping;
   const steps = [
@@ -621,7 +635,8 @@ const DoctorOrder = () => {
                     lab: "",
                     selectedTeeth: [], // 🟢 track selected teeth
                     toothSelections: {},
-                    note: ''
+                    note: '',
+                    crown: ''
                   }}
                   validationSchema={OrderValidationSchema}
                   validateOnChange={true}  // 🚫 Validation har change pe na chale
@@ -642,6 +657,7 @@ const DoctorOrder = () => {
                           >
 
                             <LabeledInput
+                              type="text"
                               label="Doctor Name / Office Name"
                               placeholder='Doctor Name / Office Name'
                               name="doctorName"
@@ -653,6 +669,7 @@ const DoctorOrder = () => {
                               <p className="text-red-800 text-xs capitalize">{errors.doctorName}</p>
                             )}
                             <LabeledInput
+                              type="text"
                               label="Office registration number"
                               value={values?.officeReg}
                               name='officeReg'
@@ -694,6 +711,7 @@ const DoctorOrder = () => {
                             className="border border-gray-200 p-4"
                           >
                             <LabeledInput
+                              type="text"
                               placeholder="Name"
                               name='patientFirstName'
                               value={values?.patientFirstName}
@@ -704,7 +722,7 @@ const DoctorOrder = () => {
                               <p className="text-red-800 text-xs capitalize">{errors.patientFirstName}</p>
                             )}
                             <LabeledInput
-
+                              type="text"
                               placeholder="Last Name"
                               name='patientLastName'
                               value={values?.patientLastName}
@@ -715,6 +733,7 @@ const DoctorOrder = () => {
                               <p className="text-red-800 text-xs capitalize">{errors.patientLastName}</p>
                             )}
                             <LabeledInput
+                              type="number"
                               placeholder="Subscription id"
                               name='subscriptionId'
                               value={values?.subscriptionId}
@@ -766,12 +785,14 @@ const DoctorOrder = () => {
                             className="border border-gray-200 p-4"
                           >
                             <textarea
+                              typeof="text"
                               rows={2}
                               name='note'
                               value={values.note}
                               placeholder="Write here"
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              maxLength={500}
                               className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none  "
                             />
                             {errors.note && (
@@ -859,6 +880,40 @@ const DoctorOrder = () => {
                             <div>
                               <FormSection className="p-0">
                                 <MaterialDropdown
+                                  options={(orders.find((p) => p.name === "Crown")?.children) || []}
+                                  value={toothSelections[selectedTooth]?.crown || ""}   // use lowercase consistently
+                                  // onChange={(val) => {
+                                  //   handleDropdownChange("crown", val);                 // also lowercase here
+                                  //   if (val) {
+                                  //     setTouched((prev) => ({ ...prev, crown: false }));
+                                  //   }
+                                  // }}
+
+
+                                  onChange={(val) => {
+                                    const option = (orders.find((p) => p.name === "Crown")?.children || [])
+                                      .find(c => c.value === val);
+
+                                    handleDropdownChange("crown", {
+                                      value: val,
+                                      label: option?.label || "",
+                                      price: option?.price || 0,
+                                    });
+
+                                    if (val) {
+                                      setTouched(prev => ({ ...prev, crown: false }));
+                                    }
+                                  }}
+                                  label="Crown"
+                                  storageKey="crown"
+                                  className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                  error={
+                                    touched.crown && !toothSelections[selectedTooth]?.crown
+                                      ? "Crown is required. Please select a value."
+                                      : ""
+                                  }
+                                />
+                                <MaterialDropdown
                                   options={materialOptions}
                                   value={selectedMaterialValue}
                                   onChange={(val) => {
@@ -932,18 +987,33 @@ const DoctorOrder = () => {
                                 {Object.entries(toothSelections).map(
                                   ([toothId, values]) => (
 
-                                    <> <div
-                                      key={toothId}
-                                      className="flex justify-between items-center py-1"
-                                    >
+                                    <>
 
-                                      <p className="text-xs text-textFieldHeading">
-                                        {selectedMaterial?.label || "No Material"} x1
-                                      </p>
-                                      <p className="text-xs font-medium">
-                                        ${values.materialPrice || 0}
-                                      </p>
-                                    </div>
+                                      <div
+                                        key={toothId}
+                                        className="flex justify-between items-center py-1"
+                                      >
+
+                                        <p className="text-xs text-textFieldHeading">
+                                          {selectedMaterial?.label || "No Material"} x1
+                                        </p>
+                                        <p className="text-xs font-medium">
+                                          ${values.materialPrice || 0}
+                                        </p>
+                                      </div>
+
+
+
+
+                                      {/* <div className="flex justify-between items-center py-1">
+                                        <p className="text-xs text-textFieldHeading">
+                                          {toothSelections[selectedTooth]?.crown?.label || "No Crown"}
+                                        </p>
+                                        <p className="text-xs font-medium">
+                                          ${toothSelections[selectedTooth]?.crown?.price || 0}
+                                        </p>
+                                      </div> */}
+
                                       <div
 
                                         className="flex justify-between items-center py-1"

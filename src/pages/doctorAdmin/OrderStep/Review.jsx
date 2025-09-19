@@ -39,7 +39,7 @@ const ReviewOrder = ({ next }) => {
 
 
   const savedData = localStorage.getItem("restorationForm");
-  console.log(savedData)
+  console.log('savedData', savedData)
 
   const totalPrice = selectedTeeth.reduce((sum, toothId) => {
     const tooth = formData?.teeth?.[toothId] || {};
@@ -136,12 +136,12 @@ const ReviewOrder = ({ next }) => {
                   : "None"}
               </span>
             </p>
-            <div className="py-4">
-              <img
+            <div className="">
+              {/* <img
                 src="/assets/doctor/teeth.png"
                 alt="Teeth Chart"
                 className="w-full h-auto rounded-md border border-gray-300"
-              />
+              /> */}
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-2   gap-4 md:text-sm text-base">
@@ -157,9 +157,21 @@ const ReviewOrder = ({ next }) => {
                 <p className="text-[#949494]  font-normal text-xs font-poppins pb-2">
                   Crown Type
                 </p>
-                <p className="font-medium text-secondaryBrand  text-xs  font-poppins">
-                  full contour crown
-                </p>
+                {selectedTeeth?.map((toothId) => {
+                  const tooth = formData?.teeth?.[toothId];
+
+                  return (
+                    <p
+                      key={toothId}
+                      className="font-medium text-secondaryBrand text-xs font-poppins"
+                    >
+                      {tooth?.crown?.label ? tooth.crown.label : "No Crown"}
+                    </p>
+                  );
+                })}
+
+
+
               </div>
             </div>
           </div>
@@ -305,7 +317,7 @@ const ReviewOrder = ({ next }) => {
                         <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.labPrice || 0}</span>
                       </div>
 
-                     
+
                     </div>
                   );
                 })}
@@ -340,7 +352,7 @@ const ReviewOrder = ({ next }) => {
           </button>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
