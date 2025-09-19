@@ -40,7 +40,7 @@ const DoctorOrder = () => {
   const currentValues = selectedTooth
     ? toothSelections[selectedTooth] || {}
     : {};
-  
+
   const handleDropdownChange = (field, value) => {
     if (!selectedTooth) return;
 
@@ -79,14 +79,6 @@ const DoctorOrder = () => {
       }));
     }
   };
-
-
-
-
-
-
-
-
   const handleSave = async (validateForm, values, next) => {
     // Merge current selectedTeeth and toothSelections into form values
     const currentValues = {
@@ -94,19 +86,15 @@ const DoctorOrder = () => {
       selectedTeeth: selectedTeeth,
       toothSelections: toothSelections,
     };
-
     const errors = await validateForm(currentValues);
     const newErrors = {};
     const touchedUpdate = {};
-
     // Validate selected teeth
     if (!currentValues.selectedTeeth || currentValues.selectedTeeth.length === 0) {
       newErrors.selectedTeeth = "At least one tooth must be selected.";
       touchedUpdate.selectedTeeth = true;
     }
-
     let totalPrice = 0;
-
     // Validate dropdowns for each selected tooth & calculate price
     currentValues.selectedTeeth.forEach((toothId) => {
       const tooth = currentValues.toothSelections[toothId];
@@ -125,34 +113,22 @@ const DoctorOrder = () => {
         }
       );
     });
-
     setErrors(newErrors);
     setTouched((prev) => ({ ...prev, ...touchedUpdate }));
-
     // Stop if validation failed
     if (Object.keys(newErrors).length > 0) {
       console.log("Validation failed:", newErrors);
       return;
     }
-
     // ✅ Save data and go next
     const data = {
       ...currentValues,
       totalPrice, // store the total price
     };
     localStorage.setItem("restorationForm", JSON.stringify(data));
-    console.log("Total price calculated:", totalPrice);
 
     next();
   };
-
-  // const subtotal = Object.values(toothSelections).reduce(
-  //   (sum, tooth) => sum + (tooth.materialPrice || 0),
-  //   0
-  // );
-
-
-
   const subtotal = Object.values(toothSelections).reduce((sum, tooth) => {
     return (
       sum +
@@ -162,9 +138,6 @@ const DoctorOrder = () => {
       (tooth.lab?.price || 0)
     );
   }, 0);
-
-  console.log("Total Price:", subtotal);
-
   const shipping = subtotal > 100 ? 0 : 0;
   const total = subtotal + shipping;
   const steps = [
@@ -174,14 +147,12 @@ const DoctorOrder = () => {
     { id: "s4", title: "Completion" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
-
   const next = () => setActiveIndex((prev) => Math.min(prev + 1, 3))
   const back = () => {
     if (activeIndex > 0) setActiveIndex(activeIndex - 1);
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [chartSize, setChartSize] = useState(480);
-
   // Update chart size based on window width
   useEffect(() => {
     const updateSize = () => {
@@ -200,7 +171,6 @@ const DoctorOrder = () => {
     return () => window.removeEventListener("resize", updateSize);
   }, []);
   ;
-
   useEffect(() => {
     orderService.getDropDown()
       .then((data) => {
@@ -304,7 +274,6 @@ const DoctorOrder = () => {
                   validateOnChange={true}  // 🚫 Validation har change pe na chale
                   validateOnBlur={true}
                   onSubmit={(values) => {
-                    console.log('values of the form:', values);
                   }}
                 >
                   {({ values, errors, touched, handleChange, handleSubmit, validateForm, setFieldValue, handleBlur }) => (
@@ -429,7 +398,6 @@ const DoctorOrder = () => {
                               if (val) {
                                 setTouched(prev => ({ ...prev, scannerType: false }));
                               }
-                              console.log("Selected Scanner :", val);
                             }}
                             label="Scanner Type"
                             storageKey="scannerType"
@@ -547,10 +515,7 @@ const DoctorOrder = () => {
 
                                 <ShadeDropdown
                                   shades={shadeGroups}
-                                  onChange={(selected) => {
-                                    console.log("Selected Shades:", selected);
-                                    // You can persist into state if needed
-                                  }}
+                                  onChange={(selected) => { }}
                                 />
                                 <MaterialDropdown
                                   options={Digital_Option}
@@ -568,10 +533,10 @@ const DoctorOrder = () => {
                                   options={
                                     (orders.find((p) => p.name === "Participating Lab")?.children) || []
                                   }
-                                  value={toothSelections[selectedTooth]?.Lab || ""} // ✅ selected value
+                                  value={toothSelections[selectedTooth]?.lab || ""} // ✅ selected value
                                   onChange={(val) => {
 
-                                    handleDropdownChange("Lab", val)
+                                    // handleDropdownChange("Lab", val)
                                     handleDropdownChange("lab", val)
                                     if (val) {
                                       setTouched(prev => ({ ...prev, lab: false }));
@@ -580,7 +545,7 @@ const DoctorOrder = () => {
                                   label="Select Laboratory"
                                   storageKey="Select Laboratory"
                                   className="w-full rounded-xl  bg-white     px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                  error={touched.lab && !toothSelections[selectedTooth]?.lab ? "Participating Lab is Required Select the teeth" : ""}
+                                  error={touched.material && !toothSelections[selectedTooth]?.material ? "Participating Lab is Required Select the teeth" : ""}
                                 />
                                 <MaterialDropdown
                                   options={PHOTOGRAMMETRY_FILES}

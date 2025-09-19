@@ -9,14 +9,64 @@ const ReviewOrder = ({ next }) => {
   });
   const [selectedTeeth, setSelectedTeeth] = useState([]);
 
+  // useEffect(() => {
+  //   const savedData = localStorage.getItem("restorationForm");
+  //   if (savedData) {
+  //     const parsed = JSON.parse(savedData);
+  //     setFormData(parsed);
+  //     setSelectedTeeth(parsed.selectedTeeth || Object.keys(parsed.teeth || {}));
+  //   }
+  // }, []);
+
   useEffect(() => {
     const savedData = localStorage.getItem("restorationForm");
     if (savedData) {
       const parsed = JSON.parse(savedData);
-      setFormData(parsed);
-      setSelectedTeeth(parsed.selectedTeeth || Object.keys(parsed.teeth || {}));
+
+      // Restructure doctor and patient
+      const formattedData = {
+        doctor: {
+          doctorName: parsed.doctorName,
+          officeReg: parsed.officeReg,
+          createDate: parsed.createDate,
+          dueDate: parsed.dueDate
+        },
+        patient: {
+          firstName: parsed.patientFirstName,
+          lastName: parsed.patientLastName,
+          subscriptionId: parsed.subscriptionId
+        },
+        teeth: parsed.toothSelections || {},
+        selectedTeeth: parsed.selectedTeeth || [],
+        totalPrice: parsed.totalPrice || 0,
+        note: parsed.note || ""
+      };
+
+      setFormData(formattedData);
+      setSelectedTeeth(formattedData.selectedTeeth);
     }
   }, []);
+
+
+  const savedData = localStorage.getItem("restorationForm");
+  console.log(savedData)
+
+  // ✅ compute subtotal from teeth
+  // const totalPrice = formData.selectedTeeth.reduce((sum, toothId) => {
+  //   const tooth = formData.teeth[toothId] || {};
+  //   return sum + (tooth.materialPrice || 0);
+  // }, 0);
+
+  const totalPrice = selectedTeeth.reduce((sum, toothId) => {
+    const tooth = formData?.teeth?.[toothId] || {};
+    return (
+      sum +
+      (tooth.materialPrice || 0) +
+      (tooth.digitalOptionsPrice || 0) +
+      (tooth.surgical_guidePrice || 0) +
+      (tooth.labPrice || 0)
+    );
+  }, 0);
 
 
   // const totalPrice = Object.values(formData.teeth).reduce(
@@ -195,7 +245,7 @@ const ReviewOrder = ({ next }) => {
                           Laboratory:
                         </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.LabOption?.label || tooth.Lab || "N/A"}
+                          {tooth.Lab?.label || tooth.Lab || "N/A"}
                         </p>
                       </div>
                       <div>
@@ -246,7 +296,7 @@ const ReviewOrder = ({ next }) => {
               Order Summary
             </h2>
             <div className="space-y-3 text-sm">
-              {selectedTeeth.map((toothId) => {
+              {/* {selectedTeeth.map((toothId) => {
                 const tooth = formData?.teeth?.[toothId] || {};
                 return (
                   <div key={toothId} className="flex justify-between ">
@@ -258,14 +308,82 @@ const ReviewOrder = ({ next }) => {
                     </span>
                   </div>
                 );
-              })}
-              <hr className="my-2 border-gray-200" />
+              })} */}
+
+
+
+              {/* {selectedTeeth.map((toothId) => {
+                const tooth = formData?.teeth?.[toothId] || {};
+                const toothPrice =
+                  (tooth.materialPrice || 0) +
+                  (tooth.digitalOptionsPrice || 0) +
+                  (tooth.surgical_guidePrice || 0) +
+                  (tooth.labPrice || 0);
+
+                return (
+                  <div key={toothId} className="flex justify-between">
+                    <span className="text-[#828386] font-poppins text-sm">
+                      Tooth #{toothId} x1
+                    </span>
+                    <span className="text-[#1A1A1A] font-poppins text-sm">
+                      ${toothPrice}
+                    </span>
+                  </div>
+                );
+              })} */}
+
+
+
+
+
+
+              <div className="space-y-3 text-sm">
+                {selectedTeeth.map((toothId) => {
+                  const tooth = formData?.teeth?.[toothId] || {};
+
+                  return (
+                    <div key={toothId} className="border-b border-gray-200 pb-2">
+                      <p className="font-semibold text-[#1A1A1A]">Tooth #{toothId}</p>
+
+                      <div className="flex justify-between">
+                        <span className="text-[#828386] font-poppins text-sm">Material:</span>
+                        <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.materialPrice || 0}</span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-[#828386] font-poppins text-sm">Digital Options:</span>
+                        <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.digitalOptionsPrice || 0}</span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-[#828386] font-poppins text-sm">Surgical Guide:</span>
+                        <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.surgical_guidePrice || 0}</span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-[#828386] font-poppins text-sm">Lab:</span>
+                        <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.labPrice || 0}</span>
+                      </div>
+
+                      <div className="flex justify-between font-medium mt-1">
+                        <span className="text-[#828386] font-poppins text-sm">Tooth Total:</span>
+                        {/* <span className="text-[#1A1A1A] font-poppins text-sm">${toothTotal}</span> */}
+                      </div>
+                    </div>
+                  );
+                })}
+
+
+              </div>
+
+
+              {/* <hr className="my-2 border-gray-200" /> */}
               <div className="flex justify-between ">
                 <span className="text-[#828386] font-poppins text-sm">
                   Subtotal :
                 </span>
                 <span className=" font-semibold text-[#1A1A1A]">
-                  {/* ${totalPrice} */}
+                  ${totalPrice}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -276,7 +394,7 @@ const ReviewOrder = ({ next }) => {
               </div>
               <div className="flex justify-between font-normal text-secondaryBrand text-lg mt-4 border-t border-gray-200 pt-2">
                 <span>Total</span>
-                {/* <span>${totalPrice}</span> */}
+                <span>${totalPrice}</span>
               </div>
             </div>
           </div>

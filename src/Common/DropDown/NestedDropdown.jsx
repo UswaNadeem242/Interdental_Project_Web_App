@@ -109,11 +109,11 @@ export const ShadeDropdown = ({ shades = [], onChange = () => { } }) => {
             {isOpen && (
                 <div className="p-3 space-y-3">
                     {/* Search (optional) */}
-                    <input
+                    {/* <input
                         type="text"
                         placeholder="Search here..."
                         className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none"
-                    />
+                    /> */}
 
                     {/* Dynamically render sub-groups from API */}
                     {Array.isArray(shades) && shades.map((group) => (
