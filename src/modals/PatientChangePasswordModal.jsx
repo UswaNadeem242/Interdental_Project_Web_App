@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
+const PatientChangePasswordModel = ({
+  isModalPassword,
+  setIsModalPassword,
+}) => {
   const handleOpenModal = () => {
     setIsModalPassword(true);
   };
@@ -49,13 +52,13 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
       <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg  md:w-auto w-96 relative">
         <div className=" w-[350px] ">
           <div className="flex  justify-between items-center gap-[4px] pb-4 border-b  outline-offset-[-0.50px] outline-black/10">
-            <p className="font-poppins font-medium text-[20px] leading-[30px] text-[#0D4041]">
+            <p className="font-poppins font-bold text-[20px] leading-[30px] text-[#0D4041]">
               Change Password
             </p>
 
             <button
               onClick={handleCloseModal}
-              className="w-6 h-6 rounded-full bg-[#E5E5E5] right-4 text-gray-500 hover:text-gray-800"
+              className="w-8 h-8  border rounded-md right-4 text-[#4F4F4F] font-semibold"
             >
               ✕
             </button>
@@ -236,4 +239,4 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
   );
 };
 
-export default ChangePasswordModel;
+export default PatientChangePasswordModel;

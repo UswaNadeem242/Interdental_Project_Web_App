@@ -49,6 +49,9 @@ const PatientDashboardPage = () => {
   return (
     <div>
       <div className="bg-white rounded-2xl p-6">
+        <h1 className="mb-4 text-secondaryBrand font-poppins font-bold text-lg">
+          Warranties
+        </h1>
         <TabsStepper steps={steps} />
         <Drawers
           isOpen={isOpen}

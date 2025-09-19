@@ -8,8 +8,7 @@ export default function DoctorSidebar({ items }) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  console.log('location:', location);
-
+  console.log("location:", location);
 
   return (
     <>
@@ -23,13 +22,19 @@ export default function DoctorSidebar({ items }) {
         </div>
 
         {/* Menu items */}
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4 p-4 ">
           {items.map((item) => {
             const Icon = item.icon;
             const isActive =
               location.pathname.startsWith(item.path) ||
-              (item.name === "Orders" && location.pathname.includes("/order-details") || item.name === "Claim Requests" && location.pathname.includes("/patient-form") || item.name === "Claim Requests" && location.pathname.includes("/term-condition") || item.name === "Orders" && location.pathname.includes("/place-order"));
-
+              (item.name === "Orders" &&
+                location.pathname.includes("/order-details")) ||
+              (item.name === "Claim Requests" &&
+                location.pathname.includes("/patient-form")) ||
+              (item.name === "Claim Requests" &&
+                location.pathname.includes("/term-condition")) ||
+              (item.name === "Orders" &&
+                location.pathname.includes("/place-order"));
 
             return (
               <NavLink
@@ -39,10 +44,11 @@ export default function DoctorSidebar({ items }) {
               >
                 <div
                   className={`flex items-center gap-3 px-3 h-[44px] rounded-lg text-sm font-poppins
-                ${isActive
-                      ? "bg-secondaryBrand text-white"
-                      : "text-[#949494] hover:bg-gray-100"
-                    }`}
+                ${
+                  isActive
+                    ? "bg-secondaryBrand text-white font-semibold"
+                    : "text-[#949494] hover:bg-gray-100"
+                }`}
                 >
                   {Icon && <Icon color={isActive ? "white" : "#949494"} />}
                   {item.name}
@@ -56,7 +62,7 @@ export default function DoctorSidebar({ items }) {
       {/* Overlay for sm & md */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden "
           onClick={() => setIsOpen(false)}
         ></div>
       )}
