@@ -499,11 +499,12 @@ const CheckoutForm = ({ next }) => {
 
                     return (
                       <div key={toothId} className="space-y-2 mb-4">
+                        {/* Render standard Option fields */}
                         {optionFields.map((fieldKey) => {
-                          const option = tooth[fieldKey]; // e.g. materialOption, labOption
-                          if (!option) return null; // skip null values
+                          const option = tooth[fieldKey]; // e.g., materialOption, labOption
+                          if (!option) return null;
 
-                          const baseKey = fieldKey.replace("Option", ""); // e.g. materialOption -> material
+                          const baseKey = fieldKey.replace("Option", ""); // e.g., materialOption -> material
                           const quantity = tooth.quantity || 1;
                           const price = tooth[`${baseKey}Price`] || option.price || 0;
 
@@ -511,9 +512,6 @@ const CheckoutForm = ({ next }) => {
                             <div key={fieldKey} className="flex justify-between">
                               <span className="text-xs text-[#828386] font-normal">
                                 {option.label}
-                                {/* <span className="text-[#1A1A1A] text-xs font-poppins font-normal ml-1">
-                                  x{quantity}
-                                </span> */}
                               </span>
                               <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
                                 ${price * quantity}
@@ -521,9 +519,22 @@ const CheckoutForm = ({ next }) => {
                             </div>
                           );
                         })}
+
+                        {/* Render Crown explicitly */}
+                        {tooth.crown && (
+                          <div className="flex justify-between">
+                            <span className="text-xs text-[#828386] font-normal">
+                              {tooth.crown.label}
+                            </span>
+                            <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
+                              ${tooth.crown.price * (tooth.quantity || 1)}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     );
                   })}
+
 
                   {/* ✅ Subtotal dynamically calculated the same way */}
                   <div className="flex justify-between">
@@ -536,6 +547,7 @@ const CheckoutForm = ({ next }) => {
                           key.endsWith("Option")
                         );
 
+                        // Sum of all Option fields
                         const toothTotal = optionFields.reduce((toothSum, fieldKey) => {
                           const option = tooth[fieldKey];
                           if (!option) return toothSum;
@@ -547,10 +559,14 @@ const CheckoutForm = ({ next }) => {
                           return toothSum + price * quantity;
                         }, 0);
 
-                        return sum + toothTotal;
+                        // Add Crown price if available
+                        const crownTotal = tooth.crown ? (tooth.crown.price || 0) * (tooth.quantity || 1) : 0;
+
+                        return sum + toothTotal + crownTotal;
                       }, 0)}
                     </span>
                   </div>
+
 
                   <hr />
 
@@ -571,6 +587,7 @@ const CheckoutForm = ({ next }) => {
                           key.endsWith("Option")
                         );
 
+                        // Sum all Option fields
                         const toothTotal = optionFields.reduce((toothSum, fieldKey) => {
                           const option = tooth[fieldKey];
                           if (!option) return toothSum;
@@ -582,9 +599,13 @@ const CheckoutForm = ({ next }) => {
                           return toothSum + price * quantity;
                         }, 0);
 
-                        return sum + toothTotal;
+                        // Add Crown price if present
+                        const crownTotal = tooth.crown ? (tooth.crown.price || 0) * (tooth.quantity || 1) : 0;
+
+                        return sum + toothTotal + crownTotal;
                       }, 0)}
                     </span>
+
                   </div>
                 </div>
 
@@ -599,7 +620,7 @@ const CheckoutForm = ({ next }) => {
               </div>
               <button
                 type="submit"
-                
+
                 className="mt-6 w-full py-4 rounded-3xl bg-[rgba(0,29,88,1)] hover:bg-blue-800 text-white font-medium"
               >
                 Place Order
