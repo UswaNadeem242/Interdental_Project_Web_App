@@ -79,288 +79,7 @@ const DoctorOrder = () => {
       }));
     }
   };
-  // const handleSave = async (validateForm, values, next) => {
-  //   // Merge current selectedTeeth and toothSelections into form values
-  //   const currentValues = {
-  //     ...values,
-  //     selectedTeeth: selectedTeeth,
-  //     toothSelections: toothSelections,
-  //   };
-  //   const errors = await validateForm(currentValues);
-  //   const newErrors = {};
-  //   const touchedUpdate = {};
-  //   // Validate selected teeth
-  //   if (!currentValues.selectedTeeth || currentValues.selectedTeeth.length === 0) {
-  //     newErrors.selectedTeeth = "At least one tooth must be selected.";
-  //     touchedUpdate.selectedTeeth = true;
-  //   }
-  //   let totalPrice = 0;
-  //   // Validate dropdowns for each selected tooth & calculate price
-  //   currentValues.selectedTeeth.forEach((toothId) => {
-  //     const tooth = currentValues.toothSelections[toothId];
-
-  //     ["scannerType", "digitalOptions", "surgical_guide", "material", "lab"].forEach(
-  //       (field) => {
-  //         const value = tooth?.[field];
-  //         if (!value) {
-  //           newErrors[`tooth_${toothId}_${field}`] = `${field.replace(/([A-Z])/g, " $1")} is required`;
-  //           touchedUpdate[field] = true;
-  //         } else {
-  //           // Sum price if option has a price
-  //           const optionPrice = tooth[`${field}Price`] || 0; // ensure you store price when selecting dropdown
-  //           totalPrice += optionPrice;
-  //         }
-  //       }
-  //     );
-  //   });
-  //   setErrors(newErrors);
-  //   setTouched((prev) => ({ ...prev, ...touchedUpdate }));
-  //   // Stop if validation failed
-  //   if (Object.keys(newErrors).length > 0) {
-  //     console.log("Validation failed:", newErrors);
-  //     return;
-  //   }
-  //   // ✅ Save data and go next
-
-  //   const data = {
-  //     ...currentValues,
-  //     totalPrice, // store the total price
-  //   };
-  //   console.log('reso:', data);
-
-  //   localStorage.setItem("restorationForm", JSON.stringify(data));
-
-  //   next();
-
-  // };
-
-  // const handleSave = async (validateForm, values, next) => {
-  //   // Merge current selectedTeeth and toothSelections into form values
-  //   const currentValues = {
-  //     ...values,
-  //     selectedTeeth,
-  //     toothSelections,
-  //   };
-
-  //   const errors = await validateForm(currentValues);
-  //   const newErrors = {};
-  //   const touchedUpdate = {};
-
-  //   // Validate selected teeth
-  //   if (!currentValues.selectedTeeth || currentValues.selectedTeeth.length === 0) {
-  //     newErrors.selectedTeeth = "At least one tooth must be selected.";
-  //     touchedUpdate.selectedTeeth = true;
-  //   }
-
-  //   let totalPrice = 0;
-  //   const doctorOrderItems = [];
-
-  //   // Validate dropdowns for each selected tooth & calculate price
-  //   currentValues.selectedTeeth.forEach((toothId) => {
-  //     const tooth = currentValues.toothSelections[toothId];
-
-  //     ["scannerType", "digitalOptions", "surgical_guide", "material", "lab"].forEach(
-  //       (field) => {
-  //         const value = tooth?.[field];
-  //         if (!value) {
-  //           newErrors[`tooth_${toothId}_${field}`] = `${field.replace(/([A-Z])/g, " $1")} is required`;
-  //           touchedUpdate[field] = true;
-  //         } else {
-  //           const optionPrice = tooth[`${field}Price`] || 0;
-  //           totalPrice += optionPrice;
-
-  //           // Add to doctorOrderItems array
-  //           doctorOrderItems.push({
-  //             id:1,
-  //             doctorOrderId: 1, // will be set by backend
-  //             dropdownMasterId: value,
-  //             quantity: 1,
-  //             unitPrice: optionPrice,
-  //           });
-  //         }
-  //       }
-  //     );
-  //   });
-
-  //   setErrors(newErrors);
-  //   setTouched((prev) => ({ ...prev, ...touchedUpdate }));
-
-  //   // Stop if validation failed
-  //   if (Object.keys(newErrors).length > 0) {
-  //     console.log("Validation failed:", newErrors);
-  //     return;
-  //   }
-
-  //   // ✅ Prepare final API payload
-  //   const data = {
-  //     ...currentValues,
-  //     totalAmount: totalPrice,
-  //     doctorOrderItems, // flattened array
-  //   };
-
-  //   console.log("API Payload:", data);
-
-  //   localStorage.setItem("restorationForm", JSON.stringify(data));
-
-  //   next();
-  // };
-
-
-
-
-
-  // const handleSave = async (validateForm, values, next) => {
-  //   const currentValues = {
-  //     ...values,
-  //     selectedTeeth,
-  //     toothSelections,
-  //   };
-
-  //   const errors = await validateForm(currentValues);
-  //   const newErrors = {};
-  //   const touchedUpdate = {};
-
-  //   if (!currentValues.selectedTeeth || currentValues.selectedTeeth.length === 0) {
-  //     newErrors.selectedTeeth = "At least one tooth must be selected.";
-  //     touchedUpdate.selectedTeeth = true;
-  //   }
-
-  //   let totalPrice = 0;
-  //   const doctorOrderItems = [];
-
-  //   currentValues.selectedTeeth.forEach((toothId) => {
-  //     const tooth = currentValues.toothSelections[toothId];
-
-  //     ["scannerType", "digitalOptions", "surgical_guide", "material", "lab"].forEach(
-  //       (field) => {
-  //         const selectedValue = tooth?.[field];
-  //         if (!selectedValue) {
-  //           newErrors[`tooth_${toothId}_${field}`] = `${field.replace(/([A-Z])/g, " $1")} is required`;
-  //           touchedUpdate[field] = true;
-  //         } else {
-  //           const optionPrice = tooth[`${field}Price`] || 0;
-  //           totalPrice += optionPrice;
-
-  //           // ✅ Find the actual API item from orders or shadeGroups
-  //           let apiItem;
-  //           // if (field === "shade") {
-  //           //   apiItem = shadeGroups.find((s) => s.id === selectedValue);
-  //           // } else {
-  //           //   apiItem = orders.flatMap(p => p.children || []).find(c => c.id === selectedValue);
-  //           // }
-
-  //           doctorOrderItems.push({
-  //             id: apiItem?.id || null,       // dynamic API-provided ID
-  //             doctorOrderId: null,           // backend assigns if creating
-  //             dropdownMasterId: selectedValue, // user selection
-  //             quantity: 1,
-  //             unitPrice: optionPrice,
-  //           });
-  //         }
-  //       }
-  //     );
-  //   });
-
-  //   setErrors(newErrors);
-  //   setTouched(prev => ({ ...prev, ...touchedUpdate }));
-
-  //   if (Object.keys(newErrors).length > 0) {
-  //     console.log("Validation failed:", newErrors);
-  //     return;
-  //   }
-
-  //   const data = {
-  //     ...currentValues,
-  //     totalAmount: totalPrice,
-  //     doctorOrderItems, // dynamic, API-ready
-  //   };
-
-  //   console.log("API Payload:", data);
-
-  //   localStorage.setItem("restorationForm", JSON.stringify(data));
-
-  //   next();
-  // };
-
-
-
-
-  // const handleSave = async (validateForm, values, next) => {
-  //   const currentValues = {
-  //     ...values,
-  //     selectedTeeth,
-  //     toothSelections,
-  //   };
-
-  //   const errors = await validateForm(currentValues);
-  //   const newErrors = {};
-  //   const touchedUpdate = {};
-
-  //   if (!currentValues.selectedTeeth || currentValues.selectedTeeth.length === 0) {
-  //     newErrors.selectedTeeth = "At least one tooth must be selected.";
-  //     touchedUpdate.selectedTeeth = true;
-  //   }
-
-  //   let totalPrice = 0;
-  //   const doctorOrderItems = [];
-
-  //   currentValues.selectedTeeth.forEach((toothId) => {
-  //     const tooth = currentValues.toothSelections[toothId];
-
-  //     ["scannerType", "digitalOptions", "surgical_guide", "material", "lab", "shade"].forEach(
-  //       (field) => {
-  //         const selectedValue = tooth?.[field];
-  //         if (!selectedValue) {
-  //           newErrors[`tooth_${toothId}_${field}`] = `${field.replace(/([A-Z])/g, " $1")} is required`;
-  //           touchedUpdate[field] = true;
-  //         } else {
-  //           const optionPrice = tooth[`${field}Price`] || 0;
-  //           totalPrice += optionPrice;
-
-  //           // ✅ Get actual item from orders or shadeGroups
-  //           let apiItem;
-  //           if (field === "shade") {
-  //             apiItem = shadeGroups.find((s) => s.id === selectedValue);
-  //           } else {
-  //             apiItem = orders.flatMap((p) => p.children || []).find((c) => c.value === selectedValue);
-  //           }
-
-  //           doctorOrderItems.push({
-  //             id: null,                                  // keep null for new creation
-  //             doctorOrderId: apiItem?.id || selectedValue, // ✅ store child id here
-  //             dropdownMasterId: selectedValue,             // original selection
-  //             quantity: 1,
-  //             unitPrice: optionPrice,
-  //           });
-  //         }
-  //       }
-  //     );
-  //   });
-
-  //   setErrors(newErrors);
-  //   setTouched((prev) => ({ ...prev, ...touchedUpdate }));
-
-  //   if (Object.keys(newErrors).length > 0) {
-  //     console.log("Validation failed:", newErrors);
-  //     return;
-  //   }
-
-  //   const data = {
-  //     ...currentValues,
-  //     totalAmount: totalPrice,
-  //     doctorOrderItems, // dynamic, API-ready
-  //   };
-
-  //   console.log("API Payload:", data);
-
-  //   localStorage.setItem("restorationForm", JSON.stringify(data));
-
-  //   next();
-  // };
-
-
-
-
+ 
   const handleSave = async (validateForm, values, next) => {
     const currentValues = {
       ...values,
@@ -438,15 +157,7 @@ const DoctorOrder = () => {
 
     next();
   };
-  // const subtotal = Object.values(toothSelections).reduce((sum, tooth) => {
-  //   return (
-  //     sum +
-  //     (tooth.materialPrice || 0) +
-  //     (tooth.digitalOptionsOption?.price || 0) +
-  //     (tooth.surgical_guideOption?.price || 0) +
-  //     (tooth.lab?.price || 0)
-  //   );
-  // }, 0);
+ 
 
 
 
@@ -454,12 +165,13 @@ const DoctorOrder = () => {
     return (
       sum +
       (tooth.materialPrice || tooth.materialOption?.price || 0) +
+      (tooth.crown?.price || tooth.crownPrice || 0) +
       (tooth.digitalOptionsPrice || tooth.digitalOptionsOption?.price || 0) +
       (tooth.surgical_guidePrice || tooth.surgical_guideOption?.price || 0) +
       (tooth.labPrice || tooth.labOption?.price || tooth.lab?.price || 0)
-      // (tooth.crownPrice || tooth.crownOption?.price || 0) // if you also have Crown
     );
   }, 0);
+
 
   const shipping = subtotal > 100 ? 0 : 0;
   const total = subtotal + shipping;
@@ -475,25 +187,7 @@ const DoctorOrder = () => {
     if (activeIndex > 0) setActiveIndex(activeIndex - 1);
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [chartSize, setChartSize] = useState(380);
-  // // Update chart size based on window width
-  // useEffect(() => {
-  //   const updateSize = () => {
-  //     const width = window.innerWidth;
-  //     if (width < 640) {
-  //       setChartSize(100); // mobile
-  //     } else if (width < 1024) {
-  //       setChartSize(200); // tablet
-  //     } else {
-  //       setChartSize(480); // desktop
-  //     }
-  //   };
-  //   updateSize(); // set initial size
-  //   window.addEventListener("resize", updateSize);
-
-  //   return () => window.removeEventListener("resize", updateSize);
-  // }, []);
-
+ 
 
 
 
@@ -856,7 +550,7 @@ const DoctorOrder = () => {
                                   initialSelectedIds={selectedTeeth}
                                   currentToothId={selectedTooth}
                                   onSelect={(arr) => {
-                                    console.table(arr);
+                                    
                                     const toothIds = arr.map(t => t.id);
                                     setSelectedTeeth(toothIds);
 
@@ -1014,84 +708,86 @@ const DoctorOrder = () => {
 
                             <div className="mt-96">
                               <div className="flex flex-col space-y-3">
-                                {Object.entries(toothSelections).map(
-                                  ([toothId, values]) => (
+                                {Object.entries(toothSelections).map(([toothId, values]) => (
+                                  <div key={toothId} className="space-y-1">
+                                    {/* Material */}
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {values.materialOption?.label || "No Material"} x1
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        ${values.materialPrice || values.materialOption?.price || 0}
+                                      </p>
+                                    </div>
 
-                                    <>
+                                    {/* Crown */}
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {values.crown?.label || "No Crown"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        ${values.crown?.price || 0}
+                                      </p>
+                                    </div>
 
-                                      <div
-                                        key={toothId}
-                                        className="flex justify-between items-center py-1"
-                                      >
+                                    {/* Surgical Guide */}
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {values.surgical_guideOption?.label || "No Surgical Guide"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        {values.surgical_guideOption?.price
+                                          ? `$${values.surgical_guideOption.price}`
+                                          : ""}
+                                      </p>
+                                    </div>
 
-                                        <p className="text-xs text-textFieldHeading">
-                                          {selectedMaterial?.label || "No Material"} x1
-                                        </p>
-                                        <p className="text-xs font-medium">
-                                          ${values.materialPrice || 0}
-                                        </p>
-                                      </div>
+                                    {/* Digital Denture */}
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {values.digitalOptionsOption?.label || "No Digital Denture selected"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        {values.digitalOptionsOption?.price
+                                          ? `$${values.digitalOptionsOption.price}`
+                                          : ""}
+                                      </p>
+                                    </div>
 
-
-
-
-                                      {/* <div className="flex justify-between items-center py-1">
-                                        <p className="text-xs text-textFieldHeading">
-                                          {toothSelections[selectedTooth]?.crown?.label || "No Crown"}
-                                        </p>
-                                        <p className="text-xs font-medium">
-                                          ${toothSelections[selectedTooth]?.crown?.price || 0}
-                                        </p>
-                                      </div> */}
-
-                                      <div
-
-                                        className="flex justify-between items-center py-1"
-                                      >
-                                        <p className="text-xs text-textFieldHeading">
-                                          {toothSelections[selectedTooth]?.surgical_guideOption?.label || "No Surgical Guide"}                                        </p>
-                                        <p className="text-xs font-medium">
-                                          {toothSelections[selectedTooth]?.surgical_guideOption?.price
-                                            ? ` $${toothSelections[selectedTooth].surgical_guideOption.price}`
-                                            : ""}
-                                        </p>
-                                      </div>
-                                      <div
-
-                                        className="flex justify-between items-center py-1"
-                                      >
-                                        <p className="text-xs text-textFieldHeading">
-                                          {toothSelections[selectedTooth]?.digitalOptionsOption ? toothSelections[selectedTooth]?.digitalOptionsOption.label : "No Digital Denture selected"}
-                                        </p>
-                                        <p className="text-xs font-medium">
-                                          {toothSelections[selectedTooth]?.digitalOptionsOption ? `$${toothSelections[selectedTooth]?.digitalOptionsOption.price || 0}` : ""}
-                                        </p>
-                                      </div>
-
-
-
-
-
-                                      <div className="flex justify-between items-center py-1">
-                                        {/* Lab Name */}
-                                        <p className="text-xs text-textFieldHeading">
-                                          {toothSelections[selectedTooth]?.labOption?.label || "Participating Lab"}
-                                        </p>
-
-                                        {/* Lab Price */}
-                                        <p className="text-xs font-medium">
-                                          {toothSelections[selectedTooth]?.labOption
-                                            ? `$${toothSelections[selectedTooth].labOption.price}`
-                                            : ""}
-                                        </p>
-                                      </div>
+                                    {/* Lab */}
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {values.labOption?.label || "Participating Lab"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        {values.labOption?.price ? `$${values.labOption.price}` : ""}
+                                      </p>
+                                    </div>
+                                  </div>
+                                ))}
 
 
 
-                                    </>
-                                  )
-                                )}
+
+
+
+
+
+
+
+
+
+
+
+
                               </div>
+
+                              <>
+
+
+
+
+                              </>
                               <div className="flex justify-between items-center py-3">
                                 <p className="text-textFieldHeading text-xs font-poppins">
                                   Subtotal:
