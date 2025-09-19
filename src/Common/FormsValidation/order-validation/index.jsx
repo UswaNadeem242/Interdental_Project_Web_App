@@ -8,7 +8,9 @@ export const OrderValidationSchema = Yup.object().shape({
     dueDate: Yup.date().required("Case expected due date"),
     patientFirstName: Yup.string().required(" name is required"),
     patientLastName: Yup.string().required("Last name is required"),
-    subscriptionId: Yup.string().required("Subscription ID is required"),
+    subscriptionId: Yup.string()
+        .matches(/^[A-Za-z0-9@#$%^&*]+$/, "Only letters, numbers, and special characters @#$%^&* are allowed")
+        .required("Subscription ID is required"),
     scannerType: Yup.string().required("Scanner Type is required"),
     digitalOptions: Yup.string().required("Digital Denture is required"),
     surgical_guide: Yup.string().required("Surgical Guide is required"),
