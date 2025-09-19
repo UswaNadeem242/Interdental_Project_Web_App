@@ -733,7 +733,7 @@ const DoctorOrder = () => {
                               <p className="text-red-800 text-xs capitalize">{errors.patientLastName}</p>
                             )}
                             <LabeledInput
-                              type="number"
+                               
                               placeholder="Subscription id"
                               name='subscriptionId'
                               value={values?.subscriptionId}
