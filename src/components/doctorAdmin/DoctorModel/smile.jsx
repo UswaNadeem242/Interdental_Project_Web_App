@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { CheckIcon } from "@heroicons/react/24/solid";
+import { updateToothSelection } from "../../../store/slices/restoration-slice";
+import { useDispatch, useSelector } from "react-redux";
 
 export const SmileDesignPicker = ({
   isModalOpen,
@@ -9,28 +11,56 @@ export const SmileDesignPicker = ({
   selected,
   setSelected,
 }) => {
-  const navigate = useNavigate();
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+  const dispatch = useDispatch();
+  const { dropdowns, selectedTooth, toothSelections } = useSelector(
+    (state) => state.restoration
+  );
 
-  const handleCloseModal = () => {
+  const [smileItems, setSmileItems] = useState([]);
+  const [selectedSmile, setSelectedSmile] = useState(null);
+
+  // Load Smile Type from dropdowns
+  useEffect(() => {
+    if (!dropdowns || !Array.isArray(dropdowns)) return;
+
+    const smileGroup = dropdowns.find((item) => item.name === "Smile Type");
+    if (smileGroup?.children && Array.isArray(smileGroup.children)) {
+      setSmileItems(smileGroup.children);
+
+      // Preselect the current smile for the selected tooth
+      const currentSmile = toothSelections.find(
+        (t) => t.toothId === selectedTooth
+      )?.smile;
+      if (currentSmile) setSelectedSmile(currentSmile);
+    }
+  }, [dropdowns, selectedTooth, toothSelections]);
+
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleSelect = (smile) => {
+    if (!selectedTooth) {
+      alert("⚠️ Please select a tooth first");
+      return;
+    }
+
+    // Update local state for UI
+    setSelectedSmile(smile);
+
+    // Dispatch to Redux
+    dispatch(
+      updateToothSelection({
+        toothId: selectedTooth,
+        field: "smile",
+        value: smile.name,
+        option: smile, // full object including filePath, children, etc.
+      })
+    );
+
+    // Close modal
     setIsModalOpen(false);
   };
-  // const [selected, setSelected] = useState([]);
 
-  // Generate 16 designs dynamically
-  const smileDesigns = Array.from({ length: 16 }, (_, i) => i + 1);
-
-  const toggleDesign = (design) => {
-    setSelected((prev) =>
-      prev.includes(design)
-        ? prev.filter((d) => d !== design)
-        : [...prev, design]
-    );
-  };
-  const [selectedTeeth, setSelectedTeeth] = useState([3, 4, 12, 30]);
-  const [showSmilePicker, setShowSmilePicker] = useState(false);
+  if (!smileItems || smileItems.length === 0) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
@@ -56,10 +86,10 @@ export const SmileDesignPicker = ({
 
         {/* Smile Design Grid */}
         <div className="grid grid-cols-4 gap-4">
-          {smileDesigns.map((design) => (
+          {smileItems.map((smile, id) => (
             <label
-              key={design}
-              className={`relative border rounded-lg p-2  flex flex-col items-center cursor-pointer transition ${selected.includes(design)
+              key={id}
+              className={`relative border rounded-lg p-2  flex flex-col items-center cursor-pointer transition ${selected.includes(id)
                 ? "border-blue-600 ring-1 ring-blue-600"
                 : "border-gray-200"
                 }`}
@@ -67,32 +97,50 @@ export const SmileDesignPicker = ({
               {/* Custom checkbox */}
 
               <input
-                type="checkbox"
-                value={design}
-                checked={selected.includes(design)}
-                onChange={() => toggleDesign(design)}
-                className="hidden peer "
+                type="radio"
+                name={`smile_${selectedTooth}`}
+                checked={selectedSmile?.id === smile.id}
+                onChange={() => handleSelect(smile)}
+                className="hidden peer"
               />
 
-              <div className="flex gap-1 items-center justify-center">
+
+              {/* <div className="flex gap-1 items-center justify-center">
                 <div className="top-2 left-2 w-4 h-4  text-center border border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-600">
-                  {/* <SmileCheckBox selected={selected} design={design} /> */}
+             
                   <CheckIcon
                     className={`w-8 h-8 text-[#001D58] ${selected.includes(design) ? "block" : "hidden"
                       }`}
                   />
                 </div>
 
-                {/* Label text */}
+              
                 <span className="md:text-sm  text-xs  font-poppins">
                   Smile Design {design}
                 </span>
               </div>
 
-              {/* Image */}
+           
               <img
                 src="/assets/doctor/teeth1.png"
                 alt={`Smile Design ${design}`}
+                className="w-full h-auto rounded-md mt-2"
+              />
+            </label> */}
+
+              <div className="flex gap-1 items-center justify-center">
+                <div className="top-2 left-2 w-4 h-4 text-center border border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-600">
+                  <CheckIcon
+                    className={`w-5 h-5 text-[#001D58] ${selectedSmile?.id === smile.id ? "block" : "hidden"
+                      }`}
+                  />
+                </div>
+                <span className="md:text-sm text-xs font-poppins">{smile.name}</span>
+              </div>
+
+              <img
+                src={smile.filePath || "/assets/doctor/teeth1.png"}
+                alt={smile.name}
                 className="w-full h-auto rounded-md mt-2"
               />
             </label>
