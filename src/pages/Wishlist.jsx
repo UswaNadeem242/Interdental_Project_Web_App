@@ -21,7 +21,7 @@ const Wishlist = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
+   
       setWishlist(response.data.items);
     } catch (error) {
       console.log(error);

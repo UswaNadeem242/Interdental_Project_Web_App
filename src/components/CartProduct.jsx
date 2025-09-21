@@ -22,8 +22,7 @@ const CartProduct = ({ item, getCart }) => {
           },
         }
       );
-      // alert("Item removed from cart");
-      setToastMessage("Item removed from cart");
+       setToastMessage("Item removed from cart");
       fetchCartCount();
       setToastType("success");
       setToastVisible(true);
@@ -35,8 +34,7 @@ const CartProduct = ({ item, getCart }) => {
     }
   };
   const handleUpdateItem = async (status, items) => {
-    console.log("=--==--==-=-items=-=-==--==--==--=-=");
-    if (status === "add" && items.stockItem <= count) {
+     if (status === "add" && items.stockItem <= count) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
       setToastVisible(true);

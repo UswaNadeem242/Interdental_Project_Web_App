@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { orderService } from "../../../services/order-service/index";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CheckoutvalidationSchema } from "../../../Common/FormsValidation/order-validation";
 import { ErrorMessage, Field, Formik } from "formik";
+import { showToast } from "../../../store/toast-slice";
 
 const CheckoutForm = ({ next }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
-    fullName: "",
-    contactNumber: "",
+    name: "",
+    phone: "",
     email: "",
     country: "America",
     state: "",
@@ -24,8 +25,7 @@ const CheckoutForm = ({ next }) => {
     accountNumber: "",
     bankName: "",
   });
-
-
+  const dispatch = useDispatch();
   const restoration = useSelector((state) => state.restoration);
   const { toothSelections, selectedTooth } = restoration; // destructure from Redux
   const flattenedItems = (restoration.doctorOrderItems || []).map((item, index) => ({
@@ -64,35 +64,27 @@ const CheckoutForm = ({ next }) => {
       selectedTooths: selectedTeeth,
       doctorOrderItems: flattenedItems,
       paymentId: 8,
-      name: data.fullName || "",
+      name: data.name || "",
       address: `${data.street || ""}, ${data.city || ""}, ${data.state || ""}, ${data.country || ""}`,
       email: data.email || "",
-      phone: data.contactNumber || "+1-555-123-4567",
+      phone: data.phone || "+1-555-123-4567",
       orderStatus: "PENDING",
       paymentStatus: "Unpaid",
     };
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values) => {
     setLoading(true);
     setError(null);
-
-    // Required fields validation
-    const requiredFields = ["fullName", "contactNumber", "email", "state", "city", "street", "paymentMethod"];
+    const requiredFields = ["name", "phone", "email", "state", "city", "street"];
     for (let field of requiredFields) {
-      if (!formData[field] || formData[field].trim() === "") {
-        alert(`Please fill ${field}`);
+      if (!values[field] || values[field].trim() === "") {
+        dispatch(showToast({ message: `Please fill ${field}`, type: "error" }));
         setLoading(false);
         return;
       }
     }
-
     try {
-      // Pass formData explicitly
-      const requestData = buildRequestData(formData);
-      console.log("🟢 Final requestData:", requestData);
-
+      const requestData = buildRequestData(values);
       const apiFormData = new FormData();
       apiFormData.append("request", JSON.stringify(requestData));
 
@@ -106,8 +98,6 @@ const CheckoutForm = ({ next }) => {
       setLoading(false);
     }
   };
-
-
   const currentTooth = toothSelections.find((t) => t.toothId === selectedTooth);
   const totalPrice = currentTooth
     ? Object.values(currentTooth)
@@ -126,26 +116,27 @@ const CheckoutForm = ({ next }) => {
           <Formik
             initialValues={
               {
-                fullName: "",
-                contactNumber: "",
+                name: "",
+                phone: "",
                 email: "",
                 country: "America",
                 state: "",
                 city: "",
                 street: "",
-                paymentMethod: "",
-                recipientName: "",
-                paypalUsername: "",
-                paypalEmailPhone: "",
-                cardNumber: "",
-                expiryDate: "",
-                accountNumber: "",
-                bankName: ""
+                // paymentMethod: "",
+                // recipientName: "",
+                // paypalUsername: "",
+                // paypalEmailPhone: "",
+                // cardNumber: "",
+                // expiryDate: "",
+                // accountNumber: "",
+                // bankName: ""
               }}
             validationSchema={CheckoutvalidationSchema}
-            onSubmit={handleSubmit}
+            onSubmit={(values) => handleSubmit(values)}
+
           >
-            {({ values, setFieldValue }) => (
+            {({ values, setFieldValue, handleSubmit }) => (
 
               <>
                 <form
@@ -170,39 +161,50 @@ const CheckoutForm = ({ next }) => {
                         /> */}
 
 
-                        <Field
-                          type="text"
-                          name="fullName"
-                          placeholder="Full Name"
-                        
-                          onChange={handleChange}
-                          
-                          className="border rounded-lg px-3 py-2 w-full"
-                        />
-                        <ErrorMessage
-                          name="fullName"
-                          component="div"
-                          className="text-red-500 text-xs mt-1"
-                        />
-                        <input
+                        <div className="sm:col-span-6">
+                          <Field
+                            type="text"
+                            name="name"
+                            placeholder="Full Name"
+                            className="border rounded-lg px-3 py-2 w-full"
+                          />
+                          <ErrorMessage name="name" component="div" className="text-red-600 text-xs mt-1" />
+                        </div>
+                        {/* <input
                           type="text"
                           name="contactNumber"
                           placeholder="Contact Number"
                           value={formData.contactNumber}
                           onChange={handleChange}
                           className="border sm:col-span-6 space-y-4  outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
+                        /> */}
+                        <div className="sm:col-span-6">
+                          <Field
+                            type="tel"
+                            name="phone"
+                            placeholder="Contact Number"
+                            className="border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins"
+                          />
+                          <ErrorMessage
+                            name="phone"
+                            component="div"
+                            className="text-red-600 text-xs mt-1"
+                          />
+                        </div>
+                      </div>  
+                      <div className="mt-4">
+                        <Field
+                          type="email"
+                          name="email"
+                          placeholder="Email Address"
+                          className="border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins"
+                        />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="text-red-600 text-xs mt-1"
                         />
                       </div>
-                      <input
-                        type="email"
-                        name="email"
-                        placeholder="E-Mail Address"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={
-                          "border outline-none  rounded-lg px-3 py-2 w-full mt-3 bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
-                        }
-                      />
                     </div>
 
                     {/* Shipping */}
@@ -212,46 +214,65 @@ const CheckoutForm = ({ next }) => {
                       </h2>
                       <div className="grid grid-cols-2 gap-3">
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                          <span className="absolute left-3 top-5  transform -translate-y-1/2">
                             <img
                               src="/assets/doctor/flag.png" // Replace with actual flag image path
                               alt="US Flag"
                               className="w-5 h-5 rounded-sm"
                             />
                           </span>
-                          <input
+                          <Field
                             type="text"
                             name="country"
                             placeholder="Country"
-                            value={formData.country}
                             readOnly
-                            className="border rounded-lg pl-10 px-3 py-2 w-full outline-none text-gray-700  placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
+                            value="America" // default value, or set from Formik initialValues
+                            className="border rounded-lg pl-10 px-3 py-2 w-full outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal bg-gray-100 cursor-not-allowed"
                           />
                         </div>
-                        <input
-                          type="text"
-                          name="state"
-                          placeholder="State/Province"
-                          value={formData.state}
-                          onChange={handleChange}
-                          className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700  placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
-                        />
-                        <input
-                          type="text"
-                          name="city"
-                          placeholder="City"
-                          value={formData.city}
-                          onChange={handleChange}
-                          className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700  placeholder:text-sm placeholder:font-poppins placeholder:font-normal "
-                        />
-                        <input
-                          type="text"
-                          name="street"
-                          placeholder="Street"
-                          value={formData.street}
-                          onChange={handleChange}
-                          className="border  rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700   placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
-                        />
+                        <div>
+                          <Field
+                            type="text"
+                            name="state"
+                            placeholder="State/Province"
+                            className="border rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
+                          />
+                          <ErrorMessage
+                            name="state"
+                            component="div"
+                            className="text-red-600 text-xs mt-1"
+                          />
+                        </div>
+
+                        <div>
+                          <Field
+                            type="text"
+                            name="city"
+                            placeholder="City"
+                            className="border rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
+                          />
+                          <ErrorMessage
+                            name="city"
+                            component="div"
+                            className="text-red-600 text-xs mt-1"
+                          />
+                        </div>
+
+                        <div>
+                          <Field
+                            type="text"
+                            name="street"
+                            placeholder="Street"
+                            className="border rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
+                          />
+                          <ErrorMessage
+                            name="street"
+                            component="div"
+                            className="text-red-600 text-xs mt-1"
+                          />
+                        </div>
+
+
                       </div>
                     </div>
 
@@ -520,13 +541,17 @@ const CheckoutForm = ({ next }) => {
                       </div>
 
                     </div>
-                    <button
-                      type="submit"
-
-                      className="mt-6 w-full py-4 rounded-3xl bg-[rgba(0,29,88,1)] hover:bg-blue-800 text-white font-medium"
-                    >
-                      Place Order
-                    </button>
+                    <div className="md:col-span-4">
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className={`mt-6 w-full py-4 rounded-3xl text-white font-medium ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[rgba(0,29,88,1)] hover:bg-blue-800"
+                          }`}
+                      >
+                        {loading ? "Processing..." : "Place Order"}
+                      </button>
+                      {error && <div className="text-red-600 mt-2 text-sm">{error}</div>}
+                    </div>
                   </div>
                 </form>
               </>

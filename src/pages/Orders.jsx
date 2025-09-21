@@ -22,8 +22,7 @@ const Orders = () => {
         }
       );
       setOrders(response.data.orders);
-      console.log(response.data.orders);
-    } catch (error) {
+     } catch (error) {
       console.log(error);
     }
   };
@@ -78,8 +77,7 @@ const Orders = () => {
                 <div
                   key={order.orderId}
                   onClick={() => {
-                    console.log("-=-=-==-=--=click=--==--=-=-=-=", order);
-                    navigate(`/order-info/${order.orderId}`);
+                     navigate(`/order-info/${order.orderId}`);
                   }}
                   className="flex flex-col justify-center items-center w-[522px] h-[151px] rounded-[8px] space-y-[8px] py-[8px] bg-[#FFFFFF] shadow-[0_0_4px_0_#0000000A]"
                 >

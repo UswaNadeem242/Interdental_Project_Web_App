@@ -30,7 +30,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [brandsDropdown, setBrandsDropdown] = useState(false);
   const [categories, setCategories] = useState(false);
-  const {  wishlistCount, cartCount } = useAuth();
+  const { wishlistCount, cartCount } = useAuth();
 
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -44,11 +44,9 @@ const Header = () => {
   const user = userData ? JSON.parse(userData) : null;
 
   // Debugging logs
-  console.log(user, "parsed user data");
 
   // Safely log firstName only if user exists
   if (user && user.firstName) {
-    console.log(user.firstName, "sarhey de oghai");
   }
   const getAllProducts = async () => {
     try {
@@ -227,9 +225,7 @@ const Header = () => {
 
                     setToastType("error");
                     setToastVisible(true);
-                    console.log(
-                      "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
-                    );
+                    
                   }
                 }}
               >
@@ -269,9 +265,7 @@ const Header = () => {
 
                     setToastType("error");
                     setToastVisible(true);
-                    console.log(
-                      "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
-                    );
+                  
                   }
                 }}
               >
@@ -427,11 +421,10 @@ const Header = () => {
           <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[83px] h-[21px]">
             <label
               onClick={() => setBrandsDropdown(true)}
-              className={`${
-                brandsDropdown
+              className={`${brandsDropdown
                   ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
                   : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-              }`}
+                }`}
             >
               Brands
             </label>
@@ -441,9 +434,8 @@ const Header = () => {
               viewBox="0 0 10 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`${
-                brandsDropdown ? " text-secondaryBrand" : " text-tertiaryBrand"
-              }`}
+              className={`${brandsDropdown ? " text-secondaryBrand" : " text-tertiaryBrand"
+                }`}
             >
               <path
                 d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"
@@ -465,11 +457,10 @@ const Header = () => {
           <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[113px] h-[21px]">
             <label
               onClick={() => setCategories(true)}
-              className={`${
-                categories
+              className={`${categories
                   ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
                   : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-              }`}
+                }`}
             >
               Categories
             </label>
@@ -479,9 +470,8 @@ const Header = () => {
               viewBox="0 0 10 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`${
-                categories ? " text-secondaryBrand" : " text-tertiaryBrand"
-              }`}
+              className={`${categories ? " text-secondaryBrand" : " text-tertiaryBrand"
+                }`}
             >
               <path
                 d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"

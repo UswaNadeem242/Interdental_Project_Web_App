@@ -1,15 +1,9 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { menuItems } from "../../../Constant";
-import { Xmark } from "../../../icon/xmark";
-import { Hamburger } from "../../../icon/hamburger";
 
 export default function DoctorSidebar({ items }) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-
-  console.log("location:", location);
-
   return (
     <>
       <div
@@ -58,7 +52,6 @@ export default function DoctorSidebar({ items }) {
           })}
         </div>
       </div>
-
       {/* Overlay for sm & md */}
       {isOpen && (
         <div

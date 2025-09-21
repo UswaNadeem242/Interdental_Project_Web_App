@@ -94,8 +94,7 @@ const UpdateProduct = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("-=-=-=-=--=response.data=--==-=-=", response.data);
-      setBrandsList(response.data.data);
+       setBrandsList(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -117,8 +116,7 @@ const UpdateProduct = () => {
       brandId,
       sku,
     };
-    console.log("-=-=-=-=-=-==--=--==-==-papp=--=-==-=-==-", payloasd);
-    if (
+     if (
       !name ||
       !description ||
       !price ||

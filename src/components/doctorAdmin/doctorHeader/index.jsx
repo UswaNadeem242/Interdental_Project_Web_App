@@ -16,8 +16,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
     role === "doctor"
       ? "/doctor-admin/profile"
       : "/patient-admin/profile-settings";
-  console.log("pageTitle:", pageTitle);
-  
+   
 
   return (
     <>

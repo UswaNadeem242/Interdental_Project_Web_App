@@ -99,8 +99,7 @@ const Signup = () => {
       setToastType("success");
       setToastVisible(true);
       navigate("/login");
-      console.log("response", response);
-    } catch (error) {
+     } catch (error) {
       console.log(error);
       setToastMessage(`Error: ${error}`);
       setToastType("success");

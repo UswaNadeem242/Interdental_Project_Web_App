@@ -33,10 +33,7 @@ const BrandsDropdown = ({ setBrandsDropdown }) => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
-
-  const handleBrand = (id) => {
-    console.log(id);
-  };
+ 
   return (
     <div
       ref={dropdownRef}

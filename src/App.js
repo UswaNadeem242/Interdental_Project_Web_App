@@ -155,9 +155,8 @@ const SimpleLayout = ({ children }) => <div className="">{children}</div>;
 function App() {
   return (
     <div>
-
       <ToastContainer
-        position="top-right"
+        position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}

@@ -43,15 +43,13 @@ const AddCategoryModal = ({
           },
         }
       );
-      console.log(response.data.responseCode);
-      if (response.data.responseCode === "0000") {
+       if (response.data.responseCode === "0000") {
         console.log(response);
         getAllCategories();
         alert("Categroy added successfully");
         setIsModalOpen(false);
       } else if (response.data.responseCode === "1500") {
-        console.log("==-=-==-=--=-==--=-=dsfsafsdfsdfsfdsfdsffs");
-
+ 
         alert("Categroy Already Exsist");
         setIsModalOpen(false);
       }

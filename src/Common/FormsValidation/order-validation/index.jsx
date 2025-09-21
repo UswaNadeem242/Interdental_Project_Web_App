@@ -4,8 +4,8 @@ export const OrderValidationSchema = Yup.object().shape({
     doctorName: Yup.string().required("Doctor's Name / Office Name is required"),
     officeReg: Yup.string().required("Office registration number is required")
         .matches(/^[0-9]{10}$/, "Office registration number must be exactly 10 digits"),
-    createDate: Yup.date().required("Create Date is required"),
-    dueDate: Yup.date().required("Case expected due date"),
+    createDate: Yup.date().nullable().required("Create Date is required"),
+    dueDate: Yup.date().nullable().required("Case expected due date"),
     patientFirstName: Yup.string().required(" name is required"),
     patientLastName: Yup.string().required("Last name is required"),
     subscriptionId: Yup.string()
@@ -25,39 +25,39 @@ export const OrderValidationSchema = Yup.object().shape({
 
 
 export const CheckoutvalidationSchema = Yup.object().shape({
-    fullName: Yup.string().required("Full Name is required"),
-    contactNumber: Yup.string().required("Contact Number is required"),
+    name: Yup.string().required("Full Name is required"),
+    phone: Yup.string().required("Contact Number is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     state: Yup.string().required("State is required"),
     city: Yup.string().required("City is required"),
     street: Yup.string().required("Street is required"),
-    paymentMethod: Yup.string().required("Please select a payment method"),
-    recipientName: Yup.string().when("paymentMethod", {
-        is: "paypal",
-        then: Yup.string().required("Recipient's Name is required"),
-    }),
-    paypalUsername: Yup.string().when("paymentMethod", {
-        is: "paypal",
-        then: Yup.string().required("Paypal Username is required"),
-    }),
-    paypalEmailPhone: Yup.string().when("paymentMethod", {
-        is: "paypal",
-        then: Yup.string().required("Paypal Email/Phone is required"),
-    }),
-    cardNumber: Yup.string().when("paymentMethod", {
-        is: "creditCard",
-        then: Yup.string().required("Card Number is required"),
-    }),
-    expiryDate: Yup.string().when("paymentMethod", {
-        is: "creditCard",
-        then: Yup.string().required("Expiry Date is required"),
-    }),
-    accountNumber: Yup.string().when("paymentMethod", {
-        is: "bankTransfer",
-        then: Yup.string().required("Account Number is required"),
-    }),
-    bankName: Yup.string().when("paymentMethod", {
-        is: "bankTransfer",
-        then: Yup.string().required("Bank Name is required"),
-    }),
+    // paymentMethod: Yup.string().required("Please select a payment method"),
+    // recipientName: Yup.string().when("paymentMethod", {
+    //     is: "paypal",
+    //     then: Yup.string().required("Recipient's Name is required"),
+    // }),
+    // paypalUsername: Yup.string().when("paymentMethod", {
+    //     is: "paypal",
+    //     then: Yup.string().required("Paypal Username is required"),
+    // }),
+    // paypalEmailPhone: Yup.string().when("paymentMethod", {
+    //     is: "paypal",
+    //     then: Yup.string().required("Paypal Email/Phone is required"),
+    // }),
+    // cardNumber: Yup.string().when("paymentMethod", {
+    //     is: "creditCard",
+    //     then: Yup.string().required("Card Number is required"),
+    // }),
+    // expiryDate: Yup.string().when("paymentMethod", {
+    //     is: "creditCard",
+    //     then: Yup.string().required("Expiry Date is required"),
+    // }),
+    // accountNumber: Yup.string().when("paymentMethod", {
+    //     is: "bankTransfer",
+    //     then: Yup.string().required("Account Number is required"),
+    // }),
+    // bankName: Yup.string().when("paymentMethod", {
+    //     is: "bankTransfer",
+    //     then: Yup.string().required("Bank Name is required"),
+    // }),
 });

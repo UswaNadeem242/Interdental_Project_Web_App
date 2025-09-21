@@ -45,8 +45,7 @@ const PatientChangePasswordModel = ({
       alert("New password and confirm password do not match!");
       return;
     }
-    console.log("Submitted data:", formData);
-  };
+   };
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg  md:w-auto w-96 relative">

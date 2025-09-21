@@ -20,8 +20,7 @@ const HeroSection = () => {
         },
       });
       setBanners(response.data.banners);
-      console.log("bannerss", response.data.banners);
-    } catch (error) {
+     } catch (error) {
       console.log(error);
     }
   };

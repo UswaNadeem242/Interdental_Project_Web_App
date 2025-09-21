@@ -18,8 +18,7 @@ const Header = () => {
   const user = userData ? JSON.parse(userData) : null;
 
   // Debugging logs
-  console.log(user, "parsed user data");
-
+ 
   // Safely log firstName only if user exists
   if (user && user.firstName) {
     console.log(user.firstName, "sarhey de oghai");

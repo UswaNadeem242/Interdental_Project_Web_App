@@ -37,6 +37,7 @@ import { Form, Formik } from "formik";
 import { OrderValidationSchema } from "../../../Common/FormsValidation/order-validation";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
+import { showToast } from "../../../store/toast-slice";
 
 const DoctorOrder = () => {
 
@@ -44,9 +45,6 @@ const DoctorOrder = () => {
   const { orders, shadeGroups, loading: dropdownLoading } = useSelector(state => state.dropdown);
   const { teethData, loading: teethLoading } = useSelector(state => state.teeth);
   const { selectedTeeth, selectedTooth, toothSelections, doctorOrderItems, doctor, patient } = useSelector(state => state.restoration);
-
-
-
   const [touched, setTouched] = useState({});
   const [selected, setSelected] = useState([]);
   const steps = [
@@ -124,19 +122,16 @@ const DoctorOrder = () => {
               const handleTabClick = async (index) => {
                 if (index === activeIndex) return;
                 const formErrors = await validateForm();
-                console.log("Form Errors:", formErrors);
-
                 if (Object.keys(formErrors).length === 0) {
                   setActiveIndex(index);
                 } else {
-                  // alert("Please Fill the Restoration Design form then move to next");
-                  toast.error("Please fill the Restoration Design form before moving to the next tab");
+                  dispatch(showToast({ message: `Please fill the Restoration Design form before moving to the next tab`, type: "error" }));
 
                 }
               };
               return (
                 <>
-                  {/* Stepper / Tab Headers */}
+
                   <StepperTabs
                     steps={steps}
                     setActiveIndex={(i) => handleTabClick(i)}
@@ -170,7 +165,11 @@ const DoctorOrder = () => {
                       validationSchema={OrderValidationSchema}
                       validateOnChange={true}  // 🚫 Validation har change pe na chale
                       validateOnBlur={true}
-                      onSubmit={(values) => { }}
+                      onSubmit={(values, { setSubmitting }) => {
+                        next();
+                        setSubmitting(false);
+                      }}
+
                     >
                       {({ values, errors, touched, handleChange, handleSubmit, validateForm, setFieldValue, handleBlur }) => (
                         <Form onSubmit={handleSubmit} className="space-y-4">
@@ -189,12 +188,12 @@ const DoctorOrder = () => {
                                   label="Doctor Name / Office Name"
                                   placeholder="Doctor Name / Office Name"
                                   name="doctorName"
-                                  value={values.doctorName || ""}  
+                                  value={values.doctorName || ""}
                                   onChange={(e) => {
                                     const value = e.target.value;
-                                    const fieldName = e.target.name;  
-                                    setFieldValue(fieldName, value); 
-                                    dispatch(setDoctorField({ field: fieldName, value })); 
+                                    const fieldName = e.target.name;
+                                    setFieldValue(fieldName, value);
+                                    dispatch(setDoctorField({ field: fieldName, value }));
                                   }}
                                   onBlur={handleBlur}
                                 />
@@ -210,16 +209,9 @@ const DoctorOrder = () => {
                                   value={values.officeReg || ""}
                                   onChange={(e) => {
                                     const value = e.target.value;
-                                    const fieldName = e.target.name; // safe access
-
-                                    // Update Formik state
+                                    const fieldName = e.target.name;
                                     setFieldValue(fieldName, value);
-
-                                    // Update Redux dynamically
                                     dispatch(setDoctorField({ field: fieldName, value }));
-
-                                    // Console logs for debugging
-
                                   }}
                                   onBlur={handleBlur}
                                   placeholder="Office registration number"
@@ -237,15 +229,8 @@ const DoctorOrder = () => {
                                   onChange={(e) => {
                                     const value = e.target.value;
                                     const fieldName = e.target.name;
-
-                                    // Update Formik state
                                     setFieldValue(fieldName, value);
-
-                                    // Update Redux dynamically
                                     dispatch(setDoctorField({ field: fieldName, value }));
-
-                                    // Debugging
-                                    console.log("Redux dispatch for createDate:", { field: fieldName, value });
                                   }}
                                   onBlur={handleBlur}
                                 />
@@ -263,15 +248,8 @@ const DoctorOrder = () => {
                                   onChange={(e) => {
                                     const value = e.target.value;
                                     const fieldName = e.target.name;
-
-                                    // Update Formik state
                                     setFieldValue(fieldName, value);
-
-                                    // Update Redux dynamically
                                     dispatch(setDoctorField({ field: fieldName, value }));
-
-                                    // Debugging
-                                    console.log("Redux dispatch for dueDate:", { field: fieldName, value });
                                   }}
                                   onBlur={handleBlur}
                                 />
@@ -294,15 +272,8 @@ const DoctorOrder = () => {
                                   onChange={(e) => {
                                     const value = e.target.value;
                                     const fieldName = e.target.name;
-
-                                    // Update Formik state
                                     setFieldValue(fieldName, value);
-
-                                    // Update Redux dynamically
                                     dispatch(setPatientField({ field: fieldName, value }));
-
-                                    // Debugging
-                                    console.log("Redux dispatch for patientFirstName:", { field: fieldName, value });
                                   }}
                                   onBlur={handleBlur}
                                 />
@@ -327,8 +298,7 @@ const DoctorOrder = () => {
                                     dispatch(setPatientField({ field: fieldName, value }));
 
                                     // Debugging to confirm Redux update
-                                    console.log("Redux dispatch for patientLastName:", { field: fieldName, value });
-                                  }}
+                                   }}
                                   onBlur={handleBlur}
                                 />
                                 {errors.patientLastName && (
@@ -446,7 +416,9 @@ const DoctorOrder = () => {
                                     value={toothSelections.find(t => t.toothId === selectedTooth)?.digitalOptions || ""}
                                     onChange={(option) => {
                                       if (!selectedTooth) {
-                                        alert("⚠️ Please select a tooth first");
+
+                                        dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+
                                         return;
                                       }
                                       dispatch(updateToothSelection({
@@ -475,7 +447,8 @@ const DoctorOrder = () => {
                                     value={toothSelections.find(t => t.toothId === selectedTooth)?.surgical_guide || ""}
                                     onChange={(val) => {
                                       if (!selectedTooth) {
-                                        alert("⚠️ Please select a tooth first");
+                                        dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+
                                         return;
                                       }
                                       handleDropdownChange("surgical_guide", val);
@@ -567,7 +540,8 @@ const DoctorOrder = () => {
                                       value={toothSelections.find(t => t.toothId === selectedTooth)?.material || ""}
                                       onChange={(val) => {
                                         if (!selectedTooth) {
-                                          alert("⚠️ Please select a tooth first");
+                                          dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+
                                           return;
                                         }
 
@@ -609,7 +583,7 @@ const DoctorOrder = () => {
                                       value={toothSelections.find(t => t.toothId === selectedTooth)?.lab || ""} // ✅ correct selected value
                                       onChange={(val) => {
                                         if (!selectedTooth) {
-                                          alert("⚠️ Please select a tooth first");
+                                          dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
                                           return;
                                         }
 
@@ -633,7 +607,7 @@ const DoctorOrder = () => {
                                       value={toothSelections.find(t => t.toothId === selectedTooth)?.photogrammetryfiles || ""} // ✅ get value from current tooth
                                       onChange={(val) => {
                                         if (!selectedTooth) {
-                                          alert("⚠️ Please select a tooth first");
+                                          dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
                                           return;
                                         }
 
@@ -750,6 +724,23 @@ const DoctorOrder = () => {
                               </div>
                               <button
                                 type="button"
+                                // onClick={() => {
+                                //   // ✅ validate form before next
+                                //   console.log('erroe', errors);
+                                //   validateForm().then((errors) => {
+                                //     if (Object.keys(errors).length === 0) {
+                                //       // no errors → submit → move next
+
+                                //       handleSubmit();
+                                //     } else {
+                                //       // show toast instead of silently failing
+                                //       toast.error("⚠️ Please fill all required fields", {
+                                //         position: "bottom-right",
+                                //         autoClose: 3000,
+                                //       });
+                                //     }
+                                //   });
+                                // }}
                                 onClick={() => next()}
                                 className="w-full rounded-full bg-[#0b2b62] px-6 py-3 text-sm font-semibold text-white hover:bg-[#092b58]"
                               >
@@ -765,7 +756,7 @@ const DoctorOrder = () => {
 
 
 
-                    </Formik>
+                    </Formik >
                   )}
                   {activeIndex === 1 && <ReviewOrder next={next} />}
                   {activeIndex === 2 && <CheckoutForm next={next} />}
@@ -775,19 +766,6 @@ const DoctorOrder = () => {
             }}
           </Formik>
         </main>
-
-
-
-
-
-
-
-
-
-
-
-
-
         {isModalOpen && (
           <SmileDesignPicker
             isModalOpen={isModalOpen}
@@ -796,7 +774,7 @@ const DoctorOrder = () => {
             setSelected={setSelected}
           />
         )}
-      </div>
+      </div >
     </>
   );
 };

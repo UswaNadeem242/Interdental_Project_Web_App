@@ -21,8 +21,7 @@ const SingleProduct = () => {
   const { productId } = useParams();
   const {  fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } =
     useAuth();
-  console.log("single product", cartCount);
-
+ 
   const [product, setProduct] = useState({});
   const [categoriesList, setCategoriesList] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -76,8 +75,7 @@ const SingleProduct = () => {
         }
       );
       setRelatedProducts(response.data);
-      console.log("related products", response.data);
-    } catch (error) {
+     } catch (error) {
       setRelatedProducts(error.response.data.data);
     }
   };
@@ -95,8 +93,7 @@ const SingleProduct = () => {
   const [isOpenCart, setIsOpenCart] = useState(false);
 
   const handleAddtoCart = async () => {
-    console.log("==-=-=--=-product=--=-==--=-", product);
-    if (product.stockQuantity <= 0) {
+     if (product.stockQuantity <= 0) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
       setToastVisible(true);
@@ -112,8 +109,7 @@ const SingleProduct = () => {
         price: product.price,
         totalPrice: product.price,
       };
-      console.log("-=-=-=-=-=payload-=-=-=-=-=-==--=", payload);
-      const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
+       const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
         headers: {
           Accept: "*/*",
           "Content-Type": "application/json",
@@ -154,8 +150,7 @@ const SingleProduct = () => {
           },
         }
       );
-      console.log("respons whishlist::", response);
-      fetchWishlistCount();
+       fetchWishlistCount();
       setToastMessage("Added to Wishlist !");
       setToastType("success");
       setToastVisible(true);
@@ -173,12 +168,10 @@ const userData = localStorage.getItem("users");
 const user = userData ? JSON.parse(userData) : null;
 
 // Debugging logs
-console.log(user, "parsed user data");
-
+ 
 // Safely log firstName only if user exists
 if (user && user.firstName) {
-  console.log(user.firstName, "sarhey de oghai");
-}
+ }
 
 
    return (
@@ -282,9 +275,7 @@ if (user && user.firstName) {
 
                       setToastType("error");
                       setToastVisible(true);
-                      console.log(
-                        "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
-                      );
+                    
                     }
                   }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
@@ -302,9 +293,7 @@ if (user && user.firstName) {
 
                       setToastType("error");
                       setToastVisible(true);
-                      console.log(
-                        "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
-                      );
+                      
                     }
                   }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
@@ -322,9 +311,7 @@ if (user && user.firstName) {
 
                       setToastType("error");
                       setToastVisible(true);
-                      console.log(
-                        "-=-==---=-==-=-=-=--= login first -=-=-==-=-=-=-="
-                      );
+                     
                     }
                   }}
                   className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]"
