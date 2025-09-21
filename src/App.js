@@ -33,8 +33,8 @@ import { menuAdminPanelItem, menuItems, menuItemsUser, menuPatientItem } from ".
 import PatientAdmin from "./pages/PatientAdmin/Patient";
 import DoctorHeader from "./components/doctorAdmin/doctorHeader";
 import AdminPanel from "./pages/admin-panel/admin-panel";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; 
+import Toastify from "./Common/react-toastify";
 
 const MainLayout = ({ children }) => (
   <>
@@ -155,17 +155,8 @@ const SimpleLayout = ({ children }) => <div className="">{children}</div>;
 function App() {
   return (
     <div>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <Toastify />
+
       <AuthProvider>
         <BrowserRouter basename="/">
           <ScrollToTop />
