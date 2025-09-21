@@ -4,7 +4,7 @@ const toastSlice = createSlice({
     name: "toast",
     initialState: {
         message: "",
-        type: "info", // 'success', 'error', 'info'
+        type: "info", // 'success', 'error', 'info', 'warning'
         visible: false,
     },
     reducers: {

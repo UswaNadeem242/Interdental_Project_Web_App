@@ -1,28 +1,24 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { hideToast } from "../redux/toastSlice";
+import { hideToast } from "../../store/toast-slice";
+import { toast, ToastContainer } from "react-toastify";
 
-const Toast = () => {
-    const dispatch = useDispatch();
+
+const Toastify = () => {
     const { message, type, visible } = useSelector((state) => state.toast);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (visible) {
-            const timer = setTimeout(() => {
-                dispatch(hideToast());
-            }, 3000); // auto hide after 3s
-            return () => clearTimeout(timer);
+        if (visible && message) {
+            toast[type](message, {
+                position: "bottom-right", // 👈 you wanted bottom right
+                autoClose: 3000,
+            });
+            dispatch(hideToast()); // reset so it doesn't repeat
         }
-    }, [visible]);
+    }, [visible, message, type, dispatch]);
 
-    if (!visible) return null;
-
-    return (
-        <div className={`fixed bottom-4 right-4 p-4 rounded shadow-lg text-white
-      ${type === "error" ? "bg-red-500" : "bg-blue-500"}`}>
-            {message}
-        </div>
-    );
+    return <ToastContainer />;
 };
 
-export default Toast;
+export default Toastify;

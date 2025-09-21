@@ -53,6 +53,8 @@ const DoctorOrder = () => {
     { id: "s3", title: "Checkout" },
     { id: "s4", title: "Completion" },
   ];
+  const currentStepIndex = 0; // update this dynamically from your state
+  const currentStep = steps[currentStepIndex];
   const [activeIndex, setActiveIndex] = useState(0);
   const next = () => setActiveIndex((prev) => Math.min(prev + 1, 3))
   const back = () => {
@@ -125,8 +127,15 @@ const DoctorOrder = () => {
                 if (Object.keys(formErrors).length === 0) {
                   setActiveIndex(index);
                 } else {
-                  dispatch(showToast({ message: `Please fill the Restoration Design form before moving to the next tab`, type: "error" }));
-
+                  // dispatch(showToast({ message: `Please fill the Restoration Design form before moving to the next tab`, type: "error" }));
+                  if (currentStep) {
+                    dispatch(
+                      showToast({
+                        message: `Please fill the "${currentStep.title}" form before moving to the next tab`,
+                        type: "error",
+                      })
+                    );
+                  }
                 }
               };
               return (
@@ -298,7 +307,7 @@ const DoctorOrder = () => {
                                     dispatch(setPatientField({ field: fieldName, value }));
 
                                     // Debugging to confirm Redux update
-                                   }}
+                                  }}
                                   onBlur={handleBlur}
                                 />
                                 {errors.patientLastName && (
@@ -417,7 +426,7 @@ const DoctorOrder = () => {
                                     onChange={(option) => {
                                       if (!selectedTooth) {
 
-                                        dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+                                        dispatch(showToast({ message: `Please select a tooth first`, type: "error" }));
 
                                         return;
                                       }
@@ -447,7 +456,7 @@ const DoctorOrder = () => {
                                     value={toothSelections.find(t => t.toothId === selectedTooth)?.surgical_guide || ""}
                                     onChange={(val) => {
                                       if (!selectedTooth) {
-                                        dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+                                        dispatch(showToast({ message: `Please select a tooth first`, type: "error" }));
 
                                         return;
                                       }
@@ -503,7 +512,7 @@ const DoctorOrder = () => {
                                       value={toothSelections.find(t => t.toothId === selectedTooth)?.crown?.value || ""}
                                       onChange={(val) => {
                                         if (!selectedTooth) {
-                                          toast.warning("⚠️ Please select a tooth first", {
+                                          toast.error("Please select a tooth first", {
                                             position: "top-right",
                                             autoClose: 3000,
                                             hideProgressBar: false,
@@ -540,7 +549,7 @@ const DoctorOrder = () => {
                                       value={toothSelections.find(t => t.toothId === selectedTooth)?.material || ""}
                                       onChange={(val) => {
                                         if (!selectedTooth) {
-                                          dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+                                          dispatch(showToast({ message: `Please select a tooth first`, type: "error" }));
 
                                           return;
                                         }
@@ -583,7 +592,7 @@ const DoctorOrder = () => {
                                       value={toothSelections.find(t => t.toothId === selectedTooth)?.lab || ""} // ✅ correct selected value
                                       onChange={(val) => {
                                         if (!selectedTooth) {
-                                          dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+                                          dispatch(showToast({ message: `Please select a tooth first`, type: "error" }));
                                           return;
                                         }
 
@@ -607,7 +616,7 @@ const DoctorOrder = () => {
                                       value={toothSelections.find(t => t.toothId === selectedTooth)?.photogrammetryfiles || ""} // ✅ get value from current tooth
                                       onChange={(val) => {
                                         if (!selectedTooth) {
-                                          dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+                                          dispatch(showToast({ message: `Please select a tooth first`, type: "error" }));
                                           return;
                                         }
 
@@ -662,9 +671,8 @@ const DoctorOrder = () => {
                                             {values.surgical_guideOption?.label || "No Surgical Guide"}
                                           </p>
                                           <p className="text-xs font-medium">
-                                            {values.surgical_guideOption?.price
-                                              ? `$${values.surgical_guideOption.price}`
-                                              : ""}
+                                            ${values.surgical_guideOption?.price || 0}
+
                                           </p>
                                         </div>
 
@@ -674,9 +682,7 @@ const DoctorOrder = () => {
                                             {values.digitalOptionsOption?.label || "No Digital Denture selected"}
                                           </p>
                                           <p className="text-xs font-medium">
-                                            {values.digitalOptionsOption?.price
-                                              ? `$${values.digitalOptionsOption.price}`
-                                              : ""}
+                                            ${values.digitalOptionsOption?.price || 0}
                                           </p>
                                         </div>
 
@@ -686,7 +692,7 @@ const DoctorOrder = () => {
                                             {values.labOption?.label || "Participating Lab"}
                                           </p>
                                           <p className="text-xs font-medium">
-                                            {values.labOption?.price ? `$${values.labOption.price}` : ""}
+                                            ${values.labOption?.price || 0}
                                           </p>
                                         </div>
                                       </div>
