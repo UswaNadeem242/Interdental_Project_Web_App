@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const DonePage = () => {
   return (
@@ -37,9 +38,12 @@ const DonePage = () => {
         </div>
 
         {/* Button */}
-        <button className="bg-secondaryBrand text-white rounded-full px-5 py-4 w-full sm:w-80 md:w-96 font-poppins text-sm font-semibold">
-          Track Order
-        </button>
+        <NavLink to='/doctor-admin/orders'>
+          <button className="bg-secondaryBrand text-white rounded-full px-5 py-4 w-full sm:w-80 md:w-96 font-poppins text-sm font-semibold" >
+            Track Order
+          </button>
+        </NavLink>
+
       </div>
     </div>
   );

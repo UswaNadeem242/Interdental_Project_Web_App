@@ -130,8 +130,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
 
   const createOrder = async () => {
     //
-    console.log("=--=-==--=user=--=-===-", user);
-
+ 
     try {
       const payload = {
         userId: user.id,
@@ -142,8 +141,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         orderItems: cart.items,
       };
 
-      console.log("-=-=-=-=-=payload-=-=-=-=-=-==--=", payload);
-      const response = await axios.post(
+       const response = await axios.post(
         `${BASE_URL}/orders/createOrder`,
         payload,
         {
@@ -161,8 +159,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
       } else if (response.data.responseCode === "0000") {
         setActiveTab("order");
       }
-      console.log(response);
-    } catch (error) {
+     } catch (error) {
       console.log(error);
     }
   };
@@ -251,8 +248,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const user = userData ? JSON.parse(userData) : null;
 
   // Debugging logs
-  console.log(user, "parsed user data");
-
+ 
   // Safely log firstName only if user exists
   if (user && user.firstName) {
     console.log(user.firstName, "sarhey de oghai");
@@ -264,8 +260,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         ref={modalRef}
         className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative "
       >
-        {console.log("-=-=-=-=---=user-=-=-=-=-=-==", user.email)}
-        {/* Tabs */}
+         {/* Tabs */}
         <div className="flex justify-around w-[587px] h-[68.69px]  pb-[16px] pt-[8px]">
           <div className="flex justify-around w-[539.02px] h-[44.69px]">
             <div

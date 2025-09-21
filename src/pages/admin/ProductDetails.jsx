@@ -39,8 +39,7 @@ const ProductDetails = () => {
           },
         }
       );
-      console.log("=--=-=-==-=response-=-=-=-==-=-", response);
-      setProduct(response.data.data);
+       setProduct(response.data.data);
     } catch (error) {
       console.log(error);
     } finally {

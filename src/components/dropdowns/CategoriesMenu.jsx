@@ -5,8 +5,7 @@ const CategoriesMenu = ({ setCategories, categoriesList }) => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  console.log("categoriesList", categoriesList);
-
+ 
   const brands = [
     {
       id: 1,
@@ -36,9 +35,7 @@ const CategoriesMenu = ({ setCategories, categoriesList }) => {
     };
   }, []);
 
-  const handleBrand = (id) => {
-    console.log(id);
-  };
+ 
   return (
     <div
       ref={dropdownRef}

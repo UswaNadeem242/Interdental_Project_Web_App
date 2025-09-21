@@ -110,8 +110,7 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, isItemId }) => {
         review: review,
       };
 
-      console.log("-=-=-=payload==--===-==", payload);
-      const response = await axios.post(`${BASE_URL}/api/ratings/add`, payload, {
+       const response = await axios.post(`${BASE_URL}/api/ratings/add`, payload, {
         headers: {
           Accept: "*/*",
           "Content-Type": "application/json",
@@ -119,8 +118,7 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, isItemId }) => {
         },
       });
 
-      console.log("Rating submitted:", response.data);
-    } catch (error) {
+     } catch (error) {
       console.error("Error adding rating:", error);
     }
   };

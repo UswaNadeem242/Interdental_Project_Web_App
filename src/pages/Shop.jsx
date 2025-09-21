@@ -85,8 +85,7 @@ const Shop = () => {
   const handleProduct = (product) => {
     navigate(`/product/${product.productId}`);
 
-    console.log("=--=-=-=-=product-=-=-=-=", product);
-  };
+   };
 
   const getAllProducts = async () => {
     try {
@@ -96,10 +95,7 @@ const Shop = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(
-        "-=-====--=-=-response.data.data==--==-=-==-=--====",
-        response.data.data
-      );
+     
       setProducts(response.data.data);
     } catch (error) {
       console.log(error);

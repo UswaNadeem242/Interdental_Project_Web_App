@@ -72,24 +72,41 @@ export default function TeethChart({
     // const [selectedIds, setSelectedIds] = useState([]);
     const [currentTooth, setCurrentTooth] = useState(null);
 
+    // const toggle = (tooth) => {
+    //     const next = selectedIds.includes(tooth.id)
+    //         ? selectedIds.filter((id) => id !== tooth.id)
+    //         : [...selectedIds, tooth.id];
+
+    //     setSelectedIds(next);
+    //     setCurrentTooth(tooth.id); // ✅ keep the latest as "current"
+
+    //     if (onSelect) {
+    //         onSelect(
+    //             next.map((id) => {
+    //                 const t = teethData.find((x) => x.id === id);
+    //                 const fdi = toFDI(id);
+    //                 return { ...t, fdi, palmer: toPalmerFromFDI(fdi) };
+    //             })
+    //         );
+    //     }
+    // };
+
+
+
     const toggle = (tooth) => {
         const next = selectedIds.includes(tooth.id)
             ? selectedIds.filter((id) => id !== tooth.id)
             : [...selectedIds, tooth.id];
 
         setSelectedIds(next);
-        setCurrentTooth(tooth.id); // ✅ keep the latest as "current"
+        setCurrentTooth(tooth.id);
 
         if (onSelect) {
-            onSelect(
-                next.map((id) => {
-                    const t = teethData.find((x) => x.id === id);
-                    const fdi = toFDI(id);
-                    return { ...t, fdi, palmer: toPalmerFromFDI(fdi) };
-                })
-            );
+            const fdi = toFDI(tooth.id);
+            onSelect({ ...tooth, fdi, palmer: toPalmerFromFDI(fdi) }); // ✅ sirf clicked tooth bhejta hai
         }
     };
+
 
 
     const [leftOffset, setLeftOffset] = useState("left-0");

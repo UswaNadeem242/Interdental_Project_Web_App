@@ -9,10 +9,24 @@ import CheckoutForm from "./Checkout";
 import {
   // DIGITAL_DENTURE,
   Digital_Option,
-
   PHOTOGRAMMETRY_FILES,
-
 } from "../../../Constant";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDropdowns } from "../../../store/slices/order-dropdown-slice/index";
+import { fetchTeeth } from "../../../store/slices/teeth-slice/index";
+import {
+  setSelectedTeeth,
+  updateToothSelection,
+  selectTooth,
+  setNote,
+  computeOrderItems,
+  computeTotal,
+  setDoctorField,
+  setPatientField,
+
+
+} from "../../../store/slices/restoration-slice/index";
+import addDoctorOrderItems from "../../../store/slices/restoration-slice/index"
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import DonePage from "./DonePage";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
@@ -21,160 +35,18 @@ import { ShadeDropdown } from "../../../Common/DropDown/NestedDropdown";
 import { orderService } from "../../../services/order-service/index";
 import { Form, Formik } from "formik";
 import { OrderValidationSchema } from "../../../Common/FormsValidation/order-validation";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import { showToast } from "../../../store/toast-slice";
 
 const DoctorOrder = () => {
-  const [errors, setErrors] = useState({});
+
+  const dispatch = useDispatch();
+  const { orders, shadeGroups, loading: dropdownLoading } = useSelector(state => state.dropdown);
+  const { teethData, loading: teethLoading } = useSelector(state => state.teeth);
+  const { selectedTeeth, selectedTooth, toothSelections, doctorOrderItems, doctor, patient } = useSelector(state => state.restoration);
   const [touched, setTouched] = useState({});
-
-  const [note, setNote] = useState("");
   const [selected, setSelected] = useState([]);
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [shadeGroups, setShadeGroups] = useState([]);
-
-  const [teethData, setTeethData] = useState([]);       // API ka data
-  const [selectedTooth, setSelectedTooth] = useState(null);
-  const [selectedTeeth, setSelectedTeeth] = useState([]); // Array of all selected teeth
-  const [toothSelections, setToothSelections] = useState({});
-
-  const currentValues = selectedTooth
-    ? toothSelections[selectedTooth] || {}
-    : {};
-
-  const handleDropdownChange = (field, value) => {
-    if (!selectedTooth) return;
-
-    // Find option and price from orders
-    let selectedOption = null;
-    let price = 0;
-    for (const order of orders) {
-      if (order.children) {
-        const option = order.children.find(child => child.value === value);
-        if (option) {
-          selectedOption = option;
-          price = option.price || 0;
-          break;
-        }
-      }
-    }
-
-    setToothSelections(prev => ({
-      ...prev,
-      [selectedTooth]: {
-        ...prev[selectedTooth],
-        [field]: value,
-        [`${field}Price`]: price,
-        [`${field}Option`]: selectedOption,
-      },
-    }));
-
-    if (value) {
-      setErrors(prev => ({
-        ...prev,
-        [`tooth_${selectedTooth}_${field}`]: "",
-      }));
-      setTouched(prev => ({
-        ...prev,
-        [`tooth_${selectedTooth}_${field}`]: false,
-      }));
-    }
-  };
-
-  const handleSave = async (validateForm, values, next) => {
-    const currentValues = {
-      ...values,
-      selectedTeeth,
-      toothSelections,
-      note
-    };
-
-    const errors = await validateForm(currentValues);
-    const newErrors = {};
-    const touchedUpdate = {};
-
-    if (!currentValues.selectedTeeth || currentValues.selectedTeeth.length === 0) {
-      newErrors.selectedTeeth = "At least one tooth must be selected.";
-      touchedUpdate.selectedTeeth = true;
-    }
-
-    let totalPrice = 0;
-    const doctorOrderItems = [];
-
-    currentValues.selectedTeeth.forEach((toothId) => {
-      const tooth = currentValues.toothSelections[toothId];
-
-      ["scannerType", "digitalOptions", "surgical_guide", "material", "lab", "crown"].forEach(
-        (field) => {
-          const selectedValue = tooth?.[field];
-          if (!selectedValue) {
-            newErrors[`tooth_${toothId}_${field}`] = `${field.replace(/([A-Z])/g, " $1")} is required`;
-            touchedUpdate[field] = true;
-          } else {
-            const optionPrice = tooth[`${field}Price`] || 0;
-            totalPrice += optionPrice;
-
-
-            // ✅ Find matching item
-            // let apiItem;
-            // if (field === "shade") {
-            //   apiItem = shadeGroups.find((s) => s.id === selectedValue);
-            // } else {
-            //   apiItem = orders.flatMap((p) => p.children || []).find((c) => c.value === selectedValue);
-            // }
-
-            const apiItem = orders
-              .flatMap((p) => p.children || [])
-              .find((c) => c.value === selectedValue);
-            doctorOrderItems.push({
-              id: 1,          // ✅ same logic as doctorOrderId
-              doctorOrderId: 1,
-              dropdownMasterId: apiItem?.value || selectedValue,
-              quantity: 1,
-              unitPrice: optionPrice,
-            });
-          }
-        }
-      );
-    });
-
-    setErrors(newErrors);
-    setTouched((prev) => ({ ...prev, ...touchedUpdate }));
-
-    if (Object.keys(newErrors).length > 0) {
-      console.log("Validation failed:", newErrors);
-      return;
-    }
-
-    const data = {
-      ...currentValues,
-      totalAmount: totalPrice,
-      doctorOrderItems,
-    };
-
-    console.log("API Payload:", data);
-
-    localStorage.setItem("restorationForm", JSON.stringify(data));
-
-    next();
-  };
-
-
-
-
-  const subtotal = Object.values(toothSelections).reduce((sum, tooth) => {
-    return (
-      sum +
-      (tooth.materialPrice || tooth.materialOption?.price || 0) +
-      (tooth.crown?.price || tooth.crownPrice || 0) +
-      (tooth.digitalOptionsPrice || tooth.digitalOptionsOption?.price || 0) +
-      (tooth.surgical_guidePrice || tooth.surgical_guideOption?.price || 0) +
-      (tooth.labPrice || tooth.labOption?.price || tooth.lab?.price || 0)
-    );
-  }, 0);
-
-
-  const shipping = subtotal > 100 ? 0 : 0;
-  const total = subtotal + shipping;
   const steps = [
     { id: "s1", title: "Restoration Design Form" },
     { id: "s2", title: "Review" },
@@ -187,12 +59,7 @@ const DoctorOrder = () => {
     if (activeIndex > 0) setActiveIndex(activeIndex - 1);
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-
-
-
-  const [chartSize, setChartSize] = useState(480); // default desktop
-
+  const [chartSize, setChartSize] = useState(480);
   useEffect(() => {
     const small = window.matchMedia("(max-width: 639px)");
     const medium = window.matchMedia("(min-width: 640px) and (max-width: 1023px)");
@@ -208,9 +75,7 @@ const DoctorOrder = () => {
       }
     };
 
-    updateSize(); // set initial
-
-    // Add listeners
+    updateSize();
     [small, medium, large].forEach(mq => mq.addEventListener("change", updateSize));
 
     return () => {
@@ -219,89 +84,34 @@ const DoctorOrder = () => {
   }, []);
 
 
-  useEffect(() => {
-    orderService.getDropDown()
-      .then((data) => {
-        const raw = data?.data?.data || [];
-        console.log('data:', data);
-
-        const mapped = raw.map((parent) => ({
-          id: parent.id,
-          name: parent.name,
-          type: parent.type,
-          price: parent.price,
-          discountedPrice: parent.discountedPrice,
-          children: parent.name === "Shade"
-            ? (parent.children || [])
-            : (parent.children?.map((child) => ({
-              label: child.name,
-              value: child.id,
-              parentId: parent.id,
-              price: child.price,
-            })) || [])
-        }));
-
-        setOrders(mapped);
-        const shadeRoot = raw.find((p) => p.name === "Shade");
-        if (shadeRoot && Array.isArray(shadeRoot.children)) {
-          setShadeGroups(shadeRoot.children);
-        } else {
-          setShadeGroups([]);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching orders:", err);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => {
-    orderService.getTooth()
-      .then((res) => {
-        const raw = res?.data?.data || res?.data || [];
-        const mapped = Array.isArray(raw)
-          ? raw.map((t, idx) => ({
-            id: Number(t.toothNumber) || t.id || (idx + 1),
-            name: t.toothName || `Tooth ${idx + 1}`,
-            fdiNumber: t.fdiNumber,
-            quadrant: t.quadrant,
-            type: t.type,
-            isPermanent: t.isPermanent,
-          }))
-          : [];
-        setTeethData(mapped);
-      })
-      .catch((err) => {
-        console.error("❌ Error fetching teeth:", err);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-  const materialOptions =
-    orders.find((p) => p.name === "Material")?.children || [];
-  const selectedMaterialValue = toothSelections[selectedTooth]?.material || "";
-  // find the label of the selected material
-  const selectedMaterial = materialOptions.find(
-    (opt) => opt.value === selectedMaterialValue
-  );
-  const handleTabChange = async (index, validateForm, values) => {
-    const errors = await validateForm(); // validate current form
-    if (Object.keys(errors).length === 0) {
-      setActiveIndex(index); // move to next tab if no errors
-    } else {
-      // Optionally: scroll to first error or show a toast
-      console.log("Please Fill the Restoration Design form then move to next ");
-    }
+  const handleDropdownChange = (field, option) => {
+    if (!selectedTooth) return; // ❌ this will block if your slice doesn't set selectedTooth properly
+    if (!option) return;
+    dispatch(updateToothSelection({
+      toothId: selectedTooth,    // must be an ID
+      field,
+      value: option.value,
+      price: Number(option.price) || 0,
+      option
+    }));
   };
+  useEffect(() => {
+    dispatch(fetchDropdowns());
+    dispatch(fetchTeeth());
+  }, [dispatch]);
 
-
+  const activeToothSelection =
+    toothSelections.find(t => t.toothId === selectedTooth) || {};
+  const currentTooth = toothSelections.find((t) => t.toothId === selectedTooth);
+  const totalPrice = currentTooth
+    ? Object.values(currentTooth)
+      .filter((field) => field && typeof field === "object" && field.price)
+      .reduce((sum, field) => sum + field.price, 0)
+    : 0;
   return (
     <>
+
       <div className="flex flex-col rounded-3xl justify-center items-start">
-
-
-
-
-
         <main className="flex-1 bg-white rounded-3xl p-4 sm:p-6 w-full">
           <Formik
             initialValues=''
@@ -315,13 +125,13 @@ const DoctorOrder = () => {
                 if (Object.keys(formErrors).length === 0) {
                   setActiveIndex(index);
                 } else {
-                  alert("Please Fill the Restoration Design form then move to next");
+                  dispatch(showToast({ message: `Please fill the Restoration Design form before moving to the next tab`, type: "error" }));
+
                 }
               };
-
               return (
                 <>
-                  {/* Stepper / Tab Headers */}
+
                   <StepperTabs
                     steps={steps}
                     setActiveIndex={(i) => handleTabClick(i)}
@@ -349,13 +159,17 @@ const DoctorOrder = () => {
                         selectedTeeth: [], // 🟢 track selected teeth
                         toothSelections: {},
                         note: '',
-                        crown: ''
+                        crown: '',
+                        photogrammetryfiles: ''
                       }}
                       validationSchema={OrderValidationSchema}
                       validateOnChange={true}  // 🚫 Validation har change pe na chale
                       validateOnBlur={true}
-                      onSubmit={(values) => {
+                      onSubmit={(values, { setSubmitting }) => {
+                        next();
+                        setSubmitting(false);
                       }}
+
                     >
                       {({ values, errors, touched, handleChange, handleSubmit, validateForm, setFieldValue, handleBlur }) => (
                         <Form onSubmit={handleSubmit} className="space-y-4">
@@ -372,51 +186,78 @@ const DoctorOrder = () => {
                                 <LabeledInput
                                   type="text"
                                   label="Doctor Name / Office Name"
-                                  placeholder='Doctor Name / Office Name'
+                                  placeholder="Doctor Name / Office Name"
                                   name="doctorName"
-                                  value={values.doctorName}
-                                  onChange={handleChange}
+                                  value={values.doctorName || ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const fieldName = e.target.name;
+                                    setFieldValue(fieldName, value);
+                                    dispatch(setDoctorField({ field: fieldName, value }));
+                                  }}
                                   onBlur={handleBlur}
                                 />
                                 {errors.doctorName && (
                                   <p className="text-red-800 text-xs capitalize">{errors.doctorName}</p>
                                 )}
+
+
                                 <LabeledInput
                                   type="text"
                                   label="Office registration number"
-                                  value={values?.officeReg}
-                                  name='officeReg'
-                                  placeholder="Office registration number"
-                                  onChange={handleChange}
+                                  name="officeReg"
+                                  value={values.officeReg || ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const fieldName = e.target.name;
+                                    setFieldValue(fieldName, value);
+                                    dispatch(setDoctorField({ field: fieldName, value }));
+                                  }}
                                   onBlur={handleBlur}
+                                  placeholder="Office registration number"
                                 />
-                                {errors.officeReg && (
-                                  <p className="text-red-800 text-xs capitalize">{errors.officeReg}</p>
-                                )}
+
+
                                 <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Create Date</lable>
+
+
                                 <LabeledInput
                                   label="Create Date"
                                   type="date"
-                                  name='createDate'
-                                  value={values?.createDate}
-                                  onChange={handleChange}
+                                  name="createDate"
+                                  value={values.createDate || ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const fieldName = e.target.name;
+                                    setFieldValue(fieldName, value);
+                                    dispatch(setDoctorField({ field: fieldName, value }));
+                                  }}
                                   onBlur={handleBlur}
                                 />
                                 {errors.createDate && (
                                   <p className="text-red-800 text-xs capitalize">{errors.createDate}</p>
                                 )}
+
+
                                 <lable className='text-primaryText text-xs font-semibold font-poppins capitalize'>Case expected due date</lable>
                                 <LabeledInput
                                   label="Case expected due date"
                                   type="date"
-                                  name='dueDate'
-                                  value={values?.dueDate}
-                                  onChange={handleChange}
+                                  name="dueDate"
+                                  value={values.dueDate || ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const fieldName = e.target.name;
+                                    setFieldValue(fieldName, value);
+                                    dispatch(setDoctorField({ field: fieldName, value }));
+                                  }}
                                   onBlur={handleBlur}
                                 />
                                 {errors.dueDate && (
                                   <p className="text-red-800 text-xs capitalize">{errors.dueDate}</p>
                                 )}
+
+
                               </FormSection>
                               <FormSection
                                 title="Patient ID"
@@ -426,36 +267,69 @@ const DoctorOrder = () => {
                                 <LabeledInput
                                   type="text"
                                   placeholder="Name"
-                                  name='patientFirstName'
-                                  value={values?.patientFirstName}
-                                  onChange={handleChange}
+                                  name="patientFirstName"
+                                  value={values.patientFirstName || ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const fieldName = e.target.name;
+                                    setFieldValue(fieldName, value);
+                                    dispatch(setPatientField({ field: fieldName, value }));
+                                  }}
                                   onBlur={handleBlur}
                                 />
                                 {errors.patientFirstName && (
                                   <p className="text-red-800 text-xs capitalize">{errors.patientFirstName}</p>
                                 )}
+
+
                                 <LabeledInput
                                   type="text"
                                   placeholder="Last Name"
-                                  name='patientLastName'
-                                  value={values?.patientLastName}
-                                  onChange={handleChange}
+                                  name="patientLastName"
+                                  value={values.patientLastName || ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const fieldName = e.target.name;
+
+                                    // Update Formik state
+                                    setFieldValue(fieldName, value);
+
+                                    // Update Redux dynamically
+                                    dispatch(setPatientField({ field: fieldName, value }));
+
+                                    // Debugging to confirm Redux update
+                                   }}
                                   onBlur={handleBlur}
                                 />
                                 {errors.patientLastName && (
                                   <p className="text-red-800 text-xs capitalize">{errors.patientLastName}</p>
                                 )}
-                                <LabeledInput
 
+
+
+                                <LabeledInput
                                   placeholder="Subscription id"
-                                  name='subscriptionId'
-                                  value={values?.subscriptionId}
-                                  onChange={handleChange}
+                                  name="subscriptionId"
+                                  value={values.subscriptionId || ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const fieldName = e.target.name;
+
+                                    // Update Formik state
+                                    setFieldValue(fieldName, value);
+
+                                    // Update Redux dynamically
+                                    dispatch(setPatientField({ field: fieldName, value }));
+
+                                    // Debugging to confirm Redux update
+                                    console.log("Redux dispatch for subscriptionId:", { field: fieldName, value });
+                                  }}
                                   onBlur={handleBlur}
                                 />
                                 {errors.subscriptionId && (
                                   <p className="text-red-800 text-xs capitalize">{errors.subscriptionId}</p>
                                 )}
+
                               </FormSection>
                               <div className="bg-textField  rounded-md ">
                                 <button
@@ -477,19 +351,31 @@ const DoctorOrder = () => {
                               <MaterialDropdown
                                 className="w-full rounded-md bg-textField px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
                                 options={(orders.find((p) => p.name === "Scanner")?.children) || []}
-                                value={toothSelections[selectedTooth]?.scannerType || ""}
-                                onChange={(val) => {
-                                  handleDropdownChange("scannerType", val);
-                                  if (val) {
+                                value={activeToothSelection.scannerType || ""}
+                                onChange={(option) => {
+                                  if (!selectedTooth) return; // make sure tooth is selected
+                                  dispatch(updateToothSelection({
+                                    toothId: selectedTooth,
+                                    field: "scannerType",
+                                    value: option.value,
+                                    price: option.price,
+                                    option,
+                                  }));
+                                  if (option) {
                                     setTouched(prev => ({ ...prev, scannerType: false }));
                                   }
                                 }}
                                 label="Scanner Type"
                                 storageKey="scannerType"
                                 dropdownClass="text-secondaryBrand"
-                                error={touched.scannerType && !toothSelections[selectedTooth]?.scannerType ? "Scanner Type is Required Select the Teeth" : ""}
-
+                                error={
+                                  touched.scannerType && !activeToothSelection.scannerType
+                                    ? "Scanner Type is Required Select the Teeth"
+                                    : ""
+                                }
                               />
+
+
                               <div>
                                 <FileUploadSection />
                               </div>
@@ -498,88 +384,108 @@ const DoctorOrder = () => {
                                 className="border border-gray-200 p-4"
                               >
                                 <textarea
-                                  typeof="text"
+                                  type="text"
                                   rows={2}
-                                  name='note'
+                                  name="note"
                                   value={values.note}
                                   placeholder="Write here"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
                                   maxLength={500}
-                                  className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none  "
+                                  className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none"
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Dispatch to Redux
+                                    dispatch(setNote(value));
+                                    // Update Formik state
+                                    handleChange(e);
+                                  }}
+                                  onBlur={handleBlur}
                                 />
                                 {errors.note && (
                                   <p className="text-red-800 text-xs capitalize">{errors.note}</p>
                                 )}
                               </FormSection>
+
                             </aside>
                             <section className="col-span-12 md:col-span-6 space-y-4">
                               <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
                                 <div className="grid grid-cols-2 gap-4 mt-5 mb-10">
+
                                   <MaterialDropdown
                                     className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                    options={
-                                      (orders.find((p) => p.name === "Digital Denture")?.children) || []
-                                    }
-                                    value={
-                                      toothSelections[selectedTooth]?.digitalOptions || ""}
-                                    onChange={(val) => {
-                                      handleDropdownChange("digitalOptions", val);
-                                      // Clear error when user selects a value
-                                      if (val) {
-                                        setTouched(prev => ({ ...prev, digitalOptions: false }));
+                                    options={(orders.find(p => p.name === "Digital Denture")?.children) || []}
+                                    value={toothSelections.find(t => t.toothId === selectedTooth)?.digitalOptions || ""}
+                                    onChange={(option) => {
+                                      if (!selectedTooth) {
+
+                                        dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+
+                                        return;
                                       }
+                                      dispatch(updateToothSelection({
+                                        toothId: selectedTooth,
+                                        field: "digitalOptions",
+                                        value: option.value,
+                                        price: option.price || 0,
+                                        option
+                                      }));
+                                      setTouched(prev => ({ ...prev, digitalOptions: false }));
                                     }}
+
                                     label="Digital Denture"
                                     storageKey="digitalOptions"
-                                    error={touched.digitalOptions && !toothSelections[selectedTooth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
-
+                                    // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
+                                    error={
+                                      touched.digitalOptions &&
+                                        !toothSelections.find(t => t.toothId === selectedTooth)?.digitalOptions
+                                        ? "Digital Denture is Required Select the teeth"
+                                        : ""
+                                    }
                                   />
-
-
                                   <MaterialDropdown
                                     className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                    options={
-                                      (orders.find((p) => p.name === "Surgical Guide")?.children) || []
-                                    }
-                                    value={toothSelections[selectedTooth]?.surgical_guide || ""}
-
-
+                                    options={(orders.find((p) => p.name === "Surgical Guide")?.children) || []}
+                                    value={toothSelections.find(t => t.toothId === selectedTooth)?.surgical_guide || ""}
                                     onChange={(val) => {
-                                      handleDropdownChange("surgical_guide", val);
+                                      if (!selectedTooth) {
+                                        dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
 
+                                        return;
+                                      }
+                                      handleDropdownChange("surgical_guide", val);
                                       if (val) {
                                         setTouched(prev => ({ ...prev, surgical_guide: false }));
                                       }
                                     }}
                                     label="Surgical Guide"
                                     storageKey="surgical_guide"
-                                    error={touched.surgical_guide && !toothSelections[selectedTooth]?.surgical_guide ? "Surgical Guide is Required Select the teeth" : ""}
-
+                                    error={
+                                      touched.surgical_guide &&
+                                        !toothSelections.find(t => t.toothId === selectedTooth)?.surgical_guide
+                                        ? "Surgical Guide is Required. Please select a tooth."
+                                        : ""
+                                    }
                                   />
-
                                 </div>
                                 <div className="flex flex-wrap gap-2  justify-center flex-col">
                                   <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">upper Arch</button>
                                   {/* <img src='/assets/doctor/image.png' /> */}
                                   <div>
                                     <TeethChart
-                                      teeth={teethData && teethData.length ? teethData : undefined}
+                                      teeth={teethData}
                                       sizePx={chartSize}
                                       initialSelectedIds={selectedTeeth}
                                       currentToothId={selectedTooth}
-                                      onSelect={(arr) => {
-
-                                        const toothIds = arr.map(t => t.id);
-                                        setSelectedTeeth(toothIds);
-
-                                        if (arr.length > 0) {
-                                          setSelectedTooth(arr[arr.length - 1].id);
-                                        } else {
-                                          setSelectedTooth(null);
+                                      onSelect={(tooth) => {
+                                        const id =
+                                          tooth?.id ||
+                                          tooth?.toothId ||
+                                          (typeof tooth === "number" ? tooth : null);
+                                        if (id) {
+                                          dispatch(selectTooth(id));
                                         }
                                       }}
                                     />
+
                                   </div>
 
                                   {/* <button className="text-[#949494] text-sm font-normal pt-10  font-poppins">Lower Arch</button> */}
@@ -592,96 +498,79 @@ const DoctorOrder = () => {
                               <div className="flex  flex-col justify-between">
                                 <div>
                                   <FormSection className="p-0">
-                                    {/* <MaterialDropdown
-                                  options={(orders.find((p) => p.name === "Crown")?.children) || []}
-                                  value={toothSelections[selectedTooth]?.crown || ""}   // use lowercase consistently
-                                  // onChange={(val) => {
-                                  //   handleDropdownChange("crown", val);                 // also lowercase here
-                                  //   if (val) {
-                                  //     setTouched((prev) => ({ ...prev, crown: false }));
-                                  //   }
-                                  // }}
-
-
-                                  onChange={(val) => {
-                                    const option = (orders.find((p) => p.name === "Crown")?.children || [])
-                                      .find(c => c.value === val);
-
-                                    handleDropdownChange("crown", {
-                                      value: val,
-                                      label: option?.label || "",
-                                      price: option?.price || 0,
-                                    });
-
-                                    if (val) {
-                                      setTouched(prev => ({ ...prev, crown: false }));
-                                    }
-                                  }}
-                                  label="Crown"
-                                  storageKey="crown"
-                                  className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                  error={
-                                    touched.crown && !toothSelections[selectedTooth]?.crown
-                                      ? "Crown is required. Please select a value."
-                                      : ""
-                                  }
-                                /> */}
-
-
-
                                     <MaterialDropdown
-                                      options={(orders.find((p) => p.name === "Crown")?.children) || []}
-                                      value={toothSelections[selectedTooth]?.crown?.value || ""}   // use .value here
+                                      options={(orders.find(p => p.name === "Crown")?.children) || []}
+                                      value={toothSelections.find(t => t.toothId === selectedTooth)?.crown?.value || ""}
                                       onChange={(val) => {
-                                        const option = (orders.find((p) => p.name === "Crown")?.children || [])
-                                          .find(c => c.value === val);
+                                        if (!selectedTooth) {
+                                          toast.warning("⚠️ Please select a tooth first", {
+                                            position: "top-right",
+                                            autoClose: 3000,
+                                            hideProgressBar: false,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            draggable: true,
+                                            progress: undefined,
+                                          });
+                                          return;
+                                        }
+                                        const option = (orders.find(p => p.name === "Crown")?.children || []).find(c => c.value === val);
 
                                         handleDropdownChange("crown", {
-                                          value: val,
+                                          value: option?.value || val,
                                           label: option?.label || "",
                                           price: option?.price || 0,
+                                          option // pass the full object if needed in redux
                                         });
 
-                                        if (val) {
-                                          setTouched(prev => ({ ...prev, crown: false }));
-                                        }
+                                        setTouched(prev => ({ ...prev, crown: false }));
                                       }}
                                       label="Crown"
                                       storageKey="crown"
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       error={
-                                        touched.crown && !toothSelections[selectedTooth]?.crown
+                                        touched.crown && !toothSelections.find(t => t.toothId === selectedTooth)?.crown
                                           ? "Crown is required. Please select a value."
                                           : ""
                                       }
                                     />
-
                                     <MaterialDropdown
-                                      options={materialOptions}
-                                      value={selectedMaterialValue}
-                                      onChange={(val) => {
+                                      options={orders.find((p) => p.name === "Material")?.children || []}
 
-                                        handleDropdownChange("material", val)
+                                      value={toothSelections.find(t => t.toothId === selectedTooth)?.material || ""}
+                                      onChange={(val) => {
+                                        if (!selectedTooth) {
+                                          dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+
+                                          return;
+                                        }
+
+                                        handleDropdownChange("material", val);
+
                                         if (val) {
                                           setTouched(prev => ({ ...prev, material: false }));
                                         }
-                                      }
-                                      }
+                                      }}
                                       label="Material"
                                       storageKey="material"
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      error={touched.material && !toothSelections[selectedTooth]?.material ? "Material is Required Select the teeth" : ""}
+                                      error={
+                                        touched.material && !toothSelections.find(t => t.toothId === selectedTooth)?.material
+                                          ? "Material is required. Please select a tooth first"
+                                          : ""
+                                      }
                                     />
-
-
                                     <ShadeDropdown
                                       shades={shadeGroups}
-                                      onChange={(selected) => { }}
+                                      selectedTooth={selectedTooth}
+                                      touched={touched}
+                                      setTouched={setTouched}
+                                      onChange={(selected) => console.log(selected)}
                                     />
                                     <MaterialDropdown
                                       options={Digital_Option}
                                       value={
-                                        toothSelections[selectedTooth]?.digital_option || ""
+                                        toothSelections[selectedTeeth]?.digital_option || ""
                                       }
                                       onChange={(val) =>
                                         handleDropdownChange("digital_option", val)
@@ -689,39 +578,57 @@ const DoctorOrder = () => {
                                       label=" Digital Model type"
                                       className="w-full rounded-xl  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     />
-
                                     <MaterialDropdown
-                                      options={
-                                        (orders.find((p) => p.name === "Participating Lab")?.children) || []
-                                      }
-                                      value={toothSelections[selectedTooth]?.lab || ""} // ✅ selected value
+                                      options={(orders.find((p) => p.name === "Participating Lab")?.children) || []}
+                                      value={toothSelections.find(t => t.toothId === selectedTooth)?.lab || ""} // ✅ correct selected value
                                       onChange={(val) => {
+                                        if (!selectedTooth) {
+                                          dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+                                          return;
+                                        }
 
-                                        // handleDropdownChange("Lab", val)
-                                        handleDropdownChange("lab", val)
+                                        handleDropdownChange("lab", val);
+
                                         if (val) {
                                           setTouched(prev => ({ ...prev, lab: false }));
                                         }
                                       }}
                                       label="Select Laboratory"
                                       storageKey="Select Laboratory"
-                                      className="w-full rounded-xl  bg-white     px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      error={touched.material && !toothSelections[selectedTooth]?.material ? "Participating Lab is Required Select the teeth" : ""}
+                                      className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                      error={
+                                        touched.lab && !toothSelections.find(t => t.toothId === selectedTooth)?.lab
+                                          ? "Participating Lab is required. Please select a tooth first."
+                                          : ""
+                                      }
                                     />
                                     <MaterialDropdown
-                                      options={PHOTOGRAMMETRY_FILES}
-                                      value={
-                                        toothSelections[selectedTooth]
-                                          ?.Photogrammetry_files || ""
-                                      }
-                                      onChange={(val) =>
-                                        handleDropdownChange("Photogrammetry_files", val)
-                                      }
+                                      options={(orders.find((p) => p.name === "Photogrammetry files")?.children) || []}
+                                      value={toothSelections.find(t => t.toothId === selectedTooth)?.photogrammetryfiles || ""} // ✅ get value from current tooth
+                                      onChange={(val) => {
+                                        if (!selectedTooth) {
+                                          dispatch(showToast({ message: `Please select a tooth first`, type: "warning" }));
+                                          return;
+                                        }
+
+                                        handleDropdownChange("photogrammetryfiles", val);
+
+                                        if (val) {
+                                          setTouched(prev => ({ ...prev, photogrammetryfiles: false }));
+                                        }
+                                      }}
                                       label="Photogrammetry files"
                                       storageKey="Photogrammetry files"
-                                      className="w-full rounded-xl  bg-[#F8F8F8] border-none    px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
-                                      dropdownClass=' text-secondaryBrand'
+                                      className="w-full rounded-xl bg-[#F8F8F8] border-none px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
+                                      dropdownClass="text-secondaryBrand"
+                                      error={
+                                        touched.photogrammetryfiles &&
+                                          !toothSelections.find(t => t.toothId === selectedTooth)?.photogrammetryfiles
+                                          ? "Photogrammetry files is required. Please select a tooth first."
+                                          : ""
+                                      }
                                     />
+
                                   </FormSection>
                                 </div>
 
@@ -784,35 +691,14 @@ const DoctorOrder = () => {
                                         </div>
                                       </div>
                                     ))}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                   </div>
-
-                                  <>
-
-
-
-
-                                  </>
+                                  <>    </>
                                   <div className="flex justify-between items-center py-3">
                                     <p className="text-textFieldHeading text-xs font-poppins">
                                       Subtotal:
                                     </p>
                                     <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                      ${subtotal.toFixed(2)}
+                                      ${totalPrice.toFixed(2)}
                                     </p>
                                   </div>
                                   <div className="flex justify-between items-center py-3">
@@ -820,28 +706,48 @@ const DoctorOrder = () => {
                                       Shipping:
                                     </p>
                                     <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                      ${shipping.toFixed(2)}
+                                      {/* ${shipping.toFixed(2)} */}
                                     </p>
                                   </div>
                                   <div className="flex justify-between items-center py-3">
                                     <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
                                       Total:
                                     </p>
+
+
                                     <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                      ${total.toFixed(2)}
+                                      ${totalPrice.toFixed(2)}
                                     </p>
+
                                   </div>
                                 </div>
                               </div>
-
                               <button
-                                type="submit"
-                                // onClick={handleSave}
-                                onClick={() => handleSave(validateForm, values, next)}
+                                type="button"
+                                // onClick={() => {
+                                //   // ✅ validate form before next
+                                //   console.log('erroe', errors);
+                                //   validateForm().then((errors) => {
+                                //     if (Object.keys(errors).length === 0) {
+                                //       // no errors → submit → move next
+
+                                //       handleSubmit();
+                                //     } else {
+                                //       // show toast instead of silently failing
+                                //       toast.error("⚠️ Please fill all required fields", {
+                                //         position: "bottom-right",
+                                //         autoClose: 3000,
+                                //       });
+                                //     }
+                                //   });
+                                // }}
+                                onClick={() => next()}
                                 className="w-full rounded-full bg-[#0b2b62] px-6 py-3 text-sm font-semibold text-white hover:bg-[#092b58]"
                               >
                                 Checkout
                               </button>
+
+
                             </aside>
                           </div>
 
@@ -850,7 +756,7 @@ const DoctorOrder = () => {
 
 
 
-                    </Formik>
+                    </Formik >
                   )}
                   {activeIndex === 1 && <ReviewOrder next={next} />}
                   {activeIndex === 2 && <CheckoutForm next={next} />}
@@ -860,19 +766,6 @@ const DoctorOrder = () => {
             }}
           </Formik>
         </main>
-
-
-
-
-
-
-
-
-
-
-
-
-
         {isModalOpen && (
           <SmileDesignPicker
             isModalOpen={isModalOpen}
@@ -881,7 +774,7 @@ const DoctorOrder = () => {
             setSelected={setSelected}
           />
         )}
-      </div>
+      </div >
     </>
   );
 };
