@@ -1,7 +1,9 @@
 import Header from '../header';
 import UpperFooter from '../../../components/upper-footer';
 import Footer from '../../../components/Footer';
-import { settingsOption, teethOption } from '../../../Constant';
+import { diameters, newDiameters, newThicknesses, settingsOption, shadesproduct, shadesProductLanding, teethOption, thicknesses } from '../../../Constant';
+import Shades from '../../../Common/product-landing/shades-product-landing';
+import Dimensions from '../../../Common/product-landing/dimensions-product-landing';
 
 function ArgebbPmma({ isLanding }) {
 
@@ -40,13 +42,7 @@ function ArgebbPmma({ isLanding }) {
                         />
                     </div>
                 </div>
-
-
-
-
             </section>
-
-
             <section className='continer mx-auto md:px-8 px-4  pb-10'>
 
                 <div className='flex justify-center'>
@@ -138,6 +134,16 @@ function ArgebbPmma({ isLanding }) {
 
                 </div>
 
+            </section>
+            <section>
+                <div className="mx-72 py-10">
+                    <Shades shades={shadesproduct} title="Shades" />
+                </div>
+
+
+                <div className=" mx-72 p-4">
+                    <Dimensions thicknesses={newThicknesses} diameters={newDiameters} />
+                </div>
             </section>
 
             <Footer />

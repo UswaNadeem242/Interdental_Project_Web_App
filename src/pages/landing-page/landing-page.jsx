@@ -10,6 +10,7 @@ import Warranty from "./warranty";
 import Contact from "./contact";
 import ProductLandingPage from "./product";
 import ArgebbPmma from "./product/argen-pmma";
+import ArgenZ from "./product/argen-z-h";
 
 const LandingPage = () => {
   return (
@@ -21,6 +22,7 @@ const LandingPage = () => {
         <AboutUs />
         <ProductLandingPage isLanding={true} />
         <ArgebbPmma isLanding={true} />
+        <ArgenZ isLanding={true} />
         <Patients isLanding={true} />
         <Doctor isLanding={true} />
         <Warranty />
