@@ -47,28 +47,22 @@ const restorationSlice = createSlice({
         updateToothSelection: (state, action) => {
             const { toothId, field, value, price = 0, option = null } = action.payload;
             if (!toothId) return;
-
-            // Find or create the tooth object
             let tooth = state.toothSelections.find(t => t.toothId === toothId);
             if (!tooth) {
                 tooth = { toothId };
                 state.toothSelections.push(tooth);
             }
-
-            // Save the field selection
             tooth[field] = value;
             tooth[`${field}Price`] = price;
             tooth[`${field}Option`] = option;
-
-            // Rebuild doctorOrderItems
             const items = [];
             let total = 0;
 
             state.toothSelections.forEach(t => {
-                fields.forEach(f => {
+                ["material", "shade", "crown", "lab"].forEach(f => {
                     if (t[f]) {
                         items.push({
-                            id: `${t.toothId}-${f}`,  // unique id per tooth-field
+                            id: `${t.toothId}-${f}`,
                             toothId: t.toothId,
                             dropdownMasterId: t[f],
                             unitPrice: t[`${f}Price`] || 0,
@@ -83,29 +77,19 @@ const restorationSlice = createSlice({
             state.doctorOrderItems = items;
             state.totalPrice = total;
         },
-
         setDoctorField: (state, action) => {
             const { field, value } = action.payload;
             const idx = state.doctor.findIndex((d) => d.field === field);
             if (idx !== -1) state.doctor[idx].value = value;
         },
-
-        // Update a single patient field
         setPatientField: (state, action) => {
             const { field, value } = action.payload;
             const idx = state.patient.findIndex((p) => p.field === field);
             if (idx !== -1) state.patient[idx].value = value;
         },
-
-        // Note update
         setNote: (state, action) => {
             state.note = action.payload;
         },
-
-
-
-
-
         resetRestoration: (state) => {
             state.selectedTeeth = [];
             state.selectedTooth = null;
@@ -114,7 +98,7 @@ const restorationSlice = createSlice({
             state.doctorOrderItems = [];
             state.doctor.forEach((d) => (d.value = ""));
             state.patient.forEach((p) => (p.value = ""));
-            state.note.forEach((n) => (n.value = ""));
+            state.note = "";
         },
     }
 });
