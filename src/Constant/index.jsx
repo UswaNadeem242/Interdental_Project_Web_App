@@ -6,11 +6,11 @@ import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
 import UserProfileIcon from "../icon/UserProfileIcon";
- 
 
 export const navItems = [
   { to: "/", label: "Home" },
   { to: "/shop", label: "Shop" },
+  { to: "/our-products", label: "Our Products" },
   { to: "/patient", label: "Patient" },
   { to: "/doctor", label: "Doctor" },
   { to: "/about-us", label: "About Us" },
@@ -26,8 +26,6 @@ export const LAB_OPTIONS = [
   { value: "argen", label: "Argen" },
   { value: "modern", label: "Modern Dental" },
 ];
-
- 
 
 export const PHOTOGRAMMETRY_FILES = [
   { value: "STL", label: "STL" },
@@ -850,4 +848,50 @@ export const PatientClaimReqData = [
     status: "accepted",
     action: "View Detail",
   },
+];
+
+//
+
+export const compositionData = [
+  { name: "ZlO₂+HfO₂+Y₂O₃", value: "> 99 Wt%", bold: true },
+  { name: "Y₂O₃", value: "6.1–8.2 Wt%", bold: true },
+  { name: "HfO₂", value: "< 5 Wt%" },
+  { name: "Al₂O₃", value: "< 0.2 Wt%", bold: true },
+];
+
+export const shadesProductLanding = [
+  { label: "A1", color: "#EFEAD4" },
+  { label: "A2", color: "#ECE8D0" },
+  { label: "A3.5", color: "#E4DBC2" },
+  { label: "A4", color: "#E4DDC3" },
+  { label: "B1", color: "#D2C89B" },
+  { label: "B2", color: "#EFEAD4" },
+
+  { label: "B3", color: "#EAE3C6" },
+  { label: "B4", color: "#E0D7B3" },
+  { label: "C1", color: "#E0D7B5" },
+  { label: "C2", color: "#E4DDC3" },
+  { label: "C3", color: "#E0D7B5" },
+  { label: "C4", color: "#E4DBC2" },
+
+  { label: "D2", color: "#DDD4B5" },
+  { label: "D3", color: "#D0C2A2" },
+  { label: "D4", color: "#D0C2A2" },
+
+  { label: "OM1", color: "#FFFFFF", border: true },
+  { label: "OM2", color: "#FFFFFF", border: true },
+  { label: "OM3", color: "#FFFFFF", border: true },
+  { label: "White", color: "#FFFFFF", border: true },
+];
+
+export const diameters = ["95mm", "98mm"];
+export const thicknesses = [
+  "10mm",
+  "12mm",
+  "14mm",
+  "16mm",
+  "20mm",
+  "22mm",
+  "25mm",
+  "30mm",
 ];
