@@ -36,6 +36,7 @@ import AdminPanel from "./pages/admin-panel/admin-panel";
 import "react-toastify/dist/ReactToastify.css";
 import Toastify from "./Common/react-toastify";
 import ProductLandingPage from "./pages/landing-page/product";
+import ArgebbPmma from "./pages/landing-page/product/argen-pmma";
 
 const MainLayout = ({ children }) => (
   <>
@@ -176,6 +177,7 @@ function App() {
               // test
             }{" "}
             <Route path="/product" element={<ProductLandingPage isLanding={false} />} />
+            <Route path="/product/argen-pmma" element={<ArgebbPmma isLanding={false} />} />
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
             <Route
