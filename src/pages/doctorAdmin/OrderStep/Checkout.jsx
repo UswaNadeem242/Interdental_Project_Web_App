@@ -20,10 +20,10 @@ const CheckoutForm = ({ next }) => {
     paypalUsername: "",
     paypalEmailPhone: "",
     paymentMethod: "",
-    cardNumber: "",
-    expiryDate: "",
-    accountNumber: "",
-    bankName: "",
+    // cardNumber: "",
+    // expiryDate: "",
+    // accountNumber: "",
+    // bankName: "",
   });
   const dispatch = useDispatch();
   const restoration = useSelector((state) => state.restoration);
@@ -191,7 +191,7 @@ const CheckoutForm = ({ next }) => {
                             className="text-red-600 text-xs mt-1"
                           />
                         </div>
-                      </div>  
+                      </div>
                       <div className="mt-4">
                         <Field
                           type="email"
@@ -301,7 +301,7 @@ const CheckoutForm = ({ next }) => {
                         >
                           PayPal
                         </option>
-                        <option
+                        {/* <option
                           value="creditCard"
                           className="text-xs font-normal  font-poppins"
                         >
@@ -312,7 +312,7 @@ const CheckoutForm = ({ next }) => {
                           className="text-xs font-normal  font-poppins"
                         >
                           Bank Transfer
-                        </option>
+                        </option> */}
                       </select>
 
                       {/* PayPal Section */}
@@ -374,7 +374,7 @@ const CheckoutForm = ({ next }) => {
                       )}
 
                       {/* Credit Card Section */}
-                      {formData.paymentMethod === "creditCard" && (
+                      {/* {formData.paymentMethod === "creditCard" && (
                         <div className="border rounded-lg p-4 space-y-3">
                           <label className="block text-sm font-medium mb-1 text-primaryText">
                             Card Number
@@ -399,10 +399,10 @@ const CheckoutForm = ({ next }) => {
                             className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
                           />
                         </div>
-                      )}
+                      )} */}
 
                       {/* Bank Transfer Section */}
-                      {formData.paymentMethod === "bankTransfer" && (
+                      {/* {formData.paymentMethod === "bankTransfer" && (
                         <div className="border rounded-lg p-4 space-y-3">
                           <label className="block text-sm font-medium mb-1 text-gray-700">
                             Account Number
@@ -428,7 +428,7 @@ const CheckoutForm = ({ next }) => {
                             className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-primaryText placeholder:text-xs placeholder:font-poppins"
                           />
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
 
