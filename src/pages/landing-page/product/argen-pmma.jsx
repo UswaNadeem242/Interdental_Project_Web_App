@@ -4,12 +4,55 @@ import Footer from '../../../components/Footer';
 import { diameters, newDiameters, newThicknesses, settingsOption, shadesproduct, shadesProductLanding, teethOption, thicknesses } from '../../../Constant';
 import Shades from '../../../Common/product-landing/shades-product-landing';
 import Dimensions from '../../../Common/product-landing/dimensions-product-landing';
+import Accordion from '../../../Common/accordion';
+import Contact from '../contact';
 
 function ArgebbPmma({ isLanding }) {
 
+    const accordionData = [
+        {
+            title: "How do you generate $5 leads?",
+            description:
+                "Files must be submitted by 3:00 p.m. PST. Units will be received within 2 business days.",
+        },
+        {
+            title: "How quickly can I see results?",
+            description: [
+                "Wall Thickness: <b>0.80 mm minimum</b>",
+                "Margin Thickness: <b>0.10 mm</b>",
+                "Margin Angle: <b>90° degrees</b>",
+                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+            ],
+        },
+        {
+            title: "What’s included in your service?",
+            description: [
+                "Wall Thickness: <b>0.80 mm minimum</b>",
+                "Margin Thickness: <b>0.10 mm</b>",
+                "Margin Angle: <b>90° degrees</b>",
+                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+            ],
+        },
+        {
+            title: "How do you ensure the leads are qualified?",
+            description: [
+                "Wall Thickness: <b>0.80 mm minimum</b>",
+                "Margin Thickness: <b>0.10 mm</b>",
+                "Margin Angle: <b>90° degrees</b>",
+                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+            ],
+        },
+        {
+            title: "Can this system work for my specific market?",
+            description: [
+                "Wall Thickness: <b>0.80 mm minimum</b>",
+                "Margin Thickness: <b>0.10 mm</b>",
+                "Margin Angle: <b>90° degrees</b>",
+                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+            ],
+        },
 
-
-
+    ];
 
     return (
         <div>
@@ -135,17 +178,29 @@ function ArgebbPmma({ isLanding }) {
                 </div>
 
             </section>
-            <section>
-                <div className="mx-72 py-10">
-                    <Shades shades={shadesproduct} title="Shades" />
-                </div>
+            <section className="py-10">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="py-10">
+                        <Shades shades={shadesproduct} title="Shades" />
+                    </div>
 
-
-                <div className=" mx-72 p-4">
-                    <Dimensions thicknesses={newThicknesses} diameters={newDiameters} />
+                    <div className="p-4">
+                        <Dimensions thicknesses={newThicknesses} diameters={newDiameters} />
+                    </div>
                 </div>
             </section>
 
+            <section className='continer mx-auto md:px-8 px-4 py-10 md:py-40 bg-background'>
+                <div className='flex justify-center pb-5'>
+                    <h1 className='text-secondaryBrand md:text-5xl text-xl text-center'>Frequently <br /> <span className='text-[#94D3DD]'> Asked Questions</span>
+                    </h1>
+                </div>
+                <div>
+                    <Accordion items={accordionData} />
+                </div>
+            </section>
+            <Contact />
+            <UpperFooter />
             <Footer />
 
 
