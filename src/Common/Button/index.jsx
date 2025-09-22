@@ -6,7 +6,7 @@ export function PrimaryButtonUI({ title, onClick, className, href }) {
     <NavLink to={href}>
       <button
         onClick={onClick}
-        className={`${className} bg-secondaryBrand  text-white font-semibold font-poppins text-sm  whitespace-nowrap`}
+        className={`${className} bg-secondaryBrand  text-white font-semibold font-poppins text-sm  whitespace-nowrap `}
       >
         {title}
       </button>
@@ -21,7 +21,9 @@ export function SecondaryButton({ title, onClick, className, icon, href }) {
         onClick={onClick}
         className={`${className}   font-semibold font-poppins text-sm  whitespace-nowrap`}
       >
-        {icon} {title}
+        <span className="flex gap-2 items-center">
+          {icon} {title}
+        </span>
       </button>
     </NavLink>
   );

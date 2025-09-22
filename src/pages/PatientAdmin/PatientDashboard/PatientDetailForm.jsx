@@ -4,7 +4,7 @@ import FileIcon from "../../../icon/FileIcon";
 export default function PatientDetailForm() {
   return (
     <div className="bg-bgWhite">
-      <div className="bg-card p-4">
+      <div className="bg-card p-4 rounded-2xl">
         <p className="text-black font-poppins font-semibold text-sm ">
           Warranty
           <p className="text-xs font-poppins font-light  pt-6 text-primaryText">

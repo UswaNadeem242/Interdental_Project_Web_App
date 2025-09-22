@@ -8,8 +8,10 @@ import {
   headingsPatientClaimReq,
   PatientClaimReqData,
 } from "../../../Constant";
-import { PrimaryButtonUI } from "../../../Common/Button";
+import { PrimaryButtonUI, SecondaryButton } from "../../../Common/Button";
 import PatientClaimForm from "./PatientClaimForm";
+import { PlusIcon } from "../../../icon/PlusIcon";
+
 const PatientClaimrequests = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +31,7 @@ const PatientClaimrequests = () => {
       ),
     },
     {
-      name: "Active",
+      name: "Accepted",
       content: (
         <TableComponent
           headings={headingsPatientClaimReq}
@@ -37,7 +39,24 @@ const PatientClaimrequests = () => {
         />
       ),
     },
-
+    {
+      name: "Pending",
+      content: (
+        <TableComponent
+          headings={headingsPatientClaimReq}
+          data={PatientClaimReqData}
+        />
+      ),
+    },
+    {
+      name: "Rejected",
+      content: (
+        <TableComponent
+          headings={headingsPatientClaimReq}
+          data={PatientClaimReqData}
+        />
+      ),
+    },
   ];
   return (
     <div>
@@ -45,13 +64,12 @@ const PatientClaimrequests = () => {
         <TabsStepper
           steps={steps}
           newClaimBtn={
-            <PrimaryButtonUI
+            <SecondaryButton
               title="New Claim Request"
+              icon={<PlusIcon />}
               // onClick={() => setIsOpen(true)}
-              href='/patient-admin/patient-form'
-              // <Route path="/Patient-Form" element={<PatientForm/>} />
-
-              className=" w-full md:w-auto rounded-md px-6 py-3  font-poppins"
+              href="/patient-admin/patient-form"
+              className="w-full md:w-auto rounded-md px-6 py-3 mb-5 font-poppins bg-[#F8F8F8] text-primaryText"
             />
           }
         />
@@ -59,7 +77,7 @@ const PatientClaimrequests = () => {
         <Drawers
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          title="Claim Submissionn Form"
+          title="Claim Submission Form"
           status={selectedRow?.status}
           Content={<PatientClaimForm row={selectedRow} />}
         />
