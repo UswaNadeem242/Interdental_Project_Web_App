@@ -10,6 +10,7 @@ module.exports = {
         primaryText: "#434343",
         secondaryText: "#949494",
         textField: "#F8F8F8",
+        background: "#F8F8F8",
         card: "#F8F8F8",
         bgWhite: "#FFFFFF",
         bgBlack: "#000000",
