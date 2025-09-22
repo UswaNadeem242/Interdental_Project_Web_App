@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import ProfileDropdown from "../../components/dropdowns/ProfileDropdown";
+import { navItems } from "../../Constant";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Header = () => {
   const user = userData ? JSON.parse(userData) : null;
 
   // Debugging logs
- 
+
   // Safely log firstName only if user exists
   if (user && user.firstName) {
     console.log(user.firstName, "sarhey de oghai");
@@ -56,7 +57,7 @@ const Header = () => {
       </div>
 
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex space-x-2 lg:space-x-3 text-base lg:text-lg">
+      {/* <nav className="hidden lg:flex space-x-2 lg:space-x-3 text-base lg:text-lg">
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -117,7 +118,31 @@ const Header = () => {
         >
           Contact Us
         </NavLink>
+      </nav> */}
+
+
+      <nav className="hidden lg:flex space-x-2 lg:space-x-3 text-base lg:text-lg">
+        {navItems.map(({ to, label }) => (
+          <NavLink
+            key={to}
+            to={to}
+            className={({ isActive }) =>
+              isActive
+                ? "bg-blue-100 text-blue-500 px-3 sm:px-4 py-1 sm:py-2 rounded-full"
+                : "hover:text-blue-500 px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-100 rounded-full"
+            }
+          >
+            {label}
+          </NavLink>
+        ))}
       </nav>
+
+
+
+
+
+
+
 
       {/* Desktop buttons */}
       <div className="hidden lg:flex space-x-3 lg:space-x-4">
