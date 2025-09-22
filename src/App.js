@@ -33,8 +33,9 @@ import { menuAdminPanelItem, menuItems, menuItemsUser, menuPatientItem } from ".
 import PatientAdmin from "./pages/PatientAdmin/Patient";
 import DoctorHeader from "./components/doctorAdmin/doctorHeader";
 import AdminPanel from "./pages/admin-panel/admin-panel";
-import "react-toastify/dist/ReactToastify.css"; 
+import "react-toastify/dist/ReactToastify.css";
 import Toastify from "./Common/react-toastify";
+import ProductLandingPage from "./pages/landing-page/product";
 
 const MainLayout = ({ children }) => (
   <>
@@ -174,6 +175,7 @@ function App() {
               // </MainLayout>
               // test
             }{" "}
+            <Route path="/product" element={<ProductLandingPage isLanding={false} />} />
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
             <Route
@@ -184,6 +186,16 @@ function App() {
                 // </MainLayout>
               }
             />
+
+
+            {/* <Route
+              path="/product"
+              element={
+                // <MainLayout>
+                <ProductLandingPage />
+                // </MainLayout>
+              }
+            /> */}
             <Route
               path="/brands"
               element={

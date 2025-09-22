@@ -6,10 +6,11 @@ import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
 import UserProfileIcon from "../icon/UserProfileIcon";
- 
+
 
 export const navItems = [
   { to: "/", label: "Home" },
+  { to: "/product", label: "Our Products" },
   { to: "/shop", label: "Shop" },
   { to: "/patient", label: "Patient" },
   { to: "/doctor", label: "Doctor" },
@@ -27,7 +28,7 @@ export const LAB_OPTIONS = [
   { value: "modern", label: "Modern Dental" },
 ];
 
- 
+
 
 export const PHOTOGRAMMETRY_FILES = [
   { value: "STL", label: "STL" },

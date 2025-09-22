@@ -8,15 +8,17 @@ import Patients from "./patient";
 import Doctor from "./doctor";
 import Warranty from "./warranty";
 import Contact from "./contact";
+import ProductLandingPage from "./product";
 
 const LandingPage = () => {
   return (
     <>
-    <Header />
+      <Header />
       <div className="bg-[#e2f7fb]  font-poppins min-h-screen text-gray-800">
+     
         <HeroSection />
         <AboutUs />
-        <Products />
+        <ProductLandingPage isLanding={true} />
         <Patients isLanding={true} />
         <Doctor isLanding={true} />
         <Warranty />
