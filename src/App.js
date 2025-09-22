@@ -29,12 +29,20 @@ import DoctorAdmin from "./pages/doctorAdmin/Doctor";
 import DoctorSidebar from "./components/doctorAdmin/DoctorSideBar";
 import MobileSidebar from "./components/doctorAdmin/DoctorSideBar/MobileSideBar";
 import ScrollToTop from "./Hooks/UseScroll";
-import { menuAdminPanelItem, menuItems, menuItemsUser, menuPatientItem } from "./Constant";
+import {
+  menuAdminPanelItem,
+  menuItems,
+  menuItemsUser,
+  menuPatientItem,
+} from "./Constant";
 import PatientAdmin from "./pages/PatientAdmin/Patient";
 import DoctorHeader from "./components/doctorAdmin/doctorHeader";
 import AdminPanel from "./pages/admin-panel/admin-panel";
-import "react-toastify/dist/ReactToastify.css"; 
+import "react-toastify/dist/ReactToastify.css";
 import Toastify from "./Common/react-toastify";
+import ProductLandingPage from "./pages/landing-page/product";
+import ArgebbPmma from "./pages/landing-page/product/argen-pmma";
+import ArgenZ from "./pages/landing-page/product/argen-z-h";
 
 const MainLayout = ({ children }) => (
   <>
@@ -148,8 +156,6 @@ const PlainLayoutAdminPanel = ({ children }) => (
   </div>
 );
 
-
-
 const SimpleLayout = ({ children }) => <div className="">{children}</div>;
 
 function App() {
@@ -174,8 +180,15 @@ function App() {
               // </MainLayout>
               // test
             }{" "}
+            <Route path="/product" element={<ProductLandingPage isLanding={false} />} />
+            <Route path="/product/argen-pmma" element={<ArgebbPmma isLanding={false} />} />
+            <Route path="/product/argen-zh" element={<ArgenZ isLanding={false} />} />
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
+            <Route
+              path="/our-products"
+              element={<ArgenZ isLanding={false} />}
+            />
             <Route
               path="/shop"
               element={
@@ -184,6 +197,16 @@ function App() {
                 // </MainLayout>
               }
             />
+
+
+            {/* <Route
+              path="/product"
+              element={
+                // <MainLayout>
+                <ProductLandingPage />
+                // </MainLayout>
+              }
+            /> */}
             <Route
               path="/brands"
               element={
@@ -298,7 +321,6 @@ function App() {
                 </PlainLayoutPatient>
               }
             />
-
             <Route
               path="/admin-panel/*"
               element={
@@ -311,7 +333,6 @@ function App() {
               }
             />
           </Routes>
-
 
           {/* <Footer /> */}
         </BrowserRouter>

@@ -6,15 +6,158 @@ import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
 import UserProfileIcon from "../icon/UserProfileIcon";
-// export const MATERIAL_OPTIONS = [
-//   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
-//   { value: "argen-ht", label: "Argen HT", price: 45 },
-//   { value: "argen-st", label: "Argen ST", price: 50 },
-//   { value: "emax", label: "Emax", price: 95 },
-//   { value: "aidite", label: "Aidite", price: 85 },
-//   { value: "multilayer", label: "Multilayer Pro", price: 75 },
-//   { value: "pmma", label: "PMMA", price: 35 },
-// ];
+
+export const navItems = [
+  { to: "/", label: "Home" },
+  { to: "/product", label: "Our Products" },
+  { to: "/shop", label: "Shop" },
+  
+  { to: "/patient", label: "Patient" },
+  { to: "/doctor", label: "Doctor" },
+  { to: "/about-us", label: "About Us" },
+  { to: "/contact-us", label: "Contact Us" },
+];
+
+export const productsOption = [
+  {
+    id: 1,
+    title: "ARGEN PMMA",
+    description:
+      "Argen PMMA offers high quality, life-like temporary material in a wide selection of monochromatic and multilayer discs.",
+    image: "/assets/landing-page/product1.png",
+    nav: '/product/argen-pmma'
+  },
+  {
+    id: 2,
+    title: "ARGEN Z HT+",
+    description:
+      "ArgenZ HT+ Zirconia offers extremely accurate, life-like restorations with 4-5% more translucency and 100-150 MPa higher strength over traditional HT zirconia. Available for milling in high definition by Argen. TRANSLUCENCY STRENGTH.",
+    image: "/assets/landing-page/product2.png",
+    nav: '/product/argen-zh'
+  },
+  {
+    id: 3,
+    title: "ARGEN Z ST M",
+    description:
+      "Argen Z ST Multilayer Zirconia features proprietary layer shading technology for natural transitions from dentin to enamel. Available for milling in high definition by Argen to ensure ultra-reliable designs.",
+    image: "/assets/landing-page/product3.png",
+    nav: '/product'
+  },
+  {
+    id: 4,
+    title: "ZirCad Ivoclar",
+    description:
+      "IPS e.max ZirCAD provides a versatile range of zirconium oxide materials for labside CAD/CAM applications. It is used for the fabrication of frameworks and full-contour crowns and bridges. High strength, thin wall thickness and high esthetics are among its hallmarks. IPS e.max ZirCAD Prime is redefining all-ceramics. This revolutionary material is characterized by exceptional quality and",
+    image: "/assets/landing-page/product4.png",
+    nav: '/product'
+  },
+  {
+    id: 5,
+    title: "Multilayer 4D pro",
+    description: `
+Our advanced 4D Pro Zirconia disc features an unparalleled four-dimensional gradient that seamlessly integrates color, translucency, strength, and hardness, making it an optimal choice for any dental laboratory.
+4D Pro Zirconia not only elevates the quality of all-ceramic dentures but also ensures a streamlined, efficient, and precise workflow for dental professionals.
+`,
+
+    image: "/assets/landing-page/product5.png",
+    nav: '/product/argen-pmma'
+  },
+  {
+    id: 6,
+    title: "LayZir",
+    description: `LayZir All Indication Zirconia Disc by SMART DENTISTRY SOLUTIONS – FDA Cleared, Aesthetic Like Lithium Disilicate, Minimal Sintering Distortion, Excellent Millability, and Advanced 3Y/5Y Blending Technology.`,
+
+    image: "/assets/landing-page/product6.png",
+    nav: '/product'
+  },
+  {
+    id: 7,
+    title: "Aidite zirconia",
+    description: `3D Pro zir is fabricated with the most advanced production processes at Aidite, producing a layerless,natural shade gradient, with optimal strengthand translucency, transitioning from Cervical to Incisal areas of the restoration. 
+
+With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic results while being suitable for all indications from single crowns to 14- unitbridge structures.`,
+
+    image: "/assets/landing-page/product7.png",
+    multiline: true,
+    nav: '/product'
+  },
+];
+
+
+
+
+
+
+export const teethOption = [
+  { id: 1, title: 'Inlay/Onlay', img: '/assets/landing-page/1.png' },
+  { id: 2, title: 'Veneer', img: '/assets/landing-page/2.png' },
+  { id: 3, title: 'Anterior full crown', img: '/assets/landing-page/3.png' },
+  { id: 4, title: 'Anterior full crown bridge', img: '/assets/landing-page/4.png' },
+  { id: 5, title: 'Screw-retained bridge', img: '/assets/landing-page/5.png' },
+  { id: 6, title: 'Posterior full crown', img: '/assets/landing-page/6.png' },
+  {
+    id: 7, title: 'Posterior full crown bridge', img: '/assets/landing-page/7.png'
+  },
+]
+
+
+export const settingsOption = [
+  {
+    title: "CUT-OFF TIME",
+    description:
+      "Files must be submitted by 3:00 p.m. PST (6:00 p.m. EST). Milled PMMA units will be received within 2 business days.",
+  },
+  {
+    title: "DESIGN",
+    description: [
+      "Wall Thickness: ......................... 0.80 mm minimum",
+      "Margin Thickness: .................. 0.10 mm",
+      "Margin Angle: ......................... 90° degrees",
+      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+    ],
+  },
+  {
+    title: "FIT SETTINGS",
+    description: [
+      'Drill Compensation should be checked "ON"',
+      "Drill Compensation Offset: ....... 0.6 mm",
+      "Drill Radius: .................................... 0.5 mm",
+      "Cement Gap: ................................. 0.05 mm (near margin)",
+      "Extra Cement Gap: .................................  0.06 mm (die spacer)",
+      "Distance to Margin: .................................  1.0 mm",
+      'Note: Cement gap settings are adjustable. Increase values to give a looser fit, decrease values to get a tighter fit.'
+
+    ],
+  },
+  {
+    title: "Digital Product",
+    description:
+      ["Milled PMMA"],
+  },
+  {
+    title: "# of Units",
+    description:
+      ["Single up to 14 units"],
+  },
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const Digital_Option = [
   { value: "quad", label: "Quadrant" },
   { value: "fullarch", label: "Full Arch" },
@@ -26,20 +169,7 @@ export const LAB_OPTIONS = [
   { value: "modern", label: "Modern Dental" },
 ];
 
-// export const DIGITAL_DENTURE = [
-//   { value: "crown", label: "Crown" },
-//   { value: "bridge", label: "Bridge" },
-//   { value: "full_denture", label: "Full Denture" },
-//   { value: "partial_denture", label: "Partial Denture" },
-// ];
 
-// export const SURGICAL_GUIDE = [
-//   { value: "single_implant_guide", label: "Single Implant Guide" },
-//   { value: "multiple_implant_guide", label: "Multiple Implant Guide" },
-//   { value: "full_arch", label: "Full Arch Surgical Guide" },
-//   { value: "tooth-supported", label: "Tooth-Supported Guide" },
-//   { value: "partial_denture", label: "Partial Denture" },
-// ];
 
 export const PHOTOGRAMMETRY_FILES = [
   { value: "STL", label: "STL" },
@@ -50,13 +180,6 @@ export const PHOTOGRAMMETRY_FILES = [
   { value: "Itero", label: "Itero" },
   { value: "OrthoCAD", label: "OrthoCAD" },
 ];
-
-// export const SCANNER_TYPE = [
-//   { value: "3shap", label: "3Shape" },
-//   { value: "dentsply_sirona", label: "Dentsply Sirona" },
-//   { value: "itero", label: "Itero" },
-//   { value: "other", label: "Other" },
-// ];
 
 export const menuItems = [
   {
@@ -870,3 +993,75 @@ export const PatientClaimReqData = [
     action: "View Detail",
   },
 ];
+
+//
+
+export const compositionData = [
+  { name: "ZlO₂+HfO₂+Y₂O₃", value: "> 99 Wt%", bold: true },
+  { name: "Y₂O₃", value: "6.1–8.2 Wt%", bold: true },
+  { name: "HfO₂", value: "< 5 Wt%" },
+  { name: "Al₂O₃", value: "< 0.2 Wt%", bold: true },
+];
+
+export const shadesProductLanding = [
+  { label: "A1", color: "#EFEAD4" },
+  { label: "A2", color: "#ECE8D0" },
+  { label: "A3.5", color: "#E4DBC2" },
+  { label: "A4", color: "#E4DDC3" },
+  { label: "B1", color: "#D2C89B" },
+  { label: "B2", color: "#EFEAD4" },
+
+  { label: "B3", color: "#EAE3C6" },
+  { label: "B4", color: "#E0D7B3" },
+  { label: "C1", color: "#E0D7B5" },
+  { label: "C2", color: "#E4DDC3" },
+  { label: "C3", color: "#E0D7B5" },
+  { label: "C4", color: "#E4DBC2" },
+
+  { label: "D2", color: "#DDD4B5" },
+  { label: "D3", color: "#D0C2A2" },
+  { label: "D4", color: "#D0C2A2" },
+
+  { label: "OM1", color: "#FFFFFF", border: true },
+  { label: "OM2", color: "#FFFFFF", border: true },
+  { label: "OM3", color: "#FFFFFF", border: true },
+  { label: "White", color: "#FFFFFF", border: true },
+];
+
+export const shadesproduct = [{ label: "A1", color: "#EFEAD4" },
+{ label: "A2", color: "#ECE8D0" },
+{ label: "A3.5", color: "#E4DBC2" },
+{ label: "A4", color: "#E4DDC3" },
+{ label: "B1", color: "#D2C89B" },
+{ label: "B2", color: "#EFEAD4" },
+
+{ label: "C1", color: "#E0D7B5" },
+{ label: "C2", color: "#E4DDC3" },
+{ label: "C3", color: "#E0D7B5" },
+{ label: "C4", color: "#E4DBC2" },
+
+{ label: "D2", color: "#DDD4B5" },
+{ label: "D3", color: "#D0C2A2" },
+{ label: "D4", color: "#D0C2A2" },
+]
+
+export const diameters = ["95mm", "98mm"];
+export const thicknesses = [
+  "10mm",
+  "12mm",
+  "14mm",
+  "16mm",
+  "20mm",
+  "22mm",
+  "25mm",
+  "30mm",
+];
+
+
+
+export const newDiameters = ["98mm"]
+export const newThicknesses = ["12mm",
+  "14mm",
+  "16mm",
+  "20mm", "25mm",
+  "30mm",]

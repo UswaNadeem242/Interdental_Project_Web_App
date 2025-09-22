@@ -8,15 +8,21 @@ import Patients from "./patient";
 import Doctor from "./doctor";
 import Warranty from "./warranty";
 import Contact from "./contact";
+import ProductLandingPage from "./product";
+import ArgebbPmma from "./product/argen-pmma";
+import ArgenZ from "./product/argen-z-h";
 
 const LandingPage = () => {
   return (
     <>
-    <Header />
+      <Header />
       <div className="bg-[#e2f7fb]  font-poppins min-h-screen text-gray-800">
+
         <HeroSection />
         <AboutUs />
-        <Products />
+        <ProductLandingPage isLanding={true} />
+        <ArgebbPmma isLanding={true} />
+        <ArgenZ isLanding={true} />
         <Patients isLanding={true} />
         <Doctor isLanding={true} />
         <Warranty />
