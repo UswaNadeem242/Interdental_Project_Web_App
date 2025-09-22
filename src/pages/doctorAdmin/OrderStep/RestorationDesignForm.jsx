@@ -15,27 +15,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDropdowns } from "../../../store/slices/order-dropdown-slice/index";
 import { fetchTeeth } from "../../../store/slices/teeth-slice/index";
 import {
-  setSelectedTeeth,
   updateToothSelection,
   selectTooth,
   setNote,
-  computeOrderItems,
-  computeTotal,
   setDoctorField,
   setPatientField,
-
-
+  resetRestoration,
 } from "../../../store/slices/restoration-slice/index";
-import addDoctorOrderItems from "../../../store/slices/restoration-slice/index"
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import DonePage from "./DonePage";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { FileUploadSection } from "../../../components/doctorAdmin/OrderFileSelection";
 import { ShadeDropdown } from "../../../Common/DropDown/NestedDropdown";
-import { orderService } from "../../../services/order-service/index";
 import { Form, Formik } from "formik";
 import { OrderValidationSchema } from "../../../Common/FormsValidation/order-validation";
-import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import { showToast } from "../../../store/toast-slice";
 
@@ -104,12 +97,18 @@ const DoctorOrder = () => {
 
   const activeToothSelection =
     toothSelections.find(t => t.toothId === selectedTooth) || {};
-  const currentTooth = toothSelections.find((t) => t.toothId === selectedTooth);
-  const totalPrice = currentTooth
-    ? Object.values(currentTooth)
+  const totalPrice = toothSelections.reduce((toothSum, tooth) => {
+    // for each tooth, sum its fields that have price
+    const toothTotal = Object.values(tooth)
       .filter((field) => field && typeof field === "object" && field.price)
-      .reduce((sum, field) => sum + field.price, 0)
-    : 0;
+      .reduce((sum, field) => sum + field.price, 0);
+
+    return toothSum + toothTotal;
+  }, 0);
+
+  useEffect(() => {
+    dispatch(resetRestoration());
+  }, [dispatch]);
   return (
     <>
 
@@ -131,7 +130,7 @@ const DoctorOrder = () => {
                   if (currentStep) {
                     dispatch(
                       showToast({
-                        message: `Please fill the "${currentStep.title}" form before moving to the next tab`,
+                        message: `Please complete all required fields before proceeding to Review.`,
                         type: "error",
                       })
                     );
