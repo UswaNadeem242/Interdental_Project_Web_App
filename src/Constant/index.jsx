@@ -11,7 +11,7 @@ export const navItems = [
   { to: "/", label: "Home" },
   { to: "/product", label: "Our Products" },
   { to: "/shop", label: "Shop" },
-  
+
   { to: "/patient", label: "Patient" },
   { to: "/doctor", label: "Doctor" },
   { to: "/about-us", label: "About Us" },
@@ -41,7 +41,7 @@ export const productsOption = [
     description:
       "Argen Z ST Multilayer Zirconia features proprietary layer shading technology for natural transitions from dentin to enamel. Available for milling in high definition by Argen to ensure ultra-reliable designs.",
     image: "/assets/landing-page/product3.png",
-    nav: '/product'
+    nav: '/product/zidcard-ivoclar'
   },
   {
     id: 4,
@@ -85,50 +85,50 @@ With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic result
 
 
 
- export  const accordionData = [
-        {
-            title: "How do you generate $5 leads?",
-            description:
-                "Files must be submitted by 3:00 p.m. PST. Units will be received within 2 business days.",
-        },
-        {
-            title: "How quickly can I see results?",
-            description: [
-                "Wall Thickness: <b>0.80 mm minimum</b>",
-                "Margin Thickness: <b>0.10 mm</b>",
-                "Margin Angle: <b>90° degrees</b>",
-                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-            ],
-        },
-        {
-            title: "What’s included in your service?",
-            description: [
-                "Wall Thickness: <b>0.80 mm minimum</b>",
-                "Margin Thickness: <b>0.10 mm</b>",
-                "Margin Angle: <b>90° degrees</b>",
-                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-            ],
-        },
-        {
-            title: "How do you ensure the leads are qualified?",
-            description: [
-                "Wall Thickness: <b>0.80 mm minimum</b>",
-                "Margin Thickness: <b>0.10 mm</b>",
-                "Margin Angle: <b>90° degrees</b>",
-                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-            ],
-        },
-        {
-            title: "Can this system work for my specific market?",
-            description: [
-                "Wall Thickness: <b>0.80 mm minimum</b>",
-                "Margin Thickness: <b>0.10 mm</b>",
-                "Margin Angle: <b>90° degrees</b>",
-                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-            ],
-        },
+export const accordionData = [
+  {
+    title: "How do you generate $5 leads?",
+    description:
+      "Files must be submitted by 3:00 p.m. PST. Units will be received within 2 business days.",
+  },
+  {
+    title: "How quickly can I see results?",
+    description: [
+      "Wall Thickness: <b>0.80 mm minimum</b>",
+      "Margin Thickness: <b>0.10 mm</b>",
+      "Margin Angle: <b>90° degrees</b>",
+      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+    ],
+  },
+  {
+    title: "What’s included in your service?",
+    description: [
+      "Wall Thickness: <b>0.80 mm minimum</b>",
+      "Margin Thickness: <b>0.10 mm</b>",
+      "Margin Angle: <b>90° degrees</b>",
+      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+    ],
+  },
+  {
+    title: "How do you ensure the leads are qualified?",
+    description: [
+      "Wall Thickness: <b>0.80 mm minimum</b>",
+      "Margin Thickness: <b>0.10 mm</b>",
+      "Margin Angle: <b>90° degrees</b>",
+      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+    ],
+  },
+  {
+    title: "Can this system work for my specific market?",
+    description: [
+      "Wall Thickness: <b>0.80 mm minimum</b>",
+      "Margin Thickness: <b>0.10 mm</b>",
+      "Margin Angle: <b>90° degrees</b>",
+      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+    ],
+  },
 
-    ];
+];
 
 
 export const teethOption = [

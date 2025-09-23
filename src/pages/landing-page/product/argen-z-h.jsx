@@ -18,7 +18,7 @@ function ArgenZ({ isLanding }) {
 
       <div className="p-6 bg-bgWhite font-poppins">
         <div className="container md:px-8 px-4 mx-auto">
-          <img src="/assets/Argen.png" alt="ArgrnImg" className="w-full   h-auto object-contain" />
+          <img src="/assets/Argen.png" alt="ArgrnImg" className="w-full   h-auto object-full" />
         </div>
         <div className="mt-6 flex justify-around ">
           <span className="">

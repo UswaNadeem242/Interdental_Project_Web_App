@@ -9,12 +9,13 @@ function Shades({ shades, title }) {
       </h2>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-items-center">
+      <div className="grid grid-cols-3 md:grid-cols-6 gap-4 justify-items-center">
         {shades.map((shade, index) => (
           <div
             key={index}
-            className={`w-20 h-10 sm:w-24 sm:h-12 flex items-center justify-center rounded-full text-xs sm:text-sm font-medium 
+            className={`flex items-center justify-center rounded-full text-xs sm:text-sm font-medium  py-8 px-9
               ${shade.border ? "border border-gray-300" : ""}`}
+            // w-20 h-10 sm:w-24 sm:h-12 
             style={{ backgroundColor: shade.color }}
           >
             {shade.label}

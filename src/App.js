@@ -43,6 +43,7 @@ import Toastify from "./Common/react-toastify";
 import ProductLandingPage from "./pages/landing-page/product";
 import ArgebbPmma from "./pages/landing-page/product/argen-pmma";
 import ArgenZ from "./pages/landing-page/product/argen-z-h";
+import ZidcardIvoclar from "./pages/landing-page/product/zidcard-ivoclar";
 
 const MainLayout = ({ children }) => (
   <>
@@ -183,6 +184,7 @@ function App() {
             <Route path="/product" element={<ProductLandingPage isLanding={false} />} />
             <Route path="/product/argen-pmma" element={<ArgebbPmma isLanding={false} />} />
             <Route path="/product/argen-zh" element={<ArgenZ isLanding={false} />} />
+            <Route path="/product/zidcard-ivoclar" element={<ZidcardIvoclar isLanding={false} />} />
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
             <Route
