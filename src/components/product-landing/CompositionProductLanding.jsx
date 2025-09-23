@@ -2,7 +2,7 @@ import React from "react";
 
 function CompositionProductLanding({ data, title }) {
   return (
-    <div className="w-2/6  border-2 border-[#0000000D] rounded-2xl p-6">
+    <div className="p-12 border-2 border-[#0000000D] rounded-2xl">
       <h2 className="text-2xl font-bold text-[#001D58] mb-4">{title}</h2>
       <div className="divide-y divide-gray-200">
         {data.map((item, id) => (

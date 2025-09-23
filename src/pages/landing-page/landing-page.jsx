@@ -16,8 +16,7 @@ const LandingPage = () => {
   return (
     <>
       <Header />
-      <div className="bg-[#e2f7fb]  font-poppins min-h-screen text-gray-800">
-
+      <div className="bg-[#e2f7fb] font-poppins min-h-screen text-gray-800">
         <HeroSection />
         <AboutUs />
         <ProductLandingPage isLanding={true} />
@@ -30,7 +29,6 @@ const LandingPage = () => {
         <Footer />
       </div>
     </>
-
   );
 };
 

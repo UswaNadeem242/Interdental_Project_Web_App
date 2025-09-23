@@ -1,4 +1,3 @@
-import React from "react";
 import Shades from "../../../Common/product-landing/shades-product-landing";
 import IndicationProductLanding from "../../../components/product-landing/IndicationProductLanding";
 import CompositionProductLanding from "../../../components/product-landing/CompositionProductLanding";
@@ -14,37 +13,37 @@ import Header from "../header";
 function ArgenZ({ isLanding }) {
   return (
     <>
-      <div className='pb-20'>{!isLanding && <Header />} </div>
+      <div className="pb-20 md:pb-36">{!isLanding && <Header />} </div>
 
-      <div className="p-6 bg-bgWhite font-poppins">
-        <div className="container md:px-8 px-4 mx-auto">
-          <img src="/assets/Argen.png" alt="ArgrnImg" className="w-full   h-auto object-contain" />
+      <div className="bg-bgWhite font-poppins w-11/12 flex flex-col gap-2 md:gap-10 mx-auto">
+        <div className="w-full">
+          <img src="/assets/Argen.png" alt="ArgrnImg" className="min-w-full" />
         </div>
-        <div className="mt-6 flex justify-around ">
-          <span className="">
+        <div className=" flex gap-6 ">
+          {/* Left image */}
+          <div className=" ">
             <img
-              className="h-3/4"
+              className="hidden md:block "
               src="/assets/ArgenSmall.png"
               alt="ArgenPic"
-
             />
-          </span>
-          <div className="w-1/3 mt-14">
-            <div>
-              <h1 className="font-bold text-4xl text-secondaryBrand">
+          </div>
+          <div className="flex flex-col justify-center items-start max-w-[509px] mx-auto  text-left ">
+            <div className="mt-16 mb-8">
+              <h1 className="font-bold text-4xl text-secondaryBrand text-left ">
                 ARGEN Z HT +
               </h1>
             </div>
-            <div>
-              <p className="text-xl font-medium text-secondaryText mt-4">
+            <div className="">
+              <p className="text-xl font-medium text-secondaryText mt-4 ">
                 ArgenZ HT+ Zirconia offers extremely accurate, life-like
                 restorations with 4-5% more Translucency and 100-150 MPa higher
                 strength over traditional HT zirconia. Available for milling in
                 high definition by Argen. TRANSLUCENCY STRENGTH
               </p>
             </div>
-            <div className="flex gap-2 mt-6">
-              <div className="flex flex-col items-center bg-card p-10 ">
+            <div className="flex gap-2 mt-12 w-full">
+              <div className="flex flex-col items-center w-full py-6 bg-card ">
                 <span className="text-secondaryBrand font-bold text-2xl">
                   <h1>45%</h1>
                 </span>{" "}
@@ -52,15 +51,15 @@ function ArgenZ({ isLanding }) {
                   <h3>teanslucency</h3>
                 </span>
               </div>
-              <div className="flex flex-col items-center justify-center bg-card p-10">
+              <div className="flex flex-col items-center w-full py-6 justify-center bg-card">
                 <span className="text-secondaryBrand font-bold text-2xl">
                   <h1>12MPA</h1>
-                </span>{" "}
+                </span>
                 <span className="text-secondaryText font-semibold text-base">
                   <h3>Strenght</h3>
                 </span>
               </div>
-              <div className="flex flex-col items-center bg-card p-10">
+              <div className="flex flex-col items-center w-full py-6 bg-card ">
                 <span className="text-secondaryBrand font-bold text-2xl">
                   <h1>4Y</h1>
                 </span>{" "}
@@ -72,27 +71,36 @@ function ArgenZ({ isLanding }) {
           </div>
         </div>
 
-        <div className="flex gap-10 mb-10 justify-center">
+        <div
+          className="flex flex-col my-10 lg:flex-row gap-6 items-center justify-center
+"
+        >
           {/* Indication */}
-          <IndicationProductLanding />
+          <div className=" w-full h-full">
+            <IndicationProductLanding />
+          </div>
 
           {/* Composition*/}
-          <CompositionProductLanding data={compositionData} title="Composition" />
+          <div className=" w-full h-full">
+            <CompositionProductLanding
+              data={compositionData}
+              title="Composition"
+            />
+          </div>
         </div>
 
         {/* Shades */}
-        <div className="mx-72  py-10">
+        <div className="mt-12">
           <Shades shades={shadesProductLanding} title="Shades" />
         </div>
 
         {/* Dimensions*/}
 
-        <div className=" mx-72 p-4">
+        <div className="mb-16 mt-12">
           <Dimensions thicknesses={thicknesses} diameters={diameters} />
         </div>
       </div>
     </>
-
   );
 }
 
