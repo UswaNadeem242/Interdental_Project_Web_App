@@ -20,9 +20,9 @@ const LandingPage = () => {
 
         <HeroSection />
         <AboutUs />
-        <ProductLandingPage isLanding={true} />
+        {/* <ProductLandingPage isLanding={true} />
         <ArgebbPmma isLanding={true} />
-        <ArgenZ isLanding={true} />
+        <ArgenZ isLanding={true} /> */}
         <Patients isLanding={true} />
         <Doctor isLanding={true} />
         <Warranty />
