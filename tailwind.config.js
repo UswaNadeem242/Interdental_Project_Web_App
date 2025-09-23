@@ -7,6 +7,7 @@ module.exports = {
         brand: "#013764",
         secondaryBrand: "#001D58",
         tertiaryBrand: "#393A44",
+        fouthBrand:'#94D3DD',
         primaryText: "#434343",
         secondaryText: "#949494",
         textField: "#F8F8F8",
@@ -17,7 +18,8 @@ module.exports = {
         docText: '#737791',
         textFieldColor: '#F8F8F8',
         borderPrimary: '#E5E5E5',
-        textFieldHeading:'#828386'
+        textFieldHeading:'#828386',
+        textColor:'#757575'
        },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],

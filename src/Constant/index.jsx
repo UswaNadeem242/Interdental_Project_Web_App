@@ -37,45 +37,47 @@ export const productsOption = [
   },
   {
     id: 3,
-    title: "ARGEN Z ST M",
+    title: "ARGEN Z ST MULTILAYER",
     description:
-      "Argen Z ST Multilayer Zirconia features proprietary layer shading technology for natural transitions from dentin to enamel. Available for milling in high definition by Argen to ensure ultra-reliable designs.",
+      "ArgenZ ST Multilayer Zirconia features proprietary layer blending technology for natural shade transition. Suitable for single units anywhere in the mouth and up to three unit anterior bridges.",
     image: "/assets/landing-page/product3.png",
-    nav: '/product/zidcard-ivoclar'
+    nav: '/product/argenz-st'
   },
   {
     id: 4,
     title: "ZirCad Ivoclar",
+
     description:
-      "IPS e.max ZirCAD provides a versatile range of zirconium oxide materials for labside CAD/CAM applications. It is used for the fabrication of frameworks and full-contour crowns and bridges. High strength, thin wall thickness and high esthetics are among its hallmarks. IPS e.max ZirCAD Prime is redefining all-ceramics. This revolutionary material is characterized by exceptional quality and",
+      "IPS e.max ZirCAD provides a versatile range of zirconium oxide materials for labside CAD/CAM applications. It is used for the fabrication of frameworks and full-contour crowns and bridges. High strength, thin wall thickness and high esthetics are among its hallmarks. IPS e.max ZirCAD Prime is redefining all-ceramics. This revolutionary material is characterized by exceptional quality and ",
+    readMoreLink: "/zircad-details",
     image: "/assets/landing-page/product4.png",
-    nav: '/product'
+    nav: '/product/zidcard-ivoclar'
   },
   {
     id: 5,
     title: "Multilayer 4D pro",
     description: `
-Our advanced 4D Pro Zirconia disc features an unparalleled four-dimensional gradient that seamlessly integrates color, translucency, strength, and hardness, making it an optimal choice for any dental laboratory.
-4D Pro Zirconia not only elevates the quality of all-ceramic dentures but also ensures a streamlined, efficient, and precise workflow for dental professionals.
+Our advanced 4D Pro Zirconia disc features an unparalleled four - dimensional gradient that seamlessly integrates color, translucency, strength, and hardness, making it an optimal choice for any dental laboratory.
+4D Pro Zirconia not only elevates the quality of all - ceramic dentures but also ensures a streamlined, efficient, and precise workflow for dental professionals.
 `,
 
     image: "/assets/landing-page/product5.png",
-    nav: '/product/argen-pmma'
+    nav: '/product/multilayer-pro'
   },
   {
     id: 6,
     title: "LayZir",
-    description: `LayZir All Indication Zirconia Disc by SMART DENTISTRY SOLUTIONS – FDA Cleared, Aesthetic Like Lithium Disilicate, Minimal Sintering Distortion, Excellent Millability, and Advanced 3Y/5Y Blending Technology.`,
+    description: `LayZir All Indication Zirconia Disc by SMART DENTISTRY SOLUTIONS – FDA Cleared, Aesthetic Like Lithium Disilicate, Minimal Sintering Distortion, Excellent Millability, and Advanced 3Y / 5Y Blending Technology.`,
 
     image: "/assets/landing-page/product6.png",
-    nav: '/product'
+    nav: '/product/lay-zir'
   },
   {
     id: 7,
     title: "Aidite zirconia",
-    description: `3D Pro zir is fabricated with the most advanced production processes at Aidite, producing a layerless,natural shade gradient, with optimal strengthand translucency, transitioning from Cervical to Incisal areas of the restoration. 
+    description: `3D Pro zir is fabricated with the most advanced production processes at Aidite, producing a layerless, natural shade gradient, with optimal strengthand translucency, transitioning from Cervical to Incisal areas of the restoration. 
 
-With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic results while being suitable for all indications from single crowns to 14- unitbridge structures.`,
+With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic results while being suitable for all indications from single crowns to 14 - unitbridge structures.`,
 
     image: "/assets/landing-page/product7.png",
     multiline: true,
@@ -144,11 +146,14 @@ export const teethOption = [
 ]
 
 
+
+
+
 export const settingsOption = [
   {
     title: "CUT-OFF TIME",
     description:
-      "Files must be submitted by 3:00 p.m. PST (6:00 p.m. EST). Milled PMMA units will be received within 2 business days.",
+      "Files must be submitted by 3:00 P.M. PST (6:00 P.M. EST). Milled PMMA units will be received within 2 business days.",
   },
   {
     title: "DESIGN",
@@ -156,7 +161,7 @@ export const settingsOption = [
       "Wall Thickness: ......................... 0.80 mm minimum",
       "Margin Thickness: .................. 0.10 mm",
       "Margin Angle: ......................... 90° degrees",
-      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+      "Note: If Walls/Margins Are Too Thin, Failures May Occur During The Build Process (i.e. Cracks, Holes).",
     ],
   },
   {
@@ -168,7 +173,7 @@ export const settingsOption = [
       "Cement Gap: ................................. 0.05 mm (near margin)",
       "Extra Cement Gap: .................................  0.06 mm (die spacer)",
       "Distance to Margin: .................................  1.0 mm",
-      'Note: Cement gap settings are adjustable. Increase values to give a looser fit, decrease values to get a tighter fit.'
+      'Note: Cement Gap Settings Are Adjustable. Increase Values To Give a Looser Fit, Decrease Values To Get a Tighter Fit.'
 
     ],
   },
@@ -1073,19 +1078,22 @@ export const shadesProductLanding = [
 
 export const shadesproduct = [{ label: "A1", color: "#EFEAD4" },
 { label: "A2", color: "#ECE8D0" },
-{ label: "A3.5", color: "#E4DBC2" },
-{ label: "A4", color: "#E4DDC3" },
+{ label: "A3.5", color: "#E4DDC3" },
+
 { label: "B1", color: "#D2C89B" },
 { label: "B2", color: "#EFEAD4" },
+{ label: "B3", color: "#E0D7B3" },
+{ label: "B4", color: "#E0D7B5" },
 
-{ label: "C1", color: "#E0D7B5" },
-{ label: "C2", color: "#E4DDC3" },
-{ label: "C3", color: "#E0D7B5" },
-{ label: "C4", color: "#E4DBC2" },
+{ label: "C1", color: "#E4DDC3" },
+{ label: "C2", color: "#E0D7B5" },
+{ label: "C3", color: "#E4DBC2" },
+{ label: "C4", color: "#D2C89B" },
 
 { label: "D2", color: "#DDD4B5" },
 { label: "D3", color: "#D0C2A2" },
 { label: "D4", color: "#D0C2A2" },
+{ label: "Bleach", color: "#FFFFFF" },
 ]
 
 export const diameters = ["95mm", "98mm"];
@@ -1108,3 +1116,249 @@ export const newThicknesses = ["12mm",
   "16mm",
   "20mm", "25mm",
   "30mm",]
+
+
+
+export const shadesproductargenzst = [{ label: "A1", color: "#EFEAD4" },
+{ label: "A2", color: "#ECE8D0" },
+{ label: "A3", color: "#D2C89B" },
+{ label: "A3.5", color: "#E4DDC3" },
+{ label: "B1", color: "#EFEAD4" },
+{ label: "B2", color: "#EAE3C6" },
+{ label: "B3", color: "#E0D7B3" },
+{ label: "B4", color: "#E0D7B5" },
+
+{ label: "C1", color: "#E4DDC3" },
+{ label: "C2", color: "#E0D7B5" },
+{ label: "C3", color: "#E4DBC2" },
+{ label: "C4", color: "#D2C89B" },
+
+{ label: "D2", color: "#D2C89B" },
+{ label: "D3", color: "#D0C2A2" },
+{ label: "D4", color: "#D0C2A2" },
+{ label: "D4", color: "#D0C2A2" },
+
+{ label: "OM1", color: "#FFFFFF" },
+{ label: "OM2", color: "#FFFFFF" },
+{ label: "OM3", color: "#FFFFFF" },
+]
+
+export const newDiametersargenzst = ["95mm", "98mm"]
+export const newThicknessesargenzst = ["12mm",
+  "14mm",
+  "16mm",
+  "18mm",
+  "20mm"]
+
+
+export const CardZidcard = [
+  { title: "Class of material", label1: "Incisal", value1: "5Y-TZP", label2: "Dentin", value2: " 3Y-TZP" },
+  { title: "Flexural strength", label1: "650 MPa", value1: "(incisal)", label2: "1200 MPa ", value2: " (dentin)" },
+  { title: "Fracture toughness", label1: "5.0 MPa ", value1: "• M¹/² (dentin)" },
+
+];
+export const cardsecondZidCard = [
+  { title: "Minimum wall thickness (crown)", label1: "Anterior tooth monolithic: ", value1: "0.8 mm", label2: "Posterior tooth monolithic: ", value2: " 1.0 mm" },
+  { title: "Disc thickness (Ø 98.5 mm)", value1: "14mm, 16mm, 20mm, 25mm", },
+]
+
+export const shadesproductzidCard = [{ label: "A1", color: "#EFEAD4" },
+{ label: "A2", color: "#ECE8D0" },
+{ label: "A3", color: "#D2C89B" },
+{ label: "A3.5", color: "#E4DDC3" },
+{ label: "B1", color: "#EFEAD4" },
+{ label: "B2", color: "#EAE3C6" },
+{ label: "B3", color: "#E0D7B3" },
+{ label: "B4", color: "#E0D7B5" },
+
+{ label: "C1", color: "#E4DDC3" },
+{ label: "C2", color: "#E0D7B5" },
+{ label: "C3", color: "#E4DBC2" },
+{ label: "C4", color: "#D2C89B" },
+
+{ label: "D2", color: "#D2C89B" },
+{ label: "D3", color: "#D0C2A2" },
+{ label: "D4", color: "#D0C2A2" },
+{ label: "D4", color: "#D0C2A2" },
+
+{ label: "BL1", color: "#EFEAD4" },
+{ label: "BL2", color: "#ECE8D0" },
+{ label: "BL3", color: "#E4DBC2" },
+{ label: "BL4", color: "#E4DDC3" },
+]
+
+
+
+export const newDiameterszidCard = ["95mm", "98mm"]
+export const newThicknesseszidCard = ["12mm",
+  "14mm",
+  "16mm",
+  "18mm",
+  "20mm"]
+
+
+
+export const zidCardComponent = [
+  {
+    title: "Applications",
+    items: [
+      "Crowns and crown copings",
+      "3-unit bridges and bridge frameworks",
+      "4-unit and multi-unit bridges and bridge frameworks with max. 2 pontics",
+      "Crowns and bridges on natural teeth and on implant systems",
+    ],
+  },
+  {
+    title: "Recommended fabrication techniques",
+    items: [
+      "Staining and glazing",
+      "Brush infiltration with LT Colouring and Effect liquids",
+      "Cut-back",
+      "Layering",
+    ],
+  },
+];
+
+
+export const teethOptionMutiple = [
+  { id: 1, title: 'Inlay/Onlay', img: '/assets/landing-page/1.png' },
+  { id: 2, title: 'Veneer', img: '/assets/landing-page/2.png' },
+  { id: 3, title: 'Anterior full crown', img: '/assets/landing-page/3.png' },
+  { id: 4, title: 'Anterior full crown bridge', img: '/assets/landing-page/4.png' },
+  { id: 5, title: 'Anterior coping Anterior reduced crowne', img: '/assets/landing-page/8.png' },
+  { id: 6, title: 'Anterior coping bridge Anteriorreduced crown bridge', img: '/assets/landing-page/11.png' },
+  {
+    id: 7, title: 'Posterior full crown', img: '/assets/landing-page/7.png'
+  },
+  {
+    id: 8, title: 'Posterior full crown bridge', img: '/assets/landing-page/6.png'
+  },
+  {
+    id: 9, title: 'Posterior coping Posterior reduced crown', img: '/assets/landing-page/9.png'
+  },
+  {
+    id: 10, title: 'Posterior coping bridge Posterior reduced crown bridge', img: '/assets/landing-page/10.png'
+  },
+  {
+    id: 11, title: 'Screw-retained bridge', img: '/assets/landing-page/11.png'
+  },
+]
+
+
+
+export const prescriptionCards = [
+  {
+    title: "Prescription Wizard RX",
+    subtitle: "The only dynamic prescription system of its kind:",
+    points: [
+      "- Smart AI assistant walks you through every submission",
+      "- Visual tooth selector + dropdown materials",
+      "- Compatible with STL, PLY, DICOM, and PDF uploads",
+      "- Auto-fills lab instructions + FedEx shipping labels",
+    ],
+  },
+  {
+    title: "Implant Interface",
+    subtitle: "Connect directly to doctors at the time of treatment planning:",
+    points: [
+      "- Doctors select components using your part SKUs",
+      "- System matches compatible parts by platform, diameter, and angulation",
+      "- Seamless ordering and shipping of implant kits",
+      "- Monthly subscription per state for visibility and usage",
+      "- Warranties aligned with manufacturer specifications",
+    ],
+  },
+  {
+    title: "Dentallaballiance",
+    subtitle: "Real-time searchable lab directory:",
+    points: [
+      "- Labs list pricing, turnaround times, specialties",
+      "- Dentists browse and select based on fit",
+      "- Seamless ordering and shipping of implant kits",
+      "- Exclusive InterOral.ai discounts only available via platform",
+      "- Revenue sharing and quality control supported",
+    ],
+  },
+  {
+    title: "ChatGPT Smart Assistant (Doctor-Facing)",
+    subtitle: "Fills out the forms with you:",
+    points: [
+      "- Explains steps, suggests missing data, corrects formatting",
+      "- Prevents common submission errors",
+      "- Voice-assisted and visual input–ready",
+    ],
+  },
+  {
+    title: "Auto Routing + Payment Tracking",
+    subtitle: "Routing AI — Built-In Continuity",
+    points: [
+      "Disruptions happen — hurricanes, fires, shipping delays, even power outages. Traditionally, that meant frustrated patients and costly remakes. With Routing AI, your cases are never stuck.",
+      "If one lab is disrupted, your case is automatically rerouted to another qualified lab in your tier.",
+      "Patients see on-time results, not excuses.",
+      "Dentists gain peace of mind knowing that every case has a backup plan.",
+      "Your patients don’t care what storm hit — they care that their crown or guide is ready. Routing AI makes sure it is.",
+    ],
+  },
+  {
+    title: "Make Me Smile™ Warranty Module",
+    subtitle: "Patient enrollments are included directly from your case submission:",
+    points: [
+      "- 3, 6, or 9-year coverage available",
+      "- Covers crowns, implants, and bridges",
+      "- Provides peace of mind to patients and builds long-term practice revenue",
+      "- Claim certificates and tracking integrated",
+    ],
+  },
+];
+
+
+
+
+
+
+export const warrantyCards = [
+  {
+    title: "WARRANTY DASHBOARD",
+    subtitle: "PATIENT",
+    img: "/assets/landing-page/card 1.png",
+    points: [
+      "Easy online activation",
+      "Downloadable warranty certificate",
+      "Direct access to our support team",
+    ],
+  },
+  {
+    title: "WARRANTY DASHBOARD",
+    subtitle: "DOCTOR",
+    img: "/assets/landing-page/card 2.png",
+    points: [
+      "Streamlined doctor registration",
+      "Track patient warranty status",
+      "Exclusive warranty benefits",
+    ],
+  },
+];
+
+
+export const implantCards = [
+  {
+    img: "/assets/landing-page/card 3.png",
+    title: "Dentures",
+    subtitle: "What Are Implant-Retained Dentures?",
+    button: "Read More",
+  },
+  {
+    img: "/assets/landing-page/card 5.png",
+    title: "Dentures",
+    subtitle: "What Are Implant-Retained Dentures?",
+    button: "Read More",
+  },
+  {
+    img: "/assets/landing-page/card 4.png",
+    title: "Dentures",
+    subtitle: "What Are Implant-Retained Dentures?",
+    button: "Read More",
+  },
+];
+
+

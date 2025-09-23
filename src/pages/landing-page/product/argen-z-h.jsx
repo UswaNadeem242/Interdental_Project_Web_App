@@ -31,7 +31,7 @@ function ArgenZ({ isLanding }) {
           </span>
           <div className="w-1/3 mt-14">
             <div>
-              <h1 className="font-bold text-4xl text-secondaryBrand">
+              <h1 className="font-bold text-4xl text-secondaryBrand pb-8">
                 ARGEN Z HT +
               </h1>
             </div>

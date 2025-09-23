@@ -6,9 +6,9 @@ export default function UpperFooter() {
             <div className='flex justify-center py-40'>
                 <div className='md:px-0 px-4'>
                     <h1 className="text-secondaryBrand md:text-5xl text-xl text-center font-poppins">
-                        Join <span className="text-[#94D3DD]">InterOral.ai</span> Today – Transform Your
+                        Join <span className="text-[#94D3DD] font-bold">InterOral.ai</span> Today – Transform Your
                         <br />
-                        <span className="text-[#94D3DD]">Dental Experience!</span>
+                        <span className="text-[#94D3DD] font-bold">Dental Experience!</span>
                     </h1>
 
                     <p className='font-poppins text-[#949494] py-10 text-center md:w-1/2 mx-auto'>Sign up now to access top-rated dental professionals, personalized treatment plans, and exclusive offers for a healthier smile.</p>

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Contact from "./contact";
 import Header from "./header";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 const plans = [
   {
@@ -98,38 +99,26 @@ const Patients = ({ isLanding }) => {
       <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:mx-12 xl:mx-24 2xl:mx-48 flex flex-col md:flex-row items-center justify-between">
         {/* Left Side: Text */}
         <div className="w-full md:w-1/2 text-gray-800">
-          <h3 className="text-sm md:text-2xl font-bold text-blue-900">
-            PATIENT
+          <h3 className="text-sm md:text-5xl font-bold text-secondaryBrand">
+            Protect Your Smile with MakeMeSmile
           </h3>
-          <p className="mt-4 text-sm md:text-lg text-gray-600">
-            Our team of experts is committed to delivering exceptional results
-            and ensuring your satisfaction. Whether you need a crown, bridge, or
-            denture, we are here to help.
+          <p className="text-secondaryText text-sm font-normal font-poppins py-4">Extended warranties up to 9 years- simple, affordable, and trusted by your dentist</p>
+          <p className="mt-4  text-secondaryText text-sm font-normal font-poppins">
+            Your dental work is an investment in your health and your confidence. Life happens — crowns can chip, bridges may loosen, or implants may need attention. With MakeMeSmile, you don’t have to worry.
           </p>
-          <button className="mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white  transition-all duration-300 flex items-center group text-sm sm:text-base" onClick={() => navigate("/signup")}>
-            <span className="mr-2 sm:mr-4">Register</span>
-            <span className="w-6 sm:w-8 h-6 sm:h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
-              <svg
-                width="39"
-                height="39"
-                viewBox="0 0 39 39"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="0.970001"
-                  y="0.63623"
-                  width="37.7273"
-                  height="37.7273"
-                  rx="18.8636"
-                  fill="#001D58"
-                />
-                <path
-                  d="M21.1641 16.3588C20.899 16.0936 20.899 15.6637 21.1641 15.3986C21.4293 15.1334 21.8592 15.1334 22.1244 15.3986L25.7456 19.0198C26.0107 19.2849 26.0107 19.7148 25.7456 19.98L22.1244 23.6012C21.8592 23.8664 21.4293 23.8664 21.1641 23.6012C20.899 23.3361 20.899 22.9062 21.1641 22.641L23.6263 20.1789H14.8545C14.4795 20.1789 14.1755 19.8749 14.1755 19.4999C14.1755 19.1249 14.4795 18.8209 14.8545 18.8209H23.6263L21.1641 16.3588Z"
-                  fill="white"
-                />
-              </svg>
-            </span>
+          <ul className=" pt-5 list-disc pl-4 pb-6">
+            <li className="text-secondaryText text-sm font-normal font-poppin">Peace of mind with coverage up to 9 years</li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">Fast, simple claims if something happens</li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">Trusted warranty lab: InterDentalUSA</li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">Your dentist stays by your side — and so do we</li>
+          </ul>
+          <button  onClick={() => navigate("/signup")} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+            <h1 className="font-poppins font-semibold text-base text-[#434343]">
+              Register
+            </h1>
+            <div className="rounded-full bg-secondaryBrand text-white p-2">
+              <ArrowRightIcon className="w-4 h-4" />
+            </div>
           </button>
         </div>
 

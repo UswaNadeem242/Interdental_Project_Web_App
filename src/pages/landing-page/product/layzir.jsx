@@ -6,7 +6,7 @@ import Shades from '../../../Common/product-landing/shades-product-landing';
 import Dimensions from '../../../Common/product-landing/dimensions-product-landing';
 import Contact from '../contact';
 import FrequentlyAskedQuestion from '../../../components/frequently-asked-question';
-function ArgebbPmma({ isLanding }) {
+function layZirPage({ isLanding }) {
     return (
         <div>
             <div className='pb-20'>{!isLanding && <Header />} </div>
@@ -153,4 +153,4 @@ function ArgebbPmma({ isLanding }) {
     )
 }
 
-export default ArgebbPmma
+export default layZirPage
