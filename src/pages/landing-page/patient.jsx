@@ -8,8 +8,6 @@ import CircleIcon from "../../icon/circle-icon";
 import UpperFooter from "../../components/upper-footer";
 import { concerns, plans, steps } from "../../Constant";
 
-
-
 const Patients = ({ isLanding }) => {
   const navigate = useNavigate();
   return (

@@ -16,15 +16,15 @@ const LandingPage = () => {
   return (
     <>
       <Header />
-      <div className="bg-[#e2f7fb]  font-poppins min-h-screen text-gray-800">
+      <div className="  font-poppins min-h-screen text-gray-800">
 
         <HeroSection />
         <AboutUs />
         {/* <ProductLandingPage isLanding={true} />
         <ArgebbPmma isLanding={true} />
         <ArgenZ isLanding={true} /> */}
-        <Patients isLanding={true} />
-        <Doctor isLanding={true} />
+        {/* <Patients isLanding={false} /> */}
+        {/* <Doctor isLanding={false} /> */}
         <Warranty />
         <Contact isLanding={true} />
         <Footer />

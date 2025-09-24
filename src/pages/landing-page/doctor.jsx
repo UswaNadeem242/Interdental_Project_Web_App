@@ -140,8 +140,6 @@ const Doctor = ({ isLanding }) => {
 
   return (
 
-
-
     <>
 
       <div className="bg-gradient-to-b from-[#f7fefc] to-[#e2f7fb]">
@@ -189,26 +187,7 @@ const Doctor = ({ isLanding }) => {
             </button>
           </div>
         </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center md:px-16 px-4 py-20">
           {/* Left column */}
           <div className="space-y-4">
@@ -256,11 +235,8 @@ const Doctor = ({ isLanding }) => {
             </ul>
             <p className="text-sm font-poppins text-secondaryText space-y-3">Whether you're looking to grow your patient base, improve patient satisfaction, or reduce lab expenses, our plans offer a flexible way to streamline your operations and increase your revenue.</p>
 
-          </div>
-
-          {/* Right column (empty for now, can hold image/video later) */}
-          <div className="flex justify-center ">
-            {/* Example placeholder image */}
+          </div> 
+          <div className="flex justify-center"> 
             <img
               src="/assets/landing-page/doctor1.png"
               alt="Doctor Enrollment"

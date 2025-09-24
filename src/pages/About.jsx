@@ -303,7 +303,7 @@ const About = ({ isLanding }) => {
             </p>
           </div>
 
-          <div className="">
+          <div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {warrantyCards.map((card, index) => (
                 <div
@@ -316,7 +316,8 @@ const About = ({ isLanding }) => {
                     <img
                       src={card.img}
                       alt={card.title}
-                      className="object-cover" />
+                      className="w-full sm:w-[200px] md:w-[290px] lg:w-[300px] h-[150px] sm:h-[180px] md:h-[200px] lg:h-[288px] m-2 sm:m-4 rounded-lg object-cover" />
+
                   </div>
 
                   {/* Right - Content */}
@@ -352,14 +353,9 @@ const About = ({ isLanding }) => {
 
               ))}
             </div>
-
-
-
-          </div>
-
-        </section>
-
-
+          </div>       
+          
+           </section>
 
         <section className="container px-4 mx-auto py-28 ">
           <div className="flex justify-center ">
