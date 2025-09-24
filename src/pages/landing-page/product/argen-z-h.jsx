@@ -19,16 +19,16 @@ function ArgenZ({ isLanding }) {
         <div className="w-full">
           <img src="/assets/Argen.png" alt="ArgrnImg" className="min-w-full" />
         </div>
-        <div className=" flex gap-6 ">
+        <div className=" flex gap-6  ">
           {/* Left image */}
-          <div className=" ">
+          <div className="w-full ">
             <img
               className="hidden md:block "
               src="/assets/ArgenSmall.png"
               alt="ArgenPic"
             />
           </div>
-          <div className="flex flex-col justify-center items-start max-w-[509px] mx-auto  text-left ">
+          <div className="flex flex-col justify-center w-full items-start mx-auto   text-left ">
             <div className="mt-16 mb-8">
               <h1 className="font-bold text-4xl text-secondaryBrand text-left ">
                 ARGEN Z HT +
