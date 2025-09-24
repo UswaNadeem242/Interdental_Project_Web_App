@@ -47,6 +47,9 @@ import ZidcardIvoclar from "./pages/landing-page/product/zidcard-ivoclar";
 import ArgenzST from "./pages/landing-page/product/argenz-st";
 import AiditeZirconia from "./pages/landing-page/product/multilayer-pro";
 import Multilayerpro from "./pages/landing-page/product/multilayer-pro";
+import Blog from "./pages/landing-page/blog";
+import ImplantTabs from "./pages/landing-page/blogs/sub-page";
+import ImplantDenturesPage from "./pages/landing-page/blogs/sub-page";
 
 const MainLayout = ({ children }) => (
   <>
@@ -193,6 +196,7 @@ function App() {
             <Route path="/product/zidcard-ivoclar" element={<ZidcardIvoclar isLanding={false} />} />
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
+            <Route path="/blog" element={<ImplantDenturesPage isLanding={false} />} />
             <Route
               path="/our-products"
               element={<ArgenZ isLanding={false} />}

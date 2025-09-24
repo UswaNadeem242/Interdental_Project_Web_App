@@ -22,7 +22,7 @@ function ProductLandingPage({ isLanding }) {
                             >
                                 <div
                                     className={`grid grid-cols-1 md:grid-cols-2 items-center p-6 rounded-xl 
-              ${!isEven ? "bg-background" : "bg-transparent"}`}
+                                 ${!isEven ? "bg-background" : "bg-transparent"}`}
                                 >
                                     {/* Left side */}
                                     {isEven ? (

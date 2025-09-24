@@ -14,6 +14,7 @@ export const navItems = [
 
   { to: "/patient", label: "Patient" },
   { to: "/doctor", label: "Doctor" },
+  { to: "/blog", label: "Blogs" },
   { to: "/about-us", label: "About Us" },
   { to: "/contact-us", label: "Contact Us" },
 ];
@@ -1362,3 +1363,242 @@ export const implantCards = [
 ];
 
 
+export const steps = [
+  {
+    id: 1,
+    title: "Register Your Warranty",
+    description: [
+      " Fill out your details and select your plan",
+      "Add your dentist info (or we’ll help you find one)",
+      "Secure payment activates your coverage",
+
+    ],
+  },
+  {
+    id: 2,
+    title: "Submit a Claim if Needed",
+    description: [
+      "Download your form from the portal",
+      "Work with your dentist to finalize details",
+      "We’ll guide you step-by-step",
+
+    ],
+  },
+  {
+    id: 3,
+    title: "You’re All Set!",
+    description: [
+      "Save your reference number",
+      "Track your coverage through your dashboard",
+    ],
+  },
+];
+
+
+
+export const Doctorsteps = [
+  {
+    id: 1,
+    title: "Choose a Plan",
+    parag: 'Select a subscription plan based on your needs:',
+    description: [
+      "Growth Plan – 3-month trial, allows up to 10 patients per month.",
+      "Gold Plan – Treat up to 20 patients per month.",
+      "platinum Plan – Manage unlimited patients per month.",
+
+    ],
+  },
+  {
+    id: 2,
+    title: " Get Exclusive Benefits",
+    description: [
+      "all 3 plans get the discount, silver gold and platinum.",
+      "To access the laboratory pricing schedule, submit an email request.",],
+  },
+  {
+    id: 3,
+    title: "Start Your Subscription",
+    description: [
+      "First register your office, one dr per subscription",
+      "Begin managing your patients efficiently.",
+      "Upgrade anytime as your practice grows.",
+    ],
+  },
+];
+
+export const concerns = [
+  {
+    title: "Chipped Crowns",
+    subtitle: 'Full remake included',
+    description:
+      "Crowns made of all porcelain can occasionally chip. If the chipping is extensive the crown may need to be replaced. We will re-make it at no charge.",
+  },
+  {
+    title: "Loose Crowns",
+    subtitle: "We'll adjust itc",
+    description:
+      "The crown naturally may become loose through wear and tear, when this open bacteria can seep in, causing decay and infection. If your crown feels loose, contact your dental office. We can replace it for free.",
+  },
+  {
+    title: "Crown Displacement",
+    subtitle: 'Recement or remake',
+    description:
+      "If your crown or bridge is displaced, this may be due to an improper fit or lack of cement. If this happens, contact your doctor's office immediately. The restoration may need to be recemented or replaced.",
+  },
+  {
+    title: "Allergic Reaction",
+    subtitle: 'Case by case support',
+    description:
+      "In the case of porcelain fused to metal crown or bridge, on rare occasions patients have had allergic reactions due to the fact that crown restorations are made using a mixture of metals reactions may occur, but extremely rare.",
+  },
+];
+
+
+export const plans = [
+  {
+    id: 1,
+    title: "3 YEAR PLAN",
+
+    price: "$99 ",
+    description: [
+      " Covers up to 10 Crowns, Bridges, or Veneers",
+      "one-time enrollment",
+      "Ideal for minor restorative work",
+
+    ],
+    buttonStyle:
+      "border-blue-500 secondaryBrand hover:bg-blue-800 hover:text-white",
+  },
+  {
+    id: 2,
+    title: "6 YEAR PLAN",
+
+    price: "$199 ",
+    description: [
+      " Covers up to 20 Crowns, Bridges, or Veneers ",
+      "one-time enrollment",
+      "Great for full-arch or cosmetic work",
+
+    ],
+    buttonStyle: "bg-blue-900 text-white hover:bg-blue-700",
+  },
+  {
+    id: 3,
+    title: "6 YEAR PLAN",
+
+    price: "$299 ",
+    description: [
+      "we cover the crown over the implant, not the implant abutment or implant",
+      " one-time enrollment",
+      "Most comprehensive protection"
+    ],
+    buttonStyle:
+      "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
+  },
+];
+
+
+
+
+
+
+ export const tabs = [
+        {
+            "id": "all",
+            "label": "All Topics",
+            "cards": [
+                {
+                    "img": "/assets/landing-page/card 3.png",
+                    "title": "Dentures",
+                    "subtitle": "What Are Implant-Retained Dentures?",
+                    "button": "Read More"
+                },
+                {
+                    "img": "/assets/landing-page/card 5.png",
+                    "title": "Implants",
+                    "subtitle": "Benefits of Dental Implants",
+                    "button": "Read More"
+                },
+                {
+                    "img": "/assets/landing-page/card 4.png",
+                    "title": "Surgery",
+                    "subtitle": "What to Expect During Oral Surgery",
+                    "button": "Read More"
+                },
+                 {
+                    "img": "/assets/landing-page/card 6.png",
+                    "title": "Surgery",
+                    "subtitle": "What to Expect During Oral Surgery",
+                    "button": "Read More"
+                },
+                 {
+                    "img": "/assets/landing-page/card 7.png",
+                    "title": "Surgery",
+                    "subtitle": "What to Expect During Oral Surgery",
+                    "button": "Read More"
+                },
+                {
+                    "img": "/assets/landing-page/card 8.png",
+                    "title": "Surgery",
+                    "subtitle": "What to Expect During Oral Surgery",
+                    "button": "Read More"
+                },
+                {
+                    "img": "/assets/landing-page/card 6.png",
+                    "title": "Surgery",
+                    "subtitle": "What to Expect During Oral Surgery",
+                    "button": "Read More"
+                },
+                {
+                    "img": "/assets/landing-page/card 7.png",
+                    "title": "Surgery",
+                    "subtitle": "What to Expect During Oral Surgery",
+                    "button": "Read More"
+                },
+                {
+                    "img": "/assets/landing-page/card 8.png",
+                    "title": "Surgery",
+                    "subtitle": "What to Expect During Oral Surgery",
+                    "button": "Read More"
+                },
+            ]
+        },
+        {
+            "id": "questions",
+            "label": "Questions",
+            "cards": [
+                {
+                    "img": "/assets/landing-page/card 3.png",
+
+                    "title": "FAQs",
+                    "subtitle": "Common Questions About Implants",
+                    "button": "Read More"
+                }
+            ]
+        },
+        {
+            "id": "dental",
+            "label": "Dental Health",
+            "cards": [
+                {
+                    "img": "/assets/landing-page/card 5.png",
+                    "title": "Dental Health",
+                    "subtitle": "Tips for Better Oral Care",
+                    "button": "Read More"
+                }
+            ]
+        },
+        {
+            "id": "surgery",
+            "label": "Surgery Instructions",
+            "cards": [
+                {
+                    "img": "/assets/landing-page/card 4.png",
+                    "title": "Oral Surgery",
+                    "subtitle": "Post-Operation Care",
+                    "button": "Read More"
+                }
+            ]
+        },
+
+    ]

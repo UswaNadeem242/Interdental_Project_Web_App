@@ -1,47 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "./header";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import DotIcon from "../../icon/dotIcon";
+import { Doctorsteps, steps } from "../../Constant";
+import Contact from "./contact";
+import { PrimaryButtonUI } from "../../Common/Button";
 
-const doctorPlans = [
-  {
-    id: 1,
-    title: "STANDARD",
-    bgColor: "bg-blue-900 text-white",
-    content: [
-      "Standard Plan",
-      "3 Month Trial",
-      "10 Patients Per Month",
-      "Silver Plan - 20 Patients Per Month",
-      "Gold Plan - Unlimited Patients Per Month",
-      "50-70% Discount On All Laboratory Fees (Implant Parts Not Included).",
-      "Laboratory Pricing Schedule - Please Email Request.",
-    ],
-  },
-  {
-    id: 2,
-    title: "REFERRAL",
-    bgColor: "bg-blue-300 text-white",
-    content: [
-      "The Patient Is Enrolled Through Our Marketing Efforts Into MMS Warranty Program.",
-      "We Refer The Patient To You.",
-      "We Will List Your Office On Our Website As A Participating Professional.",
-      "$125.00 Per Month.",
-      "Cancel Anytime.",
-      "Coming Soon!",
-    ],
-  },
-  {
-    id: 3,
-    title: "PROCEDURE",
-    bgColor: "bg-blue-500 text-white",
-    content: [
-      "To Register, Fill Out The Office Information Including Participating Doctor.",
-      "Read And Initial The Patients Terms And Conditions.",
-      "Choose The Right Plan For You.",
-      "Submit Your Payment Through Our Portal. You Will Receive An Email With An Office-Specific Reference Number.",
-    ],
-  },
-];
+
 
 const pricingPlans = [
   {
@@ -77,301 +43,413 @@ const pricingPlans = [
       "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
   },
 ];
+
+
+
+const plans = [
+  {
+    id: "1",
+    name: "Starter Plan",
+    price: "$125",
+    duration: "Per Month",
+    enrollmentFee: "One‑Time Setup Fee: $125",
+    features: [
+      "Unlimited Patients/Month",
+      "Full Lab Discounts",
+      "Priority Case Handling",
+
+      "Smart Assistant access included",
+      "One-time setup fee: $125",
+    ],
+    buttonStyle:
+      "text-secondaryBrand border-secondaryBrand text-sm  font-semibold  font-popins",
+  },
+  {
+    id: "2",
+    name: "Growth Plan",
+    price: "$125",
+    duration: "Per Month",
+    enrollmentFee: "One‑Time Setup Fee: $125",
+    features: [
+      "Streamline Workflows",
+      "Add Warranties",
+      "Receive Patient Referrals",
+    ],
+    buttonStyle:
+      "text-secondaryBrand border-secondaryBrand text-sm  font-semibold  font-popins",
+  },
+  {
+    id: "3",
+    name: "Pro Plan",
+    price: "$125",
+    duration: "Per Month",
+    enrollmentFee: "One‑Time Setup Fee: $125",
+    features: [
+      "Unlimited Cases",
+      "Priority Support",
+      "Full Automation For DSOs",
+
+    ],
+    buttonStyle:
+      "text-secondaryBrand border-secondaryBrand text-sm  font-semibold  font-popins",
+  },
+  {
+    id: "4",
+    name: "Referral Plan",
+    price: null,
+    duration: "Coming Soon",
+    enrollmentFee: "",
+    features: [
+      "We refer patients to you",
+      "Featured listing as a Participating Provider",
+      "Great for practices looking to grow",
+      "Cancel anytime",
+      "Coming soon",
+    ],
+    isReferral: true,
+  },
+];
+
+
+
+const Check = (props) => (
+  <svg
+    viewBox="0 0 24 24"
+    role="img"
+    aria-hidden="true"
+    className={`h-4 w-4 flex-none ${props.className ?? ""}`}
+  >
+    <path
+      d="M20 6L9 17l-5-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+
+
+
+
 const Doctor = ({ isLanding }) => {
   const navigate = useNavigate();
 
+
   return (
-    <div className="bg-gradient-to-b from-[#f7fefc] to-[#e2f7fb]">
-      {!isLanding && <Header />}
-      <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 flex flex-col md:flex-row items-center justify-between">
-        {/* Left Side: Image */}
-        <div className="relative w-full md:w-1/2 flex justify-center items-center">
-          {/* Circular Image */}
-          <img
-            src={
-              isLanding
-                ? "/assets/landing-page/doctor-image.png"
-                : "/assets/landing-page/doctor-image-3.png"
-            }
-            alt="Doctor"
-            className="w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] object-cover"
-          />
-          {/* Small Circle */}
-        </div>
 
-        {/* Right Side: Text */}
-        <div className="mt-6 sm:mt-8 md:mt-0 md:ml-8 lg:ml-16 w-full md:w-1/2 text-gray-800">
-          <h3 className="text-sm md:text-lg font-bold text-blue-900">
-            DOCTOR
-          </h3>
-          <p className="mt-4 text-sm md:text-lg text-gray-600">
-            Our team of experienced technicians uses the latest technology and
-            highest quality materials to ensure the best results for your
-            patients.
-          </p>
-          <button className="mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white  transition-all duration-300 flex items-center group text-sm sm:text-base" onClick={() => navigate("/signup")}>
-            <span className="mr-2 sm:mr-4">Register</span>
-            <span className="w-8 h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
-              <svg
-                width="39"
-                height="39"
-                viewBox="0 0 39 39"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="0.970001"
-                  y="0.63623"
-                  width="37.7273"
-                  height="37.7273"
-                  rx="18.8636"
-                  fill="#001D58"
-                />
-                <path
-                  d="M21.1641 16.3588C20.899 16.0936 20.899 15.6637 21.1641 15.3986C21.4293 15.1334 21.8592 15.1334 22.1244 15.3986L25.7456 19.0198C26.0107 19.2849 26.0107 19.7148 25.7456 19.98L22.1244 23.6012C21.8592 23.8664 21.4293 23.8664 21.1641 23.6012C20.899 23.3361 20.899 22.9062 21.1641 22.641L23.6263 20.1789H14.8545C14.4795 20.1789 14.1755 19.8749 14.1755 19.4999C14.1755 19.1249 14.4795 18.8209 14.8545 18.8209H23.6263L21.1641 16.3588Z"
-                  fill="white"
-                />
-              </svg>
-            </span>
-          </button>
-        </div>
-      </section>
 
-      <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
-        {/* Section Header */}
-        <h2 className="text-sm md:text-2xl font-bold text-blue-900 uppercase text-center">
-          DOCTOR ENROLLMENT
-        </h2>
-        <h3 className="text-sm md:text-2xl font-bold text-blue-300 text-center mt-2">
-          PRICING PLANS
-        </h3>
-        <p className="mt-4 text-sm md:text-lg text-gray-600 text-center max-w-md sm:max-w-lg md:max-w-2xl   mx-auto">
-          "Interdental Lab" together with "Make Me Smile" a subscription bases
-          limited extended warranty program for both patients and dentists with
-          quarterly and monthly maintenance fees. By being a participating
-          enrolled doctor in the program, you are entitled to reduced laboratory
-          fees for products crafted by participating labs. Please see below for
-          a description of our services.
-        </p>
 
-        {/* Plans Grid */}
-        <div className="mx-auto mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-full sm:max-w-4xl md:max-w-5xl lg:max-w-6xl">
-          {doctorPlans.map((plan) => (
-            <div
-              key={plan.id}
-              className="bg-white border rounded-lg shadow-md p-4 sm:p-6 hover:shadow-lg transition"
-            >
-              {/* Plan Header */}
-              <div
-                className={`text-center py-3 sm:py-4 font-bold text-sm md:text-lg rounded ${plan.bgColor}`}
-              >
-                {plan.title}
-              </div>
+    <>
 
-              {/* Plan Content */}
-              <ul className="mt-4 text-gray-600 space-y-2 text-sm md:text-lg">
-                {plan.content.map((item, index) => (
-                  <li key={index} className="flex items-start space-x-2">
-                    <span className="text-blue-500 font-bold">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
-        {/* Section Header */}
-        <h2 className="text-sm md:text-lg font-bold text-blue-300 uppercase text-center">
-          DOCTOR PRICING PLAN
-        </h2>
-        <p className="mt-4 sm:mt-6 text-sm md:text-base text-gray-600 text-center max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
-          If you do not see what you want, don't worry{" "}
-          <a
-            href="/contact-us"
-            className="text-blue-900 font-bold underline hover:text-blue-600"
-          >
-            Contact Us
-          </a>{" "}
-          and we will create a personalized proposal that fits your business
-          needs.
-        </p>
-
-        {/* Plans Grid */}
-        <div className="mx-auto mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-full sm:max-w-4xl md:max-w-5xl lg:max-w-6xl text-center">
-          {pricingPlans.map((plan) => (
-            <div
-              key={plan.id}
-              className="bg-white border rounded-lg shadow-md p-4 sm:p-6 hover:shadow-lg transition flex flex-col justify-between"
-            >
-              {/* Card Content */}
-              <div>
-                <h3 className="text-sm md:text-xl font-bold text-gray-900">
-                  {plan.name}
-                </h3>
-                <p className="mt-4 text-sm md:text-xl font-extrabold text-blue-900">
-                  {plan.price}
-                </p>
-                <p className="mt-2 text-sm sm:text-xl font-bold text-blue-300">
-                  {plan.duration}
-                </p>
-                <p className="mt-2 text-sm sm:text-sm text-gray-500">
-                  {plan.enrollmentFee}
-                </p>
-                <ul className="mt-4 text-gray-600 space-y-2 flex flex-col items-center text-sm sm:text-sm">
-                  {plan.description.map((item, index) => (
-                    <li key={index} className="flex items-center space-x-2">
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Button */}
-              <button
-                className={`mt-8 sm:mt-12 px-4 sm:px-6 py-2 sm:py-3 w-full border transition rounded-lg ${plan.buttonStyle} text-sm sm:text-base`}
-              >
-                Select
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-      {!isLanding && (
-        <>
-          <div className="flex flex-col md:flex-row items-center justify-center py-8 sm:py-12 md:py-16 px-4 sm:px-8 md:px-16 lg:px-24 bg-gray-50">
-            {/* Left Section: Image */}
-            <div className="relative w-full md:w-1/2 flex justify-center items-center">
-              <img
-                src="/assets/landing-page/doctor-image-2.png"
-                alt="Doctor"
-                className="w-[200px] sm:w-[250px] md:w-[300px] lg:w-[384px] h-[200px] sm:h-[250px] md:h-[300px] lg:h-[384px] object-cover"
-              />
-            </div>
-
-            {/* Right Section: Form */}
-            <div className="w-full md:w-1/2 mt-6 sm:mt-8 md:mt-0 md:ml-8 lg:ml-12">
-              <h2 className="text-sm md:text-lg font-bold text-blue-900 mb-4 sm:mb-6 text-center md:text-left">
-                Doctor Registration
-              </h2>
-              <form className="space-y-4">
-                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                  <input
-                    type="text"
-                    placeholder="First Name"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Company Name"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
-                  />
-                </div>
-                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Phone"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
-                  />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Address"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm"
-                />
-                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                  <input
-                    type="text"
-                    placeholder="City"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  placeholder:text-sm"
-                  />
-                  <input
-                    type="text"
-                    placeholder="ZIP"
-                    className="w-full sm:w-1/2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  placeholder:text-sm"
-                  />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Doctor's License Number"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  placeholder:text-sm"
-                />
-                <input
-                  type="text"
-                  placeholder="Office Reference Number"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  placeholder:text-sm"
-                />
-                <div className="mt-4">
-                  <h3 className="text-base sm:text-lg font-semibold text-blue-900 mb-2">
-                    Service Type
-                  </h3>
-                  <div className="flex flex-wrap space-x-2 sm:space-x-4">
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        name="serviceType"
-                        value="Trial 3 Months"
-                        className="form-checkbox text-blue-900"
-                      />
-                      <span className="text-sm md:text-base">
-                        Trial 3 Months
-                      </span>
-                    </label>
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        name="serviceType"
-                        value="$175 Basic Plan"
-                        className="form-checkbox text-blue-900"
-                      />
-                      <span className="text-sm md:text-base">
-                        $175 Basic Plan
-                      </span>
-                    </label>
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        name="serviceType"
-                        value="$275 Basic Plan"
-                        className="form-checkbox text-blue-900"
-                      />
-                      <span className="text-sm md:text-base">
-                        $275 Basic Plan
-                      </span>
-                    </label>
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        name="serviceType"
-                        value="$475 Basic Plan"
-                        className="form-checkbox text-blue-900"
-                      />
-                      <span className="text-sm md:text-base">
-                        $475 Basic Plan
-                      </span>
-                    </label>
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-2 sm:py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-700 transition text-sm md:text-base"
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
+      <div className="bg-gradient-to-b from-[#f7fefc] to-[#e2f7fb]">
+        {!isLanding && <Header />}
+        <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 flex flex-col md:flex-row items-center justify-between">
+          {/* Left Side: Image */}
+          <div className="relative w-full md:w-1/2 flex justify-center items-center">
+            {/* Circular Image */}
+            <img
+              src={
+                isLanding
+                  ? "/assets/landing-page/doctor-image.png"
+                  : "/assets/landing-page/doctor-image-3.png"
+              }
+              alt="Doctor"
+              className="w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] object-cover"
+            />
+            {/* Small Circle */}
           </div>
-          <Footer />
-        </>
-      )}
-    </div>
+
+          {/* Right Side: Text */}
+          <div className="mt-6 sm:mt-8 md:mt-0 md:ml-8 lg:ml-16 w-full md:w-1/2 text-gray-800">
+            <h3 className="text-3xl md:text-5xl font-bold text-secondaryBrand">
+              DOCTOR
+            </h3>
+            <p className="font-poppins capitalize text-base  font-medium py-4">Partner with InterOral.ai- Smplify, save, and grow</p>
+            <p className="mt-4 text-sm md:text-lg text-secondaryText">
+              Join our platform to access lab discounts, extended warranties, AI design tools, and patient referrals — all in one streamlined system. Your Practice Benefits:
+            </p>
+            <ul className="list-disc list-inside text-secondaryText text-start p-4 rounded-md  text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
+              <li>Discounted lab fees through the Dental Lab Alliance</li>
+              <li>Eligibility for 3–9 year patient warranties via MakeMeSmile</li>
+              <li>Patient referrals from national marketing campaigns</li>
+              <li>Increased visibility as a featured providere</li>
+              <li>Case automation with our AI-powered Doctor Portal</li>
+            </ul>
+
+            <button onClick={() => navigate("/signup")} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+              <h1 className="font-poppins font-semibold text-base text-[#434343]">
+                Register
+              </h1>
+              <div className="rounded-full bg-secondaryBrand text-white p-2">
+                <ArrowRightIcon className="w-4 h-4" />
+              </div>
+            </button>
+          </div>
+        </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center md:px-16 px-4 py-20">
+          {/* Left column */}
+          <div className="space-y-4">
+            <h1 className="text-3xl lg:text-4xl font-poppins capitalize">
+              DOCTOR{" "}
+              <span className="text-secondaryBrand font-bold capitalize">
+                ENROLLMENT
+              </span>
+            </h1>
+
+            <p className="text-base font-medium font-poppins">
+              Smart Subscription Plans That Bring You Patients, Peace of Mind, and Lab Savings
+            </p>
+
+            <p className="text-sm font-poppins text-secondaryText">
+              Interoral.ai and Make Me Smile have teamed up to offer a subscription-based
+              program designed to support your practice with lab discounts, patient referrals,
+              and extended dental warranties.
+            </p>
+
+            <p className="text-sm font-poppins text-secondaryText">
+              By enrolling, your office gains:
+            </p>
+
+
+
+            <ul className="flex flex-col space-y-3">
+              <li className="flex items-start gap-3 bg-blue-300/10 p-3 rounded-md font-poppins font-medium">
+                <DotIcon className="w-5 h-5 shrink-0" />
+                Discounted lab fees through our curated network of partner labs
+              </li>
+              <li className="flex items-start gap-3 bg-blue-300/10 p-3 rounded-md font-poppins font-medium">
+                <DotIcon className="w-5 h-5 shrink-0" />
+                Eligibility for 3–9 year patient warranties, building long-term trust and confidence
+              </li>
+              <li className="flex items-start gap-3 bg-blue-300/10 p-3 rounded-md font-poppins font-medium">
+                <DotIcon className="w-5 h-5 shrink-0" />
+                Referral patients from our national marketing campaigns
+              </li>
+              <li className="flex items-start gap-3 bg-blue-300/10 p-3 rounded-md font-poppins font-medium">
+                <DotIcon className="w-5 h-5 shrink-0" />
+                Increased visibility through featured listings as a participating provider on our platform
+              </li>
+
+            </ul>
+            <p className="text-sm font-poppins text-secondaryText space-y-3">Whether you're looking to grow your patient base, improve patient satisfaction, or reduce lab expenses, our plans offer a flexible way to streamline your operations and increase your revenue.</p>
+
+          </div>
+
+          {/* Right column (empty for now, can hold image/video later) */}
+          <div className="flex justify-center ">
+            {/* Example placeholder image */}
+            <img
+              src="/assets/landing-page/doctor1.png"
+              alt="Doctor Enrollment"
+              className="w-full max-w-md rounded-lg"
+            />
+          </div>
+        </section>
+
+
+
+
+        <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
+          <div className="text-center mb-6 sm:mb-12">
+            <h2 className=" text-sm md:text-3xl font-semibold text-secondaryBrand max-w-[600px] mx-auto text-center">
+              Simplify Your <span className="text-fouthBrand">Practice</span>  with Our  <span className="text-secondaryBrand">Subscription Plans</span>
+            </h2>
+            <p className="text-secondaryText py-8 font-poppins text-sm  font-normal">Effortless Patient Management in Three Simple Steps</p>
+          </div>
+          <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {Doctorsteps.map((step, idx) => (
+              <div key={step.id} className="flex flex-col items-center">
+                {/* Step Circle */}
+                <div className="flex items-center w-full mx-auto">
+                  {/* Step Circle */}
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-fouthBrand text-white text-xl font-bold z-10">
+                    {idx + 1}
+                  </div>
+                  {idx !== Doctorsteps.length - 1 && (
+                    <div className="hidden sm:block flex-grow h-0.5 border-t-2 border-dashed border-gray-400"></div>
+                  )}
+                </div>
+
+                <div className="mt-6 flex-1 w-full bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md hover:shadow-lg transition">
+                  <h3 className="text-sm md:text-2xl font-poppins font-bold text-start text-secondaryBrand mb-4">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm font-poppins font-bold text-start text-secondaryBrand mb-4">
+                    {step?.parag}
+                  </p>
+                  <ul className="text-gray-600 text-sm font-poppins space-y-2 pl-2">
+                    {step.description.map((desc, index) => (
+                      <li key={index}>{desc}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+
+        <div className="py-8 sm:py-12 md:pb-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
+          <div className="text-center mb-6 sm:mb-12">
+            <h2 className=" text-sm md:text-3xl font-semibold text-secondaryBrand max-w-[600px] mx-auto text-center">
+              Doctor <span className="text-secondaryBrand font-bold ">Portal</span> &  <span className=" text-fouthBrand font-bold">Plans</span>
+            </h2>
+            <p className="text-secondaryText py-8 font-poppins text-xl  font-bold">Precision Restorations. Smart Workflow. Smiling Patients.</p>
+            <p className="text-primaryText py-8 font-poppins text-base   font-medium ">Welcome to the  Interoral.ai and Make Me Smile™ platform—where aesthetics, innovation, and automation come together to support your practice. </p>
+            <p className="text-secondaryText max-w-[1033px]  text-center  mx-auto font-poppins text-sm  font-normal">Whether you're placing a single crown or managing full-arch restorations, our system ensures every case is accurate, streamlined, and protected.
+              Smart Prescription Wizard + Guided Assistant Need help filling out your case forms? Our AI-powered Prescription Wizard makes it simple to:</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+            {/* Top 3 Divs */}
+            <div className="bg-background p-4 rounded col-span-4">
+              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Select teeth, materials, and shades</p>
+            </div>
+            <div className="bg-background p-4 rounded col-span-4">
+
+
+              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Upload STL, DICOM, or PLY files</p>
+
+            </div>
+            <div className="bg-background p-4 rounded col-span-4"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Auto-match compatible implant parts</p></div>
+
+            {/* Bottom 2 Divs (span across 3 columns) */}
+            <div className="col-span-6 bg-background p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Generate prescription sheets and FedEx labels</p></div>
+            <div className="col-span-6 bg-background p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Route your files directly to design and production labs</p></div>
+          </div>
+          <p className="text-sm font-poppins font-normal">Bonus: Our built-in ChatGPT Assistant can guide you through the form step-by-step to prevent errors, answer questions, and ensure your cases are processed without delays.</p>
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
+          {/* Header */}
+          <h2 className="text-base md:text-3xl font-bold text-primaryText uppercase text-center tracking-wide">
+            DOCTOR <span className="font-bold text-3xl font-poppins uppercase">ENROLLMENT</span> <span className="text-3xl font-bold font-poppins uppercase ">PLANS </span>
+          </h2>
+          <p className="mt-4 sm:mt-6 text-sm md:text-base text-gray-600 text-center max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
+            If you do not see what you want, don&apos;t worry{' '}
+            <a
+              href="/contact-us"
+              className="text-secondaryBrand font-bold underline hover:text-blue-600"
+            >
+              Contact Us
+            </a>{' '}
+            and we will create a personalized proposal that fits your business needs.
+          </p>
+
+
+          {/* Plans Grid */}
+          <div className="mx-auto mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-full  ">
+            {plans.map((plan) => (
+              <div
+                key={plan.id}
+                className={`bg-white border rounded-xl  p-4 sm:p-6 flex flex-col justify-between hover:shadow-md transition shadow-md`}
+              >
+                {/* Card content */}
+                <div>
+                  {plan.isReferral ? (
+                    <div className="bg-secondaryBrand text-white rounded-lg p-4 text-center">
+                      <p className="text-2xl  sm:text-xl font-bold font-poppins capitalize ">{plan.name}</p>
+                      <p className="text-base font-bold font-poppins ">{plan.duration}</p>
+                    </div>
+                  ) : (
+                    <>
+                      <h3 className="text-base sm:text-xl font-semibold font-poppins capitalize text-center">
+                        {plan.name}
+                      </h3>
+                      <p className="mt-4 ext-3xl font-bold font-poppins text-secondaryBrand text-center">
+                        {plan.price}
+                      </p>
+
+                    </>
+                  )}
+
+
+                  <ul className="mt-4 list-disc list-inside  bg-blue-300/10 p-2 text-gray-700 space-y-2 text-sm sm:text-base mx-auto max-w-[20rem]">
+                    {plan.features.map((f, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className={`mt-1 ${plan.isReferral ? "text-blue-900" : "text-blue-400"}`}>
+                          <Check />
+                        </span>
+                        <span className={`${plan.isReferral ? "text-gray-700" : ""}`}>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+
+                {/* Button */}
+                <button
+                  disabled={plan.isReferral}
+                  className={
+                    plan.isReferral
+                      ? "mt-6 sm:mt-8 w-full rounded-lg border border-gray-200 text-gray-400 cursor-not-allowed py-2"
+                      : `mt-8 sm:mt-12 px-4 sm:px-6 py-2 sm:py-3 w-full border rounded-lg ${plan.buttonStyle}`
+                  }
+                  aria-label={plan.isReferral ? "Coming soon" : `Select ${plan.name}`}
+                >
+                  {plan.isReferral ? "Coming Soon" : "Select"}
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div >
+
+
+      <Contact />
+      <section className="container mx-auto px-4 my-16">
+        <div className="flex justify-center">
+          <h3 className="text-secondaryBrand text-5xl font-normal font-poppins">Need a <span className="text-secondaryBrand text-5xl   font-bold font-poppins ">Custom Plan?</span></h3>
+
+        </div>
+        <p className="text-xl font-normal font-poppins text-secondaryText max-w-[600px] mx-auto text-center py-8">
+          We’re happy to build a tailored solution for your team. Just Contact Us and let us know what you need.
+        </p>
+        <div className="flex justify-center">
+          <PrimaryButtonUI
+            title="Contact Us"
+            className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
+          />
+        </div>
+
+
+      </section>
+      <Footer />
+
+    </>
   );
 };
 

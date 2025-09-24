@@ -6,6 +6,7 @@ import AccountDeactivate from "../modals/AccountDeactivateModal";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import Toast from "../components/Toast";
+import MaterialDropdown from "../components/doctorAdmin/CommonLabel/selectInputLabel";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -17,13 +18,20 @@ const Signup = () => {
   const [showCPassword, setShowCPassword] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [zip, setZip] = useState("");
+  const [license, setLicense] = useState("");
+  const [officeRef, setOfficeRef] = useState("");
 
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
+  const [selectedValue, setSelectedValue] = useState("");
 
   const handleSignup = async () => {
-    if (!firstName || !lastName || !email || !password || !cPassword) {
+    if (!firstName || !lastName || !email || !password || !phone || !cPassword) {
       setToastMessage("Please fill all the fields !");
       setToastType("error");
       setToastVisible(true);
@@ -35,7 +43,7 @@ const Signup = () => {
       setToastVisible(true);
       return;
     }
-    if (!firstName || !lastName || !email || !password || !cPassword) {
+    if (!firstName || !lastName || !email || !password || !phone || !cPassword) {
       setToastMessage("Please fill in all the fields!");
       setToastType("error");
       setToastVisible(true);
@@ -99,7 +107,7 @@ const Signup = () => {
       setToastType("success");
       setToastVisible(true);
       navigate("/login");
-     } catch (error) {
+    } catch (error) {
       console.log(error);
       setToastMessage(`Error: ${error}`);
       setToastType("success");
@@ -145,49 +153,98 @@ const Signup = () => {
           </p>
         </div>
 
-        <div className="px-3 flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[252px] gap-4 lg:gap-[16px]">
-          {/* Name fields - stack vertically on mobile */}
-          <div className="flex flex-col gap-4 lg:flex-row justify-between items-center w-full    h-auto lg:h-[51px]">
+        <div className="flex flex-col justify-center items-center w-full lg:w-[494px] gap-8">
+
+
+          {/* Form */}
+          <div className="w-full space-y-4">
+            {/* Full width */}
             <input
               type="text"
-              className="w-full lg:w-[239px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
+              className="w-full rounded-md border border-gray-300 py-3 px-4 text-textFieldHeading"
               placeholder="First Name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
+
+            {/* Email + Phone */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 py-3 outline-none  px-4 text-textFieldHeading"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 py-3  outline-none px-4 text-textFieldHeading"
+                placeholder="Phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+
+            {/* Address */}
             <input
               type="text"
-              className="w-full lg:w-[239px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              className="w-full rounded-md border border-gray-300 py-3  outline-none px-4 text-textFieldHeading"
+              placeholder="Address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
             />
-          </div>
 
-          <input
-            type="text"
-            className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            {/* City + Zip */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <input
+                type="text"
+                className="w-full rounded-md border  py-3  outline-none px-4 text-textFieldHeading"
+                placeholder="City"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+              <input
+                type="text"
+                className="w-full rounded-md border  py-3 outline-none  px-4 text-textFieldHeading"
+                placeholder="Zip"
+                value={zip}
+                onChange={(e) => setZip(e.target.value)}
+              />
+            </div>
 
-          <div className="relative w-full lg:w-[494px]">
-            <input
-              type={showPassword ? "text" : "password"}
-              className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {/* Password visibility toggle icon */}
-            <div
-              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                // Eye Open
-                <svg
+            {/* License + Office Ref */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <input
+                type="text"
+                className="w-full rounded-md border  py-3 outline-none  px-4 text-textFieldHeading"
+                placeholder="Doctor's License Number"
+                value={license}
+                onChange={(e) => setLicense(e.target.value)}
+              />
+              <input
+                type="text"
+                className="w-full rounded-md border  py-3  outline-none px-4 text-textFieldHeading"
+                placeholder="Office Reference Number"
+                value={officeRef}
+                onChange={(e) => setOfficeRef(e.target.value)}
+              />
+            </div>
+
+            {/* Password */}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full rounded-md border  py-3 outline-none  px-4 text-textFieldHeading"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div
+                className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {/* Eye icon same as before */}
+                {showPassword ? (<svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
                   height="20"
@@ -201,78 +258,45 @@ const Signup = () => {
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                   <circle cx="12" cy="12" r="3" />
                 </svg>
-              ) : (
-                // Eye Closed
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#808080"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
-                  <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                  <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              )}
+                ) : (
+                  // Eye Closed
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#808080"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
+                    <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
+                    <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                )}
+
+              </div>
             </div>
-          </div>
 
-          <div className="relative w-full lg:w-[494px]">
-            <input
-              type={showCPassword ? "text" : "password"}
-              className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px]"
-              placeholder="Confirm Password"
-              value={cPassword}
-              onChange={(e) => setCPassword(e.target.value)}
+            {/* Dropdown */}
+            <MaterialDropdown
+              options={[
+                { label: "Dental Lab", value: "1" },
+                { label: "Dentist", value: "2" },
+              ]}
+              value={selectedValue}
+              onChange={(val) => setSelectedValue(val)}
+              label="Select Laboratory"
+              className="w-full bg-white border   px-4 py-3 rounded-md text-textFieldHeading"
             />
-            <div
-              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
-              onClick={() => setShowCPassword(!showCPassword)} // ✅ fix here
-            >  {showCPassword ? (
-              // Eye Open
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#808080"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-            ) : (
-              // Eye Closed
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#808080"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
-                <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-            )}</div>
-            {/* Confirm password visibility toggle icon */}
-
           </div>
+
+
         </div>
+
 
         <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
           <button
@@ -282,65 +306,6 @@ const Signup = () => {
             Sign Up
           </button>
 
-          {/* Social login buttons - stack vertically on mobile */}
-          {/* <div className="flex flex-row justify-center items-center w-full gap-4 lg:gap-[16px] h-auto lg:h-[56px]">
-            <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center items-center cursor-pointer">
-              <svg
-                width="25"
-                height="24"
-                viewBox="0 0 25 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g clip-path="url(#clip0_13834_3306)">
-                  <path
-                    d="M24.2663 12.2764C24.2663 11.4606 24.2001 10.6405 24.059 9.83801H12.7402V14.459H19.222C18.953 15.9493 18.0888 17.2677 16.8233 18.1055V21.1039H20.6903C22.9611 19.0138 24.2663 15.9273 24.2663 12.2764Z"
-                    fill="#4285F4"
-                  />
-                  <path
-                    d="M12.7401 24.0008C15.9766 24.0008 18.7059 22.9382 20.6945 21.1039L16.8276 18.1055C15.7517 18.8375 14.3627 19.252 12.7445 19.252C9.61388 19.252 6.95946 17.1399 6.00705 14.3003H2.0166V17.3912C4.05371 21.4434 8.2029 24.0008 12.7401 24.0008Z"
-                    fill="#34A853"
-                  />
-                  <path
-                    d="M6.00277 14.3003C5.50011 12.81 5.50011 11.1962 6.00277 9.70581V6.61487H2.01674C0.314734 10.0056 0.314734 14.0005 2.01674 17.3913L6.00277 14.3003Z"
-                    fill="#FBBC04"
-                  />
-                  <path
-                    d="M12.7401 4.74966C14.4509 4.7232 16.1044 5.36697 17.3434 6.54867L20.7695 3.12262C18.6001 1.0855 15.7208 -0.034466 12.7401 0.000808666C8.2029 0.000808666 4.05371 2.55822 2.0166 6.61481L6.00264 9.70575C6.95064 6.86173 9.60947 4.74966 12.7401 4.74966Z"
-                    fill="#EA4335"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_13834_3306">
-                    <rect
-                      width="24"
-                      height="24"
-                      fill="white"
-                      transform="translate(0.5)"
-                    />
-                  </clipPath>
-                </defs>
-              </svg>
-              <h1 className="hidden lg:block">Login with Google</h1>
-            </div>
-            <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center items-center cursor-pointer">
-              <svg
-                width="25"
-                height="24"
-                viewBox="0 0 25 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M18.5 8.25H14V5.25C14 4.85218 14.158 4.47064 14.4393 4.18934C14.7206 3.90804 15.1022 3.75 15.5 3.75H17V0H14C12.8065 0 11.6619 0.474106 10.818 1.31802C9.97411 2.16193 9.5 3.30653 9.5 4.5V8.25H6.5V12H9.5V24H14V12H17L18.5 8.25Z"
-                  fill="#1976D2"
-                />
-              </svg>
-              <h1 className="hidden lg:block">Log in with Facebook</h1>
-            </div>
-          </div> */}
 
           <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
             <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">
