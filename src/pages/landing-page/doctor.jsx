@@ -130,10 +130,6 @@ const Check = (props) => (
   </svg>
 );
 
-
-
-
-
 const Doctor = ({ isLanding }) => {
   const navigate = useNavigate();
 

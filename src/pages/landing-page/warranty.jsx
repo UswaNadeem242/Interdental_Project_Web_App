@@ -21,7 +21,6 @@ const Warranty = () => {
           Interoral.ai provides peace of mind and a unique practice growth opportunity with a comprehensive Warranty Plans and Referal Program
         </p>
       </div>
-
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {warrantyCards.map((card, index) => (
@@ -67,9 +66,6 @@ const Warranty = () => {
                 </button>
               </div>
             </div>
-
-
-
           ))}
         </div>
       </div>
