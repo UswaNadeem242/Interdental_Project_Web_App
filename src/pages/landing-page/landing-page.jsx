@@ -1,8 +1,7 @@
 import Footer from "../../components/Footer";
 import Header from "./header";
 import HeroSection from "./hero-section";
-import AboutUs from "./about-us";
-import Contact from "./contact";
+import AboutUs from "./about-us"; 
 import DoctorComponent from "../../components/landing-page-component";
 import CircleIcon from "../../icon/circle-icon";
 import { implantCards } from "../../Constant";
@@ -31,11 +30,10 @@ const LandingPage = () => {
 
   return (
     <>
-      <div>{<Header />} </div>
+      {/* <div>{<Header />} </div> */}
       <div className="  font-poppins min-h-screen text-gray-800">
         <HeroSection />
         <AboutUs />
- 
         <OurModules />
         <MakeSmile />
         <ImplantInterfeace />
@@ -82,24 +80,19 @@ const LandingPage = () => {
               Interoral.ai provides peace of mind and a unique practice growth opportunity with a comprehensive Warranty Plans and Referal Program
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] gap-6 justify-items-center">
             {warrantyCard.map((card, index) => (
               <div
                 key={index}
                 className="bg-white shadow-lg rounded-xl overflow-hidden grid grid-cols-1 sm:grid-cols-2"
-              >
-
-                {/* Left - Image */}
+              > 
                 <div className="w-full h-full">
                   <img
                     src={card.img}
                     alt={card.title}
                     className="w-full sm:w-[200px] md:w-[290px] lg:w-[300px] h-[150px] sm:h-[180px] md:h-[200px] lg:h-[288px] m-2 sm:m-4 rounded-lg object-cover" />
 
-                </div>
-
-                {/* Right - Content */}
+                </div> 
                 <div className="flex flex-col justify-between p-6 ">
                   <div>
                     <h3 className="text-primaryText text-sm md:text-base font-semibold">
@@ -150,24 +143,17 @@ const LandingPage = () => {
                 <ArrowRightIcon className="w-4 h-4" />
               </div>
             </button>
-
-
-
           </div>
           <div className="flex justify-start pb-6">
             <p className="text-secondaryText text-sm font-poppins text-center max-w-3xl">
               Read our interesting blog
             </p>
-          </div>
-
-          {/* <div className="grid grid-cols-1 md:grid-cols-12 gap-6"> */}
+          </div> 
           <div className="grid md:grid-cols-12 grid-cols-2   gap-8 justify-items-center  ">
 
             {implantCards?.map((card, index) => (
               <div key={index} className="col-span-4">
-                <img src={card.img} alt={card.title || "Implant card"} className="" />
-
-                {/* Show content only if available */}
+                <img src={card.img} alt={card.title || "Implant card"} className="" /> 
                 {card.title && (
                   <>
                     <h3 className="text-xs font-medium font-poppins uppercase text-fouthBrand pt-5">

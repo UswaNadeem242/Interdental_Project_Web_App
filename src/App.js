@@ -51,7 +51,6 @@ import ImplantDenturesPage from "./pages/landing-page/blogs/sub-page";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Blog from "./pages/landing-page/blog";
-
 import LayZirPage from "./pages/landing-page/product/layzir";
 const MainLayout = ({ children }) => (
   <>
