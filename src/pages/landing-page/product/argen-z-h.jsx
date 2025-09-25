@@ -9,6 +9,9 @@ import {
   thicknesses,
 } from "../../../Constant";
 import Header from "../header";
+import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
+import UpperFooter from "../../../components/upper-footer";
+import Footer from "../../../components/Footer";
 
 function ArgenZ({ isLanding }) {
   return (
@@ -100,6 +103,10 @@ function ArgenZ({ isLanding }) {
           <Dimensions thicknesses={thicknesses} diameters={diameters} />
         </div>
       </div>
+
+      <FrequentlyAskedQuestion />
+      <UpperFooter />
+      <Footer />
     </>
   );
 }

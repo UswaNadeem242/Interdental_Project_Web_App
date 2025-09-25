@@ -404,19 +404,11 @@ const About = ({ isLanding }) => {
           </div>
 
 
-        </section>
-
-
-
-
-
-
-
+        </section> 
       </div>
 
       <FrequentlyAskedQuestion />
-      <Contact />
-      <UpperFooter />
+       <UpperFooter />
       <Footer />
     </div>
 

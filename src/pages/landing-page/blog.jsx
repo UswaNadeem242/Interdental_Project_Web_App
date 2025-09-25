@@ -187,7 +187,7 @@ function Blog({ isLanding }) {
             </section>
 
             <FrequentlyAskedQuestion />
-            <Contact />
+         
             <UpperFooter />
             <Footer />
         </div>

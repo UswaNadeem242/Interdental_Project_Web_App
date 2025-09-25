@@ -242,9 +242,7 @@ function Multilayerpro({ isLanding }) {
           </div>
         </div>
       </section>
-
       <FrequentlyAskedQuestion />
-      <Contact />
       <UpperFooter />
       <Footer />
     </div>

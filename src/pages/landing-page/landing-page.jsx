@@ -192,11 +192,8 @@ const LandingPage = () => {
 
         </section>
 
-
-
-
         <FrequentlyAskedQuestion />
-        <Contact />
+      
         <UpperFooter />
         <Footer />
       </div>

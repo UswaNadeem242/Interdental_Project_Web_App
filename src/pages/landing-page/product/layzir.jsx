@@ -171,7 +171,7 @@ function LayZirPage({ isLanding }) {
       </section>
 
       <FrequentlyAskedQuestion />
-      <Contact />
+
       <UpperFooter />
       <Footer />
     </div>

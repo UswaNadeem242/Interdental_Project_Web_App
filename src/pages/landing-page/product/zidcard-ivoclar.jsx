@@ -4,16 +4,9 @@ import Footer from '../../../components/Footer';
 import { cardsecondZidCard, CardZidcard, compositionData, newDiameterszidCard, newThicknesseszidCard, shadesproductzidCard, zidCardComponent } from '../../../Constant';
 import Shades from '../../../Common/product-landing/shades-product-landing';
 import Dimensions from '../../../Common/product-landing/dimensions-product-landing';
-import Contact from '../contact';
-import IndicationProductLanding from '../../../components/product-landing/IndicationProductLanding';
-import CompositionProductLanding from '../../../components/product-landing/CompositionProductLanding';
-import FrequentlyAskedQuestion from '../../../components/frequently-asked-question';
 import { NavLink } from 'react-router-dom';
 
 function ZidcardIvoclar({ isLanding }) {
-
-
-
     return (
         <div>
 
@@ -82,11 +75,7 @@ function ZidcardIvoclar({ isLanding }) {
                         })
                     }
                 </div>
-
-
             </section>
-
-
             <section className="container  mx-auto  px-4 py-10">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="py-10">
@@ -126,7 +115,6 @@ function ZidcardIvoclar({ isLanding }) {
                 </div>
             </section>
             <FrequentlyAskedQuestion />
-            <Contact />
             <UpperFooter />
             <Footer />
         </div>
