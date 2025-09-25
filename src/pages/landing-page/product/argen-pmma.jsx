@@ -1,7 +1,7 @@
 import Header from '../header';
 import UpperFooter from '../../../components/upper-footer';
 import Footer from '../../../components/Footer';
-import { diameters, newDiameters, newThicknesses, settingsOption, shadesproduct, shadesProductLanding, teethOption, thicknesses } from '../../../Constant';
+import { accordionData, diameters, newDiameters, newThicknesses, settingsOption, shadesproduct, shadesProductLanding, teethOption, thicknesses } from '../../../Constant';
 import Shades from '../../../Common/product-landing/shades-product-landing';
 import Dimensions from '../../../Common/product-landing/dimensions-product-landing';
 import Accordion from '../../../Common/accordion';
@@ -9,50 +9,7 @@ import Contact from '../contact';
 
 function ArgebbPmma({ isLanding }) {
 
-    const accordionData = [
-        {
-            title: "How do you generate $5 leads?",
-            description:
-                "Files must be submitted by 3:00 p.m. PST. Units will be received within 2 business days.",
-        },
-        {
-            title: "How quickly can I see results?",
-            description: [
-                "Wall Thickness: <b>0.80 mm minimum</b>",
-                "Margin Thickness: <b>0.10 mm</b>",
-                "Margin Angle: <b>90° degrees</b>",
-                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-            ],
-        },
-        {
-            title: "What’s included in your service?",
-            description: [
-                "Wall Thickness: <b>0.80 mm minimum</b>",
-                "Margin Thickness: <b>0.10 mm</b>",
-                "Margin Angle: <b>90° degrees</b>",
-                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-            ],
-        },
-        {
-            title: "How do you ensure the leads are qualified?",
-            description: [
-                "Wall Thickness: <b>0.80 mm minimum</b>",
-                "Margin Thickness: <b>0.10 mm</b>",
-                "Margin Angle: <b>90° degrees</b>",
-                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-            ],
-        },
-        {
-            title: "Can this system work for my specific market?",
-            description: [
-                "Wall Thickness: <b>0.80 mm minimum</b>",
-                "Margin Thickness: <b>0.10 mm</b>",
-                "Margin Angle: <b>90° degrees</b>",
-                "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-            ],
-        },
-
-    ];
+  
 
     return (
         <div>

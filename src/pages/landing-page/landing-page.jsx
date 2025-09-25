@@ -35,6 +35,7 @@ const LandingPage = () => {
       <div className="  font-poppins min-h-screen text-gray-800">
         <HeroSection />
         <AboutUs />
+ 
         <OurModules />
         <MakeSmile />
         <ImplantInterfeace />
@@ -198,6 +199,7 @@ const LandingPage = () => {
         <FrequentlyAskedQuestion />
         <Contact />
         <UpperFooter />
+ 
         <Footer />
       </div>
     </>
