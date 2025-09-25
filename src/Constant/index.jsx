@@ -82,7 +82,7 @@ With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic result
 
     image: "/assets/landing-page/product7.png",
     multiline: true,
-    nav: '/product'
+    nav: '/product/'
   },
 ];
 

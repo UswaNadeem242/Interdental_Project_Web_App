@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CheckoutvalidationSchema } from "../../../Common/FormsValidation/order-validation";
 import { ErrorMessage, Field, Formik } from "formik";
 import { showToast } from "../../../store/toast-slice";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 const CheckoutForm = ({ next }) => {
   const [loading, setLoading] = useState(false);
@@ -109,6 +110,21 @@ const CheckoutForm = ({ next }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const [openSections, setOpenSections] = useState([
+    "paypal",
+
+  ]);
+  const toggleSection = (section) => {
+    if (openSections.includes(section)) {
+      setOpenSections(openSections.filter((s) => s !== section));
+    } else {
+      setOpenSections([...openSections, section]);
+    }
+  };
+
+  const isOpen = (section) => openSections.includes(section);
+
   return (
     <div className="min-h-screen bg-bgWhite">
       <div className=" pt-5  pb-10">
@@ -276,162 +292,142 @@ const CheckoutForm = ({ next }) => {
                       </div>
                     </div>
 
-                    {/* Payment Method */}
-                    <div className="border rounded-lg p-4 bg-white">
-                      <h2 className="text-sm font-semibold mb-3 font-poppins">
-                        Payment Method
-                      </h2>
+                    <div className="border rounded-lg  bg-[#F8F8F8]">
+                      {/* <div className="flex  justify-between items-center">
+                        <h2 className="text-sm font-semibold mb-3 font-poppins">
+                          Payment Method
+                        </h2>
+                        <div>
+                          <ChevronDownIcon className='w-5 h-5' />
+                        </div>
+                      </div> */}
 
-                      {/* Dropdown */}
-                      <select
-                        name="paymentMethod"
-                        value={formData.paymentMethod || ""}
-                        onChange={handleChange}
-                        className="border rounded-lg px-3 py-2 w-full bg-gray-50 text-gray-700 mb-4 outline-none text-xs font-normal  font-poppins"
-                      >
-                        <option
-                          value=""
-                          className="text-xs font-normal  font-poppins"
-                        >
-                          Select the Option
-                        </option>
-                        <option
-                          value="paypal"
-                          className="text-xs font-normal  font-poppins"
-                        >
-                          PayPal
-                        </option>
-                        {/* <option
-                          value="creditCard"
-                          className="text-xs font-normal  font-poppins"
-                        >
-                          Credit Card
-                        </option>
-                        <option
-                          value="bankTransfer"
-                          className="text-xs font-normal  font-poppins"
-                        >
-                          Bank Transfer
-                        </option> */}
-                      </select>
+                      {/* <div className="border rounded-lg p-4 ">
+                        <div className="flex items-center mb-3">
+                          <img
+                            src="/assets/doctor/paypal.png"
+                            alt="Paypal Logo"
+                            className="w-5 h-5 rounded-sm"
+                          />
+                          <span className="font-medium ml-2">Paypal</span>
+                        </div>
+                        <hr className="border-t my-3" />
+
+                        <div className="mb-3">
+                          <label className="block text-xs font-medium mb-1 text-primaryText  ">
+                            Recipient's Name
+                          </label>
+                          <input
+                            type="text"
+                            name="recipientName"
+                            placeholder="Enter Recipient's Name"
+                            value={formData.recipientName}
+                            onChange={handleChange}
+                            className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText  placeholder:text-xs placeholder:font-poppins"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium mb-1  ">
+                              Paypal Username
+                            </label>
+                            <input
+                              type="text"
+                              name="paypalUsername"
+                              placeholder="Enter Paypal Username"
+                              value={formData.paypalUsername}
+                              onChange={handleChange}
+                              className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium mb-1  ">
+                              E-mail/Phone number
+                            </label>
+                            <input
+                              type="text"
+                              name="paypalEmailPhone"
+                              placeholder="Enter E-mail/Phone number"
+                              value={formData.paypalEmailPhone}
+                              onChange={handleChange}
+                              className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                            />
+                          </div>
+                        </div>
+                      </div> */}
+
+                      <h2 className="text-sm font-semibold mb-3 font-poppins p-4">Payment Method</h2>
 
                       {/* PayPal Section */}
-                      {formData.paymentMethod === "paypal" && (
-                        <div className="border rounded-lg p-4 ">
-                          <div className="flex items-center mb-3">
+                      <div className="border rounded-lg bg-white">
+                        <button
+                          type="button"
+                          className="w-full flex justify-between items-center p-3"
+                          onClick={() => toggleSection("paypal")}
+                        >
+                          <div className="flex items-center">
                             <img
                               src="/assets/doctor/paypal.png"
                               alt="Paypal Logo"
                               className="w-5 h-5 rounded-sm"
                             />
-                            <span className="font-medium ml-2">Paypal</span>
+                            <span className="font-medium ml-2">PayPal</span>
                           </div>
-                          <hr className="border-t my-3" />
-
-                          <div className="mb-3">
-                            <label className="block text-xs font-medium mb-1 text-primaryText  ">
-                              Recipient's Name
-                            </label>
-                            <input
-                              type="text"
-                              name="recipientName"
-                              placeholder="Enter Recipient's Name"
-                              value={formData.recipientName}
-                              onChange={handleChange}
-                              className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText  placeholder:text-xs placeholder:font-poppins"
-                            />
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <label className="block text-xs font-medium mb-1  ">
-                                Paypal Username
+                          <ChevronDownIcon
+                            className={`w-5 h-5 transform transition-transform ${isOpen("paypal") ? "rotate-180" : ""
+                              }`}
+                          />
+                        </button>
+                        {isOpen("paypal") && (
+                          <div className="p-4 border-t">
+                            <div className="mb-3">
+                              <label className="block text-xs font-medium mb-1 text-primaryText">
+                                Recipient's Name
                               </label>
                               <input
                                 type="text"
-                                name="paypalUsername"
-                                placeholder="Enter Paypal Username"
-                                value={formData.paypalUsername}
+                                name="recipientName"
+                                placeholder="Enter Recipient's Name"
+                                value={formData.recipientName}
                                 onChange={handleChange}
                                 className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
                               />
                             </div>
-                            <div>
-                              <label className="block text-xs font-medium mb-1  ">
-                                E-mail/Phone number
-                              </label>
-                              <input
-                                type="text"
-                                name="paypalEmailPhone"
-                                placeholder="Enter E-mail/Phone number"
-                                value={formData.paypalEmailPhone}
-                                onChange={handleChange}
-                                className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
-                              />
+
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <label className="block text-xs font-medium mb-1">
+                                  Paypal Username
+                                </label>
+                                <input
+                                  type="text"
+                                  name="paypalUsername"
+                                  placeholder="Enter Paypal Username"
+                                  value={formData.paypalUsername}
+                                  onChange={handleChange}
+                                  className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs font-medium mb-1">
+                                  E-mail/Phone number
+                                </label>
+                                <input
+                                  type="text"
+                                  name="paypalEmailPhone"
+                                  placeholder="Enter E-mail/Phone number"
+                                  value={formData.paypalEmailPhone}
+                                  onChange={handleChange}
+                                  className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
-
-                      {/* Credit Card Section */}
-                      {/* {formData.paymentMethod === "creditCard" && (
-                        <div className="border rounded-lg p-4 space-y-3">
-                          <label className="block text-sm font-medium mb-1 text-primaryText">
-                            Card Number
-                          </label>
-                          <input
-                            type="text"
-                            name="cardNumber"
-                            placeholder="Enter Card Number"
-                            value={formData.cardNumber || ""}
-                            onChange={handleChange}
-                            className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-primaryText placeholder:text-xs placeholder:font-poppins"
-                          />
-                          <label className="block text-sm font-medium mb-1 text-primaryText ">
-                            Expiry Date
-                          </label>
-                          <input
-                            type="text"
-                            name="expiryDate"
-                            placeholder="MM/YY"
-                            value={formData.expiryDate || ""}
-                            onChange={handleChange}
-                            className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
-                          />
-                        </div>
-                      )} */}
-
-                      {/* Bank Transfer Section */}
-                      {/* {formData.paymentMethod === "bankTransfer" && (
-                        <div className="border rounded-lg p-4 space-y-3">
-                          <label className="block text-sm font-medium mb-1 text-gray-700">
-                            Account Number
-                          </label>
-                          <input
-                            type="text"
-                            name="accountNumber"
-                            placeholder="Enter Account Number"
-                            value={formData.accountNumber || ""}
-                            onChange={handleChange}
-                            className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-primaryText placeholder:text-xs placeholder:font-poppins
-"
-                          />
-                          <label className="block text-sm font-medium mb-1 outline-none text-gray-700">
-                            Bank Name
-                          </label>
-                          <input
-                            type="text"
-                            name="bankName"
-                            placeholder="Enter Bank Name"
-                            value={formData.bankName || ""}
-                            onChange={handleChange}
-                            className="border rounded-lg px-3 py-2 w-full bg-gray-50 outline-none text-primaryText placeholder:text-xs placeholder:font-poppins"
-                          />
-                        </div>
-                      )} */}
+                        )}
+                      </div>
                     </div>
                   </div>
-
                   {/* Right Section - Order Summary */}
                   <div className="md:col-span-4 bg-white rounded-xl border border-gray-200 p-6 flex flex-col justify-between">
                     <div>

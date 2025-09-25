@@ -8,9 +8,8 @@ function Dimensions({ thicknesses, diameters }) {
       </h2>
 
       <div className="space-y-6">
-
         {/* Diameters */}
-        <div className="flex flex-col md:flex-row md:items-center md:gap-10">
+        <div className="flex flex-col md:flex-row md:items-center md:gap-10 mb-12">
           <span className="font-bold text-[#000000] mb-2 md:mb-0 w-full md:w-auto">
             Diameters
           </span>
@@ -42,7 +41,6 @@ function Dimensions({ thicknesses, diameters }) {
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
