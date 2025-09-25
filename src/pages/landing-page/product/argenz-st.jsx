@@ -104,7 +104,7 @@ function ArgenzST({ isLanding }) {
       </section>
 
       <FrequentlyAskedQuestion />
-      <Contact />
+     
       <UpperFooter />
       <Footer />
     </div>
