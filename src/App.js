@@ -52,6 +52,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Blog from "./pages/landing-page/blog";
 import LayZirPage from "./pages/landing-page/product/layzir";
+import AiditeZirconia from "./pages/landing-page/product/aidite-zirconia ";
 const MainLayout = ({ children }) => (
   <>
     <Header />
@@ -212,16 +213,18 @@ function App() {
               path="/product/lay-zir"
               element={<LayZirPage isLanding={false} />}
             />
+            AiditeZirconia
             <Route
               path="/product/zidcard-ivoclar"
               element={<ZidcardIvoclar isLanding={false} />}
             />
+            <Route
+              path="/product/aidite-zirconia"
+              element={<AiditeZirconia isLanding={false} />}
+            />
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
-            <Route
-              path="/blog"
-              element={<Blog isLanding={false} />}
-            />
+            <Route path="/blog" element={<Blog isLanding={false} />} />
             <Route path="/blogs/:slug" element={<ImplantDenturesPage />} />
             <Route
               path="/our-products"
