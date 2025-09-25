@@ -110,6 +110,16 @@ export const menuAdminPanelItem = [
     path: "/admin-panel/doctor-detail",
     icon: DashboardIcon,
   },
+  {
+    name: "Orders",
+    path: "/admin-panel/orders",
+    icon: DashboardIcon,
+  },
+  // {
+  //   name: "Order Detail",
+  //   path: "/admin-panel/order-detail",
+  //   icon: DashboardIcon,
+  // },
 ];
 export const menuItemsUser = [
   {
@@ -1103,5 +1113,73 @@ export const dataDoctors = [
     subStatus: "expired",
     detailUrl: "/doctor-admin/order-details",
     icon: "✌️",
+  },
+];
+
+export const headingsAdminPanelOrders = [
+  { label: "order ID", key: "id" },
+  { label: "Scan Date", key: "scanDate" },
+  { label: "Doctor Name", key: "dName" },
+  { label: "Patient ID", key: "pId" },
+  { label: "Shopping Date", key: "shoppingDate" },
+  { label: "Status", key: "status" },
+  { label: "Action", key: "action" },
+];
+
+export const dataOrdersAdminPanel = [
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
+  },
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
+  },
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
+  },
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
+  },
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
   },
 ];

@@ -29,17 +29,17 @@ const ReviewOrder = ({ next }) => {
           doctorName: parsed.doctorName,
           officeReg: parsed.officeReg,
           createDate: parsed.createDate,
-          dueDate: parsed.dueDate
+          dueDate: parsed.dueDate,
         },
         patient: {
           firstName: parsed.patientFirstName,
           lastName: parsed.patientLastName,
-          subscriptionId: parsed.subscriptionId
+          subscriptionId: parsed.subscriptionId,
         },
         teeth: parsed.toothSelections || {},
         selectedTeeth: parsed.selectedTeeth || [],
         totalPrice: parsed.totalPrice || 0,
-        note: parsed.note || ""
+        note: parsed.note || "",
       };
 
       setFormData(formattedData);
@@ -47,9 +47,8 @@ const ReviewOrder = ({ next }) => {
     }
   }, []);
 
-
   const savedData = localStorage.getItem("restorationForm");
-  console.log(savedData)
+  console.log(savedData);
 
   // ✅ compute subtotal from teeth
   // const totalPrice = formData.selectedTeeth.reduce((sum, toothId) => {
@@ -68,7 +67,6 @@ const ReviewOrder = ({ next }) => {
     );
   }, 0);
 
-
   // const totalPrice = Object.values(formData.teeth).reduce(
   //   (sum, tooth) => sum + (tooth.materialPrice || 0),
   //   0
@@ -78,7 +76,9 @@ const ReviewOrder = ({ next }) => {
       <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Left Panel */}
         <div className="md:col-span-7 bg-white rounded-xl border border-gray-200 p-4 sm:p-6 space-y-6">
-          <h2 className="text-sm font-poppins text-primaryText">Implant Design Details: </h2>
+          <h2 className="text-sm font-poppins text-primaryText">
+            Implant Design Details:{" "}
+          </h2>
           {/* Doctor Info */}
           <div className="border border-gray-200  p-4 sm:p-6">
             <h3 className="font-medium mb-2 text-sm sm:text-base font-poppins text-[#434343]">
@@ -195,7 +195,10 @@ const ReviewOrder = ({ next }) => {
               {selectedTeeth?.map((toothId) => {
                 const tooth = formData?.teeth?.[toothId] || {};
                 return (
-                  <div key={toothId} className="border border-gray-200 p-3 rounded-lg">
+                  <div
+                    key={toothId}
+                    className="border border-gray-200 p-3 rounded-lg"
+                  >
                     <h4 className="font-semibold text-sm mb-2 text-secondaryBrand">
                       Tooth #{toothId}
                     </h4>
@@ -205,7 +208,9 @@ const ReviewOrder = ({ next }) => {
                           Material:
                         </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.materialOption?.label || tooth.material || "N/A"}
+                          {tooth.materialOption?.label ||
+                            tooth.material ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
@@ -213,7 +218,9 @@ const ReviewOrder = ({ next }) => {
                           Scanner Type:
                         </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.scannerTypeOption?.label || tooth.scannerType || "N/A"}
+                          {tooth.scannerTypeOption?.label ||
+                            tooth.scannerType ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
@@ -221,7 +228,9 @@ const ReviewOrder = ({ next }) => {
                           Digital Denture:
                         </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.digitalOptionsOption?.label || tooth.digitalOptions || "N/A"}
+                          {tooth.digitalOptionsOption?.label ||
+                            tooth.digitalOptions ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
@@ -229,7 +238,9 @@ const ReviewOrder = ({ next }) => {
                           Surgical Guide:
                         </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.surgical_guideOption?.label || tooth.surgical_guide || "N/A"}
+                          {tooth.surgical_guideOption?.label ||
+                            tooth.surgical_guide ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
@@ -237,7 +248,9 @@ const ReviewOrder = ({ next }) => {
                           Digital Model:
                         </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.digital_optionOption?.label || tooth.digital_option || "N/A"}
+                          {tooth.digital_optionOption?.label ||
+                            tooth.digital_option ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
@@ -253,7 +266,9 @@ const ReviewOrder = ({ next }) => {
                           Photogrammetry:
                         </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.Photogrammetry_filesOption?.label || tooth.Photogrammetry_files || "N/A"}
+                          {tooth.Photogrammetry_filesOption?.label ||
+                            tooth.Photogrammetry_files ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
@@ -310,8 +325,6 @@ const ReviewOrder = ({ next }) => {
                 );
               })} */}
 
-
-
               {/* {selectedTeeth.map((toothId) => {
                 const tooth = formData?.teeth?.[toothId] || {};
                 const toothPrice =
@@ -332,50 +345,65 @@ const ReviewOrder = ({ next }) => {
                 );
               })} */}
 
-
-
-
-
-
               <div className="space-y-3 text-sm">
                 {selectedTeeth.map((toothId) => {
                   const tooth = formData?.teeth?.[toothId] || {};
 
                   return (
-                    <div key={toothId} className="border-b border-gray-200 pb-2">
-                      <p className="font-semibold text-[#1A1A1A]">Tooth #{toothId}</p>
+                    <div
+                      key={toothId}
+                      className="border-b border-gray-200 pb-2"
+                    >
+                      <p className="font-semibold text-[#1A1A1A]">
+                        Tooth #{toothId}
+                      </p>
 
                       <div className="flex justify-between">
-                        <span className="text-[#828386] font-poppins text-sm">Material:</span>
-                        <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.materialPrice || 0}</span>
+                        <span className="text-[#828386] font-poppins text-sm">
+                          Material:
+                        </span>
+                        <span className="text-[#1A1A1A] font-poppins text-sm">
+                          ${tooth.materialPrice || 0}
+                        </span>
                       </div>
 
                       <div className="flex justify-between">
-                        <span className="text-[#828386] font-poppins text-sm">Digital Options:</span>
-                        <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.digitalOptionsPrice || 0}</span>
+                        <span className="text-[#828386] font-poppins text-sm">
+                          Digital Options:
+                        </span>
+                        <span className="text-[#1A1A1A] font-poppins text-sm">
+                          ${tooth.digitalOptionsPrice || 0}
+                        </span>
                       </div>
 
                       <div className="flex justify-between">
-                        <span className="text-[#828386] font-poppins text-sm">Surgical Guide:</span>
-                        <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.surgical_guidePrice || 0}</span>
+                        <span className="text-[#828386] font-poppins text-sm">
+                          Surgical Guide:
+                        </span>
+                        <span className="text-[#1A1A1A] font-poppins text-sm">
+                          ${tooth.surgical_guidePrice || 0}
+                        </span>
                       </div>
 
                       <div className="flex justify-between">
-                        <span className="text-[#828386] font-poppins text-sm">Lab:</span>
-                        <span className="text-[#1A1A1A] font-poppins text-sm">${tooth.labPrice || 0}</span>
+                        <span className="text-[#828386] font-poppins text-sm">
+                          Lab:
+                        </span>
+                        <span className="text-[#1A1A1A] font-poppins text-sm">
+                          ${tooth.labPrice || 0}
+                        </span>
                       </div>
 
                       <div className="flex justify-between font-medium mt-1">
-                        <span className="text-[#828386] font-poppins text-sm">Tooth Total:</span>
+                        <span className="text-[#828386] font-poppins text-sm">
+                          Tooth Total:
+                        </span>
                         {/* <span className="text-[#1A1A1A] font-poppins text-sm">${toothTotal}</span> */}
                       </div>
                     </div>
                   );
                 })}
-
-
               </div>
-
 
               {/* <hr className="my-2 border-gray-200" /> */}
               <div className="flex justify-between ">
@@ -398,7 +426,10 @@ const ReviewOrder = ({ next }) => {
               </div>
             </div>
           </div>
-          <button className="mt-6 w-full py-3 rounded-3xl bg-secondaryBrand  text-white font-medium" onClick={next}>
+          <button
+            className="mt-6 w-full py-3 rounded-3xl bg-secondaryBrand  text-white font-medium"
+            onClick={next}
+          >
             Checkout
           </button>
         </div>
