@@ -1,12 +1,10 @@
 import React from "react";
+import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
+import Contact from "../contact";
+import UpperFooter from "../../../components/upper-footer";
+import Footer from "../../../components/Footer";
+import BlogNext from "../../../components/landing-page-component/blog-next.jsx";
 
-/**
- * Implant Dentures Page
- * - Tailwind + React
- * - Uses Array.map to render sections
- * - Headings with dotted leader line to the right (like the reference)
- * - Mobile-first, responsive spacing/typography
- */
 
 const sections = [
   {
@@ -57,45 +55,73 @@ const HeadingWithLeader = ({ children }) => (
 
 export default function ImplantDenturesPage() {
   return (
-    <section className="bg-white text-gray-700 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20 py-6 sm:py-10 md:py-14">
-      {/* Hero image */}
-      <div className="max-w-4xl mx-auto">
-        <img
-          src="/images/implant-dentures-hero.png"
-          alt="Implant retained dentures"
-          className="w-full h-auto rounded-md shadow-sm"
-        />
+    <>
+
+
+
+      <div className="container px-4 mx-auto py-8 sm:py-12 md:pt-32  sm:px-6 md:px-8">
+        {/*  flex flex-col md:flex-row items-center justify-between */}
+
+        <h1 className="text-5xl font-bold text-primaryText max-w-[700px]  text-center mx-auto">What Are Implant-Retained
+          Dentures?</h1>
+        <p className="text-sm font-normal font-poppins text-primaryText text-center">Dentures</p>
+
       </div>
 
-      {/* Intro paragraph (optional) */}
-      <p className="max-w-4xl mx-auto mt-4 sm:mt-6 text-sm md:text-base leading-relaxed text-gray-600">
-        Implant-retained dentures are revolutionizing tooth replacement, blending the reliability of traditional dentures
-        with advanced dental implant technology. By addressing common issues associated with conventional dentures,
-        implant-supported dentures offer a more secure, comfortable, and long-lasting solution.
-      </p>
 
-      {/* Content sections rendered via map */}
-      <div className="max-w-4xl mx-auto mt-8 md:mt-12 space-y-10 md:space-y-12">
-        {sections.map((sec) => (
-          <section key={sec.id} className="space-y-4">
-            <HeadingWithLeader>{sec.title}</HeadingWithLeader>
 
-            {sec.paras?.map((p, i) => (
-              <p key={i} className="text-sm md:text-base leading-7 text-gray-700">
-                {p}
-              </p>
-            ))}
+      <section className="bg-white text-gray-700 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20 py-6 sm:py-10 md:py-14">
+        {/* Hero image */}
+        <div className="max-w-4xl mx-auto">
+          <img
+            src="/assets/landing-page/blog 1.png"
+            alt="Implant retained dentures"
+            className="w-full h-auto rounded-md shadow-sm"
+          />
+        </div>
 
-            {sec.bullets && (
-              <ul className="list-disc pl-5 text-sm md:text-base leading-7 space-y-1">
-                {sec.bullets.map((b, i) => (
-                  <li key={i}>{b}</li>
-                ))}
-              </ul>
-            )}
-          </section>
-        ))}
-      </div>
-    </section>
+        {/* Intro paragraph (optional) */}
+        <p className="max-w-4xl mx-auto mt-4 sm:mt-6 text-sm md:text-base leading-relaxed text-gray-600">
+          Implant-retained dentures are revolutionizing tooth replacement, blending the reliability of traditional dentures
+          with advanced dental implant technology. By addressing common issues associated with conventional dentures,
+          implant-supported dentures offer a more secure, comfortable, and long-lasting solution.
+        </p>
+
+        {/* Content sections rendered via map */}
+        <div className="max-w-4xl mx-auto mt-8 md:mt-12 space-y-10 md:space-y-12">
+          {sections.map((sec) => (
+            <section key={sec.id} className="space-y-4">
+              <HeadingWithLeader>{sec.title}</HeadingWithLeader>
+
+              {sec.paras?.map((p, i) => (
+                <p key={i} className="text-sm md:text-base leading-7 text-gray-700">
+                  {p}
+                </p>
+              ))}
+
+              {sec.bullets && (
+                <ul className="list-disc pl-5 text-sm md:text-base leading-7 space-y-1">
+                  {sec.bullets.map((b, i) => (
+                    <li key={i}>{b}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))}
+        </div>
+      </section>
+
+<BlogNext />
+
+
+      <FrequentlyAskedQuestion />
+      <Contact />
+      <UpperFooter />
+      <Footer />
+    </>
+
+
+
+
   );
 }

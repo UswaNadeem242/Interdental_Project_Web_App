@@ -135,9 +135,7 @@ const Doctor = ({ isLanding }) => {
 
 
   return (
-
     <>
-
       <div className="bg-gradient-to-b from-[#f7fefc] to-[#e2f7fb]">
         {!isLanding && <Header />}
         <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 flex flex-col md:flex-row items-center justify-between">
@@ -183,7 +181,6 @@ const Doctor = ({ isLanding }) => {
             </button>
           </div>
         </section>
- 
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center md:px-16 px-4 py-20">
           {/* Left column */}
           <div className="space-y-4">
@@ -207,9 +204,6 @@ const Doctor = ({ isLanding }) => {
             <p className="text-sm font-poppins text-secondaryText">
               By enrolling, your office gains:
             </p>
-
-
-
             <ul className="flex flex-col space-y-3">
               <li className="flex items-start gap-3 bg-blue-300/10 p-3 rounded-md font-poppins font-medium">
                 <DotIcon className="w-5 h-5 shrink-0" />
@@ -240,10 +234,6 @@ const Doctor = ({ isLanding }) => {
             />
           </div>
         </section>
-
-
-
-
         <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
           <div className="text-center mb-6 sm:mb-12">
             <h2 className=" text-sm md:text-3xl font-semibold text-secondaryBrand max-w-[600px] mx-auto text-center">
@@ -282,8 +272,6 @@ const Doctor = ({ isLanding }) => {
             ))}
           </div>
         </div>
-
-
         <div className="py-8 sm:py-12 md:pb-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
           <div className="text-center mb-6 sm:mb-12">
             <h2 className=" text-sm md:text-3xl font-semibold text-secondaryBrand max-w-[600px] mx-auto text-center">
@@ -312,19 +300,7 @@ const Doctor = ({ isLanding }) => {
             <div className="col-span-6 bg-background p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Route your files directly to design and production labs</p></div>
           </div>
           <p className="text-sm font-poppins font-normal">Bonus: Our built-in ChatGPT Assistant can guide you through the form step-by-step to prevent errors, answer questions, and ensure your cases are processed without delays.</p>
-
-
-
         </div>
-
-
-
-
-
-
-
-
-
         <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
           {/* Header */}
           <h2 className="text-base md:text-3xl font-bold text-primaryText uppercase text-center tracking-wide">
@@ -340,8 +316,6 @@ const Doctor = ({ isLanding }) => {
             </a>{' '}
             and we will create a personalized proposal that fits your business needs.
           </p>
-
-
           {/* Plans Grid */}
           <div className="mx-auto mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-full  ">
             {plans.map((plan) => (
@@ -367,8 +341,6 @@ const Doctor = ({ isLanding }) => {
 
                     </>
                   )}
-
-
                   <ul className="mt-4 list-disc list-inside  bg-blue-300/10 p-2 text-gray-700 space-y-2 text-sm sm:text-base mx-auto max-w-[20rem]">
                     {plan.features.map((f, i) => (
                       <li key={i} className="flex items-start gap-2">

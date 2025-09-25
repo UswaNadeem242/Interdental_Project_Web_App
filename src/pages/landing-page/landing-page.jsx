@@ -1,15 +1,19 @@
-import React from "react";
 import Footer from "../../components/Footer";
 import Header from "./header";
 import HeroSection from "./hero-section";
 import AboutUs from "./about-us";
-import Warranty from "./warranty";
 import Contact from "./contact";
-import DoctorComponent from "../../components/doctor-component";
+import DoctorComponent from "../../components/landing-page-component";
 import CircleIcon from "../../icon/circle-icon";
 import { implantCards } from "../../Constant";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import OurModules from "../../components/landing-page-component/our-modules";
+import MakeSmile from "../../components/landing-page-component/make-smile";
+import ImplantInterfeace from "../../components/landing-page-component/implant-interface";
+import FrequentlyAskedQuestion from "../../components/frequently-asked-question";
+import UpperFooter from "../../components/upper-footer";
+import FeaturedProducts from "../../components/landing-page-component/featured-product";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -25,50 +29,25 @@ const LandingPage = () => {
       ],
     },]
 
-
   return (
     <>
-      <Header />
+      <div>{<Header />} </div>
       <div className="  font-poppins min-h-screen text-gray-800">
-
         <HeroSection />
         <AboutUs />
-
-
-
-        <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-[1511px] h-auto sm:h-[814px] border-t border-[#0000001A] bg-white py-8 sm:py-12 md:py-16 lg:py-[132px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-8 lg:gap-[120px]">
-          {/* Image */}
-          <img
-            src="/assets/landing-page/about-us-1.png"
-            alt="about us image"
-            className="w-[300px] sm:w-[400px] md:w-[500px] lg:w-[550px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px]"
-          />
-
+        <OurModules />
+        <MakeSmile />
+        <ImplantInterfeace />
+        <FeaturedProducts />
+        <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-[1511px] h-auto sm:h-[814px]   bg-white py-8 sm:py-12 md:py-16 lg:py-[132px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-8 lg:gap-[120px]">
           {/* Text Content */}
           <div className="flex flex-col justify-start items-start w-full max-w-[575px] space-y-4 sm:space-y-[16px] px-4 sm:px-0">
-            <h1 className="font-poppins font-bold text-lg sm:text-xl lg:text-lg text-[#949494]">
-              About Us
-            </h1>
-
             <div className="flex justify-start items-center gap-2 sm:gap-4 font-poppins font-bold sm:text-sm md:text-3xl lg:text-[40px]">
-              <h1 className="text-secondaryBrand">Interoral.ai</h1>
+              <h1 className="text-secondaryBrand  text-5xl font-poppins font-semibold">InterOral.ai</h1>
             </div>
-
             <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 lg:leading-[30px]">
-              At Interoral.ai, we are more than a dental laboratory—we're your digital
-              command center for smarter restorations and confident patient care.
+              InterOral.ai is an AI-driven platform that seamlessly connects dentists, dental labs, and patients under one secure system. Dentists can submit digital prescriptions, upload scans, and order implant parts, while labs efficiently receive and manage cases. Patients gain added value through extended warranty coverage, ensuring a smooth, connected, and compliant workflow for all.
             </p>
-
-            <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 lg:leading-[30px]">
-              With over 15 years of expertise in advanced prosthetics and full-mouth
-              reconstruction, we’ve built a powerful, tech-forward platform that
-              connects dentists, labs, and implant companies like never before.
-            </p>
-
-            <p className=" w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 lg:leading-[30px]">
-              Every case begins with craftsmanship—and ends with peace of mind.
-            </p>
-
             <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
               <h1 className="font-poppins font-semibold text-base text-[#434343]">
                 View More
@@ -78,26 +57,14 @@ const LandingPage = () => {
               </div>
             </button>
           </div>
+          {/* Image */}
+          <img
+            src="/assets/landing-page/about-us-1.png"
+            alt="about us image"
+            className="w-[300px] sm:w-[400px] md:w-[500px] lg:w-[550px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px]"
+          />
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <DoctorComponent />
-
-
         <div className="container mx-auto px-3 w-full py-28">
 
           <div className="flex justify-center ">
@@ -162,12 +129,6 @@ const LandingPage = () => {
             ))}
           </div>
         </div>
-
-
-
-
-
-
 
         {/* bloags */}
         <section className="container px-4 mx-auto py-28 ">
@@ -234,8 +195,9 @@ const LandingPage = () => {
 
 
 
-
-        <Contact isLanding={true} />
+        <FrequentlyAskedQuestion />
+        <Contact />
+        <UpperFooter />
         <Footer />
       </div>
     </>
