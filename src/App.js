@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -43,7 +44,15 @@ import Toastify from "./Common/react-toastify";
 import ProductLandingPage from "./pages/landing-page/product";
 import ArgebbPmma from "./pages/landing-page/product/argen-pmma";
 import ArgenZ from "./pages/landing-page/product/argen-z-h";
+import ZidcardIvoclar from "./pages/landing-page/product/zidcard-ivoclar";
+import ArgenzST from "./pages/landing-page/product/argenz-st";
+import Multilayerpro from "./pages/landing-page/product/multilayer-pro";
+import ImplantDenturesPage from "./pages/landing-page/blogs/sub-page";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Blog from "./pages/landing-page/blog";
 
+import LayZirPage from "./pages/landing-page/product/layzir";
 const MainLayout = ({ children }) => (
   <>
     <Header />
@@ -180,11 +189,41 @@ function App() {
               // </MainLayout>
               // test
             }{" "}
-            <Route path="/product" element={<ProductLandingPage isLanding={false} />} />
-            <Route path="/product/argen-pmma" element={<ArgebbPmma isLanding={false} />} />
-            <Route path="/product/argen-zh" element={<ArgenZ isLanding={false} />} />
+            <Route
+              path="/product"
+              element={<ProductLandingPage isLanding={false} />}
+            />
+            <Route
+              path="/product/argen-pmma"
+              element={<ArgebbPmma isLanding={false} />}
+            />
+            <Route
+              path="/product/argen-zh"
+              element={<ArgenZ isLanding={false} />}
+            />
+            <Route
+              path="/product/argenz-st"
+              element={<ArgenzST isLanding={false} />}
+            />
+            <Route
+              path="/product/multilayer-pro"
+              element={<Multilayerpro isLanding={false} />}
+            />
+            <Route
+              path="/product/lay-zir"
+              element={<LayZirPage isLanding={false} />}
+            />
+            <Route
+              path="/product/zidcard-ivoclar"
+              element={<ZidcardIvoclar isLanding={false} />}
+            />
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
+            <Route
+              path="/blog"
+              element={<Blog isLanding={false} />}
+            />
+            <Route path="/blogs/:slug" element={<ImplantDenturesPage />} />
             <Route
               path="/our-products"
               element={<ArgenZ isLanding={false} />}
@@ -197,8 +236,6 @@ function App() {
                 // </MainLayout>
               }
             />
-
-
             {/* <Route
               path="/product"
               element={

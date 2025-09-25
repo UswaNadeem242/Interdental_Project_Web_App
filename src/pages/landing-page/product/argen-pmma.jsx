@@ -99,18 +99,19 @@ function ArgebbPmma({ isLanding }) {
                                     <h5 className="text-[#000000] font-semibold">{item.title}</h5>
                                 </div>
 
-                                <div className="md:col-span-3 text-center md:text-left space-y-1">
-
-
-                                    {Array.isArray(item.description) ? (
-                                        item.description.map((line, i) => {
-                                            if (line.startsWith("Note")) {
-                                                return (
-                                                    <p key={i} className="text-gray-700 text-sm md:text-base leading-relaxed">
-                                                        {line}
-                                                    </p>
-                                                );
-                                            }
+                <div className="md:col-span-3 text-center md:text-left space-y-1">
+                  {Array.isArray(item.description) ? (
+                    item.description.map((line, i) => {
+                      if (line.startsWith("Note")) {
+                        return (
+                          <p
+                            key={i}
+                            className="text-gray-700 text-sm md:text-base leading-relaxed"
+                          >
+                            {line}
+                          </p>
+                        );
+                      }
 
                                             const [label, value] = line.split(":");
                                             return (
@@ -141,11 +142,11 @@ function ArgebbPmma({ isLanding }) {
                         <Shades shades={shadesproduct} title="Shades" />
                     </div>
 
-                    <div className="p-4">
-                        <Dimensions thicknesses={newThicknesses} diameters={newDiameters} />
-                    </div>
-                </div>
-            </section>
+          <div className="p-4">
+            <Dimensions thicknesses={newThicknesses} diameters={newDiameters} />
+          </div>
+        </div>
+      </section>
 
             <section className='continer mx-auto md:px-8 px-4 py-10 md:py-40 bg-background'>
                 <div className='flex justify-center pb-5'>
@@ -165,4 +166,4 @@ function ArgebbPmma({ isLanding }) {
     )
 }
 
-export default ArgebbPmma
+export default ArgebbPmma;

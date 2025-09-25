@@ -1,135 +1,42 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Contact from "./contact";
 import Header from "./header";
-
-const plans = [
-  {
-    id: 1,
-    title: "3 YEAR PLAN",
-    duration: "3 Years (36 Months)",
-    price: "$99 Enrollment",
-    description: "Up to 10 Crowns, Bridges and Veneers",
-    buttonStyle:
-      "border-blue-500 text-blue-900 hover:bg-blue-800 hover:text-white",
-  },
-  {
-    id: 2,
-    title: "6 YEAR PLAN",
-    duration: "6 Years (72 Months)",
-    price: "$199 Enrollment",
-    description: "Up to 20 Crowns, Bridges and Veneers",
-    buttonStyle: "bg-blue-900 text-white hover:bg-blue-700",
-  },
-  {
-    id: 3,
-    title: "6 YEAR PLAN",
-    duration: "9 Years (108 Months)",
-    price: "$299 Enrollment",
-    description: "Including Implant Crowns, not related Implant Parts",
-    buttonStyle:
-      "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
-  },
-];
-
-const concerns = [
-  {
-    title: "Chipped Crowns",
-    description:
-      "Crowns made of all porcelain can occasionally chip. If the chipping is extensive the crown may need to be replaced. We will re-make it at no charge.",
-  },
-  {
-    title: "Loose Crowns",
-    description:
-      "The crown naturally may become loose through wear and tear, when this open bacteria can seep in, causing decay and infection. If your crown feels loose, contact your dental office. We can replace it for free.",
-  },
-  {
-    title: "Crown Displacement",
-    description:
-      "If your crown or bridge is displaced, this may be due to an improper fit or lack of cement. If this happens, contact your doctor's office immediately. The restoration may need to be recemented or replaced.",
-  },
-  {
-    title: "Allergic Reaction",
-    description:
-      "In the case of porcelain fused to metal crown or bridge, on rare occasions patients have had allergic reactions due to the fact that crown restorations are made using a mixture of metals reactions may occur, but extremely rare.",
-  },
-];
-
-const steps = [
-  {
-    id: 1,
-    title: "REGISTER",
-    description: [
-      "Register first by filling out patient information including participating dentist/doctor.",
-      "Read and initial terms and conditions.",
-      "If your dentist is not a participating dentist, we will find one for you.",
-      "Select the date to submit payment for your subscription. The date will automatically charge your credit card every month on that date.",
-      "Submit Payment.",
-      "You will receive an email from us with a reference number. This number is for the next set of instructions.",
-    ],
-  },
-  {
-    id: 2,
-    title: "CLAIM REQUEST FORM",
-    description: [
-      "Go to your patient’s page and log in.",
-      "Download the claim request and fill out all of your information including the reference number provided by your welcome email.",
-      "Log into this website on the portal page and fill out the claim request form with your dentist also using your reference number.",
-      "Your dentist will indicate the number of years you want 'Make Me Smile' to extend the warranty.",
-      "Pick the number of years you want to extend this service.",
-      "The system will generate your monthly dues depending on your choice of coverage.",
-    ],
-  },
-  {
-    id: 3,
-    title: "ALL DONE",
-    description: [
-      "You should now have a copy of your contract with Make Me Smile and Interdental Lab. You can download a copy on your page.",
-      "Any questions, come to your page log in and submit an email regarding your concerns.",
-    ],
-  },
-];
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { PrimaryButtonUI } from "../../Common/Button";
+import CircleIcon from "../../icon/circle-icon";
+import UpperFooter from "../../components/upper-footer";
+import { concerns, plans, steps } from "../../Constant";
 
 const Patients = ({ isLanding }) => {
   const navigate = useNavigate();
   return (
-    <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc]">
+    <div className="bg-gray-50">
+
       {!isLanding && <Header />}
-      <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:mx-12 xl:mx-24 2xl:mx-48 flex flex-col md:flex-row items-center justify-between">
+      <section className="py-8 sm:py-12 md:py-48 px-4 sm:px-6 md:px-8 lg:mx-12 xl:mx-24 2xl:mx-48 flex flex-col md:flex-row items-center justify-between">
         {/* Left Side: Text */}
         <div className="w-full md:w-1/2 text-gray-800">
-          <h3 className="text-sm md:text-2xl font-bold text-blue-900">
-            PATIENT
+          <h3 className="text-sm md:text-5xl font-bold text-secondaryBrand">
+            Protect Your Smile with MakeMeSmile
           </h3>
-          <p className="mt-4 text-sm md:text-lg text-gray-600">
-            Our team of experts is committed to delivering exceptional results
-            and ensuring your satisfaction. Whether you need a crown, bridge, or
-            denture, we are here to help.
+          <p className="text-secondaryText text-sm font-normal font-poppins py-4">Extended warranties up to 9 years- simple, affordable, and trusted by your dentist</p>
+          <p className="mt-4  text-secondaryText text-sm font-normal font-poppins">
+            Your dental work is an investment in your health and your confidence. Life happens — crowns can chip, bridges may loosen, or implants may need attention. With MakeMeSmile, you don’t have to worry.
           </p>
-          <button className="mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white  transition-all duration-300 flex items-center group text-sm sm:text-base" onClick={() => navigate("/signup")}>
-            <span className="mr-2 sm:mr-4">Register</span>
-            <span className="w-6 sm:w-8 h-6 sm:h-8 bg-[#001d58] text-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#001d58] transition-all duration-300">
-              <svg
-                width="39"
-                height="39"
-                viewBox="0 0 39 39"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="0.970001"
-                  y="0.63623"
-                  width="37.7273"
-                  height="37.7273"
-                  rx="18.8636"
-                  fill="#001D58"
-                />
-                <path
-                  d="M21.1641 16.3588C20.899 16.0936 20.899 15.6637 21.1641 15.3986C21.4293 15.1334 21.8592 15.1334 22.1244 15.3986L25.7456 19.0198C26.0107 19.2849 26.0107 19.7148 25.7456 19.98L22.1244 23.6012C21.8592 23.8664 21.4293 23.8664 21.1641 23.6012C20.899 23.3361 20.899 22.9062 21.1641 22.641L23.6263 20.1789H14.8545C14.4795 20.1789 14.1755 19.8749 14.1755 19.4999C14.1755 19.1249 14.4795 18.8209 14.8545 18.8209H23.6263L21.1641 16.3588Z"
-                  fill="white"
-                />
-              </svg>
-            </span>
+          <ul className=" pt-5 list-disc pl-4 pb-6">
+            <li className="text-secondaryText text-sm font-normal font-poppin">Peace of mind with coverage up to 9 years</li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">Fast, simple claims if something happens</li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">Trusted warranty lab: InterDentalUSA</li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">Your dentist stays by your side — and so do we</li>
+          </ul>
+          <button onClick={() => navigate("/signup")} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+            <h1 className="font-poppins font-semibold text-base text-[#434343]">
+              Register
+            </h1>
+            <div className="rounded-full bg-secondaryBrand text-white p-2">
+              <ArrowRightIcon className="w-4 h-4" />
+            </div>
           </button>
         </div>
 
@@ -143,14 +50,78 @@ const Patients = ({ isLanding }) => {
           />
         </div>
       </section>
+      <section>
+        <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-white">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-sm md:text-3xl font-bold font-poppins text-fouthBrand">
+              Common Concerns
+            </h2>
+            <p className="text-sm md:text-xl text-primaryText mt-4 font-poppins">
+              Our warranty gives you the comfort and reassurance you deserve
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6">
+            {concerns.map((concern, index) => (
+              <div
+                key={index}
+                className="bg-background p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition"
+              >
+                <h3 className="text-sm md:text-xl font-semibold text-secondaryBrand  mb-4">
+                  {concern.title} - <span className="text-fouthBrand">
+                    {concern?.subtitle}
+                  </span>
+                </h3>
 
-      <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
+                <p className="text-sm md:text-sm font-poppins  font-normal text-textColor">
+                  {concern.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
+        <div className="text-center mb-6 sm:mb-12">
+          <h2 className=" text-sm md:text-2xl font-semibold text-secondaryBrand">
+            Get Started in 3 Easy Steps
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+          {steps.map((step) => (
+            <div
+              key={step.id}
+              className="bg-white p-4 sm:p-6 md:p-8  rounded-lg shadow-md hover:shadow-lg transition"
+            >
+              <div className="flex items-center justify-center w-28  h-28 sm:w-28 sm:h-28  text-5xl bg-background text-secondaryBrand font-bold rounded-full mx-auto mb-4 sm:mb-6">
+                {/* w-10 sm:w-12 h-10 sm:h-12 */}
+                {step.id}
+              </div>
+              <h3 className="text-sm md:text-2xl font-poppins font-bold text-center text-gray-800 mb-4">
+                {step.title}
+              </h3>
+              <ul className="list-disc list-inside text-gray-600 text-sm md:text-sm font-poppins space-y-2 pl-2">
+                {step.description.map((desc, index) => (
+                  <li key={index}>{desc}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div> 
+      
+      
+      
+      
+           <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
         {/* Section Header */}
-        <h2 className="text-sm md:text-lg font-bold text-blue-400">
-          PATIENT YEARLY PLAN
+        <h2 className="text-sm md:text-3xl  font-bold text-primaryText">
+          Choose Your <span className="text-sm md:text-3xl  font-bold text-secondaryBrand">
+            Patient
+          </span>  <span className="text-sm md:text-3xl  font-bold text-fouthBrand"> Warranty </span> <span className="text-sm md:text-3xl  font-bold text-primaryText"> Plan  </span>
         </h2>
-        <p className="mt-4 md:mt-4 text-sm  text-gray-600">
-          Our warranty gives you the comfort and reassurance you deserve
+
+        <p className="mt-4 md:mt-4 font-poppins font-normal text-sm  text-primaryText max-w-[900px] mx-auto text-center">
+          Whether you're receiving a crown, bridge, denture, or implant, your smile deserves protection that lasts. Our Make Me Smile Warranty Program gives you long-term peace of mind—plus access to a network of trusted dentists and advanced dental labs.
         </p>
 
         {/* Plans Grid */}
@@ -158,153 +129,119 @@ const Patients = ({ isLanding }) => {
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className="bg-white border rounded-lg shadow-md p-4 sm:p-6 text-center hover:shadow-lg transition"
+              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
             >
-              <h3 className="text-lg md:text-xl font-bold text-blue-900">
+              {/* Title + Price */}
+              <h3 className="text-lg md:text-2xl font-poppins font-semibold text-center text-primaryText mb-2">
                 {plan.title}
               </h3>
-              <p className="mt-2 text-sm md:text-lg text-blue-400 font-semibold">
-                {plan.duration}
-              </p>
-              <p className="mt-2 sm:mt-4 text-sm md:text-lg text-gray-800 font-bold">
+              <p className="text-center text-secondaryBrand text-3xl font-bold  mb-4">
                 {plan.price}
               </p>
-              <p className="mt-2 text-sm md:text-lg text-gray-600">
-                {plan.description}
-              </p>
+
+              {/* Description as bullet list */}
+              <ul className="list-disc list-inside text-gray-600 text-start p-4 rounded-md bg-blue-300/10 text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
+                {plan.description.map((desc, index) => (
+                  <li key={index}>{desc}</li>
+                ))}
+              </ul>
+
+              {/* Button */}
               <button
-                className={`mt-8 sm:mt-12 md:mt-16 px-4 sm:px-6 py-2 sm:py-3 w-full border transition rounded-lg text-sm md:text-lg ${plan.buttonStyle}`}
+                className={`w-full py-2 px-4 rounded-md font-semibold transition   capitalize secondaryBrand  border border-secondaryBrand    `}
               >
-                GET IT NOW
+                select
               </button>
             </div>
           ))}
         </div>
+        <div>
+          <p className="mt-4 md:mt-4 text-primaryText font-normal font-poppins max-w-[900px] mx-auto text-center ">If You do not see what you want. Don’t worry <a href='/contact' className='text-secondaryBrand'> Contact Us
+          </a> and we will create a personalized proposal that fit your business needs.</p>
+        </div>
       </section>
-      {!isLanding && (
-        <>
-          <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
-            <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-sm md:text-2xl font-semibold text-blue-900">
-                Common Concerns
-              </h2>
-              <p className="text-sm md:text-xl text-gray-600 mt-4">
-                Our warranty gives you the comfort and reassurance you deserve
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6">
-              {concerns.map((concern, index) => (
-                <div
-                  key={index}
-                  className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition"
-                >
-                  <h3 className="text-sm md:text-lg font-semibold text-blue-800 mb-4">
-                    {concern.title}
-                  </h3>
-                  <p className="text-sm md:text-sm text-gray-600">
-                    {concern.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
-            <div className="text-center mb-8 sm:mb-12">
-              <h2 className=" text-sm md:text-2xl font-semibold text-blue-900">
-                Get Started
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-              {steps.map((step) => (
-                <div
-                  key={step.id}
-                  className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md hover:shadow-lg transition"
-                >
-                  <div className="flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-blue-100 text-blue-900 font-bold rounded-full mx-auto mb-4 sm:mb-6">
-                    {step.id}
-                  </div>
-                  <h3 className="text-sm md:text-lg font-poppins font-bold text-center text-gray-800 mb-4">
-                    {step.title}
-                  </h3>
-                  <ul className="list-disc list-inside text-gray-600 text-sm md:text-sm font-poppins space-y-2">
-                    {step.description.map((desc, index) => (
-                      <li key={index}>{desc}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row items-center justify-center py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
-            {/* Left Section: Image */}
-            <div className="relative w-full md:w-1/2 flex justify-center items-center">
-              <img
-                src="/assets/landing-page/patient-image-2.png"
-                alt="Patient"
-                className="w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 object-cover"
-              />
-            </div>
 
-            {/* Right Section: Form */}
-            <div className="w-full md:w-1/2 mt-6 sm:mt-8 md:mt-0 md:ml-6 lg:ml-12">
-              <h2 className=" text-xl md:text-2xl font-poppins font-bold text-blue-900 mb-6 text-center md:text-left">
-                Patient Registration
-              </h2>
-              <form className="space-y-4">
-                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                  <input
-                    type="text"
-                    placeholder="First Name"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Last Name"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
-                  />
-                </div>
-                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                  <input
-                    type="tel"
-                    placeholder="Phone"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
-                  />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Address"
-                  className="w-full px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
-                />
-                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                  <input
-                    type="text"
-                    placeholder="City"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
-                  />
-                  <input
-                    type="text"
-                    placeholder="ZIP"
-                    className="w-full sm:w-1/2 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:font-poppins"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-2 sm:py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-700 transition text-sm sm:text-base"
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
+        <div className="text-center mb-6 sm:mb-12">
+          <h2 className=" text-sm md:text-5xl font-semibold text-secondaryBrand">
+            Need <span className="text-fouthBrand font-poppins font-bold"> Help
+            </span>  Filling It Out?
+          </h2>
+        </div>
+        <div>
+          <p className="text-primaryText font-normal text-xl text-center max-w-[900px]  mx-auto">Use our built-in Smart Assistant to walk you through the form. From tooth selections to warranty terms, our AI guide ensures every detail is right.</p>
+
+          <p className="text-primaryText font-normal text-xl text-center max-w-[700px]  mx-auto pt-11">Ask questions live, get file upload tips, and make confident choices.</p>
+        </div>
+        <div className="flex justify-center mt-7">
+          <PrimaryButtonUI title='Launch Guided Help' className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
+          />
+        </div>
+
+      </div>
+
+      <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-16 ">
+        <div className="grid md:grid-cols-12 grid-cols-6 gap-4 items-center">
+          <div className="col-span-6  ">
+            <h1 className="text-lg md:text-5xl font-poppins text-secondaryBrand">
+              Patient eBook:{" "}
+              <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">Mastering</span> the{" "}
+              <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">Full Mouth</span>
+            </h1>
+            <p className="text-fouthBrand  text-3xl  font-poppins font-bold">$19.95</p>
+            <p className="text-secondaryText  md:text-xl  text-base font-normal font-poppins pt-8 max-w-[500px] ">Packed with insights into restorative options, patient stories, and cost-saving tips, this guide helps you make smarter decisions for long-term dental care.</p>
+
+
+
+
+            <h3 className="text-secondaryBrand md:text-xl  text-base py-8 font-poppins font-semibold ">Includes:</h3>
+            <ul>
+              <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">  <CircleIcon className="text-secondaryBrand w-4 h-4" /> Full overview of crowns, implants, veneers, and bridges</li>
+              <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">  <CircleIcon className="text-secondaryBrand w-4 h-4" /> Tips on what to expect before and after treatment</li>
+              <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">  <CircleIcon className="text-secondaryBrand w-4 h-4" /> Bonus chapter: Top Questions to Ask Before Starting</li>
+            </ul>
+
           </div>
-          <Contact />
-        </>
-      )}
-    </div>
+
+
+
+
+          <div className="col-span-6 flex justify-center">
+            <img
+              src="/assets/landing-page/book.png"
+              alt="Patient"
+              className="w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 object-cover"
+            />
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+
+
+      <Contact />
+      <UpperFooter />
+      <Footer />
+
+
+
+    </div >
   );
 };
 
