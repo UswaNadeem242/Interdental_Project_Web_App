@@ -68,9 +68,6 @@ function ZidcardIvoclar({ isLanding }) {
                         })
                     }
                     {/* First Row */}
-
-
-
                     {
                         cardsecondZidCard?.map((item, id) => {
                             return (
