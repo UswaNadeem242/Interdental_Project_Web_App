@@ -61,7 +61,7 @@ export default function MaterialDropdown({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const selected = options.find((o) => o.value === value);
+  const selected = options?.find((o) => o.value === value);
 
   const handleSelect = (option) => {
     onChange?.(option); // send whole object to Redux

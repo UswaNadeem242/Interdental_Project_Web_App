@@ -7,6 +7,7 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 import Toast from "../components/Toast";
 import MaterialDropdown from "../components/doctorAdmin/CommonLabel/selectInputLabel";
+import YearlyPlanModel from "../modals/yearly-plan";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -27,8 +28,10 @@ const Signup = () => {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
+  const [labs, setLabs] = useState([]);
+  const [selectedLab, setSelectedLab] = useState("");
+  const [yearly, setYearly] = useState(false)
   const validate = () => {
-
     if (!firstName?.trim()) return "First name is required";
     // if (!lastName?.trim()) return "Last name is required";     // remove if not needed
     if (!email?.trim()) return "Email is required";
@@ -47,22 +50,10 @@ const Signup = () => {
     const phoneRegex = /^[0-9\s()+-]{7,15}$/;
     if (!phoneRegex.test(phone)) return "Enter a valid phone number";
 
-    // Optional: strong password
-    // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-    // if (!passwordRegex.test(password)) return "Password must be 8+ chars and include letters & numbers";
-
-    // Optional: confirm password (if you render cPassword)
-    // if (password !== cPassword) return "Passwords do not match";
-
     return null;
   };
-  console.log('11111111111');
 
   const handleSignup = async () => {
-
-
-    console.log('1: sihn');
-
     const error = validate();
     if (error) {
       console.log('2: sihn');
@@ -72,8 +63,6 @@ const Signup = () => {
       setToastVisible(true);
       return;
     }
-    console.log('3: sihn');
-
     const payload = {
       email,
       password,
@@ -81,22 +70,16 @@ const Signup = () => {
       lastName: lastName?.trim() || "Admin",
       phone,
       address,
-      city,
-      zip,
       drLicenseNo,
       officeRefNo,
-      lab: Number(labs),            // send selected lab ID
+      lab: Number(selectedLab),            // send selected lab ID
       role: "DOCTOR",
     };
-
-    console.log('4:', payload);
-    const url = `http://69.62.66.110:8080/api/users/sign-up?email=${email}&password=${password}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&address=${address}&city=${city}&zip=${zip}drLicenseNo=${drLicenseNo}&officeRefNo=${officeRefNo}&lab=${labs}&role=DOCTOR`;
     try {
-      // setIsSubmitting(true);
-      const response = await axios.post(url, {},
+      const response = await axios.post(`${BASE_URL}/api/users/sign-up`, payload,
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            Accept: "*/*",
           },
         });
       setToastMessage("User Registered Successfully!");
@@ -110,61 +93,42 @@ const Signup = () => {
       setToastType("error");
       setToastVisible(true);
     } finally {
-      // setIsSubmitting(false);
+
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const [labs, setLabs] = useState([]);
   const [isLoadingLabs, setIsLoadingLabs] = useState(false);
 
   useEffect(() => {
     const loadLabs = async () => {
       try {
         setIsLoadingLabs(true);
-        const token = localStorage.getItem("authToken"); // <-- adjust the key you use
-        if (!token) {
-          setToastMessage("Please log in to load labs.");
-          setToastType("error");
-          setToastVisible(true);
-          return;
-        }
 
-        const res = await axios.get(`${BASE_URL}/api/lab/getAll`, {
-          headers: { Authorization: `Bearer ${token}` },
-          // withCredentials: true, // <- only if your API uses cookies
-        });
-        console.log('resposne:', res);
+        const res = await axios.get(`${BASE_URL}/api/lab/getAll`);
+        console.log("response:", res);
 
-        // const raw = Array.isArray(res.data) ? res.data : (res.data?.data ?? res.data?.content ?? []);
-        // const options = raw.map(l => ({
-        //   label: l.name || l.labName || `Lab ${l.id}`,
-        //   value: String(l.id),
-        // }));
+        // Ensure raw is always an array
+        const raw =
+          Array.isArray(res.data)
+            ? res.data
+            : Array.isArray(res.data?.data)
+              ? res.data.data
+              : Array.isArray(res.data?.content)
+                ? res.data.content
+                : [];
 
-        // setLabs(options);
-        // setSelectedLab(options[0]?.value || "");
+        const options = raw.map((l) => ({
+          label: l.name || l.labName || `Lab ${l.id}`,
+          value: String(l.id),
+        }));
+
+        console.log("options:", options);
+
+        setLabs(options);
+        setSelectedLab(options.length > 0 ? options[0].value : "");
       } catch (err) {
-        setToastMessage(`Could not load labs: ${err.response?.data?.message || err.message}`);
+        setToastMessage(
+          `Could not load labs: ${err.response?.data?.message || err.message}`
+        );
         setToastType("error");
         setToastVisible(true);
       } finally {
@@ -175,40 +139,10 @@ const Signup = () => {
     loadLabs();
   }, []);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const closeToast = () => {
     setToastVisible(false);
   };
 
-  // useEffect(() => {
-  //   // Example: fetch user info
-  //   const userRole = user?.role; // coming from API / context
-  //   if (userRole) {
-  //     setSelectedValue(userRole); // "1" or "2"
-  //   }
-  // }, [user]);
 
   return (
     <div className="flex flex-col lg:flex-row justify-start items-center gap-6 lg:gap-24 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
@@ -371,35 +305,13 @@ const Signup = () => {
 
               </div>
             </div>
-            {/* Dropdown */}
-            {/* <MaterialDropdown
-              options={[
-                { label: "Dental Lab", value: "1" },
-                { label: "Dentist", value: "2" },
-              ]}
-              value={selectedValue}
-              onChange={(val) => setSelectedValue(val)}
-              label="Select Laboratory"
-              className="w-full bg-white border   px-4 py-3 rounded-md text-textFieldHeading"
-            /> */}
-
-            {/* <MaterialDropdown
-              options={[
-                { label: "Dental Lab", value: "1" },
-                { label: "Dentist", value: "2" },
-              ]}
-              value={lab}
-              onChange={(val) => setSelectedLab(val)}
-              label="Select Laboratory"
-              className="w-full bg-white border px-4 py-3 rounded-md text-textFieldHeading"
-            /> */}
             <MaterialDropdown
               options={labs}
-
-              value={labs}
-              onChange={val => setLabs(val)}
+              value={selectedLab} // ✅ must be single value (string/number)
+              onChange={(opt) => setSelectedLab(opt.value)} // ✅ opt is full object
               label={isLoadingLabs ? "Loading labs..." : "Select Laboratory"}
-              className="w-full bg-white border px-4 py-3 rounded-md"
+
+              className="w-full rounded-md border  bg-white py-3 outline-none  px-4 text-textFieldHeading"
             />
 
           </div>
@@ -440,6 +352,14 @@ const Signup = () => {
         onClose={closeToast}
         type={toastType}
       />
+      {yearly && (
+        <YearlyPlanModel
+          yearly={yearly}
+          setYearly={setYearly}
+        />
+      )}
+
+
     </div>
   );
 };

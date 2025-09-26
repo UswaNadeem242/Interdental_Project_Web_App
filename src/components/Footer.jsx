@@ -51,7 +51,7 @@ const Footer = () => {
             {socialIcons.map((item) => (
               <div
                 key={item.id}
-                className="bg-secondaryBrand  w-10 h-10 rounded-full  shadow-[0px_3.9398081302642822px_3.9398081302642822px_0px_rgba(0,0,0,0.25) flex items-center justify-center"
+                className="bg-[#193368]  w-10 h-10 rounded-full  shadow-[0px_3.9398081302642822px_3.9398081302642822px_0px_rgba(0,0,0,0.25) flex items-center justify-center"
               >
                 {item.icon}
               </div>
