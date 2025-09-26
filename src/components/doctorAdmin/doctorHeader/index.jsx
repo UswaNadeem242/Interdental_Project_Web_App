@@ -3,20 +3,43 @@ import { useAuth } from "../../../auth/AuthContext";
 import { BellIcon } from "../../../icon/Bell";
 import { LogoutIcon } from "../../../icon/LogoutIcon";
 import usePageTitle from "../../../Hooks/usePageTitle";
+import { useState, useEffect } from "react";
 
 const DoctorHeader = ({ title, subTitle, role }) => {
   const navigate = useNavigate();
+  const [doctorProfile, setDoctorProfile] = useState(null);
   const { logout } = useAuth();
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
+
+  useEffect(() => {
+    const userData = localStorage.getItem("users");
+
+    if (userData) {
+      try {
+        const parsedUserData = JSON.parse(userData);
+
+        if (parsedUserData) {
+          setDoctorProfile(parsedUserData);
+        }
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (doctorProfile) {
+    }
+  }, [doctorProfile]);
+
   const pageTitle = usePageTitle();
   const roleLink =
     role === "doctor"
       ? "/doctor-admin/profile"
       : "/patient-admin/profile-settings";
-   
 
   return (
     <>
@@ -32,8 +55,13 @@ const DoctorHeader = ({ title, subTitle, role }) => {
             className="w-10 h-10 rounded-full"
           />
           <NavLink to={roleLink} className="flex flex-col justify-center">
-            <p className="text-sm font-semibold">Bransim Hanry</p>
-            <p className="text-xs text-gray-500">hanry463@gmail.com</p>
+            <p className="text-sm font-semibold">
+              {doctorProfile &&
+                `${doctorProfile.firstName} ${doctorProfile.lastName}`}
+            </p>
+            <p className="text-xs text-gray-500">
+              {doctorProfile && `${doctorProfile.email}`}
+            </p>
           </NavLink>
           <button className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center">
             <BellIcon className="w-5 h-5" />

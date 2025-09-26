@@ -1,107 +1,133 @@
-// // DentalChart.jsx
-// import React, { useState } from "react";
-
-// const upperTeeth = Array.from({ length: 16 }, (_, i) => i + 1);  // 1–16
-// const lowerTeeth = Array.from({ length: 16 }, (_, i) => i + 17); // 17–32
-
-// export const TeethSelection = ({ selectedTeeth, setSelectedTeeth, toggleTooth }) => {
-//     const Tooth = ({ id }) => (
-//         <div
-//             onClick={() => toggleTooth(id)}
-//             className={`w-10 h-14 flex items-center justify-center border rounded-md cursor-pointer transition
-//         ${selectedTeeth.includes(id) ? "border-secondaryBrand text-secondaryBrand" : "bg-white"}`}
-//         >
-//             {id}
-//         </div>
-//     );
-
-//     return (
-//         <div className="p-6">
-//             {/* Selected Teeth */}
-//             {/* {selectedTeeth.length > 0 && (
-//                 <div className="mb-6 p-4   text-blue-800 rounded-lg font-semibold text-center">
-//                     Selected Teeth: {selectedTeeth.sort((a, b) => a - b).join(", ")}
-//                 </div>
-//             )} */}
-
-//             {/* Upper Jaw (1–16) */}
-//             <div className="flex justify-center gap-2 mb-8">
-//                 {upperTeeth.map((id) => (
-//                     <Tooth key={id} id={id} />
-//                 ))}
-//             </div>
-
-//             {/* Lower Jaw (17–32) */}
-//             <div className="flex justify-center gap-2">
-//                 {lowerTeeth.map((id) => (
-//                     <Tooth key={id} id={id} />
-//                 ))}
-//             </div>
-//         </div>
-//     );
-// };
-
-
-
-
-
-// DentalChart.jsx
 import React from "react";
 
-// Replace with your actual image URLs
-const toothImage = "https://placehold.co/40x40/000000/FFFFFF.png?text=Tooth";
+const TeethSelection = ({
+  selectedTeeth = [],
+  onToothSelect,
+  showIds = false,
+}) => {
+  // Use selectedTeeth prop directly - no local state needed
 
-const upperTeeth = Array.from({ length: 16 }, (_, i) => i + 1);  // 1–16
-const lowerTeeth = Array.from({ length: 16 }, (_, i) => i + 17); // 17–32
+  const teethData = [
+    // Top row (1-16)
+    { id: 1, name: "UR 3rd Molar (Wisdom)", position: "top" },
+    { id: 2, name: "UR 2nd Molar", position: "top" },
+    { id: 3, name: "UR 1st Molar", position: "top" },
+    { id: 4, name: "UR 2nd Premolar", position: "top" },
+    { id: 5, name: "UR 1st Premolar", position: "top" },
+    { id: 6, name: "UR Canine", position: "top" },
+    { id: 7, name: "UR Lateral Incisor", position: "top" },
+    { id: 8, name: "UR Central Incisor", position: "top" },
+    { id: 9, name: "UL Central Incisor", position: "top" },
+    { id: 10, name: "UL Lateral Incisor", position: "top" },
+    { id: 11, name: "UL Canine", position: "top" },
+    { id: 12, name: "UL 1st Premolar", position: "top" },
+    { id: 13, name: "UL 2nd Premolar", position: "top" },
+    { id: 14, name: "UL 1st Molar", position: "top" },
+    { id: 15, name: "UL 2nd Molar", position: "top" },
+    { id: 16, name: "UL 3rd Molar (Wisdom)", position: "top" },
+    // Bottom row (17-32)
+    { id: 17, name: "LL 3rd Molar (Wisdom)", position: "bottom" },
+    { id: 18, name: "LL 2nd Molar", position: "bottom" },
+    { id: 19, name: "LL 1st Molar", position: "bottom" },
+    { id: 20, name: "LL 2nd Premolar", position: "bottom" },
+    { id: 21, name: "LL 1st Premolar", position: "bottom" },
+    { id: 22, name: "LL Canine", position: "bottom" },
+    { id: 23, name: "LL Lateral Incisor", position: "bottom" },
+    { id: 24, name: "LL Central Incisor", position: "bottom" },
+    { id: 25, name: "LR Central Incisor", position: "bottom" },
+    { id: 26, name: "LR Lateral Incisor", position: "bottom" },
+    { id: 27, name: "LR Canine", position: "bottom" },
+    { id: 28, name: "LR 1st Premolar", position: "bottom" },
+    { id: 29, name: "LR 2nd Premolar", position: "bottom" },
+    { id: 30, name: "LR 1st Molar", position: "bottom" },
+    { id: 31, name: "LR 2nd Molar", position: "bottom" },
+    { id: 32, name: "LR 3rd Molar (Wisdom)", position: "bottom" },
+  ];
 
-export const TeethSelection = ({ selectedTeeth, setSelectedTeeth }) => {
-    const toggleTooth = (id) => {
-        setSelectedTeeth((prev) =>
-            prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
-        );
-    };
+  // No click handler needed - teeth are display only
 
-    const Tooth = ({ id }) => {
-        const isSelected = selectedTeeth.includes(id);
+  const getToothColor = (tooth) => {
+    if (selectedTeeth.includes(tooth.id)) {
+      return "bg-blue-500 border-blue-600"; // Selected color - blue
+    }
+    return "bg-white border-gray-300"; // Default color - white with border
+  };
 
-        return (
-            <div
-                onClick={() => toggleTooth(id)}
-                className=" w-10  gap-2 flex flex-col items-center cursor-pointer "
-            >
-                <div
-                    className={`w-12 h-12 flex items-center justify-center border rounded-md 
-                        ${isSelected ? "border-secondaryBrand" : "border-gray-300"}
-                    `}
-                >
-                    <img
-                        src={toothImage}
-                        alt={`Tooth ${id}`}
-                        className={`w-10 h-10 ${isSelected ? "opacity-100" : "opacity-70"}`}
-                    />
-
-                </div>
-                <span className="mt-1 text-xs font-medium text-gray-700">{id}</span>
+  return (
+    <div className="w-full overflow-hidden">
+      {/* Top row (1-16) */}
+      <div className="flex justify-center items-center gap-0.5 mb-2 flex-wrap">
+        {teethData
+          .filter((tooth) => tooth.position === "top")
+          .map((tooth) => (
+            <div key={tooth.id} className="flex flex-col items-center m-0.5">
+              {/* Tooth number above */}
+              <span className="text-[10px] font-semibold text-gray-600 mb-0.5">
+                {tooth.id}
+              </span>
+              {/* Tooth shape */}
+              <div
+                className={`
+                  w-6 h-4 sm:w-8 sm:h-5 md:w-10 md:h-6
+                  ${getToothColor(tooth)}
+                  border border-gray-300 rounded-sm
+                  flex items-center justify-center
+                  ${
+                    selectedTeeth.includes(tooth.id)
+                      ? "ring-1 ring-blue-500"
+                      : ""
+                  }
+                `}
+                title={tooth.name}
+              >
+                {showIds && (
+                  <span className="text-[8px] sm:text-[10px] font-bold text-gray-700">
+                    {tooth.id}
+                  </span>
+                )}
+              </div>
             </div>
-        );
-    };
+          ))}
+      </div>
 
-    const renderJaw = (teeth) => (
-        <div className="flex justify-center gap-2 mb-4">
-            {teeth.map((id) => (
-                <Tooth key={id} id={id} />
-            ))}
-        </div>
-    );
+      {/* Bottom row (17-32) */}
+      <div className="flex justify-center items-center gap-0.5 flex-wrap">
+        {teethData
+          .filter((tooth) => tooth.position === "bottom")
+          .map((tooth) => (
+            <div key={tooth.id} className="flex flex-col items-center m-0.5">
+              {/* Tooth shape */}
+              <div
+                className={`
+                  w-6 h-4 sm:w-8 sm:h-5 md:w-10 md:h-6
+                  ${getToothColor(tooth)}
+                  border border-gray-300 rounded-sm
+                  flex items-center justify-center
+                  ${
+                    selectedTeeth.includes(tooth.id)
+                      ? "ring-1 ring-blue-500"
+                      : ""
+                  }
+                `}
+                title={tooth.name}
+              >
+                {showIds && (
+                  <span className="text-[8px] sm:text-[10px] font-bold text-gray-700">
+                    {tooth.id}
+                  </span>
+                )}
+              </div>
+              {/* Tooth number below */}
+              <span className="text-[10px] font-semibold text-gray-600 mt-0.5">
+                {tooth.id}
+              </span>
+            </div>
+          ))}
+      </div>
 
-    return (
-        <div className="p-6">
-            {/* Upper Jaw */}
-            {renderJaw(upperTeeth)}
-
-            {/* Lower Jaw */}
-            {renderJaw(lowerTeeth)}
-        </div>
-    );
+      {/* Display only - no selected teeth summary needed */}
+    </div>
+  );
 };
 
+export default TeethSelection;

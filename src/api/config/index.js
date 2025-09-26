@@ -1,0 +1,25 @@
+import { BASE_URL } from "../../config";
+
+export const API_CONFIG = {
+  baseURL: BASE_URL,
+  timeout: 10000,
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
+  headers: {},
+};
+
+export const ENDPOINTS = {
+  DOCTOR: {
+    STATS: "/api/dashboard/getDoctorStats",
+    ORDERS: "/api/doctororder/getOrders",
+    ORDER_BY_ID: "/api/doctororder/getOrderByID",
+    GRAPH_STATS: "/api/dashboard/getDoctorGraph",
+    PATIENTS: "/api/users/getPatientByDoctor",
+    ADD_PATIENT: "/api/users/addPatient",
+    DOCTOR_PROFILE: "/api/users/getById",
+    UPDATE_PROFILE: "/api/users/update-profile-info",
+    CHANGE_PASSWORD: "/api/users/change-password",
+    UPDATE_USER_PROFILE_IMAGE: "/api/users/updateUserProfileImage",
+  },
+};

@@ -48,7 +48,19 @@ export function MultiLineChart({
   title = "",
 }) {
   return (
-    <div className="bg-white w-full h-full">
+    <div
+      className="bg-white w-full h-full focus:outline-none focus:ring-0 focus:border-0"
+      style={{
+        outline: "none",
+        border: "none",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        MozUserSelect: "none",
+        msUserSelect: "none",
+      }}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={(e) => e.preventDefault()}
+    >
       {/* Legend at top-right outside the chart */}
       {(title || showLegend) && (
         <div className="flex justify-between items-center mb-2">
@@ -61,11 +73,51 @@ export function MultiLineChart({
         </div>
       )}
 
-      <ResponsiveContainer width="100%" height={height}>
+      <ResponsiveContainer
+        width="100%"
+        height={height}
+        className="focus:outline-none focus:ring-0 focus:border-0"
+        style={{
+          outline: "none",
+          border: "none",
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          MozUserSelect: "none",
+          msUserSelect: "none",
+        }}
+      >
         <AreaChart
           data={data}
           margin={{ top: 5, right: 10, left: 10, bottom: 10 }}
+          style={{
+            outline: "none",
+            border: "none",
+            userSelect: "none",
+            WebkitUserSelect: "none",
+            MozUserSelect: "none",
+            msUserSelect: "none",
+          }}
         >
+          <style>
+            {`
+              svg:focus {
+                outline: none !important;
+                border: none !important;
+              }
+              svg *:focus {
+                outline: none !important;
+                border: none !important;
+              }
+              .recharts-wrapper:focus {
+                outline: none !important;
+                border: none !important;
+              }
+              .recharts-wrapper *:focus {
+                outline: none !important;
+                border: none !important;
+              }
+            `}
+          </style>
           <defs>
             {lines.map((line, index) => (
               <linearGradient
@@ -92,7 +144,7 @@ export function MultiLineChart({
           )}
 
           <XAxis
-            dataKey="month"
+            dataKey="label"
             axisLine={false}
             tickLine={false}
             tick={{ fontSize: 10, fill: "#64748b" }}
