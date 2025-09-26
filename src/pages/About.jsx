@@ -49,7 +49,7 @@ const About = ({ isLanding }) => {
               Every case begins with craftsmanship—and ends with peace of mind.
             </p>
 
-             
+
           </div>
         </div>
 
@@ -297,29 +297,34 @@ const About = ({ isLanding }) => {
           </div>
 
           <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6  px-8 ">
               {warrantyCards.map((card, index) => (
                 <div
                   key={index}
-                  className="bg-white shadow-lg rounded-xl overflow-hidden grid grid-cols-1 sm:grid-cols-2"
+                  className={`bg-white shadow-[0px_59px_124px_0px_rgba(0,0,0,0.06)] rounded-xl overflow-hidden grid grid-cols-1 sm:grid-cols-2`}
                 >
-
-                  {/* Left - Image */}
-                  <div className="w-full h-full">
+                  {/* Image */}
+                  <div
+                    className={`w-full h-full ${index % 2 !== 0 ? "sm:order-2" : "sm:order-1"
+                      }`}
+                  >
                     <img
                       src={card.img}
                       alt={card.title}
-                      className="w-full sm:w-[200px] md:w-[290px] lg:w-[300px] h-[150px] sm:h-[180px] md:h-[200px] lg:h-[288px] m-2 sm:m-4 rounded-lg object-cover" />
-
+                      className="w-full sm:w-[200px] md:w-[290px] lg:w-[250px] h-[150px] sm:h-[180px] md:h-[200px] lg:h-[237px] m-2 sm:m-4 rounded-lg object-cover"
+                    />
                   </div>
 
-                  {/* Right - Content */}
-                  <div className="flex flex-col justify-between p-6 ">
+                  {/* Text */}
+                  <div
+                    className={`flex flex-col gap-5 p-4 ${index % 2 !== 0 ? "sm:order-1 sm:text-start" : "sm:order-2"
+                      }`}
+                  >
                     <div>
                       <h3 className="text-primaryText text-sm md:text-base font-semibold">
                         {card.title}
                       </h3>
-                      <p className="text-secondaryBrand text-lg font-bold mb-4">
+                      <p className="text-fouthBrand text-lg font-bold mb-4">
                         {card.subtitle}
                       </p>
 
@@ -327,7 +332,7 @@ const About = ({ isLanding }) => {
                         {card.points.map((point, i) => (
                           <li
                             key={i}
-                            className="flex gap-2 items-center text-sm text-[#757575]"
+                            className="flex gap-2 items-center text-sm text-secondaryText"
                           >
                             <CircleIcon className="text-secondaryBrand w-4 h-4" />
                             {point}
@@ -336,26 +341,24 @@ const About = ({ isLanding }) => {
                       </ul>
                     </div>
 
-                    <button className="mt-6 text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
+                    <button className="text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
                       Learn more
                     </button>
                   </div>
                 </div>
-
-
-
               ))}
+
             </div>
-          </div>       
-          
-           </section>
+          </div>
+
+        </section>
 
         <section className="container px-4 mx-auto py-28 ">
           <div className="flex justify-center ">
             <h1 className="text-primaryText text-base md:text-3xl font-bold font-poppins capitalize ">
               Blog &
 
-              <span className="md:text-3xl font-bold font-poppins text-fouthBrand capitalize ml-2">
+              <span className="md:text-3xl font-bold font-poppins text-fouthBrand capitalize ml-2 pt-4">
                 Articles
               </span>
             </h1>
@@ -397,11 +400,11 @@ const About = ({ isLanding }) => {
           </div>
 
 
-        </section> 
+        </section>
       </div>
 
       <FrequentlyAskedQuestion />
-       <UpperFooter />
+      <UpperFooter />
       <Footer />
     </div>
 

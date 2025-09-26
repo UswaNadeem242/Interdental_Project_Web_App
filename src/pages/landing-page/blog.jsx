@@ -8,11 +8,11 @@ import Header from "./header";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 function Blog({ isLanding }) {
-    const [activeTab, setActiveTab] = useState("All Topics");
+   const [activeTab, setActiveTab] = useState(tabs[0]?.id || "");
     const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const cardsPerPage = 6;
-    const currentTab = tabs.find((tab) => tab.id === activeTab);
+  const currentTab = tabs.find((tab) => tab.id === activeTab) || tabs[0];
     const filteredCards =
         currentTab?.cards.filter(
             (card) =>

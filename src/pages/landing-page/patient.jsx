@@ -20,7 +20,7 @@ const Patients = ({ isLanding }) => {
           <h3 className="text-sm md:text-5xl font-bold text-secondaryBrand">
             Protect Your Smile with MakeMeSmile
           </h3>
-          <p className="text-secondaryText text-sm font-normal font-poppins py-4">Extended warranties up to 9 years- simple, affordable, and trusted by your dentist</p>
+          <p className="text-primaryText text-[10px] whitespace-nowrap font-normal font-poppins py-4">Extended warranties up to 9 years- simple, affordable, and trusted by your dentist</p>
           <p className="mt-4  text-secondaryText text-sm font-normal font-poppins">
             Your dental work is an investment in your health and your confidence. Life happens — crowns can chip, bridges may loosen, or implants may need attention. With MakeMeSmile, you don’t have to worry.
           </p>
@@ -90,18 +90,18 @@ const Patients = ({ isLanding }) => {
           {steps.map((step) => (
             <div
               key={step.id}
-              className="bg-white p-4 sm:p-6 md:p-8  rounded-lg shadow-md hover:shadow-lg transition"
+              className="bg-white p-4 sm:p-6   rounded-lg shadow-md hover:shadow-lg transition"
             >
               <div className="flex items-center justify-center w-28  h-28 sm:w-28 sm:h-28  text-5xl bg-background text-secondaryBrand font-bold rounded-full mx-auto mb-4 sm:mb-6">
                 {/* w-10 sm:w-12 h-10 sm:h-12 */}
                 {step.id}
               </div>
-              <h3 className="text-sm md:text-2xl font-poppins font-bold text-center text-gray-800 mb-4">
+              <h3 className="text-sm md:text-2xl whitespace-nowrap  font-poppins font-bold text-center text-gray-800 mb-4">
                 {step.title}
               </h3>
               <ul className="list-disc list-inside text-gray-600 text-sm md:text-sm font-poppins space-y-2 pl-2">
                 {step.description.map((desc, index) => (
-                  <li key={index}>{desc}</li>
+                  <li key={index}  className="text-[10px] ">{desc}</li>
                 ))}
               </ul>
             </div>
@@ -114,7 +114,7 @@ const Patients = ({ isLanding }) => {
       
            <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
         {/* Section Header */}
-        <h2 className="text-sm md:text-3xl  font-bold text-primaryText">
+        <h2 className="text-sm md:text-3xl  font-bold text-primaryText uppercase">
           Choose Your <span className="text-sm md:text-3xl  font-bold text-secondaryBrand">
             Patient
           </span>  <span className="text-sm md:text-3xl  font-bold text-fouthBrand"> Warranty </span> <span className="text-sm md:text-3xl  font-bold text-primaryText"> Plan  </span>
@@ -156,7 +156,7 @@ const Patients = ({ isLanding }) => {
           ))}
         </div>
         <div>
-          <p className="mt-4 md:mt-4 text-primaryText font-normal font-poppins max-w-[900px] mx-auto text-center ">If You do not see what you want. Don’t worry <a href='/contact' className='text-secondaryBrand'> Contact Us
+          <p className="mt-4 md:mt-4 text-secondaryText font-normal font-poppins max-w-[900px] mx-auto text-center ">If You do not see what you want. Don’t worry <a href='/contact' className='text-secondaryBrand'> Contact Us
           </a> and we will create a personalized proposal that fit your business needs.</p>
         </div>
       </section>

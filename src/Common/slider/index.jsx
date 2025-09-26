@@ -34,6 +34,7 @@ export default function ProductCarousel({ items = [] }) {
     <section className="w-full py-10">
       <style>{`
         .slick-dots { bottom: -28px !important; }
+        ..slick-dots li button {margin-top:'30px'}
         .slick-dots li button:before { font-size: 11px; color: #9ca3af; opacity: .6; }
         .slick-dots li.slick-active button:before { color: #001D58; opacity: 1; }
         .slick-slider { overflow: visible; }

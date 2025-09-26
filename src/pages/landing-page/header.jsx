@@ -121,13 +121,13 @@ const Header = () => {
               <>
                 <button
                   onClick={() => navigate("/login")}
-                  className="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 text-sm font-semibold"
+                  className="px-4 py-2 rounded-full bg-gray-100 text-secondaryText text-sm whitespace-nowrap font-semibold"
                 >
                   Log In
                 </button>
                 <button
                   onClick={() => navigate("/signup")}
-                  className="px-5 py-2 rounded-full bg-blue-900 text-white hover:bg-blue-800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
+                  className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
                 >
                   Register Now
                 </button>

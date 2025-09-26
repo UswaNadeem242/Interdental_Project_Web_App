@@ -85,7 +85,7 @@ const Shop = () => {
   const handleProduct = (product) => {
     navigate(`/product/${product.productId}`);
 
-   };
+  };
 
   const getAllProducts = async () => {
     try {
@@ -95,7 +95,7 @@ const Shop = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-     
+
       setProducts(response.data.data);
     } catch (error) {
       console.log(error);
@@ -230,7 +230,8 @@ const Shop = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-gradient-to-b from-cyan-50 to-emerald-50/0">
+    <div className="bg-background">
+      {/* bg-gradient-to-b from-cyan-50 to-emerald-50/0 */}
       <Header />
       <div className="px-4 md:px-10 lg:px-20 py-6 ">
         {/* Header */}
@@ -442,24 +443,24 @@ const Shop = () => {
                   <div
                     key={idx}
                     className="flex flex-col items-center bg-white rounded-lg shadow-sm p-4 cursor-pointer"
-                       onClick={() => handleProduct(product)}
+                    onClick={() => handleProduct(product)}
                   >
-                     
-                      <img
-                        src={product.imageUrls[0]}
-                        alt="product"
-                        className="w-[263.15px] h-[260.45px]"
-                      />
 
-                      <div className="text-center mt-3">
-                        <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
-                          {product.name}
-                        </h1>
-                        <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
-                          ${product.price}
-                        </h1>
-                      </div>
-                   
+                    <img
+                      src={product.imageUrls[0]}
+                      alt="product"
+                      className="w-[263.15px] h-[260.45px]"
+                    />
+
+                    <div className="text-center mt-3">
+                      <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
+                        {product.name}
+                      </h1>
+                      <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
+                        ${product.price}
+                      </h1>
+                    </div>
+
 
                   </div>
                 ))
