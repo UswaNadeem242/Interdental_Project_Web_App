@@ -26,292 +26,180 @@ const Header = () => {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full max-w-[95%] sm:max-w-[90%] mx-auto rounded-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-white shadow-md">
-      {/* Hamburger menu for mobile */}
-      <svg
-        width="22"
-        height="20"
-        viewBox="0 0 22 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="flex lg:hidden cursor-pointer"
-        onClick={toggleMobileMenu}
-      >
-        <path
-          d="M1.62891 3.89404H20.3696M1.62891 10.0052H20.3696M1.62891 16.1163H20.3696"
-          stroke="#434343"
-          strokeWidth="1.83333"
-          strokeMiterlimit="10"
-          strokeLinecap="round"
-        />
-      </svg>
-
-      {/* Logo */}
-      <div className="flex items-center space-x-2">
-        <NavLink
-          to="/"
-          className="text-lg sm:text-xl md:text-2xl font-bold text-blue-900"
-        >
-          Interdental <span className="text-blue-300">Lab</span>
-        </NavLink>
-      </div>
-
-      {/* Desktop Navigation */}
-      {/* <nav className="hidden lg:flex space-x-2 lg:space-x-3 text-base lg:text-lg">
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-blue-100 text-blue-500 px-3 sm:px-4 py-1 sm:py-2 rounded-full"
-              : "hover:text-blue-500 px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-100 rounded-full"
-          }
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to="/shop"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-blue-100 text-blue-500 px-3 sm:px-4 py-1 sm:py-2 rounded-full"
-              : "hover:text-blue-500 px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-100 rounded-full"
-          }
-        >
-          Shop
-        </NavLink>
-        <NavLink
-          to="/patient"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-blue-100 text-blue-500 px-3 sm:px-4 py-1 sm:py-2 rounded-full"
-              : "hover:text-blue-500 px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-100 rounded-full"
-          }
-        >
-          Patient
-        </NavLink>
-        <NavLink
-          to="/doctor"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-blue-100 text-blue-500 px-3 sm:px-4 py-1 sm:py-2 rounded-full"
-              : "hover:text-blue-500 px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-100 rounded-full"
-          }
-        >
-          Doctor
-        </NavLink>
-        <NavLink
-          to="/about-us"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-blue-100 text-blue-500 px-3 sm:px-4 py-1 sm:py-2 rounded-full"
-              : "hover:text-blue-500 px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-100 rounded-full"
-          }
-        >
-          About Us
-        </NavLink>
-        <NavLink
-          to="/contact-us"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-blue-100 text-blue-500 px-3 sm:px-4 py-1 sm:py-2 rounded-full"
-              : "hover:text-blue-500 px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-100 rounded-full"
-          }
-        >
-          Contact Us
-        </NavLink>
-      </nav> */}
-
-
-      <nav className="hidden lg:flex space-x-2 lg:space-x-3 text-base lg:text-lg">
-        {navItems.map(({ to, label }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              isActive
-                ? "bg-blue-100 text-blue-500 px-3 sm:px-4 py-1 sm:py-2 rounded-full"
-                : "hover:text-blue-500 px-3 sm:px-4 py-1 sm:py-2 hover:bg-blue-100 rounded-full"
-            }
+    <>
+      <header className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[92%] md:w-[90%]">
+        {/* pill container */}
+        <div className="mx-auto flex items-center justify-between rounded-full bg-white/95  ring-1 ring-black/5 backdrop-blur px-3 sm:px-5 md:px-6 py-2.5">
+          {/* Mobile menu button */}
+          {/* shadow-lg */}
+          <button
+            className="inline-flex lg:hidden items-center justify-center h-10 w-10 rounded-full hover:bg-gray-100 transition"
+            aria-label="Open menu"
+            onClick={toggleMobileMenu}
           >
-            {label}
-          </NavLink>
-        ))}
-      </nav>
+            <svg width="22" height="20" viewBox="0 0 22 20" fill="none">
+              <path
+                d="M1.62891 3.89404H20.3696M1.62891 10.0052H20.3696M1.62891 16.1163H20.3696"
+                stroke="#434343"
+                strokeWidth="1.83333"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
 
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <NavLink to="/" className="flex items-center gap-2">
+              <img
+                src="/assets/logo.png"
+                alt="Interdental Lab"
+                className="h-10 w-auto sm:h-12"
+              />
+            </NavLink>
+          </div>
 
-
-
-
-
-
-
-      {/* Desktop buttons */}
-      <div className="hidden lg:flex space-x-3 lg:space-x-4">
-        {user && user?.email ? (
-          <div className="flex flex-col relative">
-            <div
-              onClick={() => setProfileDropdown(!profileDropdown)}
-              className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-3"
-            >
-              <svg
-                width="38"
-                height="38"
-                viewBox="0 0 38 38"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-1 text-[15px]">
+            {navItems.map(({ to, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) =>
+                  [
+                    "px-3.5 py-2 rounded-full transition text-sm whitespace-nowrap font-poppins",
+                    "text-secondaryText ",
+                    isActive ? "bg-background     font-semibold" : "",
+                  ].join(" ")
+                }
               >
-                <rect width="38" height="38" rx="19" fill="#F8F8F8" />
-                <ellipse
-                  cx="18.9997"
-                  cy="14.2502"
-                  rx="3.16667"
-                  ry="3.16667"
-                  stroke="#001D58"
-                  stroke-width="1.1875"
-                />
-                <ellipse
-                  cx="18.9997"
-                  cy="22.9582"
-                  rx="5.54167"
-                  ry="3.16667"
-                  stroke="#001D58"
-                  stroke-width="1.1875"
-                />
-              </svg>
+                {label}
+              </NavLink>
+            ))}
+          </nav>
 
-              <p className="font-poppins font-normal text-[14px] w-[80px] leading-[21px] text-[#393A44]">
-                {user?.email.split("@")[0].charAt(0).toUpperCase() +
-                  user.email.split("@")[0].slice(1)}
-              </p>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.33301 6L7.99967 10L12.6663 6"
-                  stroke="#001D58"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-            {profileDropdown && (
-              <div className="absolute right-0 top-12 mt-2 z-10">
-                <ProfileDropdown
-                  isModalOpen={profileDropdown}
-                  setIsModalOpen={setProfileDropdown}
-                />
+          {/* Desktop actions */}
+          <div className="hidden lg:flex items-center gap-3">
+            {user?.email ? (
+              <div className="relative">
+                <button
+                  onClick={() => setProfileDropdown((s) => !s)}
+                  className="flex items-center gap-2 h-11 px-3 rounded-full border border-gray-200 hover:bg-gray-50"
+                >
+                  <svg width="28" height="28" viewBox="0 0 38 38" fill="none">
+                    <rect width="38" height="38" rx="19" fill="#F8F8F8" />
+                    <ellipse cx="19" cy="14.25" rx="3.166" ry="3.166" stroke="#001D58" strokeWidth="1.2" />
+                    <ellipse cx="19" cy="22.95" rx="5.54" ry="3.166" stroke="#001D58" strokeWidth="1.2" />
+                  </svg>
+                  <span className="text-sm text-gray-700">
+                    {user.email.split("@")[0].replace(/^./, (c) => c.toUpperCase())}
+                  </span>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3.333 6L8 10l4.667-4" stroke="#001D58" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+
+                {/* profile dropdown slot */}
+                {profileDropdown && (
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white shadow-lg ring-1 ring-black/5 p-2">
+                    {/* Replace with your <ProfileDropdown /> if needed */}
+                    <button
+                      onClick={() => navigate("/profile")}
+                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm"
+                    >
+                      Profile
+                    </button>
+                    <button
+                      onClick={() => navigate("/logout")}
+                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm"
+                    >
+                      Log out
+                    </button>
+                  </div>
+                )}
               </div>
+            ) : (
+              <>
+                <button
+                  onClick={() => navigate("/login")}
+                  className="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 text-sm font-semibold"
+                >
+                  Log In
+                </button>
+                <button
+                  onClick={() => navigate("/signup")}
+                  className="px-5 py-2 rounded-full bg-blue-900 text-white hover:bg-blue-800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
+                >
+                  Register Now
+                </button>
+              </>
             )}
           </div>
-        ) : (
-          <>
-            <button
-              onClick={() => navigate("/login")}
-              className="hidden md:inline-block px-3 sm:px-4 py-1 sm:py-2 font-semibold  bg-gray-100 text-gray-500 rounded-full border-2 hover:bg-blue-100 text-sm sm:text-base"
-            >
-              Log In
-            </button>
-            <button
-              onClick={() => navigate("/signup")}
-              className="px-3 sm:px-4 py-1 sm:py-2 bg-blue-900 text-white font-semibold rounded-full hover:bg-blue-600 text-sm sm:text-base"
-            >
-              Register Now
-            </button>
-          </>
-        )}
-      </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="absolute left-0 top-0 w-full h-screen bg-white shadow-md lg:hidden flex flex-col py-6 px-6 space-y-4 ">
-          {/* Logo & Close */}
-          <div className="flex justify-between items-center mb-4  ">
-            <NavLink
-              to="/"
-              className="text-lg font-bold text-blue-900"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Interdental <span className="text-blue-300">Lab</span>
-            </NavLink>
-            <button
-              onClick={toggleMobileMenu}
-              className="text-gray-500 text-xl font-bold"
-            >
-              ✕
-            </button>
-          </div>
-
-          {/* Auth buttons */}
-          <div className="flex w-full justify-between mb-6">
-            <button
-              onClick={() => {
-                navigate("/login");
-                setIsMobileMenuOpen(false);
-              }}
-              className=" w-[48%] py-2 bg-blue-900 text-white rounded-full font-semibold"
-            >
-              Log In
-            </button>
-            <button
-              onClick={() => {
-                navigate("/signup");
-                setIsMobileMenuOpen(false);
-              }}
-              className="w-[48%] py-2 border border-gray-300 rounded-full font-semibold text-gray-600 hover:bg-gray-100"
-            >
-              Sign Up
-            </button>
-          </div>
-
-          {/* Menu links */}
-          <NavLink
-            to="/"
-            className="w-full py-3 border border-gray-200 rounded-lg text-left hover:bg-gray-50 pl-4"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/shop"
-            className="w-full py-3 border border-gray-200 rounded-lg text-left hover:bg-gray-50 pl-4"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Shop
-          </NavLink>
-          <NavLink
-            to="/patient"
-            className="w-full py-3 border border-gray-200 rounded-lg text-left hover:bg-gray-50 pl-4"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Patient
-          </NavLink>
-          <NavLink
-            to="/doctor"
-            className="w-full py-3 border border-gray-200 rounded-lg text-left hover:bg-gray-50 pl-4"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Doctor
-          </NavLink>
-          <NavLink
-            to="/about-us"
-            className="w-full py-3 border border-gray-200 rounded-lg text-left hover:bg-gray-50 pl-4"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            About Us
-          </NavLink>
-          <NavLink
-            to="/contact-us"
-            className="w-full py-3 border border-gray-200 rounded-lg text-left hover:bg-gray-50 pl-4"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Contact Us
-          </NavLink>
+          {/* Spacer to keep layout balanced on desktop when center nav grows */}
+          <div className="w-10 lg:hidden" />
         </div>
-      )}
-    </header>
+
+        {/* Mobile drawer */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 z-40 bg-white">
+            <div className="flex items-center justify-between px-5 py-4 border-b">
+              <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2">
+                <img src="/assets/logo.png" alt="Interdental Lab" className="h-9 w-auto" />
+              </NavLink>
+              <button
+                onClick={toggleMobileMenu}
+                className="h-10 w-10 rounded-full hover:bg-gray-100 flex items-center justify-center"
+                aria-label="Close menu"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-5 space-y-3 w-full h-screen  bg-white">
+              <div className="flex gap-3 mb-4">
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex-1 py-2.5 rounded-full bg-gray-100 text-gray-700 font-semibold"
+                >
+                  Log In
+                </button>
+                <button
+                  onClick={() => {
+                    navigate("/signup");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex-1 py-2.5 rounded-full bg-blue-900 text-white font-semibold"
+                >
+                  Register Now
+                </button>
+              </div>
+
+              <nav className="space-y-2 ">
+                {navItems.map(({ to, label }) => (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      [
+                        "block w-full px-4 py-3 rounded-xl border text-left",
+                        "border-gray-200 hover:bg-gray-50",
+                        isActive ? "bg-gray-50 text-blue-700 font-semibold" : "text-gray-700",
+                      ].join(" ")
+                    }
+                  >
+                    {label}
+                  </NavLink>
+                ))}
+              </nav>
+            </div>
+          </div>
+        )}
+      </header>
+    </>
   );
 };
 

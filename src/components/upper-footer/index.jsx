@@ -2,8 +2,8 @@
 import { PrimaryButtonUI } from '../../Common/Button'
 export default function UpperFooter() {
     return (
-        <div className='border-t border-t-textField'>
-            <div className='flex justify-center py-40'>
+        <div className=''>
+            <div className='flex justify-center py-12'>
                 <div className='md:px-0 px-4'>
                     <h1 className="text-secondaryBrand md:text-5xl text-xl text-center font-poppins">
                         Join <span className="text-[#94D3DD] font-bold">InterOral.ai</span> Today – Transform Your

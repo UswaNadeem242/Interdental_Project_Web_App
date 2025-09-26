@@ -26,7 +26,7 @@ export const productsOption = [
     description:
       "Argen PMMA offers high quality, life-like temporary material in a wide selection of monochromatic and multilayer discs.",
     image: "/assets/landing-page/product1.png",
-    nav: '/product/argen-pmma'
+    nav: "/product/argen-pmma",
   },
   {
     id: 2,
@@ -34,7 +34,7 @@ export const productsOption = [
     description:
       "ArgenZ HT+ Zirconia offers extremely accurate, life-like restorations with 4-5% more translucency and 100-150 MPa higher strength over traditional HT zirconia. Available for milling in high definition by Argen. TRANSLUCENCY STRENGTH.",
     image: "/assets/landing-page/product2.png",
-    nav: '/product/argen-zh'
+    nav: "/product/argen-zh",
   },
   {
     id: 3,
@@ -42,7 +42,7 @@ export const productsOption = [
     description:
       "ArgenZ ST Multilayer Zirconia features proprietary layer blending technology for natural shade transition. Suitable for single units anywhere in the mouth and up to three unit anterior bridges.",
     image: "/assets/landing-page/product3.png",
-    nav: '/product/argenz-st'
+    nav: "/product/argenz-st",
   },
   {
     id: 4,
@@ -52,7 +52,7 @@ export const productsOption = [
       "IPS e.max ZirCAD provides a versatile range of zirconium oxide materials for labside CAD/CAM applications. It is used for the fabrication of frameworks and full-contour crowns and bridges. High strength, thin wall thickness and high esthetics are among its hallmarks. IPS e.max ZirCAD Prime is redefining all-ceramics. This revolutionary material is characterized by exceptional quality and ",
     readMoreLink: "/zircad-details",
     image: "/assets/landing-page/product4.png",
-    nav: '/product/zidcard-ivoclar'
+    nav: "/product/zidcard-ivoclar",
   },
   {
     id: 5,
@@ -63,7 +63,7 @@ Our advanced 4D Pro Zirconia disc features an unparalleled four - dimensional gr
 `,
 
     image: "/assets/landing-page/product5.png",
-    nav: '/product/multilayer-pro'
+    nav: "/product/multilayer-pro",
   },
   {
     id: 6,
@@ -71,7 +71,7 @@ Our advanced 4D Pro Zirconia disc features an unparalleled four - dimensional gr
     description: `LayZir All Indication Zirconia Disc by SMART DENTISTRY SOLUTIONS – FDA Cleared, Aesthetic Like Lithium Disilicate, Minimal Sintering Distortion, Excellent Millability, and Advanced 3Y / 5Y Blending Technology.`,
 
     image: "/assets/landing-page/product6.png",
-    nav: '/product/lay-zir'
+    nav: "/product/lay-zir",
   },
   {
     id: 7,
@@ -82,13 +82,10 @@ With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic result
 
     image: "/assets/landing-page/product7.png",
     multiline: true,
-    nav: '/product/'
+    nav: "/product/aidite-zirconia",
   },
 ];
 
-
-
- 
 export const accordionData = [
   {
     title: "How do you generate $5 leads?",
@@ -131,26 +128,25 @@ export const accordionData = [
       "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
     ],
   },
-
 ];
- 
-
 
 export const teethOption = [
-  { id: 1, title: 'Inlay/Onlay', img: '/assets/landing-page/1.png' },
-  { id: 2, title: 'Veneer', img: '/assets/landing-page/2.png' },
-  { id: 3, title: 'Anterior full crown', img: '/assets/landing-page/3.png' },
-  { id: 4, title: 'Anterior full crown bridge', img: '/assets/landing-page/4.png' },
-  { id: 5, title: 'Screw-retained bridge', img: '/assets/landing-page/5.png' },
-  { id: 6, title: 'Posterior full crown', img: '/assets/landing-page/6.png' },
+  { id: 1, title: "Inlay/Onlay", img: "/assets/landing-page/1.png" },
+  { id: 2, title: "Veneer", img: "/assets/landing-page/2.png" },
+  { id: 3, title: "Anterior full crown", img: "/assets/landing-page/3.png" },
   {
-    id: 7, title: 'Posterior full crown bridge', img: '/assets/landing-page/7.png'
+    id: 4,
+    title: "Anterior full crown bridge",
+    img: "/assets/landing-page/4.png",
   },
-]
-
-
-
-
+  { id: 5, title: "Screw-retained bridge", img: "/assets/landing-page/5.png" },
+  { id: 6, title: "Posterior full crown", img: "/assets/landing-page/6.png" },
+  {
+    id: 7,
+    title: "Posterior full crown bridge",
+    img: "/assets/landing-page/7.png",
+  },
+];
 
 export const settingsOption = [
   {
@@ -176,38 +172,18 @@ export const settingsOption = [
       "Cement Gap: ................................. 0.05 mm (near margin)",
       "Extra Cement Gap: .................................  0.06 mm (die spacer)",
       "Distance to Margin: .................................  1.0 mm",
-      'Note: Cement Gap Settings Are Adjustable. Increase Values To Give a Looser Fit, Decrease Values To Get a Tighter Fit.'
-
+      "Note: Cement Gap Settings Are Adjustable. Increase Values To Give a Looser Fit, Decrease Values To Get a Tighter Fit.",
     ],
   },
   {
     title: "Digital Product",
-    description:
-      ["Milled PMMA"],
+    description: ["Milled PMMA"],
   },
   {
     title: "# of Units",
-    description:
-      ["Single up to 14 units"],
+    description: ["Single up to 14 units"],
   },
 ];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export const Digital_Option = [
   { value: "quad", label: "Quadrant" },
@@ -219,8 +195,6 @@ export const LAB_OPTIONS = [
   { value: "argen", label: "Argen" },
   { value: "modern", label: "Modern Dental" },
 ];
-
-
 
 export const PHOTOGRAMMETRY_FILES = [
   { value: "STL", label: "STL" },
@@ -1079,25 +1053,26 @@ export const shadesProductLanding = [
   { label: "White", color: "#FFFFFF", border: true },
 ];
 
-export const shadesproduct = [{ label: "A1", color: "#EFEAD4" },
-{ label: "A2", color: "#ECE8D0" },
-{ label: "A3.5", color: "#E4DDC3" },
+export const shadesproduct = [
+  { label: "A1", color: "#EFEAD4" },
+  { label: "A2", color: "#ECE8D0" },
+  { label: "A3.5", color: "#E4DDC3" },
 
-{ label: "B1", color: "#D2C89B" },
-{ label: "B2", color: "#EFEAD4" },
-{ label: "B3", color: "#E0D7B3" },
-{ label: "B4", color: "#E0D7B5" },
+  { label: "B1", color: "#D2C89B" },
+  { label: "B2", color: "#EFEAD4" },
+  { label: "B3", color: "#E0D7B3" },
+  { label: "B4", color: "#E0D7B5" },
 
-{ label: "C1", color: "#E4DDC3" },
-{ label: "C2", color: "#E0D7B5" },
-{ label: "C3", color: "#E4DBC2" },
-{ label: "C4", color: "#D2C89B" },
+  { label: "C1", color: "#E4DDC3" },
+  { label: "C2", color: "#E0D7B5" },
+  { label: "C3", color: "#E4DBC2" },
+  { label: "C4", color: "#D2C89B" },
 
-{ label: "D2", color: "#DDD4B5" },
-{ label: "D3", color: "#D0C2A2" },
-{ label: "D4", color: "#D0C2A2" },
-{ label: "Bleach", color: "#FFFFFF" },
-]
+  { label: "D2", color: "#DDD4B5" },
+  { label: "D3", color: "#D0C2A2" },
+  { label: "D4", color: "#D0C2A2" },
+  { label: "Bleach", color: "#FFFFFF" },
+];
 
 export const diameters = ["95mm", "98mm"];
 export const thicknesses = [
@@ -1111,95 +1086,97 @@ export const thicknesses = [
   "30mm",
 ];
 
+export const newDiameters = ["98mm"];
+export const newThicknesses = ["12mm", "14mm", "16mm", "20mm", "25mm", "30mm"];
 
+export const shadesproductargenzst = [
+  { label: "A1", color: "#EFEAD4" },
+  { label: "A2", color: "#ECE8D0" },
+  { label: "A3", color: "#D2C89B" },
+  { label: "A3.5", color: "#E4DDC3" },
+  { label: "B1", color: "#EFEAD4" },
+  { label: "B2", color: "#EAE3C6" },
+  { label: "B3", color: "#E0D7B3" },
+  { label: "B4", color: "#E0D7B5" },
 
-export const newDiameters = ["98mm"]
-export const newThicknesses = ["12mm",
-  "14mm",
-  "16mm",
-  "20mm", "25mm",
-  "30mm",]
+  { label: "C1", color: "#E4DDC3" },
+  { label: "C2", color: "#E0D7B5" },
+  { label: "C3", color: "#E4DBC2" },
+  { label: "C4", color: "#D2C89B" },
 
+  { label: "D2", color: "#D2C89B" },
+  { label: "D3", color: "#D0C2A2" },
+  { label: "D4", color: "#D0C2A2" },
+  { label: "D4", color: "#D0C2A2" },
 
+  { label: "OM1", color: "#FFFFFF" },
+  { label: "OM2", color: "#FFFFFF" },
+  { label: "OM3", color: "#FFFFFF" },
+];
 
-export const shadesproductargenzst = [{ label: "A1", color: "#EFEAD4" },
-{ label: "A2", color: "#ECE8D0" },
-{ label: "A3", color: "#D2C89B" },
-{ label: "A3.5", color: "#E4DDC3" },
-{ label: "B1", color: "#EFEAD4" },
-{ label: "B2", color: "#EAE3C6" },
-{ label: "B3", color: "#E0D7B3" },
-{ label: "B4", color: "#E0D7B5" },
-
-{ label: "C1", color: "#E4DDC3" },
-{ label: "C2", color: "#E0D7B5" },
-{ label: "C3", color: "#E4DBC2" },
-{ label: "C4", color: "#D2C89B" },
-
-{ label: "D2", color: "#D2C89B" },
-{ label: "D3", color: "#D0C2A2" },
-{ label: "D4", color: "#D0C2A2" },
-{ label: "D4", color: "#D0C2A2" },
-
-{ label: "OM1", color: "#FFFFFF" },
-{ label: "OM2", color: "#FFFFFF" },
-{ label: "OM3", color: "#FFFFFF" },
-]
-
-export const newDiametersargenzst = ["95mm", "98mm"]
-export const newThicknessesargenzst = ["12mm",
-  "14mm",
-  "16mm",
-  "18mm",
-  "20mm"]
-
+export const newDiametersargenzst = ["95mm", "98mm"];
+export const newThicknessesargenzst = ["12mm", "14mm", "16mm", "18mm", "20mm"];
 
 export const CardZidcard = [
-  { title: "Class of material", label1: "Incisal", value1: "5Y-TZP", label2: "Dentin", value2: " 3Y-TZP" },
-  { title: "Flexural strength", label1: "650 MPa", value1: "(incisal)", label2: "1200 MPa ", value2: " (dentin)" },
-  { title: "Fracture toughness", label1: "5.0 MPa ", value1: "• M¹/² (dentin)" },
-
+  {
+    title: "Class of material",
+    label1: "Incisal",
+    value1: "5Y-TZP",
+    label2: "Dentin",
+    value2: " 3Y-TZP",
+  },
+  {
+    title: "Flexural strength",
+    label1: "650 MPa",
+    value1: "(incisal)",
+    label2: "1200 MPa ",
+    value2: " (dentin)",
+  },
+  {
+    title: "Fracture toughness",
+    label1: "5.0 MPa ",
+    value1: "• M¹/² (dentin)",
+  },
 ];
 export const cardsecondZidCard = [
-  { title: "Minimum wall thickness (crown)", label1: "Anterior tooth monolithic: ", value1: "0.8 mm", label2: "Posterior tooth monolithic: ", value2: " 1.0 mm" },
-  { title: "Disc thickness (Ø 98.5 mm)", value1: "14mm, 16mm, 20mm, 25mm", },
-]
+  {
+    title: "Minimum wall thickness (crown)",
+    label1: "Anterior tooth monolithic: ",
+    value1: "0.8 mm",
+    label2: "Posterior tooth monolithic: ",
+    value2: " 1.0 mm",
+  },
+  { title: "Disc thickness (Ø 98.5 mm)", value1: "14mm, 16mm, 20mm, 25mm" },
+];
 
-export const shadesproductzidCard = [{ label: "A1", color: "#EFEAD4" },
-{ label: "A2", color: "#ECE8D0" },
-{ label: "A3", color: "#D2C89B" },
-{ label: "A3.5", color: "#E4DDC3" },
-{ label: "B1", color: "#EFEAD4" },
-{ label: "B2", color: "#EAE3C6" },
-{ label: "B3", color: "#E0D7B3" },
-{ label: "B4", color: "#E0D7B5" },
+export const shadesproductzidCard = [
+  { label: "A1", color: "#EFEAD4" },
+  { label: "A2", color: "#ECE8D0" },
+  { label: "A3", color: "#D2C89B" },
+  { label: "A3.5", color: "#E4DDC3" },
+  { label: "B1", color: "#EFEAD4" },
+  { label: "B2", color: "#EAE3C6" },
+  { label: "B3", color: "#E0D7B3" },
+  { label: "B4", color: "#E0D7B5" },
 
-{ label: "C1", color: "#E4DDC3" },
-{ label: "C2", color: "#E0D7B5" },
-{ label: "C3", color: "#E4DBC2" },
-{ label: "C4", color: "#D2C89B" },
+  { label: "C1", color: "#E4DDC3" },
+  { label: "C2", color: "#E0D7B5" },
+  { label: "C3", color: "#E4DBC2" },
+  { label: "C4", color: "#D2C89B" },
 
-{ label: "D2", color: "#D2C89B" },
-{ label: "D3", color: "#D0C2A2" },
-{ label: "D4", color: "#D0C2A2" },
-{ label: "D4", color: "#D0C2A2" },
+  { label: "D2", color: "#D2C89B" },
+  { label: "D3", color: "#D0C2A2" },
+  { label: "D4", color: "#D0C2A2" },
+  { label: "D4", color: "#D0C2A2" },
 
-{ label: "BL1", color: "#EFEAD4" },
-{ label: "BL2", color: "#ECE8D0" },
-{ label: "BL3", color: "#E4DBC2" },
-{ label: "BL4", color: "#E4DDC3" },
-]
+  { label: "BL1", color: "#EFEAD4" },
+  { label: "BL2", color: "#ECE8D0" },
+  { label: "BL3", color: "#E4DBC2" },
+  { label: "BL4", color: "#E4DDC3" },
+];
 
-
-
-export const newDiameterszidCard = ["95mm", "98mm"]
-export const newThicknesseszidCard = ["12mm",
-  "14mm",
-  "16mm",
-  "18mm",
-  "20mm"]
-
-
+export const newDiameterszidCard = ["95mm", "98mm"];
+export const newThicknesseszidCard = ["12mm", "14mm", "16mm", "18mm", "20mm"];
 
 export const zidCardComponent = [
   {
@@ -1222,32 +1199,51 @@ export const zidCardComponent = [
   },
 ];
 
-
 export const teethOptionMutiple = [
-  { id: 1, title: 'Inlay/Onlay', img: '/assets/landing-page/1.png' },
-  { id: 2, title: 'Veneer', img: '/assets/landing-page/2.png' },
-  { id: 3, title: 'Anterior full crown', img: '/assets/landing-page/3.png' },
-  { id: 4, title: 'Anterior full crown bridge', img: '/assets/landing-page/4.png' },
-  { id: 5, title: 'Anterior coping Anterior reduced crowne', img: '/assets/landing-page/8.png' },
-  { id: 6, title: 'Anterior coping bridge Anteriorreduced crown bridge', img: '/assets/landing-page/11.png' },
+  { id: 1, title: "Inlay/Onlay", img: "/assets/landing-page/1.png" },
+  { id: 2, title: "Veneer", img: "/assets/landing-page/2.png" },
+  { id: 3, title: "Anterior full crown", img: "/assets/landing-page/3.png" },
   {
-    id: 7, title: 'Posterior full crown', img: '/assets/landing-page/7.png'
+    id: 4,
+    title: "Anterior full crown bridge",
+    img: "/assets/landing-page/4.png",
   },
   {
-    id: 8, title: 'Posterior full crown bridge', img: '/assets/landing-page/6.png'
+    id: 5,
+    title: "Anterior coping Anterior reduced crowne",
+    img: "/assets/landing-page/8.png",
   },
   {
-    id: 9, title: 'Posterior coping Posterior reduced crown', img: '/assets/landing-page/9.png'
+    id: 6,
+    title: "Anterior coping bridge Anteriorreduced crown bridge",
+    img: "/assets/landing-page/11.png",
   },
   {
-    id: 10, title: 'Posterior coping bridge Posterior reduced crown bridge', img: '/assets/landing-page/10.png'
+    id: 7,
+    title: "Posterior full crown",
+    img: "/assets/landing-page/7.png",
   },
   {
-    id: 11, title: 'Screw-retained bridge', img: '/assets/landing-page/11.png'
+    id: 8,
+    title: "Posterior full crown bridge",
+    img: "/assets/landing-page/6.png",
   },
-]
-
-
+  {
+    id: 9,
+    title: "Posterior coping Posterior reduced crown",
+    img: "/assets/landing-page/9.png",
+  },
+  {
+    id: 10,
+    title: "Posterior coping bridge Posterior reduced crown bridge",
+    img: "/assets/landing-page/10.png",
+  },
+  {
+    id: 11,
+    title: "Screw-retained bridge",
+    img: "/assets/landing-page/11.png",
+  },
+];
 
 export const prescriptionCards = [
   {
@@ -1304,7 +1300,8 @@ export const prescriptionCards = [
   },
   {
     title: "Make Me Smile™ Warranty Module",
-    subtitle: "Patient enrollments are included directly from your case submission:",
+    subtitle:
+      "Patient enrollments are included directly from your case submission:",
     points: [
       "- 3, 6, or 9-year coverage available",
       "- Covers crowns, implants, and bridges",
@@ -1313,11 +1310,6 @@ export const prescriptionCards = [
     ],
   },
 ];
-
-
-
-
-
 
 export const warrantyCards = [
   {
@@ -1342,28 +1334,29 @@ export const warrantyCards = [
   },
 ];
 
-
 export const implantCards = [
   {
     img: "/assets/landing-page/card 3.png",
     title: "Dentures",
     subtitle: "What Are Implant-Retained Dentures?",
     button: "Read More",
+    href: '/blogs'
   },
   {
     img: "/assets/landing-page/card 5.png",
     title: "Dentures",
     subtitle: "What Are Implant-Retained Dentures?",
     button: "Read More",
+    href: '/blogs'
   },
   {
     img: "/assets/landing-page/card 4.png",
     title: "Dentures",
     subtitle: "What Are Implant-Retained Dentures?",
     button: "Read More",
+    href: '/blogs'
   },
 ];
-
 
 export const steps = [
   {
@@ -1373,7 +1366,6 @@ export const steps = [
       " Fill out your details and select your plan",
       "Add your dentist info (or we’ll help you find one)",
       "Secure payment activates your coverage",
-
     ],
   },
   {
@@ -1383,7 +1375,6 @@ export const steps = [
       "Download your form from the portal",
       "Work with your dentist to finalize details",
       "We’ll guide you step-by-step",
-
     ],
   },
   {
@@ -1396,18 +1387,15 @@ export const steps = [
   },
 ];
 
-
-
 export const Doctorsteps = [
   {
     id: 1,
     title: "Choose a Plan",
-    parag: 'Select a subscription plan based on your needs:',
+    parag: "Select a subscription plan based on your needs:",
     description: [
       "Growth Plan – 3-month trial, allows up to 10 patients per month.",
       "Gold Plan – Treat up to 20 patients per month.",
       "platinum Plan – Manage unlimited patients per month.",
-
     ],
   },
   {
@@ -1415,7 +1403,8 @@ export const Doctorsteps = [
     title: " Get Exclusive Benefits",
     description: [
       "all 3 plans get the discount, silver gold and platinum.",
-      "To access the laboratory pricing schedule, submit an email request.",],
+      "To access the laboratory pricing schedule, submit an email request.",
+    ],
   },
   {
     id: 3,
@@ -1431,7 +1420,7 @@ export const Doctorsteps = [
 export const concerns = [
   {
     title: "Chipped Crowns",
-    subtitle: 'Full remake included',
+    subtitle: "Full remake included",
     description:
       "Crowns made of all porcelain can occasionally chip. If the chipping is extensive the crown may need to be replaced. We will re-make it at no charge.",
   },
@@ -1443,18 +1432,17 @@ export const concerns = [
   },
   {
     title: "Crown Displacement",
-    subtitle: 'Recement or remake',
+    subtitle: "Recement or remake",
     description:
       "If your crown or bridge is displaced, this may be due to an improper fit or lack of cement. If this happens, contact your doctor's office immediately. The restoration may need to be recemented or replaced.",
   },
   {
     title: "Allergic Reaction",
-    subtitle: 'Case by case support',
+    subtitle: "Case by case support",
     description:
       "In the case of porcelain fused to metal crown or bridge, on rare occasions patients have had allergic reactions due to the fact that crown restorations are made using a mixture of metals reactions may occur, but extremely rare.",
   },
 ];
-
 
 export const plans = [
   {
@@ -1466,7 +1454,6 @@ export const plans = [
       " Covers up to 10 Crowns, Bridges, or Veneers",
       "one-time enrollment",
       "Ideal for minor restorative work",
-
     ],
     buttonStyle:
       "border-blue-500 secondaryBrand hover:bg-blue-800 hover:text-white",
@@ -1480,7 +1467,6 @@ export const plans = [
       " Covers up to 20 Crowns, Bridges, or Veneers ",
       "one-time enrollment",
       "Great for full-arch or cosmetic work",
-
     ],
     buttonStyle: "bg-blue-900 text-white hover:bg-blue-700",
   },
@@ -1492,109 +1478,108 @@ export const plans = [
     description: [
       "we cover the crown over the implant, not the implant abutment or implant",
       " one-time enrollment",
-      "Most comprehensive protection"
+      "Most comprehensive protection",
     ],
     buttonStyle:
       "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
   },
 ];
- export const tabs = [
-        {
-            "id": "all",
-            "label": "All Topics",
-            "cards": [
-                {
-                    "img": "/assets/landing-page/card 3.png",
-                    "title": "Dentures",
-                    "subtitle": "What Are Implant-Retained Dentures?",
-                    "button": "Read More"
-                },
-                {
-                    "img": "/assets/landing-page/card 5.png",
-                    "title": "Implants",
-                    "subtitle": "Benefits of Dental Implants",
-                    "button": "Read More"
-                },
-                {
-                    "img": "/assets/landing-page/card 4.png",
-                    "title": "Surgery",
-                    "subtitle": "What to Expect During Oral Surgery",
-                    "button": "Read More"
-                },
-                 {
-                    "img": "/assets/landing-page/card 6.png",
-                    "title": "Surgery",
-                    "subtitle": "What to Expect During Oral Surgery",
-                    "button": "Read More"
-                },
-                 {
-                    "img": "/assets/landing-page/card 7.png",
-                    "title": "Surgery",
-                    "subtitle": "What to Expect During Oral Surgery",
-                    "button": "Read More"
-                },
-                {
-                    "img": "/assets/landing-page/card 8.png",
-                    "title": "Surgery",
-                    "subtitle": "What to Expect During Oral Surgery",
-                    "button": "Read More"
-                },
-                {
-                    "img": "/assets/landing-page/card 6.png",
-                    "title": "Surgery",
-                    "subtitle": "What to Expect During Oral Surgery",
-                    "button": "Read More"
-                },
-                {
-                    "img": "/assets/landing-page/card 7.png",
-                    "title": "Surgery",
-                    "subtitle": "What to Expect During Oral Surgery",
-                    "button": "Read More"
-                },
-                {
-                    "img": "/assets/landing-page/card 8.png",
-                    "title": "Surgery",
-                    "subtitle": "What to Expect During Oral Surgery",
-                    "button": "Read More"
-                },
-            ]
-        },
-        {
-            "id": "questions",
-            "label": "Questions",
-            "cards": [
-                {
-                    "img": "/assets/landing-page/card 3.png",
+export const tabs = [
+  {
+    id: "all",
+    label: "All Topics",
+    cards: [
+      {
+        img: "/assets/landing-page/card 3.png",
+        title: "Dentures",
+        subtitle: "What Are Implant-Retained Dentures?",
+        button: "Read More",
+      },
+      {
+        img: "/assets/landing-page/card 5.png",
+        title: "Implants",
+        subtitle: "Benefits of Dental Implants",
+        button: "Read More",
+      },
+      {
+        img: "/assets/landing-page/card 4.png",
+        title: "Surgery",
+        subtitle: "What to Expect During Oral Surgery",
+        button: "Read More",
+      },
+      {
+        img: "/assets/landing-page/card 6.png",
+        title: "Surgery",
+        subtitle: "What to Expect During Oral Surgery",
+        button: "Read More",
+      },
+      {
+        img: "/assets/landing-page/card 7.png",
+        title: "Surgery",
+        subtitle: "What to Expect During Oral Surgery",
+        button: "Read More",
+      },
+      {
+        img: "/assets/landing-page/card 8.png",
+        title: "Surgery",
+        subtitle: "What to Expect During Oral Surgery",
+        button: "Read More",
+      },
+      {
+        img: "/assets/landing-page/card 6.png",
+        title: "Surgery",
+        subtitle: "What to Expect During Oral Surgery",
+        button: "Read More",
+      },
+      {
+        img: "/assets/landing-page/card 7.png",
+        title: "Surgery",
+        subtitle: "What to Expect During Oral Surgery",
+        button: "Read More",
+      },
+      {
+        img: "/assets/landing-page/card 8.png",
+        title: "Surgery",
+        subtitle: "What to Expect During Oral Surgery",
+        button: "Read More",
+      },
+    ],
+  },
+  {
+    id: "questions",
+    label: "Questions",
+    cards: [
+      {
+        img: "/assets/landing-page/card 3.png",
 
-                    "title": "FAQs",
-                    "subtitle": "Common Questions About Implants",
-                    "button": "Read More"
-                }
-            ]
-        },
-        {
-            "id": "dental",
-            "label": "Dental Health",
-            "cards": [
-                {
-                    "img": "/assets/landing-page/card 5.png",
-                    "title": "Dental Health",
-                    "subtitle": "Tips for Better Oral Care",
-                    "button": "Read More"
-                }
-            ]
-        },
-        {
-            "id": "surgery",
-            "label": "Surgery Instructions",
-            "cards": [
-                {
-                    "img": "/assets/landing-page/card 4.png",
-                    "title": "Oral Surgery",
-                    "subtitle": "Post-Operation Care",
-                    "button": "Read More"
-                }
-            ]
-        },
-
-    ]
+        title: "FAQs",
+        subtitle: "Common Questions About Implants",
+        button: "Read More",
+      },
+    ],
+  },
+  {
+    id: "dental",
+    label: "Dental Health",
+    cards: [
+      {
+        img: "/assets/landing-page/card 5.png",
+        title: "Dental Health",
+        subtitle: "Tips for Better Oral Care",
+        button: "Read More",
+      },
+    ],
+  },
+  {
+    id: "surgery",
+    label: "Surgery Instructions",
+    cards: [
+      {
+        img: "/assets/landing-page/card 4.png",
+        title: "Oral Surgery",
+        subtitle: "Post-Operation Care",
+        button: "Read More",
+      },
+    ],
+  },
+];

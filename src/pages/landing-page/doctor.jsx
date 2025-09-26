@@ -225,8 +225,8 @@ const Doctor = ({ isLanding }) => {
             </ul>
             <p className="text-sm font-poppins text-secondaryText space-y-3">Whether you're looking to grow your patient base, improve patient satisfaction, or reduce lab expenses, our plans offer a flexible way to streamline your operations and increase your revenue.</p>
 
-          </div> 
-          <div className="flex justify-center"> 
+          </div>
+          <div className="flex justify-center">
             <img
               src="/assets/landing-page/doctor1.png"
               alt="Doctor Enrollment"
@@ -234,6 +234,8 @@ const Doctor = ({ isLanding }) => {
             />
           </div>
         </section>
+
+
         <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
           <div className="text-center mb-6 sm:mb-12">
             <h2 className=" text-sm md:text-3xl font-semibold text-secondaryBrand max-w-[600px] mx-auto text-center">
@@ -241,19 +243,21 @@ const Doctor = ({ isLanding }) => {
             </h2>
             <p className="text-secondaryText py-8 font-poppins text-sm  font-normal">Effortless Patient Management in Three Simple Steps</p>
           </div>
-          <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-8">
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 relative">
+            {/* ✅ Dashed line only between first and last steps */}
+            <div className="hidden md:block absolute top-6 left-[16.666%] w-[66.666%] border-t-2 border-dashed border-gray-300 z-0"></div>
+
             {Doctorsteps.map((step, idx) => (
-              <div key={step.id} className="flex flex-col items-center">
+              <div
+                key={step.id}
+                className="flex flex-col items-center   relative z-10"
+              >
                 {/* Step Circle */}
-                <div className="flex items-center w-full mx-auto">
-                  {/* Step Circle */}
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-fouthBrand text-white text-xl font-bold z-10">
-                    {idx + 1}
-                  </div>
-                  {idx !== Doctorsteps.length - 1 && (
-                    <div className="hidden sm:block flex-grow h-0.5 border-t-2 border-dashed border-gray-400"></div>
-                  )}
+                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-fouthBrand text-white text-xl font-bold mb-6">
+                  {idx + 1}
                 </div>
+
 
                 <div className="mt-6 flex-1 w-full bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md hover:shadow-lg transition">
                   <h3 className="text-sm md:text-2xl font-poppins font-bold text-start text-secondaryBrand mb-4">
@@ -263,15 +267,39 @@ const Doctor = ({ isLanding }) => {
                     {step?.parag}
                   </p>
                   <ul className="text-gray-600 text-sm font-poppins space-y-2 pl-2">
-                    {step.description.map((desc, index) => (
-                      <li key={index}>{desc}</li>
-                    ))}
+                    {step.description.map((desc, index) => {
+                      if (step.id === 1) {
+                        const [firstWord, ...rest] = desc.split("–");
+                        return (
+                          <li
+                            key={index}
+                            className="text-xs font-poppins font-normal"
+                          >
+                            {/* First part */}
+                            <span className="font-bold text-primaryText">
+                              {firstWord.trim()}
+                            </span>
+
+                            {/* Rest part with different color */}
+                            {rest.length > 0 && (
+                              <span className="text-secondaryText font-normal">
+                                {" – " + rest.join("–")}
+                              </span>
+                            )}
+                          </li>
+                        );
+                      }
+                      return <li key={index} className='text-xs font-poppins font-normal text-secondaryText'>{desc}</li>;
+                    })}
                   </ul>
                 </div>
               </div>
             ))}
           </div>
+
+
         </div>
+
         <div className="py-8 sm:py-12 md:pb-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
           <div className="text-center mb-6 sm:mb-12">
             <h2 className=" text-sm md:text-3xl font-semibold text-secondaryBrand max-w-[600px] mx-auto text-center">

@@ -1,18 +1,7 @@
 import Header from "../header";
 import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
-import {
-  newDiameters,
-  newThicknesses,
-  settingsOption,
-  shadesproduct,
-  teethOption,
-} from "../../../Constant";
-import Shades from "../../../Common/product-landing/shades-product-landing";
-import Dimensions from "../../../Common/product-landing/dimensions-product-landing";
-import Contact from "../contact";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
-
 function LayZirPage({ isLanding }) {
   const features = [
     "FDA Cleared",
@@ -21,7 +10,6 @@ function LayZirPage({ isLanding }) {
     "Excellent Millability Across All Systems",
     "Proprietary 3Y and 5Y Blending",
   ];
-
   return (
     <div>
       <div className="pb-20">{!isLanding && <Header />} </div>
@@ -171,7 +159,6 @@ function LayZirPage({ isLanding }) {
       </section>
 
       <FrequentlyAskedQuestion />
-
       <UpperFooter />
       <Footer />
     </div>

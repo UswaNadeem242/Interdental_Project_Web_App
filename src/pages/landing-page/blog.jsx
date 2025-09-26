@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { ArrowLeftCircleIcon, ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
-import { implantCards, prescriptionCards, tabs, warrantyCards } from "../../Constant";
-import CircleIcon from "../../icon/circle-icon";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import { tabs, } from "../../Constant";
 import FrequentlyAskedQuestion from "../../components/frequently-asked-question";
-import Contact from "./contact";
 import UpperFooter from "../../components/upper-footer";
 import Footer from "../../components/Footer";
 import Header from "./header";
@@ -67,49 +65,6 @@ function Blog({ isLanding }) {
                     </div>
                     {/* Cards */}
                     <div className="grid md:grid-cols-12 grid-cols-2 gap-8 justify-items-center  mx-auto mt-16">
-                        {/* {filteredCards && filteredCards.length > 0 ? (
-                            filteredCards.map((card, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition col-span-4"
-                                >
-                                    <img
-                                        src={card.img}
-                                        alt={card.title || "Implant card"}
-                                        className=""
-                                    />
-                                    <h3 className="text-xs font-medium font-poppins uppercase text-fouthBrand pt-5">
-                                        {card.title}
-                                    </h3>
-                                    <p className="text-xl font-normal font-poppins capitalize w-3/4 py-5">
-                                        {card.subtitle}
-                                    </p>
-                                    <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-                                        <h1 className="font-poppins font-semibold text-base text-[#434343]">
-                                            {card.button}
-                                        </h1>
-                                        <div className="rounded-full bg-secondaryBrand text-white p-2">
-                                            <ArrowRightIcon className="w-4 h-4" />
-                                        </div>
-                                    </button>
-                                </div>
-                            ))
-                        ) : (
-                            <p className="col-span-12 text-center text-gray-500 font-poppins">
-                                No results found.
-                            </p>
-                        )} */}
-
-
-
-
-
-
-
-
-
-
-
                         {filteredCards && filteredCards.length > 0 ? (
                             filteredCards.map((card, index) => {
                                 const slug = card.slug || slugify(card.title) || String(index);
@@ -178,16 +133,8 @@ function Blog({ isLanding }) {
                     )}
 
                 </div>
-
-
-
-
-
-
             </section>
-
             <FrequentlyAskedQuestion />
-         
             <UpperFooter />
             <Footer />
         </div>

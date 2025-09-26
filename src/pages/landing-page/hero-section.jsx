@@ -17,15 +17,22 @@ const HeroSection = () => {
           </span>
 
         </h2>
-        <p className="mt-3 sm:mt-4 text-sm   md:text-base text-primaryText max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto md:mx-0">
-          At InterOral.ai, we’ve reimagined the way practices connect to labs, implants, and patients. It starts with our Wizard intake system — a smarter way to submit cases, generate prescriptions, and route everything in one seamless workflow.
+        <p className="mt-3 sm:mt-4 text-sm md:text-base text-primaryText max-w-xs sm:max-w-sm md:max-w-md lg:max-w-[37rem] mx-auto md:mx-0 leading-6 md:leading-7">
+          At InterOral.ai, we’ve reimagined the way practices
+          <span className="hidden md:inline"><br /></span> connect to labs, implants, and patients. It starts with our
+          <span className="hidden md:inline"><br /></span> Wizard intake system — a smarter way to submit cases,
+          <span className="hidden md:inline"><br /></span> generate prescriptions, and route everything in one
+          <span className="hidden md:inline"><br /></span> seamless workflow.
         </p>
 
 
 
-        <p className="mt-3 sm:mt-4 text-sm   md:text-base text-primaryText max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto md:mx-0">
-          Behind the scenes, our patented Routing AI connects your cases to the right Dental Lab Alliance partner, giving you nationwide access and three tiers of quality to choose from.
+
+        <p className="mt-3 sm:mt-4 text-sm md:text-base text-primaryText max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto md:mx-0 leading-6 md:leading-7">
+          Behind the scenes, our patented Routing AI connects your cases to the right Dental Lab Alliance partner, giving you nationwide access and three tiers of quality to choose
+          <span className="hidden md:inline"><br /></span> from.
         </p>
+
         <div className="mr-20 w-auto h-auto flex flex-col sm:flex-row justify-center md:justify-start items-center gap-3 sm:gap-4 md:gap-6 mt-4 sm:mt-6">
           <PrimaryButtonUI title='Enroll now' onClick={() => navigate("/shop")} className="px-10 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
           />
