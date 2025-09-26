@@ -382,7 +382,7 @@ const Header = () => {
                 onClick={() => navigate("/login")}
                 className="flex justify-center items-center  w-[65px] h-[34px] rounded-[37px] gap-[8px] bg-secondaryBrand"
               >
-                <h1 className="flex justify-center items-center cursor-pointer leading-[18px] font-poppins font-normal text-white text-[12px] w-full">
+                <h1 className="flex justify-center items-center cursor-pointer leading-[18px] font-poppins font-normal text-white text-[12px] w-full whitespace-nowrap">
                   Log in
                 </h1>
               </div>

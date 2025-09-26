@@ -59,7 +59,6 @@ const LandingPage = () => {
               <span className="hidden md:inline"><br /></span> through extended warranty coverage, ensuring a
               smooth, connected, and compliant workflow for  <span className="hidden md:inline"><br /></span> all.
             </p>
-
             <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
               <h1 className="font-poppins font-semibold text-base text-[#434343]" onClick={() => navigate("/about-us")}>
                 View More
@@ -104,9 +103,7 @@ const LandingPage = () => {
                     src={card.img}
                     alt={card.title}
                     className="w-full sm:w-[200px] md:w-[290px] lg:w-[300px] h-[150px] sm:h-[180px] md:h-[200px] lg:h-[237px] m-2 sm:m-4 rounded-lg object-fit"
-
                   />
-
                 </div>
                 <div className="flex flex-col gap-5 p-4 ">
                   <div>
@@ -151,8 +148,8 @@ const LandingPage = () => {
             </h1>
 
             <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2" onClick={() => navigate("/blog")}>
-              <h1 className="font-poppins font-semibold text-base text-[#434343]">
-                View All
+              <h1 className="font-poppins font-semibold text-base text-primaryText capitalize">
+                View more
               </h1>
               <div className="rounded-full bg-secondaryBrand text-white p-2">
                 <ArrowRightIcon className="w-4 h-4" />
@@ -160,7 +157,7 @@ const LandingPage = () => {
             </button>
           </div>
           <div className="flex justify-start pb-6">
-            <p className="text-secondaryText text-sm font-poppins text-center max-w-3xl">
+            <p className="text-primaryText text-sm font-poppins text-center max-w-3xl">
               Read our interesting blog
             </p>
           </div>
@@ -194,14 +191,9 @@ const LandingPage = () => {
               </div>
             ))}
           </div>
-
-
         </section>
-
         <FrequentlyAskedQuestion />
-
         <UpperFooter />
-
         <Footer />
       </div>
     </>

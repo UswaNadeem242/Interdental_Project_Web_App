@@ -1273,7 +1273,6 @@ export const prescriptionCards = [
     points: [
       "- Labs list pricing, turnaround times, specialties",
       "- Dentists browse and select based on fit",
-      "- Seamless ordering and shipping of implant kits",
       "- Exclusive InterOral.ai discounts only available via platform",
       "- Revenue sharing and quality control supported",
     ],
@@ -1315,7 +1314,7 @@ export const warrantyCards = [
   {
     title: "WARRANTY DASHBOARD",
     subtitle: "PATIENT",
-    img: "/assets/landing-page/card 1.png",
+    img: "/assets/landing-page/card 2.png",
     points: [
       "Easy online activation",
       "Downloadable warranty certificate",
@@ -1325,7 +1324,7 @@ export const warrantyCards = [
   {
     title: "WARRANTY DASHBOARD",
     subtitle: "DOCTOR",
-    img: "/assets/landing-page/card 2.png",
+    img: "/assets/landing-page/card 1.png",
     points: [
       "Streamlined doctor registration",
       "Track patient warranty status",

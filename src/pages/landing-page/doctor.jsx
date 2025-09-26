@@ -300,9 +300,9 @@ const Doctor = ({ isLanding }) => {
 
         </div>
 
-        <div className="py-8 sm:py-12 md:pb-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
+        <div className="py-8 sm:py-12 md:pb-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-white">
           <div className="text-center mb-6 sm:mb-12">
-            <h2 className=" text-sm md:text-3xl font-semibold text-secondaryBrand max-w-[600px] mx-auto text-center">
+            <h2 className=" text-sm md:text-3xl font-semibold text-primaryText max-w-[600px] mx-auto text-center">
               Doctor <span className="text-secondaryBrand font-bold ">Portal</span> &  <span className=" text-fouthBrand font-bold">Plans</span>
             </h2>
             <p className="text-secondaryText py-8 font-poppins text-xl  font-bold">Precision Restorations. Smart Workflow. Smiling Patients.</p>
@@ -312,20 +312,20 @@ const Doctor = ({ isLanding }) => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
             {/* Top 3 Divs */}
-            <div className="bg-background p-4 rounded col-span-4">
+            <div className="bg-blue-300/10 p-4 rounded col-span-4">
               <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Select teeth, materials, and shades</p>
             </div>
-            <div className="bg-background p-4 rounded col-span-4">
+            <div className="bg-blue-300/10 p-4 rounded col-span-4">
 
 
               <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Upload STL, DICOM, or PLY files</p>
 
             </div>
-            <div className="bg-background p-4 rounded col-span-4"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Auto-match compatible implant parts</p></div>
+            <div className="bg-blue-300/10 p-4 rounded col-span-4"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Auto-match compatible implant parts</p></div>
 
             {/* Bottom 2 Divs (span across 3 columns) */}
-            <div className="col-span-6 bg-background p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Generate prescription sheets and FedEx labels</p></div>
-            <div className="col-span-6 bg-background p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Route your files directly to design and production labs</p></div>
+            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Generate prescription sheets and FedEx labels</p></div>
+            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Route your files directly to design and production labs</p></div>
           </div>
           <p className="text-sm font-poppins font-normal">Bonus: Our built-in ChatGPT Assistant can guide you through the form step-by-step to prevent errors, answer questions, and ensure your cases are processed without delays.</p>
         </div>

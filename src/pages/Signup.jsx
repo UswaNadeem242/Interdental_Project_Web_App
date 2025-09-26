@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import loginrectangle from "../assets/loginrectangle.png";
 // import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -22,102 +22,193 @@ const Signup = () => {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
-  const [license, setLicense] = useState("");
-  const [officeRef, setOfficeRef] = useState("");
-
+  const [drLicenseNo, setdrLicense] = useState("");
+  const [officeRefNo, setofficeRefNo] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
-  const [selectedValue, setSelectedValue] = useState("");
+  const validate = () => {
+
+    if (!firstName?.trim()) return "First name is required";
+    // if (!lastName?.trim()) return "Last name is required";     // remove if not needed
+    if (!email?.trim()) return "Email is required";
+    if (!password) return "Password is required";
+    if (!phone?.trim()) return "Phone is required";
+    if (!labs) return "Please select a laboratory";
+
+    const nameRegex = /^[A-Za-z]{2,}$/;
+    if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
+    // if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return "Enter a valid email address";
+
+    // Optional: phone 7–15 digits
+    const phoneRegex = /^[0-9\s()+-]{7,15}$/;
+    if (!phoneRegex.test(phone)) return "Enter a valid phone number";
+
+    // Optional: strong password
+    // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+    // if (!passwordRegex.test(password)) return "Password must be 8+ chars and include letters & numbers";
+
+    // Optional: confirm password (if you render cPassword)
+    // if (password !== cPassword) return "Passwords do not match";
+
+    return null;
+  };
+  console.log('11111111111');
 
   const handleSignup = async () => {
-    if (!firstName || !lastName || !email || !password || !phone || !cPassword) {
-      setToastMessage("Please fill all the fields !");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
-    if (password != cPassword) {
-      setToastMessage("Passwords are not same !");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
-    if (!firstName || !lastName || !email || !password || !phone || !cPassword) {
-      setToastMessage("Please fill in all the fields!");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
 
-    // Validate First Name & Last Name (only letters, min 2 chars)
-    const nameRegex = /^[A-Za-z]{2,}$/;
-    if (!nameRegex.test(firstName)) {
-      setToastMessage("Enter a valid First Name (letters only)");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
-    if (!nameRegex.test(lastName)) {
-      setToastMessage("Enter a valid Last Name (letters only)");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
 
-    // Validate Email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setToastMessage("Enter a valid Email Address");
+    console.log('1: sihn');
+
+    const error = validate();
+    if (error) {
+      console.log('2: sihn');
+
+      setToastMessage(error);
       setToastType("error");
       setToastVisible(true);
       return;
     }
+    console.log('3: sihn');
 
-    // Validate Password Strength (min 8 chars, at least one letter & one number)
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const payload = {
+      email,
+      password,
+      firstName,
+      lastName: lastName?.trim() || "Admin",
+      phone,
+      address,
+      city,
+      zip,
+      drLicenseNo,
+      officeRefNo,
+      lab: Number(labs),            // send selected lab ID
+      role: "DOCTOR",
+    };
 
-    if (!passwordRegex.test(password)) {
-      setToastMessage(
-        "Password must be at least 8 characters long and include letters & numbers"
-      );
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
-
-    // Confirm Password
-    if (password !== cPassword) {
-      setToastMessage("Passwords do not match!");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
+    console.log('4:', payload);
+    const url = `http://69.62.66.110:8080/api/users/sign-up?email=${email}&password=${password}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&address=${address}&city=${city}&zip=${zip}drLicenseNo=${drLicenseNo}&officeRefNo=${officeRefNo}&lab=${labs}&role=DOCTOR`;
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/users/sign-up?email=${email}&password=${password}&firstName=${firstName}&lastName=${lastName}`,
+      // setIsSubmitting(true);
+      const response = await axios.post(url, {},
         {
           headers: {
-            Accept: "*/*",
+            "Content-Type": "application/x-www-form-urlencoded"
           },
-        }
-      );
-      setToastMessage("User Registered Successfully !");
+        });
+      setToastMessage("User Registered Successfully!");
       setToastType("success");
       setToastVisible(true);
       navigate("/login");
+      console.log("response:", response.data);
     } catch (error) {
-      console.log(error);
-      setToastMessage(`Error: ${error}`);
-      setToastType("success");
+      console.log("Signup error:", error);
+      setToastMessage(`Error: ${error.response?.data?.message || error.message}`);
+      setToastType("error");
       setToastVisible(true);
+    } finally {
+      // setIsSubmitting(false);
     }
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const [labs, setLabs] = useState([]);
+  const [isLoadingLabs, setIsLoadingLabs] = useState(false);
+
+  useEffect(() => {
+    const loadLabs = async () => {
+      try {
+        setIsLoadingLabs(true);
+        const token = localStorage.getItem("authToken"); // <-- adjust the key you use
+        if (!token) {
+          setToastMessage("Please log in to load labs.");
+          setToastType("error");
+          setToastVisible(true);
+          return;
+        }
+
+        const res = await axios.get(`${BASE_URL}/api/lab/getAll`, {
+          headers: { Authorization: `Bearer ${token}` },
+          // withCredentials: true, // <- only if your API uses cookies
+        });
+        console.log('resposne:', res);
+
+        // const raw = Array.isArray(res.data) ? res.data : (res.data?.data ?? res.data?.content ?? []);
+        // const options = raw.map(l => ({
+        //   label: l.name || l.labName || `Lab ${l.id}`,
+        //   value: String(l.id),
+        // }));
+
+        // setLabs(options);
+        // setSelectedLab(options[0]?.value || "");
+      } catch (err) {
+        setToastMessage(`Could not load labs: ${err.response?.data?.message || err.message}`);
+        setToastType("error");
+        setToastVisible(true);
+      } finally {
+        setIsLoadingLabs(false);
+      }
+    };
+
+    loadLabs();
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const closeToast = () => {
     setToastVisible(false);
   };
+
+  // useEffect(() => {
+  //   // Example: fetch user info
+  //   const userRole = user?.role; // coming from API / context
+  //   if (userRole) {
+  //     setSelectedValue(userRole); // "1" or "2"
+  //   }
+  // }, [user]);
 
   return (
     <div className="flex flex-col lg:flex-row justify-start items-center gap-6 lg:gap-24 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
@@ -172,7 +263,7 @@ const Signup = () => {
               <input
                 type="text"
                 className="w-full rounded-md border border-gray-300 py-3 outline-none  px-4 text-textFieldHeading"
-                placeholder="Email Address"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -218,15 +309,15 @@ const Signup = () => {
                 type="text"
                 className="w-full rounded-md border  py-3 outline-none  px-4 text-textFieldHeading"
                 placeholder="Doctor's License Number"
-                value={license}
-                onChange={(e) => setLicense(e.target.value)}
+                value={drLicenseNo}
+                onChange={(e) => setdrLicense(e.target.value)}
               />
               <input
                 type="text"
                 className="w-full rounded-md border  py-3  outline-none px-4 text-textFieldHeading"
                 placeholder="Office Reference Number"
-                value={officeRef}
-                onChange={(e) => setOfficeRef(e.target.value)}
+                value={officeRefNo}
+                onChange={(e) => setofficeRefNo(e.target.value)}
               />
             </div>
 
@@ -280,9 +371,8 @@ const Signup = () => {
 
               </div>
             </div>
-
             {/* Dropdown */}
-            <MaterialDropdown
+            {/* <MaterialDropdown
               options={[
                 { label: "Dental Lab", value: "1" },
                 { label: "Dentist", value: "2" },
@@ -291,13 +381,29 @@ const Signup = () => {
               onChange={(val) => setSelectedValue(val)}
               label="Select Laboratory"
               className="w-full bg-white border   px-4 py-3 rounded-md text-textFieldHeading"
+            /> */}
+
+            {/* <MaterialDropdown
+              options={[
+                { label: "Dental Lab", value: "1" },
+                { label: "Dentist", value: "2" },
+              ]}
+              value={lab}
+              onChange={(val) => setSelectedLab(val)}
+              label="Select Laboratory"
+              className="w-full bg-white border px-4 py-3 rounded-md text-textFieldHeading"
+            /> */}
+            <MaterialDropdown
+              options={labs}
+
+              value={labs}
+              onChange={val => setLabs(val)}
+              label={isLoadingLabs ? "Loading labs..." : "Select Laboratory"}
+              className="w-full bg-white border px-4 py-3 rounded-md"
             />
+
           </div>
-
-
         </div>
-
-
         <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
           <button
             onClick={() => handleSignup()}
@@ -339,3 +445,21 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
