@@ -1483,6 +1483,48 @@ export const plans = [
       "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
   },
 ];
+
+
+export const plansmodel = [
+  {
+    id: 1,
+    title: "Starter Plan",
+
+    price: "$125 ",
+    description: [
+      " Covers up to 10 Crowns, Bridges, or Veneers",
+      "one-time enrollment",
+      "Ideal for minor restorative work",
+    ],
+    buttonStyle:
+      "border-blue-500 secondaryBrand hover:bg-blue-800 hover:text-white",
+  },
+  {
+    id: 2,
+    title: "6 YEAR PLAN",
+
+    price: "$199 ",
+    description: [
+      " Covers up to 20 Crowns, Bridges, or Veneers ",
+      "one-time enrollment",
+      "Great for full-arch or cosmetic work",
+    ],
+    buttonStyle: "bg-blue-900 text-white hover:bg-blue-700",
+  },
+  {
+    id: 3,
+    title: "6 YEAR PLAN",
+
+    price: "$299 ",
+    description: [
+      "we cover the crown over the implant, not the implant abutment or implant",
+      " one-time enrollment",
+      "Most comprehensive protection",
+    ],
+    buttonStyle:
+      "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
+  },
+];
 export const tabs = [
   {
     id: "all",
