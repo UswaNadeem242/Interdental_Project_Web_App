@@ -10,33 +10,29 @@ function ImplantInterfeace() {
                     <img
                         src="/assets/landing-page/landing 3.png"
                         alt="Doctor Enrollment"
-                        className="w-full max-w-md rounded-lg"
+                        className="w-full max-w-md"
                     />
                 </div>
                 <div className="space-y-4">
-                    <h1 className="text-sm  text-black md:text-4xl font-bold font-poppins  ">
-                        Implant Interface
+                    <h1 className="text-sm  text-black md:text-3xl font-bold font-poppins  ">
+                        <span className='text-fouthBrand'>Implant</span>  <span className='text-secondaryBrand'>Interface</span>
                     </h1>
-                    <p className='text-xl font-normal font-poppins text-black'>Nationwide lab access at your fingertips.</p>
-                    <ul className="flex flex-col space-y-3">
-                        <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-medium text-primaryText">
-                            <CircleTrickIcon className="w-5 h-5 shrink-0   text-secondaryBrand" />
-                            Explore labs across the country, not just nearby.
+                    <p className='text-xl font-normal font-poppins text-black'>Benefit for dentists:</p>
+                    <ul className="flex flex-col space-y-1">
+                        <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-normal text-sm text-primaryText">
+                            No phone calls needed to order implant parts.
                         </li>
-                        <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-medium text-primaryText">
-                            <CircleTrickIcon className="w-5 h-5 shrink-0   text-secondaryBrand" />
-                            View specialties, prices, turnaround times, and portfolio photos.
+                        <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-normal text-sm text-primaryText">
+                            Eliminates errors in size and brand selection.
                         </li>
-                        <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-medium text-primaryText">
-                            <CircleTrickIcon className="w-5 h-5 shrink-0  text-secondaryBrand" />
-                            Compare and choose the best match with ease.
+                        <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-normal text-sm text-primaryText">
+                            Saves 10–15 minutes per case with digital ordering.
                         </li>
-                        <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-medium text-primaryText">
-                            <CircleTrickIcon className="w-5 h-5 shrink-0   text-secondaryBrand" />
-                            Access denture, implant, crown & bridge labs without guesswork.
+                        <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-normal text-sm text-primaryText">
+                            Case and parts are bundled and sent together to the lab.
                         </li>
                     </ul>
-                    <button className="flex justify-center items-center w-[300px] sm:w-[210px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2" onClick={() => navigate("/blog")}>
+                    <button className="flex justify-center items-center w-[300px] sm:w-[210px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2" >
                         <h1 className="font-poppins font-semibold text-base text-primaryText">
                             Order Smarter
                         </h1>

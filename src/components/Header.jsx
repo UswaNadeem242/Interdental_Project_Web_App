@@ -390,7 +390,7 @@ const Header = () => {
                 onClick={() => navigate("/signup")}
                 className="flex justify-center items-center cursor-pointer leading-[18px] font-poppins font-normal text-black text-[12px] w-[60px]"
               >
-                Sign Up
+                Sign Up 
               </h1>
             </div>
           )}

@@ -17,12 +17,12 @@ const AboutUs = () => {
 
       {/* Right Side: Text */}
       <div className="mt-8 md:mt-0 md:ml-16 w-full md:w-1/2 text-gray-800">
-        <h3 className="text-lg font-bold text-[#949494] ">About Us</h3>
+        <h3 className="text-lg font-bold text-secondaryText pb-4 ">About Us</h3>
         <h2 className="text-4xl font-bold text-secondaryBrand uppercase">
           InterOral. <span className="text-fouthBrand">Ai</span>
         </h2>
         <p className="mt-4 text-gray-600 py-4 max-w-[560px]">
-          At InterOral.ai, we believe dentistry deserves a smarter, more connected future.That’s why we built an integrated platform where dentists, labs, and implant suppliers all work together in one digital ecosystem.
+          At InterOral.ai, we believe dentistry deserves a <br/> smarter, more connected future. <br/>That’s why we built an integrated platform where <br/> dentists, labs, and implant suppliers all work <br/> together in one digital ecosystem.
         </p>
 
 

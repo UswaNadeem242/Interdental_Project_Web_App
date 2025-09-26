@@ -20,17 +20,12 @@ function DoctorComponent() {
                     <h3 className="text-3xl md:text-5xl font-bold text-secondaryBrand">
                         DOCTOR
                     </h3>
-                    <p className="font-poppins capitalize text-base  font-medium py-4">Partner with InterOral.ai- Smplify, save, and grow</p>
-                    <p className="mt-4 text-sm md:text-lg text-secondaryText">
-                        Join our platform to access lab discounts, extended warranties, AI design tools, and patient referrals — all in one streamlined system. Your Practice Benefits:
+                    {/* <p className="font-poppins capitalize text-base  font-medium py-4">Partner with InterOral.ai- Smplify, save, and grow</p> */}
+                    <p className="mt-4 text-sm md:text-xl font-normal text-secondaryText">
+                        Join a network of providers who trust  Interoral.ai and Make Me Smile to deliver exceptional restorations, streamlined workflows, and long-term patient satisfaction.
                     </p>
-                    <ul className="list-disc list-inside text-secondaryText text-start p-4 rounded-md  text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
-                        <li>Discounted lab fees through the Dental Lab Alliance</li>
-                        <li>Eligibility for 3–9 year patient warranties via MakeMeSmile</li>
-                        <li>Patient referrals from national marketing campaigns</li>
-                        <li>Increased visibility as a featured providere</li>
-                        <li>Case automation with our AI-powered Doctor Portal</li>
-                    </ul>
+                    <p className='mt-4 text-sm md:text-xl font-normal text-secondaryText'>Our technicians combine advanced CAD/CAM technology with artistic craftsmanship to ensure every case supports your reputation—and your bottom line.</p>
+                    <p className='mt-4 text-sm md:text-xl font-normal text-secondaryText pb-4'>Register Now to unlock lab discounts, extended warranties, and new patient referrals.</p>
 
                     <button onClick={() => navigate("/signup")} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
 
@@ -43,7 +38,7 @@ function DoctorComponent() {
                     </button>
                 </div>
             </section>
-            <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
+            <div className="py-8 sm:py-12 md:py-20 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
                 <div className="text-center mb-6 sm:mb-12">
                     <h2 className=" text-sm md:text-3xl font-semibold text-secondaryBrand max-w-[600px] mx-auto text-center">
                         Simplify Your <span className="text-fouthBrand">Practice</span>  with Our  <span className="text-secondaryBrand">Subscription Plans</span>
@@ -73,21 +68,30 @@ function DoctorComponent() {
                                 <p className="text-sm font-poppins font-bold text-start text-secondaryBrand mb-4">
                                     {step?.parag}
                                 </p>
-                              
-
-
-                                <ul className="text-gray-600 text-sm font-poppins space-y-2 pl-2">
+                                <ul className=" text-xs font-poppins font-normal  space-y-2 pl-2">
                                     {step.description.map((desc, index) => {
-                                        if (step.id === 1) { 
+                                        if (step.id === 1) {
                                             const [firstWord, ...rest] = desc.split("–");
                                             return (
-                                                <li key={index}>
-                                                    <span className="font-bold">{firstWord.trim()}</span>
-                                                    {rest.length > 0 && " – " + rest.join("–")}
+                                                <li
+                                                    key={index}
+                                                    className="text-xs font-poppins font-normal"
+                                                >
+                                                    {/* First part */}
+                                                    <span className="font-bold text-primaryText">
+                                                        {firstWord.trim()}
+                                                    </span>
+
+                                                    {/* Rest part with different color */}
+                                                    {rest.length > 0 && (
+                                                        <span className="text-secondaryText font-normal">
+                                                            {" – " + rest.join("–")}
+                                                        </span>
+                                                    )}
                                                 </li>
                                             );
                                         }
-                                        return <li key={index}>{desc}</li>;
+                                        return <li key={index} className='text-xs font-poppins font-normal text-secondaryText'>{desc}</li>;
                                     })}
                                 </ul>
 

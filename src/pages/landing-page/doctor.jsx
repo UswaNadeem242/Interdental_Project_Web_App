@@ -271,13 +271,25 @@ const Doctor = ({ isLanding }) => {
                       if (step.id === 1) {
                         const [firstWord, ...rest] = desc.split("–");
                         return (
-                          <li key={index}>
-                            <span className="font-bold">{firstWord.trim()}</span>
-                            {rest.length > 0 && " – " + rest.join("–")}
+                          <li
+                            key={index}
+                            className="text-xs font-poppins font-normal"
+                          >
+                            {/* First part */}
+                            <span className="font-bold text-primaryText">
+                              {firstWord.trim()}
+                            </span>
+
+                            {/* Rest part with different color */}
+                            {rest.length > 0 && (
+                              <span className="text-secondaryText font-normal">
+                                {" – " + rest.join("–")}
+                              </span>
+                            )}
                           </li>
                         );
                       }
-                      return <li key={index}>{desc}</li>;
+                      return <li key={index} className='text-xs font-poppins font-normal text-secondaryText'>{desc}</li>;
                     })}
                   </ul>
                 </div>

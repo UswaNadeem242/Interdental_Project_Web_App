@@ -1340,18 +1340,21 @@ export const implantCards = [
     title: "Dentures",
     subtitle: "What Are Implant-Retained Dentures?",
     button: "Read More",
+    href: '/blogs'
   },
   {
     img: "/assets/landing-page/card 5.png",
     title: "Dentures",
     subtitle: "What Are Implant-Retained Dentures?",
     button: "Read More",
+    href: '/blogs'
   },
   {
     img: "/assets/landing-page/card 4.png",
     title: "Dentures",
     subtitle: "What Are Implant-Retained Dentures?",
     button: "Read More",
+    href: '/blogs'
   },
 ];
 

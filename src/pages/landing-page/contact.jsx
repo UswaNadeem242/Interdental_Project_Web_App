@@ -42,9 +42,9 @@ const Contact = ({ isLanding }) => {
             <div className="space-y-4">
               {/* Phone Section */}
               <div className="flex items-center bg-gray-100 rounded-full p-3 md:p-4 shadow-md">
-                <div className="w-10 h-10 md:w-12 md:h-12 bg-fouthBrand rounded-full flex items-center justify-center shadow-lg">
+                <div className=" p-3  bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
                   {/* Phone SVG */}
-                  <PhoneIcon className="w-6 h-6 text-white stroke-white" />
+                  <PhoneIcon className="w-5 h-5 text-white stroke-white" />
                 </div>
                 <input
                   type="number"
@@ -55,9 +55,9 @@ const Contact = ({ isLanding }) => {
 
               {/* Email Section */}
               <div className="flex items-center bg-gray-100 rounded-full p-3 md:p-4 shadow-md">
-                <div className="w-10 h-10 md:w-12 md:h-12 bg-fouthBrand rounded-full flex items-center justify-center shadow-lg">
+                <div className="p-3  bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
                   {/* Email SVG */}
-                  <EnvelopeIcon className="w-6 h-6 stroke-white" />
+                  <EnvelopeIcon className="w-5 h-5 stroke-white" />
                 </div>
                 <input
                   type="email"
@@ -110,7 +110,7 @@ const Contact = ({ isLanding }) => {
 
               <button
                 type="submit"
-                className="w-full md:w-auto mt-4 bg-fouthBrand text-white px-6 py-3 rounded-lg   transition flex items-center justify-center gap-2 font-poppins  capitalize"
+                className="w-full md:w-auto mt-4 bg-secondaryBrand text-white px-6 py-3 rounded-lg   transition flex items-center justify-center gap-2 font-poppins  capitalize"
               >
                 Send  <PaperAirplaneIcon className="w-5 h-5  stroke-white" />
                 {/* Send SVG */}

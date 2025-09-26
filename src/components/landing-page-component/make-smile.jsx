@@ -12,34 +12,31 @@ function MakeSmile() {
 
 
                 <div className="space-y-4">
-                    <h1 className="text-sm  text-black md:text-4xl font-bold font-poppins  ">
-                        MakeMeSmile Warranty (MMS)
+                    <h1 className="text-sm  text-black md:text-3xl font-bold font-poppins  ">
+                        <span className='text-fouthBrand'>MakeMeSmile
+                        </span>  <span className='text-secondaryBrand'>Warranty (MMS)</span>
                     </h1>
-                    <p className='text-xl font-normal font-poppins text-black'>Peace of mind for patients, savings for dentists.</p>
-                    <ul className="flex flex-col space-y-3">
+                    <p className='text-xl font-normal font-poppins text-black'>Benefit for dentists:</p>
+                    <ul className="flex flex-col space-y-1">
 
-                        <li className="flex items-start gap-3  p-3 rounded-md font-poppins font-medium text-primaryText">
-                            <CircleTrickIcon className="w-5 h-5 shrink-0 text-secondaryBrand  " />
-                            Explore labs across the country, not just nearby.
+                        <li className="flex items-start gap-3  bg-textFieldColor p-3 rounded-md font-poppins font-medium text-primaryText">
+                            Provides patients with peace of mind and trust.
                         </li>
 
-                        <li className="flex items-start gap-3  p-3 rounded-md font-poppins font-medium text-primaryText">
-                            <CircleTrickIcon className="w-5 h-5 shrink-0 text-secondaryBrand  " />
-                            View specialties, prices, turnaround times, and portfolio photos.
+                        <li className="flex items-start gap-3  bg-textFieldColor p-3 rounded-md font-poppins font-medium text-primaryText">
+                            Dentist saves money with lab bill discounts.
                         </li>
 
-                        <li className="flex items-start gap-3  p-3 rounded-md font-poppins font-medium text-primaryText">
-                            <CircleTrickIcon className="w-5 h-5 shrink-0 text-secondaryBrand  " />
-                            Compare and choose the best match with ease.
+                        <li className="flex items-start gap-3  bg-textFieldColor p-3 rounded-md font-poppins font-medium text-primaryText">
+                            No disputes over who pays if a crown or implant breaks.
                         </li>
 
-                        <li className="flex items-start gap-3  p-3 rounded-md font-poppins font-medium text-primaryText">
-                            <CircleTrickIcon className="w-5 h-5 shrink-0 text-secondaryBrand  " />
-                            Access denture, implant, crown & bridge labs without guesswork.
+                        <li className="flex items-start gap-3 bg-textFieldColor  p-3 rounded-md font-poppins font-medium text-primaryText">
+                            Builds loyalty and professionalism in the practice.
                         </li>
                     </ul>
-                    <button className="flex justify-center items-center w-[300px] sm:w-[250px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2" onClick={() => navigate("/blog")}>
-                        <h1 className="font-poppins font-semibold text-base text-primaryText">
+                    <button className="flex justify-center items-center w-[300px] sm:w-[250px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+                        <h1 className="font-poppins text-sm font-semibold  text-primaryText">
                             Protect Your Smile
                         </h1>
                         <div className="rounded-full text-white bg-secondaryBrand p-2">

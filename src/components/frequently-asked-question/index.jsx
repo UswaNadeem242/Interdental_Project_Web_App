@@ -19,7 +19,7 @@ export default function FrequentlyAskedQuestion() {
                     <Accordion items={accordionData} />
                 </div>
             </section>
-            <div className="relative z-10 -mt-24 md:-mt-32 max-w-5xl mx-auto">
+            <div className="relative z-10 -mt-24 md:-mt-32 max-w-5xl mx-auto shadow-[0px_59px_124px_0px_rgba(0,0,0,0.06)]">
                 <Contact />
             </div>
         </section>

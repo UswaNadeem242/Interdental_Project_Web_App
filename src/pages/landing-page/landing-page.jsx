@@ -1,12 +1,12 @@
 import Footer from "../../components/Footer";
 import Header from "./header";
 import HeroSection from "./hero-section";
-import AboutUs from "./about-us"; 
+import AboutUs from "./about-us";
 import DoctorComponent from "../../components/landing-page-component";
 import CircleIcon from "../../icon/circle-icon";
 import { implantCards } from "../../Constant";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OurModules from "../../components/landing-page-component/our-modules";
 import MakeSmile from "../../components/landing-page-component/make-smile";
 import ImplantInterfeace from "../../components/landing-page-component/implant-interface";
@@ -27,7 +27,11 @@ const LandingPage = () => {
         "Direct access to our support team",
       ],
     },]
-
+  const slugify = (s) =>
+    s?.toLowerCase().trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
   return (
     <>
       {/* <div>{<Header />} </div> */}
@@ -38,17 +42,26 @@ const LandingPage = () => {
         <MakeSmile />
         <ImplantInterfeace />
         <FeaturedProducts />
-        <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-[1511px] h-auto sm:h-[814px]   bg-white py-8 sm:py-12 md:py-16 lg:py-[132px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-8 lg:gap-[120px]">
+        <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-[1511px] h-auto sm:h-[814px]   bg-blue-300/5 py-8 sm:py-12 md:py-16 lg:py-[132px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4   ">
           {/* Text Content */}
-          <div className="flex flex-col justify-start items-start w-full max-w-[575px] space-y-4 sm:space-y-[16px] px-4 sm:px-0">
+          <div className="flex flex-col justify-start items-start w-full  space-y-4 sm:space-y-[16px] px-4 sm:px-0">
+            {/* max-w-[575px] */}
             <div className="flex justify-start items-center gap-2 sm:gap-4 font-poppins font-bold sm:text-sm md:text-3xl lg:text-[40px]">
               <h1 className="text-secondaryBrand  text-5xl font-poppins font-semibold">InterOral.ai</h1>
             </div>
-            <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 lg:leading-[30px]">
-              InterOral.ai is an AI-driven platform that seamlessly connects dentists, dental labs, and patients under one secure system. Dentists can submit digital prescriptions, upload scans, and order implant parts, while labs efficiently receive and manage cases. Patients gain added value through extended warranty coverage, ensuring a smooth, connected, and compliant workflow for all.
+            <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 md:leading-[30px]">
+              InterOral.ai is an AI-driven platform that
+              <span className="hidden md:inline"><br /></span> seamlessly connects dentists, dental labs, and
+              <span className="hidden md:inline"><br /></span> patients under one secure system. Dentists can
+              <span className="hidden md:inline"><br /></span> submit digital prescriptions, upload scans, and
+              <span className="hidden md:inline"><br /></span> order implant parts, while labs efficiently receive
+              <span className="hidden md:inline"><br /></span> and manage cases. Patients gain added value
+              <span className="hidden md:inline"><br /></span> through extended warranty coverage, ensuring a
+              smooth, connected, and compliant workflow for  <span className="hidden md:inline"><br /></span> all.
             </p>
+
             <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-              <h1 className="font-poppins font-semibold text-base text-[#434343]">
+              <h1 className="font-poppins font-semibold text-base text-[#434343]" onClick={() => navigate("/about-us")}>
                 View More
               </h1>
               <div className="rounded-full bg-secondaryBrand text-white p-2">
@@ -85,20 +98,22 @@ const LandingPage = () => {
               <div
                 key={index}
                 className="bg-white shadow-lg rounded-xl overflow-hidden grid grid-cols-1 sm:grid-cols-2"
-              > 
+              >
                 <div className="w-full h-full">
                   <img
                     src={card.img}
                     alt={card.title}
-                    className="w-full sm:w-[200px] md:w-[290px] lg:w-[300px] h-[150px] sm:h-[180px] md:h-[200px] lg:h-[288px] m-2 sm:m-4 rounded-lg object-cover" />
+                    className="w-full sm:w-[200px] md:w-[290px] lg:w-[300px] h-[150px] sm:h-[180px] md:h-[200px] lg:h-[237px] m-2 sm:m-4 rounded-lg object-fit"
 
-                </div> 
-                <div className="flex flex-col justify-between p-6 ">
+                  />
+
+                </div>
+                <div className="flex flex-col gap-5 p-4 ">
                   <div>
                     <h3 className="text-primaryText text-sm md:text-base font-semibold">
                       {card.title}
                     </h3>
-                    <p className="text-secondaryBrand text-lg font-bold mb-4">
+                    <p className="text-fouthBrand text-lg font-bold mb-4">
                       {card.subtitle}
                     </p>
 
@@ -106,7 +121,7 @@ const LandingPage = () => {
                       {card.points.map((point, i) => (
                         <li
                           key={i}
-                          className="flex gap-2 items-center text-sm text-[#757575]"
+                          className="flex gap-2 items-center text-sm text-secondaryText"
                         >
                           <CircleIcon className="text-secondaryBrand w-4 h-4" />
                           {point}
@@ -115,7 +130,7 @@ const LandingPage = () => {
                     </ul>
                   </div>
 
-                  <button className="mt-6 text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
+                  <button className=" text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
                     Learn more
                   </button>
                 </div>
@@ -125,7 +140,7 @@ const LandingPage = () => {
         </div>
 
         {/* bloags */}
-        <section className="container px-4 mx-auto py-28 ">
+        <section className="container md:px-8 px-4 mx-auto py-28 ">
           <div className="flex justify-between ">
             <h1 className="text-primaryText text-base md:text-3xl font-bold font-poppins capitalize ">
               Blog &
@@ -137,7 +152,7 @@ const LandingPage = () => {
 
             <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2" onClick={() => navigate("/blog")}>
               <h1 className="font-poppins font-semibold text-base text-[#434343]">
-                View More
+                View All
               </h1>
               <div className="rounded-full bg-secondaryBrand text-white p-2">
                 <ArrowRightIcon className="w-4 h-4" />
@@ -148,30 +163,34 @@ const LandingPage = () => {
             <p className="text-secondaryText text-sm font-poppins text-center max-w-3xl">
               Read our interesting blog
             </p>
-          </div> 
+          </div>
           <div className="grid md:grid-cols-12 grid-cols-2   gap-8 justify-items-center  ">
 
             {implantCards?.map((card, index) => (
               <div key={index} className="col-span-4">
-                <img src={card.img} alt={card.title || "Implant card"} className="" /> 
-                {card.title && (
-                  <>
-                    <h3 className="text-xs font-medium font-poppins uppercase text-fouthBrand pt-5">
-                      {card.title}
-                    </h3>
-                    <p className="text-xl font-normal font-poppins capitalize w-3/4 py-5">
-                      {card.subtitle}
-                    </p>
-                    <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-                      <h1 className="font-poppins font-semibold text-base text-[#434343]">
-                        {card.button}
-                      </h1>
-                      <div className="rounded-full bg-secondaryBrand text-white p-2">
-                        <ArrowRightIcon className="w-4 h-4" />
-                      </div>
-                    </button>
-                  </>
-                )}
+                <Link key={index}
+                  to={card?.href}>
+                  <img src={card.img} alt={card.title || "Implant card"} className="" />
+                  {card.title && (
+                    <>
+                      <h3 className="text-xs font-medium font-poppins uppercase text-fouthBrand pt-5">
+                        {card.title}
+                      </h3>
+                      <p className="text-xl font-normal font-poppins capitalize w-3/4 py-5">
+                        {card.subtitle}
+                      </p>
+                      <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+                        <h1 className="font-poppins font-semibold text-base text-[#434343]">
+                          {card.button}
+                        </h1>
+                        <div className="rounded-full bg-secondaryBrand text-white p-2">
+                          <ArrowRightIcon className="w-4 h-4" />
+                        </div>
+                      </button>
+                    </>
+                  )}
+                </Link>
+
               </div>
             ))}
           </div>
@@ -180,9 +199,9 @@ const LandingPage = () => {
         </section>
 
         <FrequentlyAskedQuestion />
-      
+
         <UpperFooter />
- 
+
         <Footer />
       </div>
     </>
