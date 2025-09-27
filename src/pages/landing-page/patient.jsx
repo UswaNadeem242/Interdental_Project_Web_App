@@ -101,18 +101,18 @@ const Patients = ({ isLanding }) => {
               </h3>
               <ul className="list-disc list-inside text-gray-600 text-sm md:text-sm font-poppins space-y-2 pl-2">
                 {step.description.map((desc, index) => (
-                  <li key={index}  className="text-[10px] ">{desc}</li>
+                  <li key={index} className="text-[10px] ">{desc}</li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-      </div> 
-      
-      
-      
-      
-           <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
+      </div>
+
+
+
+
+      <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
         {/* Section Header */}
         <h2 className="text-sm md:text-3xl  font-bold text-primaryText uppercase">
           Choose Your <span className="text-sm md:text-3xl  font-bold text-secondaryBrand">
@@ -234,8 +234,10 @@ const Patients = ({ isLanding }) => {
 
 
 
+      <div className="px-5">
 
-      <Contact />
+        <Contact />
+      </div>
       <UpperFooter />
       <Footer />
 
