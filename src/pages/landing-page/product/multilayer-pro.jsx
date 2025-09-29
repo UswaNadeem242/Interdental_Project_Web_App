@@ -2,52 +2,18 @@ import Header from "../header";
 import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
 import {
-  compositionData,
-  newDiametersargenzst,
-  newThicknessesargenzst,
-  shadesproductargenzst,
-  teethOption,
+  insideContent,
+  shadesProductMultiPro,
   teethOptionMutiple,
 } from "../../../Constant";
 import Shades from "../../../Common/product-landing/shades-product-landing";
-import Dimensions from "../../../Common/product-landing/dimensions-product-landing";
-import Contact from "../contact";
-import IndicationProductLanding from "../../../components/product-landing/IndicationProductLanding";
-import CompositionProductLanding from "../../../components/product-landing/CompositionProductLanding";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
 
 function Multilayerpro({ isLanding }) {
-  const shadesProductMultiPro = [
-    { label: "A1", color: "#EFEAD4" },
-    { label: "A2", color: "#ECE8D0" },
-    { label: "A3", color: "#D2C89B" },
-    { label: "A3.5", color: "#E4DDC3" },
-    { label: "B1", color: "#EFEAD4" },
-    { label: "B2", color: "#EAE3C6" },
-    { label: "B3", color: "#E0D7B3" },
-    { label: "B4", color: "#E0D7B5" },
-
-    { label: "C1", color: "#E4DDC3" },
-    { label: "C2", color: "#E0D7B5" },
-    { label: "C3", color: "#E4DBC2" },
-    { label: "C4", color: "#D2C89B" },
-
-    { label: "D2", color: "#D2C89B" },
-    { label: "D3", color: "#D0C2A2" },
-    { label: "D4", color: "#D0C2A2" },
-    { label: "BL1", color: "#EFEAD4" },
-    { label: "BL2", color: "#ECE8D0" },
-
-    { label: "OM1", color: "#FFFFFF" },
-    { label: "OM2", color: "#FFFFFF" },
-    { label: "OM3", color: "#FFFFFF" },
-    { label: "Hollywood White", color: "#F1EBE4" },
-  ];
-
   return (
     <div>
       <div className="pb-20">{!isLanding && <Header />} </div>
-      <section className="container mx-auto    pb-10">
+      <section className="container mx-auto  pb-10">
         <div className="w-full pt-10">
           <img
             src="/assets/landing-page/multiPro.png"
@@ -66,7 +32,7 @@ function Multilayerpro({ isLanding }) {
             />
           </div>
           <div className="col-span-4 flex flex-col justify-center px-6 ">
-            <h3 className="text-[#001D58] font-bold text-2xl md:text-4xl ">
+            <h3 className="text-secondaryBrand font-bold  font-poppins text-2xl md:text-4xl ">
               Multilayer 4D pro
             </h3>
 
@@ -88,48 +54,24 @@ function Multilayerpro({ isLanding }) {
           <div className="w-full  px-6 py-8  rounded-2xl border">
             <div className="space-y-8 font-poppins">
               {/* Bionic Section */}
-              <div>
-                <h2 className="text-xl sm:text-lg font-semibold text-[#000000]">
-                  Bionic
-                </h2>
-                <p className="text-secondaryText text-lg font-normal leading-relaxed">
-                  3D Pro Zir Is Developed By Aidite Technology And Peking
-                  University School Of Stomatology. The Material Comes Closer To
-                  Natural Teeth. Not Only From The Esthetic Point Of View, Also
-                  Its Abrasion Characteristics Makes It To A Dental Material
-                  With Biomimetic Properties.
-                </p>
-              </div>
-
-              {/* High Strength Section */}
-              <div>
-                <h2 className="text-xl sm:text-lg font-semibold text-[#000000]">
-                  High Strength
-                </h2>
-                <p className="text-secondaryText text-lg font-normal leading-relaxed">
-                  The Flexural Strength Of 3D Pro Zir Is Up To 1100 MPa Which Is
-                  Greatly Improved. Long Span Bridges Are Stable And Fully Meet
-                  The Strength Requirements Of Laboratories For A Broad Range Of
-                  Indications.
-                </p>
-              </div>
-
-              {/* Layerless Natural Transition Section */}
-              <div>
-                <h2 className="text-xl sm:text-lg font-semibold text-[#000000]">
-                  Layerless Natural Transition
-                </h2>
-                <p className="text-secondaryText text-lg font-normal leading-relaxed">
-                  Matching The Color Transition Of Natural Teeth From Cervical
-                  To Incisal, 3D Pro Zir Has A Smooth Color Gradient Without
-                  Visible Layer.
-                </p>
-              </div>
+              {
+                insideContent?.map((item, idx) => {
+                  return (
+                    <div key={idx}>
+                      <h2 className="text-xl sm:text-lg font-semibold text-black pb-5">
+                        {item?.title}
+                      </h2>
+                      <p className="text-secondaryText text-lg font-normal leading-relaxed">
+                        {item?.description}
+                      </p>
+                    </div>
+                  )
+                })
+              }
             </div>
           </div>
         </div>
       </section>
-
       <section className="continer mx-auto md:px-8 px-4  pb-10">
         <div className="flex flex-col items-center justify-center min-h-screen bg-bgWhite p-8 font-poppins">
           <div className="space-y-8 md:mx-16">
@@ -182,11 +124,11 @@ function Multilayerpro({ isLanding }) {
         </div>
       </section>
 
-      <section className="continer mx-auto md:px-8 px-4  pb-10">
+      <section className="continer mx-auto md:px-8 px-4 ">
         <div className="flex justify-center">
-          <h2 className="font-poppins text-secondaryBrand md:text-4xl text-base pb-10">
+          <h2 className="font-poppins text-black md:text-4xl text-base pb-10">
             {" "}
-            Recommended <span className="text-[#94D3DD]">Indications</span>
+            Recommended <span className="text-fouthBrand font-bold">Indications</span>
           </h2>
         </div>
         <div className="flex flex-col items-center gap-8">
@@ -229,7 +171,7 @@ function Multilayerpro({ isLanding }) {
         </div>
       </section>
 
-      <section className="container mx-auto md:px-8 px-4 py-10 md:py-20"></section>
+      {/* <section className="container mx-auto md:px-8 px-4 py-10 md:py-20"></section> */}
 
       <section className="container  mx-auto  px-4 py-10">
         <div className="max-w-7xl mx-auto px-4">
@@ -237,6 +179,7 @@ function Multilayerpro({ isLanding }) {
             <Shades
               shades={shadesProductMultiPro}
               title="Shades"
+              className='lg:grid-cols-8'
               description="3D Pro zir is available in 16 shades of the classical VITA shade guide and 3 bleach shades OM1/OM2/OM3. For individual further charac-terisation, Biomic Stain&Glaze can be used. 3D Pro zir simplifies the whole process in achieving highly aesthetic results."
             />
           </div>

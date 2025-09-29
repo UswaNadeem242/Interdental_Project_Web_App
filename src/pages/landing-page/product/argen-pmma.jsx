@@ -126,7 +126,7 @@ function ArgebbPmma({ isLanding }) {
             </section>
             <section className='continer mx-auto md:px-8 px-4  pb-10 rounded-2xl '>
                 <div className='bg-background py-20 px-8'>
-                    <h1 className='text-secondaryBrand font-poppins flex justify-center md:text-4xl text-lg pb-10'>Recommended Setting    <span className='text-[#94D3DD] ml-2'>  Parameters </span> </h1>
+                    <h1 className='text-black font-poppins flex justify-center md:text-4xl text-lg pb-10'>Recommended Setting    <span className='text-[#94D3DD] ml-2'>  Parameters </span> </h1>
 
                     <div className="space-y-6">
                         {settingsOption.map((item, index) => (
@@ -137,7 +137,7 @@ function ArgebbPmma({ isLanding }) {
                                 {/* Title */}
                                 <div className='col-span-1'></div>
                                 <div className="md:col-span-1 text-center md:text-left">
-                                    <h5 className="text-[#000000] font-semibold">{item.title}</h5>
+                                    <h5 className="text-[#000000] font-bold">{item.title}</h5>
                                 </div>
 
                                 <div className="md:col-span-3 text-center md:text-left space-y-1">
@@ -147,7 +147,7 @@ function ArgebbPmma({ isLanding }) {
                                                 return (
                                                     <p
                                                         key={i}
-                                                        className="text-gray-700 text-sm md:text-base leading-relaxed"
+                                                        className="text-primaryText text-sm md:text-base leading-relaxed"
                                                     >
                                                         {line}
                                                     </p>
@@ -156,7 +156,7 @@ function ArgebbPmma({ isLanding }) {
 
                                             const [label, value] = line.split(":");
                                             return (
-                                                <p key={i} className="text-gray-700 text-sm md:text-base leading-relaxed">
+                                                <p key={i} className="text-primaryText text-sm md:text-base leading-relaxed">
                                                     {label}: <span className="font-bold">{value}</span>
                                                 </p>
                                             );
@@ -180,7 +180,7 @@ function ArgebbPmma({ isLanding }) {
             <section className="py-10">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="py-10">
-                        <Shades shades={shadesproduct} title="Shades" />
+                        <Shades shades={shadesproduct} title="Shades" className='lg:grid-cols-8' />
                     </div>
 
                     <div className="p-4">

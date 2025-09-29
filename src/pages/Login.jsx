@@ -53,6 +53,8 @@ const Login = () => {
         navigate("/doctor-admin/dashboard");
       } else if (response.data.data.users.roles[0] === "PATIENT") {
         navigate("/");
+      } else if (response.data.data.users.roles[0] === "DOCTOR") {
+        navigate("/doctor-admin/dashboard");
       } else {
         alert("Login failed");
       }

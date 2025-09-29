@@ -8,10 +8,10 @@ function CompositionProductLanding({ data, title }) {
         {data.map((item, id) => (
           <div
             key={id}
-            className="flex items-center justify-between py-3 text-[#434343] text-lg font-normal"
+            className="flex items-center justify-between py-3 text-primaryText text-lg font-normal"
           >
             <span>{item.name}</span>
-            <span className="font-normal text-lg text-[#434343]">
+            <span className="  text-lg text-primaryText font-bold ">
               {item.value}
             </span>
           </div>

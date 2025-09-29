@@ -82,7 +82,7 @@ const Patients = ({ isLanding }) => {
       </section>
       <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
         <div className="text-center mb-6 sm:mb-12">
-          <h2 className=" text-sm md:text-2xl font-semibold text-secondaryBrand">
+          <h2 className=" text-sm md:text-2xl font-bold text-secondaryBrand">
             Get Started in 3 Easy Steps
           </h2>
         </div>
@@ -108,13 +108,9 @@ const Patients = ({ isLanding }) => {
           ))}
         </div>
       </div>
-
-
-
-
       <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
         {/* Section Header */}
-        <h2 className="text-sm md:text-3xl  font-bold text-primaryText uppercase">
+        <h2 className="text-sm md:text-3xl  font-normal text-primaryText uppercase">
           Choose Your <span className="text-sm md:text-3xl  font-bold text-secondaryBrand">
             Patient
           </span>  <span className="text-sm md:text-3xl  font-bold text-fouthBrand"> Warranty </span> <span className="text-sm md:text-3xl  font-bold text-primaryText"> Plan  </span>
@@ -132,7 +128,7 @@ const Patients = ({ isLanding }) => {
               className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
             >
               {/* Title + Price */}
-              <h3 className="text-lg md:text-2xl font-poppins font-semibold text-center text-primaryText mb-2">
+              <h3 className="text-lg md:text-2xl font-poppins font-semibold text-center text-primaryText mb-2 capitalize">
                 {plan.title}
               </h3>
               <p className="text-center text-secondaryBrand text-3xl font-bold  mb-4">
@@ -160,20 +156,6 @@ const Patients = ({ isLanding }) => {
           </a> and we will create a personalized proposal that fit your business needs.</p>
         </div>
       </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
         <div className="text-center mb-6 sm:mb-12">
           <h2 className=" text-sm md:text-5xl font-semibold text-secondaryBrand">
@@ -182,9 +164,9 @@ const Patients = ({ isLanding }) => {
           </h2>
         </div>
         <div>
-          <p className="text-primaryText font-normal text-xl text-center max-w-[900px]  mx-auto">Use our built-in Smart Assistant to walk you through the form. From tooth selections to warranty terms, our AI guide ensures every detail is right.</p>
+          <p className="text-secondaryText font-normal text-xl text-center max-w-[900px]  mx-auto">Use our built-in Smart Assistant to walk you through the form. From tooth selections to warranty terms, our AI guide ensures every detail is right.</p>
 
-          <p className="text-primaryText font-normal text-xl text-center max-w-[700px]  mx-auto pt-11">Ask questions live, get file upload tips, and make confident choices.</p>
+          <p className="text-secondaryText font-normal text-xl text-center max-w-[700px]  mx-auto pt-11">Ask questions live, get file upload tips, and make confident choices.</p>
         </div>
         <div className="flex justify-center mt-7">
           <PrimaryButtonUI title='Launch Guided Help' className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
@@ -201,7 +183,7 @@ const Patients = ({ isLanding }) => {
               <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">Mastering</span> the{" "}
               <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">Full Mouth</span>
             </h1>
-            <p className="text-fouthBrand  text-3xl  font-poppins font-bold">$19.95</p>
+            <p className="text-fouthBrand  text-3xl  font-poppins font-bold mt-5">$19.95</p>
             <p className="text-secondaryText  md:text-xl  text-base font-normal font-poppins pt-8 max-w-[500px] ">Packed with insights into restorative options, patient stories, and cost-saving tips, this guide helps you make smarter decisions for long-term dental care.</p>
 
 

@@ -14,6 +14,10 @@ import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
 
 function ArgenZ({ isLanding }) {
+  const Indication = [
+    { id: '1', title: 'Up to 14 Units  couple mispelled words' },
+    { id: '2', title: 'Full contour' },
+  ]
   return (
     <>
       <div className="pb-20 md:pb-36">{!isLanding && <Header />} </div>
@@ -22,22 +26,24 @@ function ArgenZ({ isLanding }) {
         <div className="w-full">
           <img src="/assets/Argen.png" alt="ArgrnImg" className="min-w-full" />
         </div>
-        <div className=" flex gap-6  ">
-          {/* Left image */}
-          <div className="w-full ">
+
+
+
+
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-8 py-12">
+          {/* Left Image */}
+          <div className="col-span-4 flex justify-center items-center ">
             <img
               className="hidden md:block "
               src="/assets/ArgenSmall.png"
               alt="ArgenPic"
             />
           </div>
-          <div className="w-1/3 mt-14">
-            <div>
-              <h1 className="font-bold text-4xl text-secondaryBrand">
+          <div className="col-span-4 flex flex-col justify-center items-center md:items-start  mx-0 md:mx-0  text-left">
+            <div className="max-w-[510px]">
+              <h4 className="text-secondaryBrand md:text-3xl text-lg font-bold font-poppins pb-8">
                 ARGEN Z HT +
-              </h1>
-            </div>
-            <div className="">
+              </h4>
               <p className="text-xl font-medium text-secondaryText mt-4 ">
                 ArgenZ HT+ Zirconia offers extremely accurate, life-like
                 restorations with 4-5% more Translucency and 100-150 MPa higher
@@ -45,30 +51,32 @@ function ArgenZ({ isLanding }) {
                 high definition by Argen. TRANSLUCENCY STRENGTH
               </p>
             </div>
-            <div className="flex gap-2 mt-12 w-full">
-              <div className="flex flex-col items-center w-full py-6 bg-card ">
-                <span className="text-secondaryBrand font-bold text-2xl">
-                  <h1>45%</h1>
-                </span>{" "}
-                <span className="text-secondaryText font-semibold text-base">
-                  <h3>teanslucency</h3>
-                </span>
+            <div className="grid   grid-cols-3 gap-2">
+              <div className="bg-background py-8 px-4 flex flex-col items-center justify-center text-center">
+                <h6 className="text-secondaryBrand md:text-2xl text-base font-bold font-poppins">
+                  45%
+                </h6>
+                <p className="text-secondaryText font-poppins text-base font-semibold uppercase">
+                  teanslucency
+                </p>
               </div>
-              <div className="flex flex-col items-center w-full py-6 justify-center bg-card">
-                <span className="text-secondaryBrand font-bold text-2xl">
-                  <h1>12MPA</h1>
-                </span>
-                <span className="text-secondaryText font-semibold text-base">
-                  <h3>Strenght</h3>
-                </span>
+
+              <div className="bg-background py-8 px-4 flex flex-col items-center justify-center text-center">
+                <h6 className="text-secondaryBrand md:text-2xl text-base font-bold font-poppins">
+                  12MPA
+                </h6>
+                <p className="text-secondaryText font-poppins text-base font-semibold uppercase">
+                  Strength
+                </p>
               </div>
-              <div className="flex flex-col items-center w-full py-6 bg-card ">
-                <span className="text-secondaryBrand font-bold text-2xl">
-                  <h1>4Y</h1>
-                </span>{" "}
-                <span className="text-secondaryText font-semibold text-base">
-                  <h3>mole%</h3>
-                </span>
+
+              <div className="bg-background py-8 px-4 flex flex-col items-center justify-center text-center">
+                <h6 className="text-secondaryBrand md:text-2xl text-base font-bold font-poppins">
+                  4Y
+                </h6>
+                <p className="text-secondaryText font-poppins text-base font-semibold uppercase">
+                  MOLE%
+                </p>
               </div>
             </div>
           </div>
@@ -80,7 +88,7 @@ function ArgenZ({ isLanding }) {
         >
           {/* Indication */}
           <div className=" w-full h-full">
-            <IndicationProductLanding />
+            <IndicationProductLanding Indication={Indication} />
           </div>
 
           {/* Composition*/}
@@ -94,7 +102,7 @@ function ArgenZ({ isLanding }) {
 
         {/* Shades */}
         <div className="mt-12">
-          <Shades shades={shadesProductLanding} title="Shades" />
+          <Shades shades={shadesProductLanding} title="Shades" className='lg:grid-cols-6' />
         </div>
 
         {/* Dimensions*/}
