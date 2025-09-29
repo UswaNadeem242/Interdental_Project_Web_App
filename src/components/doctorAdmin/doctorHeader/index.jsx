@@ -32,6 +32,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
 
   useEffect(() => {
     if (doctorProfile) {
+      console.log("doctorProfile", doctorProfile);
     }
   }, [doctorProfile]);
 
@@ -50,7 +51,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
         <div className="hidden md:flex flex-1"></div>
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
           <img
-            src="/assets/user.png"
+            src={doctorProfile?.profileImage}
             alt="userImg"
             className="w-10 h-10 rounded-full"
           />

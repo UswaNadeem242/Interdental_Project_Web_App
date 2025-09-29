@@ -40,7 +40,7 @@ const DoctorProfile = () => {
 
   // State for input values
   const [formData, setFormData] = useState({
-    username: "",
+    firstName: "",
     email: "",
     phone: "",
     license: "",
@@ -52,7 +52,7 @@ const DoctorProfile = () => {
   useEffect(() => {
     if (doctorProfile) {
       setFormData({
-        username: doctorProfile?.firstName || "",
+        firstName: doctorProfile?.firstName || "",
         email: doctorProfile?.email || "",
         phone: doctorProfile?.phoneNumber || "",
         license: doctorProfile?.doctorLicenceNumber || "",
@@ -142,7 +142,7 @@ const DoctorProfile = () => {
   // Validation function
   const validateField = (name, value) => {
     switch (name) {
-      case "username":
+      case "first Name":
         if (!value.trim()) return "First Name is required";
         else return "";
       case "email":
@@ -201,8 +201,9 @@ const DoctorProfile = () => {
         setIsUpdating(true);
 
         const bodyData = {
-          firstName: formData.username,
-          lastName: formData.username,
+          firstName: formData.firstName,
+          lastName: doctorProfile?.lastName,
+          // lastName: formData.firstName,
           phone: formData.phone,
           address: formData.address,
           officeRefNumber: formData.reference,
@@ -241,11 +242,10 @@ const DoctorProfile = () => {
         <div className="col-span-12 md:col-span-6 flex gap-4 items-center">
           <img
             src={
-              profileImagePreview ||
-              doctorProfile?.profileImage ||
-              "/assets/user.png"
+              profileImagePreview || doctorProfile?.profileImage
+              // "/assets/user.png"
             }
-            className="md:w-20 md:h-20 w-12 h-12 object-contain rounded-full"
+            className="md:w-20 md:h-20 w-12 h-12 object-cover rounded-full"
             alt="Profile"
           />
           <div>
@@ -332,17 +332,17 @@ const DoctorProfile = () => {
         >
           <div className="col-span-12  space-y-4">
             <TextInput
-              id="username"
-              name="username"
+              id="firstName"
+              name="firstName"
               label="First Name"
               placeholder="Bransim"
               icon={<PenIcon size={18} />}
-              value={formData.username}
+              value={formData.firstName}
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {errors.username && (
-              <p className="text-red-500 text-sm">{errors.username}</p>
+            {errors.firstName && (
+              <p className="text-red-500 text-sm">{errors.firstName}</p>
             )}
           </div>
 
