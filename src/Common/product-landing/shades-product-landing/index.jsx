@@ -13,8 +13,9 @@ function Shades({ shades, title, description }) {
         {shades.map((shade, index) => (
           <div
             key={index}
-            className={`w-20 h-10 sm:w-24 sm:h-12 flex items-center justify-center rounded-full text-xs sm:text-sm font-medium 
+            className={` px-8 py-5 flex items-center justify-center rounded-full text-xs sm:text-sm font-medium whitespace-nowrap 
               ${shade.border ? "border border-gray-300" : ""}`}
+              // w-20 h-10 sm:w-24 sm:h-12
             style={{ backgroundColor: shade.color }}
           >
             {shade.label}
