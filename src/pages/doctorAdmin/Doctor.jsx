@@ -7,7 +7,6 @@ import DoctorOrder from "./OrderStep/RestorationDesignForm";
 import OrderDoctorPage from "./DoctorOrder";
 import DoctorDeailsPage from "./DoctorOrder/DoctorOrderDetail";
 
-
 const DoctorAdmin = () => {
   return (
     <div className="">
@@ -18,9 +17,7 @@ const DoctorAdmin = () => {
         <Route path="/place-order" element={<DoctorOrder />} />
         <Route path="/profile" element={<DoctorProfile />} />
         <Route path="/orders" element={<OrderDoctorPage />} />
-        <Route path="/order-details" element={<DoctorDeailsPage />} />
-
-
+        <Route path="/order-details/:id" element={<DoctorDeailsPage />} />
       </Routes>
     </div>
   );

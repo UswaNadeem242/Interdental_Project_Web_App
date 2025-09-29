@@ -1,16 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextInput from "../../../Common/Input";
 import PenIcon from "../../../icon/PenIcon";
 import ChangePasswordModel from "../../../modals/ChangePasswordModel";
 import ChevronRightIcon from "../../../icon/ChevronRight";
 import LockIcon from "../../../icon/LockIcon";
+import Toast from "../../../components/Toast";
+import {
+  getDoctorProfile,
+  updateDoctorProfile,
+  updateUserProfileImage,
+} from "../../../api/doctorDasboard";
 
 const DoctorProfile = () => {
   const [isModalPassword, setIsModalPassword] = useState(false);
+  const [doctorProfile, setDoctorProfile] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const [toast, setToast] = useState({
+    isVisible: false,
+    message: "",
+    type: "success",
+  });
+
+  useEffect(() => {
+    const userData = localStorage.getItem("users");
+
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      const userId = parsedUserData.id;
+
+      const fetchDoctorProfile = async () => {
+        const response = await getDoctorProfile(userId);
+        setDoctorProfile(response.data.data);
+      };
+      fetchDoctorProfile();
+    }
+  }, []);
 
   // State for input values
   const [formData, setFormData] = useState({
-    username: "",
+    firstName: "",
     email: "",
     phone: "",
     license: "",
@@ -18,18 +48,106 @@ const DoctorProfile = () => {
     address: "",
   });
 
+  // Update form data when doctorProfile is loaded
+  useEffect(() => {
+    if (doctorProfile) {
+      setFormData({
+        firstName: doctorProfile?.firstName || "",
+        email: doctorProfile?.email || "",
+        phone: doctorProfile?.phoneNumber || "",
+        license: doctorProfile?.doctorLicenceNumber || "",
+        reference: doctorProfile?.officeRefNumber || "",
+        address: doctorProfile?.address || "",
+      });
+    }
+  }, [doctorProfile]);
+
   // State for input errors
   const [errors, setErrors] = useState({});
+
+  // Function to show toast messages
+  const showToast = (message, type = "success") => {
+    setToast({
+      isVisible: true,
+      message,
+      type,
+    });
+  };
+
+  // Function to hide toast
+  const hideToast = () => {
+    setToast({
+      isVisible: false,
+      message: "",
+      type: "success",
+    });
+  };
+
+  // Handle image upload
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      showToast("Please select a valid image file", "error");
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      showToast("Image size should be less than 5MB", "error");
+      return;
+    }
+
+    // Create preview immediately
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setProfileImagePreview(e.target.result);
+    };
+    reader.readAsDataURL(file);
+
+    setIsUploadingImage(true);
+
+    try {
+      const formData = new FormData();
+
+      formData.append("profileImage", file);
+
+      const response = await updateUserProfileImage(formData);
+
+      if (response.status === 200 || response.data?.responseCode === "200") {
+        showToast("Profile image updated successfully!", "success");
+        // Keep the preview image after successful upload
+      } else {
+        showToast(
+          response.data?.responseMessage || "Failed to update profile image",
+          "error"
+        );
+        // Remove preview on error
+        setProfileImagePreview(null);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      showToast("Error uploading image. Please try again.", "error");
+      // Remove preview on error
+      setProfileImagePreview(null);
+    } finally {
+      setIsUploadingImage(false);
+      // Reset the file input
+      event.target.value = "";
+    }
+  };
 
   // Validation function
   const validateField = (name, value) => {
     switch (name) {
-      case "username":
+      case "first Name":
         if (!value.trim()) return "First Name is required";
         else return "";
       case "email":
         if (!value.trim()) return "Email is required";
-        else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
+        else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
           return "Invalid email address";
         else return "";
       case "phone":
@@ -66,7 +184,7 @@ const DoctorProfile = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate all fields before submit
@@ -79,24 +197,63 @@ const DoctorProfile = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log("Form Data:", formData);
-      // Submit form logic here
+      try {
+        setIsUpdating(true);
+
+        const bodyData = {
+          firstName: formData.firstName,
+          lastName: doctorProfile?.lastName,
+          // lastName: formData.firstName,
+          phone: formData.phone,
+          address: formData.address,
+          officeRefNumber: formData.reference,
+          doctorLicenceNumber: formData.license,
+        };
+
+        const response = await updateDoctorProfile(bodyData);
+
+        if (response.status === 200) {
+          showToast("Profile updated successfully!", "success");
+        } else {
+          console.error("Failed to update profile:", response);
+          showToast("Failed to update profile. Please try again.", "error");
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        showToast("Error updating profile. Please try again.", "error");
+      } finally {
+        setIsUpdating(false);
+      }
     }
   };
 
   return (
     <>
+      {/* Toast Component */}
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
+
       <div className="grid md:grid-cols-12 grid-cols-1 gap-4 bg-white md:p-8 p-4 rounded-2xl items-center ">
         {/* Left side */}
         <div className="col-span-12 md:col-span-6 flex gap-4 items-center">
           <img
-            src="/assets/user.png"
-            className="md:w-20 md:h-20 w-12 h-12 object-contain"
+            src={
+              profileImagePreview || doctorProfile?.profileImage
+              // "/assets/user.png"
+            }
+            className="md:w-20 md:h-20 w-12 h-12 object-cover rounded-full"
+            alt="Profile"
           />
           <div>
-            <h3 className="text-2xl font-bold font-poppins">Bransim hanry</h3>
+            <h3 className="text-2xl font-bold font-poppins">
+              {doctorProfile?.firstName} {doctorProfile?.lastName}
+            </h3>
             <p className="text-docText font-poppins text-sm">
-              hanry463@gmail.com
+              {doctorProfile?.email}
             </p>
           </div>
         </div>
@@ -107,14 +264,18 @@ const DoctorProfile = () => {
             <input
               type="file"
               id="fileUpload"
+              accept="image/*"
               className="hidden"
-              onChange={(e) => console.log(e.target.files[0])} // handle file here
+              onChange={handleImageUpload}
+              disabled={isUploadingImage}
             />
             <label
               htmlFor="fileUpload"
-              className="cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block"
+              className={`cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block ${
+                isUploadingImage ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Upload new picture
+              {isUploadingImage ? "Uploading..." : "Upload new picture"}
             </label>
           </div>
         </div>
@@ -165,20 +326,23 @@ const DoctorProfile = () => {
             </button>
           </div>
         </div>
-        <form className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white ">
+        <form
+          className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white "
+          onSubmit={handleSubmit}
+        >
           <div className="col-span-12  space-y-4">
             <TextInput
-              id="username"
-              name="username"
+              id="firstName"
+              name="firstName"
               label="First Name"
               placeholder="Bransim"
               icon={<PenIcon size={18} />}
-              value={formData.username}
+              value={formData.firstName}
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {errors.username && (
-              <p className="text-red-500 text-sm">{errors.username}</p>
+            {errors.firstName && (
+              <p className="text-red-500 text-sm">{errors.firstName}</p>
             )}
           </div>
 
@@ -261,6 +425,21 @@ const DoctorProfile = () => {
             {errors.address && (
               <p className="text-red-500 text-sm">{errors.address}</p>
             )}
+          </div>
+
+          {/* Submit Button */}
+          <div className="col-span-12 flex justify-end mt-6">
+            <button
+              type="submit"
+              disabled={isUpdating}
+              className={`px-8 py-3 rounded-lg font-semibold text-white transition-colors ${
+                isUpdating
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-secondaryBrand hover:bg-blue-600"
+              }`}
+            >
+              {isUpdating ? "Updating..." : "Update Profile"}
+            </button>
           </div>
         </form>
         <button
