@@ -360,31 +360,27 @@ const Doctor = ({ isLanding }) => {
 
                     </>
                   )}
-                  <ul className="mt-4 list-disc list-inside  bg-blue-300/10 p-2 text-gray-700 space-y-2 text-sm sm:text-base mx-auto max-w-[20rem]">
+                  <ul className="mt-4 list-disc list-inside rounded-xl bg-blue-300/10 p-2 text-gray-700 space-y-2 text-sm sm:text-base mx-auto max-w-[20rem]">
                     {plan.features.map((f, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className={`mt-1 ${plan.isReferral ? "text-blue-900" : "text-blue-400"}`}>
-                          <Check />
-                        </span>
-                        <span className={`${plan.isReferral ? "text-gray-700" : ""}`}>{f}</span>
+                      <li
+                        key={i}
+                        className={`${plan.isReferral ? "text-secondaryBrand" : "text-secondaryBrand"} marker:text-secondaryBrand`}
+                      >
+                        {f}
                       </li>
                     ))}
                   </ul>
                 </div>
-
-
                 {/* Button */}
-                <button
-                  disabled={plan.isReferral}
-                  className={
-                    plan.isReferral
-                      ? "mt-6 sm:mt-8 w-full rounded-lg border border-gray-200 text-gray-400 cursor-not-allowed py-2"
-                      : `mt-8 sm:mt-12 px-4 sm:px-6 py-2 sm:py-3 w-full border rounded-lg ${plan.buttonStyle}`
-                  }
-                  aria-label={plan.isReferral ? "Coming soon" : `Select ${plan.name}`}
-                >
-                  {plan.isReferral ? "Coming Soon" : "Select"}
-                </button>
+               {!plan.isReferral && (
+                  <button
+                    className={`mt-8 sm:mt-12 px-4 sm:px-6 py-2 sm:py-3 w-full border rounded-lg ${plan.buttonStyle}`}
+                    aria-label={`Select ${plan.name}`}
+                  >
+                    Select
+                  </button>
+                )}
+
               </div>
             ))}
           </div>
@@ -401,8 +397,10 @@ const Doctor = ({ isLanding }) => {
         </section>
       </div >
 
+      <div className="px-5">
 
-      <Contact />
+        <Contact />
+      </div>
       <section className="container mx-auto px-4 my-16">
         <div className="flex justify-center">
           <h3 className="text-secondaryBrand text-5xl font-normal font-poppins">Need a <span className="text-secondaryBrand text-5xl   font-bold font-poppins ">Custom Plan?</span></h3>

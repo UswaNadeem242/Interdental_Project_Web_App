@@ -15,6 +15,10 @@ import CompositionProductLanding from "../../../components/product-landing/Compo
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
 
 function ArgenzST({ isLanding }) {
+  const Indication = [
+    { id: '1', title: 'Up to 3-unit anterior bridges' },
+    { id: '2', title: 'Single unit posterior crowns' },
+  ]
   return (
     <div>
       <div className="pb-20">{!isLanding && <Header />} </div>
@@ -52,7 +56,7 @@ function ArgenzST({ isLanding }) {
                 <h6 className="text-secondaryBrand md:text-2xl text-base font-bold font-poppins">
                   50%
                 </h6>
-                <p className="text-secondaryText font-poppins text-base font-semibold">
+                <p className="text-secondaryText font-poppins text-base font-semibold uppercase">
                   TRANSLUCENCY
                 </p>
               </div>
@@ -61,7 +65,7 @@ function ArgenzST({ isLanding }) {
                 <h6 className="text-secondaryBrand md:text-2xl text-base font-bold font-poppins">
                   850 MPa
                 </h6>
-                <p className="text-secondaryText font-poppins text-base font-semibold">
+                <p className="text-secondaryText font-poppins text-base font-semibold uppercase">
                   Strength
                 </p>
               </div>
@@ -70,7 +74,7 @@ function ArgenzST({ isLanding }) {
                 <h6 className="text-secondaryBrand md:text-2xl text-base font-bold font-poppins">
                   5Y
                 </h6>
-                <p className="text-secondaryText font-poppins text-base font-semibold">
+                <p className="text-secondaryText font-poppins text-base font-semibold uppercase">
                   MOLE%
                 </p>
               </div>
@@ -80,18 +84,30 @@ function ArgenzST({ isLanding }) {
       </section>
 
       <section className="continer mx-auto md:px-8 px-4  pb-10">
-        <div className="flex  justify-around items-center">
-          <IndicationProductLanding />
-          <CompositionProductLanding
-            data={compositionData}
-            title="Composition"
-          />
+
+
+        <div
+          className="flex flex-col my-10 lg:flex-row gap-6 items-center justify-center
+"
+        >
+          {/* Indication */}
+          <div className=" w-full h-full">
+            <IndicationProductLanding Indication={Indication} />
+          </div>
+
+          {/* Composition*/}
+          <div className=" w-full h-full">
+            <CompositionProductLanding
+              data={compositionData}
+              title="Composition"
+            />
+          </div>
         </div>
       </section>
       <section className="container  mx-auto  px-4 py-10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="py-10">
-            <Shades shades={shadesproductargenzst} title="Shades" />
+            <Shades shades={shadesproductargenzst} title="Shades" className='lg:grid-cols-8' />
           </div>
 
           <div className="p-4">
@@ -104,7 +120,7 @@ function ArgenzST({ isLanding }) {
       </section>
 
       <FrequentlyAskedQuestion />
-     
+
       <UpperFooter />
       <Footer />
     </div>

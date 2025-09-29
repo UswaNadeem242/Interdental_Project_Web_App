@@ -213,6 +213,7 @@ function AiditeZirconia({ isLanding }) {
             <Shades
               shades={shadesProductMultiPro}
               title="Colour"
+              className='lg:grid-cols-9'
               description="3D Pro zir is available in 16 shades of the classical VITA shade guide and 3 bleach shades OM1/OM2/OM3. For individual further charac-terisation, Biomic Stain&Glaze can be used. 3D Pro zir simplifies the whole process in achieving highly aesthetic results."
             />
           </div>

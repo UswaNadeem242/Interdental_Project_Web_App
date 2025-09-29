@@ -108,10 +108,6 @@ const Patients = ({ isLanding }) => {
           ))}
         </div>
       </div>
-
-
-
-
       <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
         {/* Section Header */}
         <h2 className="text-sm md:text-3xl  font-normal text-primaryText uppercase">
@@ -160,20 +156,6 @@ const Patients = ({ isLanding }) => {
           </a> and we will create a personalized proposal that fit your business needs.</p>
         </div>
       </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
         <div className="text-center mb-6 sm:mb-12">
           <h2 className=" text-sm md:text-5xl font-semibold text-secondaryBrand">

@@ -11,10 +11,11 @@ export default function FrequentlyAskedQuestion() {
                 <div className="bg-white h-[30%]"></div>
             </div>
             <section className='container mx-auto md:px-8 px-4 py-10 md:py-20  bg-background'>
-                <div className='flex justify-center pb-20'>
-                    <h1 className='text-secondaryBrand md:text-5xl text-xl text-center'>Frequently <br /> <span className='text-[#94D3DD] font-bold'> Asked Questions</span>
+                <div className='flex justify-center '>
+                    <h1 className='text-primaryText md:text-5xl text-xl text-center'>Frequently <br /> <span className='text-[#94D3DD] font-bold'> Asked Questions</span>
                     </h1>
                 </div>
+                <p className='flex justify-center pb-20 pt-5   font-normal text-lg text-secondaryText'>Get the insights you need about our services, pricing, and processes—answered in one place.</p>
                 <div>
                     <Accordion items={accordionData} />
                 </div>

@@ -152,7 +152,8 @@ export const settingsOption = [
   {
     title: "CUT-OFF TIME",
     description:
-      "Files must be submitted by 3:00 P.M. PST (6:00 P.M. EST). Milled PMMA units will be received within 2 business days.",
+      `Files must be submitted by 3:00 P.M. PST (6:00 P.M. EST).
+       Milled PMMA units will be received within 2 business days`,
   },
   {
     title: "DESIGN",
@@ -1056,6 +1057,7 @@ export const shadesProductLanding = [
 export const shadesproduct = [
   { label: "A1", color: "#EFEAD4" },
   { label: "A2", color: "#ECE8D0" },
+  { label: "A3", color: "#E4DBC2" },
   { label: "A3.5", color: "#E4DDC3" },
 
   { label: "B1", color: "#D2C89B" },
@@ -1623,4 +1625,63 @@ export const tabs = [
       },
     ],
   },
+  {
+    id: "Oral Surgery",
+    label: "Oral Surgery",
+    cards: [
+      {
+        img: "/assets/landing-page/card 3.png",
+
+        title: "FAQs",
+        subtitle: "Common Questions About Implants",
+        button: "Read More",
+      },
+    ],
+  },
 ];
+
+
+  export const insideContent = [
+    {
+      id: 1, title: 'Bionic', description: `3D Pro Zir Is Developed By Aidite Technology And Peking  University School Of Stomatology. The Material Comes Closer To
+                  Natural Teeth. Not Only From The Esthetic Point Of View, Also
+                  Its Abrasion Characteristics Makes It To A Dental Material
+                  With Biomimetic Properties.`},
+    {
+      id: 2, title: ' High Strength', description: `  The Flexural Strength Of 3D Pro Zir Is Up To 1100 MPa Which Is
+                  Greatly Improved. Long Span Bridges Are Stable And Fully Meet
+                  The Strength Requirements Of Laboratories For A Broad Range Of
+                  Indications.`},
+    {
+      id: 3, title: ' Layerless Natural Transition', description: `  Matching The Color Transition Of Natural Teeth From Cervical
+                  To Incisal, 3D Pro Zir Has A Smooth Color Gradient Without
+                  Visible Layer.`},
+  ]
+
+  export   const shadesProductMultiPro = [
+    { label: "A1", color: "#EFEAD4" },
+    { label: "A2", color: "#ECE8D0" },
+    { label: "A3", color: "#D2C89B" },
+    { label: "A3.5", color: "#E4DDC3" },
+    { label: "A4", color: "#E0D7B5" },
+    { label: "B1", color: "#EFEAD4" },
+    { label: "B2", color: "#EAE3C6" },
+    { label: "B3", color: "#E0D7B3" },
+    { label: "B4", color: "#E0D7B5" },
+
+    { label: "C1", color: "#E4DDC3" },
+    { label: "C2", color: "#E0D7B5" },
+    { label: "C3", color: "#E4DBC2" },
+    { label: "C4", color: "#D2C89B" },
+
+    { label: "D2", color: "#D2C89B" },
+    { label: "D3", color: "#D0C2A2" },
+    { label: "D4", color: "#D0C2A2" },
+    { label: "BL1", color: "#EFEAD4" },
+    { label: "BL2", color: "#ECE8D0" },
+
+    { label: "OM1", color: "#FFFFFF" },
+    { label: "OM2", color: "#FFFFFF" },
+    { label: "OM3", color: "#FFFFFF" },
+    { label: "Hollywood White", color: "#F1EBE4" },
+  ];

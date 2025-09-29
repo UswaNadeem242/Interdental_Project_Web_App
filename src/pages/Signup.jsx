@@ -73,7 +73,7 @@ const Signup = () => {
       drLicenseNo,
       officeRefNo,
       lab: Number(selectedLab),            // send selected lab ID
-      role: "ADMIN",
+      role: "DOCTOR",
     };
     try {
       const response = await axios.post(`${BASE_URL}/api/users/sign-up`, payload,

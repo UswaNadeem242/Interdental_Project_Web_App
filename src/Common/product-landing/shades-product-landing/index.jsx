@@ -1,4 +1,4 @@
-function Shades({ shades, title, description }) {
+function Shades({ shades, title, description, className }) {
   return (
     <div className="px-4 md:px-8 lg:px-16">
       {/* Title */}
@@ -9,20 +9,20 @@ function Shades({ shades, title, description }) {
         {description}
       </p>
       {/* Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-items-center">
+      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 justify-items-center ${className}`}>
         {shades.map((shade, index) => (
           <div
             key={index}
             className={` px-8 py-5 flex items-center justify-center rounded-full text-xs sm:text-sm font-medium whitespace-nowrap 
-              ${shade.border ? "border border-gray-300" : ""}`}
-              // w-20 h-10 sm:w-24 sm:h-12
+              ${shade.border ? "border border-gray-300" : " border border-grey-200"}`}
+            // w-20 h-10 sm:w-24 sm:h-12
             style={{ backgroundColor: shade.color }}
           >
             {shade.label}
           </div>
         ))}
       </div>
-    </div>
+    </div >
   );
 }
 

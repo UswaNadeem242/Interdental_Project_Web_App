@@ -11,7 +11,7 @@ export default function UpperFooter() {
                         <span className="text-[#94D3DD] font-bold">Dental Experience!</span>
                     </h1>
 
-                    <p className='font-poppins text-[#949494] py-10 text-center md:w-1/2 mx-auto'>Sign up now to access top-rated dental professionals, personalized treatment plans, and exclusive offers for a healthier smile.</p>
+                    <p className='font-poppins text-[#949494] py-10 text-center md:w-3/5 mx-auto'>Sign up now to access top-rated dental professionals, personalized treatment plans, and exclusive offers for a healthier smile.</p>
                     <div className='  flex justify-center'>
                         <PrimaryButtonUI
                             title="Join as a Doctor!"
