@@ -80,7 +80,7 @@ const Patients = ({ isLanding }) => {
           </div>
         </div>
       </section>
-      <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
+      <div className="py-8 sm:py-12 md:py-20 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
         <div className="text-center mb-6 sm:mb-12">
           <h2 className=" text-sm md:text-2xl font-bold text-secondaryBrand">
             Get Started in 3 Easy Steps
@@ -106,6 +106,19 @@ const Patients = ({ isLanding }) => {
               </ul>
             </div>
           ))}
+
+
+        </div>
+
+        <div className="flex justify-center   mt-8">
+          <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2" onClick={() => navigate("/signup")}>
+            <h1 className="font-poppins font-semibold text-base text-[#434343]"  >
+              Register
+            </h1>
+            <div className="rounded-full bg-secondaryBrand text-white p-2">
+              <ArrowRightIcon className="w-4 h-4" />
+            </div>
+          </button>
         </div>
       </div>
       <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
@@ -136,7 +149,7 @@ const Patients = ({ isLanding }) => {
               </p>
 
               {/* Description as bullet list */}
-              <ul className="list-disc list-inside text-gray-600 text-start p-4 rounded-md bg-blue-300/10 text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
+              <ul className="list-disc list-inside text-secondaryBrand text-start p-4 rounded-md bg-blue-300/10 text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
                 {plan.description.map((desc, index) => (
                   <li key={index}>{desc}</li>
                 ))}
@@ -185,10 +198,6 @@ const Patients = ({ isLanding }) => {
             </h1>
             <p className="text-fouthBrand  text-3xl  font-poppins font-bold mt-5">$19.95</p>
             <p className="text-secondaryText  md:text-xl  text-base font-normal font-poppins pt-8 max-w-[500px] ">Packed with insights into restorative options, patient stories, and cost-saving tips, this guide helps you make smarter decisions for long-term dental care.</p>
-
-
-
-
             <h3 className="text-secondaryBrand md:text-xl  text-base py-8 font-poppins font-semibold ">Includes:</h3>
             <ul>
               <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">  <CircleIcon className="text-secondaryBrand w-4 h-4" /> Full overview of crowns, implants, veneers, and bridges</li>
@@ -196,7 +205,12 @@ const Patients = ({ isLanding }) => {
               <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">  <CircleIcon className="text-secondaryBrand w-4 h-4" /> Bonus chapter: Top Questions to Ask Before Starting</li>
             </ul>
 
+            <div className=" mb-6 sm:mb-12 mt-8">
+              <PrimaryButtonUI title='Order the eBook Now' className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow " />
+            </div>
           </div>
+
+
 
 
 

@@ -5,21 +5,7 @@ function OurModules() {
     const navigate = useNavigate();
     return (
         <div className='border-t border-bg-background'>
-            <div className="flex justify-center  pt-10">
-                <h1 className="text-3xl lg:text-4xl font-poppins capitalize">
-                    our
-                    <span className="text-secondaryBrand font-bold capitalize ml-2">
-                        Modules
-                    </span>
-                </h1>
-            </div>
-            <div className="flex justify-center pb-6">
-                <p className="text-secondaryText text-sm font-poppins text-center max-w-3xl py-6">
-                    Explore our top-rated selections crafted just for you!
-                </p>
-            </div>
             <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center md:px-16 px-4 py-20 bg-[#F7FCFC]">
-
                 <div className="flex justify-center">
                     <img
                         src="/assets/landing-page/landing1.png"

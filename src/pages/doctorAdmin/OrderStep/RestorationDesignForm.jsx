@@ -501,7 +501,7 @@ const DoctorOrder = () => {
                                     className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     options={
                                       orders.find(
-                                        (p) => p.name === "Digital Denture"
+                                        (p) => p.name === "Denture"
                                       )?.children || []
                                     }
                                     value={
@@ -534,7 +534,7 @@ const DoctorOrder = () => {
                                         digitalOptions: false,
                                       }));
                                     }}
-                                    label="Digital Denture"
+                                    label=" Denture"
                                     storageKey="digitalOptions"
                                     // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
                                     error={
@@ -669,7 +669,7 @@ const DoctorOrder = () => {
                                           crown: false,
                                         }));
                                       }}
-                                      label="Crown"
+                                      label="Smart Crown"
                                       storageKey="crown"
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       error={
