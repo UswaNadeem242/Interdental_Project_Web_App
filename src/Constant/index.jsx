@@ -1446,12 +1446,12 @@ export const concerns = [
 export const plans = [
   {
     id: 1,
-    title: "3 YEAR PLAN",
+    title: "3 year plan",
 
     price: "$99 ",
     description: [
       " Covers up to 10 Crowns, Bridges, or Veneers",
-      "one-time enrollment",
+      "One-time enrollment",
       "Ideal for minor restorative work",
     ],
     buttonStyle:
@@ -1459,24 +1459,24 @@ export const plans = [
   },
   {
     id: 2,
-    title: "6 YEAR PLAN",
+    title: "6 year plan",
 
     price: "$199 ",
     description: [
       " Covers up to 20 Crowns, Bridges, or Veneers ",
-      "one-time enrollment",
+      "One-time enrollment",
       "Great for full-arch or cosmetic work",
     ],
     buttonStyle: "bg-blue-900 text-white hover:bg-blue-700",
   },
   {
     id: 3,
-    title: "6 YEAR PLAN",
+    title: "6 year plan",
 
     price: "$299 ",
     description: [
       "we cover the crown over the implant, not the implant abutment or implant",
-      " one-time enrollment",
+      "One-time enrollment",
       "Most comprehensive protection",
     ],
     buttonStyle:
@@ -1493,7 +1493,7 @@ export const plansmodel = [
     price: "$125 ",
     description: [
       " Covers up to 10 Crowns, Bridges, or Veneers",
-      "one-time enrollment",
+      "One-time enrollment",
       "Ideal for minor restorative work",
     ],
     buttonStyle:
@@ -1506,7 +1506,7 @@ export const plansmodel = [
     price: "$199 ",
     description: [
       " Covers up to 20 Crowns, Bridges, or Veneers ",
-      "one-time enrollment",
+      "One-time enrollment",
       "Great for full-arch or cosmetic work",
     ],
     buttonStyle: "bg-blue-900 text-white hover:bg-blue-700",
@@ -1518,7 +1518,7 @@ export const plansmodel = [
     price: "$299 ",
     description: [
       "we cover the crown over the implant, not the implant abutment or implant",
-      " one-time enrollment",
+      "One-time enrollment",
       "Most comprehensive protection",
     ],
     buttonStyle:

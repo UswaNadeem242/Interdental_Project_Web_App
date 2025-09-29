@@ -83,12 +83,6 @@ const YearlyPlanModel = ({ yearly, setYearly }) => {
           </button>
         </div>
       </div> */}
-
-
-
-
-
-
             <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
                 {/* Header */}
                 <div className="flex justify-center ">  <img src="/assets/logo.png" /></div>
@@ -116,7 +110,7 @@ const YearlyPlanModel = ({ yearly, setYearly }) => {
                                 {/* Description */}
                                 <ul className="mt-4 list-disc list-inside text-gray-700 space-y-2 text-sm sm:text-base">
                                     {plan.description?.map((desc, i) => (
-                                        <li key={i} className="flex items-start gap-2">
+                                        <li key={i} className="flex items-start gap-2 capitalize">
                                             <span className="mt-1 text-blue-500">
                                                 <Check />
                                             </span>
