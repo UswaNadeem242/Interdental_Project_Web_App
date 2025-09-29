@@ -1,6 +1,6 @@
 import Footer from "../../components/Footer";
 import Header from "./header";
-import HeroSection from "./hero-section";
+import {HeroSection} from "./hero-section";
 import AboutUs from "./about-us";
 import DoctorComponent from "../../components/landing-page-component";
 import CircleIcon from "../../icon/circle-icon";
@@ -38,8 +38,23 @@ const LandingPage = () => {
       <div className="  font-poppins min-h-screen text-gray-800">
         <HeroSection />
         <AboutUs />
-        <OurModules />
+        <div>
+          <div className="flex justify-center  pt-10">
+            <h1 className="text-3xl lg:text-4xl font-poppins capitalize">
+              our
+              <span className="text-secondaryBrand font-bold capitalize ml-2">
+                Modules
+              </span>
+            </h1>
+          </div>
+          <div className="flex justify-center pb-6">
+            <p className="text-secondaryText text-sm font-poppins text-center max-w-3xl py-6">
+              Explore our top-rated selections crafted just for you!
+            </p>
+          </div>
+        </div>
         <MakeSmile />
+        <OurModules />
         <ImplantInterfeace />
         <FeaturedProducts />
         <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-[1511px] h-auto sm:h-[814px]   bg-blue-300/5 py-8 sm:py-12 md:py-16 lg:py-[132px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4   ">
@@ -127,7 +142,7 @@ const LandingPage = () => {
                     </ul>
                   </div>
 
-                  <button className=" text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
+                  <button className=" text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition" onClick={() => navigate("/patient")}>
                     Learn more
                   </button>
                 </div>

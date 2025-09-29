@@ -1,47 +1,51 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { PrimaryButtonUI } from "../../Common/Button";
-
-const HeroSection = () => {
+export const HeroSection = () => {
   const navigate = useNavigate();
+
   return (
-    <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc] flex flex-col md:flex-row justify-around items-center h-auto sm:h-screen min-h-[600px] py-8 sm:py-12 md:py-16">
+    <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc] flex flex-col md:flex-row items-center justify-between min-h-screen px-4 sm:px-8 md:px-12 lg:px-16 py-20">
+
       {/* Left Section: Text Content */}
-      <section className="text-left md:text-left px-4 sm:px-8 md:px-12 lg:px-16 mt-9">
-        <h2 className="md:text-4xl mb-8 text-base  font-normal text-gray-900 leading-tight space-y-2 sm:space-y-3 md:space-y-4">
-          <span className="block font-normal text-5xl  font-poppins text-primaryText">
-            Discover a New
-
+      <sectzion className="flex-1 text-left space-y-6">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-poppins font-normal text-gray-900 leading-tight">
+          <span className="block text-primaryText">Discover a New</span>
+          <span className="font-bold text-fouthBrand">
+            Pathway{" "}
+            <span className="font-normal text-primaryText">in</span>{" "}
+            <span className="text-secondaryBrand font-bold">Dentistry</span>
           </span>
-          <span className="font-bold text-fouthBrand text-5xl">
-            Pathway <span className="text-5xl font-normal  font-poppins text-primaryText">in</span> <span className="text-5xl text-secondaryBrand  font-bold">  Dentistry</span>
-          </span>
-
         </h2>
-        <p className="mt-3 sm:mt-4 text-sm md:text-base text-primaryText max-w-xs sm:max-w-sm md:max-w-md lg:max-w-[37rem] mx-auto md:mx-0 leading-6 md:leading-7">
+
+        <p className="text-sm sm:text-base text-primaryText max-w-xl leading-6 sm:leading-7">
           At InterOral.ai, we’ve reimagined the way practices
-          <span className="hidden md:inline"><br /></span> connect to labs, implants, and patients. It starts with our
-          <span className="hidden md:inline"><br /></span> Wizard intake system — a smarter way to submit cases,
-          <span className="hidden md:inline"><br /></span> generate prescriptions, and route everything in one
-          <span className="hidden md:inline"><br /></span> seamless workflow.
+          <br className="hidden md:block" /> connect to labs, implants, and
+          patients. It starts with our
+          <br className="hidden md:block" /> Wizard intake system — a smarter
+          way to submit cases,
+          <br className="hidden md:block" /> generate prescriptions, and route
+          everything in one
+          <br className="hidden md:block" /> seamless workflow.
+        </p>
+
+        <p className="text-sm sm:text-base text-primaryText max-w-xl leading-6 sm:leading-7">
+          Behind the scenes, our patented Routing AI matches you  <br className="hidden md:block" /> with the right Dental Lab Alliance partner—so you get  <br className="hidden md:block" /> faster turnaround, consistent quality, and nationwide  <br className="hidden md:block" /> access.
         </p>
 
 
-
-
-        <p className="mt-3 sm:mt-4 text-sm md:text-base text-primaryText max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto md:mx-0 leading-6 md:leading-7">
-          Behind the scenes, our patented Routing AI connects your cases to the right Dental Lab Alliance partner, giving you nationwide access and three tiers of quality to choose
-          <span className="hidden md:inline"><br /></span> from.
-        </p>
-
-        <div className="mr-20 w-auto h-auto flex flex-col sm:flex-row justify-center md:justify-start items-center gap-3 sm:gap-4 md:gap-6 mt-4 sm:mt-6">
-          <PrimaryButtonUI title='Enroll now' onClick={() => navigate("/shop")} className="px-10 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
+        {/* CTA Button */}
+        <div className="flex justify-center md:justify-start mt-6">
+          <PrimaryButtonUI
+            title="Enroll now"
+            onClick={() => navigate("/shop")}
+            className="px-10 py-5 rounded-full font-poppins font-normal text-xs bg-secondaryBrand text-white shadow"
           />
-
         </div>
-      </section>
+      </sectzion>
 
       {/* Right Section: Images */}
-      <section className="flex justify-center items-center mt-8 sm:mt-10 md:mt-12 lg:mt-0 space-x-4 sm:space-x-6 md:space-x-8">
+      <section className="flex-1 flex justify-center items-center mt-10 md:mt-0">
         <img
           src="/assets/landing-page/hero-image.png"
           alt="Patient 1"
@@ -51,5 +55,4 @@ const HeroSection = () => {
     </div>
   );
 };
-
-export default HeroSection;
+ 

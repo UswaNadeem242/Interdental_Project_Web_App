@@ -5,7 +5,7 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import DotIcon from "../../icon/dotIcon";
 import { Doctorsteps, steps } from "../../Constant";
 import Contact from "./contact";
-import { PrimaryButtonUI } from "../../Common/Button";
+import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
 
 
 
@@ -57,7 +57,6 @@ const plans = [
       "Unlimited Patients/Month",
       "Full Lab Discounts",
       "Priority Case Handling",
-
       "Smart Assistant access included",
       "One-time setup fee: $125",
     ],
@@ -67,7 +66,7 @@ const plans = [
   {
     id: "2",
     name: "Growth Plan",
-    price: "$125",
+    price: "$275",
     duration: "Per Month",
     enrollmentFee: "One‑Time Setup Fee: $125",
     features: [
@@ -81,7 +80,7 @@ const plans = [
   {
     id: "3",
     name: "Pro Plan",
-    price: "$125",
+    price: "$475",
     duration: "Per Month",
     enrollmentFee: "One‑Time Setup Fee: $125",
     features: [
@@ -296,47 +295,15 @@ const Doctor = ({ isLanding }) => {
               </div>
             ))}
           </div>
-
-
         </div>
 
-        <div className="py-8 sm:py-12 md:pb-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-white">
-          <div className="text-center mb-6 sm:mb-12">
-            <h2 className=" text-sm md:text-3xl font-semibold text-primaryText max-w-[600px] mx-auto text-center">
-              Doctor <span className="text-secondaryBrand font-bold ">Portal</span> &  <span className=" text-fouthBrand font-bold">Plans</span>
-            </h2>
-            <p className="text-primaryText py-8 font-poppins text-xl font-bold">Precision Restorations. Smart Workflow. Smiling Patients.</p>
-            <p className="text-primaryText py-8 font-poppins text-base mx-auto  flex justify-center font-medium max-w-[750px] capitalize">Welcome to the  Interoral.ai and Make Me Smile™ platform—where aesthetics, innovation, and automation come together to support your practice. </p>
-            <p className="text-secondaryText max-w-[1033px]  text-center  mx-auto font-poppins text-sm  font-normal">Whether you're placing a single crown or managing full-arch restorations, our system ensures every case is accurate, streamlined, and protected.
-              Smart Prescription Wizard + Guided Assistant Need help filling out your case forms? Our AI-powered Prescription Wizard makes it simple to:</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-            {/* Top 3 Divs */}
-            <div className="bg-blue-300/10 p-4 rounded col-span-4">
-              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Select teeth, materials, and shades</p>
-            </div>
-            <div className="bg-blue-300/10 p-4 rounded col-span-4">
-
-
-              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Upload STL, DICOM, or PLY files</p>
-
-            </div>
-            <div className="bg-blue-300/10 p-4 rounded col-span-4"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Auto-match compatible implant parts</p></div>
-
-            {/* Bottom 2 Divs (span across 3 columns) */}
-            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Generate prescription sheets and FedEx labels</p></div>
-            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Route your files directly to design and production labs</p></div>
-          </div>
-          <p className="text-sm font-poppins font-normal text-center pt-16">Bonus: Our built-in ChatGPT Assistant can guide you through the form step-by-step to prevent errors, answer questions, and ensure your cases are processed without delays.</p>
-        </div>
         <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
           {/* Header */}
           <h2 className="text-base md:text-3xl font-normal text-primaryText capitalize text-center tracking-wide">
             DOCTOR <span className="font-bold text-3xl font-poppins uppercase text-secondaryBrand">ENROLLMENT</span> <span className="text-3xl font-bold font-poppins uppercase text-fouthBrand ">PLANS </span>
           </h2>
-
           {/* Plans Grid */}
-          <div className="mx-auto mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-full  ">
+          <div className="mx-auto mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-full">
             {plans.map((plan) => (
               <div
                 key={plan.id}
@@ -355,7 +322,7 @@ const Doctor = ({ isLanding }) => {
                         {plan.name}
                       </h3>
                       <p className="mt-4 text-3xl font-bold font-poppins text-secondaryBrand text-center">
-                        {plan.price}
+                        {plan.price}<span className="text-sm font-semibold font-poppins text-secondaryBrand">/month</span>
                       </p>
 
                     </>
@@ -372,7 +339,7 @@ const Doctor = ({ isLanding }) => {
                   </ul>
                 </div>
                 {/* Button */}
-               {!plan.isReferral && (
+                {!plan.isReferral && (
                   <button
                     className={`mt-8 sm:mt-12 px-4 sm:px-6 py-2 sm:py-3 w-full border rounded-lg ${plan.buttonStyle}`}
                     aria-label={`Select ${plan.name}`}
@@ -395,10 +362,46 @@ const Doctor = ({ isLanding }) => {
             and we will create a personalized proposal that fits your business needs.
           </p>
         </section>
+
+        <div className="py-8 sm:py-12 md:pb-20 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-white">
+          <div className="text-center mb-6 sm:mb-12">
+            <h2 className=" text-sm md:text-3xl font-normal  text-primaryText max-w-[600px] mx-auto text-center">
+              Doctor <span className="text-secondaryBrand font-bold ">Portal</span> &  <span className=" text-fouthBrand font-bold">Plans</span>
+            </h2>
+            <p className="text-primaryText py-8 font-poppins text-xl font-bold">Precision Restorations. Smart Workflow. Smiling Patients.</p>
+            <p className="text-primaryText py-8 font-poppins text-base mx-auto  flex justify-center font-medium max-w-[750px] capitalize">Welcome to the  Interoral.ai and Make Me Smile™ platform—where aesthetics, innovation, and automation come together to support your practice. </p>
+            <p className="text-secondaryText max-w-[1033px]  text-center  mx-auto font-poppins text-sm  font-normal">Whether you're placing a single crown or managing full-arch restorations, our system ensures every case is accurate, streamlined, and protected.
+              Smart Prescription Wizard + Guided Assistant Need help filling out your case forms? Our AI-powered Prescription Wizard makes it simple to:</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+            {/* Top 3 Divs */}
+            <div className="bg-blue-300/10 p-4 rounded col-span-4">
+              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Select teeth, materials, and shades</p>
+            </div>
+            <div className="bg-blue-300/10 p-4 rounded col-span-4">
+              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Upload STL, DICOM, or PLY files</p>
+            </div>
+            <div className="bg-blue-300/10 p-4 rounded col-span-4"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Auto-match compatible implant parts</p></div>
+            {/* Bottom 2 Divs (span across 3 columns) */}
+            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Generate prescription sheets and FedEx labels</p></div>
+            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Route your files directly to design and production labs</p></div>
+          </div>
+          <p className="text-sm font-poppins font-normal text-center pt-16">Bonus: Our built-in ChatGPT Assistant can guide you through the form step-by-step to prevent errors, answer questions, and ensure your cases are processed without delays.
+          </p>
+          <div className="flex justify-center mb-6 sm:mb-12 mt-8">
+            <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+              <h1 className="font-poppins font-semibold text-base text-[#434343]"  >
+                Continue
+              </h1>
+              <div className="rounded-full bg-secondaryBrand text-white p-2">
+                <ArrowRightIcon className="w-4 h-4" />
+              </div>
+            </button>
+          </div>
+        </div>
       </div >
 
-      <div className="px-5">
-
+      <div className="px-5 bg-blue-300/5 py-10">
         <Contact />
       </div>
       <section className="container mx-auto px-4 my-16">
