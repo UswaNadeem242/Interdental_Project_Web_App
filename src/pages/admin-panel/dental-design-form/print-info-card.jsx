@@ -1,7 +1,10 @@
 import React from "react";
 import { SecondaryButton } from "../../../Common/Button";
+import { useState } from "react";
+import AreYouSureModel from "../../../modals/AreYouSureModel";
 
 function PrintInfoCard() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className=" bg-white p-6 flex flex-col h-full justify-between rounded-2xl ">
       <div className="text-primaryText">
@@ -66,7 +69,15 @@ function PrintInfoCard() {
           <SecondaryButton
             title="Print"
             className="w-full  bg-[#001D58] text-[#F8F8F8] font-medium text-xs border-secondaryBrand rounded-full  px-16 py-3"
+            onClick={() => setIsModalOpen(true)}
           />
+          {isModalOpen && (
+            <AreYouSureModel
+              setIsModalOpen={setIsModalOpen}
+              title="Are You Sure"
+              desc="You can not undo the action"
+            />
+          )}
         </div>
       </div>
     </div>

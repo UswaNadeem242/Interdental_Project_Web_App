@@ -1,4 +1,3 @@
-import React from "react";
 import ImpalntDesignForm from "../../../Common/ImplantDesignForm";
 import { SecondaryButton } from "../../../Common/Button";
 import PrintInfoCard from "./print-info-card";

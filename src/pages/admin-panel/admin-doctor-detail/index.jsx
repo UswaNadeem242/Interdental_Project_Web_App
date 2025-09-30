@@ -1,8 +1,8 @@
 import Stepper from "../../../Common/TabsStepper/Stepper";
-import SubscriptionForm from "./SubscriptionForm";
-import BasicInfo from "./BasicInfo";
-import PaymentDetail from "./PaymentDetail";
-import AccountDetailForm from "./AccountDetailForm";
+import SubscriptionForm from "./subscription-form";
+import BasicInfo from "./basic-info";
+import PaymentDetail from "./payment-detail";
+import AccountDetailForm from "./account-detail-form";
 
 const AdminPanelDoctorDetail = () => {
   const stepss = [

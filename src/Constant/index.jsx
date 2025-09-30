@@ -1183,3 +1183,59 @@ export const dataOrdersAdminPanel = [
     detailUrl: "/admin-panel/order-detail",
   },
 ];
+
+// Admin Panel Produts
+
+export const headingsProducts = [
+  { label: "Name", key: "name" },
+  { label: "Product ID", key: "pId" },
+  { label: "Category", key: "category" },
+  { label: "Stock", key: "stock" },
+  { label: "Price", key: "price" },
+];
+
+export const dataProducts = [
+  {
+    name: "Mgr Financial Plan",
+    pId: "PRID233214",
+    category: "Contact Lenses",
+    stock: "543",
+    price: "$23",
+  },
+];
+
+export const feedbackData = [
+  {
+    name: "Kristin Watson",
+    rating: 5,
+    time: "2 Min Ago",
+    comment:
+      "Himenaeos. Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum. Nulla varius magna a consequat.",
+  },
+  {
+    name: "Kristin Watson",
+    rating: 5,
+    time: "2 Min Ago",
+    comment:
+      "Iti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum.",
+  },
+  {
+    name: "Kristin Watson",
+    rating: 5,
+    time: "2 Min Ago",
+    comment:
+      "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
+  },
+];
+
+//
+//Admin-panel(Product Details)
+export const productDetailsData = {
+  title: "Woodpecker Scaling Tip",
+  rating: "5.0",
+  price: "17.28",
+  desc: "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum. Nulla varius magna a consequat pulvinar.",
+  sold: "200",
+  inStock: "300",
+  category: "Dental Laser",
+};

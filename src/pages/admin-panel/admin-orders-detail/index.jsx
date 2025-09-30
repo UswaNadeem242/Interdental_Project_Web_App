@@ -1,7 +1,9 @@
 import React from "react";
 import { ProgressBar } from "../../../Common/ProgressBar";
 
-import AdminOrderDetailForm from "./AdminOrderDetailForm";
+import AdminOrderDetailForm from "./admin-order-detail-form";
+import { SecondaryButton } from "../../../Common/Button";
+import ChevronRightIcon from "../../../icon/ChevronRight";
 
 function AdminOrdersDetail() {
   return (
@@ -10,9 +12,19 @@ function AdminOrdersDetail() {
         <h3 className="text-tertiaryBrand text-sm font-poppins capitalize font-semibold border-b-2 pb-3">
           order status
         </h3>
-        <div>
-          <div className="mt-4 ">
-            <ProgressBar />
+        <div className="">
+          <div className="mt-4 flex  ">
+            <span className="flex-1">
+              <ProgressBar />
+            </span>
+
+            <div className="">
+              <SecondaryButton
+                title="Move Order To Delivered"
+                icon={""}
+                className="bg-[#001D58] text-[#FFFFFF] text-xs font-light font-poppins px-6 py-3 rounded-xl "
+              />
+            </div>
           </div>
         </div>
       </div>

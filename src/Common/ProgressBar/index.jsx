@@ -112,7 +112,7 @@ export const ProgressBar = ({ steps = stepsDefault }) => {
           <div
             key={step.id}
             className={`flex flex-col w-[25%] relative ${
-              idx === steps.length - 1 ? "mr-40" : ""
+              idx === steps.length + 1 ? "mr-40" : ""
             }`}
           >
             {/* --- Circle with Check --- */}
@@ -151,7 +151,7 @@ export const ProgressBar = ({ steps = stepsDefault }) => {
                 <Icon className="w-3 h-3" />
               </div>
 
-              <div className="flex flex-col ">
+              <div className="flex flex-col">
                 <span className="text-xs font-semibold font-poppins capitalize">
                   {step.title}
                 </span>
