@@ -1,18 +1,14 @@
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux"; 
 
 const ReviewOrder = ({ next }) => {
   const restoration = useSelector((state) => state.restoration);
-
+  const patient = restoration.patient;
   // Map doctor and patient arrays to objects for easier access
   const doctor = restoration.doctor.reduce((acc, d) => {
     acc[d.field] = d.value || "N/A";
     return acc;
   }, {});
-  const patient = restoration.patient.reduce((acc, p) => {
-    acc[p.field] = p.value || "N/A";
-    return acc;
-  }, {});
-
+ 
   const toothSelections = restoration.toothSelections || [];
   const selectedTeeth = restoration.selectedTeeth || [];
   const note = restoration.note || "";
@@ -34,7 +30,7 @@ const ReviewOrder = ({ next }) => {
       (tooth.crownPrice || tooth.crown?.price || 0)
     );
   }, 0);
-
+ 
   return (
     <div className="">
       <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -86,7 +82,7 @@ const ReviewOrder = ({ next }) => {
           </div>
 
           {/* Patient Info */}
-          <div className="border border-gray-200 p-4 font-poppins">
+          {/* <div className="border border-gray-200 p-4 font-poppins">
             <h3 className="font-medium mb-2 text-[#434343]">Patient Information</h3>
             <hr className="border-gray-200 my-2" />
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
@@ -109,7 +105,45 @@ const ReviewOrder = ({ next }) => {
                 </p>
               </div>
             </div>
+          </div> */}
+
+
+
+
+
+          <div className="border border-gray-200 p-4 font-poppins">
+            <h3 className="font-medium mb-2 text-[#434343]">Patient Information</h3>
+            <hr className="border-gray-200 my-2" />
+            {patient ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <p className="text-[#949494]">Full Name</p>
+                  <p className="font-normal text-secondaryBrand">{patient.name}</p>
+                </div>
+                <div>
+                  <p className="text-[#949494]">Email</p>
+                  <p className="font-normal text-secondaryBrand">{patient.email}</p>
+                </div>
+                {/* <div>
+                  <p className="text-[#949494]">Phone</p>
+                  <p className="font-normal text-secondaryBrand">{patient.phone || "N/A"}</p>
+                </div> */}
+              </div>
+            ) : (
+              <p className="text-gray-400 text-sm">No patient selected</p>
+            )}
           </div>
+
+
+
+
+
+
+
+
+
+
+
 
           {/* Selected Teeth */}
           <div className="border border-gray-200 p-4">
@@ -154,7 +188,7 @@ const ReviewOrder = ({ next }) => {
             <div className="space-y-4">
               {selectedTeeth.map((toothId) => {
                 const tooth = teeth[toothId] || {};
- 
+
                 return (
                   <div
                     key={toothId}

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import FormSection from "../CommonLabel/FormSelection";
 import { ClipboardDocumentListIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import ExclamationCircleIcon from "../../../icon/exclamation-circle-icon";
 
 export const FileUploadSection = () => {
     const [files, setFiles] = useState([]);
@@ -27,17 +28,28 @@ export const FileUploadSection = () => {
 
     return (
         <FormSection
-            className="bg-textField py-3 px-4 border border-gray-200"
+            className="bg-textField py-3 px-2 border border-gray-200"
             title={
-                <div className="flex items-center justify-between gap-5">
-                    <span className="text-sm font-poppins font-normal text-secondaryBrand">
+                <div className="flex items-center relative gap-1">
+                    <span className="text-xs whitespace-nowrap font-poppins font-normal text-secondaryBrand">
                         Upload Patient Photos/Files
                     </span>
+
+                    {/* Icon with tooltip */}
+                    <div className="relative group">
+                        <ExclamationCircleIcon className="w-5 h-5 text-gray-500 cursor-pointer" />
+                        <div className="absolute top-full left-0 mt-1 hidden group-hover:block z-50">
+                            <div className="w-40 rounded-md bg-white px-3 py-2 text-[10px] font-normal text-secondaryText shadow-lg whitespace-normal leading-snug">
+                                include patient face only (lips, nose, teeth) and profile pics
+                            </div>
+                        </div>
+                    </div>
+
                     <label
                         htmlFor="file-upload"
-                        className="rounded-full px-3 py-1 text-xs font-semibold text-[#4640FF] cursor-pointer pb-0"
+                        className="rounded-full py-1 pr-2 text-xs font-semibold text-[#4640FF] cursor-pointer pb-0"
                     >
-                        <PlusIcon className="w-5 h-5" />
+                        <PlusIcon className="w-4 h-5" />
                     </label>
 
                     <input
@@ -48,6 +60,8 @@ export const FileUploadSection = () => {
                         className="hidden"
                     />
                 </div>
+
+
             }
         >
             {/* Show selected file names */}

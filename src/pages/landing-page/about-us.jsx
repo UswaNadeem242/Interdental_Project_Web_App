@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const AboutUs = () => {
   const navigate = useNavigate();
   return (
-    <section className="bg-white py-16 px-8 flex flex-col md:flex-row items-center justify-between">
+    <section className="bg-white py-16 px-8 flex flex-col md:flex-row items-center justify-between  ">
       {/* Left Side: Image */}
       <div className="relative w-full md:w-1/2 flex justify-center items-center">
         {/* Tooth-shaped container */}

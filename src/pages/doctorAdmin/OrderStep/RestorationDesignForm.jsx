@@ -9,7 +9,6 @@ import CheckoutForm from "./Checkout";
 import {
   // DIGITAL_DENTURE,
   Digital_Option,
-  PHOTOGRAMMETRY_FILES,
 } from "../../../Constant";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDropdowns } from "../../../store/slices/order-dropdown-slice/index";
@@ -19,7 +18,6 @@ import {
   selectTooth,
   setNote,
   setDoctorField,
-  setPatientField,
   resetRestoration,
 } from "../../../store/slices/restoration-slice/index";
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
@@ -32,6 +30,7 @@ import { OrderValidationSchema } from "../../../Common/FormsValidation/order-val
 import { toast } from "react-toastify";
 import { showToast } from "../../../store/toast-slice";
 import { PatientDropdown } from "../../../components/doctorAdmin/patient-component";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 const DoctorOrder = () => {
   const dispatch = useDispatch();
@@ -182,7 +181,7 @@ const DoctorOrder = () => {
                         officeReg: "",
                         createDate: "",
                         dueDate: "",
-                        // patientFirstName: "",
+                        patientFirstName: "",
 
                         scannerType: "",
                         digitalOptions: "",
@@ -221,6 +220,7 @@ const DoctorOrder = () => {
                                 title="Doctor Info"
                                 color="text-xs font-semibold"
                                 className="border border-gray-200 p-4"
+                                gap='gap-4'
                               >
                                 <LabeledInput
                                   type="text"
@@ -322,111 +322,43 @@ const DoctorOrder = () => {
                                   </p>
                                 )}
                               </FormSection>
+
                               <FormSection
-                                title="Patient ID"
+                                title={
+                                  <div className="flex items-center gap-20">
+                                    <span>Patient ID</span>
+                                    <div className="relative group">
+                                      <button
+                                        type="button"
+                                        className="p-1 rounded-full  text-secondaryBrand"
+                                      >
+                                        <PlusIcon className="h-4 w-4" />
+                                      </button>
+                                      {/* Tooltip */}
+                                      <div className="  absolute left-full top-1/2 -translate-y-1/2 ml-2   hidden group-hover:block  z-50">
+                                        {/* hidden group-hover:block */}
+                                        <div className="w-52 rounded-md bg-white font-normal px-4  py-1 text-[8.03px] text-secondaryText shadow">
+                                          Add New Patient if the patient is not exist in the dropdown
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                }
                                 color="text-xs font-semibold"
                                 className="border border-gray-200 p-4"
+                                gap='gap-0'
                               >
-                                {/* <LabeledInput
-                                  type="text"
-                                  placeholder="Name"
-                                  name="patientFirstName"
-                                  value={values.patientFirstName || ""}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    const fieldName = e.target.name;
-                                    setFieldValue(fieldName, value);
-                                    dispatch(
-                                      setPatientField({
-                                        field: fieldName,
-                                        value,
-                                      })
-                                    );
-                                  }}
-                                  onBlur={handleBlur}
+                                <PatientDropdown
+                                  className="w-full rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow"
+                                  dropdownClass="text-secondaryBrand"
+                                  value={values.patientFirstName} // Formik value
+                                  onChange={(val) => setFieldValue("patientFirstName", val)} // update formik
                                 />
-                                {errors.patientFirstName && (
+                                {errors.patientFirstName && touched.patientFirstName && (
                                   <p className="text-red-800 text-xs capitalize">
                                     {errors.patientFirstName}
                                   </p>
-                                )} */}
-
-                                {/* <LabeledInput
-                                  type="text"
-                                  placeholder="Last Name"
-                                  name="patientLastName"
-                                  value={values.patientLastName || ""}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    const fieldName = e.target.name;
-
-                                    // Update Formik state
-                                    setFieldValue(fieldName, value);
-
-                                    // Update Redux dynamically
-                                    dispatch(
-                                      setPatientField({
-                                        field: fieldName,
-                                        value,
-                                      })
-                                    );
-
-                                    // Debugging to confirm Redux update
-                                  }}
-                                  onBlur={handleBlur}
-                                /> */}
-                                {/* {errors.patientLastName && (
-                                  <p className="text-red-800 text-xs capitalize">
-                                    {errors.patientLastName}
-                                  </p>
                                 )}
-
-                                <LabeledInput
-                                  placeholder="Subscription id"
-                                  name="subscriptionId"
-                                  value={values.subscriptionId || ""}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    const fieldName = e.target.name;
-
-                                    // Update Formik state
-                                    setFieldValue(fieldName, value);
-
-                                    // Update Redux dynamically
-                                    dispatch(
-                                      setPatientField({
-                                        field: fieldName,
-                                        value,
-                                      })
-                                    );
-                                  }}
-                                  onBlur={handleBlur}
-                                />
-                                {errors.subscriptionId && (
-                                  <p className="text-red-800 text-xs capitalize">
-                                    {errors.subscriptionId}
-                                  </p>
-                                )} */}
-
-
-
-                                <PatientDropdown className="w-full rounded-md bg-textField px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                               </FormSection>
                               <div className="bg-textField  rounded-md ">
                                 <button
@@ -489,6 +421,7 @@ const DoctorOrder = () => {
                               <FormSection
                                 title="Additional Notes"
                                 className="border border-gray-200 p-4"
+                                gap='gap-4'
                               >
                                 <textarea
                                   type="text"
@@ -800,8 +733,8 @@ const DoctorOrder = () => {
                                           }));
                                         }
                                       }}
-                                      label="Select Laboratory"
-                                      storageKey="Select Laboratory"
+                                      label="Dental lab alliance"
+                                      storageKey="Dental lab alliance"
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       error={
                                         touched.lab &&

@@ -99,9 +99,9 @@ const Patients = ({ isLanding }) => {
               <h3 className="text-sm md:text-2xl whitespace-nowrap  font-poppins font-bold text-center text-gray-800 mb-4">
                 {step.title}
               </h3>
-              <ul className="list-disc list-inside text-gray-600 text-sm md:text-sm font-poppins space-y-2 pl-2">
+              <ul className="list-disc custom-list list-inside text-gray-600   font-poppins space-y-2 pl-2">
                 {step.description.map((desc, index) => (
-                  <li key={index} className="text-[10px] ">{desc}</li>
+                  <li key={index} className="text-sm">{desc}</li>
                 ))}
               </ul>
             </div>
@@ -149,7 +149,7 @@ const Patients = ({ isLanding }) => {
               </p>
 
               {/* Description as bullet list */}
-              <ul className="list-disc list-inside text-secondaryBrand text-start p-4 rounded-md bg-blue-300/10 text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
+              <ul className="list-disc custom-list list-inside text-secondaryBrand text-start p-4 rounded-md bg-blue-300/10 text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
                 {plan.description.map((desc, index) => (
                   <li key={index}>{desc}</li>
                 ))}
@@ -196,7 +196,7 @@ const Patients = ({ isLanding }) => {
               <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">Mastering</span> the{" "}
               <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">Full Mouth</span>
             </h1>
-            <p className="text-fouthBrand  text-3xl  font-poppins font-bold mt-5">$19.95</p>
+            <p className="text-fouthBrand  text-3xl  font-poppins font-bold mt-5">5.99</p>
             <p className="text-secondaryText  md:text-xl  text-base font-normal font-poppins pt-8 max-w-[500px] ">Packed with insights into restorative options, patient stories, and cost-saving tips, this guide helps you make smarter decisions for long-term dental care.</p>
             <h3 className="text-secondaryBrand md:text-xl  text-base py-8 font-poppins font-semibold ">Includes:</h3>
             <ul>

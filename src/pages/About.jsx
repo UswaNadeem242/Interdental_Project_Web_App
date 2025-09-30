@@ -16,7 +16,7 @@ const About = ({ isLanding }) => {
       {!isLanding && <Header />}
       <div className="flex flex-col justify-center items-center w-full h-full">
         {/* About Us Section */}
-        <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-[1511px] h-auto sm:h-[814px] border-t border-[#0000001A] bg-white py-8 sm:py-12 md:py-16 lg:py-[132px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-8 lg:gap-[120px]">
+        <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-[1511px] h-auto sm:h-[814px] border-t border-[#0000001A] bg-white py-8 sm:py-12 md:py-16 lg:py-[132px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-8">
           {/* Image */}
           <img
             src="/assets/landing-page/about-us-1.png"
@@ -26,35 +26,30 @@ const About = ({ isLanding }) => {
 
           {/* Text Content */}
           <div className="flex flex-col justify-start items-start w-full max-w-[575px] space-y-4 sm:space-y-[16px] px-4 sm:px-0">
-            <h1 className="font-poppins font-bold text-lg sm:text-xl lg:text-lg text-[#949494]">
+            <h1 className="font-poppins font-bold text-lg sm:text-xl lg:text-lg text-secondaryText">
               About Us
             </h1>
 
             <div className="flex justify-start items-center gap-2 sm:gap-4 font-poppins font-bold sm:text-sm md:text-3xl lg:text-[40px]">
-              <h1 className="text-secondaryBrand">Interoral.ai</h1>
+              <h1 className="text-secondaryBrand">Interdental Lab</h1>
             </div>
 
-            <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 lg:leading-[30px]">
-              At Interoral.ai, we are more than a dental laboratory—we're your digital
-              command center for smarter restorations and confident patient care.
+            <p className="w-full max-w-[500px] font-poppins font-normal text-lg md:text-xl text-secondaryText leading-6 lg:leading-[30px]">
+              At Interdental Lab, we’re proud to serve as the founding lab partner within InterOral.ai. For over 15 years, we’ve specialized in advanced prosthetics, digital workflows, and full-mouth reconstruction. Together with MakeMeSmile’s patient warranty program, we manage warranty cases with precision and accountability, ensuring every restoration meets the highest standards.
             </p>
 
-            <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 lg:leading-[30px]">
-              With over 15 years of expertise in advanced prosthetics and full-mouth
-              reconstruction, we’ve built a powerful, tech-forward platform that
-              connects dentists, labs, and implant companies like never before.
+            <p className="w-full max-w-[500px] font-poppins font-normal text-lg md:text-xl text-secondaryText leading-6 lg:leading-[30px]">
+              By combining our craftsmanship with InterOral.ai’s technology, we give dentists and patients confidence that every case is supported, protected, and delivered at the highest quality.
             </p>
 
-            <p className=" w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 lg:leading-[30px]">
-              Every case begins with craftsmanship—and ends with peace of mind.
-            </p>
+
 
 
           </div>
         </div>
 
         {/* Why Interdental.ai Section */}
-        <div className="flex justify-center items-center w-full max-w-[1512px] h-auto sm:h-[818px] border-t border-[#0000001A] bg-[#F8F8F8] py-8 sm:py-12 md:py-16 lg:py-[124px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-6 lg:gap-[32px]">
+        <div className="flex justify-center items-center w-full max-w-[1512px]    border-t border-[#0000001A] bg-[#F8F8F8] py-8 sm:py-12 md:py-16   px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-6 lg:gap-[32px]">
           <div className="flex flex-col justify-start items-start w-full max-w-[1312px] gap-6 sm:gap-8 lg:gap-[64px]">
             <div className="flex justify-center items-center gap-2 sm:gap-4">
               <h1 className="font-poppins font-normal text-sm md:text-5xl">Why</h1>
@@ -67,21 +62,39 @@ const About = ({ isLanding }) => {
               {/* Card 1 */}
               <div className="flex flex-col w-full rounded-[16px] border border-[#0000001A] space-y-4 p-4 sm:p-6 lg:p-[24px]">
                 <h1 className="text-[#434343] font-poppins font-bold text-sm md:text-lg">
+                  A Note From Our Founder
+                </h1>
+                <p className="font-poppins font-normal text-sm md:text-xl text-secondaryText">
+                  “I built InterOral.ai because dentistry needed more than just another lab or another piece of software — it needed a platform. One place where dentists, labs, implant suppliers, and patients could connect seamlessly, with AI doing the heavy lifting behind the scenes.
+                </p>
+
+                <p className="font-poppins font-normal text-sm md:text-xl text-secondaryText">
+
+                  At Interdental Lab, we’ve spent years perfecting restorations and standing behind our work. InterOral.ai is the natural extension of that — a smarter system that saves time, reduces costs, and gives patients peace of mind. This is the future we’re creating, and we’re just getting started.”
+                </p>
+
+                <p className="text-primaryText font-poppins font-normal text-sm md:text-xl">— Tony Sol, MDT, Founder</p>
+              </div>
+              <div className="flex flex-col w-full rounded-[16px] border border-[#0000001A] space-y-4 p-4 sm:p-6 lg:p-[24px]">
+                <h1 className="text-[#434343] font-poppins font-bold text-sm md:text-lg">
                   Encourage feedback
                 </h1>
-                <p className="font-poppins font-normal text-sm md:text-lg text-[#949494]">
+                <p className="font-poppins font-normal text-sm md:text-lg text-secondaryText">
                   “We encourage feedback” to ensure even higher standards.
                 </p>
               </div>
+
+
+
+
 
               {/* Card 2 */}
               <div className="flex flex-col w-full rounded-[16px] border border-[#0000001A] space-y-4 p-4 sm:p-6 lg:p-[24px]">
                 <h1 className="text-[#434343] font-poppins font-bold text-sm md:text-lg">
                   Quality services
                 </h1>
-                <p className="font-poppins font-normal text-sm md:text-lg text-[#949494]">
-                  We are proud to provide quality services, high standard products at
-                  realistic prices.
+                <p className="font-poppins font-normal text-sm md:text-lg text-secondaryText">
+                  We are proud to provide quality services, high standard products at realistic prices.
                 </p>
               </div>
 
@@ -90,10 +103,8 @@ const About = ({ isLanding }) => {
                 <h1 className="text-[#434343] font-poppins font-bold text-sm md:text-lg">
                   Products support
                 </h1>
-                <p className="font-poppins font-normal text-sm md:text-lg text-[#949494]">
-                  We always provide support to our products for customer’s convenience
-                  by giving them a complete technical knowledge and practical
-                  information.
+                <p className="font-poppins font-normal text-sm md:text-lg text-secondaryText">
+                  We always provide support to our products for customer’s convenience by giving them a complete technical knowledge and practical information.
                 </p>
               </div>
             </div>
@@ -147,7 +158,7 @@ const About = ({ isLanding }) => {
                     </p>
 
                     {/* Middle 3 with bullets */}
-                    <ul className="list-disc list-inside space-y-2">
+                    <ul className="list-disc list-inside space-y-2 custom-list">
                       {card.points.slice(1, 4).map((point, i) => (
                         <li
                           key={i}

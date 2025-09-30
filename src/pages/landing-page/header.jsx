@@ -56,7 +56,7 @@ const Header = () => {
               <img
                 src="/assets/logo.png"
                 alt="Interdental Lab"
-                className="h-10 w-auto sm:h-12"
+                className="h-5 w-auto sm:h-5 "
               />
             </NavLink>
           </div>
@@ -155,7 +155,7 @@ const Header = () => {
           <div className="fixed inset-0 z-40 bg-white">
             <div className="flex items-center justify-between px-5 py-4 border-b">
               <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2">
-                <img src="/assets/logo.png" alt="Interdental Lab" className="h-9 w-auto" />
+                <img src="/assets/logo.png" alt="Interdental Lab" className="h-5 w-auto" />
               </NavLink>
               <button
                 onClick={toggleMobileMenu}
