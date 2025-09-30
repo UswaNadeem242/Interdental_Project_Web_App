@@ -15,9 +15,11 @@ export default function DropDownComponent({
   return (
     <div
       className={`relative w-full bg-white 
-    ${isOpen ? "rounded-tl-2xl rounded-tr-2xl" : "rounded-2xl"}
-  `}
+        ${isOpen ? "rounded-tl-2xl rounded-tr-2xl" : "rounded-2xl"} 
+        ${className || ""}
+      `}
     >
+      {/* Dropdown toggle button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex justify-between items-center p-4 rounded-lg"
@@ -27,12 +29,12 @@ export default function DropDownComponent({
         </span>
 
         <ChevronUpIcon
-          className={`w-5 h-5 ml-2 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }`}
+          className={`w-5 h-5 ml-2 transition-transform duration-200 ${isOpen ? "rotate-180" : "rotate-0"
+            }`}
         />
       </button>
 
+      {/* Dropdown menu */}
       {isOpen && (
         <ul className="w-full bg-white rounded-bl-2xl rounded-br-2xl shadow-md max-h-60 overflow-auto">
           {options.map((option, index) => (
@@ -48,6 +50,8 @@ export default function DropDownComponent({
               <span className="text-xs">{option[optionValue]}</span>
             </li>
           ))}
+
+          {/* Cart total row */}
           {label === "Cart Total" && (
             <li className="flex justify-between px-4 py-3 text-gray-700 font-poppins border-t border-borderPrimary text-sm">
               <p>Total:</p>

@@ -15,11 +15,12 @@ const restorationSlice = createSlice({
             { id: 4, field: "dueDate", value: "" },
         ],
 
-        patient: [
-            { id: 1, field: "patientFirstName", value: "" },
-            { id: 2, field: "patientLastName", value: "" },
-            { id: 3, field: "subscriptionId", value: "" },
-        ],
+        // patient: [
+        //     { id: 1, field: "patientFirstName", value: "" },
+        //     { id: 2, field: "patientLastName", value: "" },
+        //     { id: 3, field: "subscriptionId", value: "" },
+        // ],
+        
         note: "",
     },
     reducers: {
@@ -82,11 +83,12 @@ const restorationSlice = createSlice({
             const idx = state.doctor.findIndex((d) => d.field === field);
             if (idx !== -1) state.doctor[idx].value = value;
         },
-        setPatientField: (state, action) => {
-            const { field, value } = action.payload;
-            const idx = state.patient.findIndex((p) => p.field === field);
-            if (idx !== -1) state.patient[idx].value = value;
-        },
+        // setPatientField: (state, action) => {
+        //     const { field, value } = action.payload;
+        //     const idx = state.patient.findIndex((p) => p.field === field);
+        //     if (idx !== -1) state.patient[idx].value = value;
+        // },
+        
         setNote: (state, action) => {
             state.note = action.payload;
         },
@@ -97,7 +99,7 @@ const restorationSlice = createSlice({
             state.totalPrice = 0;
             state.doctorOrderItems = [];
             state.doctor.forEach((d) => (d.value = ""));
-            state.patient.forEach((p) => (p.value = ""));
+            // state.patient.forEach((p) => (p.value = ""));
             state.note = "";
         },
     }
@@ -108,7 +110,8 @@ export const {
     updateToothSelection,
     resetRestoration,
     setDoctorField,
-    setPatientField,
+    // setPatientField,
+    
     setNote
 } = restorationSlice.actions;
 

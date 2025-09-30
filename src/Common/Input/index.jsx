@@ -41,6 +41,7 @@ export default function TextInput({
   onChange,
   onBlur,
   className,
+  className2,
 }) {
   return (
     <div className="w-full">
@@ -52,7 +53,9 @@ export default function TextInput({
           {label}
         </label>
       )}
-      <div className="flex items-center rounded-md border border-borderPrimary px-3  ">
+      <div
+        className={`flex items-center rounded-md border border-borderPrimary px-3 ${className2}`}
+      >
         <input
           id={id}
           name={name}

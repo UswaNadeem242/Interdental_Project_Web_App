@@ -6,185 +6,18 @@ import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
 import UserProfileIcon from "../icon/UserProfileIcon";
-
-export const navItems = [
-  { to: "/", label: "Home" },
-  { to: "/product", label: "Our Products" },
-  { to: "/shop", label: "Shop" },
-  { to: "/patient", label: "Patient" },
-  { to: "/doctor", label: "Doctor" },
-  { to: "/blog", label: "Blogs" },
-  { to: "/about-us", label: "About Us" },
-  { to: "/contact-us", label: "Contact Us" },
+import { DoctorIcon } from "../icon/DoctorIcon";
+import { Crown } from "../icon/Crown";
+import { Revenue } from "../icon/Revenue";
+export const MATERIAL_OPTIONS = [
+  { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
+  { value: "argen-ht", label: "Argen HT", price: 45 },
+  { value: "argen-st", label: "Argen ST", price: 50 },
+  { value: "emax", label: "Emax", price: 95 },
+  { value: "aidite", label: "Aidite", price: 85 },
+  { value: "multilayer", label: "Multilayer Pro", price: 75 },
+  { value: "pmma", label: "PMMA", price: 35 },
 ];
-
-export const productsOption = [
-  {
-    id: 1,
-    title: "ARGEN PMMA",
-    description:
-      "Argen PMMA offers high quality, life-like temporary material in a wide selection of monochromatic and multilayer discs.",
-    image: "/assets/landing-page/product1.png",
-    nav: "/product/argen-pmma",
-  },
-  {
-    id: 2,
-    title: "ARGEN Z HT+",
-    description:
-      "ArgenZ HT+ Zirconia offers extremely accurate, life-like restorations with 4-5% more translucency and 100-150 MPa higher strength over traditional HT zirconia. Available for milling in high definition by Argen. TRANSLUCENCY STRENGTH.",
-    image: "/assets/landing-page/product2.png",
-    nav: "/product/argen-zh",
-  },
-  {
-    id: 3,
-    title: "ARGEN Z ST MULTILAYER",
-    description:
-      "ArgenZ ST Multilayer Zirconia features proprietary layer blending technology for natural shade transition. Suitable for single units anywhere in the mouth and up to three unit anterior bridges.",
-    image: "/assets/landing-page/product3.png",
-    nav: "/product/argenz-st",
-  },
-  {
-    id: 4,
-    title: "ZirCad Ivoclar",
-
-    description:
-      "IPS e.max ZirCAD provides a versatile range of zirconium oxide materials for labside CAD/CAM applications. It is used for the fabrication of frameworks and full-contour crowns and bridges. High strength, thin wall thickness and high esthetics are among its hallmarks. IPS e.max ZirCAD Prime is redefining all-ceramics. This revolutionary material is characterized by exceptional quality and ",
-    readMoreLink: "/zircad-details",
-    image: "/assets/landing-page/product4.png",
-    nav: "/product/zidcard-ivoclar",
-  },
-  {
-    id: 5,
-    title: "Multilayer 4D pro",
-    description: `
-Our advanced 4D Pro Zirconia disc features an unparalleled four - dimensional gradient that seamlessly integrates color, translucency, strength, and hardness, making it an optimal choice for any dental laboratory.
-4D Pro Zirconia not only elevates the quality of all - ceramic dentures but also ensures a streamlined, efficient, and precise workflow for dental professionals.
-`,
-
-    image: "/assets/landing-page/product5.png",
-    nav: "/product/multilayer-pro",
-  },
-  {
-    id: 6,
-    title: "LayZir",
-    description: `LayZir All Indication Zirconia Disc by SMART DENTISTRY SOLUTIONS – FDA Cleared, Aesthetic Like Lithium Disilicate, Minimal Sintering Distortion, Excellent Millability, and Advanced 3Y / 5Y Blending Technology.`,
-
-    image: "/assets/landing-page/product6.png",
-    nav: "/product/lay-zir",
-  },
-  {
-    id: 7,
-    title: "Aidite zirconia",
-    description: `3D Pro zir is fabricated with the most advanced production processes at Aidite, producing a layerless, natural shade gradient, with optimal strengthand translucency, transitioning from Cervical to Incisal areas of the restoration. 
-
-With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic results while being suitable for all indications from single crowns to 14 - unitbridge structures.`,
-
-    image: "/assets/landing-page/product7.png",
-    multiline: true,
-    nav: "/product/aidite-zirconia",
-  },
-];
-
-export const accordionData = [
-  {
-    title: "How do you generate $5 leads?",
-    description:
-      "Files must be submitted by 3:00 p.m. PST. Units will be received within 2 business days.",
-  },
-  {
-    title: "How quickly can I see results?",
-    description: [
-      "Wall Thickness: <b>0.80 mm minimum</b>",
-      "Margin Thickness: <b>0.10 mm</b>",
-      "Margin Angle: <b>90° degrees</b>",
-      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-    ],
-  },
-  {
-    title: "What’s included in your service?",
-    description: [
-      "Wall Thickness: <b>0.80 mm minimum</b>",
-      "Margin Thickness: <b>0.10 mm</b>",
-      "Margin Angle: <b>90° degrees</b>",
-      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-    ],
-  },
-  {
-    title: "How do you ensure the leads are qualified?",
-    description: [
-      "Wall Thickness: <b>0.80 mm minimum</b>",
-      "Margin Thickness: <b>0.10 mm</b>",
-      "Margin Angle: <b>90° degrees</b>",
-      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-    ],
-  },
-  {
-    title: "Can this system work for my specific market?",
-    description: [
-      "Wall Thickness: <b>0.80 mm minimum</b>",
-      "Margin Thickness: <b>0.10 mm</b>",
-      "Margin Angle: <b>90° degrees</b>",
-      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
-    ],
-  },
-];
-
-export const teethOption = [
-  { id: 1, title: "Inlay/Onlay", img: "/assets/landing-page/1.png" },
-  { id: 2, title: "Veneer", img: "/assets/landing-page/2.png" },
-  { id: 3, title: "Anterior full crown", img: "/assets/landing-page/3.png" },
-  {
-    id: 4,
-    title: "Anterior full crown bridge",
-    img: "/assets/landing-page/4.png",
-  },
-  { id: 5, title: "Screw-retained bridge", img: "/assets/landing-page/5.png" },
-  { id: 6, title: "Posterior full crown", img: "/assets/landing-page/6.png" },
-  {
-    id: 7,
-    title: "Posterior full crown bridge",
-    img: "/assets/landing-page/7.png",
-  },
-];
-
-export const settingsOption = [
-  {
-    title: "CUT-OFF TIME",
-    description:
-      `Files must be submitted by 3:00 P.M. PST (6:00 P.M. EST).
-       Milled PMMA units will be received within 2 business days`,
-  },
-  {
-    title: "DESIGN",
-    description: [
-      "Wall Thickness: ......................... 0.80 mm minimum",
-      "Margin Thickness: .................. 0.10 mm",
-      "Margin Angle: ......................... 90° degrees",
-      "Note: If Walls/Margins Are Too Thin, Failures May Occur During The Build Process (i.e. Cracks, Holes).",
-    ],
-  },
-  {
-    title: "FIT SETTINGS",
-    description: [
-      'Drill Compensation should be checked "ON"',
-      "Drill Compensation Offset: ....... 0.6 mm",
-      "Drill Radius: .................................... 0.5 mm",
-      "Cement Gap: ................................. 0.05 mm (near margin)",
-      "Extra Cement Gap: .................................  0.06 mm (die spacer)",
-      "Distance to Margin: .................................  1.0 mm",
-      "Note: Cement Gap Settings Are Adjustable. Increase Values To Give a Looser Fit, Decrease Values To Get a Tighter Fit.",
-    ],
-  },
-  {
-    title: "Digital Product",
-    description: ["Milled PMMA"],
-  },
-  {
-    title: "# of Units",
-    description: ["Single up to 14 units"],
-  },
-];
-
 export const Digital_Option = [
   { value: "quad", label: "Quadrant" },
   { value: "fullarch", label: "Full Arch" },
@@ -221,6 +54,20 @@ export const menuItems = [
   },
 ];
 
+export const navItems = [
+  { to: "/", label: "Home" },
+  { to: "/product", label: "Our Products" },
+  { to: "/shop", label: "Shop" },
+  { to: "/patient", label: "Patient" },
+  { to: "/doctor", label: "Doctor" },
+  { to: "/blog", label: "Blogs" },
+  { to: "/about-us", label: "About Us" },
+  { to: "/contact-us", label: "Contact Us" },
+];
+
+
+
+
 export const menuPatientItem = [
   {
     name: "warranty mGMT",
@@ -245,6 +92,26 @@ export const menuAdminPanelItem = [
     path: "/admin-panel/dashboard",
     icon: DashboardIcon,
   },
+  {
+    name: "Doctors",
+    path: "/admin-panel/doctors",
+    icon: DashboardIcon,
+  },
+  {
+    name: "Doctor Detail",
+    path: "/admin-panel/doctor-detail",
+    icon: DashboardIcon,
+  },
+  {
+    name: "Orders",
+    path: "/admin-panel/orders",
+    icon: DashboardIcon,
+  },
+  // {
+  //   name: "Order Detail",
+  //   path: "/admin-panel/order-detail",
+  //   icon: DashboardIcon,
+  // },
 ];
 export const menuItemsUser = [
   {
@@ -766,17 +633,17 @@ export const dataOrder = [
 ];
 
 export const Chartdata = [
-  { month: "Jan", total: 0, completed: 0, inProgress: 0, pending: 0 },
   { month: "Feb", total: 5, completed: 3, inProgress: 1, pending: 1 },
-  { month: "Mar", total: 10, completed: 6, inProgress: 2, pending: 2 },
-  { month: "Apr", total: 15, completed: 9, inProgress: 3, pending: 3 },
+  { month: "Jan", total: 0, completed: 0, inProgress: 0, pending: 9 },
+  { month: "Mar", total: 10, completed: 6, inProgress: 2, pending: 10 },
+  { month: "Apr", total: 15, completed: 9, inProgress: 3, pending: 8 },
   { month: "May", total: 20, completed: 12, inProgress: 4, pending: 4 },
   { month: "Jun", total: 25, completed: 15, inProgress: 5, pending: 5 },
   { month: "Jul", total: 30, completed: 18, inProgress: 6, pending: 6 },
   { month: "Aug", total: 35, completed: 21, inProgress: 7, pending: 7 },
-  { month: "Sep", total: 40, completed: 24, inProgress: 8, pending: 8 },
-  { month: "Oct", total: 45, completed: 27, inProgress: 9, pending: 9 },
-  { month: "Nov", total: 50, completed: 30, inProgress: 10, pending: 10 },
+  { month: "Sep", total: 40, completed: 24, inProgress: 8, pending: 2 },
+  { month: "Oct", total: 45, completed: 27, inProgress: 9, pending: 1 },
+  { month: "Nov", total: 50, completed: 30, inProgress: 10, pending: 1 },
   { month: "Dec", total: 55, completed: 33, inProgress: 11, pending: 11 },
 ];
 
@@ -784,6 +651,10 @@ export const ChartStatusLines = [
   { dataKey: "pending", stroke: "#3B82F6", name: "Pending" },
   { dataKey: "inProgress", stroke: "#E13434", name: "In Progress" },
   { dataKey: "completed", stroke: "#4FAD2E", name: "Completed" },
+];
+export const ChartStatusLines2 = [
+  { dataKey: "pending", stroke: "#001D58", name: "Doctor" },
+  { dataKey: "inProgress", stroke: "#94D3DD", name: "Patient" },
 ];
 
 export const headingsPatientDashboardTable = [
@@ -1018,6 +889,348 @@ export const PatientClaimReqData = [
     action: "View Detail",
   },
 ];
+
+//
+
+export const CardAdminPanelDashboard = [
+  {
+    title: "Registered Doctors",
+    count: "500",
+    date: "Jan 01, 2024",
+    path: "/admin-panel/dashboard",
+    duedate: "Mar 30, 2024",
+    icon: <DoctorIcon />,
+  },
+  {
+    title: "Active Subscriptions",
+    count: "300",
+    date: "Jan 01, 2024",
+    path: "/admin-panel/dashboard",
+    duedate: "Mar 30, 2024",
+    icon: <Crown />,
+  },
+  {
+    title: "Revenue",
+    count: "300",
+    date: "Jan 01, 2024",
+    path: "/admin-panel/dashboard",
+    duedate: "Mar 30, 2024",
+    icon: <Revenue />,
+  },
+];
+
+//
+// Static datasets for Single Line Chart
+export const weeklyData = [
+  { day: "Mon", earnings: 200 },
+  { day: "Tue", earnings: 300 },
+  { day: "Wed", earnings: 250 },
+  { day: "Thu", earnings: 400 },
+  { day: "Fri", earnings: 350 },
+  { day: "Sat", earnings: 500 },
+  { day: "Sun", earnings: 450 },
+];
+
+export const monthlyData = [
+  { day: "Week 1", earnings: 1200 },
+  { day: "Week 2", earnings: 1800 },
+  { day: "Week 3", earnings: 1500 },
+  { day: "Week 4", earnings: 2000 },
+];
+
+export const yearlyData = [
+  { day: "Jan", earnings: 1200 },
+  { day: "Feb", earnings: 1800 },
+  { day: "Mar", earnings: 1500 },
+  { day: "Apr", earnings: 2200 },
+  { day: "May", earnings: 2800 },
+  { day: "Jun", earnings: 3200 },
+  { day: "Jul", earnings: 4000 },
+  { day: "Aug", earnings: 3700 },
+  { day: "Sep", earnings: 3100 },
+  { day: "Oct", earnings: 4500 },
+  { day: "Nov", earnings: 4800 },
+  { day: "Dec", earnings: 5200 },
+];
+
+//Admin Panel Data
+
+export const planss = [
+  {
+    id: "01",
+    name: "Gold",
+    percentage: "75%",
+    color: "bg-[#94C522]",
+    badge: "text-[#94C522]",
+  },
+  {
+    id: "02",
+    name: "Platinum",
+    percentage: "75%",
+    color: "bg-[#4ECCA3]",
+    badge: "text-[#4ECCA3]",
+  },
+  {
+    id: "03",
+    name: "Diamond",
+    percentage: "75%",
+    color: "bg-[#2734C6]",
+    badge: "text-[#2734C6]",
+  },
+];
+
+export const productDataAdminPanel = [
+  {
+    id: "01",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "02",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+  {
+    id: "03",
+    name: "GC Gold Label 1 Mini ",
+    price: "$70",
+    itemsSold: "70 Sold",
+    totalPrice: "$1400",
+    icon: (
+      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+    ),
+  },
+];
+
+export const headingsAdminPanelTable = [
+  { label: "Name", key: "name" },
+  { label: "Email", key: "email" },
+  { label: "Phone Number ", key: "phoneNumber" },
+  { label: "Address", key: "address" },
+  { label: "License Number", key: "licenseNum" },
+  { label: "Account Status", key: "status" },
+  { label: "Sub status", key: "subStatus" },
+  { label: "", key: "icon" },
+];
+
+export const dataDoctors = [
+  {
+    name: "Jon Doe",
+    email: "JonDoe@gmail.com",
+    phoneNumber: "0356 7656789",
+    address: "207 Stillwater Lane",
+    licenseNum: "456 567 43235",
+    status: "deactivated",
+    subStatus: "expired",
+    detailUrl: "/doctor-admin/order-details",
+    icon: "✌️",
+  },
+  {
+    name: "Jon Doe",
+    email: "JonDoe@gmail.com",
+    phoneNumber: "0356 7656789",
+    address: "207 Stillwater Lane",
+    licenseNum: "456 567 43235",
+    status: "active",
+    subStatus: "expired",
+    detailUrl: "/doctor-admin/order-details",
+    icon: "✌️",
+  },
+];
+
+export const headingsAdminPanelOrders = [
+  { label: "order ID", key: "id" },
+  { label: "Scan Date", key: "scanDate" },
+  { label: "Doctor Name", key: "dName" },
+  { label: "Patient ID", key: "pId" },
+  { label: "Shopping Date", key: "shoppingDate" },
+  { label: "Status", key: "status" },
+  { label: "Action", key: "action" },
+];
+
+export const dataOrdersAdminPanel = [
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
+  },
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
+  },
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
+  },
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
+  },
+  {
+    id: "#1235",
+    pId: "etedfty6",
+    product: "Argen HT",
+    status: "active",
+    scanDate: "17/22/2026",
+    action: "View Detail",
+    dName: "Miles, Esther",
+    shoppingDate: "16/22/2026",
+    detailUrl: "/admin-panel/order-detail",
+  },
+];
+
+// Admin Panel Produts
+
+export const headingsProducts = [
+  { label: "Name", key: "name" },
+  { label: "Product ID", key: "pId" },
+  { label: "Category", key: "category" },
+  { label: "Stock", key: "stock" },
+  { label: "Price", key: "price" },
+];
+
+export const dataProducts = [
+  {
+    name: "Mgr Financial Plan",
+    pId: "PRID233214",
+    category: "Contact Lenses",
+    stock: "543",
+    price: "$23",
+  },
+];
+
+export const feedbackData = [
+  {
+    name: "Kristin Watson",
+    rating: 5,
+    time: "2 Min Ago",
+    comment:
+      "Himenaeos. Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum. Nulla varius magna a consequat.",
+  },
+  {
+    name: "Kristin Watson",
+    rating: 5,
+    time: "2 Min Ago",
+    comment:
+      "Iti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum.",
+  },
+  {
+    name: "Kristin Watson",
+    rating: 5,
+    time: "2 Min Ago",
+    comment:
+      "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
+  },
+];
+
+//
+//Admin-panel(Product Details)
+export const productDetailsData = {
+  title: "Woodpecker Scaling Tip",
+  rating: "5.0",
+  price: "17.28",
+  desc: "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum. Nulla varius magna a consequat pulvinar.",
+  sold: "200",
+  inStock: "300",
+  category: "Dental Laser",
+};
 
 //
 
@@ -1683,4 +1896,173 @@ export const shadesProductMultiPro = [
   { label: "OM2", color: "#FFFFFF" },
   { label: "OM3", color: "#FFFFFF" },
   { label: "Hollywood White", color: "#F1EBE4" },
+];
+
+export const accordionData = [
+  {
+    title: "How do you generate $5 leads?",
+    description:
+      "Files must be submitted by 3:00 p.m. PST. Units will be received within 2 business days.",
+  },
+  {
+    title: "How quickly can I see results?",
+    description: [
+      "Wall Thickness: <b>0.80 mm minimum</b>",
+      "Margin Thickness: <b>0.10 mm</b>",
+      "Margin Angle: <b>90° degrees</b>",
+      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+    ],
+  },
+  {
+    title: "What’s included in your service?",
+    description: [
+      "Wall Thickness: <b>0.80 mm minimum</b>",
+      "Margin Thickness: <b>0.10 mm</b>",
+      "Margin Angle: <b>90° degrees</b>",
+      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+    ],
+  },
+  {
+    title: "How do you ensure the leads are qualified?",
+    description: [
+      "Wall Thickness: <b>0.80 mm minimum</b>",
+      "Margin Thickness: <b>0.10 mm</b>",
+      "Margin Angle: <b>90° degrees</b>",
+      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+    ],
+  },
+  {
+    title: "Can this system work for my specific market?",
+    description: [
+      "Wall Thickness: <b>0.80 mm minimum</b>",
+      "Margin Thickness: <b>0.10 mm</b>",
+      "Margin Angle: <b>90° degrees</b>",
+      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+    ],
+  },
+];
+
+
+export const teethOption = [
+  { id: 1, title: "Inlay/Onlay", img: "/assets/landing-page/1.png" },
+  { id: 2, title: "Veneer", img: "/assets/landing-page/2.png" },
+  { id: 3, title: "Anterior full crown", img: "/assets/landing-page/3.png" },
+  {
+    id: 4,
+    title: "Anterior full crown bridge",
+    img: "/assets/landing-page/4.png",
+  },
+  { id: 5, title: "Screw-retained bridge", img: "/assets/landing-page/5.png" },
+  { id: 6, title: "Posterior full crown", img: "/assets/landing-page/6.png" },
+  {
+    id: 7,
+    title: "Posterior full crown bridge",
+    img: "/assets/landing-page/7.png",
+  },
+];
+
+export const settingsOption = [
+  {
+    title: "CUT-OFF TIME",
+    description:
+      `Files must be submitted by 3:00 P.M. PST (6:00 P.M. EST).
+       Milled PMMA units will be received within 2 business days`,
+  },
+  {
+    title: "DESIGN",
+    description: [
+      "Wall Thickness: ......................... 0.80 mm minimum",
+      "Margin Thickness: .................. 0.10 mm",
+      "Margin Angle: ......................... 90° degrees",
+      "Note: If Walls/Margins Are Too Thin, Failures May Occur During The Build Process (i.e. Cracks, Holes).",
+    ],
+  },
+  {
+    title: "FIT SETTINGS",
+    description: [
+      'Drill Compensation should be checked "ON"',
+      "Drill Compensation Offset: ....... 0.6 mm",
+      "Drill Radius: .................................... 0.5 mm",
+      "Cement Gap: ................................. 0.05 mm (near margin)",
+      "Extra Cement Gap: .................................  0.06 mm (die spacer)",
+      "Distance to Margin: .................................  1.0 mm",
+      "Note: Cement Gap Settings Are Adjustable. Increase Values To Give a Looser Fit, Decrease Values To Get a Tighter Fit.",
+    ],
+  },
+  {
+    title: "Digital Product",
+    description: ["Milled PMMA"],
+  },
+  {
+    title: "# of Units",
+    description: ["Single up to 14 units"],
+  },
+];
+
+
+export const productsOption = [
+  {
+    id: 1,
+    title: "ARGEN PMMA",
+    description:
+      "Argen PMMA offers high quality, life-like temporary material in a wide selection of monochromatic and multilayer discs.",
+    image: "/assets/landing-page/product1.png",
+    nav: "/product/argen-pmma",
+  },
+  {
+    id: 2,
+    title: "ARGEN Z HT+",
+    description:
+      "ArgenZ HT+ Zirconia offers extremely accurate, life-like restorations with 4-5% more translucency and 100-150 MPa higher strength over traditional HT zirconia. Available for milling in high definition by Argen. TRANSLUCENCY STRENGTH.",
+    image: "/assets/landing-page/product2.png",
+    nav: "/product/argen-zh",
+  },
+  {
+    id: 3,
+    title: "ARGEN Z ST MULTILAYER",
+    description:
+      "ArgenZ ST Multilayer Zirconia features proprietary layer blending technology for natural shade transition. Suitable for single units anywhere in the mouth and up to three unit anterior bridges.",
+    image: "/assets/landing-page/product3.png",
+    nav: "/product/argenz-st",
+  },
+  {
+    id: 4,
+    title: "ZirCad Ivoclar",
+
+    description:
+      "IPS e.max ZirCAD provides a versatile range of zirconium oxide materials for labside CAD/CAM applications. It is used for the fabrication of frameworks and full-contour crowns and bridges. High strength, thin wall thickness and high esthetics are among its hallmarks. IPS e.max ZirCAD Prime is redefining all-ceramics. This revolutionary material is characterized by exceptional quality and ",
+    readMoreLink: "/zircad-details",
+    image: "/assets/landing-page/product4.png",
+    nav: "/product/zidcard-ivoclar",
+  },
+  {
+    id: 5,
+    title: "Multilayer 4D pro",
+    description: `
+Our advanced 4D Pro Zirconia disc features an unparalleled four - dimensional gradient that seamlessly integrates color, translucency, strength, and hardness, making it an optimal choice for any dental laboratory.
+4D Pro Zirconia not only elevates the quality of all - ceramic dentures but also ensures a streamlined, efficient, and precise workflow for dental professionals.
+`,
+
+    image: "/assets/landing-page/product5.png",
+    nav: "/product/multilayer-pro",
+  },
+  {
+    id: 6,
+    title: "LayZir",
+    description: `LayZir All Indication Zirconia Disc by SMART DENTISTRY SOLUTIONS – FDA Cleared, Aesthetic Like Lithium Disilicate, Minimal Sintering Distortion, Excellent Millability, and Advanced 3Y / 5Y Blending Technology.`,
+
+    image: "/assets/landing-page/product6.png",
+    nav: "/product/lay-zir",
+  },
+  {
+    id: 7,
+    title: "Aidite zirconia",
+    description: `3D Pro zir is fabricated with the most advanced production processes at Aidite, producing a layerless, natural shade gradient, with optimal strengthand translucency, transitioning from Cervical to Incisal areas of the restoration. 
+
+With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic results while being suitable for all indications from single crowns to 14 - unitbridge structures.`,
+
+    image: "/assets/landing-page/product7.png",
+    multiline: true,
+    nav: "/product/aidite-zirconia",
+  },
 ];

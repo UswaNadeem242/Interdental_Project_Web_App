@@ -31,6 +31,7 @@ import { Form, Formik } from "formik";
 import { OrderValidationSchema } from "../../../Common/FormsValidation/order-validation";
 import { toast } from "react-toastify";
 import { showToast } from "../../../store/toast-slice";
+import { PatientDropdown } from "../../../components/doctorAdmin/patient-component";
 
 const DoctorOrder = () => {
   const dispatch = useDispatch();
@@ -181,9 +182,8 @@ const DoctorOrder = () => {
                         officeReg: "",
                         createDate: "",
                         dueDate: "",
-                        patientFirstName: "",
-                        patientLastName: "",
-                        subscriptionId: "",
+                        // patientFirstName: "",
+
                         scannerType: "",
                         digitalOptions: "",
                         surgical_guide: "",
@@ -327,7 +327,7 @@ const DoctorOrder = () => {
                                 color="text-xs font-semibold"
                                 className="border border-gray-200 p-4"
                               >
-                                <LabeledInput
+                                {/* <LabeledInput
                                   type="text"
                                   placeholder="Name"
                                   name="patientFirstName"
@@ -349,9 +349,9 @@ const DoctorOrder = () => {
                                   <p className="text-red-800 text-xs capitalize">
                                     {errors.patientFirstName}
                                   </p>
-                                )}
+                                )} */}
 
-                                <LabeledInput
+                                {/* <LabeledInput
                                   type="text"
                                   placeholder="Last Name"
                                   name="patientLastName"
@@ -374,8 +374,8 @@ const DoctorOrder = () => {
                                     // Debugging to confirm Redux update
                                   }}
                                   onBlur={handleBlur}
-                                />
-                                {errors.patientLastName && (
+                                /> */}
+                                {/* {errors.patientLastName && (
                                   <p className="text-red-800 text-xs capitalize">
                                     {errors.patientLastName}
                                   </p>
@@ -406,7 +406,27 @@ const DoctorOrder = () => {
                                   <p className="text-red-800 text-xs capitalize">
                                     {errors.subscriptionId}
                                   </p>
-                                )}
+                                )} */}
+
+
+
+                                <PatientDropdown className="w-full rounded-md bg-textField px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                               </FormSection>
                               <div className="bg-textField  rounded-md ">
                                 <button
@@ -457,7 +477,7 @@ const DoctorOrder = () => {
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                  !activeToothSelection.scannerType
+                                    !activeToothSelection.scannerType
                                     ? "Scanner Type is Required Select the Teeth"
                                     : ""
                                 }
@@ -539,9 +559,9 @@ const DoctorOrder = () => {
                                     // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
                                     error={
                                       touched.digitalOptions &&
-                                      !toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.digitalOptions
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.digitalOptions
                                         ? "Digital Denture is Required Select the teeth"
                                         : ""
                                     }
@@ -584,9 +604,9 @@ const DoctorOrder = () => {
                                     storageKey="surgical_guide"
                                     error={
                                       touched.surgical_guide &&
-                                      !toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.surgical_guide
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.surgical_guide
                                         ? "Surgical Guide is Required. Please select a tooth."
                                         : ""
                                     }
@@ -674,9 +694,9 @@ const DoctorOrder = () => {
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       error={
                                         touched.crown &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.crown
+                                          !toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.crown
                                           ? "Crown is required. Please select a value."
                                           : ""
                                       }
@@ -718,9 +738,9 @@ const DoctorOrder = () => {
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       error={
                                         touched.material &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.material
+                                          !toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.material
                                           ? "Material is required. Please select a tooth first"
                                           : ""
                                       }
@@ -785,9 +805,9 @@ const DoctorOrder = () => {
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       error={
                                         touched.lab &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.lab
+                                          !toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.lab
                                           ? "Participating Lab is required. Please select a tooth first."
                                           : ""
                                       }
@@ -833,9 +853,9 @@ const DoctorOrder = () => {
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.photogrammetryfiles
+                                          !toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.photogrammetryfiles
                                           ? "Photogrammetry files is required. Please select a tooth first."
                                           : ""
                                       }
