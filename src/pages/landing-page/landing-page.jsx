@@ -1,6 +1,6 @@
 import Footer from "../../components/Footer";
 import Header from "./header";
-import {HeroSection} from "./hero-section";
+import { HeroSection } from "./hero-section";
 import AboutUs from "./about-us";
 import DoctorComponent from "../../components/landing-page-component";
 import CircleIcon from "../../icon/circle-icon";
@@ -38,8 +38,8 @@ const LandingPage = () => {
       <div className="  font-poppins min-h-screen text-gray-800">
         <HeroSection />
         <AboutUs />
-        <div>
-          <div className="flex justify-center  pt-10">
+        <div className="">
+          <div className="flex justify-center  pt-10   border-background">
             <h1 className="text-3xl lg:text-4xl font-poppins capitalize">
               our
               <span className="text-secondaryBrand font-bold capitalize ml-2">
@@ -65,16 +65,12 @@ const LandingPage = () => {
               <h1 className="text-secondaryBrand  text-5xl font-poppins font-semibold">InterOral.ai</h1>
             </div>
             <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 md:leading-[30px]">
-              InterOral.ai is an AI-driven platform that
-              <span className="hidden md:inline"><br /></span> seamlessly connects dentists, dental labs, and
-              <span className="hidden md:inline"><br /></span> patients under one secure system. Dentists can
-              <span className="hidden md:inline"><br /></span> submit digital prescriptions, upload scans, and
-              <span className="hidden md:inline"><br /></span> order implant parts, while labs efficiently receive
-              <span className="hidden md:inline"><br /></span> and manage cases. Patients gain added value
-              <span className="hidden md:inline"><br /></span> through extended warranty coverage, ensuring a
-              smooth, connected, and compliant workflow for  <span className="hidden md:inline"><br /></span> all.
-            </p>
+              InterOral.ai is an AI-driven platform that  <span className="hidden md:inline"><br /></span> seamlessly connects dentists, dental labs, and <span className="hidden md:inline"><br /></span> patients under one secure system. Dentists can  <span className="hidden md:inline"><br /></span> submit digital prescriptions, upload scans, and <span className="hidden md:inline"><br /></span> order implant parts, while labs efficiently receive <span className="hidden md:inline"><br /></span> and manage cases. Patients gain added value <span className="hidden md:inline"><br /></span> through extended warranty coverage, ensuring a <span className="hidden md:inline"><br /></span> smooth, connected, and compliant workflow for
+              <span className="hidden md:inline"><br /></span>
+              all.</p>
             <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+
+
               <h1 className="font-poppins font-semibold text-base text-[#434343]" onClick={() => navigate("/about-us")}>
                 View More
               </h1>
@@ -142,7 +138,7 @@ const LandingPage = () => {
                     </ul>
                   </div>
 
-                  <button className=" text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition" onClick={() => navigate("/patient")}>
+                  <button className=" text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition" >
                     Learn more
                   </button>
                 </div>

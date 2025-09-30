@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 function OurModules() {
     const navigate = useNavigate();
     return (
-        <div className='border-t border-bg-background'>
+        <div className=''>
             <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center md:px-16 px-4 py-20 bg-[#F7FCFC]">
                 <div className="flex justify-center">
                     <img
                         src="/assets/landing-page/landing1.png"
                         alt="Doctor Enrollment"
-                        className="w-full max-w-md rounded-lg"
+                        className="w-full max-w-sm"
                     />
                 </div>
                 <div className="space-y-4">

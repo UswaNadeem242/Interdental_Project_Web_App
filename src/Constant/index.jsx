@@ -1615,8 +1615,7 @@ export const Doctorsteps = [
     id: 2,
     title: " Get Exclusive Benefits",
     description: [
-      "all 3 plans get the discount, silver gold and platinum.",
-      "To access the laboratory pricing schedule, submit an email request.",
+      "Get Exclusive benefits and access to our AI modules.some availble now some still under construction.Temporize.ai MasterCrown.ai, S - Guide.ai, Bite.ai"
     ],
   },
   {

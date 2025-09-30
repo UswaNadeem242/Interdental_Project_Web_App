@@ -35,8 +35,9 @@ function MakeSmile() {
                             Builds loyalty and professionalism in the practice.
                         </li>
                     </ul>
-                    <button className="flex justify-center items-center w-[300px] sm:w-[250px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+                    <button className="flex justify-center items-center rounded-full border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
                         <h1 className="font-poppins text-sm font-semibold  text-primaryText">
+                            {/*  w-[300px] sm:w-[250px] h-[40px] sm:h-[53.73px] */}
                             Protect Your Smile
                         </h1>
                         <div className="rounded-full text-white bg-secondaryBrand p-2">
@@ -49,7 +50,7 @@ function MakeSmile() {
                     <img
                         src="/assets/landing-page/landing 2.png"
                         alt="Doctor Enrollment"
-                        className="w-full max-w-md rounded-lg"
+                        className="w-full max-w-sm rounded-lg"
                     />
                 </div>
             </section>

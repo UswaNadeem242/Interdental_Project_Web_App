@@ -9,41 +9,6 @@ import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
 
 
 
-const pricingPlans = [
-  {
-    id: 1,
-    name: "Diamond",
-    price: "$175",
-    duration: "Every Month",
-    enrollmentFee: "+$125 enrollment fee",
-    description: [
-      "Not sure this is the right fit? Try it out one month at a time.",
-      "Valid for 3 months.",
-    ],
-    buttonStyle:
-      "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
-  },
-  {
-    id: 2,
-    name: "Silver",
-    price: "$275",
-    duration: "Every Month",
-    enrollmentFee: "+$125 enrollment fee",
-    description: ["12 months 20 patients per month.", "Valid for 3 months."],
-    buttonStyle: "bg-blue-900 text-white hover:bg-blue-700",
-  },
-  {
-    id: 3,
-    name: "Silver",
-    price: "$475",
-    duration: "Every Month",
-    enrollmentFee: "+$125 enrollment fee",
-    description: ["Enroll unlimited patients.", "Valid for 3 months."],
-    buttonStyle:
-      "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
-  },
-];
-
 
 
 const plans = [
@@ -54,11 +19,11 @@ const plans = [
     duration: "Per Month",
     enrollmentFee: "One‑Time Setup Fee: $125",
     features: [
-      "Unlimited Patients/Month",
-      "Full Lab Discounts",
+      "Enroll patients into MMS",
+      "Get discounted pricing on select cases",
       "Priority Case Handling",
-      "Smart Assistant access included",
-      "One-time setup fee: $125",
+      "Pick labs nationwide from dental lab alliance",
+      "One time set up fee yes!",
     ],
     buttonStyle:
       "text-secondaryBrand border-secondaryBrand text-sm  font-semibold  font-popins",
@@ -70,9 +35,10 @@ const plans = [
     duration: "Per Month",
     enrollmentFee: "One‑Time Setup Fee: $125",
     features: [
-      "Streamline Workflows",
-      "Add Warranties",
-      "Receive Patient Referrals",
+      "Enroll patients into MMS",
+      "Get discounted pricing on select cases",
+      "Pick labs nationwide from dental lab alliance",
+      "One time set up fee yes!for growth 275.00 up to 20 crowns per month",
     ],
     buttonStyle:
       "text-secondaryBrand border-secondaryBrand text-sm  font-semibold  font-popins",
@@ -84,9 +50,11 @@ const plans = [
     duration: "Per Month",
     enrollmentFee: "One‑Time Setup Fee: $125",
     features: [
-      "Unlimited Cases",
-      "Priority Support",
-      "Full Automation For DSOs",
+      "unlimited MMS crowns",
+      "Enroll patients into MMS",
+      "Get discounted pricing on select cases",
+      "Pick labs nationwide from dental lab alliance",
+      "One time set up fee yes! 475.00",
 
     ],
     buttonStyle:
@@ -99,8 +67,7 @@ const plans = [
     duration: "Coming Soon",
     enrollmentFee: "",
     features: [
-      "We refer patients to you",
-      "Featured listing as a Participating Provider",
+      "We refer patients to you Featured listing as a Participating Provider",
       "Great for practices looking to grow",
       "Cancel anytime",
       "Coming soon",
@@ -297,6 +264,9 @@ const Doctor = ({ isLanding }) => {
           </div>
         </div>
 
+
+        
+
         <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
           {/* Header */}
           <h2 className="text-base md:text-3xl font-normal text-primaryText capitalize text-center tracking-wide">
@@ -307,7 +277,7 @@ const Doctor = ({ isLanding }) => {
             {plans.map((plan) => (
               <div
                 key={plan.id}
-                className={`bg-white border rounded-xl  p-4 sm:p-6 flex flex-col justify-between hover:shadow-md transition shadow-[0px_100px_80px_0px_rgba(49,49,49,0.10)]    duration-300 hover:-translate-y-2`}
+                className={`bg-white border rounded-xl  p-4 sm:p-6 flex flex-col justify-between  transition    duration-300 hover:-translate-y-2 hover:shadow-[0px_100px_80px_0px_rgba(49,49,49,0.10)] `}
               >
                 {/* Card content */}
                 <div>
@@ -327,7 +297,7 @@ const Doctor = ({ isLanding }) => {
 
                     </>
                   )}
-                  <ul className="mt-4 list-disc list-inside rounded-xl bg-blue-300/10 p-2 text-gray-700 space-y-2 text-sm sm:text-base mx-auto max-w-[20rem]">
+                  <ul className="mt-4 list-disc list-inside rounded-xl bg-blue-300/10 p-2 text-gray-700 space-y-2 text-sm sm:text-base mx-auto max-w-[20rem] custom-list">
                     {plan.features.map((f, i) => (
                       <li
                         key={i}
@@ -418,7 +388,6 @@ const Doctor = ({ isLanding }) => {
             className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
           />
         </div>
-
 
       </section>
       <Footer />

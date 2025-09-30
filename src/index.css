@@ -86,3 +86,15 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+
+ul.custom-list {
+  list-style-type: disc; /* bullet style */
+  list-style-position: outside; /* bullet stays outside */
+  padding-left: 1.5rem; /* space between bullet and text */
+}
+
+ul.custom-list li {
+  margin-bottom: 0.5rem; /* spacing between items */
+  line-height: 1.5; /* better readability */
+}
