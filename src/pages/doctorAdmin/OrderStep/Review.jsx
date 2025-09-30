@@ -40,7 +40,9 @@ const ReviewOrder = ({ next }) => {
       <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Left Panel */}
         <div className="md:col-span-7 bg-white rounded-xl border border-gray-200 p-4 sm:p-6 space-y-6">
-          <h2 className="text-sm font-poppins text-primaryText">Implant Design Details: </h2>
+          <h2 className="text-sm font-poppins text-primaryText">
+            Implant Design Details:{" "}
+          </h2>
           {/* Doctor Info */}
           <div className="border border-gray-200 p-4 sm:p-6">
             <h3 className="font-medium mb-2 text-sm sm:text-base font-poppins text-[#434343]">
@@ -154,7 +156,10 @@ const ReviewOrder = ({ next }) => {
                 const tooth = teeth[toothId] || {};
  
                 return (
-                  <div key={toothId} className="border border-gray-200 p-3 rounded-lg">
+                  <div
+                    key={toothId}
+                    className="border border-gray-200 p-3 rounded-lg"
+                  >
                     <h4 className="font-semibold text-sm mb-2 text-secondaryBrand">
                       Tooth #{toothId}
                     </h4>
@@ -162,13 +167,17 @@ const ReviewOrder = ({ next }) => {
                       <div>
                         <p className="text-[#949494] text-xs font-poppins">Material:</p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.materialOption?.label || tooth.material || "N/A"}
+                          {tooth.materialOption?.label ||
+                            tooth.material ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
                         <p className="text-[#949494] text-xs font-poppins">Scanner Type:</p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.scannerTypeOption?.label || tooth.scannerType || "N/A"}
+                          {tooth.scannerTypeOption?.label ||
+                            tooth.scannerType ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>

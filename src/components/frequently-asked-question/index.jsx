@@ -1,7 +1,7 @@
 import React from 'react'
-import { accordionData } from '../../Constant'
 import Accordion from '../../Common/accordion'
 import Contact from '../../pages/landing-page/contact'
+import { accordionData } from '../../Constant'
 
 export default function FrequentlyAskedQuestion() {
     return (
