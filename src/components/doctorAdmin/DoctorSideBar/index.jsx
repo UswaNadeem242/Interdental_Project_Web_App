@@ -11,8 +11,8 @@ export default function DoctorSidebar({ items }) {
           ${isOpen ? "translate-x-0" : "-translate-x-full"} 
           md:translate-x-0 md:block hidden`}
       >
-        <div className="w-full h-[72px] py-4 px-6 flex items-center">
-          <img src="/assets/logo.png" alt="logo" className="w-[180px]" />
+        <div className="w-full h-[72px] py-4 px-6 flex items-center justify-center">
+          <img src="/assets/logo.png" alt="logo" className="" />
         </div>
 
         {/* Menu items */}
