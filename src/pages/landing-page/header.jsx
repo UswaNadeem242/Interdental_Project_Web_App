@@ -3,6 +3,9 @@ import { useState } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import ProfileDropdown from "../../components/dropdowns/ProfileDropdown";
 import { navItems } from "../../Constant";
+import { ChevronDownIcon, UsersIcon } from "@heroicons/react/24/outline";
+import ProfileIcon from "../../icon/ProfileIcon";
+import { UserIcon } from "../../icon/UserIcon";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -79,41 +82,49 @@ const Header = () => {
 
           {/* Desktop actions */}
           <div className="hidden lg:flex items-center gap-3">
-            {user?.email ? (
-              <div className="relative">
-                <button
-                  onClick={() => setProfileDropdown((s) => !s)}
-                  className="flex items-center gap-2 h-11 px-3 rounded-full border border-gray-200 hover:bg-gray-50"
+            {user && user?.email ? (
+              <div className="flex flex-col relative">
+                <div
+                  onClick={() => setProfileDropdown(!profileDropdown)}
+                  className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
                 >
-                  <svg width="28" height="28" viewBox="0 0 38 38" fill="none">
+                  <svg
+                    width="38"
+                    height="38"
+                    viewBox="0 0 38 38"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <rect width="38" height="38" rx="19" fill="#F8F8F8" />
-                    <ellipse cx="19" cy="14.25" rx="3.166" ry="3.166" stroke="#001D58" strokeWidth="1.2" />
-                    <ellipse cx="19" cy="22.95" rx="5.54" ry="3.166" stroke="#001D58" strokeWidth="1.2" />
+                    <ellipse
+                      cx="18.9997"
+                      cy="14.2502"
+                      rx="3.16667"
+                      ry="3.16667"
+                      stroke="#001D58"
+                      stroke-width="1.1875"
+                    />
+                    <ellipse
+                      cx="18.9997"
+                      cy="22.9582"
+                      rx="5.54167"
+                      ry="3.16667"
+                      stroke="#001D58"
+                      stroke-width="1.1875"
+                    />
                   </svg>
-                  <span className="text-sm text-gray-700">
-                    {user.email.split("@")[0].replace(/^./, (c) => c.toUpperCase())}
-                  </span>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3.333 6L8 10l4.667-4" stroke="#001D58" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-
-                {/* profile dropdown slot */}
+                  <p className="font-poppins font-normal text-[14px]  leading-[21px] text-[#393A44]">
+                    {user?.email.split("@")[0].charAt(0).toUpperCase() +
+                      user.email.split("@")[0].slice(1)}
+                  </p>
+                  <ChevronDownIcon className="w-5 h-5" />
+                </div>
                 {profileDropdown && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white shadow-lg ring-1 ring-black/5 p-2">
-                    {/* Replace with your <ProfileDropdown /> if needed */}
-                    <button
-                      onClick={() => navigate("/profile")}
-                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm"
-                    >
-                      Profile
-                    </button>
-                    <button
-                      onClick={() => navigate("/logout")}
-                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm"
-                    >
-                      Log out
-                    </button>
+                  <div className="absolute right-0 top-12 mt-2 z-10">
+                    <ProfileDropdown
+                      isModalOpen={profileDropdown}
+                      setIsModalOpen={setProfileDropdown}
+                    />
                   </div>
                 )}
               </div>

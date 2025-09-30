@@ -21,12 +21,11 @@ export const HeroSection = () => {
         <p className="text-sm sm:text-base text-primaryText max-w-xl leading-6 sm:leading-7">
           At InterOral.ai, we’ve reimagined the way practices
           <br className="hidden md:block" /> connect to labs, implants, and
-          patients. It starts with our
+          patients.  
           <br className="hidden md:block" /> Wizard intake system — a smarter
           way to submit cases,
-          <br className="hidden md:block" /> generate prescriptions, and route
-          everything in one
-          <br className="hidden md:block" /> seamless workflow.
+          <br className="hidden md:block" /> generate prescriptions, and track everything in one flow.
+         
         </p>
 
         <p className="text-sm sm:text-base text-primaryText max-w-xl leading-6 sm:leading-7">

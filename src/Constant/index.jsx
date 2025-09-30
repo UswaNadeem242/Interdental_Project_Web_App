@@ -11,7 +11,6 @@ export const navItems = [
   { to: "/", label: "Home" },
   { to: "/product", label: "Our Products" },
   { to: "/shop", label: "Shop" },
-
   { to: "/patient", label: "Patient" },
   { to: "/doctor", label: "Doctor" },
   { to: "/blog", label: "Blogs" },
