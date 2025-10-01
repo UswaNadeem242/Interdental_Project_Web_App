@@ -30,7 +30,7 @@ const MobileSidebar = ({ items }) => {
         {/* Logo */}
         <div>
           <div className="w-full h-[72px] py-4 px-4 flex items-center justify-between">
-            <img src="/assets/logo.png" alt="logo" className=" " />
+            <img src="/assets/logo.png" alt="logo" className="" />
             <button onClick={() => setIsOpen(!isOpen)}>
               {isOpen ? <Xmark /> : ""}
             </button>

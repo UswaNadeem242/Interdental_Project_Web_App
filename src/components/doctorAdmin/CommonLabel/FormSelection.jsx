@@ -3,7 +3,8 @@ export default function FormSection({ title, children, action, color, className,
         <section className={` ${className} rounded-lg `}>
 
             {/* border border-gray-200 */}
-            <div className={`flex items-center justify-between ${gap}`}>
+            <div className={` ${gap}`}>
+                {/* flex items-center justify-between */}
 
                 {title && (
                     <h3 className={`${color} text-primaryText text-xs font-normal font-poppins capitalize `}>

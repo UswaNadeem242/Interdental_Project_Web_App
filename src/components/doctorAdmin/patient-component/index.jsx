@@ -24,6 +24,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
                         return {
                             id: order.id,
                             name: fullName || "Unknown",
+                            lastName: lastName || "Unknown",
                             email: order?.email || "",
                             avatar: order?.avatar || null,
                         };
@@ -73,6 +74,10 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
             );
         }
     }, [searchTerm, patientsList]);
+
+
+   
+
     return (
         <div className={`relative w-full ${className || ""}`} ref={dropdownRef}>
             {/* Button */}
@@ -104,8 +109,8 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
 
             {open && (
                 <div className="absolute z-20 mt-1 w-full rounded-xl border border-gray-200 bg-white shadow-lg max-h-60 overflow-y-auto">
-                    <div className="sticky top-0 bg-background p-2 ">
-                        <div className="relative">
+                    <div className="sticky top-0 bg-background p-2 w-80">
+                        <div className="relative ">
                             <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-secondaryText" />
                             <input type="text"
                                 placeholder="Search patient..."
@@ -120,9 +125,17 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
                             const active = selectedPatient?.id === p.id;
                             const isLast = idx === filteredPatients.length - 1;
                             const maskName = (name) => {
-                                if (!name) return "Unknown";
-                                return name.slice(0, 4); // only first 4 chars
+                                if (!name?.trim()) return "Unknown";
+                                const clean = name.trim();
+                                return clean.slice(0, 2).charAt(0).toUpperCase() + clean.slice(1, 2).toLowerCase();
                             };
+
+                            const maskLastName = (lastName) => {
+                                if (!lastName?.trim()) return "Unknown";
+                                const clean = lastName.trim();
+                                return clean.slice(0, 2).charAt(0).toUpperCase() + clean.slice(1, 2).toLowerCase();
+                            };
+
                             const maskEmail = (email) => {
                                 if (!email) return "";
                                 const [localPart, domain] = email.split("@");
@@ -136,7 +149,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
                                     key={p.id}
                                     type="button"
                                     onClick={() => handleSelect(p)}
-                                    className={`flex w-full items-center gap-2 px-3 py-2 text-sm transition-colors
+                                    className={`flex w-80 items-center gap-2 px-3 py-2 text-sm transition-colors
                     ${active ? "bg-indigo-50" : "hover:bg-gray-50"}
                     ${!isLast ? "border-b border-gray-200" : ""}`}
                                 >
@@ -149,8 +162,8 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
                                         {/* <span className="text-primaryText font-medium">{p.name}</span>
                                         <span className="text-xs text-secondaryText">{p.email}</span> */}
 
-                                        <span className="text-primaryText font-medium">
-                                            {maskName(p.name)} - {maskEmail(p.email)}
+                                        <span className="text-primaryText font-medium text-sm">
+                                            {`${maskName(p.name)} ${maskLastName(p.lastName)} - ${maskEmail(p.email)}`}
                                         </span>
                                     </div>
                                 </button>

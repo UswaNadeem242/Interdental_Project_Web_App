@@ -1663,7 +1663,7 @@ export const plans = [
 
     price: "$99 ",
     description: [
-      " Covers up to 10 Crowns, Bridges, or Veneers",
+      "Covers up to 10 Crowns, Bridges, or Veneers",
       "One-time enrollment",
       "Ideal for minor restorative work",
     ],
@@ -1684,7 +1684,7 @@ export const plans = [
   },
   {
     id: 3,
-    title: "6 year plan",
+    title: "9 year plan",
 
     price: "$299 ",
     description: [

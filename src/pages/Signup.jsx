@@ -33,7 +33,7 @@ const Signup = () => {
   const [yearly, setYearly] = useState(false)
   const validate = () => {
     if (!firstName?.trim()) return "First name is required";
-    // if (!lastName?.trim()) return "Last name is required";     // remove if not needed
+    if (!lastName?.trim()) return "Last name is required";     // remove if not needed
     if (!email?.trim()) return "Email is required";
     if (!password) return "Password is required";
     if (!phone?.trim()) return "Phone is required";
@@ -67,7 +67,7 @@ const Signup = () => {
       email,
       password,
       firstName,
-      lastName: lastName?.trim() || "Admin",
+      lastName,
       phone,
       address,
       drLicenseNo,
@@ -184,26 +184,36 @@ const Signup = () => {
           {/* Form */}
           <div className="w-full space-y-4">
             {/* Full width */}
-            <input
-              type="text"
-              className="w-full rounded-md border border-gray-300 py-3 px-4 text-textFieldHeading"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 py-3 px-4 text-textFieldHeading outline-none"
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 py-3 px-4 text-textFieldHeading outline-none"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+
 
             {/* Email + Phone */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <input
                 type="text"
-                className="w-full rounded-md border border-gray-300 py-3 outline-none  px-4 text-textFieldHeading"
+                className="w-full rounded-md border border-gray-300 py-3 outline-none  px-4 text-textFieldHeading "
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <input
                 type="text"
-                className="w-full rounded-md border border-gray-300 py-3  outline-none px-4 text-textFieldHeading"
+                className="w-full rounded-md border border-gray-300 py-3  outline-none px-4 text-textFieldHeading "
                 placeholder="Phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}

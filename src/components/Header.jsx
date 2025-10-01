@@ -105,12 +105,16 @@ const Header = () => {
 
   return (
     <div className="flex flex-col justify-center items-center h-[110.77px] w-full bg-white rounded-[8px] gap-[8px] pt-[20px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
-      <div className="flex w-full h-[45.77px] px-[100px] gap-[94px]">
-        <img
+      <div className="flex w-full justify-around items-center">
+        {/*  h-[45.77px] px-[100px] gap-[94px] */}
+        <NavLink to="/" className="flex items-center gap-2"> <img
           src="/assets/logo.png"
           alt="logo"
-          className="w-[200px] h-[45.77px]"
+          className="h-5 w-auto sm:h-5"
+        // w-[200px] h-[45.77px]
         />
+        </NavLink>
+
         <div className="flex w-[665.83px] gap-[32px]">
           <div className="flex flex-col relative">
             <div
@@ -225,7 +229,7 @@ const Header = () => {
 
                     setToastType("error");
                     setToastVisible(true);
-                    
+
                   }
                 }}
               >
@@ -265,7 +269,7 @@ const Header = () => {
 
                     setToastType("error");
                     setToastVisible(true);
-                  
+
                   }
                 }}
               >
@@ -390,7 +394,7 @@ const Header = () => {
                 onClick={() => navigate("/signup")}
                 className="flex justify-center items-center cursor-pointer leading-[18px] font-poppins font-normal text-black text-[12px] w-[60px]"
               >
-                Sign Up 
+                Sign Up
               </h1>
             </div>
           )}
@@ -422,8 +426,8 @@ const Header = () => {
             <label
               onClick={() => setBrandsDropdown(true)}
               className={`${brandsDropdown
-                  ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
-                  : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
+                ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
+                : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
                 }`}
             >
               Brands
@@ -458,8 +462,8 @@ const Header = () => {
             <label
               onClick={() => setCategories(true)}
               className={`${categories
-                  ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
-                  : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
+                ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
+                : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
                 }`}
             >
               Categories
@@ -503,7 +507,7 @@ const Header = () => {
           Categories
         </NavLink> */}
         <NavLink
-          to="/aboutus"
+          to="/about-us"
           className={({ isActive }) =>
             isActive
               ? "font-poppins font-bold text-secondaryBrand leading-[21px]"

@@ -30,7 +30,7 @@ export const FileUploadSection = () => {
         <FormSection
             className="bg-textField py-3 px-2 border border-gray-200"
             title={
-                <div className="flex items-center relative gap-1">
+                <div className="flex items-center justify-between relative gap-1">
                     <span className="text-xs whitespace-nowrap font-poppins font-normal text-secondaryBrand">
                         Upload Patient Photos/Files
                     </span>

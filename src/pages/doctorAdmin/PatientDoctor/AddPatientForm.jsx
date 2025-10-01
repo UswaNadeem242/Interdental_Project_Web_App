@@ -6,6 +6,7 @@ import { PatientvalidationSchema } from "../../../Common/FormsValidation";
 import { EyeOpenIcon, EyeCloseIcon } from "../../../icon/EyeIcon";
 import { addPatient } from "../../../api/doctorDasboard";
 import Toast from "../../../components/Toast";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
 export default function AddPatientForm({ onClose }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,6 +21,8 @@ export default function AddPatientForm({ onClose }) {
   const initialValues = {
     photo: null,
     username: "",
+    lastName: "",
+    address: "",
     email: "",
     phone: "",
     password: "",
@@ -73,6 +76,8 @@ export default function AddPatientForm({ onClose }) {
     // Validation check (following AddBrandModal pattern)
     if (
       !values.username ||
+      !values.lastName ||
+      !values.address ||
       !values.email ||
       !values.phone ||
       !values.password
@@ -94,6 +99,8 @@ export default function AddPatientForm({ onClose }) {
       const patientData = {
         email: values.email,
         firstName: values.username,
+        lastName: values?.lastName,
+        address: values?.address,
         phoneNumber: values.phone,
         password: values.password,
       };
@@ -101,7 +108,7 @@ export default function AddPatientForm({ onClose }) {
         "req",
         new Blob([JSON.stringify(patientData)], { type: "application/json" })
       );
-
+ 
       // API call using the new addPatient function
       const response = await addPatient(formData);
 
@@ -125,13 +132,20 @@ export default function AddPatientForm({ onClose }) {
           "error"
         );
       }
-    } catch (error) {
+      
+    }
+    
+    
+    
+    catch (error) {
       console.error("API Error:", error);
       showToast("An error occurred. Please try again.", "error");
     } finally {
       setSubmitting(false);
     }
   };
+  
+  
   return (
     <div>
       <Formik
@@ -187,42 +201,14 @@ export default function AddPatientForm({ onClose }) {
                       onClick={() => {
                         handleImageDelete();
                       }}
-                      className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full shadow-md flex items-center justify-center hover:bg-red-600 transition"
+                      className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full shadow-md flex items-center justify-center  "
                     >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M3 6H5H21M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M10 11V17"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M14 11V17"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <TrashIcon className="w-4 h-4 text-white" />
                     </button>
                   </div>
 
                   {/* Upload New Profile Picture Button - Smaller */}
-                  <label className="px-4 py-2 bg-blue-500 text-white text-xs font-medium rounded cursor-pointer hover:bg-blue-600 transition whitespace-nowrap">
+                  <label className="px-4 py-2 bg-secondaryBrand text-white text-sm font-medium rounded cursor-pointer transition whitespace-nowrap">
                     Upload new profile picture
                     <input
                       type="file"
@@ -244,22 +230,38 @@ export default function AddPatientForm({ onClose }) {
             </div>
 
             {/* First Name */}
-            <div className="col-span-12 space-y-1">
-              <Field
-                as={TextInput}
-                id="username"
-                name="username"
-                label="First Name"
-                placeholder="Enter Name"
-                type="text"
-              />
-              <ErrorMessage
-                name="username"
-                component="div"
-                className="text-red-700 text-sm"
-              />
+            <div className="col-span-12 grid grid-cols-12   gap-2">
+              <div className="col-span-12 sm:col-span-6">
+                <Field
+                  as={TextInput}
+                  id="username"
+                  name="username"
+                  label="First Name"
+                  placeholder="First Name"
+                  type="text"
+                />
+                <ErrorMessage
+                  name="username"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
+              <div className="col-span-12 sm:col-span-6">
+                <Field
+                  as={TextInput}
+                  id="lastName"
+                  name="lastName"
+                  label="Last Name"
+                  placeholder="Last Name"
+                  type="text"
+                />
+                <ErrorMessage
+                  name="lastName"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
             </div>
-
             {/* Email */}
             <div className="col-span-12">
               <Field
@@ -293,6 +295,24 @@ export default function AddPatientForm({ onClose }) {
                 className="text-red-700 text-sm"
               />
             </div>
+
+
+            <div className="col-span-12">
+              <Field
+                as={TextInput}
+                id="address"
+                name="address"
+                label="Location"
+                placeholder="Enter Patient Location"
+                type="text"
+              />
+              <ErrorMessage
+                name="address"
+                component="div"
+                className="text-red-700 text-sm"
+              />
+            </div>
+
 
             {/* Password */}
             <div className="col-span-12">

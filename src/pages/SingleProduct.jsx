@@ -19,9 +19,9 @@ import ShoppingCart from "../modals/ShoppingCartModal";
 
 const SingleProduct = () => {
   const { productId } = useParams();
-  const {  fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } =
+  const { fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } =
     useAuth();
- 
+
   const [product, setProduct] = useState({});
   const [categoriesList, setCategoriesList] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -75,7 +75,7 @@ const SingleProduct = () => {
         }
       );
       setRelatedProducts(response.data);
-     } catch (error) {
+    } catch (error) {
       setRelatedProducts(error.response.data.data);
     }
   };
@@ -93,7 +93,7 @@ const SingleProduct = () => {
   const [isOpenCart, setIsOpenCart] = useState(false);
 
   const handleAddtoCart = async () => {
-     if (product.stockQuantity <= 0) {
+    if (product.stockQuantity <= 0) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
       setToastVisible(true);
@@ -109,7 +109,7 @@ const SingleProduct = () => {
         price: product.price,
         totalPrice: product.price,
       };
-       const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
+      const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
         headers: {
           Accept: "*/*",
           "Content-Type": "application/json",
@@ -150,7 +150,7 @@ const SingleProduct = () => {
           },
         }
       );
-       fetchWishlistCount();
+      fetchWishlistCount();
       setToastMessage("Added to Wishlist !");
       setToastType("success");
       setToastVisible(true);
@@ -163,21 +163,24 @@ const SingleProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
-    // Retrieve user data from localStorage
-const userData = localStorage.getItem("users");
-const user = userData ? JSON.parse(userData) : null;
+  // Retrieve user data from localStorage
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
 
-// Debugging logs
- 
-// Safely log firstName only if user exists
-if (user && user.firstName) {
- }
+  // Debugging logs
+
+  // Safely log firstName only if user exists
+  if (user && user.firstName) {
+  }
 
 
-   return (
-    <div className="flex justify-center items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
-      <div className="flex flex-col justify-start items-center w-[1312px] h-auto space-y-[32px] my-8 pt-[8px] pl-[100px]">
-        <div className="flex justify-center items-center w-full h-[603.32px] p-[51.16px] gap-[6.39px] rounded-2xl bg-white">
+  return (
+    <div className="flex justify-center  items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
+      {/* justify-center  */}
+      <div className="flex flex-col justify-start items-center h-auto space-y-[32px] my-8 pt-[8px] ">
+        {/*  w-[1312px]  pl-[100px]*/}
+        <div className="flex justify-center items-center w-full h-[603.32px]  gap-[6.39px] rounded-2xl bg-white ">
+          {/* p-[51.16px] */}
           <div className="flex justify-center items-center w-[1131px] h-[501px] gap-5">
             <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
               <Swiper
@@ -195,8 +198,8 @@ if (user && user.firstName) {
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
                 {product &&
-                product.imageUrls &&
-                product.imageUrls.length > 0 ? (
+                  product.imageUrls &&
+                  product.imageUrls.length > 0 ? (
                   product.imageUrls.map((url, index) => (
                     <SwiperSlide key={index}>
                       <img
@@ -275,7 +278,7 @@ if (user && user.firstName) {
 
                       setToastType("error");
                       setToastVisible(true);
-                    
+
                     }
                   }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
@@ -293,7 +296,7 @@ if (user && user.firstName) {
 
                       setToastType("error");
                       setToastVisible(true);
-                      
+
                     }
                   }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
@@ -311,7 +314,7 @@ if (user && user.firstName) {
 
                       setToastType("error");
                       setToastVisible(true);
-                     
+
                     }
                   }}
                   className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]"
@@ -347,21 +350,17 @@ if (user && user.firstName) {
           </div>
         </div>
 
-        <div className="flex flex-col justify-start items-start w-full h-[430.25px] py-[20px] px-[24px] space-y-[25.58px] rounded-[16px] bg-white">
-          <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-[#434343]">
+        <div className="flex flex-col justify-start items-start w-full h-[430.25px] py-[20px]  space-y-[25.58px] rounded-[16px] bg-white">
+          <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-primaryText p-4">
             Customer Feedback
           </h1>
-          <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll">
+          <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll hidden ">
             {product &&
               product?.ratings &&
               product?.ratings.length > 0 &&
               product?.ratings.map((item) => <CustomerFeedback item={item} />)}
 
-            {/* <div className="w-[110.16px] h-[35.38px] py-[11.19px] px-[25.58px] gap-[9.59px] rounded-[34.37px] bg-[#001D580D]">
-              <h1 className="font-poppins font-semibold text-[11.19px] leading-[13.43px] text-secondaryBrand">
-                Load More
-              </h1>
-            </div> */}
+
           </div>
         </div>
         {relatedProducts?.length > 0 ? (

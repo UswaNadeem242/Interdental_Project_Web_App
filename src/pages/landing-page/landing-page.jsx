@@ -13,6 +13,7 @@ import ImplantInterfeace from "../../components/landing-page-component/implant-i
 import FrequentlyAskedQuestion from "../../components/frequently-asked-question";
 import UpperFooter from "../../components/upper-footer";
 import FeaturedProducts from "../../components/landing-page-component/featured-product";
+import { ThirdButtonUI } from "../../Common/Button";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -157,15 +158,7 @@ const LandingPage = () => {
                 Articles
               </span>
             </h1>
-
-            <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2" onClick={() => navigate("/blog")}>
-              <h1 className="font-poppins font-semibold text-base text-primaryText capitalize">
-                View more
-              </h1>
-              <div className="rounded-full bg-secondaryBrand text-white p-2">
-                <ArrowRightIcon className="w-4 h-4" />
-              </div>
-            </button>
+            <ThirdButtonUI title='View more' href='/blog' />
           </div>
           <div className="flex justify-start pb-6">
             <p className="text-primaryText text-sm font-poppins text-center max-w-3xl">

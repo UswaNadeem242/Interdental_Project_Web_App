@@ -1,10 +1,10 @@
 import * as Yup from "yup";
 
 export const OrderValidationSchema = Yup.object().shape({
-    doctorName: Yup.string().required("Doctor's Name / Office Name is required"),
+    // doctorName: Yup.string().required("Doctor's Name / Office Name is required"),
     officeReg: Yup.string().required("Office registration number is required")
         .matches(/^[0-9]{10}$/, "Office registration number must be exactly 10 digits"),
-    createDate: Yup.date().nullable().required("Create Date is required"),
+    // createDate: Yup.date().nullable().required("Create Date is required"),
     dueDate: Yup.date().nullable().required("Case expected due date"),
     patientFirstName: Yup.string().required(" Select the Name "),
     // patientLastName: Yup.string().required("Last name is required"),

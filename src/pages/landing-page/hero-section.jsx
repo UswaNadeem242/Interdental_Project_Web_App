@@ -17,20 +17,8 @@ export const HeroSection = () => {
             <span className="text-secondaryBrand font-bold">Dentistry</span>
           </span>
         </h2>
-
-        <p className="text-sm sm:text-base text-primaryText max-w-xl leading-6 sm:leading-7">
-          At InterOral.ai, we’ve reimagined the way practices
-          <br className="hidden md:block" /> connect to labs, implants, and
-          patients.  
-          <br className="hidden md:block" /> Wizard intake system — a smarter
-          way to submit cases,
-          <br className="hidden md:block" /> generate prescriptions, and track everything in one flow.
-         
-        </p>
-
-        <p className="text-sm sm:text-base text-primaryText max-w-xl leading-6 sm:leading-7">
-          Behind the scenes, our patented Routing AI matches you  <br className="hidden md:block" /> with the right Dental Lab Alliance partner—so you get  <br className="hidden md:block" /> faster turnaround, consistent quality, and nationwide  <br className="hidden md:block" /> access.
-        </p>
+        <p className="text-sm sm:text-base text-primaryText max-w-xl leading-6 sm:leading-7">At InterOral.ai, we’re simplifying the way you connect with <br className="hidden md:block" /> labs, implant companies, and patients. <br className="hidden md:block" />With our Wizard intake system, you can submit cases, <br className="hidden md:block" />  generate  prescriptions, and track everything in one flow.</p>
+        <p className="text-sm sm:text-base text-primaryText max-w-xl leading-6 sm:leading-7">Behind the scenes, our patented Routing AI matches you <br className="hidden md:block" /> with the right Dental Lab Alliance partner—so you get <br className="hidden md:block" /> faster turnaround, consistent quality, and nationwide <br className="hidden md:block" /> access.</p>
 
 
         {/* CTA Button */}
@@ -54,4 +42,4 @@ export const HeroSection = () => {
     </div>
   );
 };
- 
+

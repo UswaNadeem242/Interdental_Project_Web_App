@@ -81,8 +81,7 @@ const ProfileSettings = () => {
     if (hasErrors) return;
 
     // Submit form logic here
-    console.log("Form submitted successfully", form);
-  };
+   };
   return (
     <>
       <div className="grid md:grid-cols-12 grid-cols-1 gap-4 bg-white md:p-8 p-4 rounded-2xl items-center  ">
