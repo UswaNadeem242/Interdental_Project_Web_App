@@ -20,7 +20,6 @@ const PatientPage = () => {
 
   const transformPatientsData = (apiData) => {
     if (!apiData || !Array.isArray(apiData)) return [];
-
     return apiData.map((order) => ({
       name: `${order?.firstName || "-"} ${order?.lastName || "-"}`,
       email: order?.email,
@@ -30,8 +29,6 @@ const PatientPage = () => {
       address: order?.address || "abc....",
     }));
   };
-
-
   useEffect(() => {
     const fetchPatients = async () => {
       try {
@@ -40,7 +37,7 @@ const PatientPage = () => {
         if (response.status === 200) {
           setPatients(transformPatientsData(response.data.data));
 
-        } 
+        }
       } catch (error) {
         console.log(error);
       }
@@ -71,7 +68,8 @@ const PatientPage = () => {
     }
     return filtered;
   }, [searchQuery, sortOrder, patients]);
-   return (
+
+  return (
     <div>
       <div className="bg-white rounded-2xl py-6 px-6">
         <div className="flex flex-col md:flex-row justify-between gap-2 pb-3">

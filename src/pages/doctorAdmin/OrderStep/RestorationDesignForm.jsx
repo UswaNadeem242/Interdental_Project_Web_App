@@ -159,6 +159,27 @@ const DoctorOrder = () => {
       });
     }
   }, [doctorProfile]);
+
+  // Capitalize and mask properly (e.g., "John" -> "JoHn")
+  const formatMaskedName = (name) => {
+    if (!name?.trim()) return "Unknown";
+    const clean = name.trim();
+
+    if (clean.length <= 2) {
+      return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+    }
+
+    const firstPart = clean.slice(0, 2); // first 2 chars
+    const lastPart = clean.slice(-2);   // last 2 chars
+
+    return (
+      firstPart.charAt(0).toUpperCase() +
+      firstPart.charAt(1).toLowerCase() +
+      lastPart.charAt(0).toUpperCase() +
+      lastPart.charAt(1).toLowerCase()
+    );
+  };
+
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -252,7 +273,7 @@ const DoctorOrder = () => {
                                   type="text"
                                   label="Office Reference number"
                                   name="officeReg"
-                                  value={formData?.reference}  
+                                  value={formData?.reference}
                                   onBlur={handleBlur}
                                   placeholder="Office Reference number"
                                 />

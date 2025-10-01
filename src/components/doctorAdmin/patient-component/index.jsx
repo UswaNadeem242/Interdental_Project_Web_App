@@ -11,7 +11,6 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
     const [searchTerm, setSearchTerm] = useState("");
     const dropdownRef = useRef(null);
     const dispatch = useDispatch();
-
     useEffect(() => {
         const fetchPatients = async () => {
             try {
@@ -26,7 +25,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
                             name: fullName || "Unknown",
                             lastName: lastName || "Unknown",
                             email: order?.email || "",
-                            avatar: order?.avatar || null,
+                            profileURL: order?.profileURL || null,
                         };
                     });
                     setPatientsList(patients);
@@ -38,7 +37,6 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
         };
         fetchPatients();
     }, []);
-
     // close dropdown on outside click
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -57,8 +55,6 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
         setOpen(false);
         dispatch(setSelectedPatient(patient));
     };
-
-
     // Filter patients by search term
     useEffect(() => {
         if (!searchTerm.trim()) {
@@ -74,10 +70,6 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
             );
         }
     }, [searchTerm, patientsList]);
-
-
-   
-
     return (
         <div className={`relative w-full ${className || ""}`} ref={dropdownRef}>
             {/* Button */}
@@ -154,14 +146,11 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
                     ${!isLast ? "border-b border-gray-200" : ""}`}
                                 >
                                     <img
-                                        src={"/assets/users.png"}
+                                        src={p.profileURL || "/assets/users.png"}
                                         alt={p.name}
                                         className="w-9 h-9 rounded-full object-cover border border-[#285772]" />
 
                                     <div className="flex flex-col text-left">
-                                        {/* <span className="text-primaryText font-medium">{p.name}</span>
-                                        <span className="text-xs text-secondaryText">{p.email}</span> */}
-
                                         <span className="text-primaryText font-medium text-sm">
                                             {`${maskName(p.name)} ${maskLastName(p.lastName)} - ${maskEmail(p.email)}`}
                                         </span>

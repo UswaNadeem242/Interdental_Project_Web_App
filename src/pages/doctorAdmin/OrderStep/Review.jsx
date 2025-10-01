@@ -6,6 +6,8 @@ const ReviewOrder = ({ next }) => {
   const restoration = useSelector((state) => state.restoration);
 
   const patient = restoration.patient;
+  console.log('patient:', patient);
+
   const [doctorProfile, setDoctorProfile] = useState(null);
   // Map doctor and patient arrays to objects for easier access
   const doctor = restoration.doctor.reduce((acc, d) => {
@@ -13,7 +15,7 @@ const ReviewOrder = ({ next }) => {
     return acc;
   }, {});
 
-   
+
   const toothSelections = restoration.toothSelections || [];
   const selectedTeeth = restoration.selectedTeeth || [];
   const note = restoration.note || "";
@@ -72,6 +74,7 @@ const ReviewOrder = ({ next }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    createdAt: "",
     email: "",
     phone: "",
     license: "",
@@ -85,6 +88,7 @@ const ReviewOrder = ({ next }) => {
       setFormData({
         firstName: doctorProfile?.firstName || "",
         lastName: doctorProfile?.lastName || "",
+        createdAt: doctorProfile?.createdAt || "",
         email: doctorProfile?.email || "",
         phone: doctorProfile?.phoneNumber || "",
         license: doctorProfile?.doctorLicenceNumber || "",
@@ -93,6 +97,29 @@ const ReviewOrder = ({ next }) => {
       });
     }
   }, [doctorProfile]);
+  // Utility function
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // months start from 0
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+  // Mask number -> keeps first 2 and last 2 digits visible
+  const maskNumber = (num) => {
+    if (!num) return "";
+    const str = String(num).trim();
+
+    if (str.length <= 2) return str; // too short to mask
+
+    const first = str.charAt(0);
+    const last = str.charAt(str.length - 1);
+    const middle = "*".repeat(str.length - 2);
+
+    return first + middle + last;
+  };
+
 
   return (
     <div className="">
@@ -123,7 +150,8 @@ const ReviewOrder = ({ next }) => {
                   Office Registration#
                 </p>
                 <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-                  {formData?.reference}
+                  {maskNumber(formData?.reference)}
+
                 </p>
               </div>
               <div>
@@ -131,7 +159,7 @@ const ReviewOrder = ({ next }) => {
                   Create Date
                 </p>
                 <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-                  {doctor?.createDate}
+                  {formatDate(formData?.createdAt)}
                 </p>
               </div>
               <div>
@@ -139,7 +167,7 @@ const ReviewOrder = ({ next }) => {
                   Due Date
                 </p>
                 <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-                  {doctor?.dueDate}
+                  {formatDate(doctor?.dueDate)}
                 </p>
               </div>
             </div>
@@ -156,7 +184,7 @@ const ReviewOrder = ({ next }) => {
                 </div>
                 <div>
                   <p className="text-[#949494]">Email</p>
-                  <p className="font-normal text-secondaryBrand">{maskEmail(patient?.email)}</p>
+                  <p className="font-normal text-secondaryBrand">{patient?.id}</p>
                 </div>
 
               </div>
@@ -282,7 +310,8 @@ const ReviewOrder = ({ next }) => {
             <hr className="border-gray-200 my-2" />
             <div className="grid grid-cols-1 gap-4 text-sm sm:text-base">
               <div>
-                <p className="text-[#949494] font-normal text-xs font-poppins pb-2">{doctor?.doctorName}</p>
+                <p className="text-[#949494] font-normal text-xs font-poppins pb-2">{getMaskedFullName(formData?.firstName, formData?.lastName)}
+                </p>
                 <p className="font-normal text-secondaryBrand text-xs font-poppins">{note}</p>
               </div>
             </div>

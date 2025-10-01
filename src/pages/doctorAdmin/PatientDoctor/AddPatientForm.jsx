@@ -108,9 +108,10 @@ export default function AddPatientForm({ onClose }) {
         "req",
         new Blob([JSON.stringify(patientData)], { type: "application/json" })
       );
- 
+
       // API call using the new addPatient function
       const response = await addPatient(formData);
+      console.log('formdata:', formData);
 
       // Check for success using the API function response format
       if (response.success) {
@@ -119,7 +120,7 @@ export default function AddPatientForm({ onClose }) {
         // Close drawer and refresh page after success
         setTimeout(() => {
           if (onClose) {
-            onClose(); // Close the drawer
+            // onClose(); // Close the drawer
           } else {
             console.log("onClose function not available");
           }
@@ -132,11 +133,8 @@ export default function AddPatientForm({ onClose }) {
           "error"
         );
       }
-      
+
     }
-    
-    
-    
     catch (error) {
       console.error("API Error:", error);
       showToast("An error occurred. Please try again.", "error");
@@ -144,8 +142,8 @@ export default function AddPatientForm({ onClose }) {
       setSubmitting(false);
     }
   };
-  
-  
+
+
   return (
     <div>
       <Formik
