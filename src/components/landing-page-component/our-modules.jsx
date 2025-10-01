@@ -1,6 +1,7 @@
 import CircleTrickIcon from '../../icon/circle-trick-icon'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom';
+import { ThirdButtonUI } from '../../Common/Button';
 function OurModules() {
     const navigate = useNavigate();
     return (
@@ -33,14 +34,8 @@ function OurModules() {
                             Centralized communication with no more phone calls.
                         </li>
                     </ul>
-                    <button className="flex justify-center items-center w-[300px] sm:w-[210px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-                        <h1 className="font-poppins font-semibold text-sm capitalize text-primaryText">
-                            Explore Labs Now
-                        </h1>
-                        <div className="rounded-full bg-secondaryBrand text-white p-2">
-                            <ArrowRightIcon className="w-4 h-4" />
-                        </div>
-                    </button>
+                    <ThirdButtonUI title=' Explore Labs Now' />
+
                 </div>
             </section>
         </div>

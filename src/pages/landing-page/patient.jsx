@@ -3,7 +3,7 @@ import Footer from "../../components/Footer";
 import Contact from "./contact";
 import Header from "./header";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { PrimaryButtonUI } from "../../Common/Button";
+import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
 import CircleIcon from "../../icon/circle-icon";
 import UpperFooter from "../../components/upper-footer";
 import { concerns, plans, steps } from "../../Constant";
@@ -14,7 +14,7 @@ const Patients = ({ isLanding }) => {
     <div className="bg-gray-50">
 
       {!isLanding && <Header />}
-      <section className="py-8 sm:py-12 md:py-48 px-4 sm:px-6 md:px-8 lg:mx-12 xl:mx-24 2xl:mx-48 flex flex-col md:flex-row items-center justify-between">
+      <section className="py-8 sm:py-12 md:py-48 px-4 sm:px-6 md:px-8 lg:mx-12   flex flex-col md:flex-row items-center justify-between">
         {/* Left Side: Text */}
         <div className="w-full md:w-1/2 text-gray-800">
           <h3 className="text-sm md:text-5xl font-bold text-secondaryBrand">
@@ -30,14 +30,9 @@ const Patients = ({ isLanding }) => {
             <li className="text-secondaryText text-sm font-normal font-poppin">Trusted warranty lab: InterDentalUSA</li>
             <li className="text-secondaryText text-sm font-normal font-poppin">Your dentist stays by your side — and so do we</li>
           </ul>
-          <button onClick={() => navigate("/signup")} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-            <h1 className="font-poppins font-semibold text-base text-[#434343]">
-              Register
-            </h1>
-            <div className="rounded-full bg-secondaryBrand text-white p-2">
-              <ArrowRightIcon className="w-4 h-4" />
-            </div>
-          </button>
+
+          <ThirdButtonUI title=' Register' href='/signup' />
+
         </div>
 
         {/* Right Side: Image */}
@@ -110,15 +105,9 @@ const Patients = ({ isLanding }) => {
 
         </div>
 
-        <div className="flex justify-center   mt-8">
-          <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2" onClick={() => navigate("/signup")}>
-            <h1 className="font-poppins font-semibold text-base text-[#434343]"  >
-              Register
-            </h1>
-            <div className="rounded-full bg-secondaryBrand text-white p-2">
-              <ArrowRightIcon className="w-4 h-4" />
-            </div>
-          </button>
+        <div className="flex justify-center mt-8">
+          <ThirdButtonUI title=' Register' href='/signup' />
+
         </div>
       </div>
       <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
@@ -151,7 +140,7 @@ const Patients = ({ isLanding }) => {
               {/* Description as bullet list */}
               <ul className="list-disc custom-list list-inside text-secondaryBrand text-start p-4 rounded-md bg-blue-300/10 text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
                 {plan.description.map((desc, index) => (
-                  <li key={index}>{desc}</li>
+                  <li key={index} className="text-sm">{desc}</li>
                 ))}
               </ul>
 
@@ -209,12 +198,6 @@ const Patients = ({ isLanding }) => {
               <PrimaryButtonUI title='Order the eBook Now' className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow " />
             </div>
           </div>
-
-
-
-
-
-
           <div className="col-span-6 flex justify-center">
             <img
               src="/assets/landing-page/book.png"

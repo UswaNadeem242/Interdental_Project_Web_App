@@ -1,6 +1,7 @@
 import CircleTrickIcon from '../../icon/circle-trick-icon'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom';
+import { ThirdButtonUI } from '../../Common/Button';
 function ImplantInterfeace() {
     const navigate = useNavigate();
     return (
@@ -29,17 +30,10 @@ function ImplantInterfeace() {
                             Saves 10-15 min to saves time
                         </li>
                         <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-normal text-sm text-primaryText">
-                        Case and parts are bundled and sent together to the lab.
+                            Case and parts are bundled and sent together to the lab.
                         </li>
-                    </ul>
-                    <button className="flex justify-center items-center w-[300px] sm:w-[210px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2" >
-                        <h1 className="font-poppins font-semibold text-base text-primaryText">
-                            Order Smarter
-                        </h1>
-                        <div className="rounded-full bg-secondaryBrand text-white p-2">
-                            <ArrowRightIcon className="w-4 h-4" />
-                        </div>
-                    </button>
+                    </ul>   
+                    <ThirdButtonUI title='Order Smarter'/>
                 </div>
             </section>
         </div>

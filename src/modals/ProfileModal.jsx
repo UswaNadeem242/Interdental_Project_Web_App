@@ -3,8 +3,7 @@ import { useAuth } from "../auth/AuthContext";
 
 const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
   const { user } = useAuth();
-  console.log("profile", user);
-
+ 
   const [name, setName] = useState(user?.firstName + " " + user?.lastName);
   const [email, setEmail] = useState(user?.email);
 

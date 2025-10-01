@@ -1,14 +1,19 @@
-import { useSelector } from "react-redux"; 
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { getDoctorProfile } from "../../../api/doctorDasboard";
 
 const ReviewOrder = ({ next }) => {
   const restoration = useSelector((state) => state.restoration);
+
   const patient = restoration.patient;
+  const [doctorProfile, setDoctorProfile] = useState(null);
   // Map doctor and patient arrays to objects for easier access
   const doctor = restoration.doctor.reduce((acc, d) => {
     acc[d.field] = d.value || "N/A";
     return acc;
   }, {});
- 
+
+   
   const toothSelections = restoration.toothSelections || [];
   const selectedTeeth = restoration.selectedTeeth || [];
   const note = restoration.note || "";
@@ -30,7 +35,65 @@ const ReviewOrder = ({ next }) => {
       (tooth.crownPrice || tooth.crown?.price || 0)
     );
   }, 0);
- 
+  // Utility function
+  const getMaskedFullName = (firstName, lastName) => {
+    const mask = (str) => {
+      if (!str?.trim()) return "";
+      const clean = str.trim();
+      return clean.slice(0, 2).charAt(0).toUpperCase() + clean.slice(1, 2).toLowerCase();
+    };
+
+    return `${mask(firstName)}${mask(lastName)}` || "Unknown";
+  };
+  // Utility to mask email
+  const maskEmail = (email) => {
+    if (!email) return "";
+    const [localPart, domain] = email.split("@");
+    if (!localPart || !domain) return email;
+    return (
+      localPart.slice(0, 3) + "*****@" + domain
+    );
+  };
+  useEffect(() => {
+    const userData = localStorage.getItem("users");
+
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      const userId = parsedUserData.id;
+
+      const fetchDoctorProfile = async () => {
+        const response = await getDoctorProfile(userId);
+        setDoctorProfile(response.data.data);
+      };
+      fetchDoctorProfile();
+    }
+  }, []);
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    license: "",
+    reference: "",
+    address: "",
+  });
+
+  // Update form data when doctorProfile is loaded
+  useEffect(() => {
+    if (doctorProfile) {
+      setFormData({
+        firstName: doctorProfile?.firstName || "",
+        lastName: doctorProfile?.lastName || "",
+        email: doctorProfile?.email || "",
+        phone: doctorProfile?.phoneNumber || "",
+        license: doctorProfile?.doctorLicenceNumber || "",
+        reference: doctorProfile?.officeRefNumber || "",
+        address: doctorProfile?.address || "",
+      });
+    }
+  }, [doctorProfile]);
+
   return (
     <div className="">
       <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -51,7 +114,8 @@ const ReviewOrder = ({ next }) => {
                   Doctor’s Name
                 </p>
                 <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-                  {doctor?.doctorName}
+
+                  {getMaskedFullName(formData?.firstName, formData?.lastName)}
                 </p>
               </div>
               <div>
@@ -59,7 +123,7 @@ const ReviewOrder = ({ next }) => {
                   Office Registration#
                 </p>
                 <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-                  {doctor?.officeReg}
+                  {formData?.reference}
                 </p>
               </div>
               <div>
@@ -80,37 +144,6 @@ const ReviewOrder = ({ next }) => {
               </div>
             </div>
           </div>
-
-          {/* Patient Info */}
-          {/* <div className="border border-gray-200 p-4 font-poppins">
-            <h3 className="font-medium mb-2 text-[#434343]">Patient Information</h3>
-            <hr className="border-gray-200 my-2" />
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-              <div>
-                <p className="text-[#949494]">First Name</p>
-                <p className="font-normal text-secondaryBrand md:text-sm text-base font-poppins">
-                  {patient?.patientFirstName}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494]">Last Name</p>
-                <p className="font-normal text-secondaryBrand md:text-sm text-base font-poppins">
-                  {patient?.patientLastName}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494]">Subscription ID</p>
-                <p className="font-normal text-secondaryBrand md:text-sm text-base font-poppins">
-                  {patient?.subscriptionId}
-                </p>
-              </div>
-            </div>
-          </div> */}
-
-
-
-
-
           <div className="border border-gray-200 p-4 font-poppins">
             <h3 className="font-medium mb-2 text-[#434343]">Patient Information</h3>
             <hr className="border-gray-200 my-2" />
@@ -118,33 +151,19 @@ const ReviewOrder = ({ next }) => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                 <div>
                   <p className="text-[#949494]">Full Name</p>
-                  <p className="font-normal text-secondaryBrand">{patient.name}</p>
+                  <p className="font-normal text-secondaryBrand">  {getMaskedFullName(patient?.name, patient?.lastName)}
+                  </p>
                 </div>
                 <div>
                   <p className="text-[#949494]">Email</p>
-                  <p className="font-normal text-secondaryBrand">{patient.email}</p>
+                  <p className="font-normal text-secondaryBrand">{maskEmail(patient?.email)}</p>
                 </div>
-                {/* <div>
-                  <p className="text-[#949494]">Phone</p>
-                  <p className="font-normal text-secondaryBrand">{patient.phone || "N/A"}</p>
-                </div> */}
+
               </div>
             ) : (
               <p className="text-gray-400 text-sm">No patient selected</p>
             )}
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
           {/* Selected Teeth */}
           <div className="border border-gray-200 p-4">
             <p className="text-sm font-medium font-poppins text-black mb-2">

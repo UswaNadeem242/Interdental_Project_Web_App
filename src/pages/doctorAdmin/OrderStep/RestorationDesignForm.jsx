@@ -31,9 +31,14 @@ import { toast } from "react-toastify";
 import { showToast } from "../../../store/toast-slice";
 import { PatientDropdown } from "../../../components/doctorAdmin/patient-component";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
+import Drawers from "../../../Common/Drawers";
+import AddPatientForm from "../PatientDoctor/AddPatientForm";
+import { getDoctorProfile } from "../../../api/doctorDasboard";
 
 const DoctorOrder = () => {
   const dispatch = useDispatch();
+  const navigator = useNavigate();
   const {
     orders,
     shadeGroups,
@@ -52,6 +57,7 @@ const DoctorOrder = () => {
   } = useSelector((state) => state.restoration);
   const [touched, setTouched] = useState({});
   const [selected, setSelected] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const steps = [
     { id: "s1", title: "Restoration Design Form" },
     { id: "s2", title: "Review" },
@@ -61,6 +67,7 @@ const DoctorOrder = () => {
   const currentStepIndex = 0; // update this dynamically from your state
   const currentStep = steps[currentStepIndex];
   const [activeIndex, setActiveIndex] = useState(0);
+  const [doctorProfile, setDoctorProfile] = useState(null);
   const next = () => setActiveIndex((prev) => Math.min(prev + 1, 3));
   const back = () => {
     if (activeIndex > 0) setActiveIndex(activeIndex - 1);
@@ -128,6 +135,30 @@ const DoctorOrder = () => {
   useEffect(() => {
     dispatch(resetRestoration());
   }, [dispatch]);
+  const [formData, setFormData] = useState({
+    reference: "",
+  });
+  useEffect(() => {
+    const userData = localStorage.getItem("users");
+
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      const userId = parsedUserData.id;
+
+      const fetchDoctorProfile = async () => {
+        const response = await getDoctorProfile(userId);
+        setDoctorProfile(response.data.data);
+      };
+      fetchDoctorProfile();
+    }
+  }, []);
+  useEffect(() => {
+    if (doctorProfile) {
+      setFormData({
+        reference: doctorProfile?.officeRefNumber || "",
+      });
+    }
+  }, [doctorProfile]);
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -152,7 +183,6 @@ const DoctorOrder = () => {
                 if (Object.keys(formErrors).length === 0) {
                   setActiveIndex(index);
                 } else {
-                  // dispatch(showToast({ message: `Please fill the Restoration Design form before moving to the next tab`, type: "error" }));
                   if (currentStep) {
                     dispatch(
                       showToast({
@@ -177,12 +207,9 @@ const DoctorOrder = () => {
                   {activeIndex === 0 && (
                     <Formik
                       initialValues={{
-                        doctorName: "",
                         officeReg: "",
-                        createDate: "",
                         dueDate: "",
                         patientFirstName: "",
-
                         scannerType: "",
                         digitalOptions: "",
                         surgical_guide: "",
@@ -221,79 +248,15 @@ const DoctorOrder = () => {
                                 color="text-xs font-semibold"
                                 className="border border-gray-200 p-4"
                                 gap='gap-4'
-                              >
-                                <LabeledInput
+                              >   <LabeledInput
                                   type="text"
-                                  label="Doctor Name / Office Name"
-                                  placeholder="Doctor Name / Office Name"
-                                  name="doctorName"
-                                  value={values.doctorName || ""}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    const fieldName = e.target.name;
-                                    setFieldValue(fieldName, value);
-                                    dispatch(
-                                      setDoctorField({
-                                        field: fieldName,
-                                        value,
-                                      })
-                                    );
-                                  }}
-                                  onBlur={handleBlur}
-                                />
-                                {errors.doctorName && (
-                                  <p className="text-red-800 text-xs capitalize">
-                                    {errors.doctorName}
-                                  </p>
-                                )}
-
-                                <LabeledInput
-                                  type="text"
-                                  label="Office registration number"
+                                  label="Office Reference number"
                                   name="officeReg"
-                                  value={values.officeReg || ""}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    const fieldName = e.target.name;
-                                    setFieldValue(fieldName, value);
-                                    dispatch(
-                                      setDoctorField({
-                                        field: fieldName,
-                                        value,
-                                      })
-                                    );
-                                  }}
+                                  value={formData?.reference}  
                                   onBlur={handleBlur}
-                                  placeholder="Office registration number"
+                                  placeholder="Office Reference number"
                                 />
 
-                                <lable className="text-primaryText text-xs font-semibold font-poppins capitalize">
-                                  Create Date
-                                </lable>
-
-                                <LabeledInput
-                                  label="Create Date"
-                                  type="date"
-                                  name="createDate"
-                                  value={values.createDate || ""}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    const fieldName = e.target.name;
-                                    setFieldValue(fieldName, value);
-                                    dispatch(
-                                      setDoctorField({
-                                        field: fieldName,
-                                        value,
-                                      })
-                                    );
-                                  }}
-                                  onBlur={handleBlur}
-                                />
-                                {errors.createDate && (
-                                  <p className="text-red-800 text-xs capitalize">
-                                    {errors.createDate}
-                                  </p>
-                                )}
 
                                 <lable className="text-primaryText text-xs font-semibold font-poppins capitalize">
                                   Case expected due date
@@ -325,14 +288,15 @@ const DoctorOrder = () => {
 
                               <FormSection
                                 title={
-                                  <div className="flex items-center gap-20">
+                                  <div className="flex justify-between items-center">
                                     <span>Patient ID</span>
                                     <div className="relative group">
                                       <button
                                         type="button"
                                         className="p-1 rounded-full  text-secondaryBrand"
+                                        onClick={() => setIsOpen(true)}
                                       >
-                                        <PlusIcon className="h-4 w-4" />
+                                        <PlusIcon className="h-3 w-3" />
                                       </button>
                                       {/* Tooltip */}
                                       <div className="  absolute left-full top-1/2 -translate-y-1/2 ml-2   hidden group-hover:block  z-50">
@@ -414,7 +378,6 @@ const DoctorOrder = () => {
                                     : ""
                                 }
                               />
-
                               <div>
                                 <FileUploadSection />
                               </div>
@@ -945,6 +908,14 @@ const DoctorOrder = () => {
             setSelected={setSelected}
           />
         )}
+        <div>
+          <Drawers
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            title="Add New User"
+            Content={<AddPatientForm onClose={() => setIsOpen(false)} />}
+          />
+        </div>
       </div>
     </>
   );

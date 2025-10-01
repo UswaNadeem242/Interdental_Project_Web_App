@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import CircleTrickIcon from '../../icon/circle-trick-icon';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ThirdButtonUI } from '../../Common/Button';
 
 function MakeSmile() {
     const navigate = useNavigate();
@@ -35,15 +36,9 @@ function MakeSmile() {
                             Builds loyalty and professionalism in the practice.
                         </li>
                     </ul>
-                    <button className="flex justify-center items-center rounded-full border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-                        <h1 className="font-poppins text-sm font-semibold  text-primaryText">
-                            {/*  w-[300px] sm:w-[250px] h-[40px] sm:h-[53.73px] */}
-                            Protect Your Smile
-                        </h1>
-                        <div className="rounded-full text-white bg-secondaryBrand p-2">
-                            <ArrowRightIcon className="w-4 h-4" />
-                        </div>
-                    </button>
+
+                    <ThirdButtonUI title='Protect Your Smile' />
+
                 </div>
 
                 <div className="flex justify-center">
