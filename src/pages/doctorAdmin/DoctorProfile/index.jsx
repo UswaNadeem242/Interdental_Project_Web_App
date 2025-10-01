@@ -41,6 +41,7 @@ const DoctorProfile = () => {
   // State for input values
   const [formData, setFormData] = useState({
     firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     license: "",
@@ -53,6 +54,7 @@ const DoctorProfile = () => {
     if (doctorProfile) {
       setFormData({
         firstName: doctorProfile?.firstName || "",
+        lastName: doctorProfile?.lastName || "",
         email: doctorProfile?.email || "",
         phone: doctorProfile?.phoneNumber || "",
         license: doctorProfile?.doctorLicenceNumber || "",
@@ -64,6 +66,10 @@ const DoctorProfile = () => {
 
   // State for input errors
   const [errors, setErrors] = useState({});
+
+
+  console.log('formdata:', formData);
+
 
   // Function to show toast messages
   const showToast = (message, type = "success") => {
@@ -203,7 +209,6 @@ const DoctorProfile = () => {
         const bodyData = {
           firstName: formData.firstName,
           lastName: doctorProfile?.lastName,
-          // lastName: formData.firstName,
           phone: formData.phone,
           address: formData.address,
           officeRefNumber: formData.reference,
@@ -226,6 +231,7 @@ const DoctorProfile = () => {
       }
     }
   };
+
 
   return (
     <>
@@ -271,9 +277,8 @@ const DoctorProfile = () => {
             />
             <label
               htmlFor="fileUpload"
-              className={`cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block ${
-                isUploadingImage ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block ${isUploadingImage ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
               {isUploadingImage ? "Uploading..." : "Upload new picture"}
             </label>
@@ -337,7 +342,7 @@ const DoctorProfile = () => {
               label="First Name"
               placeholder="Bransim"
               icon={<PenIcon size={18} />}
-              value={formData.firstName}
+              value={`${formData.firstName} ${formData?.lastName}`}
               onChange={handleChange}
               onBlur={handleBlur}
             />
@@ -432,11 +437,10 @@ const DoctorProfile = () => {
             <button
               type="submit"
               disabled={isUpdating}
-              className={`px-8 py-3 rounded-lg font-semibold text-white transition-colors ${
-                isUpdating
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-secondaryBrand hover:bg-blue-600"
-              }`}
+              className={`px-8 py-3 rounded-lg font-semibold text-white transition-colors ${isUpdating
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-secondaryBrand hover:bg-blue-600"
+                }`}
             >
               {isUpdating ? "Updating..." : "Update Profile"}
             </button>

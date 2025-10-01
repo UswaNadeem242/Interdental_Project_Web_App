@@ -40,8 +40,7 @@ const UpdateProduct = () => {
           },
         }
       );
-      console.log("-=-response.data=-=-=", response.data);
-
+ 
       setProduct(response.data.data);
       setName(response.data.data.name);
       setDescription(response.data.data.description);
