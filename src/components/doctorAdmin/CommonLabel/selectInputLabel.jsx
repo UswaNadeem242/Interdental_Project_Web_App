@@ -40,12 +40,12 @@ export function LabeledSelect({
 }
 export default function MaterialDropdown({
   options = [],
-  value,           // primitive value (e.g., option.value)
-  onChange,        // function to update Redux
+  value, // primitive value (e.g., option.value)
+  onChange, // function to update Redux
   label = "Select",
   className,
   dropdownClass,
-  error
+  error,
 }) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -74,15 +74,19 @@ export default function MaterialDropdown({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`${className || ""} flex w-full items-center justify-between bg-grey-500 border border-gray-300 px-2 py-3 text-left text-sm font-normal`}
+        className={`${
+          className || ""
+        } flex w-full items-center justify-between bg-grey-500 border border-gray-300 px-2 py-3 text-left text-sm font-normal`}
       >
         <span>{selected?.label ?? label}</span>
-        <ChevronDownIcon className={`h-3 w-3 text-[#949494] ${dropdownClass || ""}`} />
+        <ChevronDownIcon
+          className={`h-3 w-3 text-[#949494] ${dropdownClass || ""}`}
+        />
       </button>
 
-      {/* Panel */}
+      {/* Panel (removed: absolute z-20) */}
       {open && (
-        <div className="absolute z-20 w-full rounded-b-2xl border border-gray-200 bg-white shadow-lg">
+        <div className=" w-full  border border-gray-200 bg-white shadow-lg">
           <div className="space-y-1">
             {options.map((opt, idx) => {
               const active = opt.value === value;
@@ -98,12 +102,17 @@ export default function MaterialDropdown({
                 >
                   <span className="flex justify-between items-center gap-1">
                     <span
-                      className={`grid h-4 w-4 place-items-center rounded-full border ${active ? "text-[#4640FF]" : "border-gray-300"
-                        }`}
+                      className={`grid h-4 w-4 place-items-center rounded-full border ${
+                        active ? "text-[#4640FF]" : "border-gray-300"
+                      }`}
                     >
-                      {active && <span className="h-2 w-2 rounded-full bg-secondaryBrand" />}
+                      {active && (
+                        <span className="h-2 w-2 rounded-full bg-secondaryBrand" />
+                      )}
                     </span>
-                    <span className="text-[#828386] text-[10px] font-normal">{opt.label}</span>
+                    <span className="text-[#828386] text-[10px] font-normal">
+                      {opt.label}
+                    </span>
                   </span>
                   {opt.price != null && (
                     <span className="font-semibold text-[#001D58] text-[10px]">
