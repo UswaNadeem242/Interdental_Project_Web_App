@@ -8,6 +8,9 @@ import DentalDesignForm from "./dental-design-form";
 import ProductsAdminPanel from "./admin-products";
 import ListProduct from "./admin-products/list-product";
 import ProductDetails from "./admin-products/product-details";
+import Subscriptions from "./admin-subscriptions/subscriptions";
+import AdminClaimRequest from "./admin-claim-request";
+import ClaimDetailAdminPanel from "./admin-claim-request/claim-detail-form";
 
 const AdminPanel = () => {
   return (
@@ -21,8 +24,11 @@ const AdminPanel = () => {
         <Route path="/dental-design-form" element={<DentalDesignForm />} />
         <Route path="/products" element={<ProductsAdminPanel />} />
         <Route path="/list-product" element={<ListProduct />} />
-        ProductDetails
         <Route path="/product-details" element={<ProductDetails />} />
+        <Route path="/subscriptions" element={<Subscriptions />} />
+        <Route path="/claim-requests" element={<AdminClaimRequest />} />
+        claim-detail-form
+        <Route path="/claim-detail-form" element={<ClaimDetailAdminPanel />} />
         {/* // <Route path="/patient" element={<PatientPage />} />
         // <Route path="/claim-request" element={<ClaimRequest />} />
         // <Route path="/orders-details" element={<DoctorOrder />} />

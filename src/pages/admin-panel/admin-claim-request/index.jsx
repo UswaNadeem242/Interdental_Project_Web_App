@@ -2,23 +2,27 @@ import React, { useMemo, useState } from "react";
 import { PrimaryButtonUI } from "../../../Common/Button";
 import TableComponent from "../../../Common/Table";
 import {
-  dataDoctors,
-  headings,
-  headingsAdminPanelTable,
+  dataClaimreqAdminPanel,
+  dataOrdersAdminPanel,
+  headingsAdminPanelClaimReq,
+  headingsAdminPanelOrders,
 } from "../../../Constant";
 
 import SearchBar from "../../../Common/SearchBar";
 import TabsStepper from "../../../Common/TabsStepper";
 import SecondTable from "../../../Common/second-table-component";
-import OptionsDots from "../../../icon/options-dots";
+import Drawers from "../../../Common/Drawers";
+import ClaimDetailForm from "../../doctorAdmin/ClaimRequest/ClaimDetailForm";
+import ClaimDetailAdminPanel from "./claim-detail-form";
 
-const DoctorsAdminPanel = () => {
+const AdminClaimRequest = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const filteredData = useMemo(() => {
-    let filtered = dataDoctors;
+    let filtered = dataClaimreqAdminPanel;
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter((row) =>
@@ -44,52 +48,64 @@ const DoctorsAdminPanel = () => {
       name: "All",
       content: (
         <SecondTable
-          headings={headingsAdminPanelTable}
+          headings={headingsAdminPanelClaimReq}
           data={filteredData}
-          actionButton="active"
+          onActionClick={(row) => {
+            setSelectedRow(row);
+            setIsOpen(true);
+          }}
+          // actionHrefKey="detailUrl"
         />
       ),
     },
     {
-      name: "New",
+      name: "Pending",
+      content: (
+        <SecondTable
+          headings={headingsAdminPanelClaimReq}
+          data={filteredData}
+          onActionClick={(row) => {
+            setSelectedRow(row);
+            setIsOpen(true);
+          }}
+          actionHrefKey="detailUrl"
+        />
+      ),
+    },
+    {
+      name: "In Progress",
+      content: (
+        <SecondTable
+          headings={headingsAdminPanelClaimReq}
+          data={filteredData}
+          onActionClick={(row) => {
+            setSelectedRow(row);
+            setIsOpen(true);
+          }}
+          actionHrefKey="detailUrl"
+        />
+      ),
+    },
+    {
+      name: "Shipped",
       content: (
         <TableComponent
-          headings={headingsAdminPanelTable}
+          headings={headingsAdminPanelOrders}
           data={filteredData}
           actionHrefKey="detailUrl"
         />
       ),
     },
     {
-      name: "Disabled",
+      name: "completed",
       content: (
         <TableComponent
-          headings={headingsAdminPanelTable}
+          headings={headingsAdminPanelOrders}
           data={filteredData}
           actionHrefKey="detailUrl"
         />
       ),
     },
-    {
-      name: "Deactivated",
-      content: (
-        <TableComponent
-          headings={headingsAdminPanelTable}
-          data={filteredData}
-          actionHrefKey="detailUrl"
-        />
-      ),
-    },
-    // {
-    //   name: "completed",
-    //   content: (
-    //     <TableComponent
-    //       headings={headings}
-    //       data={filteredData}
-    //       actionHrefKey="detailUrl"
-    //     />
-    //   ),
-    // },
   ];
 
   return (
@@ -108,10 +124,17 @@ const DoctorsAdminPanel = () => {
         </div>
         <div className="">
           <TabsStepper steps={steps} />
+          <Drawers
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            title="Claim Details"
+            status={selectedRow?.status}
+            Content={<ClaimDetailAdminPanel row={selectedRow} />}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export default DoctorsAdminPanel;
+export default AdminClaimRequest;

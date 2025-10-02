@@ -9,6 +9,7 @@ import {
 
 import SearchBar from "../../../Common/SearchBar";
 import TabsStepper from "../../../Common/TabsStepper";
+import SecondTable from "../../../Common/second-table-component";
 
 const OrdersAdminPanel = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +42,7 @@ const OrdersAdminPanel = () => {
     {
       name: "All",
       content: (
-        <TableComponent
+        <SecondTable
           headings={headingsAdminPanelOrders}
           data={filteredData}
           actionHrefKey="detailUrl"

@@ -2,23 +2,29 @@ import React, { useMemo, useState } from "react";
 import { PrimaryButtonUI } from "../../../Common/Button";
 import TableComponent from "../../../Common/Table";
 import {
-  dataDoctors,
-  headings,
-  headingsAdminPanelTable,
+  dataOrdersAdminPanel,
+  dataSubscriptions,
+  headingsAdminPanelOrders,
+  headingsSubscriptions,
 } from "../../../Constant";
 
 import SearchBar from "../../../Common/SearchBar";
 import TabsStepper from "../../../Common/TabsStepper";
 import SecondTable from "../../../Common/second-table-component";
-import OptionsDots from "../../../icon/options-dots";
+import Drawers from "../../../Common/Drawers";
+import AddPatientForm from "../../doctorAdmin/PatientDoctor/AddPatientForm";
+import AccountDetailForm from "../admin-doctor-detail/account-detail-form";
+import SubscriptionDetail from "./subscription-detail";
+import SubscriptionForm from "../admin-doctor-detail/subscription-form";
 
-const DoctorsAdminPanel = () => {
+const Subscriptions = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const filteredData = useMemo(() => {
-    let filtered = dataDoctors;
+    let filtered = dataSubscriptions;
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter((row) =>
@@ -44,56 +50,53 @@ const DoctorsAdminPanel = () => {
       name: "All",
       content: (
         <SecondTable
-          headings={headingsAdminPanelTable}
+          headings={headingsSubscriptions}
           data={filteredData}
-          actionButton="active"
+          onActionClick={(row) => {
+            setSelectedRow(row);
+            setIsOpen(true);
+          }}
         />
       ),
     },
     {
-      name: "New",
+      name: "Active",
+      content: (
+        <SecondTable
+          headings={headingsSubscriptions}
+          data={filteredData}
+          onActionClick={(row) => {
+            setSelectedRow(row);
+            setIsOpen(true);
+          }}
+          actionHrefKey="detailUrl"
+        />
+      ),
+    },
+    {
+      name: "Trial",
       content: (
         <TableComponent
-          headings={headingsAdminPanelTable}
+          headings={headingsAdminPanelOrders}
           data={filteredData}
           actionHrefKey="detailUrl"
         />
       ),
     },
     {
-      name: "Disabled",
+      name: "Expired",
       content: (
         <TableComponent
-          headings={headingsAdminPanelTable}
+          headings={headingsAdminPanelOrders}
           data={filteredData}
           actionHrefKey="detailUrl"
         />
       ),
     },
-    {
-      name: "Deactivated",
-      content: (
-        <TableComponent
-          headings={headingsAdminPanelTable}
-          data={filteredData}
-          actionHrefKey="detailUrl"
-        />
-      ),
-    },
-    // {
-    //   name: "completed",
-    //   content: (
-    //     <TableComponent
-    //       headings={headings}
-    //       data={filteredData}
-    //       actionHrefKey="detailUrl"
-    //     />
-    //   ),
-    // },
   ];
 
   return (
-    <div>
+    <div className="">
       <div className="bg-white rounded-2xl py-6 px-6">
         <div className="flex flex-col md:flex-row justify-between gap-2 pb-3">
           <div className="md:flex-1 ">
@@ -109,9 +112,17 @@ const DoctorsAdminPanel = () => {
         <div className="">
           <TabsStepper steps={steps} />
         </div>
+        <div>
+          <Drawers
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            title="Subscription Detail"
+            Content={<SubscriptionDetail onClose={() => setIsOpen(false)} />}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
-export default DoctorsAdminPanel;
+export default Subscriptions;

@@ -14,6 +14,7 @@ import {
 import SearchBar from "../../../Common/SearchBar";
 import TabsStepper from "../../../Common/TabsStepper";
 import { PlusIcon } from "../../../icon/PlusIcon";
+import SecondTable from "../../../Common/second-table-component";
 
 const ProductsAdminPanel = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -121,7 +122,7 @@ const ProductsAdminPanel = () => {
           </div>
         </div>
         <div className="">
-          <TableComponent
+          <SecondTable
             headings={headingsProducts}
             data={filteredData}
             actionHrefKey="detailUrl"
