@@ -9,13 +9,12 @@ const restorationSlice = createSlice({
         totalPrice: 0,
         doctorOrderItems: [],
         doctor: [
-            { id: 1, field: "doctorName", value: "" },
-            { id: 2, field: "officeReg", value: "" },
-            { id: 3, field: "createDate", value: "" },
-            { id: 4, field: "dueDate", value: "" },
+            { field: "officeReg", value: "", id: "" }, // added id field upfront
+            { field: "dueDate", value: "" },
         ],
-         patient: null,
-
+        patient: null,
+        // doctorId: "",
+        // officeReg: "",
         note: "",
     },
     reducers: {
@@ -73,14 +72,31 @@ const restorationSlice = createSlice({
             state.doctorOrderItems = items;
             state.totalPrice = total;
         },
-         setSelectedPatient: (state, action) => {
-      state.patient = action.payload; // store full patient object
-    },
+        setSelectedPatient: (state, action) => {
+            state.patient = action.payload; // store full patient object
+        }, 
         setDoctorField: (state, action) => {
-            const { field, value } = action.payload;
-            const idx = state.doctor.findIndex((d) => d.field === field);
-            if (idx !== -1) state.doctor[idx].value = value;
+            const { id, officeRefNumber } = action.payload;
+
+            const officeIdx = state.doctor.findIndex(d => d.field === "officeReg");
+            if (officeIdx !== -1) {
+                // Only update value if officeRefNumber is provided, otherwise keep existing
+                state.doctor[officeIdx].value =
+                    officeRefNumber !== undefined ? officeRefNumber : state.doctor[officeIdx].value;
+
+                // Always set the id
+                state.doctor[officeIdx].id = id || state.doctor[officeIdx].id;
+            }
         },
+
+        setDueDate: (state, action) => {
+            const { dueDate } = action.payload;
+            const dueDateIdx = state.doctor.findIndex(d => d.field === "dueDate");
+            if (dueDateIdx !== -1) {
+                state.doctor[dueDateIdx].value = dueDate || "";
+            }
+        },
+
 
 
         setNote: (state, action) => {
@@ -104,8 +120,9 @@ export const {
     updateToothSelection,
     resetRestoration,
     setDoctorField,
+    setDueDate,
     setNote,
-    setSelectedPatient 
+    setSelectedPatient
 } = restorationSlice.actions;
 
 export default restorationSlice.reducer;

@@ -23,7 +23,7 @@ export function LabeledSelect({
         name={name}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
-        className={`${className} w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-shadow`}
+        className={`${className} w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-red-700 outline-none transition-shadow`}
         disabled={disabled}
       >
         <option value="" disabled>
@@ -74,9 +74,8 @@ export default function MaterialDropdown({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`${
-          className || ""
-        } flex w-full items-center justify-between bg-grey-500 border border-gray-300 px-2 py-3 text-left text-sm font-normal`}
+        className={`${className || ""
+          } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal`}
       >
         <span>{selected?.label ?? label}</span>
         <ChevronDownIcon
@@ -86,7 +85,7 @@ export default function MaterialDropdown({
 
       {/* Panel (removed: absolute z-20) */}
       {open && (
-        <div className=" w-full  border border-gray-200 bg-white shadow-lg">
+        <div className=" w-full  border border-background bg-white shadow-lg">
           <div className="space-y-1">
             {options.map((opt, idx) => {
               const active = opt.value === value;
@@ -98,19 +97,18 @@ export default function MaterialDropdown({
                   onClick={() => handleSelect(opt)} // pass full object
                   className={`flex w-full items-center justify-between px-3 py-3 text-sm transition-colors
                     ${active ? "bg-indigo-50" : "hover:bg-gray-50"} 
-                    ${!isLast ? "border-b-2 border-[#D2D4DA]" : ""}`}
+                    ${!isLast ? "border-b-2 border-background" : ""}`}
                 >
                   <span className="flex justify-between items-center gap-1">
                     <span
-                      className={`grid h-4 w-4 place-items-center rounded-full border ${
-                        active ? "text-[#4640FF]" : "border-gray-300"
-                      }`}
+                      className={`grid h-4 w-4 place-items-center rounded-full border ${active ? "text-[#4640FF]" : "border-gray-300"
+                        }`}
                     >
                       {active && (
                         <span className="h-2 w-2 rounded-full bg-secondaryBrand" />
                       )}
                     </span>
-                    <span className="text-[#828386] text-[10px] font-normal">
+                    <span className="text-textFieldHeading text-[10px] font-normal">
                       {opt.label}
                     </span>
                   </span>

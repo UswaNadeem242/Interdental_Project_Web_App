@@ -19,6 +19,7 @@ import {
   setNote,
   setDoctorField,
   resetRestoration,
+  setDueDate,
 } from "../../../store/slices/restoration-slice/index";
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import DonePage from "./DonePage";
@@ -36,7 +37,6 @@ import Drawers from "../../../Common/Drawers";
 import AddPatientForm from "../PatientDoctor/AddPatientForm";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
 import { DropdownWrapper } from "../../../Common/drop-down-wrapper";
-
 const DoctorOrder = () => {
   const dispatch = useDispatch();
   const navigator = useNavigate();
@@ -137,6 +137,7 @@ const DoctorOrder = () => {
     dispatch(resetRestoration());
   }, [dispatch]);
   const [formData, setFormData] = useState({
+    id: '',
     reference: "",
   });
   useEffect(() => {
@@ -148,7 +149,15 @@ const DoctorOrder = () => {
 
       const fetchDoctorProfile = async () => {
         const response = await getDoctorProfile(userId);
-        setDoctorProfile(response.data.data);
+        setDoctorProfile(response?.data?.data);
+        if (doctorProfile?.id && doctorProfile?.officeRefNumber) {
+          dispatch(
+            setDoctorField({
+              id: doctorProfile.id,
+              officeRefNumber: doctorProfile.officeRefNumber,
+            })
+          );
+        }
       };
       fetchDoctorProfile();
     }
@@ -156,10 +165,15 @@ const DoctorOrder = () => {
   useEffect(() => {
     if (doctorProfile) {
       setFormData({
+        id: doctorProfile?.id || "",
         reference: doctorProfile?.officeRefNumber || "",
       });
     }
   }, [doctorProfile]);
+   const handleDueDateChange = (e) => {
+    dispatch(setDueDate({ dueDate: e.target.value }));
+  };
+
 
   return (
     <>
@@ -268,18 +282,21 @@ const DoctorOrder = () => {
                                   label="Case expected due date"
                                   type="date"
                                   name="dueDate"
-                                  value={values.dueDate || ""}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    const fieldName = e.target.name;
-                                    setFieldValue(fieldName, value);
-                                    dispatch(
-                                      setDoctorField({
-                                        field: fieldName,
-                                        value,
-                                      })
-                                    );
-                                  }}
+                                  // value={values.dueDate || ""}
+                                  // onChange={(e) => {
+                                  //   const value = e.target.value;
+                                  //   const fieldName = e.target.name;
+                                  //   setFieldValue(fieldName, value);
+                                  //   dispatch(
+                                  //     setDoctorField({
+                                  //       field: fieldName,
+                                  //       value,
+                                  //     })
+                                  //   );
+                                  // }}
+
+                                  value={doctor.find(d => d.field === "dueDate")?.value || ""}
+                                  onChange={handleDueDateChange}
                                   onBlur={handleBlur}
                                 />
                                 {errors.dueDate && (
@@ -380,7 +397,7 @@ const DoctorOrder = () => {
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                  !activeToothSelection.scannerType
+                                    !activeToothSelection.scannerType
                                     ? "Scanner Type is Required Select the Teeth"
                                     : ""
                                 }
@@ -461,15 +478,15 @@ const DoctorOrder = () => {
                                     // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
                                     error={
                                       touched.digitalOptions &&
-                                      !toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.digitalOptions
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.digitalOptions
                                         ? "Digital Denture is Required Select the teeth"
                                         : ""
                                     }
                                   />
                                   <MaterialDropdown
-                                    className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    className="w-full rounded-xl border border-gray-200   bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     options={
                                       orders.find(
                                         (p) => p.name === "Surgical Guide"
@@ -506,9 +523,9 @@ const DoctorOrder = () => {
                                     storageKey="surgical_guide"
                                     error={
                                       touched.surgical_guide &&
-                                      !toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.surgical_guide
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.surgical_guide
                                         ? "Surgical Guide is Required. Please select a tooth."
                                         : ""
                                     }
@@ -596,14 +613,14 @@ const DoctorOrder = () => {
                                         label="Smart Crown"
                                         storageKey="crown"
                                         className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                        error={
-                                          touched.crown &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.crown
-                                            ? "Crown is required. Please select a value."
-                                            : ""
-                                        }
+                                      // error={
+                                      //   touched.crown &&
+                                      //   !toothSelections.find(
+                                      //     (t) => t.toothId === selectedTooth
+                                      //   )?.crown
+                                      //     ? "Crown is required. Please select a value."
+                                      //     : ""
+                                      // }
                                       />
                                       <MaterialDropdown
                                         options={
@@ -640,14 +657,14 @@ const DoctorOrder = () => {
                                         label="Material"
                                         storageKey="material"
                                         className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                        error={
-                                          touched.material &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.material
-                                            ? "Material is required. Please select a tooth first"
-                                            : ""
-                                        }
+                                      // error={
+                                      //   touched.material &&
+                                      //   !toothSelections.find(
+                                      //     (t) => t.toothId === selectedTooth
+                                      //   )?.material
+                                      //     ? "Material is required. Please select a tooth first"
+                                      //     : ""
+                                      // }
                                       />
 
                                       <ShadeDropdown
@@ -709,14 +726,14 @@ const DoctorOrder = () => {
                                         label="Dental lab alliance"
                                         storageKey="Dental lab alliance"
                                         className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                        error={
-                                          touched.lab &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.lab
-                                            ? "Participating Lab is required. Please select a tooth first."
-                                            : ""
-                                        }
+                                      // error={
+                                      //   touched.lab &&
+                                      //   !toothSelections.find(
+                                      //     (t) => t.toothId === selectedTooth
+                                      //   )?.lab
+                                      //     ? "Participating Lab is required. Please select a tooth first."
+                                      //     : ""
+                                      // }
                                       />
                                     </DropdownWrapper>
 
@@ -927,9 +944,9 @@ const DoctorOrder = () => {
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.photogrammetryfiles
+                                          !toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.photogrammetryfiles
                                           ? "Photogrammetry files is required. Please select a tooth first."
                                           : ""
                                       }

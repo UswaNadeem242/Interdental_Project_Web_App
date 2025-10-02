@@ -280,15 +280,14 @@ export default function SecondTable({
                 {headings.map((col, i) => (
                   <td
                     key={i}
-                    className={`px-4 py-4 text-[#333333] text-xs ${
-                      col.key === "name" ? "font-semibold" : "font-normal"
-                    }`}
+                    className={`px-4 py-4 text-[#333333] text-xs ${col.key === "name" ? "font-semibold" : "font-normal"
+                      }`}
                   >
                     {/* Name column */}
                     {col.key === "name" ? (
                       <div className="flex items-center gap-2 md:flex-row flex-col">
                         <img
-                          src={row.image || "/assets/user.png"}
+                          src={row.profileURL || "/assets/user.png"}
                           alt={row.name}
                           className="w-9 h-9 rounded-full object-cover border border-[#285772]"
                         />
@@ -392,21 +391,20 @@ export default function SecondTable({
                       )
                     ) : col.key === "status" ? (
                       <span
-                        className={`px-3 py-2 rounded-full text-xs font-normal capitalize ${
-                          row[col.key] === "active"
+                        className={`px-3 py-2 rounded-full text-xs font-normal capitalize ${row[col.key] === "active"
                             ? "bg-[#006A670D] text-[#006A67] rounded-none  "
                             : row[col.key] === "pending"
-                            ? "bg-[#FF57570D] text-[#FF5757]"
-                            : row[col.key] === "completed"
-                            ? "bg-[#4ECC530D] text-[#4ECC53]"
-                            : row[col.key] === "accepted"
-                            ? "bg-[#4ECC530D] text-[#4ECC53]"
-                            : row[col.key] === "in progress"
-                            ? "bg-[#EF6A1F1A] text-[#EF6A1F]"
-                            : row[col.key] === "deactivated"
-                            ? "bg-[#FFE30D1A] text-[#D4BE16] rounded-none"
-                            : "bg-[#FF57570D] text-[#FF5757]"
-                        }`}
+                              ? "bg-[#FF57570D] text-[#FF5757]"
+                              : row[col.key] === "completed"
+                                ? "bg-[#4ECC530D] text-[#4ECC53]"
+                                : row[col.key] === "accepted"
+                                  ? "bg-[#4ECC530D] text-[#4ECC53]"
+                                  : row[col.key] === "in progress"
+                                    ? "bg-[#EF6A1F1A] text-[#EF6A1F]"
+                                    : row[col.key] === "deactivated"
+                                      ? "bg-[#FFE30D1A] text-[#D4BE16] rounded-none"
+                                      : "bg-[#FF57570D] text-[#FF5757]"
+                          }`}
                       >
                         {row[col.key]}
                       </span>
@@ -415,33 +413,33 @@ export default function SecondTable({
                         {row[col.key]}
                       </span>
                     ) : /** substatus */
-                    col.key === "subStatus" ? (
-                      <span className="px-3 py-2 rounded-md text-xs font-semibold capitalize text-[#FF1D1D] border-2 border-[#F44336]">
-                        {row[col.key]}
-                      </span>
-                    ) : col.key === "action" ? (
-                      onActionClick ? (
-                        <button
-                          onClick={() => onActionClick(row)}
-                          className="text-secondaryBrand flex gap-1 items-center"
-                        >
+                      col.key === "subStatus" ? (
+                        <span className="px-3 py-2 rounded-md text-xs font-semibold capitalize text-[#FF1D1D] border-2 border-[#F44336]">
                           {row[col.key]}
-                          <ArrowUpRightIcon className="w-4 h-4 text-secondaryBrand" />
-                        </button>
-                      ) : actionHrefKey && row[actionHrefKey] ? (
-                        <NavLink
-                          to={row[actionHrefKey]}
-                          className="text-secondaryBrand flex gap-1 items-center"
-                        >
-                          {row[col.key]}
-                          <ArrowUpRightIcon className="w-4 h-4 text-secondaryBrand" />
-                        </NavLink>
+                        </span>
+                      ) : col.key === "action" ? (
+                        onActionClick ? (
+                          <button
+                            onClick={() => onActionClick(row)}
+                            className="text-secondaryBrand flex gap-1 items-center"
+                          >
+                            {row[col.key]}
+                            <ArrowUpRightIcon className="w-4 h-4 text-secondaryBrand" />
+                          </button>
+                        ) : actionHrefKey && row[actionHrefKey] ? (
+                          <NavLink
+                            to={row[actionHrefKey]}
+                            className="text-secondaryBrand flex gap-1 items-center"
+                          >
+                            {row[col.key]}
+                            <ArrowUpRightIcon className="w-4 h-4 text-secondaryBrand" />
+                          </NavLink>
+                        ) : (
+                          row[col.key] || "-"
+                        )
                       ) : (
                         row[col.key] || "-"
-                      )
-                    ) : (
-                      row[col.key] || "-"
-                    )}
+                      )}
                   </td>
                 ))}
                 {actionButton && (

@@ -11,6 +11,7 @@ import {
 } from "../../../Constant";
 import SearchBar from "../../../Common/SearchBar";
 import { getDoctorPatients } from "../../../api/doctorDasboard";
+import SecondTable from "../../../Common/second-table-component";
 
 const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,8 +71,7 @@ const PatientPage = () => {
     }
     return filtered;
   }, [searchQuery, sortOrder, patients]);
-  console.log('patients:', patients);
-
+ 
 
   return (
     <div>
@@ -82,6 +82,7 @@ const PatientPage = () => {
               title="Sort By"
               onSearch={setSearchQuery}
               onSort={setSortOrder}
+              
             />
           </div>
 
@@ -111,7 +112,11 @@ const PatientPage = () => {
             </div>
           </div>
         </div>
-        <TableComponent headings={headingsPateint} data={filteredData} />
+        {/* <TableComponent headings={headingsPateint} data={filteredData} /> */}
+        <SecondTable headings={headingsPateint} data={filteredData} actionButton="active"
+        />
+
+
       </div>
     </div>
   );

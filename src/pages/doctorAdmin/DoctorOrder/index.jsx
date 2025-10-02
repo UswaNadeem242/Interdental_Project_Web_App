@@ -33,6 +33,8 @@ const OrderDoctorPage = () => {
         : "N/A",
       action: "View Detail",
       dName: order?.doctorName || "N/A",
+      dName:  `${order?.doctorFirstName || "-"} ${order?.doctorLastName || "-"
+        }`,
       shipping: order?.expectedDeliveryDate
         ? new Date(order?.expectedDeliveryDate).toLocaleDateString()
         : "N/A",

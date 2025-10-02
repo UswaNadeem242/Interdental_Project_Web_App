@@ -9,7 +9,7 @@ const SubDropdown = ({ label, options, selected, onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-200 py-2">
+    <div className="border-b border-background py-2">
       <button
         className="flex items-center justify-between w-full text-sm font-normal text-textFieldHeading font-poppins"
         onClick={() => setIsOpen(!isOpen)}
@@ -108,7 +108,7 @@ export const ShadeDropdown = ({
     .join(", ");
 
   return (
-    <div className="border border-gray-300 shadow-sm bg-white ">
+    <div className="border border-background shadow-sm bg-white ">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-2 rounded-xl bg-white px-4 py-3 text-sm outline-none transition-shadow text-textFieldHeading font-normal"

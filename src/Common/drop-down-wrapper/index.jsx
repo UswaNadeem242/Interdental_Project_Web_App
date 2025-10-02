@@ -13,14 +13,13 @@ export const DropdownWrapper = ({ buttonLabel, children }) => {
           e.stopPropagation();
           setOpen((prev) => !prev);
         }}
-        className="px-2 py-3 w-full border bg-[#F8F8F8] font-poppins text-left text-[#828386] font-normal text-xs"
+        className="px-2 py-3 w-full border border-background bg-background font-poppins text-left text-textFieldHeading font-normal text-sm"
       >
         <div className="flex gap-4 justify-between items-center">
           <span>{buttonLabel}</span>
           <ChevronDownIcon
-            className={`w-4 h-4 mr-1 transition-transform duration-200 ${
-              open ? "rotate-180" : "rotate-0"
-            }`}
+            className={`w-4 h-4 mr-1 transition-transform duration-200 ${open ? "rotate-180" : "rotate-0"
+              }`}
           />
         </div>
       </button>

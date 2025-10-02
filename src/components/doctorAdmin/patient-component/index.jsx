@@ -116,7 +116,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
               />
             )}
             {/* <span>{selectedPatient.name}</span> */}
-            <span>{`${maskName(selectedPatient.name)} ${maskLastName(
+            <span>{`${maskName(selectedPatient.name)}${maskLastName(
               selectedPatient.lastName
             )} - ${maskEmail(selectedPatient.email)}`}</span>
           </span>
@@ -148,30 +148,6 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
             filteredPatients.map((p, idx) => {
               const active = selectedPatient?.id === p.id;
               const isLast = idx === filteredPatients.length - 1;
-              //   const maskName = (name) => {
-              //     if (!name?.trim()) return "Unknown";
-              //     const clean = name.trim();
-              //     return (
-              //       clean.slice(0, 2).charAt(0).toUpperCase() +
-              //       clean.slice(1, 2).toLowerCase()
-              //     );
-              //   };
-
-              //   const maskLastName = (lastName) => {
-              //     if (!lastName?.trim()) return "Unknown";
-              //     const clean = lastName.trim();
-              //     return (
-              //       clean.slice(0, 2).charAt(0).toUpperCase() +
-              //       clean.slice(1, 2).toLowerCase()
-              //     );
-              //   };
-
-              //   const maskEmail = (email) => {
-              //     if (!email) return "";
-              //     const [localPart, domain] = email.split("@");
-              //     if (!localPart || !domain) return email;
-              //     return localPart.slice(0, 3) + "*****@" + domain;
-              //   };
               return (
                 <button
                   key={p.id}
@@ -189,7 +165,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
 
                   <div className="flex flex-col text-left">
                     <span className="text-primaryText font-medium text-sm">
-                      {`${maskName(p.name)} ${maskLastName(
+                      {`${maskName(p.name)}${maskLastName(
                         p.lastName
                       )} - ${maskEmail(p.email)}`}
                     </span>
