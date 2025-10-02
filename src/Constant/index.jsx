@@ -65,9 +65,6 @@ export const navItems = [
   { to: "/contact-us", label: "Contact Us" },
 ];
 
-
-
-
 export const menuPatientItem = [
   {
     name: "warranty mGMT",
@@ -105,6 +102,31 @@ export const menuAdminPanelItem = [
   {
     name: "Orders",
     path: "/admin-panel/orders",
+    icon: DashboardIcon,
+  },
+  {
+    name: "Products",
+    path: "/admin-panel/products",
+    icon: DashboardIcon,
+  },
+  {
+    name: "List Product",
+    path: "/admin-panel/list-product",
+    icon: DashboardIcon,
+  },
+  {
+    name: "product Details",
+    path: "/admin-panel/product-details",
+    icon: DashboardIcon,
+  },
+  {
+    name: "Subscriptions",
+    path: "/admin-panel/subscriptions",
+    icon: DashboardIcon,
+  },
+  {
+    name: "Claim Requests",
+    path: "/admin-panel/claim-requests",
     icon: DashboardIcon,
   },
   // {
@@ -1080,7 +1102,6 @@ export const headingsAdminPanelTable = [
   { label: "License Number", key: "licenseNum" },
   { label: "Account Status", key: "status" },
   { label: "Sub status", key: "subStatus" },
-  { label: "", key: "icon" },
 ];
 
 export const dataDoctors = [
@@ -1093,7 +1114,6 @@ export const dataDoctors = [
     status: "deactivated",
     subStatus: "expired",
     detailUrl: "/doctor-admin/order-details",
-    icon: "✌️",
   },
   {
     name: "Jon Doe",
@@ -1104,7 +1124,16 @@ export const dataDoctors = [
     status: "active",
     subStatus: "expired",
     detailUrl: "/doctor-admin/order-details",
-    icon: "✌️",
+  },
+  {
+    name: "Jon Doe",
+    email: "JonDoe@gmail.com",
+    phoneNumber: "0356 7656789",
+    address: "207 Stillwater Lane",
+    licenseNum: "456 567 43235",
+    status: "active",
+    subStatus: "expired",
+    detailUrl: "/doctor-admin/order-details",
   },
 ];
 
@@ -1123,7 +1152,7 @@ export const dataOrdersAdminPanel = [
     id: "#1235",
     pId: "etedfty6",
     product: "Argen HT",
-    status: "active",
+    status: "in progress",
     scanDate: "17/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
@@ -1134,7 +1163,7 @@ export const dataOrdersAdminPanel = [
     id: "#1235",
     pId: "etedfty6",
     product: "Argen HT",
-    status: "active",
+    status: "pending",
     scanDate: "17/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
@@ -1145,7 +1174,7 @@ export const dataOrdersAdminPanel = [
     id: "#1235",
     pId: "etedfty6",
     product: "Argen HT",
-    status: "active",
+    status: "completed",
     scanDate: "17/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
@@ -1156,7 +1185,7 @@ export const dataOrdersAdminPanel = [
     id: "#1235",
     pId: "etedfty6",
     product: "Argen HT",
-    status: "active",
+    status: "completed",
     scanDate: "17/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
@@ -1167,7 +1196,7 @@ export const dataOrdersAdminPanel = [
     id: "#1235",
     pId: "etedfty6",
     product: "Argen HT",
-    status: "active",
+    status: "completed",
     scanDate: "17/22/2026",
     action: "View Detail",
     dName: "Miles, Esther",
@@ -1179,7 +1208,7 @@ export const dataOrdersAdminPanel = [
 // Admin Panel Produts
 
 export const headingsProducts = [
-  { label: "Name", key: "name" },
+  { label: "Name", key: "pName" },
   { label: "Product ID", key: "pId" },
   { label: "Category", key: "category" },
   { label: "Stock", key: "stock" },
@@ -1188,11 +1217,28 @@ export const headingsProducts = [
 
 export const dataProducts = [
   {
-    name: "Mgr Financial Plan",
+    pName: "Mgr Financial Plan",
     pId: "PRID233214",
     category: "Contact Lenses",
     stock: "543",
     price: "$23",
+    image: "/assets/brush.png",
+  },
+  {
+    pName: "Mgr Financial Plan",
+    pId: "PRID233214",
+    category: "Contact Lenses",
+    stock: "0",
+    price: "$23",
+    image: "/assets/brush.png",
+  },
+  {
+    pName: "Mgr Financial Plan",
+    pId: "PRID233214",
+    category: "Contact Lenses",
+    stock: "0",
+    price: "$23",
+    image: "/assets/brush.png",
   },
 ];
 
@@ -1553,21 +1599,21 @@ export const implantCards = [
     title: "Dentures",
     subtitle: "What Are Implant-Retained Dentures?",
     button: "Read More",
-    href: '/blogs'
+    href: "/blogs",
   },
   {
     img: "/assets/landing-page/card 5.png",
     title: "Dentures",
     subtitle: "What Are Implant-Retained Dentures?",
     button: "Read More",
-    href: '/blogs'
+    href: "/blogs",
   },
   {
     img: "/assets/landing-page/card 4.png",
     title: "Dentures",
     subtitle: "What Are Implant-Retained Dentures?",
     button: "Read More",
-    href: '/blogs'
+    href: "/blogs",
   },
 ];
 
@@ -1696,7 +1742,6 @@ export const plans = [
       "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
   },
 ];
-
 
 export const plansmodel = [
   {
@@ -1851,23 +1896,31 @@ export const tabs = [
   },
 ];
 
-
 export const insideContent = [
   {
-    id: 1, title: 'Bionic', description: `3D Pro Zir Is Developed By Aidite Technology And Peking  University School Of Stomatology. The Material Comes Closer To
+    id: 1,
+    title: "Bionic",
+    description: `3D Pro Zir Is Developed By Aidite Technology And Peking  University School Of Stomatology. The Material Comes Closer To
                   Natural Teeth. Not Only From The Esthetic Point Of View, Also
                   Its Abrasion Characteristics Makes It To A Dental Material
-                  With Biomimetic Properties.`},
+                  With Biomimetic Properties.`,
+  },
   {
-    id: 2, title: ' High Strength', description: `  The Flexural Strength Of 3D Pro Zir Is Up To 1100 MPa Which Is
+    id: 2,
+    title: " High Strength",
+    description: `  The Flexural Strength Of 3D Pro Zir Is Up To 1100 MPa Which Is
                   Greatly Improved. Long Span Bridges Are Stable And Fully Meet
                   The Strength Requirements Of Laboratories For A Broad Range Of
-                  Indications.`},
+                  Indications.`,
+  },
   {
-    id: 3, title: ' Layerless Natural Transition', description: `  Matching The Color Transition Of Natural Teeth From Cervical
+    id: 3,
+    title: " Layerless Natural Transition",
+    description: `  Matching The Color Transition Of Natural Teeth From Cervical
                   To Incisal, 3D Pro Zir Has A Smooth Color Gradient Without
-                  Visible Layer.`},
-]
+                  Visible Layer.`,
+  },
+];
 
 export const shadesProductMultiPro = [
   { label: "A1", color: "#EFEAD4" },
@@ -1941,7 +1994,6 @@ export const accordionData = [
   },
 ];
 
-
 export const teethOption = [
   { id: 1, title: "Inlay/Onlay", img: "/assets/landing-page/1.png" },
   { id: 2, title: "Veneer", img: "/assets/landing-page/2.png" },
@@ -1963,8 +2015,7 @@ export const teethOption = [
 export const settingsOption = [
   {
     title: "CUT-OFF TIME",
-    description:
-      `Files must be submitted by 3:00 P.M. PST (6:00 P.M. EST).
+    description: `Files must be submitted by 3:00 P.M. PST (6:00 P.M. EST).
        Milled PMMA units will be received within 2 business days`,
   },
   {
@@ -1997,7 +2048,6 @@ export const settingsOption = [
     description: ["Single up to 14 units"],
   },
 ];
-
 
 export const productsOption = [
   {
@@ -2065,3 +2115,106 @@ With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic result
     nav: "/product/aidite-zirconia",
   },
 ];
+
+// Admin Panel Subscriptions
+
+export const headingsSubscriptions = [
+  { label: "Sub ID", key: "subId" },
+  { label: "Customer Name", key: "name" },
+  { label: "Date", key: "date" },
+  { label: "Subscription Plan", key: "subscriptionPlan" },
+  { label: "Total price", key: "totalPrice" },
+  { label: "Status", key: "status" },
+  { label: "", key: "action" },
+];
+
+export const dataSubscriptions = [
+  {
+    subId: "1235",
+    name: "John Doe",
+    date: "Jan 15,2025",
+    subscriptionPlan: "silver",
+    totalPrice: "$100",
+    status: "active",
+    detailUrl: "/admin-panel/order-detail",
+    action: "View Detail",
+  },
+  {
+    subId: "1235",
+    name: "John Doe",
+    date: "Jan 15,2025",
+    subscriptionPlan: "gold",
+    totalPrice: "$100",
+    status: "active",
+    detailUrl: "/admin-panel/order-detail",
+    action: "View Detail",
+  },
+  {
+    subId: "1235",
+    name: "John Doe",
+    date: "Jan 15,2025",
+    subscriptionPlan: "platinum",
+    totalPrice: "free trial",
+    status: "active",
+    detailUrl: "/admin-panel/order-detail",
+    action: "View Detail",
+  },
+];
+
+export const pamentDetailList = [
+  { title: "account holder name", name: "Kindie Jhancy" },
+  { title: "bank name", name: "allied bank" },
+  { title: "swipe code", name: "qe0ssp3" },
+  { title: "IBAN", name: "8476529761391" },
+];
+
+//
+export const dropDownOpts = ["FILA", "Transi", "Dentyalo", "Dine"];
+
+//Admin-Panel Claim Req
+
+export const headingsAdminPanelClaimReq = [
+  { label: "Claim ID", key: "id" },
+  { label: "Patient Name", key: "patientName" },
+  { label: "Doctor Name", key: "doctorName" },
+  { label: "Status", key: "status" },
+  { label: "Submission Date", key: "submissionDate" },
+
+  { label: "Action", key: "action" },
+];
+
+export const dataClaimreqAdminPanel = [
+  {
+    id: "#1235",
+    patientName: "Mani Jhon",
+    doctorName: "John Doe",
+    status: "accepted",
+    submissionDate: "17/22/2026",
+    action: "View Detail",
+
+    // detailUrl: "/admin-panel/claim-detail-form",
+  },
+  {
+    id: "#1235",
+    patientName: "Mani Jhon",
+    doctorName: "John Doe",
+    status: "pending",
+    submissionDate: "17/22/2026",
+    action: "View Detail",
+
+    // detailUrl: "/admin-panel/order-detail",
+  },
+];
+
+export const doctorClaimReqData = [
+  { key: "Patient name", data: "vagra Dora" },
+  { key: "Patient Email Address", data: "VargaDóra123@gmail.com" },
+
+  { key: "Product name", data: "Dental Crown" },
+  { key: "Quantity", data: "2" },
+  { key: "Purchase Date", data: "10 March,2025" },
+  { key: "Claim Submitted On", data: "12 Mar 2025" },
+  { key: "Claim Reason", data: "Defective product" },
+];
+
+export const dentalDropDownOpts = ["1", "2", "3", "Dine"];

@@ -2,6 +2,8 @@ import React from "react";
 import { SecondaryButton } from "../../../Common/Button";
 import { useState } from "react";
 import AreYouSureModel from "../../../modals/AreYouSureModel";
+import DropDownOptions from "../../../Common/drop-down-options";
+import { dentalDropDownOpts } from "../../../Constant";
 
 function PrintInfoCard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,52 +12,68 @@ function PrintInfoCard() {
       <div className="text-primaryText">
         {/* Destination */}
         <div className="my-4  ">
-          <label className="block text-sm text-primaryText font-normal mb-1 ">
+          <label className="block text-sm text-primaryText font-normal mb-2 ">
             Destination
           </label>
-          <select className="w-full border  rounded-lg px-4 py-4 focus:outline-none text-sm font-normal  ">
-            <option className="">Hpougvy7u</option>
-          </select>
+          <DropDownOptions
+            options={dentalDropDownOpts}
+            placeholder="2"
+            buttonClassName="hidden"
+            className="text-[#3a3939] py-4"
+          />
         </div>
 
         {/* Pages */}
         <div className="mb-4">
-          <label className="block text-sm text-primaryText font-normal mb-1">
+          <label className="block text-sm text-primaryText font-normal mb-2">
             Pages
           </label>
-          <select className="w-full border rounded-lg px-4 py-4 focus:outline-none text-sm font-normal">
-            <option>All</option>
-          </select>
+
+          <DropDownOptions
+            options={dentalDropDownOpts}
+            placeholder="2"
+            buttonClassName="hidden"
+            className="text-[#3a3939] py-4"
+          />
         </div>
 
         {/* Copies */}
         <div className="mb-4">
-          <label className="block text-sm text-primaryText font-normal mb-1">
+          <label className="block text-sm text-primaryText font-normal mb-2">
             Copies
           </label>
-          <select className="w-full border rounded-lg px-4 py-4 focus:outline-none text-sm font-normal">
-            <option>2</option>
-          </select>
+          <DropDownOptions
+            options={dentalDropDownOpts}
+            placeholder="2"
+            buttonClassName="hidden"
+            className="text-[#3a3939] py-4"
+          />
         </div>
 
         {/* Layout */}
         <div className="mb-4">
-          <label className="block text-sm text-primaryText font-normal mb-1">
+          <label className="block text-sm text-primaryText font-normal mb-2">
             Layout
           </label>
-          <select className="w-full border rounded-lg px-4 py-4 focus:outline-none text-sm font-normal">
-            <option>portrait</option>
-          </select>
+          <DropDownOptions
+            options={dentalDropDownOpts}
+            placeholder="2"
+            buttonClassName="hidden"
+            className="text-[#3a3939] py-4"
+          />
         </div>
 
         {/* Colour */}
         <div className="mb-6">
-          <label className="block text-sm text-primaryText font-normal mb-1">
+          <label className="block text-sm text-primaryText font-normal mb-2">
             Colour
           </label>
-          <select className="w-full border rounded-lg px-4 py-4 focus:outline-none text-sm font-normal">
-            <option>colour</option>
-          </select>
+          <DropDownOptions
+            options={dentalDropDownOpts}
+            placeholder="2"
+            buttonClassName="hidden"
+            className="text-[#3a3939] py-4"
+          />
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import React from "react";
+import { doctorClaimReqData } from "../../../Constant";
 import FileIcon from "../../../icon/FileIcon";
 
 export default function ClaimDetailForm() {
@@ -11,38 +11,15 @@ export default function ClaimDetailForm() {
         </p>
       </div>
       <div className="grid grid-cols-12 mt-6">
-        <div className="col-span-12 space-y-2  pb-2 border-b border-b-borderPrimary">
-          <p className="text-secondaryText text-sm">Product name</p>
-          <p className="text-sm font-semibold font-poppins">Varga Dóra</p>
-        </div>
-        <div className="col-span-12 space-y-2 mt-3 pb-2 border-b border-b-borderPrimary">
-          <p className="text-secondaryText text-sm">Patient Email Address</p>
-          <p className="text-sm font-semibold font-poppins">
-            VargaDóra123@gmail.com
-          </p>
-        </div>
-        <div className="col-span-12 space-y-2 mt-3 pb-2 border-b border-b-borderPrimary">
-          <p className="text-secondaryText text-sm">Product Name</p>
-          <p className="text-sm font-semibold font-poppins">Dental Crown</p>
-        </div>
-        <div className="col-span-12 space-y-2 mt-3 pb-2 border-b border-b-borderPrimary">
-          <p className="text-secondaryText text-sm">Quantity</p>
-          <p className="text-sm font-semibold font-poppins">2</p>
-        </div>
-        <div className="col-span-12 space-y-2 mt-3 pb-2 border-b border-b-borderPrimary">
-          <p className="text-secondaryText text-sm">Purchase Date</p>
-          <p className="text-sm font-semibold font-poppins">10 Mar 2025</p>
-        </div>
-        <div className="col-span-12 space-y-2 mt-3 pb-2 border-b border-b-borderPrimary">
-          <p className="text-secondaryText text-sm">Claim Submitted On</p>
-          <p className="text-sm font-semibold font-poppins">12 Mar 2025</p>
-        </div>
-        <div className="col-span-12 space-y-2 mt-3 pb-2 border-b border-b-borderPrimary">
-          <p className="text-secondaryText text-sm">Claim Reason</p>
-          <p className="text-sm font-semibold font-poppins">
-            Defective product
-          </p>
-        </div>
+        {doctorClaimReqData.map((data, index) => (
+          <div className="col-span-12 space-y-2  pb-2 border-b border-b-borderPrimary mb-4 font-poppins">
+            <p className="text-secondaryText text-sm">{data.key}</p>
+            <p className="text-sm font-semibold font-poppins text-[#434343]">
+              {data.data}
+            </p>
+          </div>
+        ))}
+
         <div className="col-span-12 space-y-2 mt-3 pb-2 border-b border-b-borderPrimary">
           <p className="text-secondaryText text-sm">Additional Notes</p>
           <p className="text-sm font-normal font-poppins">
@@ -53,7 +30,7 @@ export default function ClaimDetailForm() {
           </p>
         </div>
 
-        <div className="col-span-12 space-y-2 mt-3">
+        <div className="col-span-12 space-y-2 mt-3 mb-8">
           <p className="text-secondaryText text-sm">Attached Document</p>
           <div>
             <FileIcon />
