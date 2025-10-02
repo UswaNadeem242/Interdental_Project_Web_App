@@ -3,6 +3,7 @@ import SubscriptionForm from "./subscription-form";
 import BasicInfo from "./basic-info";
 import PaymentDetail from "./payment-detail";
 import AccountDetailForm from "./account-detail-form";
+import PatientsTable from "./patients-table";
 
 const AdminPanelDoctorDetail = () => {
   const stepss = [
@@ -12,7 +13,7 @@ const AdminPanelDoctorDetail = () => {
     },
     {
       name: "Patients",
-      // content: <TrackingOrder />,
+      content: <PatientsTable />,
     },
     {
       name: "Payment Detail",
@@ -23,16 +24,26 @@ const AdminPanelDoctorDetail = () => {
     <div className=" p-4 ">
       <div className="grid grid-cols-12 gap-4">
         <div className="bg-bgWhite p-6  font-poppins  col-span-4 rounded-2xl ">
-          <AccountDetailForm />
+          <AccountDetailForm
+            name="Huynam Moinon"
+            icon="/assets/user01.png"
+            email="hunammoinon@gmail.com"
+            buttonText="Deactivate Account"
+          />
 
-          <SubscriptionForm />
+          <SubscriptionForm
+            title="Subscription Plan"
+            para="will be expired on 23 march 2023"
+            text="Number of patients"
+            number="10/20"
+          />
         </div>
 
         <div className="col-span-8 bg-bgWhite rounded-2xl">
           <div className="py-6 px-2">
             <Stepper
               steps={stepss}
-              className="md:w-2/3 bg-[#F8F8F8]  border-none"
+              className="md:w-2/3 mb-4 bg-[#F8F8F8]  border-none"
             />
           </div>
         </div>

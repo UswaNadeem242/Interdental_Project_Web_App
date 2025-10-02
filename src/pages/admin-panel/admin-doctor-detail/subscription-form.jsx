@@ -1,13 +1,13 @@
 import React from "react";
 
-function SubscriptionForm() {
+function SubscriptionForm({ title, para, text, number }) {
   return (
     <div className="col-span-4 mt-8">
       <div className="bg-card p-4 rounded-2xl">
         <p className="text-black font-poppins font-semibold text-sm ">
-          Subscription Plan
+          {title}
           <p className="text-xs font-poppins font-medium  pt-6 text-primaryText">
-            Will Be Expired On 23 March 2023
+            {para}
           </p>
         </p>
 
@@ -23,9 +23,9 @@ function SubscriptionForm() {
         </div>
         <div className="flex items-center justify-between border rounded-lg px-3 py-2 bg-bgWhite">
           <span className="text-xs text-primaryText font-poppins font-normal">
-            Number of Patients
+            {text}
           </span>
-          <span className="text-xs font-medium text-secondaryBrand">10/20</span>
+          <span className="text-xs font-medium text-secondaryBrand">{number}</span>
         </div>
       </div>
     </div>

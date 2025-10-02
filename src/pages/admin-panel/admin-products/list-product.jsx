@@ -1,7 +1,8 @@
-import React from "react";
 import { SecondaryButton } from "../../../Common/Button";
 import DropDownArrow from "../../../icon/DropDownArrow";
 import TextInput from "../../../Common/Input";
+import DropDownOptions from "../../../Common/drop-down-options";
+import { dropDownOpts } from "../../../Constant";
 
 function ListProduct() {
   return (
@@ -106,18 +107,11 @@ function ListProduct() {
                     Category
                   </label>
                   <div className="relative mt-2">
-                    <select
-                      id="category"
-                      className="w-full p-3 text-secondaryText text-sm font-normal bg-white rounded-lg border-2 border-borderPrimary appearance-none pr-10"
-                    >
-                      <option value="">Select Category</option>
-                      <option>C1</option>
-                      <option>C2</option>
-                      <option>C3</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <DropDownArrow />
-                    </div>
+                    <DropDownOptions
+                      options={dropDownOpts}
+                      placeholder="Select Category"
+                      buttonText="Add Category"
+                    />
                   </div>
                 </div>
 
@@ -130,19 +124,11 @@ function ListProduct() {
                     Brand
                   </label>
                   <div className="relative mt-2">
-                    <select
-                      id="brand"
-                      className="w-full p-3 text-secondaryText text-sm font-normal bg-white rounded-lg border-2 border-borderPrimary focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm appearance-none pr-10"
-                    >
-                      <option value="" disabled selected>
-                        Select Brand
-                      </option>
-                      <option>B1</option>
-                      <option>B2</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <DropDownArrow />
-                    </div>
+                    <DropDownOptions
+                      options={dropDownOpts}
+                      placeholder="Select Brand"
+                      buttonText="Add Brand"
+                    />
                   </div>
                 </div>
               </div>
