@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import loginrectangle from "../assets/loginrectangle.png";
-// import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import AccountDeactivate from "../modals/AccountDeactivateModal";
 import axios from "axios";
@@ -19,7 +17,7 @@ const Signup = () => {
   const [showCPassword, setShowCPassword] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneNumber, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
@@ -35,29 +33,41 @@ const Signup = () => {
     if (!firstName?.trim()) return "First name is required";
     if (!lastName?.trim()) return "Last name is required";     // remove if not needed
     if (!email?.trim()) return "Email is required";
+    if (!phoneNumber?.trim()) return "Phone is required";
+    if (!address) return "Address is required";
+    if (!city) return "City is required";
+    if (!zip) return "Zip Number is required";
+    if (!drLicenseNo) return "Doctor's License Number is required";
+    if (!officeRefNo) return "Office Reference number is required";
     if (!password) return "Password is required";
-    if (!phone?.trim()) return "Phone is required";
     if (!labs) return "Please select a laboratory";
-
-    const nameRegex = /^[A-Za-z]{2,}$/;
+    const nameRegex = /^[A-Za-z]{3,}$/;
+    const numberRegex = /^[0-9]{10}$/;
+    const zipRegex = /^[0-9]{5}$/;
+    const addressRegex = /^(?![0-9\s!@#$%^&*()_+=-]+$).+/;
     if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
-    // if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
-
+    if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
+    if (!nameRegex.test(city)) return "Enter a City Name";
+    if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";
+    if (!addressRegex.test(address)) return "Enter a valid Address";
+    if (!nameRegex.test(address)) return "Enter a Address Name";
+    if (!numberRegex.test(drLicenseNo)) return "Enter a valid 10-digit Doctor's License Number";
+    if (!numberRegex.test(officeRefNo)) return "Enter a valid 10-digit Office Reference number";
+    if (!password) return "Password is required";
+    // if (!nameRegex.test(drLicenseNo)) return "Enter a Doctor's License Number";
+    // if (!nameRegex.test(officeRefNo)) return "Enter a Office Reference number";
+    if (!labs) return "Please select a laboratory";
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) return "Enter a valid email address";
-
     // Optional: phone 7–15 digits
-    const phoneRegex = /^[0-9\s()+-]{7,15}$/;
-    if (!phoneRegex.test(phone)) return "Enter a valid phone number";
-
+    const phoneRegex = /^[0-9]{11}$/;
+    if (!phoneNumber) return "Phone number is required";
+    if (!phoneRegex.test(phoneNumber)) return "Enter a valid 11-digit phone number";
     return null;
   };
-
   const handleSignup = async () => {
     const error = validate();
     if (error) {
-      console.log('2: sihn');
-
       setToastMessage(error);
       setToastType("error");
       setToastVisible(true);
@@ -68,7 +78,7 @@ const Signup = () => {
       password,
       firstName,
       lastName,
-      phone,
+      phoneNumber,
       address,
       drLicenseNo,
       officeRefNo,
@@ -86,10 +96,9 @@ const Signup = () => {
       setToastType("success");
       setToastVisible(true);
       navigate("/login");
-      console.log("response:", response.data);
     } catch (error) {
       console.log("Signup error:", error);
-      setToastMessage(`Error: ${error.response?.data?.message || error.message}`);
+      setToastMessage(`Error: ${error.response?.data?.responseDesc || error.responseDesc}`);
       setToastType("error");
       setToastVisible(true);
     } finally {
@@ -97,15 +106,12 @@ const Signup = () => {
     }
   };
   const [isLoadingLabs, setIsLoadingLabs] = useState(false);
-
   useEffect(() => {
     const loadLabs = async () => {
       try {
         setIsLoadingLabs(true);
 
         const res = await axios.get(`${BASE_URL}/api/lab/getAll`);
-        console.log("response:", res);
-
         // Ensure raw is always an array
         const raw =
           Array.isArray(res.data)
@@ -120,8 +126,6 @@ const Signup = () => {
           label: l.name || l.labName || `Lab ${l.id}`,
           value: String(l.id),
         }));
-
-        console.log("options:", options);
 
         setLabs(options);
         setSelectedLab(options.length > 0 ? options[0].value : "");
@@ -142,7 +146,6 @@ const Signup = () => {
   const closeToast = () => {
     setToastVisible(false);
   };
-
 
   return (
     <div className="flex flex-col lg:flex-row justify-start items-center gap-6 lg:gap-24 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
@@ -215,7 +218,7 @@ const Signup = () => {
                 type="text"
                 className="w-full rounded-md border border-gray-300 py-3  outline-none px-4 text-textFieldHeading "
                 placeholder="Phone"
-                value={phone}
+                value={phoneNumber}
                 onChange={(e) => setPhone(e.target.value)}
               />
             </div>

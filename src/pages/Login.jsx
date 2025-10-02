@@ -47,7 +47,7 @@ const Login = () => {
       ) {
         setIsModalOpen(true);
       }
-      login(response.data.data.users, response.data.data.accessToken);
+      login(response?.data?.data?.users, response?.data?.data?.accessToken);
       console.log("test", response);
       if (response.data.data.users.roles[0] === "ADMIN") {
         navigate("/doctor-admin/dashboard");

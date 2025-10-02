@@ -129,9 +129,10 @@ export default function AddPatientForm({ onClose }) {
         }, 2000);
       } else {
         showToast(
-          response.message || "Failed to add patient. Please try again.",
+          response?.data?.responseDesc || "Failed to add patient. Please try again.",
           "error"
         );
+
       }
 
     }

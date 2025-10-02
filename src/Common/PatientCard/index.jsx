@@ -22,7 +22,7 @@ export const PatientCard = ({ title, name, email, linkName, icon, data }) => {
               {/* Left section: user info */}
               <div className="flex gap-2 flex-1 items-center">
                 <img
-                  src="/assets/users.png"
+                  src={item?.profileURL || "/assets/users.png"}
                   alt="image"
                   className="w-10 h-10 rounded-full object-cover"
                 />
@@ -38,7 +38,7 @@ export const PatientCard = ({ title, name, email, linkName, icon, data }) => {
 
               {/* Right section: link */}
               <NavLink
-                to="#"
+                to="/doctor-admin/patient"
                 className="text-[#278AE5] font-normal text-xs font-poppins flex items-center flex-shrink-0"
               >
                 <span className="mr-1">{item?.linkName}</span>

@@ -27,6 +27,8 @@ const PatientPage = () => {
       linkName: "View Detail",
       phone: order?.phoneNumber,
       address: order?.address || "abc....",
+      profileURL: order?.profileURL,
+
     }));
   };
   useEffect(() => {
@@ -68,6 +70,8 @@ const PatientPage = () => {
     }
     return filtered;
   }, [searchQuery, sortOrder, patients]);
+  console.log('patients:', patients);
+
 
   return (
     <div>

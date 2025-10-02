@@ -42,6 +42,7 @@ export default function TextInput({
   onBlur,
   className,
   className2,
+  className3
 }) {
   return (
     <div className="w-full">
@@ -64,7 +65,7 @@ export default function TextInput({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className="block w-full bg-white py-2 px-2 text-base text-primaryText placeholder:text-secondaryText md:placeholder:text-sm placeholder:text-xs  font-poppins focus:outline-none sm:text-sm"
+          className={`block w-full bg-white py-2 px-2 text-base text-primaryText placeholder:text-secondaryText md:placeholder:text-sm placeholder:text-xs  font-poppins focus:outline-none sm:text-sm ${className3}`}
         />
         {icon && <div className="ml-2 text-gray-500">{icon}</div>}
       </div>
