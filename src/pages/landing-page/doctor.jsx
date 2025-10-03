@@ -139,9 +139,6 @@ const Doctor = ({ isLanding }) => {
                 <ArrowRightIcon className="w-4 h-4" />
               </div>
             </button> */}
-
-
-
             <ThirdButtonUI title=' Register' href='/signup' />
           </div>
         </section>
