@@ -21,7 +21,7 @@ export const PatientvalidationSchema = Yup.object().shape({
   lastName: Yup.string()
      .matches(/^[A-Za-z ]+$/, "Last Name should only contain letters and spaces")
     .min(3, "First Name must be at least 3 characters")
-    .required("First Name is required"),
+    .required("Last Name is required"),
 
   address: Yup.string()
     .matches(/^(?![\d!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|~-]+$).*$/, "Address cannot be only numbers or special characters")
