@@ -28,6 +28,8 @@ const CheckoutForm = ({ next }) => {
   });
   const dispatch = useDispatch();
   const restoration = useSelector((state) => state.restoration);
+  console.log('restoration', restoration);
+
   const { toothSelections, selectedTooth } = restoration; // destructure from Redux
   const flattenedItems = (restoration.doctorOrderItems || []).map((item, index) => ({
     id: index + 1, // or your API might auto-generate
@@ -39,16 +41,32 @@ const CheckoutForm = ({ next }) => {
   const storedUser = localStorage.getItem("user");
   const userId = storedUser ? JSON.parse(storedUser).id : 5;
   const buildRequestData = (data) => {
-    const doctorData = {};
-    (restoration.doctor || []).forEach(d => {
-      doctorData[d.field] = d.value;
-    });
+    // const doctorData = {};
+    // (restoration.doctor || []).forEach(d => {
+    //   doctorData[d.field] = d.value;
+    // });
+    const doctorData = restoration.doctor?.reduce((acc, item) => {
+      acc[item.field] = item.value || "";
 
-    const patientData = {};
-    (restoration.patient || []).forEach(p => {
-      patientData[p.field] = p.value;
-    });
+      // Extract doctor ID from the officeReg field
+      if (item.field === "officeReg" && item.id) {
+        acc.id = item.id;
+      }
 
+      return acc;
+    }, {});
+
+    // Get only the doctor ID
+    const doctorId = doctorData?.id;
+
+    console.log('doctorData', doctorId);
+    const patientId = restoration?.patient?.id || null;
+
+    console.log('patientData', patientId);
+    // const patientData = {};
+    // (restoration.patient || []).forEach(p => {
+    //   patientData[p.field] = p.value;
+    // });
     const selectedTeeth = restoration.selectedTeeth || [12, 13];
 
     return {
@@ -56,11 +74,13 @@ const CheckoutForm = ({ next }) => {
       totalAmount: restoration.totalPrice || 250.0,
       transactionId: null,
       expectedDeliveryDate: "2025-09-30T00:00:00",
-      doctorName: doctorData.doctorName || "Dr. Default",
-      doctorRegNumber: doctorData.officeReg || "REG-0000",
-      patientFirstName: patientData.patientFirstName || "John",
-      patientLastName: patientData.patientLastName || "Doe",
-      subscriptionId: patientData.subscriptionId || "SUB-0000",
+      // doctorName: doctorData.doctorName || "Dr. Default",
+      // doctorRegNumber: doctorData.officeReg || "REG-0000",
+      patientId: patientId,
+      doctorId: doctorId,
+      // patientFirstName: patientData.patientFirstName || "John",
+      // patientLastName: patientData.patientLastName || "Doe",
+      // subscriptionId: patientData.subscriptionId || "SUB-0000",
       additionalNotes: restoration.note || "Checkout order",
       selectedTooths: selectedTeeth,
       doctorOrderItems: flattenedItems,

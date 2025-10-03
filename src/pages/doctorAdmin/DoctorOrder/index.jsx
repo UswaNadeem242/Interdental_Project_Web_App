@@ -23,10 +23,9 @@ const OrderDoctorPage = () => {
     if (!apiData || !Array.isArray(apiData)) return [];
 
     return apiData.map((order) => ({
-      id: order?.id,
-      pName: `${order?.patientFirstName || "-"} ${
-        order?.patientLastName || "-"
-      }`,
+      id: `#${order?.id}`,
+      pName: `${order?.patientFirstName || "-"} ${order?.patientLastName || "-"
+        }`,
       product: "Argen HT",
       status: order?.orderStatus?.toLowerCase() || "pending",
       submission: order?.createdAt
@@ -34,6 +33,8 @@ const OrderDoctorPage = () => {
         : "N/A",
       action: "View Detail",
       dName: order?.doctorName || "N/A",
+      dName:  `${order?.doctorFirstName || "-"} ${order?.doctorLastName || "-"
+        }`,
       shipping: order?.expectedDeliveryDate
         ? new Date(order?.expectedDeliveryDate).toLocaleDateString()
         : "N/A",
@@ -114,7 +115,7 @@ const OrderDoctorPage = () => {
       content: (
         <TableComponent
           headings={headingsOrder}
-          data={getFilteredDataByStatus("pending")}
+          data={getFilteredDataByStatus("progress")}
           actionHrefKey="detailUrl"
         />
       ),
@@ -148,6 +149,7 @@ const OrderDoctorPage = () => {
           <div className="md:flex-1 ">
             <SearchBar
               title="Sort By"
+              placeholder='Search here...'
               onSearch={setSearchQuery}
               onSort={setSortOrder}
             />

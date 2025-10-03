@@ -10,6 +10,8 @@ import {
   updateDoctorProfile,
   updateUserProfileImage,
 } from "../../../api/doctorDasboard";
+import { useDispatch, useSelector } from "react-redux";
+import { setProfileImage } from "../../../store/slices/profileImage-slice";
 
 const DoctorProfile = () => {
   const [isModalPassword, setIsModalPassword] = useState(false);
@@ -17,12 +19,13 @@ const DoctorProfile = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const dispatch = useDispatch(); 
+  const profileImage = useSelector((state) => state.profile?.profileImage);
   const [toast, setToast] = useState({
     isVisible: false,
     message: "",
     type: "success",
   });
-
   useEffect(() => {
     const userData = localStorage.getItem("users");
 
@@ -48,7 +51,6 @@ const DoctorProfile = () => {
     reference: "",
     address: "",
   });
-
   // Update form data when doctorProfile is loaded
   useEffect(() => {
     if (doctorProfile) {
@@ -65,12 +67,7 @@ const DoctorProfile = () => {
   }, [doctorProfile]);
 
   // State for input errors
-  const [errors, setErrors] = useState({});
-
-
-  console.log('formdata:', formData);
-
-
+  const [errors, setErrors] = useState({}); 
   // Function to show toast messages
   const showToast = (message, type = "success") => {
     setToast({
@@ -90,61 +87,114 @@ const DoctorProfile = () => {
   };
 
   // Handle image upload
-  const handleImageUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  // const handleImageUpload = async (event) => {
+  //   const file = event.target.files[0];
+  //   if (!file) return;
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      showToast("Please select a valid image file", "error");
-      return;
-    }
+  //   // Validate file type
+  //   if (!file.type.startsWith("image/")) {
+  //     showToast("Please select a valid image file", "error");
+  //     return;
+  //   }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      showToast("Image size should be less than 5MB", "error");
-      return;
-    }
+  //   // Validate file size (max 5MB)
+  //   if (file.size > 5 * 1024 * 1024) {
+  //     showToast("Image size should be less than 5MB", "error");
+  //     return;
+  //   }
 
-    // Create preview immediately
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setProfileImagePreview(e.target.result);
-    };
-    reader.readAsDataURL(file);
+  //   // Create preview immediately
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => {
+  //     setProfileImagePreview(e.target.result);
+  //   };
+  //   reader.readAsDataURL(file);
 
-    setIsUploadingImage(true);
+  //   setIsUploadingImage(true);
 
-    try {
-      const formData = new FormData();
+  //   try {
+  //     const formData = new FormData();
 
-      formData.append("profileImage", file);
+  //     formData.append("profileImage", file);
 
-      const response = await updateUserProfileImage(formData);
+  //     const response = await updateUserProfileImage(formData);
 
-      if (response.status === 200 || response.data?.responseCode === "200") {
-        showToast("Profile image updated successfully!", "success");
-        // Keep the preview image after successful upload
-      } else {
-        showToast(
-          response.data?.responseMessage || "Failed to update profile image",
-          "error"
-        );
-        // Remove preview on error
-        setProfileImagePreview(null);
-      }
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      showToast("Error uploading image. Please try again.", "error");
-      // Remove preview on error
+  //     if (response.status === 200 || response.data?.responseCode === "200") {
+  //       showToast("Profile image updated successfully!", "success");
+  //       // Keep the preview image after successful upload
+  //     } else {
+  //       showToast(
+  //         response.data?.responseMessage || "Failed to update profile image",
+  //         "error"
+  //       );
+  //       // Remove preview on error
+  //       setProfileImagePreview(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error uploading image:", error);
+  //     showToast("Error uploading image. Please try again.", "error");
+  //     // Remove preview on error
+  //     setProfileImagePreview(null);
+  //   } finally {
+  //     setIsUploadingImage(false);
+  //     // Reset the file input
+  //     event.target.value = "";
+  //   }
+  // }; 
+
+
+
+const handleImageUpload = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Validate type
+  if (!file.type.startsWith("image/")) {
+    showToast("Please select a valid image file", "error");
+    return;
+  }
+
+  // Validate size
+  if (file.size > 5 * 1024 * 1024) {
+    showToast("Image size should be less than 5MB", "error");
+    return;
+  }
+
+  // Instant preview
+  const reader = new FileReader();
+  reader.onload = (e) => setProfileImagePreview(e.target.result);
+  reader.readAsDataURL(file);
+
+  setIsUploadingImage(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    const response = await updateUserProfileImage(formData);
+
+    if (response.status === 200 || response.data?.responseCode === "200") {
+      showToast("Profile image updated successfully!", "success");
+
+      // ✅ Use preview image for Redux (instant update across app)
+      dispatch(setProfileImage(reader.result));
+    } else {
+      showToast(
+        response.data?.responseMessage || "Failed to update profile image",
+        "error"
+      );
       setProfileImagePreview(null);
-    } finally {
-      setIsUploadingImage(false);
-      // Reset the file input
-      event.target.value = "";
     }
-  };
-
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    showToast("Error uploading image. Please try again.", "error");
+    setProfileImagePreview(null);
+  } finally {
+    setIsUploadingImage(false);
+    event.target.value = "";
+  }
+};
+ 
   // Validation function
   const validateField = (name, value) => {
     switch (name) {
@@ -231,8 +281,6 @@ const DoctorProfile = () => {
       }
     }
   };
-
-
   return (
     <>
       {/* Toast Component */}
@@ -247,10 +295,17 @@ const DoctorProfile = () => {
         {/* Left side */}
         <div className="col-span-12 md:col-span-6 flex gap-4 items-center">
           <img
-            src={
-              profileImagePreview || doctorProfile?.profileImage
-              // "/assets/user.png"
-            }
+            // src={
+            //   // profileImagePreview || doctorProfile?.profileImage
+            //   profileImage || doctorProfile?.profileImage
+
+            //   // "/assets/user.png"
+            // }
+            // src={profileImage || "/assets/user.png"}
+            src={profileImage || profileImagePreview || "/assets/user.png"}
+
+
+
             className="md:w-20 md:h-20 w-12 h-12 object-cover rounded-full"
             alt="Profile"
           />
@@ -319,132 +374,187 @@ const DoctorProfile = () => {
         </button>
       </div>
       <div className="bg-white rounded-2xl md:p-8 p-4   mt-10">
-        <div className="grid md:grid-cols-12 grid-cols-6 gap-4  items-center">
-          <div className="md:col-span-6 col-span-3">
-            <h3 className="text-primaryText text-lg font-poppins font-semibold  capitalize">
-              Account info
-            </h3>{" "}
-          </div>
-          <div className="md:col-span-6 col-span-3  md:flex  md:justify-end">
-            <button className="bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full">
-              Save Change
-            </button>
-          </div>
-        </div>
+
         <form
-          className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white "
+          className=" "
           onSubmit={handleSubmit}
         >
-          <div className="col-span-12  space-y-4">
-            <TextInput
-              id="firstName"
-              name="firstName"
-              label="First Name"
-              placeholder="Bransim"
-              icon={<PenIcon size={18} />}
-              value={`${formData.firstName} ${formData?.lastName}`}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.firstName && (
-              <p className="text-red-500 text-sm">{errors.firstName}</p>
-            )}
+          {/* grid md:grid-cols-12 grid-cols-6 gap-4 bg-white */}
+
+          <div className="grid md:grid-cols-12 grid-cols-6 gap-4  items-center">
+            <div className="md:col-span-6 col-span-3">
+              <h3 className="text-primaryText text-lg font-poppins font-semibold  capitalize">
+                Account info
+              </h3>{" "}
+            </div>
+            <div className="md:col-span-6 col-span-3  md:flex  md:justify-end">
+
+              <div className="col-span-12 flex justify-end mt-6">
+                <button
+                  type="submit"
+                  disabled={isUpdating}
+                  className={`bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${isUpdating
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-secondaryBrand"
+                    }`}
+                >
+                  {isUpdating ? "Save Change ..." : "Save Change"}
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="md:col-span-6 col-span-12">
-            <TextInput
-              id="email"
-              name="email"
-              label="Email"
-              placeholder="hanry463@gmail.com"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email}</p>
-            )}
-          </div>
-          <div className="md:col-span-6 col-span-12">
-            <TextInput
-              id="phone"
-              name="phone"
-              label="Phone Number"
-              placeholder="+92 457 765 456"
-              type="text"
-              icon={<PenIcon size={18} />}
-              value={formData.phone}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.phone && (
-              <p className="text-red-500 text-sm">{errors.phone}</p>
-            )}
-          </div>
-          <div className="md:col-span-6 col-span-12">
-            <TextInput
-              id="license"
-              name="license"
-              label="Doctor's License Number"
-              placeholder="658756RFTYT7"
-              type="text"
-              icon={<PenIcon size={18} />}
-              value={formData.license}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.license && (
-              <p className="text-red-500 text-sm">{errors.license}</p>
-            )}
-          </div>
-          <div className="md:col-span-6 col-span-12">
-            <TextInput
-              id="reference"
-              name="reference"
-              label="Office Reference number"
-              placeholder="76A8SDH75"
-              type="text"
-              icon={<PenIcon size={18} />}
-              value={formData.reference}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.reference && (
-              <p className="text-red-500 text-sm">{errors.reference}</p>
-            )}
+          <div className=" grid md:grid-cols-12 grid-cols-6 gap-4 bg-white">
+            <div className="col-span-12  space-y-4 mt-4">
+
+              <TextInput
+                id="fullName"
+                name="fullName"
+                label="Full Name"
+                placeholder="Bransim"
+                className3={"text-secondaryText"}
+                icon={<PenIcon size={18} />}
+                value={`${formData.firstName || ""} ${formData.lastName || ""}`.trim()}
+                onChange={(e) => {
+                  const fullName = e.target.value;
+
+                  // split into words
+                  const parts = fullName.trim().split(/\s+/);
+                  const firstName = parts[0] || "";
+                  const lastName = parts.slice(1).join(" ") || "";
+
+                  setFormData((prev) => ({
+                    ...prev,
+                    firstName,
+                    lastName,
+                  }));
+                }}
+                onBlur={handleBlur}
+              />
+              {(errors.firstName || errors.lastName) && (
+                <p className="text-red-800 text-sm">
+                  {errors.firstName || errors.lastName}
+                </p>
+              )}
+
+
+            </div>
+
+            <div className="md:col-span-6 col-span-12">
+              {/* <TextInput
+                id="email"
+                name="email"
+                label="Email"
+                 disabled 
+                placeholder="hanry463@gmail.com"
+                type="email"
+                className3={"text-secondaryText"}
+                value={formData.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                 
+              /> */}
+              <TextInput
+                id="email"
+                name="email"
+                label="Email"
+                placeholder="hanry463@gmail.com"
+                type="email"
+                className3="text-secondaryText cursor-not-allowed"
+                value={formData.email || ""}
+                disabled // <- this makes it fully non-editable
+              />
+
+              {errors.email && (
+                <p className="text-red-800 text-sm">{errors.email}</p>
+              )}
+            </div>
+            <div className="md:col-span-6 col-span-12">
+              <TextInput
+                id="phone"
+                name="phone"
+                label="Phone Number"
+                placeholder="+92 457 765 456"
+                type="text"
+                className3={"text-secondaryText"}
+                icon={<PenIcon size={18} />}
+                value={formData.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.phone && (
+                <p className="text-red-800 text-sm">{errors.phone}</p>
+              )}
+            </div>
+            <div className="md:col-span-6 col-span-12">
+              <TextInput
+                id="license"
+                name="license"
+                label="Doctor's License Number"
+                placeholder="658756RFTYT7"
+                className3={"text-secondaryText"}
+                type="text"
+                icon={<PenIcon size={18} />}
+                value={formData.license}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.license && (
+                <p className="text-red-800 text-sm">{errors.license}</p>
+              )}
+            </div>
+            <div className="md:col-span-6 col-span-12">
+              <TextInput
+                id="reference"
+                name="reference"
+                className3={"text-secondaryText"}
+                label="Office Reference number"
+                placeholder="76A8SDH75"
+                type="text"
+                icon={<PenIcon size={18} />}
+                value={formData.reference}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.reference && (
+                <p className="text-red-800 text-sm">{errors.reference}</p>
+              )}
+            </div>
+
+            <div className="col-span-12 ">
+              <TextInput
+                id="address"
+                name="address"
+                label="Address"
+                placeholder="76A8SDH75"
+                className3={"text-secondaryText"}
+                type="text"
+                icon={<PenIcon size={18} />}
+                value={formData.address}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.address && (
+                <p className="text-red-800 text-sm">{errors.address}</p>
+              )}
+            </div>
           </div>
 
-          <div className="col-span-12 ">
-            <TextInput
-              id="address"
-              name="address"
-              label="Address"
-              placeholder="76A8SDH75"
-              type="text"
-              icon={<PenIcon size={18} />}
-              value={formData.address}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.address && (
-              <p className="text-red-500 text-sm">{errors.address}</p>
-            )}
-          </div>
+
 
           {/* Submit Button */}
-          <div className="col-span-12 flex justify-end mt-6">
+          {/* <div className="col-span-12 flex justify-end mt-6">
             <button
               type="submit"
               disabled={isUpdating}
               className={`px-8 py-3 rounded-lg font-semibold text-white transition-colors ${isUpdating
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-secondaryBrand hover:bg-blue-600"
+                : "bg-secondaryBrand"
                 }`}
             >
               {isUpdating ? "Updating..." : "Update Profile"}
             </button>
-          </div>
+          </div> */}
         </form>
         <button
           onClick={() => setIsModalPassword(true)}
@@ -457,7 +567,7 @@ const DoctorProfile = () => {
             </span>
           </div>
 
-          <ChevronRightIcon size={10} className="text-gray-400" />
+          <ChevronRightIcon className="text-primaryText" />
         </button>
 
         {isModalPassword && (

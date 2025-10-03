@@ -15,11 +15,10 @@ export default function TabsStepper({ steps, newClaimBtn }) {
                   className={({ selected }) =>
                     `rounded-full py-3 px-6 text-xs  border border-textField text-primaryText
                                         focus:outline-none transition-colors duration-200 font-poppins capitalize
-                                        ${
-                                          selected
-                                            ? "bg-[#F8F8F8] font-bold text-base  "
-                                            : "bg-white text-primary  font-normal"
-                                        }`
+                                        ${selected
+                      ? "bg-[#F8F8F8] font-bold text-base  "
+                      : "bg-white text-primary  font-normal"
+                    }`
                   }
                 >
                   {name}

@@ -4,6 +4,7 @@ import { BellIcon } from "../../../icon/Bell";
 import { LogoutIcon } from "../../../icon/LogoutIcon";
 import usePageTitle from "../../../Hooks/usePageTitle";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const DoctorHeader = ({ title, subTitle, role }) => {
   const navigate = useNavigate();
@@ -32,7 +33,6 @@ const DoctorHeader = ({ title, subTitle, role }) => {
 
   useEffect(() => {
     if (doctorProfile) {
-      console.log("doctorProfile", doctorProfile);
     }
   }, [doctorProfile]);
 
@@ -41,6 +41,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
     role === "doctor"
       ? "/doctor-admin/profile"
       : "/patient-admin/profile-settings";
+  const profileImage = useSelector((state) => state.profile?.profileImage);
 
   return (
     <>
@@ -51,7 +52,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
         <div className="hidden md:flex flex-1"></div>
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
           <img
-            src={doctorProfile?.profileImage}
+            src={profileImage || doctorProfile?.profileImage || "/default-avatar.png"}
             alt="userImg"
             className="w-10 h-10 rounded-full"
           />

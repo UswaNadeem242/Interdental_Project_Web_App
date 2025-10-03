@@ -6,11 +6,13 @@ import { useAuth } from "../auth/AuthContext";
 import AccountDeactivate from "../modals/AccountDeactivateModal";
 import GoogleIcon from "../icon/google";
 import FacebookIcon from "../icon/facebookIcon";
+import { showToast } from "../store/toast-slice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,10 +47,15 @@ const Login = () => {
         response.data.responseCode === "003" ||
         response.data.responseMessage === "User is not active"
       ) {
-        setIsModalOpen(true);
+        dispatch(
+          showToast({
+            message: response.data.responseMessage,
+            type: "error",
+          })
+        );
       }
-      login(response.data.data.users, response.data.data.accessToken);
-      console.log("test", response);
+      // { setIsModalOpen(true); }
+      login(response?.data?.data?.users, response?.data?.data?.accessToken);
       if (response.data.data.users.roles[0] === "ADMIN") {
         navigate("/doctor-admin/dashboard");
       } else if (response.data.data.users.roles[0] === "PATIENT") {
@@ -56,7 +63,12 @@ const Login = () => {
       } else if (response.data.data.users.roles[0] === "DOCTOR") {
         navigate("/doctor-admin/dashboard");
       } else {
-        alert("Login failed");
+        dispatch(
+          showToast({
+            message: 'Login failed',
+            type: "error",
+          })
+        );
       }
     } catch (error) {
       console.log(error);

@@ -19,6 +19,7 @@ import {
   setNote,
   setDoctorField,
   resetRestoration,
+  setDueDate,
 } from "../../../store/slices/restoration-slice/index";
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import DonePage from "./DonePage";
@@ -35,7 +36,7 @@ import { useNavigate } from "react-router-dom";
 import Drawers from "../../../Common/Drawers";
 import AddPatientForm from "../PatientDoctor/AddPatientForm";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
-
+import { DropdownWrapper } from "../../../Common/drop-down-wrapper";
 const DoctorOrder = () => {
   const dispatch = useDispatch();
   const navigator = useNavigate();
@@ -136,6 +137,7 @@ const DoctorOrder = () => {
     dispatch(resetRestoration());
   }, [dispatch]);
   const [formData, setFormData] = useState({
+    id: '',
     reference: "",
   });
   useEffect(() => {
@@ -147,7 +149,15 @@ const DoctorOrder = () => {
 
       const fetchDoctorProfile = async () => {
         const response = await getDoctorProfile(userId);
-        setDoctorProfile(response.data.data);
+        setDoctorProfile(response?.data?.data);
+        if (doctorProfile?.id && doctorProfile?.officeRefNumber) {
+          dispatch(
+            setDoctorField({
+              id: doctorProfile.id,
+              officeRefNumber: doctorProfile.officeRefNumber,
+            })
+          );
+        }
       };
       fetchDoctorProfile();
     }
@@ -155,14 +165,14 @@ const DoctorOrder = () => {
   useEffect(() => {
     if (doctorProfile) {
       setFormData({
+        id: doctorProfile?.id || "",
         reference: doctorProfile?.officeRefNumber || "",
       });
     }
   }, [doctorProfile]);
-
- 
-
-   
+   const handleDueDateChange = (e) => {
+    dispatch(setDueDate({ dueDate: e.target.value }));
+  };
 
 
   return (
@@ -254,8 +264,10 @@ const DoctorOrder = () => {
                                 title="Doctor Info"
                                 color="text-xs font-semibold"
                                 className="border border-gray-200 p-4"
-                                gap='gap-4'
-                              >   <LabeledInput
+                                gap="gap-4"
+                              >
+                                {" "}
+                                <LabeledInput
                                   type="text"
                                   label="Office Reference number"
                                   name="officeReg"
@@ -263,8 +275,6 @@ const DoctorOrder = () => {
                                   onBlur={handleBlur}
                                   placeholder="Office Reference number"
                                 />
-
-
                                 <lable className="text-primaryText text-xs font-semibold font-poppins capitalize">
                                   Case expected due date
                                 </lable>
@@ -272,18 +282,21 @@ const DoctorOrder = () => {
                                   label="Case expected due date"
                                   type="date"
                                   name="dueDate"
-                                  value={values.dueDate || ""}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    const fieldName = e.target.name;
-                                    setFieldValue(fieldName, value);
-                                    dispatch(
-                                      setDoctorField({
-                                        field: fieldName,
-                                        value,
-                                      })
-                                    );
-                                  }}
+                                  // value={values.dueDate || ""}
+                                  // onChange={(e) => {
+                                  //   const value = e.target.value;
+                                  //   const fieldName = e.target.name;
+                                  //   setFieldValue(fieldName, value);
+                                  //   dispatch(
+                                  //     setDoctorField({
+                                  //       field: fieldName,
+                                  //       value,
+                                  //     })
+                                  //   );
+                                  // }}
+
+                                  value={doctor.find(d => d.field === "dueDate")?.value || ""}
+                                  onChange={handleDueDateChange}
                                   onBlur={handleBlur}
                                 />
                                 {errors.dueDate && (
@@ -309,7 +322,8 @@ const DoctorOrder = () => {
                                       <div className="  absolute left-full top-1/2 -translate-y-1/2 ml-2   hidden group-hover:block  z-50">
                                         {/* hidden group-hover:block */}
                                         <div className="w-52 rounded-md bg-white font-normal px-4  py-1 text-[8.03px] text-secondaryText shadow">
-                                          Add New Patient if the patient is not exist in the dropdown
+                                          Add New Patient if the patient is not
+                                          exist in the dropdown
                                         </div>
                                       </div>
                                     </div>
@@ -317,19 +331,22 @@ const DoctorOrder = () => {
                                 }
                                 color="text-xs font-semibold"
                                 className="border border-gray-200 p-4"
-                                gap='gap-0'
+                                gap="gap-0"
                               >
                                 <PatientDropdown
                                   className="w-full rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow"
                                   dropdownClass="text-secondaryBrand"
                                   value={values.patientFirstName} // Formik value
-                                  onChange={(val) => setFieldValue("patientFirstName", val)} // update formik
+                                  onChange={(val) =>
+                                    setFieldValue("patientFirstName", val)
+                                  } // update formik
                                 />
-                                {errors.patientFirstName && touched.patientFirstName && (
-                                  <p className="text-red-800 text-xs capitalize">
-                                    {errors.patientFirstName}
-                                  </p>
-                                )}
+                                {errors.patientFirstName &&
+                                  touched.patientFirstName && (
+                                    <p className="text-red-800 text-xs capitalize">
+                                      {errors.patientFirstName}
+                                    </p>
+                                  )}
                               </FormSection>
                               <div className="bg-textField  rounded-md ">
                                 <button
@@ -391,7 +408,7 @@ const DoctorOrder = () => {
                               <FormSection
                                 title="Additional Notes"
                                 className="border border-gray-200 p-4"
-                                gap='gap-4'
+                                gap="gap-4"
                               >
                                 <textarea
                                   type="text"
@@ -423,9 +440,8 @@ const DoctorOrder = () => {
                                   <MaterialDropdown
                                     className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     options={
-                                      orders.find(
-                                        (p) => p.name === "Denture"
-                                      )?.children || []
+                                      orders.find((p) => p.name === "Denture")
+                                        ?.children || []
                                     }
                                     value={
                                       toothSelections.find(
@@ -470,7 +486,7 @@ const DoctorOrder = () => {
                                     }
                                   />
                                   <MaterialDropdown
-                                    className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    className="w-full rounded-xl border border-gray-200   bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     options={
                                       orders.find(
                                         (p) => p.name === "Surgical Guide"
@@ -546,10 +562,182 @@ const DoctorOrder = () => {
                             </section>
                             {/* Right 3 */}
                             <aside className="col-span-12 md:col-span-3 space-y-4 flex flex-col justify-between">
-                              <div className="flex  flex-col justify-between">
-                                <div>
+                              <div className="flex  flex-col justify-between items-center">
+                                <div className="w-full">
                                   <FormSection className="p-0">
-                                    <MaterialDropdown
+                                    <DropdownWrapper buttonLabel="Modules">
+                                      <MaterialDropdown
+                                        options={
+                                          orders.find((p) => p.name === "Crown")
+                                            ?.children || []
+                                        }
+                                        value={
+                                          toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.crown?.value || ""
+                                        }
+                                        onChange={(val) => {
+                                          if (!selectedTooth) {
+                                            toast.error(
+                                              "Please select a tooth first",
+                                              {
+                                                position: "top-right",
+                                                autoClose: 3000,
+                                                hideProgressBar: false,
+                                                closeOnClick: true,
+                                                pauseOnHover: true,
+                                                draggable: true,
+                                                progress: undefined,
+                                              }
+                                            );
+                                            return;
+                                          }
+                                          const option = (
+                                            orders.find(
+                                              (p) => p.name === "Crown"
+                                            )?.children || []
+                                          ).find((c) => c.value === val);
+
+                                          handleDropdownChange("crown", {
+                                            value: option?.value || val,
+                                            label: option?.label || "",
+                                            price: option?.price || 0,
+                                            option, // pass the full object if needed in redux
+                                          });
+
+                                          setTouched((prev) => ({
+                                            ...prev,
+                                            crown: false,
+                                          }));
+                                        }}
+                                        label="Smart Crown"
+                                        storageKey="crown"
+                                        className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                      // error={
+                                      //   touched.crown &&
+                                      //   !toothSelections.find(
+                                      //     (t) => t.toothId === selectedTooth
+                                      //   )?.crown
+                                      //     ? "Crown is required. Please select a value."
+                                      //     : ""
+                                      // }
+                                      />
+                                      <MaterialDropdown
+                                        options={
+                                          orders.find(
+                                            (p) => p.name === "Material"
+                                          )?.children || []
+                                        }
+                                        value={
+                                          toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.material || ""
+                                        }
+                                        onChange={(val) => {
+                                          if (!selectedTooth) {
+                                            dispatch(
+                                              showToast({
+                                                message: `Please select a tooth first`,
+                                                type: "error",
+                                              })
+                                            );
+
+                                            return;
+                                          }
+
+                                          handleDropdownChange("material", val);
+
+                                          if (val) {
+                                            setTouched((prev) => ({
+                                              ...prev,
+                                              material: false,
+                                            }));
+                                          }
+                                        }}
+                                        label="Material"
+                                        storageKey="material"
+                                        className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                      // error={
+                                      //   touched.material &&
+                                      //   !toothSelections.find(
+                                      //     (t) => t.toothId === selectedTooth
+                                      //   )?.material
+                                      //     ? "Material is required. Please select a tooth first"
+                                      //     : ""
+                                      // }
+                                      />
+
+                                      <ShadeDropdown
+                                        shades={shadeGroups}
+                                        selectedTooth={selectedTooth}
+                                        touched={touched}
+                                        setTouched={setTouched}
+                                        onChange={(selected) =>
+                                          console.log(selected)
+                                        }
+                                      />
+                                      <MaterialDropdown
+                                        options={Digital_Option}
+                                        value={
+                                          toothSelections[selectedTeeth]
+                                            ?.digital_option || ""
+                                        }
+                                        onChange={(val) =>
+                                          handleDropdownChange(
+                                            "digital_option",
+                                            val
+                                          )
+                                        }
+                                        label=" Digital Model type"
+                                        className="w-full  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                      />
+                                      <MaterialDropdown
+                                        options={
+                                          orders.find(
+                                            (p) =>
+                                              p.name === "Participating Lab"
+                                          )?.children || []
+                                        }
+                                        value={
+                                          toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.lab || ""
+                                        } // ✅ correct selected value
+                                        onChange={(val) => {
+                                          if (!selectedTooth) {
+                                            dispatch(
+                                              showToast({
+                                                message: `Please select a tooth first`,
+                                                type: "error",
+                                              })
+                                            );
+                                            return;
+                                          }
+
+                                          handleDropdownChange("lab", val);
+
+                                          if (val) {
+                                            setTouched((prev) => ({
+                                              ...prev,
+                                              lab: false,
+                                            }));
+                                          }
+                                        }}
+                                        label="Dental lab alliance"
+                                        storageKey="Dental lab alliance"
+                                        className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                      // error={
+                                      //   touched.lab &&
+                                      //   !toothSelections.find(
+                                      //     (t) => t.toothId === selectedTooth
+                                      //   )?.lab
+                                      //     ? "Participating Lab is required. Please select a tooth first."
+                                      //     : ""
+                                      // }
+                                      />
+                                    </DropdownWrapper>
+
+                                    {/* <MaterialDropdown
                                       options={
                                         orders.find((p) => p.name === "Crown")
                                           ?.children || []
@@ -597,14 +785,14 @@ const DoctorOrder = () => {
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       error={
                                         touched.crown &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.crown
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.crown
                                           ? "Crown is required. Please select a value."
                                           : ""
                                       }
-                                    />
-                                    <MaterialDropdown
+                                    /> */}
+                                    {/* <MaterialDropdown
                                       options={
                                         orders.find(
                                           (p) => p.name === "Material"
@@ -641,14 +829,14 @@ const DoctorOrder = () => {
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       error={
                                         touched.material &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.material
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.material
                                           ? "Material is required. Please select a tooth first"
                                           : ""
                                       }
-                                    />
-                                    <ShadeDropdown
+                                    /> */}
+                                    {/* <ShadeDropdown
                                       shades={shadeGroups}
                                       selectedTooth={selectedTooth}
                                       touched={touched}
@@ -708,13 +896,13 @@ const DoctorOrder = () => {
                                       className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       error={
                                         touched.lab &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.lab
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.lab
                                           ? "Participating Lab is required. Please select a tooth first."
                                           : ""
                                       }
-                                    />
+                                    /> */}
                                     <MaterialDropdown
                                       options={
                                         orders.find(
@@ -752,7 +940,7 @@ const DoctorOrder = () => {
                                       }}
                                       label="Photogrammetry files"
                                       storageKey="Photogrammetry files"
-                                      className="w-full rounded-xl bg-[#F8F8F8] border-none px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
+                                      className="w-full rounded-xl bg-[#F8F8F8] border-none px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow "
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&

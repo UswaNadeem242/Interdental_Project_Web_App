@@ -67,6 +67,7 @@ const DoctorDashaboard = () => {
       email: order.email,
       linkName: "View Detail",
       icon: <UserIcon />,
+      profileURL: order?.profileURL
     }));
   };
 
@@ -246,8 +247,9 @@ const DoctorDashaboard = () => {
             ))}
           </div>
           {/* Order Overview */}
-          <div className="col-span-1 md:col-span-1 lg:col-span-8 bg-[#FFFFFF] mt-3 md:mt-4 lg:mt-5 rounded-lg p-3 md:p-4 lg:p-4">
+          <div className="col-span-1 md:col-span-1 lg:col-span-8 bg-white mt-3 md:mt-4 lg:mt-5 rounded-lg p-3 md:p-4">
             {/* Top row: Order Overview title and status options */}
+
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-sm lg:text-sm md:text-base font-poppins font-semibold text-[#434343]">
                 Order Overview

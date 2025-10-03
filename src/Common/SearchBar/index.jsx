@@ -94,7 +94,7 @@ import FilterIcon from "../../icon/FilterIcon";
 export default function SearchBar({
   onSearch,
   onSort,
-  placeholder = "Search...",
+  placeholder = "Search here...",
   title,
   secondaryButton,
   className,
@@ -124,7 +124,7 @@ export default function SearchBar({
         type="text"
         value={query}
         onChange={handleSearch}
-        placeholder={placeholder}
+        placeholder={placeholder || 'Search here ...'}
         className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-[#F8F8F8]"
       />
 

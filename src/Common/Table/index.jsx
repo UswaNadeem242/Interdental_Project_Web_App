@@ -36,6 +36,8 @@ export default function TableComponent({
           </thead>{" "}
           <tbody>
             {currentData.map((row, idx) => (
+
+
               <tr
                 key={idx}
                 className="border-b border-gray-200  transition-all font-poppins  "
@@ -43,15 +45,14 @@ export default function TableComponent({
                 {headings.map((col, i) => (
                   <td
                     key={i}
-                    className={`px-4 py-4 text-[#333333] text-xs   ${
-                      col.key === "name" ? "font-semibold" : "font-normal"
-                    }`}
+                    className={`px-4 py-4 text-[#333333] text-xs   ${col.key === "name" ? "font-semibold" : "font-normal"
+                      }`}
                   >
                     {/* Name column */}
                     {col.key === "name" ? (
                       <div className="flex items-center gap-2 md:flex-row  flex-col">
                         <img
-                          src={row.image || "/assets/user.png"}
+                          src={row.profileURL || "/assets/user.png"}
                           alt={row.name}
                           className="w-9 h-9 rounded-full object-cover border border-[#285772]"
                         />
@@ -82,12 +83,12 @@ export default function TableComponent({
                         className={` px-3 py-2 rounded-full text-xs font-normal capitalize ${
                           // row[col.key] === "accepted"
                           row[col.key] === "accepted" ||
-                          row[col.key] === "active"
+                            row[col.key] === "active"
                             ? "bg-[#4ECC530D] text-[#4ECC53]"
                             : row[col.key] === "pending"
-                            ? "bg-[#1F27EF0D] text-[#1F27EF]"
-                            : "bg-[#FF57570D] text-[#FF5757]"
-                        }`}
+                              ? "bg-[#1F27EF0D] text-[#1F27EF]"
+                              : "bg-[#FF57570D] text-[#FF5757]"
+                          }`}
                       >
                         {row[col.key]}
                       </span>
