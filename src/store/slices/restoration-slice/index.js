@@ -54,7 +54,7 @@ const restorationSlice = createSlice({
             let total = 0;
 
             state.toothSelections.forEach(t => {
-                ["material", "shade", "crown", "lab"].forEach(f => {
+                ["material", "shade", "crown", "lab", 'Model_type'].forEach(f => {
                     if (t[f]) {
                         items.push({
                             id: `${t.toothId}-${f}`,
@@ -74,7 +74,7 @@ const restorationSlice = createSlice({
         },
         setSelectedPatient: (state, action) => {
             state.patient = action.payload; // store full patient object
-        }, 
+        },
         setDoctorField: (state, action) => {
             const { id, officeRefNumber } = action.payload;
 

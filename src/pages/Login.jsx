@@ -49,7 +49,7 @@ const Login = () => {
       ) {
         dispatch(
           showToast({
-            message: response.data.responseMessage,
+            message: 'Invalid email or password. Please try again.',
             type: "error",
           })
         );
