@@ -13,9 +13,10 @@ export const PatientvalidationSchema = Yup.object().shape({
   photo: Yup.mixed().required("Photo is required"),
 
   username: Yup.string()
-    .matches(/^[A-Za-z]+$/, "First Name should only contain letters")
+    .matches(/^[A-Za-z ]+$/, "First Name should only contain letters and spaces")
     .min(3, "First Name must be at least 3 characters")
     .required("First Name is required"),
+
 
   lastName: Yup.string()
     .matches(/^[A-Za-z]+$/, "Last Name should only contain letters")
