@@ -213,10 +213,11 @@ const Signup = () => {
                 />
                 <label
                   htmlFor="firstName"
-                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand
-        px-1 -ml-1"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
                 >
                   First Name
                 </label>
@@ -234,9 +235,11 @@ const Signup = () => {
                 />
                 <label
                   htmlFor="lastName"
-                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
                 >
                   Last Name
                 </label>
@@ -260,9 +263,11 @@ const Signup = () => {
                 />
                 <label
                   htmlFor="email"
-                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
                 >
                   Email
                 </label>
@@ -279,9 +284,11 @@ const Signup = () => {
                 />
                 <label
                   htmlFor="phone"
-                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
                 >
                   Phone
                 </label>
@@ -301,9 +308,11 @@ const Signup = () => {
               />
               <label
                 htmlFor="address"
-                className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
               >
                 Address
               </label>
@@ -323,9 +332,11 @@ const Signup = () => {
                 />
                 <label
                   htmlFor="city"
-                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
                 >
                   City
                 </label>
@@ -341,9 +352,11 @@ const Signup = () => {
                 />
                 <label
                   htmlFor="zip"
-                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
                 >
                   Zip
                 </label>
@@ -364,9 +377,11 @@ const Signup = () => {
                 />
                 <label
                   htmlFor="drLicenseNo"
-                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
                 >
                   Doctor's License Number
                 </label>
@@ -383,9 +398,11 @@ const Signup = () => {
                 />
                 <label
                   htmlFor="officeRefNo"
-                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                     className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
                 >
                   Office Reference Number
                 </label>
@@ -405,9 +422,11 @@ const Signup = () => {
               />
               <label
                 htmlFor="password"
-                className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+                   className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
               >
                 Password
               </label>
