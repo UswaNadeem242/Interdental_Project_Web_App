@@ -1014,20 +1014,7 @@ const DoctorOrder = () => {
                                               ${values.crown?.price || 0}
                                             </p>
                                           </div>
-                                          <div className="flex justify-between items-center py-1">
-                                            <p className="text-xs text-textFieldHeading">
-                                              {values.scannerTypeOption?.label ||
-                                                "scannerType"}{" "}
-
-                                            </p>
-                                            <p className="text-xs font-medium">
-                                              $
-                                              {values.scannerTypeOption ||
-                                                values.scannerTypeOption?.price ||
-                                                0}
-                                            </p>
-                                          </div>
-
+                                           
                                           {/* digital model */}
                                           <div className="flex justify-between items-center py-1">
                                             <p className="text-xs text-textFieldHeading">

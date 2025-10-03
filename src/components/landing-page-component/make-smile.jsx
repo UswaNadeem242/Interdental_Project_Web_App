@@ -9,8 +9,14 @@ function MakeSmile() {
     return (
         <div>
 
-            <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center md:px-16 px-4 py-20  ">
-
+            <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 items-center md:px-16 px-4 py-20  ">
+                <div className="flex justify-center">
+                    <img
+                        src="/assets/landing-page/landing 2.png"
+                        alt="Doctor Enrollment"
+                        className="w-full max-w-md rounded-lg"
+                    />
+                </div>
 
                 <div className="space-y-4">
                     <h1 className="text-sm  text-black md:text-3xl font-bold font-poppins  ">
@@ -41,13 +47,7 @@ function MakeSmile() {
 
                 </div>
 
-                <div className="flex justify-center">
-                    <img
-                        src="/assets/landing-page/landing 2.png"
-                        alt="Doctor Enrollment"
-                        className="w-full max-w-sm rounded-lg"
-                    />
-                </div>
+
             </section>
         </div>
     )
