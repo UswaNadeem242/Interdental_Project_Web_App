@@ -31,14 +31,22 @@ export const PatientvalidationSchema = Yup.object().shape({
     .required("Email is required"),
 
   phone: Yup.string()
-    .matches(/^[0-9]{11}$/, "Phone number must be 11 digits (Pakistan format)")
+    .matches(/^[0-9]{11}$/, "Phone number must be 11 digits")
     .required("Phone Number is required"),
-
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-    .matches(/[0-9]/, "Password must contain at least one number")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&^#()_\-+={}[\]|\\:;"'<>,.?/~]).{8,}$/,
+      "Password must have: minimum 8 characters, at least 1 uppercase, 1 lowercase, and 1 special character"
+    )
     .required("Password is required"),
+
+
+  // password: Yup.string()
+  //   .min(6, "Password must be at least 6 characters")
+  //   .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+  //   .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+  //   .matches(/[0-9]/, "Password must contain at least one number")
+  //   .matches(/[@$!%*?&^#()_\-+={}[\]|\\:;"'<>,.?/~]/, "Password must contain at least one special character")
+  //   .required("Password is required"),
 });
 
