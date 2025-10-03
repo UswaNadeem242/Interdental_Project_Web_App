@@ -183,8 +183,8 @@ const ReviewOrder = ({ next }) => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[#949494]">Email</p>
-                  <p className="font-normal text-secondaryBrand">{patient?.id}</p>
+                  <p className="text-[#949494]">Subscription ID:</p>
+                  <p className="font-normal text-secondaryBrand">{patient?.id}#</p>
                 </div>
 
               </div>

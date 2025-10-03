@@ -130,7 +130,7 @@ const Doctor = ({ isLanding }) => {
               Join our platform to access lab discounts, extended warranties, AI design tools, and patient referrals — all in one streamlined system. Your Practice Benefits:
             </p>
             <ul className="list-disc custom-list list-inside text-secondaryText text-start p-4 rounded-md  text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
-              <li>discounted by enrolling their patient to the MakeMeSmile program</li>
+              <li>Discounted by enrolling their patient to the MakeMeSmile program</li>
               <li>Eligibility for 3–9 year patient warranties via MakeMeSmile</li>
               <li>Patient referrals from national marketing campaigns</li>
               <li>Increased visibility as a featured providere</li>
