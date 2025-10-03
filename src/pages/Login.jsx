@@ -169,9 +169,11 @@ const Login = () => {
             />
             <label
               htmlFor="email"
-              className="absolute left-2 top-2 text-gray-400 text-sm transition-all
+              className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-2 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
             >
               Email
             </label>
@@ -192,9 +194,11 @@ const Login = () => {
             {/* Floating Label */}
             <label
               htmlFor="password"
-              className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+              className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
             >
               Password
             </label>
