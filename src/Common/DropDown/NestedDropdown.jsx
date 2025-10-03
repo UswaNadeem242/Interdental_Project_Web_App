@@ -60,6 +60,7 @@ export const ShadeDropdown = ({
   shades = [],
   touched,
   setTouched = () => {},
+  className,
 }) => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
@@ -124,7 +125,7 @@ export const ShadeDropdown = ({
       </button>
 
       {isOpen && (
-        <div className="p-3 space-y-3">
+        <div className={`p-3 space-y-3 ${className}`}>
           <input
             type="text"
             placeholder="Search shades..."
