@@ -114,10 +114,10 @@ export default function SearchBar({
   };
   return (
     <div
-      className={`flex items-center gap-3 w-full border  bg-[#F8F8F8] rounded-md shadow-sm px-3 py-1 ${className}`}
+      className={`flex items-center gap-3 w-full border  bg-background rounded-md shadow-sm px-3 py-1 ${className}`}
     >
       {/* Search Icon */}
-      <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
+      <MagnifyingGlassIcon className="w-5 h-5 text-primaryText" />
 
       {/* Input Field */}
       <input
@@ -125,7 +125,7 @@ export default function SearchBar({
         value={query}
         onChange={handleSearch}
         placeholder={placeholder || 'Search here ...'}
-        className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-[#F8F8F8]"
+        className="flex-1 outline-none text-sm text-primaryText placeholder-primaryText bg-background"
       />
 
       {/* Sort Button */}
