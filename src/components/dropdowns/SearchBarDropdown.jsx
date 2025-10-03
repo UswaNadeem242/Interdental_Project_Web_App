@@ -51,13 +51,13 @@ const SearchBarDropdown = ({
           <p
             key={product.id}
             onClick={() => handleProductSelection(product.id)}
-            className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343] cursor-pointer"
+            className="font-poppins font-normal text-[14px] leading-[21px] text-primaryText cursor-pointer"
           >
             {product.name}
           </p>
         ))
       ) : (
-        <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
+        <p className="font-poppins font-normal text-[14px] leading-[21px] text-primaryText">
           Nothing to see here! Try a different search or category.
         </p>
       )}
