@@ -1,21 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 const PatientChangePasswordModel = ({
   isModalPassword,
   setIsModalPassword,
 }) => {
-  const handleOpenModal = () => {
-    setIsModalPassword(true);
-  };
-
   const handleCloseModal = () => {
     setIsModalPassword(false);
   };
-  // const [show, setShow] = useState(false);
-  const [showNew, setShowNew] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const inputRef = useRef(null);
-  const [value, setValue] = useState("");
+
   const [formData, setFormData] = useState({
     oldPassword: "",
     newPassword: "",
@@ -28,6 +20,39 @@ const PatientChangePasswordModel = ({
     confirm: false,
   });
 
+  const [errors, setErrors] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  // Comprehensive password validation function
+  const validatePassword = (password) => {
+    const errors = [];
+
+    if (password.length < 8) {
+      errors.push("minimum 8 characters");
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      errors.push("at least 1 uppercase");
+    }
+
+    if (!/[a-z]/.test(password)) {
+      errors.push("at least 1 lowercase");
+    }
+
+    if (!/\d/.test(password)) {
+      errors.push("1 digit");
+    }
+
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+      errors.push("1 special character");
+    }
+
+    return errors;
+  };
+
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,38 +60,135 @@ const PatientChangePasswordModel = ({
       ...prev,
       [name]: value,
     }));
+
+    // Validate oldPassword - required field
+    if (name === "oldPassword") {
+      if (!value.trim()) {
+        setErrors((prev) => ({
+          ...prev,
+          oldPassword: "Old Password is required",
+        }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          oldPassword: "",
+        }));
+      }
+    }
+
+    // Validate newPassword with comprehensive rules
+    if (name === "newPassword") {
+      if (value) {
+        const passwordErrors = validatePassword(value);
+        if (passwordErrors.length > 0) {
+          setErrors((prev) => ({
+            ...prev,
+            newPassword: `Password must have: ${passwordErrors.join(", ")}`,
+          }));
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+            newPassword: "",
+          }));
+        }
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          newPassword: "",
+        }));
+      }
+    }
+
+    // Validate confirmPassword - check if it matches newPassword
+    if (name === "confirmPassword") {
+      if (value) {
+        if (formData.newPassword && value !== formData.newPassword) {
+          setErrors((prev) => ({
+            ...prev,
+            confirmPassword: "New password and confirm password do not match!",
+          }));
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+            confirmPassword: "",
+          }));
+        }
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          confirmPassword: "",
+        }));
+      }
+    }
   };
 
   // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (formData.newPassword !== formData.confirmPassword) {
-      alert("New password and confirm password do not match!");
+    // Initialize errors object
+    const newErrors = {
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    };
+
+    // Validate oldPassword
+    if (!formData.oldPassword.trim()) {
+      newErrors.oldPassword = "Old Password is required";
+    }
+
+    // Validate newPassword with comprehensive rules
+    if (!formData.newPassword.trim()) {
+      newErrors.newPassword = "New Password is required";
+    } else {
+      const newPasswordErrors = validatePassword(formData.newPassword);
+      if (newPasswordErrors.length > 0) {
+        newErrors.newPassword = `Password must have: ${newPasswordErrors.join(
+          ", "
+        )}`;
+      }
+    }
+
+    // Validate confirmPassword
+    if (!formData.confirmPassword.trim()) {
+      newErrors.confirmPassword = "Confirm Password is required";
+    } else if (formData.newPassword !== formData.confirmPassword) {
+      newErrors.confirmPassword =
+        "New password and confirm password do not match!";
+    }
+
+    // Set all errors at once
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    const hasErrors = Object.values(newErrors).some((error) => error !== "");
+    if (hasErrors) {
       return;
     }
-   };
+
+    // If no errors, proceed with password update
+    // Here you would typically call an API to update the password
+    console.log("Password validation passed");
+  };
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-      <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg  md:w-auto w-96 relative">
-        <div className=" w-[350px] ">
-          <div className="flex  justify-between items-center gap-[4px] pb-4 border-b  outline-offset-[-0.50px] outline-black/10">
+      <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg w-96 relative">
+        <div className="w-full">
+          <div className="flex justify-between items-center gap-[4px] pb-4 border-b outline-offset-[-0.50px] outline-black/10">
             <p className="font-poppins font-bold text-[20px] leading-[30px] text-[#0D4041]">
               Change Password
             </p>
 
             <button
               onClick={handleCloseModal}
-              className="w-8 h-8  border rounded-md right-4 text-[#4F4F4F] font-semibold"
+              className="w-8 h-8 border rounded-md right-4 text-[#4F4F4F] font-semibold"
             >
               ✕
             </button>
           </div>
         </div>
-        <form
-          onSubmit={handleSubmit}
-          className="mx-4 w-full rounded-3xl bg-white"
-        >
+        <form onSubmit={handleSubmit} className="w-full rounded-3xl bg-white">
           {/* Old Password */}
           <div className="relative mb-4">
             <input
@@ -75,7 +197,9 @@ const PatientChangePasswordModel = ({
               onChange={handleChange}
               placeholder="Old Password"
               type={show.old ? "text" : "password"}
-              className="w-full rounded-full border border-borderPrimary bg-red px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
+              className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${
+                errors.oldPassword ? "border-red-500" : "border-borderPrimary"
+              }`}
             />
             <button
               type="button"
@@ -119,6 +243,11 @@ const PatientChangePasswordModel = ({
               )}
             </button>
           </div>
+          {errors.oldPassword && (
+            <p className="text-red-500 text-xs mb-2 ml-2 break-words">
+              {errors.oldPassword}
+            </p>
+          )}
 
           {/* New Password */}
           <div className="relative mb-4">
@@ -128,7 +257,9 @@ const PatientChangePasswordModel = ({
               onChange={handleChange}
               placeholder="New Password"
               type={show.new ? "text" : "password"}
-              className="w-full rounded-full border border-borderPrimary px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
+              className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${
+                errors.newPassword ? "border-red-500" : "border-borderPrimary"
+              }`}
             />
             <button
               type="button"
@@ -172,6 +303,11 @@ const PatientChangePasswordModel = ({
               )}
             </button>
           </div>
+          {errors.newPassword && (
+            <p className="text-red-500 text-xs mb-2 ml-2 break-words">
+              {errors.newPassword}
+            </p>
+          )}
 
           {/* Confirm Password */}
           <div className="relative mb-4">
@@ -181,7 +317,11 @@ const PatientChangePasswordModel = ({
               onChange={handleChange}
               placeholder="Confirm Password"
               type={show.confirm ? "text" : "password"}
-              className="w-full rounded-full border border-borderPrimary px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none"
+              className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${
+                errors.confirmPassword
+                  ? "border-red-500"
+                  : "border-borderPrimary"
+              }`}
             />
             <button
               type="button"
@@ -225,6 +365,11 @@ const PatientChangePasswordModel = ({
               )}
             </button>
           </div>
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-xs mb-2 ml-2 break-words">
+              {errors.confirmPassword}
+            </p>
+          )}
 
           <button
             type="submit"
