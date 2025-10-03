@@ -137,7 +137,7 @@ const DoctorOrder = () => {
     dispatch(resetRestoration());
   }, [dispatch]);
   const [formData, setFormData] = useState({
-    id: '',
+    id: "",
     reference: "",
   });
   useEffect(() => {
@@ -400,7 +400,7 @@ const DoctorOrder = () => {
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                    !activeToothSelection.scannerType
+                                  !activeToothSelection.scannerType
                                     ? "Scanner Type is Required Select the Teeth"
                                     : ""
                                 }
@@ -440,7 +440,7 @@ const DoctorOrder = () => {
                             <section className="col-span-12 md:col-span-6 space-y-4">
                               <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
                                 <div className="grid grid-cols-2 gap-4 mt-5 mb-10">
-                                  <MaterialDropdown
+                                  {/* <MaterialDropdown
                                     className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     options={
                                       orders.find((p) => p.name === "Denture")
@@ -481,15 +481,14 @@ const DoctorOrder = () => {
                                     // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
                                     error={
                                       touched.digitalOptions &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.digitalOptions
+                                      !toothSelections.find(
+                                        (t) => t.toothId === selectedTooth
+                                      )?.digitalOptions
                                         ? "Digital Denture is Required Select the teeth"
                                         : ""
                                     }
                                   />
                                   <MaterialDropdown
-
                                     className="w-full rounded-xl border border-gray-200 cursor-not-allowed  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     // options={
                                     //   orders.find(
@@ -534,8 +533,7 @@ const DoctorOrder = () => {
                                     //     : ""
                                     // }
                                     disabled={!selectedTooth}
-
-                                  />
+                                  /> */}
                                 </div>
                                 <div className="flex flex-wrap gap-2  justify-center flex-col">
                                   <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">
@@ -572,6 +570,104 @@ const DoctorOrder = () => {
                                 <div className="w-full">
                                   <FormSection className="p-0">
                                     <DropdownWrapper buttonLabel="Modules">
+                                      <MaterialDropdown
+                                        className2="relative z-0"
+                                        className=" w-full  bg-white border    px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                        options={
+                                          orders.find(
+                                            (p) => p.name === "Denture"
+                                          )?.children || []
+                                        }
+                                        value={
+                                          toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.digitalOptions || ""
+                                        }
+                                        onChange={(option) => {
+                                          if (!selectedTooth) {
+                                            dispatch(
+                                              showToast({
+                                                message: `Please select a tooth first`,
+                                                type: "error",
+                                              })
+                                            );
+
+                                            return;
+                                          }
+                                          dispatch(
+                                            updateToothSelection({
+                                              toothId: selectedTooth,
+                                              field: "digitalOptions",
+                                              value: option.value,
+                                              price: option.price || 0,
+                                              option,
+                                            })
+                                          );
+                                          setTouched((prev) => ({
+                                            ...prev,
+                                            digitalOptions: false,
+                                          }));
+                                        }}
+                                        label=" Denture"
+                                        storageKey="digitalOptions"
+                                        // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
+                                        // error={
+                                        //   touched.digitalOptions &&
+                                        //   !toothSelections.find(
+                                        //     (t) => t.toothId === selectedTooth
+                                        //   )?.digitalOptions
+                                        //     ? "Digital Denture is Required Select the teeth"
+                                        //     : ""
+                                        // }
+                                      />
+                                      <MaterialDropdown
+                                        className2="relative z-0"
+                                        className="w-full border cursor-not-allowed  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                        // options={
+                                        //   orders.find(
+                                        //     (p) => p.name === "Surgical Guide"
+                                        //   )?.children || []
+                                        // }
+                                        // value={
+                                        //   toothSelections.find(
+                                        //     (t) => t.toothId === selectedTooth
+                                        //   )?.surgical_guide || ""
+                                        // }
+                                        // onChange={(val) => {
+                                        //   if (!selectedTooth) {
+                                        //     dispatch(
+                                        //       showToast({
+                                        //         message: `Please select a tooth first`,
+                                        //         type: "error",
+                                        //       })
+                                        //     );
+
+                                        //     return;
+                                        //   }
+                                        //   handleDropdownChange(
+                                        //     "surgical_guide",
+                                        //     val
+                                        //   );
+                                        //   if (val) {
+                                        //     setTouched((prev) => ({
+                                        //       ...prev,
+                                        //       surgical_guide: false,
+                                        //     }));
+                                        //   }
+                                        // }}
+                                        label="Surgical Guide"
+                                        storageKey="surgical_guide"
+                                        // error={
+                                        //   touched.surgical_guide &&
+                                        //     !toothSelections.find(
+                                        //       (t) => t.toothId === selectedTooth
+                                        //     )?.surgical_guide
+                                        //     ? "Surgical Guide is Required. Please select a tooth."
+                                        //     : ""
+                                        // }
+                                        disabled={!selectedTooth}
+                                      />
+
                                       <MaterialDropdown
                                         className2="relative z-0"
                                         options={
@@ -620,9 +716,9 @@ const DoctorOrder = () => {
                                         label="Smart Crown"
                                         storageKey="crown"
                                         className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-
                                       />
                                       <MaterialDropdown
+                                        className2="relative z-0"
                                         options={
                                           orders.find(
                                             (p) => p.name === "Material"
@@ -657,10 +753,10 @@ const DoctorOrder = () => {
                                         label="Material"
                                         storageKey="material"
                                         className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-
                                       />
 
                                       <ShadeDropdown
+                                        className="relative"
                                         shades={shadeGroups}
                                         selectedTooth={selectedTooth}
                                         touched={touched}
@@ -685,10 +781,8 @@ const DoctorOrder = () => {
                                         className="w-full  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       /> */}
 
-
-
-
                                       <MaterialDropdown
+                                        className2="relative z-0"
                                         options={
                                           orders.find(
                                             (p) =>
@@ -711,7 +805,10 @@ const DoctorOrder = () => {
                                             return;
                                           }
 
-                                          handleDropdownChange("Model_type", val);
+                                          handleDropdownChange(
+                                            "Model_type",
+                                            val
+                                          );
 
                                           if (val) {
                                             setTouched((prev) => ({
@@ -723,9 +820,9 @@ const DoctorOrder = () => {
                                         label="Digital Model Type"
                                         storageKey="Digital Model Type"
                                         className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-
                                       />
                                       <MaterialDropdown
+                                        className2="relative z-0"
                                         options={
                                           orders.find(
                                             (p) =>
@@ -760,7 +857,6 @@ const DoctorOrder = () => {
                                         label="Dental lab alliance"
                                         storageKey="Dental lab alliance"
                                         className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-
                                       />
                                     </DropdownWrapper>
 
@@ -971,9 +1067,9 @@ const DoctorOrder = () => {
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.photogrammetryfiles
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.photogrammetryfiles
                                           ? "Photogrammetry files is required. Please select a tooth first."
                                           : ""
                                       }
@@ -1014,17 +1110,18 @@ const DoctorOrder = () => {
                                               ${values.crown?.price || 0}
                                             </p>
                                           </div>
-                                           
+                                         
+
                                           {/* digital model */}
                                           <div className="flex justify-between items-center py-1">
                                             <p className="text-xs text-textFieldHeading">
-                                              {values.Model_typeOption
-                                                ?.label || "Digital Model Type"}
+                                              {values.Model_typeOption?.label ||
+                                                "Digital Model Type"}
                                             </p>
                                             <p className="text-xs font-medium">
                                               $
-                                              {values.Model_typeOption
-                                                ?.price || 0}
+                                              {values.Model_typeOption?.price ||
+                                                0}
                                             </p>
                                           </div>
 
@@ -1032,8 +1129,7 @@ const DoctorOrder = () => {
                                           <div className="flex justify-between items-center py-1">
                                             <p className="text-xs text-textFieldHeading">
                                               {values.digitalOptionsOption
-                                                ?.label ||
-                                                "No Digital Denture"}
+                                                ?.label || "No Digital Denture"}
                                             </p>
                                             <p className="text-xs font-medium">
                                               $
@@ -1059,25 +1155,6 @@ const DoctorOrder = () => {
                                   <> </>
 
                                   <div className="">
-                                    <div className="flex justify-between items-center py-3">
-                                      <p className="text-textFieldHeading text-xs font-poppins">
-                                        Emax:
-                                      </p>
-
-                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                        ${totalPrice.toFixed(2)}
-                                      </p>
-                                    </div>
-                                    {/*  */}
-                                    <div className="flex justify-between items-center py-3">
-                                      <p className="text-textFieldHeading text-xs font-poppins">
-                                        Argen ST:
-                                      </p>
-                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                        ${totalPrice.toFixed(2)}
-                                      </p>
-                                    </div>
-
                                     <div className="flex justify-between items-center py-3">
                                       <p className="text-textFieldHeading text-xs font-poppins">
                                         Subtotal:
