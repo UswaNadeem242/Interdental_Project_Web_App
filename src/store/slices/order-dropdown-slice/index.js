@@ -7,7 +7,7 @@ export const fetchDropdowns = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const res = await orderService.getDropDown();
-            const raw = res?.data?.data || [];
+             const raw = res?.data?.data || [];
             const mapped = raw.map(parent => ({
                 id: parent.id,
                 name: parent.name,

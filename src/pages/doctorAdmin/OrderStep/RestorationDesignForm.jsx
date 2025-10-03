@@ -170,7 +170,7 @@ const DoctorOrder = () => {
       });
     }
   }, [doctorProfile]);
-   const handleDueDateChange = (e) => {
+  const handleDueDateChange = (e) => {
     dispatch(setDueDate({ dueDate: e.target.value }));
   };
 
@@ -230,6 +230,7 @@ const DoctorOrder = () => {
                         scannerType: "",
                         digitalOptions: "",
                         surgical_guide: "",
+                        Model_type: "",
                         material: "",
                         lab: "",
                         selectedTeeth: [], // 🟢 track selected teeth
@@ -486,49 +487,52 @@ const DoctorOrder = () => {
                                     }
                                   />
                                   <MaterialDropdown
-                                    className="w-full rounded-xl border border-gray-200   bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                    options={
-                                      orders.find(
-                                        (p) => p.name === "Surgical Guide"
-                                      )?.children || []
-                                    }
-                                    value={
-                                      toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.surgical_guide || ""
-                                    }
-                                    onChange={(val) => {
-                                      if (!selectedTooth) {
-                                        dispatch(
-                                          showToast({
-                                            message: `Please select a tooth first`,
-                                            type: "error",
-                                          })
-                                        );
 
-                                        return;
-                                      }
-                                      handleDropdownChange(
-                                        "surgical_guide",
-                                        val
-                                      );
-                                      if (val) {
-                                        setTouched((prev) => ({
-                                          ...prev,
-                                          surgical_guide: false,
-                                        }));
-                                      }
-                                    }}
+                                    className="w-full rounded-xl border border-gray-200 cursor-not-allowed  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    // options={
+                                    //   orders.find(
+                                    //     (p) => p.name === "Surgical Guide"
+                                    //   )?.children || []
+                                    // }
+                                    // value={
+                                    //   toothSelections.find(
+                                    //     (t) => t.toothId === selectedTooth
+                                    //   )?.surgical_guide || ""
+                                    // }
+                                    // onChange={(val) => {
+                                    //   if (!selectedTooth) {
+                                    //     dispatch(
+                                    //       showToast({
+                                    //         message: `Please select a tooth first`,
+                                    //         type: "error",
+                                    //       })
+                                    //     );
+
+                                    //     return;
+                                    //   }
+                                    //   handleDropdownChange(
+                                    //     "surgical_guide",
+                                    //     val
+                                    //   );
+                                    //   if (val) {
+                                    //     setTouched((prev) => ({
+                                    //       ...prev,
+                                    //       surgical_guide: false,
+                                    //     }));
+                                    //   }
+                                    // }}
                                     label="Surgical Guide"
                                     storageKey="surgical_guide"
-                                    error={
-                                      touched.surgical_guide &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.surgical_guide
-                                        ? "Surgical Guide is Required. Please select a tooth."
-                                        : ""
-                                    }
+                                    // error={
+                                    //   touched.surgical_guide &&
+                                    //     !toothSelections.find(
+                                    //       (t) => t.toothId === selectedTooth
+                                    //     )?.surgical_guide
+                                    //     ? "Surgical Guide is Required. Please select a tooth."
+                                    //     : ""
+                                    // }
+                                    disabled={!selectedTooth}
+
                                   />
                                 </div>
                                 <div className="flex flex-wrap gap-2  justify-center flex-col">
@@ -613,14 +617,7 @@ const DoctorOrder = () => {
                                         label="Smart Crown"
                                         storageKey="crown"
                                         className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      // error={
-                                      //   touched.crown &&
-                                      //   !toothSelections.find(
-                                      //     (t) => t.toothId === selectedTooth
-                                      //   )?.crown
-                                      //     ? "Crown is required. Please select a value."
-                                      //     : ""
-                                      // }
+
                                       />
                                       <MaterialDropdown
                                         options={
@@ -657,14 +654,7 @@ const DoctorOrder = () => {
                                         label="Material"
                                         storageKey="material"
                                         className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      // error={
-                                      //   touched.material &&
-                                      //   !toothSelections.find(
-                                      //     (t) => t.toothId === selectedTooth
-                                      //   )?.material
-                                      //     ? "Material is required. Please select a tooth first"
-                                      //     : ""
-                                      // }
+
                                       />
 
                                       <ShadeDropdown
@@ -676,7 +666,7 @@ const DoctorOrder = () => {
                                           console.log(selected)
                                         }
                                       />
-                                      <MaterialDropdown
+                                      {/* <MaterialDropdown
                                         options={Digital_Option}
                                         value={
                                           toothSelections[selectedTeeth]
@@ -690,6 +680,47 @@ const DoctorOrder = () => {
                                         }
                                         label=" Digital Model type"
                                         className="w-full  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                      /> */}
+
+
+
+
+                                      <MaterialDropdown
+                                        options={
+                                          orders.find(
+                                            (p) =>
+                                              p.name === "Digital Model Type"
+                                          )?.children || []
+                                        }
+                                        value={
+                                          toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.Model_type || ""
+                                        } // ✅ correct selected value
+                                        onChange={(val) => {
+                                          if (!selectedTooth) {
+                                            dispatch(
+                                              showToast({
+                                                message: `Please select a tooth first`,
+                                                type: "error",
+                                              })
+                                            );
+                                            return;
+                                          }
+
+                                          handleDropdownChange("Model_type", val);
+
+                                          if (val) {
+                                            setTouched((prev) => ({
+                                              ...prev,
+                                              Model_type: false,
+                                            }));
+                                          }
+                                        }}
+                                        label="Digital Model Type"
+                                        storageKey="Digital Model Type"
+                                        className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+
                                       />
                                       <MaterialDropdown
                                         options={
@@ -726,14 +757,7 @@ const DoctorOrder = () => {
                                         label="Dental lab alliance"
                                         storageKey="Dental lab alliance"
                                         className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      // error={
-                                      //   touched.lab &&
-                                      //   !toothSelections.find(
-                                      //     (t) => t.toothId === selectedTooth
-                                      //   )?.lab
-                                      //     ? "Participating Lab is required. Please select a tooth first."
-                                      //     : ""
-                                      // }
+
                                       />
                                     </DropdownWrapper>
 
@@ -991,12 +1015,12 @@ const DoctorOrder = () => {
                                           {/* Surgical Guide */}
                                           <div className="flex justify-between items-center py-1">
                                             <p className="text-xs text-textFieldHeading">
-                                              {values.surgical_guideOption
+                                              {values.Model_typeOption
                                                 ?.label || "No Surgical Guide"}
                                             </p>
                                             <p className="text-xs font-medium">
                                               $
-                                              {values.surgical_guideOption
+                                              {values.Model_typeOption
                                                 ?.price || 0}
                                             </p>
                                           </div>
@@ -1006,7 +1030,7 @@ const DoctorOrder = () => {
                                             <p className="text-xs text-textFieldHeading">
                                               {values.digitalOptionsOption
                                                 ?.label ||
-                                                "No Digital Denture selected"}
+                                                "No Digital Denture"}
                                             </p>
                                             <p className="text-xs font-medium">
                                               $
@@ -1018,13 +1042,13 @@ const DoctorOrder = () => {
                                           {/* Lab */}
                                           <div className="flex justify-between items-center py-1">
                                             <p className="text-xs text-textFieldHeading">
-                                              {values.labOption?.label ||
+                                              {values?.labOption?.label ||
                                                 "Participating Lab"}
                                             </p>
                                             <p className="text-xs font-medium">
-                                              ${values.labOption?.price || 0}
+                                              ${values?.labOption?.price || 0}
                                             </p>
-                                          </div>
+                                          </div> 
                                         </div>
                                       )
                                     )}
