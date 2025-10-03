@@ -44,13 +44,20 @@ const Signup = () => {
     const nameRegex = /^[A-Za-z]{3,}$/;
     const numberRegex = /^[0-9]{10}$/;
     const zipRegex = /^[0-9]{5}$/;
-    const addressRegex = /^(?![0-9\s!@#$%^&*()_+=-]+$).+/;
+      const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
+     
     if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
     if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
-    if (!nameRegex.test(city)) return "Enter a City Name";
+    if (!addressRegex.test(city)) return "Enter a City Name";
     if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";
-    if (!addressRegex.test(address)) return "Enter a valid Address";
-    if (!nameRegex.test(address)) return "Enter a Address Name";
+    // if (!addressRegex.test(address)) return "Enter a valid Address";
+    // Must contain at least one letter or digit
+  
+
+    if (!addressRegex.test(address)) {
+      return "Enter a valid Address";
+    }
+
     if (!numberRegex.test(drLicenseNo)) return "Enter a valid 10-digit Doctor's License Number";
     if (!numberRegex.test(officeRefNo)) return "Enter a valid 10-digit Office Reference number";
     if (!password) return "Password is required";
