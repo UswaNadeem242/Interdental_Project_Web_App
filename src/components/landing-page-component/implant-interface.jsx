@@ -11,7 +11,7 @@ function ImplantInterfeace() {
                     <img
                         src="/assets/landing-page/landing 3.png"
                         alt="Doctor Enrollment"
-                        className="w-full max-w-md"
+                        className="w-full max-w-lg"
                     />
                 </div>
                 <div className="space-y-4">
