@@ -17,7 +17,6 @@ const DoctorHeader = ({ title, subTitle, role }) => {
   const pageTitle = usePageTitle();
   const displayTitle = pageTitle?.toLowerCase().includes("dashboard");
 
-
   const roleLink =
     role === "doctor"
       ? "/doctor-admin/profile"
@@ -33,7 +32,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
         <div>
           <h1 className="text-primaryText font-poppins text-lg md:text-2xl capitalize font-bold">
             {displayTitle
-              ? `Welcome back ${doctorProfile?.firstName || ""} ${doctorProfile?.lastName || ""}`
+              ? `Welcome back ${profileData?.firstName || ""} ${profileData?.lastName || ""}`
               : pageTitle}
           </h1>
           <p className="text-secondaryText text-sm  font-normal font-poppins">You have <span className="text-secondaryBrand font-normal ">2 Unread</span>  Notifications </p>

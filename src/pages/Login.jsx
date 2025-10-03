@@ -179,8 +179,6 @@ const Login = () => {
             </label>
           </div>
 
-
-
           <div className="relative w-full lg:w-[494px]">
             <input
               type={showPassword ? "text" : "password"}
