@@ -1110,8 +1110,7 @@ const DoctorOrder = () => {
                                               ${values.crown?.price || 0}
                                             </p>
                                           </div>
-                                         
-
+ 
                                           {/* digital model */}
                                           <div className="flex justify-between items-center py-1">
                                             <p className="text-xs text-textFieldHeading">

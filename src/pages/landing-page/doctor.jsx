@@ -6,11 +6,6 @@ import DotIcon from "../../icon/dotIcon";
 import { Doctorsteps, steps } from "../../Constant";
 import Contact from "./contact";
 import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
-
-
-
-
-
 const plans = [
   {
     id: "1",
@@ -136,14 +131,15 @@ const Doctor = ({ isLanding }) => {
               <li>Case automation with our AI-powered Doctor Portal</li>
             </ul>
 
-            <button onClick={() => navigate("/signup")} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+            {/* <button onClick={() => navigate("/signup")} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
               <h1 className="font-poppins font-semibold text-base text-[#434343]">
                 Register
               </h1>
               <div className="rounded-full bg-secondaryBrand text-white p-2">
                 <ArrowRightIcon className="w-4 h-4" />
               </div>
-            </button>
+            </button> */}
+            <ThirdButtonUI title=' Register' href='/signup' />
           </div>
         </section>
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center md:px-16 px-4 py-20">
@@ -358,15 +354,18 @@ const Doctor = ({ isLanding }) => {
           <p className="text-sm font-poppins font-normal text-center pt-16">Bonus: Our built-in ChatGPT Assistant can guide you through the form step-by-step to prevent errors, answer questions, and ensure your cases are processed without delays.
           </p>
           <div className="flex justify-center mb-6 sm:mb-12 mt-8">
-            <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+            {/* <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
               <h1 className="font-poppins font-semibold text-base text-[#434343]"  >
                 Continue
               </h1>
               <div className="rounded-full bg-secondaryBrand text-white p-2">
                 <ArrowRightIcon className="w-4 h-4" />
               </div>
-            </button>
+            </button> */}
+            <ThirdButtonUI title='  Continue' href='/signup' />
           </div>
+
+
         </div>
       </div >
 

@@ -22,15 +22,7 @@ const getAllMonths = () => {
 
 // Helper function to get all days of the week
 const getAllDaysOfWeek = () => {
-  return [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+  return ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 };
 
 // Helper function to get years range (current year and 3 years before)

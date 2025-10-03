@@ -670,9 +670,9 @@ export const Chartdata = [
 ];
 
 export const ChartStatusLines = [
-  { dataKey: "pending", stroke: "#3B82F6", name: "Pending" },
-  { dataKey: "inProgress", stroke: "#E13434", name: "In Progress" },
-  { dataKey: "completed", stroke: "#4FAD2E", name: "Completed" },
+  { dataKey: "pending", stroke: "#00A5FF", name: "Pending" },
+  { dataKey: "inProgress", stroke: "#000000", name: "In Progress" },
+  { dataKey: "completed", stroke: "#00AF10", name: "Completed" },
 ];
 export const ChartStatusLines2 = [
   { dataKey: "pending", stroke: "#001D58", name: "Doctor" },
@@ -1661,7 +1661,7 @@ export const Doctorsteps = [
     id: 2,
     title: " Get Exclusive Benefits",
     description: [
-      "Get Exclusive benefits and access to our AI modules.some availble now some still under construction.Temporize.ai MasterCrown.ai, S - Guide.ai, Bite.ai"
+      "Get Exclusive benefits and access to our AI modules.some availble now some still under construction.Temporize.ai MasterCrown.ai, S - Guide.ai, Bite.ai",
     ],
   },
   {
