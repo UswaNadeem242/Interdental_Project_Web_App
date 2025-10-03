@@ -137,7 +137,7 @@ const DoctorOrder = () => {
     dispatch(resetRestoration());
   }, [dispatch]);
   const [formData, setFormData] = useState({
-    id: '',
+    id: "",
     reference: "",
   });
   useEffect(() => {
@@ -170,10 +170,9 @@ const DoctorOrder = () => {
       });
     }
   }, [doctorProfile]);
-   const handleDueDateChange = (e) => {
+  const handleDueDateChange = (e) => {
     dispatch(setDueDate({ dueDate: e.target.value }));
   };
-
 
   return (
     <>
@@ -295,7 +294,10 @@ const DoctorOrder = () => {
                                   //   );
                                   // }}
 
-                                  value={doctor.find(d => d.field === "dueDate")?.value || ""}
+                                  value={
+                                    doctor.find((d) => d.field === "dueDate")
+                                      ?.value || ""
+                                  }
                                   onChange={handleDueDateChange}
                                   onBlur={handleBlur}
                                 />
@@ -397,7 +399,7 @@ const DoctorOrder = () => {
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                    !activeToothSelection.scannerType
+                                  !activeToothSelection.scannerType
                                     ? "Scanner Type is Required Select the Teeth"
                                     : ""
                                 }
@@ -478,9 +480,9 @@ const DoctorOrder = () => {
                                     // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
                                     error={
                                       touched.digitalOptions &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.digitalOptions
+                                      !toothSelections.find(
+                                        (t) => t.toothId === selectedTooth
+                                      )?.digitalOptions
                                         ? "Digital Denture is Required Select the teeth"
                                         : ""
                                     }
@@ -523,9 +525,9 @@ const DoctorOrder = () => {
                                     storageKey="surgical_guide"
                                     error={
                                       touched.surgical_guide &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.surgical_guide
+                                      !toothSelections.find(
+                                        (t) => t.toothId === selectedTooth
+                                      )?.surgical_guide
                                         ? "Surgical Guide is Required. Please select a tooth."
                                         : ""
                                     }
@@ -562,11 +564,12 @@ const DoctorOrder = () => {
                             </section>
                             {/* Right 3 */}
                             <aside className="col-span-12 md:col-span-3 space-y-4 flex flex-col justify-between">
-                              <div className="flex  flex-col justify-between items-center">
+                              <div className="flex  flex-col justify-between ">
                                 <div className="w-full">
                                   <FormSection className="p-0">
                                     <DropdownWrapper buttonLabel="Modules">
                                       <MaterialDropdown
+                                        className2="relative z-0"
                                         options={
                                           orders.find((p) => p.name === "Crown")
                                             ?.children || []
@@ -613,14 +616,14 @@ const DoctorOrder = () => {
                                         label="Smart Crown"
                                         storageKey="crown"
                                         className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      // error={
-                                      //   touched.crown &&
-                                      //   !toothSelections.find(
-                                      //     (t) => t.toothId === selectedTooth
-                                      //   )?.crown
-                                      //     ? "Crown is required. Please select a value."
-                                      //     : ""
-                                      // }
+                                        // error={
+                                        //   touched.crown &&
+                                        //   !toothSelections.find(
+                                        //     (t) => t.toothId === selectedTooth
+                                        //   )?.crown
+                                        //     ? "Crown is required. Please select a value."
+                                        //     : ""
+                                        // }
                                       />
                                       <MaterialDropdown
                                         options={
@@ -657,14 +660,14 @@ const DoctorOrder = () => {
                                         label="Material"
                                         storageKey="material"
                                         className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      // error={
-                                      //   touched.material &&
-                                      //   !toothSelections.find(
-                                      //     (t) => t.toothId === selectedTooth
-                                      //   )?.material
-                                      //     ? "Material is required. Please select a tooth first"
-                                      //     : ""
-                                      // }
+                                        // error={
+                                        //   touched.material &&
+                                        //   !toothSelections.find(
+                                        //     (t) => t.toothId === selectedTooth
+                                        //   )?.material
+                                        //     ? "Material is required. Please select a tooth first"
+                                        //     : ""
+                                        // }
                                       />
 
                                       <ShadeDropdown
@@ -726,14 +729,14 @@ const DoctorOrder = () => {
                                         label="Dental lab alliance"
                                         storageKey="Dental lab alliance"
                                         className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      // error={
-                                      //   touched.lab &&
-                                      //   !toothSelections.find(
-                                      //     (t) => t.toothId === selectedTooth
-                                      //   )?.lab
-                                      //     ? "Participating Lab is required. Please select a tooth first."
-                                      //     : ""
-                                      // }
+                                        // error={
+                                        //   touched.lab &&
+                                        //   !toothSelections.find(
+                                        //     (t) => t.toothId === selectedTooth
+                                        //   )?.lab
+                                        //     ? "Participating Lab is required. Please select a tooth first."
+                                        //     : ""
+                                        // }
                                       />
                                     </DropdownWrapper>
 
@@ -944,9 +947,9 @@ const DoctorOrder = () => {
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.photogrammetryfiles
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.photogrammetryfiles
                                           ? "Photogrammetry files is required. Please select a tooth first."
                                           : ""
                                       }
@@ -1030,57 +1033,80 @@ const DoctorOrder = () => {
                                     )}
                                   </div>
                                   <> </>
-                                  <div className="flex justify-between items-center py-3">
-                                    <p className="text-textFieldHeading text-xs font-poppins">
-                                      Subtotal:
-                                    </p>
-                                    <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                      ${totalPrice.toFixed(2)}
-                                    </p>
-                                  </div>
-                                  <div className="flex justify-between items-center py-3">
-                                    <p className="text-textFieldHeading text-xs font-poppins">
-                                      Shipping:
-                                    </p>
-                                    <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                      {/* ${shipping.toFixed(2)} */}
-                                    </p>
-                                  </div>
-                                  <div className="flex justify-between items-center py-3">
-                                    <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
-                                      Total:
-                                    </p>
 
-                                    <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                      ${totalPrice.toFixed(2)}
-                                    </p>
+                                  <div className="">
+                                    <div className="flex justify-between items-center py-3">
+                                      <p className="text-textFieldHeading text-xs font-poppins">
+                                        Emax:
+                                      </p>
+
+                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                        ${totalPrice.toFixed(2)}
+                                      </p>
+                                    </div>
+                                    {/*  */}
+                                    <div className="flex justify-between items-center py-3">
+                                      <p className="text-textFieldHeading text-xs font-poppins">
+                                        Argen ST:
+                                      </p>
+                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                        ${totalPrice.toFixed(2)}
+                                      </p>
+                                    </div>
+
+                                    <div className="flex justify-between items-center py-3">
+                                      <p className="text-textFieldHeading text-xs font-poppins">
+                                        Subtotal:
+                                      </p>
+                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                        ${totalPrice.toFixed(2)}
+                                      </p>
+                                    </div>
+
+                                    <div className="flex justify-between items-center py-3 border-t">
+                                      <p className="text-textFieldHeading text-xs font-poppins">
+                                        Shipping:
+                                      </p>
+                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                        {/* ${shipping.toFixed(2)} */}
+                                      </p>
+                                    </div>
+                                    <div className="flex justify-between items-center py-3 font-poppins">
+                                      <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
+                                        Total:
+                                      </p>
+
+                                      <p className="text-[#1A1A1A] font-semibold text-lg font-poppins">
+                                        ${totalPrice.toFixed(2)}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                              <button
-                                type="button"
-                                // onClick={() => {
-                                //   // ✅ validate form before next
-                                //   console.log('erroe', errors);
-                                //   validateForm().then((errors) => {
-                                //     if (Object.keys(errors).length === 0) {
-                                //       // no errors → submit → move next
+                                <button
+                                  type="button"
+                                  // onClick={() => {
+                                  //   // ✅ validate form before next
+                                  //   console.log('erroe', errors);
+                                  //   validateForm().then((errors) => {
+                                  //     if (Object.keys(errors).length === 0) {
+                                  //       // no errors → submit → move next
 
-                                //       handleSubmit();
-                                //     } else {
-                                //       // show toast instead of silently failing
-                                //       toast.error("⚠️ Please fill all required fields", {
-                                //         position: "bottom-right",
-                                //         autoClose: 3000,
-                                //       });
-                                //     }
-                                //   });
-                                // }}
-                                onClick={() => next()}
-                                className="w-full rounded-full bg-[#0b2b62] px-6 py-3 text-sm font-semibold text-white hover:bg-[#092b58]"
-                              >
-                                Checkout
-                              </button>
+                                  //       handleSubmit();
+                                  //     } else {
+                                  //       // show toast instead of silently failing
+                                  //       toast.error("⚠️ Please fill all required fields", {
+                                  //         position: "bottom-right",
+                                  //         autoClose: 3000,
+                                  //       });
+                                  //     }
+                                  //   });
+                                  // }}
+                                  onClick={() => next()}
+                                  className="font-poppins w-full bg-[#0b2b62] px-6 py-3 text-sm font-medium text-[#F8F8F8] hover:bg-[#092b58]"
+                                >
+                                  Checkout
+                                </button>
+                              </div>
                             </aside>
                           </div>
                         </Form>
