@@ -400,7 +400,7 @@ const DoctorOrder = () => {
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                  !activeToothSelection.scannerType
+                                    !activeToothSelection.scannerType
                                     ? "Scanner Type is Required Select the Teeth"
                                     : ""
                                 }
@@ -610,24 +610,26 @@ const DoctorOrder = () => {
                                         }}
                                         label=" Denture"
                                         storageKey="digitalOptions"
-                                        // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
-                                        // error={
-                                        //   touched.digitalOptions &&
-                                        //   !toothSelections.find(
-                                        //     (t) => t.toothId === selectedTooth
-                                        //   )?.digitalOptions
-                                        //     ? "Digital Denture is Required Select the teeth"
-                                        //     : ""
-                                        // }
+                                      // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
+                                      // error={
+                                      //   touched.digitalOptions &&
+                                      //   !toothSelections.find(
+                                      //     (t) => t.toothId === selectedTooth
+                                      //   )?.digitalOptions
+                                      //     ? "Digital Denture is Required Select the teeth"
+                                      //     : ""
+                                      // }
                                       />
                                       <MaterialDropdown
                                         className2="relative z-0"
-                                        className="w-full border cursor-not-allowed  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                        // options={
-                                        //   orders.find(
-                                        //     (p) => p.name === "Surgical Guide"
-                                        //   )?.children || []
-                                        // }
+                                        className="w-full border    bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                        options={
+                                          (orders.find((p) => p.name === "Surgical Guide")?.children?.length > 0
+                                            ? orders.find((p) => p.name === "Surgical Guide")?.children
+                                            : [{ label: "Not Available", value: "" }]
+                                          )
+                                        }
+                                        hideCheckForNotAvailable={true}
                                         // value={
                                         //   toothSelections.find(
                                         //     (t) => t.toothId === selectedTooth
@@ -1067,9 +1069,9 @@ const DoctorOrder = () => {
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.photogrammetryfiles
+                                          !toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.photogrammetryfiles
                                           ? "Photogrammetry files is required. Please select a tooth first."
                                           : ""
                                       }
@@ -1110,7 +1112,7 @@ const DoctorOrder = () => {
                                               ${values.crown?.price || 0}
                                             </p>
                                           </div>
- 
+
                                           {/* digital model */}
                                           <div className="flex justify-between items-center py-1">
                                             <p className="text-xs text-textFieldHeading">
