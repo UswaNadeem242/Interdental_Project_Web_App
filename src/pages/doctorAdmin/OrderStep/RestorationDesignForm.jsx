@@ -170,11 +170,10 @@ const DoctorOrder = () => {
       });
     }
   }, [doctorProfile]);
+
   const handleDueDateChange = (e) => {
     dispatch(setDueDate({ dueDate: e.target.value }));
   };
-
-
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -296,7 +295,10 @@ const DoctorOrder = () => {
                                   //   );
                                   // }}
 
-                                  value={doctor.find(d => d.field === "dueDate")?.value || ""}
+                                  value={
+                                    doctor.find((d) => d.field === "dueDate")
+                                      ?.value || ""
+                                  }
                                   onChange={handleDueDateChange}
                                   onBlur={handleBlur}
                                 />
@@ -566,11 +568,12 @@ const DoctorOrder = () => {
                             </section>
                             {/* Right 3 */}
                             <aside className="col-span-12 md:col-span-3 space-y-4 flex flex-col justify-between">
-                              <div className="flex  flex-col justify-between items-center">
+                              <div className="flex  flex-col justify-between ">
                                 <div className="w-full">
                                   <FormSection className="p-0">
                                     <DropdownWrapper buttonLabel="Modules">
                                       <MaterialDropdown
+                                        className2="relative z-0"
                                         options={
                                           orders.find((p) => p.name === "Crown")
                                             ?.children || []
@@ -1011,12 +1014,25 @@ const DoctorOrder = () => {
                                               ${values.crown?.price || 0}
                                             </p>
                                           </div>
+                                          <div className="flex justify-between items-center py-1">
+                                            <p className="text-xs text-textFieldHeading">
+                                              {values.scannerTypeOption?.label ||
+                                                "scannerType"}{" "}
 
-                                          {/* Surgical Guide */}
+                                            </p>
+                                            <p className="text-xs font-medium">
+                                              $
+                                              {values.scannerTypeOption ||
+                                                values.scannerTypeOption?.price ||
+                                                0}
+                                            </p>
+                                          </div>
+
+                                          {/* digital model */}
                                           <div className="flex justify-between items-center py-1">
                                             <p className="text-xs text-textFieldHeading">
                                               {values.Model_typeOption
-                                                ?.label || "No Surgical Guide"}
+                                                ?.label || "Digital Model Type"}
                                             </p>
                                             <p className="text-xs font-medium">
                                               $
@@ -1048,63 +1064,86 @@ const DoctorOrder = () => {
                                             <p className="text-xs font-medium">
                                               ${values?.labOption?.price || 0}
                                             </p>
-                                          </div> 
+                                          </div>
                                         </div>
                                       )
                                     )}
                                   </div>
                                   <> </>
-                                  <div className="flex justify-between items-center py-3">
-                                    <p className="text-textFieldHeading text-xs font-poppins">
-                                      Subtotal:
-                                    </p>
-                                    <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                      ${totalPrice.toFixed(2)}
-                                    </p>
-                                  </div>
-                                  <div className="flex justify-between items-center py-3">
-                                    <p className="text-textFieldHeading text-xs font-poppins">
-                                      Shipping:
-                                    </p>
-                                    <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                      {/* ${shipping.toFixed(2)} */}
-                                    </p>
-                                  </div>
-                                  <div className="flex justify-between items-center py-3">
-                                    <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
-                                      Total:
-                                    </p>
 
-                                    <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                      ${totalPrice.toFixed(2)}
-                                    </p>
+                                  <div className="">
+                                    <div className="flex justify-between items-center py-3">
+                                      <p className="text-textFieldHeading text-xs font-poppins">
+                                        Emax:
+                                      </p>
+
+                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                        ${totalPrice.toFixed(2)}
+                                      </p>
+                                    </div>
+                                    {/*  */}
+                                    <div className="flex justify-between items-center py-3">
+                                      <p className="text-textFieldHeading text-xs font-poppins">
+                                        Argen ST:
+                                      </p>
+                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                        ${totalPrice.toFixed(2)}
+                                      </p>
+                                    </div>
+
+                                    <div className="flex justify-between items-center py-3">
+                                      <p className="text-textFieldHeading text-xs font-poppins">
+                                        Subtotal:
+                                      </p>
+                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                        ${totalPrice.toFixed(2)}
+                                      </p>
+                                    </div>
+
+                                    <div className="flex justify-between items-center py-3 border-t">
+                                      <p className="text-textFieldHeading text-xs font-poppins">
+                                        Shipping:
+                                      </p>
+                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                        {/* ${shipping.toFixed(2)} */}
+                                      </p>
+                                    </div>
+                                    <div className="flex justify-between items-center py-3 font-poppins">
+                                      <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
+                                        Total:
+                                      </p>
+
+                                      <p className="text-[#1A1A1A] font-semibold text-lg font-poppins">
+                                        ${totalPrice.toFixed(2)}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                              <button
-                                type="button"
-                                // onClick={() => {
-                                //   // ✅ validate form before next
-                                //   console.log('erroe', errors);
-                                //   validateForm().then((errors) => {
-                                //     if (Object.keys(errors).length === 0) {
-                                //       // no errors → submit → move next
+                                <button
+                                  type="button"
+                                  // onClick={() => {
+                                  //   // ✅ validate form before next
+                                  //   console.log('erroe', errors);
+                                  //   validateForm().then((errors) => {
+                                  //     if (Object.keys(errors).length === 0) {
+                                  //       // no errors → submit → move next
 
-                                //       handleSubmit();
-                                //     } else {
-                                //       // show toast instead of silently failing
-                                //       toast.error("⚠️ Please fill all required fields", {
-                                //         position: "bottom-right",
-                                //         autoClose: 3000,
-                                //       });
-                                //     }
-                                //   });
-                                // }}
-                                onClick={() => next()}
-                                className="w-full rounded-full bg-[#0b2b62] px-6 py-3 text-sm font-semibold text-white hover:bg-[#092b58]"
-                              >
-                                Checkout
-                              </button>
+                                  //       handleSubmit();
+                                  //     } else {
+                                  //       // show toast instead of silently failing
+                                  //       toast.error("⚠️ Please fill all required fields", {
+                                  //         position: "bottom-right",
+                                  //         autoClose: 3000,
+                                  //       });
+                                  //     }
+                                  //   });
+                                  // }}
+                                  onClick={() => next()}
+                                  className="font-poppins w-full bg-[#0b2b62] px-6 py-3 text-sm font-medium text-[#F8F8F8] hover:bg-[#092b58]"
+                                >
+                                  Checkout
+                                </button>
+                              </div>
                             </aside>
                           </div>
                         </Form>
