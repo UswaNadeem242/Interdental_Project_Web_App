@@ -46,6 +46,7 @@ export default function MaterialDropdown({
   className,
   dropdownClass,
   error,
+  className2,
 }) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -74,8 +75,9 @@ export default function MaterialDropdown({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`${className || ""
-          } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal`}
+        className={`${
+          className || ""
+        } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal`}
       >
         <span>{selected?.label ?? label}</span>
         <ChevronDownIcon
@@ -85,7 +87,9 @@ export default function MaterialDropdown({
 
       {/* Panel (removed: absolute z-20) */}
       {open && (
-        <div className=" w-full  border border-background bg-white shadow-lg">
+        <div
+          className={` w-full  border border-background bg-white shadow-lg absolute z-20 ${className2}`}
+        >
           <div className="space-y-1">
             {options.map((opt, idx) => {
               const active = opt.value === value;
@@ -101,8 +105,9 @@ export default function MaterialDropdown({
                 >
                   <span className="flex justify-between items-center gap-1">
                     <span
-                      className={`grid h-4 w-4 place-items-center rounded-full border ${active ? "text-[#4640FF]" : "border-gray-300"
-                        }`}
+                      className={`grid h-4 w-4 place-items-center rounded-full border ${
+                        active ? "text-[#4640FF]" : "border-gray-300"
+                      }`}
                     >
                       {active && (
                         <span className="h-2 w-2 rounded-full bg-secondaryBrand" />
