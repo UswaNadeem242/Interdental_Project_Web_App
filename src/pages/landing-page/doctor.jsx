@@ -45,7 +45,7 @@ const plans = [
     duration: "Per Month",
     enrollmentFee: "One‑Time Setup Fee: $125",
     features: [
-      "unlimited MMS crowns",
+      "Unlimited MMS crowns",
       "Enroll patients into MMS",
       "Get discounted pricing on select cases",
       "Pick labs nationwide from dental lab alliance",

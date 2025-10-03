@@ -37,6 +37,9 @@ const DoctorHeader = ({ title, subTitle, role }) => {
   }, [doctorProfile]);
 
   const pageTitle = usePageTitle();
+  const displayTitle = pageTitle?.toLowerCase().includes("dashboard");
+
+
   const roleLink =
     role === "doctor"
       ? "/doctor-admin/profile"
@@ -46,9 +49,18 @@ const DoctorHeader = ({ title, subTitle, role }) => {
   return (
     <>
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">
-        <h1 className="text-[#1A2D33] font-poppins text-lg md:text-2xl capitalize font-bold">
-          {pageTitle}
-        </h1>
+        <div>
+          <h1 className="text-primaryText font-poppins text-lg md:text-2xl capitalize font-bold">
+            {displayTitle
+              ? `Welcome back ${doctorProfile?.firstName || ""} ${doctorProfile?.lastName || ""}`
+              : pageTitle}
+          </h1>
+          <p className="text-secondaryText text-sm  font-normal font-poppins">You have <span className="text-secondaryBrand font-normal ">2 Unread</span>  Notifications </p>
+        </div>
+
+
+
+
         <div className="hidden md:flex flex-1"></div>
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
           <img
@@ -78,6 +90,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
           </button>
         </div>
       </div>
+
     </>
   );
 };
