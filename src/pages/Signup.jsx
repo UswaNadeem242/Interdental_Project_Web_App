@@ -44,15 +44,15 @@ const Signup = () => {
     const nameRegex = /^[A-Za-z]{3,}$/;
     const numberRegex = /^[0-9]{10}$/;
     const zipRegex = /^[0-9]{5}$/;
-      const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
-     
+    const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
+
     if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
     if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
     if (!addressRegex.test(city)) return "Enter a City Name";
     if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";
     // if (!addressRegex.test(address)) return "Enter a valid Address";
     // Must contain at least one letter or digit
-  
+
 
     if (!addressRegex.test(address)) {
       return "Enter a valid Address";
@@ -146,7 +146,6 @@ const Signup = () => {
         setIsLoadingLabs(false);
       }
     };
-
     loadLabs();
   }, []);
 
@@ -195,114 +194,245 @@ const Signup = () => {
           <div className="w-full space-y-4">
             {/* Full width */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <input
+              {/* <input
                 type="text"
                 className="w-full rounded-md border border-gray-300 py-3 px-4 text-textFieldHeading outline-none"
                 placeholder="First Name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-              />
-              <input
-                type="text"
-                className="w-full rounded-md border border-gray-300 py-3 px-4 text-textFieldHeading outline-none"
-                placeholder="Last Name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
+              /> */}
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full rounded-md     py-3 px-4 text-textFieldHeading outline-none
+                "
+                />
+                <label
+                  htmlFor="firstName"
+                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand
+        px-1 -ml-1"
+                >
+                  First Name
+                </label>
+              </div>
+
+
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder=" "  // ek space zaroori hai
+                  className="peer w-full rounded-md  py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                />
+                <label
+                  htmlFor="lastName"
+                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+                >
+                  Last Name
+                </label>
+              </div>
+
+
+
             </div>
 
 
             {/* Email + Phone */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <input
-                type="text"
-                className="w-full rounded-md border border-gray-300 py-3 outline-none  px-4 text-textFieldHeading "
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                type="text"
-                className="w-full rounded-md border border-gray-300 py-3  outline-none px-4 text-textFieldHeading "
-                placeholder="Phone"
-                value={phoneNumber}
-                onChange={(e) => setPhone(e.target.value)}
-              />
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                />
+                <label
+                  htmlFor="email"
+                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+                >
+                  Email
+                </label>
+              </div>
+
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="phone"
+                  value={phoneNumber}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full rounded-md  py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                />
+                <label
+                  htmlFor="phone"
+                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+                >
+                  Phone
+                </label>
+              </div>
+
             </div>
 
             {/* Address */}
-            <input
-              type="text"
-              className="w-full rounded-md border border-gray-300 py-3  outline-none px-4 text-textFieldHeading"
-              placeholder="Address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
+            <div className="relative w-full">
+              <input
+                type="text"
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder=" "
+                className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+              />
+              <label
+                htmlFor="address"
+                className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+              >
+                Address
+              </label>
+            </div>
+
 
             {/* City + Zip */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <input
-                type="text"
-                className="w-full rounded-md border  py-3  outline-none px-4 text-textFieldHeading"
-                placeholder="City"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-              <input
-                type="text"
-                className="w-full rounded-md border  py-3 outline-none  px-4 text-textFieldHeading"
-                placeholder="Zip"
-                value={zip}
-                onChange={(e) => setZip(e.target.value)}
-              />
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="city"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full rounded-md  py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                />
+                <label
+                  htmlFor="city"
+                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+                >
+                  City
+                </label>
+              </div>
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="zip"
+                  value={zip}
+                  onChange={(e) => setZip(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                />
+                <label
+                  htmlFor="zip"
+                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+                >
+                  Zip
+                </label>
+              </div>
+
             </div>
 
             {/* License + Office Ref */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <input
-                type="text"
-                className="w-full rounded-md border  py-3 outline-none  px-4 text-textFieldHeading"
-                placeholder="Doctor's License Number"
-                value={drLicenseNo}
-                onChange={(e) => setdrLicense(e.target.value)}
-              />
-              <input
-                type="text"
-                className="w-full rounded-md border  py-3  outline-none px-4 text-textFieldHeading"
-                placeholder="Office Reference Number"
-                value={officeRefNo}
-                onChange={(e) => setofficeRefNo(e.target.value)}
-              />
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="drLicenseNo"
+                  value={drLicenseNo}
+                  onChange={(e) => setdrLicense(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                />
+                <label
+                  htmlFor="drLicenseNo"
+                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+                >
+                  Doctor's License Number
+                </label>
+              </div>
+
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="officeRefNo"
+                  value={officeRefNo}
+                  onChange={(e) => setofficeRefNo(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                />
+                <label
+                  htmlFor="officeRefNo"
+                  className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+                >
+                  Office Reference Number
+                </label>
+              </div>
+
             </div>
 
             {/* Password */}
-            <div className="relative">
+            <div className="relative w-full">
               <input
                 type={showPassword ? "text" : "password"}
-                className="w-full rounded-md border  py-3 outline-none  px-4 text-textFieldHeading"
-                placeholder="Password"
+                id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder=" "
+                className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
               />
+              <label
+                htmlFor="password"
+                className="absolute left-3 top-2 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-3 peer-focus:text-sm peer-focus:text-secondaryBrand"
+              >
+                Password
+              </label>
+
+              {/* Eye Icon */}
               <div
                 className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {/* Eye icon same as before */}
-                {showPassword ? (<svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#808080"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
+                {showPassword ? (
+                  // Eye Open
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#808080"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
                 ) : (
                   // Eye Closed
                   <svg
@@ -318,13 +448,13 @@ const Signup = () => {
                   >
                     <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
                     <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                    <path d="M1 1l22 22" /> {/* diagonal line crossing the eye */}
+                    <line x1="1" y1="1" x2="23" y2="23" /> {/* Diagonal line */}
                     <circle cx="12" cy="12" r="3" />
                   </svg>
                 )}
-
               </div>
             </div>
+
             <MaterialDropdown
               options={labs}
               value={selectedLab} // ✅ must be single value (string/number)
@@ -333,6 +463,10 @@ const Signup = () => {
 
               className="w-full rounded-md border  bg-white py-3 outline-none  px-4 text-textFieldHeading"
             />
+
+
+
+
 
           </div>
         </div>
