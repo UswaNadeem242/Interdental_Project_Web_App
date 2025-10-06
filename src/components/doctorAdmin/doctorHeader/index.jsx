@@ -37,10 +37,6 @@ const DoctorHeader = ({ title, subTitle, role }) => {
           </h1>
           <p className="text-secondaryText text-sm  font-normal font-poppins">You have <span className="text-secondaryBrand font-normal ">2 Unread</span>  Notifications </p>
         </div>
-
-
-
-
         <div className="hidden md:flex flex-1"></div>
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
           <img

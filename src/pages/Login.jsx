@@ -178,7 +178,6 @@ const Login = () => {
               Email
             </label>
           </div>
-
           <div className="relative w-full lg:w-[494px]">
             <input
               type={showPassword ? "text" : "password"}
@@ -247,7 +246,7 @@ const Login = () => {
 
 
           <p
-            onClick={() => navigate("/forgot-password")}
+            onClick={() => email && navigate("/forgot-password")}
             className="flex justify-end w-full font-poppins font-normal cursor-pointer text-xs lg:text-[12px] leading-[18px] text-secondaryBrand"
           >
             Forgot Password ?
