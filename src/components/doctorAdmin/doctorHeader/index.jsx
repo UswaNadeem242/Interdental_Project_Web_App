@@ -38,8 +38,13 @@ const DoctorHeader = ({ title, subTitle, role }) => {
 
   const pageTitle = usePageTitle();
   const roleLink =
+    // role === "doctor"
+    //   ? "/doctor-admin/profile"
+    //   : "/patient-admin/profile-settings";
     role === "doctor"
       ? "/doctor-admin/profile"
+      : role === "admin"
+      ? "/admin-panel/profile-info "
       : "/patient-admin/profile-settings";
   const profileImage = useSelector((state) => state.profile?.profileImage);
 
@@ -52,7 +57,11 @@ const DoctorHeader = ({ title, subTitle, role }) => {
         <div className="hidden md:flex flex-1"></div>
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
           <img
-            src={profileImage || doctorProfile?.profileImage || "/default-avatar.png"}
+            src={
+              profileImage ||
+              doctorProfile?.profileImage ||
+              "/default-avatar.png"
+            }
             alt="userImg"
             className="w-10 h-10 rounded-full"
           />
