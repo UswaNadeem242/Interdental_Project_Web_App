@@ -2,19 +2,54 @@ import TabsStepper from "../../../Common/TabsStepper";
 import TableComponent from "../../../Common/Table";
 // import { data, headings } from "../../../Constant";
 import Drawers from "../../../Common/Drawers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClaimDetailForm from "../../doctorAdmin/ClaimRequest/ClaimDetailForm";
 import {
   headingsPatientClaimReq,
   PatientClaimReqData,
 } from "../../../Constant";
-import { PrimaryButtonUI, SecondaryButton } from "../../../Common/Button";
+import { SecondaryButton } from "../../../Common/Button";
 import PatientClaimForm from "./PatientClaimForm";
 import { PlusIcon } from "../../../icon/PlusIcon";
+import { getClaims } from "../../../api/patient-dashaboard-api";
 
 const PatientClaimrequests = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [claims, setClaims] = useState([]);
+
+  const transformPatientsData = (apiData) => {
+    if (!apiData || !Array.isArray(apiData)) return [];
+
+    return apiData.map((order) => {
+      return {
+        id: `#${order?.id}`,
+        pName: order?.patientName || "-",
+        dName: order?.doctorName || "-",
+        pEmail: order?.patientEmail || "-",
+        dEmail: order?.doctorEmail || "-",
+        // date: order?.ccExpiry || "-",
+        action: "View Detail",
+      };
+    });
+  };
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await getClaims();
+ 
+        if (response.status === 200) {
+          setClaims(transformPatientsData(response.data.data));
+
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchPatients();
+  }, []);
 
   const steps = [
     {
@@ -22,7 +57,7 @@ const PatientClaimrequests = () => {
       content: (
         <TableComponent
           headings={headingsPatientClaimReq}
-          data={PatientClaimReqData}
+          data={claims}
           onActionClick={(row) => {
             setSelectedRow(row);
             setIsOpen(true);
@@ -74,13 +109,13 @@ const PatientClaimrequests = () => {
           }
         />
 
-        <Drawers
+        {/* <Drawers
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           title="Claim Submission Form"
           status={selectedRow?.status}
           Content={<PatientClaimForm row={selectedRow} />}
-        />
+        /> */}
       </div>
     </div>
   );

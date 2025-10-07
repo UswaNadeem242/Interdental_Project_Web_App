@@ -17,7 +17,7 @@ export default function PatientDetailForm() {
             <div className="w-full px-1 py-1  bg-bgWhite rounded-full  ">
               <div
                 className="bg-secondaryBrand h-2.5 rounded-full "
-                style={{ width: `45%` }}
+                style={{ width: `75%` }}
               ></div>
             </div>
           </div>
