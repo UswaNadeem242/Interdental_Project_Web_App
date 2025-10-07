@@ -12,6 +12,7 @@ import {
 } from "../../../api/doctorDasboard";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfileImage } from "../../../store/slices/profileImage-slice";
+import { setProfileData } from "../../../store/slices/profileData-slice";
 
 const DoctorProfile = () => {
   const [isModalPassword, setIsModalPassword] = useState(false);
@@ -19,7 +20,7 @@ const DoctorProfile = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const profileImage = useSelector((state) => state.profile?.profileImage);
   const [toast, setToast] = useState({
     isVisible: false,
@@ -35,6 +36,10 @@ const DoctorProfile = () => {
 
       const fetchDoctorProfile = async () => {
         const response = await getDoctorProfile(userId);
+
+        if (response.status === 200) {
+          dispatch(setProfileData(response.data.data));
+        }
         setDoctorProfile(response.data.data);
       };
       fetchDoctorProfile();
@@ -67,7 +72,7 @@ const DoctorProfile = () => {
   }, [doctorProfile]);
 
   // State for input errors
-  const [errors, setErrors] = useState({}); 
+  const [errors, setErrors] = useState({});
   // Function to show toast messages
   const showToast = (message, type = "success") => {
     setToast({
@@ -140,61 +145,59 @@ const DoctorProfile = () => {
   //     // Reset the file input
   //     event.target.value = "";
   //   }
-  // }; 
+  // };
 
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-
-const handleImageUpload = async (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  // Validate type
-  if (!file.type.startsWith("image/")) {
-    showToast("Please select a valid image file", "error");
-    return;
-  }
-
-  // Validate size
-  if (file.size > 5 * 1024 * 1024) {
-    showToast("Image size should be less than 5MB", "error");
-    return;
-  }
-
-  // Instant preview
-  const reader = new FileReader();
-  reader.onload = (e) => setProfileImagePreview(e.target.result);
-  reader.readAsDataURL(file);
-
-  setIsUploadingImage(true);
-
-  try {
-    const formData = new FormData();
-    formData.append("profileImage", file);
-
-    const response = await updateUserProfileImage(formData);
-
-    if (response.status === 200 || response.data?.responseCode === "200") {
-      showToast("Profile image updated successfully!", "success");
-
-      // ✅ Use preview image for Redux (instant update across app)
-      dispatch(setProfileImage(reader.result));
-    } else {
-      showToast(
-        response.data?.responseMessage || "Failed to update profile image",
-        "error"
-      );
-      setProfileImagePreview(null);
+    // Validate type
+    if (!file.type.startsWith("image/")) {
+      showToast("Please select a valid image file", "error");
+      return;
     }
-  } catch (error) {
-    console.error("Error uploading image:", error);
-    showToast("Error uploading image. Please try again.", "error");
-    setProfileImagePreview(null);
-  } finally {
-    setIsUploadingImage(false);
-    event.target.value = "";
-  }
-};
- 
+
+    // Validate size
+    if (file.size > 5 * 1024 * 1024) {
+      showToast("Image size should be less than 5MB", "error");
+      return;
+    }
+
+    // Instant preview
+    const reader = new FileReader();
+    reader.onload = (e) => setProfileImagePreview(e.target.result);
+    reader.readAsDataURL(file);
+
+    setIsUploadingImage(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+      const response = await updateUserProfileImage(formData);
+
+      if (response.status === 200 || response.data?.responseCode === "200") {
+        showToast("Profile image updated successfully!", "success");
+
+        // ✅ Use preview image for Redux (instant update across app)
+        dispatch(setProfileImage(reader.result));
+      } else {
+        showToast(
+          response.data?.responseMessage || "Failed to update profile image",
+          "error"
+        );
+        setProfileImagePreview(null);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      showToast("Error uploading image. Please try again.", "error");
+      setProfileImagePreview(null);
+    } finally {
+      setIsUploadingImage(false);
+      event.target.value = "";
+    }
+  };
+
   // Validation function
   const validateField = (name, value) => {
     switch (name) {
@@ -257,18 +260,21 @@ const handleImageUpload = async (event) => {
         setIsUpdating(true);
 
         const bodyData = {
-          firstName: formData.firstName,
-          lastName: doctorProfile?.lastName,
-          phone: formData.phone,
-          address: formData.address,
-          officeRefNumber: formData.reference,
-          doctorLicenceNumber: formData.license,
+          firstName: formData?.firstName,
+          lastName: formData?.lastName,
+          phone: formData?.phone,
+          address: formData?.address,
+          officeRefNumber: formData?.reference,
+          doctorLicenceNumber: formData?.license,
         };
 
         const response = await updateDoctorProfile(bodyData);
 
         if (response.status === 200) {
           showToast("Profile updated successfully!", "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         } else {
           console.error("Failed to update profile:", response);
           showToast("Failed to update profile. Please try again.", "error");
@@ -303,9 +309,6 @@ const handleImageUpload = async (event) => {
             // }
             // src={profileImage || "/assets/user.png"}
             src={profileImage || profileImagePreview || "/assets/user.png"}
-
-
-
             className="md:w-20 md:h-20 w-12 h-12 object-cover rounded-full"
             alt="Profile"
           />
@@ -332,8 +335,9 @@ const handleImageUpload = async (event) => {
             />
             <label
               htmlFor="fileUpload"
-              className={`cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block ${isUploadingImage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={`cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block ${
+                isUploadingImage ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               {isUploadingImage ? "Uploading..." : "Upload new picture"}
             </label>
@@ -374,11 +378,7 @@ const handleImageUpload = async (event) => {
         </button>
       </div>
       <div className="bg-white rounded-2xl md:p-8 p-4   mt-10">
-
-        <form
-          className=" "
-          onSubmit={handleSubmit}
-        >
+        <form className=" " onSubmit={handleSubmit}>
           {/* grid md:grid-cols-12 grid-cols-6 gap-4 bg-white */}
 
           <div className="grid md:grid-cols-12 grid-cols-6 gap-4  items-center">
@@ -388,15 +388,15 @@ const handleImageUpload = async (event) => {
               </h3>{" "}
             </div>
             <div className="md:col-span-6 col-span-3  md:flex  md:justify-end">
-
               <div className="col-span-12 flex justify-end mt-6">
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className={`bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${isUpdating
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-secondaryBrand"
-                    }`}
+                  className={`bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${
+                    isUpdating
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-secondaryBrand"
+                  }`}
                 >
                   {isUpdating ? "Save Change ..." : "Save Change"}
                 </button>
@@ -405,39 +405,38 @@ const handleImageUpload = async (event) => {
           </div>
 
           <div className=" grid md:grid-cols-12 grid-cols-6 gap-4 bg-white">
-            <div className="col-span-12  space-y-4 mt-4">
-
+            <div className="md:col-span-6 col-span-12">
               <TextInput
-                id="fullName"
-                name="fullName"
-                label="Full Name"
-                placeholder="Bransim"
+                id="firstName"
+                name="firstName"
+                label="First Name"
+                placeholder="First Name"
                 className3={"text-secondaryText"}
                 icon={<PenIcon size={18} />}
-                value={`${formData.firstName || ""} ${formData.lastName || ""}`.trim()}
-                onChange={(e) => {
-                  const fullName = e.target.value;
-
-                  // split into words
-                  const parts = fullName.trim().split(/\s+/);
-                  const firstName = parts[0] || "";
-                  const lastName = parts.slice(1).join(" ") || "";
-
-                  setFormData((prev) => ({
-                    ...prev,
-                    firstName,
-                    lastName,
-                  }));
-                }}
+                value={formData.firstName || ""}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {(errors.firstName || errors.lastName) && (
-                <p className="text-red-800 text-sm">
-                  {errors.firstName || errors.lastName}
-                </p>
+              {errors.firstName && (
+                <p className="text-red-800 text-sm">{errors.firstName}</p>
               )}
+            </div>
 
-
+            <div className="md:col-span-6 col-span-12">
+              <TextInput
+                id="lastName"
+                name="lastName"
+                label="Last Name"
+                placeholder="Last Name"
+                className3={"text-secondaryText"}
+                icon={<PenIcon size={18} />}
+                value={formData.lastName || ""}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.lastName && (
+                <p className="text-red-800 text-sm">{errors.lastName}</p>
+              )}
             </div>
 
             <div className="md:col-span-6 col-span-12">
@@ -539,8 +538,6 @@ const handleImageUpload = async (event) => {
               )}
             </div>
           </div>
-
-
 
           {/* Submit Button */}
           {/* <div className="col-span-12 flex justify-end mt-6">

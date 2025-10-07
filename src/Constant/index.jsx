@@ -681,11 +681,11 @@ export const ChartStatusLines2 = [
 
 export const headingsPatientDashboardTable = [
   { label: "Product ID", key: "id" },
-  { label: "Product Name", key: "pName" },
-  { label: "Purchase Date", key: "PurchaseDate" },
-  { label: "Expiration Date", key: "ExpDate" },
+  { label: "Doctoe Name", key: "dName" },
+  { label: "Patient Name", key: "pName" },
+  { label: "totalAmount", key: "tAmount" },
   { label: "Shopping Date", key: "ShoppingDate" },
-  { label: "Quantity", key: "quantity" },
+  // { label: "Quantity", key: "quantity" },
   { label: "Status", key: "status" },
   { label: "Actions", key: "action" },
 ];
@@ -875,9 +875,12 @@ export const PatientDashTabledata = [
 
 export const headingsPatientClaimReq = [
   { label: "Claim ID", key: "id" },
-  { label: "Product Name", key: "cName" },
-  { label: "Status", key: "status" },
-  { label: "Date Submitted", key: "DateSubmitted" },
+  { label: "Patient Name", key: "pName" },
+  { label: "patient Email", key: "pEmail" },
+  { label: "Doctor Name", key: "dName" },
+  { label: "Doctor Email", key: "dEmail" },
+  // { label: "Date Submitted", key: "date" },
+  // { label: "Status", key: "status" },
 
   { label: "Action", key: "action" },
 ];
