@@ -11,6 +11,7 @@ import ProductDetails from "./admin-products/product-details";
 import Subscriptions from "./admin-subscriptions/subscriptions";
 import AdminClaimRequest from "./admin-claim-request";
 import ClaimDetailAdminPanel from "./admin-claim-request/claim-detail-form";
+import ProfileInfoAdminPanel from "./admin-profile-info";
 
 const AdminPanel = () => {
   return (
@@ -27,8 +28,9 @@ const AdminPanel = () => {
         <Route path="/product-details" element={<ProductDetails />} />
         <Route path="/subscriptions" element={<Subscriptions />} />
         <Route path="/claim-requests" element={<AdminClaimRequest />} />
-        claim-detail-form
+
         <Route path="/claim-detail-form" element={<ClaimDetailAdminPanel />} />
+        <Route path="/profile-info" element={<ProfileInfoAdminPanel />} />
         {/* // <Route path="/patient" element={<PatientPage />} />
         // <Route path="/claim-request" element={<ClaimRequest />} />
         // <Route path="/orders-details" element={<DoctorOrder />} />

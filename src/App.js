@@ -154,7 +154,7 @@ const PlainLayoutAdminPanel = ({ children }) => (
         <div className="md:hidden mr-4">
           <MobileSidebar items={menuAdminPanelItem} />
         </div>
-        <DoctorHeader />
+        <DoctorHeader role={"admin"} />
       </header>
 
       {/* Main Content */}
