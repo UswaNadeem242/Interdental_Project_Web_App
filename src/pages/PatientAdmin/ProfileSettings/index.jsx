@@ -248,8 +248,8 @@ const ProfileSettings = () => {
       <div className="grid md:grid-cols-12 grid-cols-1 gap-4 bg-white md:p-8 p-4 rounded-2xl items-center  ">
         {/* Left side */}
         <div className="col-span-12 md:col-span-6 flex gap-4 items-center">
-           <img
-            
+          <img
+
             src={profileImage || profileImagePreview || "/assets/user.png"}
             className="md:w-20 md:h-20 w-12 h-12 object-cover rounded-full"
             alt="Profile"
@@ -320,7 +320,7 @@ const ProfileSettings = () => {
                 className3={"text-secondaryText"}
               />
               {errors.firstName && (
-                <p className="text-red-500 text-sm">{errors.firstName}</p>
+                <p className="text-red-700 text-sm">{errors.firstName}</p>
               )}
             </div>
             <div className="md:col-span-6 col-span-12 space-y-4 ">
@@ -346,18 +346,16 @@ const ProfileSettings = () => {
                 label="E-mail Address"
                 placeholder="hanry463@gmail.com"
                 type="email"
-
                 value={form.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
+                // onChange={handleChange}
+                // onBlur={handleBlur}
                 className={"font-semibold "}
-                icon={<PenIcon size={18} />}
+                // icon={<PenIcon size={18} />}
                 className3="text-secondaryText cursor-not-allowed"
-
-                disabled
+                readOnly
               />
               {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
+                <p className="text-red-700 text-sm">{errors.email}</p>
               )}
             </div>
             <div className="md:col-span-6 col-span-12">
@@ -375,7 +373,7 @@ const ProfileSettings = () => {
                 className3={"text-secondaryText"}
               />
               {errors.phone && (
-                <p className="text-red-500 text-sm">{errors.phone}</p>
+                <p className="text-red-700 text-sm">{errors.phone}</p>
               )}
             </div>
           </div>
