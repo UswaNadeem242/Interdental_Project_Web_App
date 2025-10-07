@@ -18,7 +18,24 @@ const PatientDashboardPage = () => {
   const profileData = useSelector(
     (state) => state.profileData?.userProfileData
   );
-  console.log('profileData', profileData?.id);
+  const transformPatientsData = (apiData) => {
+    if (!apiData || !Array.isArray(apiData)) return [];
+    return apiData.map((order) => ({
+      id: `#${order?.id}`,
+      dName: `${order?.doctorFirstName || "-"} ${order?.doctorLastName || "-"}`,
+      pName: `${order?.patientFirstName || "-"} ${order?.patientLastName || "-"}`,
+      tAmount: order?.totalAmount,
+      status: order?.orderStatus,
+      linkName: "View Detail",
+      ShoppingDate: order?.expectedDeliveryDate,
+      // address: order?.address || "abc....",
+      // profileURL: order?.profileURL,
+      action: "View Detail",
+      rewarrently: order?.remainingWarrenty,
+    }));
+  };
+  console.log('warranties', warranties);
+  console.log("warranties.rewarrently",warranties[0]?.rewarrently)
 
 
 
@@ -28,7 +45,7 @@ const PatientDashboardPage = () => {
       content: (
         <TableComponent
           headings={headingsPatientDashboardTable}
-          data={PatientDashTabledata}
+          data={warranties}
           onActionClick={(row) => {
             setSelectedRow(row);
             setIsOpen(true);
@@ -57,34 +74,17 @@ const PatientDashboardPage = () => {
   ];
   useEffect(() => {
     const fetchOrderByID = async () => {
-      const response = await getWarrantiesPatients(profileData?.id);
+      const response = await getWarrantiesPatients(123);
       console.log('repsone api', response);
       if (response.status === 200) {
         setWarranties(response.data.data);
+        setWarranties(transformPatientsData(response.data.data));
       }
     };
     fetchOrderByID();
   }, [profileData?.id]);
 
-  console.log('warranties', warranties);
 
-  // useEffect(() => {
-  //   const fetchPatients = async () => {
-  //     try {
-  //       const response = await getWarrantiesPatients();
-  //       console.log('patiten dashbaird:', response);
-
-  //       if (response.status === 200) {
-  //         setWarranties(transformPatientsData(response.data.data));
-
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchPatients();
-  // }, []);
   return (
     <div>
       <div className="bg-white rounded-2xl p-6">
@@ -97,7 +97,7 @@ const PatientDashboardPage = () => {
           onClose={() => setIsOpen(false)}
           title="Warranty Detail"
           status={selectedRow?.status}
-          Content={<PatientDetailForm row={selectedRow} />}
+          Content={<PatientDetailForm row={selectedRow} warranties={warranties} />}
         />
       </div>
     </div>

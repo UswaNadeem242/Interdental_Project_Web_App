@@ -681,11 +681,11 @@ export const ChartStatusLines2 = [
 
 export const headingsPatientDashboardTable = [
   { label: "Product ID", key: "id" },
-  { label: "Product Name", key: "pName" },
-  { label: "Purchase Date", key: "PurchaseDate" },
-  { label: "Expiration Date", key: "ExpDate" },
+  { label: "Doctoe Name", key: "dName" },
+  { label: "Patient Name", key: "pName" },
+  { label: "totalAmount", key: "tAmount" },
   { label: "Shopping Date", key: "ShoppingDate" },
-  { label: "Quantity", key: "quantity" },
+  // { label: "Quantity", key: "quantity" },
   { label: "Status", key: "status" },
   { label: "Actions", key: "action" },
 ];

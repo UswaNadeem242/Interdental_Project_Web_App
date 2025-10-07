@@ -1,7 +1,10 @@
 import React from "react";
 import FileIcon from "../../../icon/FileIcon";
 
-export default function PatientDetailForm() {
+export default function PatientDetailForm({ warranties }) {
+  console.log(warranties?.rewarrently);
+
+
   return (
     <div className="bg-bgWhite">
       <div className="bg-card p-4 rounded-2xl">
