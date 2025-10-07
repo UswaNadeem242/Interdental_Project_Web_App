@@ -35,7 +35,8 @@ const PatientDashboardPage = () => {
     }));
   };
   console.log('warranties', warranties);
-  console.log("warranties.rewarrently",warranties[0]?.rewarrently)
+  const rewarrentlyValues = warranties.map(item => item.rewarrently);
+  console.log(rewarrentlyValues);
 
 
 

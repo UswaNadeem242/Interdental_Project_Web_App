@@ -2,7 +2,12 @@ import React from "react";
 import FileIcon from "../../../icon/FileIcon";
 
 export default function PatientDetailForm({ warranties }) {
-  console.log(warranties?.rewarrently);
+
+  const getRewarrentlyById = (warranties, id) => {
+    return warranties.find(item => item.id === id)?.rewarrently || null;
+  };
+
+  console.log(getRewarrentlyById(warranties, "#41")); // "98.69926389997437"
 
 
   return (
@@ -15,12 +20,26 @@ export default function PatientDetailForm({ warranties }) {
           </p>
         </p>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div className=" pt-3 pb-3 pr-5">
           <div className="pb-4">
             <div className="w-full px-1 py-1  bg-bgWhite rounded-full  ">
               <div
                 className="bg-secondaryBrand h-2.5 rounded-full "
-                style={{ width: `75%` }}
+                style={{ width: `${getRewarrentlyById}%` }}
               ></div>
             </div>
           </div>
