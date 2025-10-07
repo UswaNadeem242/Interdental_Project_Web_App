@@ -2,9 +2,9 @@ import React, { useState } from "react";
 // import { InputField } from "../../../Common/FormInputField";
 import { InputField } from '../../../Common/FormInputField'
 import { FormSection } from "../../../Common/FormSection";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { PatientClaimInitialValues, patientClaimValidationSchema } from "../../../Common/FormsValidation/patient-claim-validation";
-import { Formik, Form, FieldArray } from "formik";
+import { Formik, Form, FieldArray, Field } from "formik";
 import { getClaimsByUser } from "../../../api/patient-dashaboard-api";
 import { showToast } from "../../../store/toast-slice";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ export const PatientForm = () => {
   const [selectedImplants, setSelectedImplants] = useState([]);
   const [selectedDenture, setSelectedDenture] = useState(null);
   const dispatch = useDispatch();
+  const navigator = useNavigate();
   const toggleSelection = (num, type) => {
     if (type === "teeth") {
       // setSelectedTeeth((prev) =>
@@ -33,33 +34,186 @@ export const PatientForm = () => {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       // Build warrantySelections dynamically
+      // const warrantySelections = [];
+
+      // if (values.crownTeeth?.length > 0) {
+      //   warrantySelections.push({
+      //     category: "Crown",
+      //     years: 3, // could be user input or config
+      //     monthlyAmount: 45.0,
+      //     selected: values.crownTeeth, // send selected tooth numbers
+      //   });
+      // }
+      // if (values.implantTeeth?.length > 0) {
+      //   warrantySelections.push({
+      //     category: "Implant",
+      //     years: 6,
+      //     monthlyAmount: 50.0,
+      //     selected: values.implantTeeth,
+      //   });
+      // }
+
+      // if (values.dentureTeeth) {
+      //   warrantySelections.push({
+      //     category: "Denture",
+      //     years: 4,
+      //     monthlyAmount: 30.0,
+      //     selected: values.dentureTeeth,
+      //   });
+      // }
+
+
+      // const warrantySelections = [];
+
+      // if (values.crownTeeth?.length > 0) {
+      //   warrantySelections.push({
+      //     category: "Crown",
+      //     years: values.crownYears?.replace(" Years", "") || "", // <-- store clean year
+      //     monthlyAmount: 45.0,
+      //     selected: values.crownTeeth, // keep array for reference
+      //   });
+      // }
+
+      // if (values.implantTeeth?.length > 0) {
+      //   warrantySelections.push({
+      //     category: "Implant",
+      //     years: values.implantYears?.replace(" Years", "") || "",
+      //     monthlyAmount: 50.0,
+      //     selected: values.implantTeeth,
+      //   });
+      // }
+
+      // if (values.dentureTeeth) {
+      //   warrantySelections.push({
+      //     category: "Denture",
+      //     years: values.dentureYears?.replace(" Years", "") || "",
+      //     monthlyAmount: 30.0,
+      //     selected: values.dentureTeeth,
+      //   });
+      // }
+
+
+
+
+
+      // const warrantyConfig = [
+      //   { key: "crownTeeth", category: "Crown", yearKey: "crownYears", monthlyAmount: 45 },
+      //   { key: "implantTeeth", category: "Implant", yearKey: "implantYears", monthlyAmount: 50 },
+      //   { key: "dentureTeeth", category: "Denture", yearKey: "dentureYears", monthlyAmount: 30 },
+      // ];
+
+      // // Build warrantySelections
+      // const warrantySelections = warrantyConfig
+      //   .filter(cfg => values[cfg.key] && values[cfg.key]?.length > 0) // only if teeth selected
+      //   .map(cfg => ({
+      //     category: cfg.category,
+      //     years: parseInt(values[cfg.yearKey]?.replace(" Years", "") || 0, 10),
+      //     monthlyAmount: cfg.monthlyAmount,
+      //   }));
+      // const warrantySelections = [];
+
+      // if (values.crownTeeth) {
+      //   warrantySelections.push({
+      //     category: "Crown",
+      //     years: values.crownYears
+      //       ? parseInt(values.crownYears.replace(/\D/g, ""), 10)
+      //       : "",
+      //     monthlyAmount: 45,
+      //   });
+      // }
+
+      // if (values.implantTeeth) {
+      //   warrantySelections.push({
+      //     category: "Implant",
+      //     years: values.implantYears
+      //       ? parseInt(values.implantYears.replace(/\D/g, ""), 10)
+      //       : "",
+      //     monthlyAmount: 50,
+      //   });
+      // }
+
+      // if (values.dentureTeeth) {
+      //   warrantySelections.push({
+      //     category: "Denture",
+      //     years: values.dentureYears
+      //       ? parseInt(values.dentureYears.replace(/\D/g, ""), 10)
+      //       : "",
+      //     monthlyAmount: 30,
+      //   });
+      // }
+
+      // console.log("Warranty Selections:", warrantySelections);
+
+
+
+
+
+
+      // const warrantySelections = [];
+
+      // const pushSelection = (field, yearsField, category, monthlyAmount) => {
+      //   if (values[field]) {
+      //     warrantySelections.push({
+      //       category,
+      //       years: values[yearsField]
+      //         ? parseInt(values[yearsField].replace(/\D/g, ""), 10) // convert "6 Years" -> 6
+      //         : null,
+      //       monthlyAmount,
+      //     });
+      //   }
+      // };
+
+      // pushSelection("crownTeeth", "crownYears", "Crown", 45.0);
+      // pushSelection("implantTeeth", "implantYears", "Implant", 50.0);
+      // pushSelection("dentureTeeth", "dentureYears", "Denture", 30.0);
+
+      // console.log("Warranty Selections:", warrantySelections);
+
+
+
+
+
       const warrantySelections = [];
 
-      if (values.crownTeeth?.length > 0) {
-        warrantySelections.push({
-          category: "Crown",
-          years: 3, // could be user input or config
-          monthlyAmount: 45.0,
-          selected: values.crownTeeth, // send selected tooth numbers
-        });
-      }
-      if (values.implantTeeth?.length > 0) {
-        warrantySelections.push({
-          category: "Implant",
-          years: 6,
-          monthlyAmount: 50.0,
-          selected: values.implantTeeth,
-        });
-      }
+      const pushSelection = (field, yearsField, category, monthlyAmount) => {
+        const teethValue = values[field];
 
-      if (values.dentureTeeth) {
-        warrantySelections.push({
-          category: "Denture",
-          years: 4,
-          monthlyAmount: 30.0,
-          selected: values.dentureTeeth,
-        });
-      }
+        if (teethValue && teethValue.toString().trim() !== "") {
+          warrantySelections.push({
+            category,
+            years: values[yearsField]
+              ? parseInt(values[yearsField].replace(/\D/g, ""), 10) // convert "6 Years" -> 6
+              : null,
+            monthlyAmount,
+          });
+        }
+      };
+      pushSelection("crownTeeth", "crownYears", "Crown", 45.0);
+      pushSelection("implantTeeth", "implantYears", "Implant", 50.0);
+      pushSelection("dentureTeeth", "dentureYears", "Denture", 30.0);
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       // Final Payload
       const payload = {
@@ -85,23 +239,36 @@ export const PatientForm = () => {
         typeOfRestoration: values.typeOfRestoration,
         shade: values.shade,
         doctorSignature: values.doctorSignature || "",
+ 
 
-        crownTeeth: values.crownTeeth?.join(",") || "",
-        implantTeeth: values.implantTeeth?.join(",") || "",
-        dentureTeeth: values.dentureTeeth || "",
+
+        crownTeeth: Array.isArray(values.crownTeeth)
+          ? values.crownTeeth.filter(Boolean).join(",")
+          : (values.crownTeeth || "").replace(/^,|,$/g, ""), // remove leading/trailing commas
+
+        implantTeeth: Array.isArray(values.implantTeeth)
+          ? values.implantTeeth.filter(Boolean).join(",")
+          : (values.implantTeeth || "").replace(/^,|,$/g, ""),
+
+        dentureTeeth: Array.isArray(values.dentureTeeth)
+          ? values.dentureTeeth.filter(Boolean).join(",")
+          : (values.dentureTeeth || "").replace(/^,|,$/g, ""),
+
+        warrantySelections,
 
         paymentMethod: values.paymentMethod || "",
         creditCardMasked: values.creditCardMasked,
         ccExpiry: values.ccExpiry,
         // createdAt: values.date,
 
-        warrantySelections, // <-- injected here
+        // warrantySelections, // <-- injected here
       };
 
       console.log("Final Payload 👉", payload);
 
       // Example API call
       const response = await getClaimsByUser(payload);
+      console.log(response);
 
       if (response.success) {
 
@@ -111,7 +278,8 @@ export const PatientForm = () => {
             type: "success",
           })
         );
-        // resetForm();
+        resetForm();
+        navigator('/patient-admin/claim-requests')
       } else {
         dispatch(
           showToast({
@@ -133,25 +301,13 @@ export const PatientForm = () => {
     }
   };
 
-
-
-
-
-
-
-
-
   const InputLabeStyle = `grid grid-cols-1 lg:grid-cols-4 gap-4`;
 
   return (
-    <div className="bg-bgWhite rounded-2xl ">
+    <div className="bg-bgWhite rounded-2xl  ">
       <Formik
         initialValues={PatientClaimInitialValues}
         validationSchema={patientClaimValidationSchema}
-        // onSubmit={(values) => {
-        //   console.log("submitt button clicked", values);
-        // }}
-
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
@@ -226,9 +382,6 @@ export const PatientForm = () => {
                   </h4>
 
                   <div className="flex flex-row flex-wrap gap-2 mb-6 ">
-
-
-
                     <FieldArray name="crownTeeth">
                       {({ push, remove, form }) => (
                         <div className="flex flex-row flex-wrap gap-2 mb-6">
@@ -323,7 +476,7 @@ export const PatientForm = () => {
                           key={option}
                           onClick={() => setSelectedDenture(option)}
                           className={`px-4 py-2 border rounded-md shadow-sm font-medium 
-                  ${selectedDenture === option
+                            ${selectedDenture === option
                               ? "bg-[#94D3DD] text-secondaryBrand"
                               : "bg-white hover:bg-gray-100"
                             }`}
@@ -333,6 +486,146 @@ export const PatientForm = () => {
                       ))}
                     </div>
                   </div>
+
+
+
+
+
+
+                  {/* Select From Options Form */}
+                  {/* <div className="p-6  bg-bgWhite font-poppins text-secondaryBrand">
+                    <h4>Please select from the following options:</h4>
+                    <div className="flex gap-10 md:flex-row flex-col ">
+                      {[
+                        "Total Crown/Bridges",
+                        "Total Implant Relate",
+                        "Total Denture/Partials",
+                      ].map((section, id) => (
+                        <div key={id} className="text-[#949494] justify-between">
+                          <InputField label={section} name='dentureTeeth' />
+                          <div className="flex gap-3 mt-4">
+                            {["3 Years", "6 Years", "12 Years"].map((option, id) => (
+                              <label key={id} className="flex flex-1 items-center">
+                                <input type="radio" value={option} name={section} />
+                                <span className="ml-2">{option}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                   
+                  </div> */}
+
+
+
+
+
+
+
+
+
+
+
+
+                  {/* Select From Options Form */}
+                  {/* <div className="pt-6 bg-bgWhite font-poppins text-secondaryBrand">
+                    <h4>Please select from the following options:</h4>
+
+                    <div className="flex gap-10 md:flex-row flex-col pt-8 ">
+                      {[
+                        { label: "Total Crown/Bridges", field: "crownTeeth", yearsField: "crownYears" },
+                        { label: "Total Implant Relate", field: "implantTeeth", yearsField: "implantYears" },
+                        { label: "Total Denture/Partials", field: "dentureTeeth", yearsField: "dentureYears" },
+                      ].map((section, id) => (
+                        <div key={id} className="text-[#949494] justify-between">
+                      
+                          <InputField label={section.label} name={section.field} />
+
+                         
+                          <div className="flex gap-3 mt-4">
+                            {["3 Years", "6 Years", "12 Years"].map((option, idx) => (
+                              <label key={idx} className="flex flex-1 items-center">
+                                <input
+                                  type="radio"
+                                  value={option}
+                                  name={section.yearsField}  // <-- unique field for Formik
+                                />
+                                <span className="ml-2">{option}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div> */}
+
+
+
+
+
+
+                  <div className="pt-6 bg-bgWhite font-poppins text-secondaryBrand">
+                    <h4>Please select from the following options:</h4>
+
+                    <div className="flex gap-10 md:flex-row flex-col pt-8 ">
+                      {[
+                        {
+                          label: "Total Crown/Bridges",
+                          field: "crownTeeth",
+                          yearsField: "crownYears",
+                          category: "Crown",
+                          monthlyAmount: 45.0,
+                        },
+                        {
+                          label: "Total Implant Relate",
+                          field: "implantTeeth",
+                          yearsField: "implantYears",
+                          category: "Implant",
+                          monthlyAmount: 50.0,
+                        },
+                        {
+                          label: "Total Denture/Partials",
+                          field: "dentureTeeth",
+                          yearsField: "dentureYears",
+                          category: "Denture",
+                          monthlyAmount: 30.0,
+                        },
+                      ].map((section, id) => (
+                        <div key={id} className="text-[#949494] justify-between">
+                          {/* count input */}
+                          <InputField label={section.label} name={section.field} />
+
+                          {/* years selection */}
+                          <div className="flex gap-3 mt-4">
+                            {["3 Years", "6 Years", "12 Years"].map((option, idx) => (
+                              <label key={idx} className="flex flex-1 items-center">
+                                <Field
+                                  type="radio"
+                                  name={section.yearsField} // <-- tracked by Formik
+                                  value={option}
+                                />
+                                <span className="ml-2">{option}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+
                 </div>
 
                 <div className="lg:ml-36 ml-12">

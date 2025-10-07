@@ -7,7 +7,7 @@ import {
 import Drawers from "../../../Common/Drawers";
 import { useEffect, useState } from "react";
 import PatientDetailForm from "./PatientDetailForm";
-import { getWarrantiesPatients, getWarrtieByID } from "../../../api/patient-dashaboard-api";
+import { getWarrantiesPatients } from "../../../api/patient-dashaboard-api";
 import { useSelector } from "react-redux";
 
 const PatientDashboardPage = () => {
@@ -34,11 +34,6 @@ const PatientDashboardPage = () => {
       rewarrently: order?.remainingWarrenty,
     }));
   };
-  console.log('warranties', warranties);
-  const rewarrentlyValues = warranties.map(item => item.rewarrently);
-  console.log(rewarrentlyValues);
-
-
 
   const steps = [
     {
@@ -75,8 +70,8 @@ const PatientDashboardPage = () => {
   ];
   useEffect(() => {
     const fetchOrderByID = async () => {
-      const response = await getWarrantiesPatients(123);
-      console.log('repsone api', response);
+      const response = await getWarrantiesPatients(profileData?.id);
+
       if (response.status === 200) {
         setWarranties(response.data.data);
         setWarranties(transformPatientsData(response.data.data));
