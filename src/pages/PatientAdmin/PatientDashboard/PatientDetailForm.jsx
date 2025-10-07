@@ -19,21 +19,6 @@ export default function PatientDetailForm({ warranties }) {
             will be expired on 23 march 2023
           </p>
         </p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div className=" pt-3 pb-3 pr-5">
           <div className="pb-4">
             <div className="w-full px-1 py-1  bg-bgWhite rounded-full  ">

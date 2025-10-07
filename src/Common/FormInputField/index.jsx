@@ -69,7 +69,7 @@ export function InputField({ label, name, type = "text", className = "" }) {
       <ErrorMessage
         name={name}
         component="div"
-        className="text-red-500 text-sm mt-1"
+        className="text-red-700 text-sm mt-1"
       />
     </div>
   );

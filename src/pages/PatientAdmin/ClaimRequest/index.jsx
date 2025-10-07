@@ -95,6 +95,7 @@ const PatientClaimrequests = () => {
   ];
   return (
     <div>
+  
       <div className="bg-white rounded-2xl p-6">
         <TabsStepper
           steps={steps}
