@@ -6,12 +6,14 @@ import { NavLink } from "react-router-dom";
 import { PatientClaimInitialValues, patientClaimValidationSchema } from "../../../Common/FormsValidation/patient-claim-validation";
 import { Formik, Form, FieldArray } from "formik";
 import { getClaimsByUser } from "../../../api/patient-dashaboard-api";
+import { showToast } from "../../../store/toast-slice";
+import { useDispatch } from "react-redux";
 
 export const PatientForm = () => {
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [selectedImplants, setSelectedImplants] = useState([]);
   const [selectedDenture, setSelectedDenture] = useState(null);
-
+  const dispatch = useDispatch();
   const toggleSelection = (num, type) => {
     if (type === "teeth") {
       // setSelectedTeeth((prev) =>
@@ -102,14 +104,30 @@ export const PatientForm = () => {
       const response = await getClaimsByUser(payload);
 
       if (response.success) {
-        showToast("Claim submitted successfully!", "success");
+
+        dispatch(
+          showToast({
+            message: `Claim submitted successfully!`,
+            type: "success",
+          })
+        );
         // resetForm();
       } else {
-        showToast(response?.data?.responseDesc || "Failed to submit claim.", "error");
+        dispatch(
+          showToast({
+            message: `response?.data?.responseDesc || "Failed to submit claim.`,
+            type: "error",
+          })
+        );
       }
     } catch (error) {
       console.error("API Error:", error);
-      showToast("An error occurred. Please try again.", "error");
+      dispatch(
+        showToast({
+          message: `An error occurred. Please try again.`,
+          type: "error",
+        })
+      );
     } finally {
       setSubmitting(false);
     }
