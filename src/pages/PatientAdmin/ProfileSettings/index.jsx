@@ -1,29 +1,76 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextInput from "../../../Common/Input";
 import PenIcon from "../../../icon/PenIcon";
 import ChangePasswordModel from "../../../modals/ChangePasswordModel";
 import ChevronRightIcon from "../../../icon/ChevronRight";
 import LockIcon from "../../../icon/LockIcon";
 import PatientChangePasswordModel from "../../../modals/PatientChangePasswordModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getPatientProfile, updatePatientProfile, updateUserPatientProfileImage } from "../../../api/patient-dashaboard-api";
+import { showToast } from "../../../store/toast-slice";
+import { setProfileImage } from "../../../store/slices/profileImage-slice";
 
 const ProfileSettings = () => {
   const initialState = {
-    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
   };
-
   const [form, setForm] = useState(initialState);
+  const [patinetProfile, setPatientProfile] = useState(null);
   const [errors, setErrors] = useState({});
   const [isModalPassword, setIsModalPassword] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const profileImage = useSelector((state) => state.profile?.profileImage);
+
+  const dispatch = useDispatch();
+  // here interation 
+  useEffect(() => {
+    const userData = localStorage.getItem("users");
+
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      const userId = parsedUserData.id;
+
+      const fetchDoctorProfile = async () => {
+        const response = await getPatientProfile(userId);
+
+        // if (response.status === 200) {
+        //   // dispatch(setProfileData(response.data.data));
+        //   setProfileData(response.data.data)
+        // }
+        console.log('useEffect doctor:', response);
+
+        setPatientProfile(response.data.data);
+      };
+      fetchDoctorProfile();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (patinetProfile) {
+      setForm({
+        firstName: patinetProfile?.firstName || "",
+        lastName: patinetProfile?.lastName || "",
+        email: patinetProfile?.email || "",
+        phone: patinetProfile?.phoneNumber || "",
+      });
+    }
+  }, [patinetProfile]);
   const validateField = (name, value) => {
     let errorMsg = "";
 
-    if (name === "username") {
+    if (name === "firstName") {
       if (!value.trim()) errorMsg = "First name is required.";
       else if (value.length < 2) errorMsg = "Must be at least 2 characters.";
     }
-
+    if (name === "lastName") {
+      if (!value.trim()) errorMsg = "First name is required.";
+      else if (value.length < 2) errorMsg = "Must be at least 2 characters.";
+    }
     if (name === "email") {
       if (!value.trim()) errorMsg = "Email is required.";
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
@@ -51,7 +98,10 @@ const ProfileSettings = () => {
     const { name, value } = e.target;
     let newValue = value;
 
-    if (name === "username") {
+    if (name === "firstName") {
+      newValue = newValue.replace(/[^a-zA-Z ]/g, "");
+    }
+    if (name === "lastName") {
       newValue = newValue.replace(/[^a-zA-Z ]/g, "");
     }
 
@@ -79,23 +129,137 @@ const ProfileSettings = () => {
     setErrors(newErrors);
     const hasErrors = Object.values(newErrors).some((err) => err);
     if (hasErrors) return;
+  };
 
-    // Submit form logic here
-   };
+
+  //UPDATE API 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate all fields before submit
+    const newErrors = {};
+    Object.keys(form).forEach((key) => {
+      const error = validateField(key, form[key]);
+      if (error) newErrors[key] = error;
+    });
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        setIsUpdating(true);
+
+        const bodyData = {
+          firstName: form?.firstName,
+          lastName: form?.lastName,
+          phone: form?.phone,
+
+        };
+
+        const response = await updatePatientProfile(bodyData);
+
+        if (response.status === 200) {
+          dispatch(
+            showToast({
+              message: `Profile updated successfully!`,
+              type: "success",
+            })
+          );
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          console.error("Failed to update profile. Please try again", response);
+          dispatch(
+            showToast({
+              message: `Failed to update profile. Please try again`,
+              type: "error",
+            })
+          );
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        dispatch(
+          showToast({
+            message: `Error updating profile. Please try again.`,
+            type: "error",
+          })
+        );
+      } finally {
+        setIsUpdating(false);
+      }
+    }
+  };
+
+  // IMAGE UPLOAD 
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate type
+    if (!file.type.startsWith("image/")) {
+      showToast("Please select a valid image file", "error");
+      return;
+    }
+
+    // Validate size
+    if (file.size > 5 * 1024 * 1024) {
+      showToast("Image size should be less than 5MB", "error");
+      return;
+    }
+
+    // Instant preview
+    const reader = new FileReader();
+    reader.onload = (e) => setProfileImagePreview(e.target.result);
+    reader.readAsDataURL(file);
+
+    setIsUploadingImage(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+      const response = await updateUserPatientProfileImage(formData);
+
+      if (response.status === 200 || response.data?.responseCode === "200") {
+        showToast("Profile image updated successfully!", "success");
+
+        // ✅ Use preview image for Redux (instant update across app)
+        dispatch(setProfileImage(reader.result));
+      } else {
+        showToast(
+          response.data?.responseMessage || "Failed to update profile image",
+          "error"
+        );
+        setProfileImagePreview(null);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      showToast("Error uploading image. Please try again.", "error");
+      setProfileImagePreview(null);
+    } finally {
+      setIsUploadingImage(false);
+      event.target.value = "";
+    }
+  };
+
   return (
     <>
       <div className="grid md:grid-cols-12 grid-cols-1 gap-4 bg-white md:p-8 p-4 rounded-2xl items-center  ">
         {/* Left side */}
         <div className="col-span-12 md:col-span-6 flex gap-4 items-center">
-          <img
-            src="/assets/user.png"
-            alt="ImageUser"
-            className="md:w-20 md:h-20 w-12 h-12 object-contain"
+           <img
+            
+            src={profileImage || profileImagePreview || "/assets/user.png"}
+            className="md:w-20 md:h-20 w-12 h-12 object-cover rounded-full"
+            alt="Profile"
           />
           <div>
-            <h3 className="text-2xl font-bold font-poppins">Bransim Hanry</h3>
+            <h3 className="text-2xl font-bold font-poppins">
+              {patinetProfile?.firstName} {patinetProfile?.lastName}
+            </h3>
             <p className="text-docText font-poppins text-sm mt-2">
-              hanry463@gmail.com
+              {patinetProfile?.email}
             </p>
           </div>
         </div>
@@ -107,7 +271,9 @@ const ProfileSettings = () => {
               type="file"
               id="fileUpload"
               className="hidden"
-              onChange={(e) => console.log(e.target.files[0])} // handle file here
+              onChange={handleImageUpload}
+              disabled={isUploadingImage}
+
             />
             <label
               htmlFor="fileUpload"
@@ -119,69 +285,99 @@ const ProfileSettings = () => {
         </div>
       </div>
       <div className="bg-white rounded-2xl md:p-8 p-4   mt-10 font-poppins">
-        <div className="grid md:grid-cols-12 grid-cols-6 gap-4  items-center">
-          <div className="md:col-span-6 col-span-3 mb-10 mt-4">
-            <h3 className="text-primaryText text-lg font-poppins font-semibold  capitalize">
-              Account info
-            </h3>
-          </div>
-          <div className="md:col-span-6 col-span-3  md:flex  md:justify-end">
-            <button className="bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full mb-10">
-              Save Changes
-            </button>
-          </div>
-        </div>
-        <form className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white  ">
-          <div className="col-span-12  space-y-4 ">
-            <TextInput
-              id="username"
-              name="username"
-              label="First Name"
-              placeholder="Bransim"
-              icon={<PenIcon size={18} />}
-              value={form.username}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={"font-semibold"}
-            />
-            {errors.username && (
-              <p className="text-red-500 text-sm">{errors.username}</p>
-            )}
-          </div>
+        <form onSubmit={handleSubmit}>
+          <div className="grid md:grid-cols-12 grid-cols-6 gap-4  items-center">
+            <div className="md:col-span-6 col-span-3 mb-10 mt-4">
+              <h3 className="text-primaryText text-lg font-poppins font-semibold  capitalize">
+                Account info
+              </h3>
+            </div>
+            <div className="md:col-span-6 col-span-3  md:flex  md:justify-end">
+              <button type="submit"
+                disabled={isUpdating}
+                className={`bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${isUpdating
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-secondaryBrand"
+                  }`}
+              >
+                {isUpdating ? "Save Change ..." : "Save Change"}
 
-          <div className="md:col-span-6 col-span-12 mr-4">
-            <TextInput
-              id="email"
-              name="email"
-              label="E-mail Address"
-              placeholder="hanry463@gmail.com"
-              type="email"
-              icon={""}
-              value={form.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={"font-semibold "}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email}</p>
-            )}
+              </button>
+            </div>
           </div>
-          <div className="md:col-span-6 col-span-12">
-            <TextInput
-              id="phone"
-              name="phone"
-              label="Phone Number"
-              placeholder="+92 457 765 456"
-              type="text"
-              icon={<PenIcon size={18} />}
-              value={form.phone}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={"font-semibold"}
-            />
-            {errors.phone && (
-              <p className="text-red-500 text-sm">{errors.phone}</p>
-            )}
+          <div className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white  ">
+            <div className="md:col-span-6 col-span-12 space-y-4 ">
+              <TextInput
+                id="firstName"
+                name="firstName"
+                label="First Name"
+                placeholder="Bransim"
+                icon={<PenIcon size={18} />}
+                value={form.firstName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={"font-semibold "}
+                className3={"text-secondaryText"}
+              />
+              {errors.firstName && (
+                <p className="text-red-500 text-sm">{errors.firstName}</p>
+              )}
+            </div>
+            <div className="md:col-span-6 col-span-12 space-y-4 ">
+              <TextInput
+                id="lastName"
+                name="lastName"
+                label="Last Name"
+                placeholder="Last Name"
+                className3={"text-secondaryText"}
+                icon={<PenIcon size={18} />}
+                value={form.lastName || ""}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.lastName && (
+                <p className="text-red-800 text-sm">{errors.lastName}</p>
+              )}
+            </div>
+            <div className="md:col-span-6 col-span-12 ">
+              <TextInput
+                id="email"
+                name="email"
+                label="E-mail Address"
+                placeholder="hanry463@gmail.com"
+                type="email"
+
+                value={form.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={"font-semibold "}
+                icon={<PenIcon size={18} />}
+                className3="text-secondaryText cursor-not-allowed"
+
+                disabled
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
+            </div>
+            <div className="md:col-span-6 col-span-12">
+              <TextInput
+                id="phone"
+                name="phone"
+                label="Phone Number"
+                placeholder="+92 457 765 456"
+                type="text"
+                icon={<PenIcon size={18} />}
+                value={form.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={"font-semibold"}
+                className3={"text-secondaryText"}
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-sm">{errors.phone}</p>
+              )}
+            </div>
           </div>
         </form>
         <button

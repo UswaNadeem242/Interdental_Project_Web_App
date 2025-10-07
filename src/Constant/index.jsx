@@ -875,9 +875,12 @@ export const PatientDashTabledata = [
 
 export const headingsPatientClaimReq = [
   { label: "Claim ID", key: "id" },
-  { label: "Product Name", key: "cName" },
-  { label: "Status", key: "status" },
-  { label: "Date Submitted", key: "DateSubmitted" },
+  { label: "Patient Name", key: "pName" },
+  { label: "patient Email", key: "pEmail" },
+  { label: "Doctor Name", key: "dName" },
+  { label: "Doctor Email", key: "dEmail" },
+  // { label: "Date Submitted", key: "date" },
+  // { label: "Status", key: "status" },
 
   { label: "Action", key: "action" },
 ];

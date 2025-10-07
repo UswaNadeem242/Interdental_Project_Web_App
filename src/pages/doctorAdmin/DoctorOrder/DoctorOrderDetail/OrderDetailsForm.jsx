@@ -13,7 +13,6 @@ export default function OrderDetailsForm({ id }) {
   // Helper function to format date as MM/DD/YYYY
   const formatDate = (dateString) => {
     if (!dateString || dateString === "-") return "-";
-
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return "-";
@@ -163,7 +162,7 @@ export default function OrderDetailsForm({ id }) {
             <div className="py-4">
               <TeethSelection
                 selectedTeeth={orderDetails?.selectedTooths || []}
-                onToothSelect={() => {}} // No selection needed - display only
+                onToothSelect={() => { }} // No selection needed - display only
                 showIds={true}
               />
             </div>
