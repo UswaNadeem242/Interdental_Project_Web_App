@@ -10,6 +10,7 @@ export const SmileDesignPicker = ({
   setIsModalOpen,
   selected,
   setSelected,
+  
 }) => {
   const dispatch = useDispatch();
   const { dropdowns, selectedTooth, toothSelections } = useSelector(
@@ -19,7 +20,7 @@ export const SmileDesignPicker = ({
   const [smileItems, setSmileItems] = useState([]);
   const [selectedSmile, setSelectedSmile] = useState(null);
 
-  // Load Smile Type from dropdowns
+  // Load Smile Type from dropdownsa
   useEffect(() => {
     if (!dropdowns || !Array.isArray(dropdowns)) return;
 
