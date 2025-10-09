@@ -6,6 +6,7 @@ import { BASE_URL } from "../config";
 import Toast from "../components/Toast";
 import MaterialDropdown from "../components/doctorAdmin/CommonLabel/selectInputLabel";
 import YearlyPlanModel from "../modals/yearly-plan";
+import { ArrowDownLeftIcon, ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -45,8 +46,7 @@ const Signup = () => {
     const numberRegex = /^[0-9]{10}$/;
     const zipRegex = /^[0-9]{5}$/;
     const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
-
-    if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
+         if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
     if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
     if (!addressRegex.test(city)) return "Enter a City Name";
     if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";
@@ -156,8 +156,14 @@ const Signup = () => {
   return (
     <div className="flex flex-col lg:flex-row justify-start items-center gap-6 lg:gap-24 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
       {/* Image section - hidden on mobile */}
+
       <div className="hidden lg:flex flex-col items-start justify-start -space-y-12">
-        <img src="/assets/logo.png" alt="logo" />
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')} >
+
+          <ArrowLeftIcon className="w- 5 h-5" />
+          <img src="/assets/logo.png" alt="logo" />
+
+        </div>
         <img
           className="w-[777px] h-[874px] rounded-[124px]"
           src="/assets/loginrectangle.png"
@@ -171,7 +177,7 @@ const Signup = () => {
           xmlns="http://www.w3.org/2000/svg"
           className="flex w-full justify-end pl-[620px]"
         >
-          {/* SVG content remains the same */}
+
         </svg>
       </div>
 
@@ -398,7 +404,7 @@ const Signup = () => {
                 />
                 <label
                   htmlFor="officeRefNo"
-                     className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
       peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
@@ -422,7 +428,7 @@ const Signup = () => {
               />
               <label
                 htmlFor="password"
-                   className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+                className="absolute left-3 top-3 text-gray-400 text-sm transition-all
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
       peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand

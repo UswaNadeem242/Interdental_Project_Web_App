@@ -64,13 +64,35 @@ const ProfileSettings = () => {
     let errorMsg = "";
 
     if (name === "firstName") {
-      if (!value.trim()) errorMsg = "First name is required.";
-      else if (value.length < 2) errorMsg = "Must be at least 2 characters.";
+      if (!value.trim()) {
+        errorMsg = "First name is required.";
+      }
+      else if (value.length < 3) {
+        errorMsg = "First name must be at least 3 characters.";
+      }
+      else if (value.length > 20) {
+        errorMsg = "First name cannot exceed 10 characters.";
+      }
+      else if (!/^[A-Za-z]+$/.test(value)) {
+        errorMsg = "First name must contain only letters (no spaces or numbers).";
+      }
     }
+
     if (name === "lastName") {
-      if (!value.trim()) errorMsg = "First name is required.";
-      else if (value.length < 2) errorMsg = "Must be at least 2 characters.";
+      if (!value.trim()) {
+        errorMsg = "Last name is required.";
+      }
+      else if (value.length < 3) {
+        errorMsg = "Last name must be at least 3 characters.";
+      }
+      else if (value.length > 20) {
+        errorMsg = "Last name cannot exceed 20 characters.";
+      }
+      else if (!/^[A-Za-z]+$/.test(value)) {
+        errorMsg = "Last name must contain only letters (no spaces or numbers).";
+      }
     }
+
     if (name === "email") {
       if (!value.trim()) errorMsg = "Email is required.";
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
@@ -78,10 +100,15 @@ const ProfileSettings = () => {
     }
 
     if (name === "phone") {
-      if (!value.trim()) errorMsg = "Phone number is required.";
-      else if (!/^\+?\d{10,15}$/.test(value))
-        errorMsg = "Invalid phone number. Include country code.";
+      if (!value.trim()) {
+        errorMsg = "Phone number is required.";
+      }
+      // ✅ allow only 11 digits
+      else if (!/^\d{11}$/.test(value)) {
+        errorMsg = "Phone number must be exactly 11 digits.";
+      }
     }
+
 
     return errorMsg;
   };
@@ -94,14 +121,64 @@ const ProfileSettings = () => {
       [name]: errorMsg,
     }));
   };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   let newValue = value;
+
+  //   if (name === "firstName") {
+  //     newValue = newValue.replace(/[^a-zA-Z ]/g, "");
+  //   }
+  //   if (name === "lastName") {
+  //     newValue = newValue.replace(/[^a-zA-Z ]/g, "");
+  //   }
+
+  //   if (name === "phone") {
+  //     newValue = newValue.replace(/[^0-9+]/g, "").slice(0, 15);
+  //   }
+
+  //   if (name === "email") {
+  //     newValue = newValue.slice(0, 50);
+  //   }
+
+  //   setForm((prev) => ({
+  //     ...prev,
+  //     [name]: newValue,
+  //   }));
+  // };
+
+  // const handleSave = () => {
+  //   const newErrors = {
+  //     username: validateField("username", form.username),
+  //     email: validateField("email", form.email),
+  //     phone: validateField("phone", form.phone),
+  //   };
+
+  //   setErrors(newErrors);
+  //   const hasErrors = Object.values(newErrors).some((err) => err);
+  //   if (hasErrors) return;
+  // };
+
+
+
+
+
+
+  // ✅ validate all fields in one go
+  const validateForm = (form) => {
+    const newErrors = {};
+    Object.keys(form).forEach((key) => {
+      const err = validateField(key, form[key]);
+      if (err) newErrors[key] = err;
+    });
+    return newErrors;
+  };
+
+  // ✅ handleChange with input restrictions
   const handleChange = (e) => {
     const { name, value } = e.target;
     let newValue = value;
 
-    if (name === "firstName") {
-      newValue = newValue.replace(/[^a-zA-Z ]/g, "");
-    }
-    if (name === "lastName") {
+    if (name === "firstName" || name === "lastName") {
       newValue = newValue.replace(/[^a-zA-Z ]/g, "");
     }
 
@@ -117,27 +194,41 @@ const ProfileSettings = () => {
       ...prev,
       [name]: newValue,
     }));
+
+    // live validation
+    setErrors((prev) => ({
+      ...prev,
+      [name]: validateField(name, newValue),
+    }));
   };
 
-  const handleSave = () => {
-    const newErrors = {
-      username: validateField("username", form.username),
-      email: validateField("email", form.email),
-      phone: validateField("phone", form.phone),
-    };
 
-    setErrors(newErrors);
-    const hasErrors = Object.values(newErrors).some((err) => err);
-    if (hasErrors) return;
-  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   //UPDATE API 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
+    const newErrors = validateForm(form);
+    setErrors(newErrors);
     // Validate all fields before submit
-    const newErrors = {};
+
     Object.keys(form).forEach((key) => {
       const error = validateField(key, form[key]);
       if (error) newErrors[key] = error;
@@ -242,7 +333,6 @@ const ProfileSettings = () => {
       event.target.value = "";
     }
   };
-
   return (
     <>
       <div className="grid md:grid-cols-12 grid-cols-1 gap-4 bg-white md:p-8 p-4 rounded-2xl items-center  ">
@@ -295,7 +385,7 @@ const ProfileSettings = () => {
             <div className="md:col-span-6 col-span-3  md:flex  md:justify-end">
               <button type="submit"
                 disabled={isUpdating}
-                className={`bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${isUpdating
+                className={`font-poppins bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${isUpdating
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-secondaryBrand"
                   }`}
@@ -351,8 +441,8 @@ const ProfileSettings = () => {
                 // onBlur={handleBlur}
                 className={"font-semibold "}
                 // icon={<PenIcon size={18} />}
-                className3="text-secondaryText cursor-not-allowed"
-                readOnly
+                className3="text-secondaryText  cursor-not-allowed"
+                disabled
               />
               {errors.email && (
                 <p className="text-red-700 text-sm">{errors.email}</p>
