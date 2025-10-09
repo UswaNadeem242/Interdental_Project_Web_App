@@ -24,7 +24,7 @@ const OrderDoctorPage = () => {
     if (!apiData || !Array.isArray(apiData)) return [];
 
     return apiData.map((order) => ({
-      id: `#${order?.id}`,
+      id: `${order?.id}`,
       pName: `${order?.patientFirstName || "-"} ${
         order?.patientLastName || "-"
       }`,
