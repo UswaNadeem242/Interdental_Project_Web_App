@@ -1,5 +1,3 @@
-import React from "react";
-import FileIcon from "../../../icon/FileIcon";
 import { CloudUpload } from "../../../icon/CloudUpload";
 
 export default function PatientClaimForm() {

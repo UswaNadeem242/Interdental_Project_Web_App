@@ -47,6 +47,8 @@ export default function MaterialDropdown({
   dropdownClass,
   error,
   className2,
+  hideCheckForNotAvailable = false, // ✅ new prop
+
 }) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -75,9 +77,8 @@ export default function MaterialDropdown({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`${
-          className || ""
-        } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal`}
+        className={`${className || ""
+          } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal`}
       >
         <span>{selected?.label ?? label}</span>
         <ChevronDownIcon
@@ -94,6 +95,8 @@ export default function MaterialDropdown({
             {options.map((opt, idx) => {
               const active = opt.value === value;
               const isLast = idx === options.length - 1;
+              const isNotAvailable = opt.label?.toLowerCase() === "not available"; // ✅ detect
+
               return (
                 <button
                   key={opt.value}
@@ -103,7 +106,7 @@ export default function MaterialDropdown({
                     ${active ? "bg-indigo-50" : "hover:bg-gray-50"} 
                     ${!isLast ? "border-b-2 border-background" : ""}`}
                 >
-                  <span className="flex justify-between items-center gap-1">
+                  {/* <span className="flex justify-between items-center gap-1">
                     <span
                       className={`grid h-4 w-4 place-items-center rounded-full border ${
                         active ? "text-[#4640FF]" : "border-gray-300"
@@ -113,6 +116,25 @@ export default function MaterialDropdown({
                         <span className="h-2 w-2 rounded-full bg-secondaryBrand" />
                       )}
                     </span>
+                    <span className="text-textFieldHeading text-[10px] font-normal">
+                      {opt.label}
+                    </span>
+                  </span> */}
+                  <span className="flex justify-between items-center gap-1">
+                    {/* ✅ Hide circle if "Not available" and prop is true */}
+                    {!(
+                      hideCheckForNotAvailable && isNotAvailable
+                    ) && (
+                        <span
+                          className={`grid h-4 w-4 place-items-center rounded-full border ${active ? "text-[#4640FF]" : "border-gray-300"
+                            }`}
+                        >
+                          {active && (
+                            <span className="h-2 w-2 rounded-full bg-secondaryBrand" />
+                          )}
+                        </span>
+                      )}
+
                     <span className="text-textFieldHeading text-[10px] font-normal">
                       {opt.label}
                     </span>

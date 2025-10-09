@@ -192,7 +192,6 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
         )}`;
       }
     }
-
     // Validate confirmPassword
     if (!formData.confirmPassword.trim()) {
       newErrors.confirmPassword = "Confirm Password is required";

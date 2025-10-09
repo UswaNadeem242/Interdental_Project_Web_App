@@ -11,9 +11,10 @@ export const getDoctorStats = async () => {
   }
 };
 
-export const getDoctorOrders = async () => {
+export const getDoctorOrders = async (id) => {
   try {
-    const response = await api.get(ENDPOINTS.DOCTOR.ORDERS);
+    const endpoint = `${ENDPOINTS.DOCTOR?.ORDERS}/${id}`;
+    const response = await api.get(endpoint);
     return handleApiSuccess(response);
   } catch (error) {
     return handleApiError(error);

@@ -6,13 +6,19 @@ import { PatientForm } from "./PatientForm";
 import PatientTermCondition from "./TermCondition";
 
 const PatientAdmin = () => {
+
+ 
+
+
     return (
         <div>
             <Routes>
                 <Route path="/dashboard" element={<PatientDashboardPage />} />
-                <Route path="/claim-requests" element={<PatientClaimrequests />} />
+                <Route path="/claim-request" element={<PatientClaimrequests />} />
+                <Route path="/claim-request/:name" element={<PatientForm />} />
+
                 <Route path="/profile-settings" element={<ProfileSettings />} />
-                <Route path="/patient-form" element={<PatientForm />} />
+                <Route path="/claim-request/:slug" element={<PatientForm />} />
                 <Route path="/term-condition" element={<PatientTermCondition />} />
             </Routes>
         </div>

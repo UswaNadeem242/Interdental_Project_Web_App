@@ -10,12 +10,12 @@ import { Xmark } from "../../icon/xmark";
 
 export default function Drawers({
   isOpen = false,
-  onClose = () => {},
+  onClose = () => { },
   title,
-  Content,
+  Content, 
 }) {
   const [open, setOpen] = useState(true);
-
+ 
   return (
     <div>
       {/* <button

@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { patientChangePassword } from "../api/patient-dashaboard-api";
+import { useDispatch } from "react-redux";
+import { showToast } from "../store/toast-slice";
 
 const PatientChangePasswordModel = ({
   isModalPassword,
   setIsModalPassword,
 }) => {
+  const dispatch = useDispatch();
   const handleCloseModal = () => {
     setIsModalPassword(false);
   };
@@ -121,6 +125,40 @@ const PatientChangePasswordModel = ({
       }
     }
   };
+  // UPDATE PASSWORD API
+  const updatePassword = async () => {
+    const bodyData = {
+      oldPassword: formData.oldPassword,
+      newPassword: formData.newPassword,
+      newConfirmPassword: formData.confirmPassword,
+    };
+    const response = await patientChangePassword(bodyData);
+
+    if (response.data.responseCode === "200") {
+      dispatch(
+        showToast({
+          message: response.data.responseMessage,
+          type: "success",
+        })
+      );
+
+
+      // Close modal after 1 second delay
+      setTimeout(() => {
+        handleCloseModal();
+      }, 1000);
+    } else {
+      console.error("Failed to update password:", response);
+      dispatch(
+        showToast({
+          message: response.data.responseMessage,
+          type: "error",
+        })
+      )
+
+
+    }
+  };
 
   // Handle form submit
   const handleSubmit = (e) => {
@@ -166,7 +204,7 @@ const PatientChangePasswordModel = ({
     if (hasErrors) {
       return;
     }
-
+    updatePassword();
     // If no errors, proceed with password update
     // Here you would typically call an API to update the password
     console.log("Password validation passed");
@@ -197,9 +235,8 @@ const PatientChangePasswordModel = ({
               onChange={handleChange}
               placeholder="Old Password"
               type={show.old ? "text" : "password"}
-              className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${
-                errors.oldPassword ? "border-red-500" : "border-borderPrimary"
-              }`}
+              className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.oldPassword ? "border-red-500" : "border-borderPrimary"
+                }`}
             />
             <button
               type="button"
@@ -257,9 +294,8 @@ const PatientChangePasswordModel = ({
               onChange={handleChange}
               placeholder="New Password"
               type={show.new ? "text" : "password"}
-              className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${
-                errors.newPassword ? "border-red-500" : "border-borderPrimary"
-              }`}
+              className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.newPassword ? "border-red-500" : "border-borderPrimary"
+                }`}
             />
             <button
               type="button"
@@ -317,11 +353,10 @@ const PatientChangePasswordModel = ({
               onChange={handleChange}
               placeholder="Confirm Password"
               type={show.confirm ? "text" : "password"}
-              className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${
-                errors.confirmPassword
-                  ? "border-red-500"
-                  : "border-borderPrimary"
-              }`}
+              className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.confirmPassword
+                ? "border-red-500"
+                : "border-borderPrimary"
+                }`}
             />
             <button
               type="button"
@@ -373,7 +408,7 @@ const PatientChangePasswordModel = ({
 
           <button
             type="submit"
-            className=" w-full flex justify-center items-center bg-secondaryBrand text-white  h-10  rounded-full  border-[1px] border-secondaryBrand gap-2 py-5   px-2  text-xs font-poppins font-normal leading-[18px]"
+            className="font-poppins  w-full flex justify-center items-center bg-secondaryBrand text-white  h-10  rounded-full  border-[1px] border-secondaryBrand gap-2 py-5   px-2  text-xs font-poppins font-normal leading-[18px]"
           >
             Confirm
           </button>

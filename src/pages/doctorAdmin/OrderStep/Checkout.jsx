@@ -39,7 +39,7 @@ const CheckoutForm = ({ next }) => {
     unitPrice: item.unitPrice || 0,
   }));
   const storedUser = localStorage.getItem("user");
-  const userId = storedUser ? JSON.parse(storedUser).id : 5;
+  const userId = JSON.parse(localStorage.getItem("user"))?.id;
   const buildRequestData = (data) => {
     // const doctorData = {};
     // (restoration.doctor || []).forEach(d => {
@@ -114,7 +114,7 @@ const CheckoutForm = ({ next }) => {
       next();
     } catch (err) {
       console.error("❌ Error creating order:", err.response?.data || err.message);
-      setError(err.response?.data || "Something went wrong");
+      // setError(err.response?.data || "Something went wrong");
     } finally {
       setLoading(false);
     }

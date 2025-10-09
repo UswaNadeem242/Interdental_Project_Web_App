@@ -8,6 +8,7 @@ import GoogleIcon from "../icon/google";
 import FacebookIcon from "../icon/facebookIcon";
 import { showToast } from "../store/toast-slice";
 import { useDispatch } from "react-redux";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const Login = () => {
       if (response.data.data.users.roles[0] === "ADMIN") {
         navigate("/doctor-admin/dashboard");
       } else if (response.data.data.users.roles[0] === "PATIENT") {
-        navigate("/");
+        navigate("/patient-admin/dashboard");
       } else if (response.data.data.users.roles[0] === "DOCTOR") {
         navigate("/doctor-admin/dashboard");
       } else {
@@ -81,8 +82,12 @@ const Login = () => {
     <div className="flex    flex-col lg:flex-row justify-start items-center lg:gap-20 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
       {/* Image div - hidden on mobile, shown on lg screens and above */}
       <div className="hidden lg:flex flex-col items-start justify-start -space-y-12">
-        <img src="/assets/logo.png" alt="logo" />
-        <img
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')} >
+
+          <ArrowLeftIcon className="w- 5 h-5" />
+          <img src="/assets/logo.png" alt="logo" />
+
+        </div>        <img
           className="w-[777px] h-[874px] rounded-[124px]" src="/assets/loginrectangle.png"
           alt="login rectangle image"
         />
@@ -155,25 +160,54 @@ const Login = () => {
             Welcome back! Please enter your credentials to continue.
           </p>
         </div>
-
+        {/*             className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px] placeholder:text-sm  placeholder:font-poppins"
+ */}
         <div className="flex flex-col justify-center items-center w-full px-4 lg:w-[494px] h-auto lg:h-[144px] gap-4 lg:gap-[16px]">
-          <input
-            type="text"
-            className="w-full lg:w-[494px] h-[51px] rounded-[32px] outline-none border-[1px] border-[#FFFFFF] gap-[8px] py-[17px] px-[24px] placeholder:text-sm  placeholder:font-poppins"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <div className="relative w-full lg:w-[494px]">
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder=" "
+              className="peer w-full rounded-full   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+            />
+            <label
+              htmlFor="email"
+              className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
+            >
+              Email
+            </label>
+          </div>
           <div className="relative w-full lg:w-[494px]">
             <input
               type={showPassword ? "text" : "password"}
-              className="w-full h-[51px] rounded-[32px] border border-[#FFFFFF] px-[24px] py-[17px] pr-12 outline-none  placeholder:text-sm placeholder:font-poppins"
+              id="password"
+              className="peer w-full h-[51px] rounded-[32px] border border-[#FFFFFF] px-[24px] pr-12 outline-none text-textFieldHeading placeholder-transparent"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            {/* Floating Label */}
+            <label
+              htmlFor="password"
+              className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
+            >
+              Password
+            </label>
+
+            {/* Eye Icon */}
             <div
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+              className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
@@ -215,8 +249,9 @@ const Login = () => {
           </div>
 
 
+
           <p
-            onClick={() => navigate("/forgot-password")}
+            onClick={() => email && navigate("/forgot-password")}
             className="flex justify-end w-full font-poppins font-normal cursor-pointer text-xs lg:text-[12px] leading-[18px] text-secondaryBrand"
           >
             Forgot Password ?

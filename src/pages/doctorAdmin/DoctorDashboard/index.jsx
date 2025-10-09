@@ -211,7 +211,7 @@ const DoctorDashaboard = () => {
       count: statsCounts.totalPatients,
       date: "Jan 01, 2024",
       path: "/doctor-admin/dashboard",
-      duedate: "Mar 30, 2024",
+      // duedate: "Mar 30, 2024",
       // From jan 01,2024  March 30,2024
       icon: <UserIcon />,
     },
@@ -220,7 +220,7 @@ const DoctorDashaboard = () => {
       count: statsCounts.ordersInProgress,
       date: "Jan 01, 2024",
       path: "/doctor-admin/dashboard",
-      duedate: "Mar 30, 2024",
+      // duedate: "Mar 30, 2024",
       icon: <CartIcon />,
     },
     {
@@ -228,7 +228,7 @@ const DoctorDashaboard = () => {
       count: statsCounts.ordersCompleted,
       date: "Jan 01, 2024",
       path: "/doctor-admin/dashboard",
-      duedate: "Mar 30, 2024",
+      // duedate: "Mar 30, 2024",
       icon: <ProfileIcon />,
     },
   ];
@@ -242,7 +242,7 @@ const DoctorDashaboard = () => {
                 key={id}
                 title={item?.title}
                 count={item?.count}
-                fromDate={item?.date}
+                // fromDate={item?.date}
                 toDate={item?.duedate}
                 icon={item?.icon}
               />

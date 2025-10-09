@@ -12,6 +12,7 @@ import {
 import SearchBar from "../../../Common/SearchBar";
 import TabsStepper from "../../../Common/TabsStepper";
 import { getDoctorOrders } from "../../../api/doctorDasboard";
+import { useSelector } from "react-redux";
 
 const OrderDoctorPage = () => {
   //   const [isOpen, setIsOpen] = useState(false);
@@ -41,11 +42,13 @@ const OrderDoctorPage = () => {
       detailUrl: `/doctor-admin/order-details/${order?.id}`,
     }));
   };
-
+  const profileData = useSelector(
+    (state) => state.profileData?.userProfileData
+  );
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await getDoctorOrders();
+        const response = await getDoctorOrders(profileData?.id);
         if (response.status === 200) {
           setOrders(transformOrdersData(response.data.data));
         }
@@ -55,7 +58,7 @@ const OrderDoctorPage = () => {
     };
 
     fetchPatients();
-  }, []);
+  }, [profileData?.id]);
 
   const filteredData = useMemo(() => {
     let filtered = orders;
