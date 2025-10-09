@@ -73,7 +73,7 @@ export const menuPatientItem = [
   },
   {
     name: "Claim Requests",
-    path: "/patient-admin/claim-requests",
+    path: "/patient-admin/claim-request",
     icon: ClaimIcon,
   },
   {

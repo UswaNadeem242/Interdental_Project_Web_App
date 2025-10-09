@@ -8,6 +8,7 @@ import GoogleIcon from "../icon/google";
 import FacebookIcon from "../icon/facebookIcon";
 import { showToast } from "../store/toast-slice";
 import { useDispatch } from "react-redux";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -81,8 +82,12 @@ const Login = () => {
     <div className="flex    flex-col lg:flex-row justify-start items-center lg:gap-20 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
       {/* Image div - hidden on mobile, shown on lg screens and above */}
       <div className="hidden lg:flex flex-col items-start justify-start -space-y-12">
-        <img src="/assets/logo.png" alt="logo" />
-        <img
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')} >
+
+          <ArrowLeftIcon className="w- 5 h-5" />
+          <img src="/assets/logo.png" alt="logo" />
+
+        </div>        <img
           className="w-[777px] h-[874px] rounded-[124px]" src="/assets/loginrectangle.png"
           alt="login rectangle image"
         />

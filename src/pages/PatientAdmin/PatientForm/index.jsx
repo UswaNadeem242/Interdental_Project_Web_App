@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import { InputField } from "../../../Common/FormInputField";
 import { InputField } from '../../../Common/FormInputField'
-import { FormSection } from "../../../Common/FormSection";
+import { FormSection, FormSectionHeading } from "../../../Common/FormSection";
 import { NavLink, useNavigate } from "react-router-dom";
 import { PatientClaimInitialValues, patientClaimValidationSchema } from "../../../Common/FormsValidation/patient-claim-validation";
 import { Formik, Form, FieldArray, Field } from "formik";
@@ -33,146 +33,6 @@ export const PatientForm = () => {
   // API OF THE FORM
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      // Build warrantySelections dynamically
-      // const warrantySelections = [];
-
-      // if (values.crownTeeth?.length > 0) {
-      //   warrantySelections.push({
-      //     category: "Crown",
-      //     years: 3, // could be user input or config
-      //     monthlyAmount: 45.0,
-      //     selected: values.crownTeeth, // send selected tooth numbers
-      //   });
-      // }
-      // if (values.implantTeeth?.length > 0) {
-      //   warrantySelections.push({
-      //     category: "Implant",
-      //     years: 6,
-      //     monthlyAmount: 50.0,
-      //     selected: values.implantTeeth,
-      //   });
-      // }
-
-      // if (values.dentureTeeth) {
-      //   warrantySelections.push({
-      //     category: "Denture",
-      //     years: 4,
-      //     monthlyAmount: 30.0,
-      //     selected: values.dentureTeeth,
-      //   });
-      // }
-
-
-      // const warrantySelections = [];
-
-      // if (values.crownTeeth?.length > 0) {
-      //   warrantySelections.push({
-      //     category: "Crown",
-      //     years: values.crownYears?.replace(" Years", "") || "", // <-- store clean year
-      //     monthlyAmount: 45.0,
-      //     selected: values.crownTeeth, // keep array for reference
-      //   });
-      // }
-
-      // if (values.implantTeeth?.length > 0) {
-      //   warrantySelections.push({
-      //     category: "Implant",
-      //     years: values.implantYears?.replace(" Years", "") || "",
-      //     monthlyAmount: 50.0,
-      //     selected: values.implantTeeth,
-      //   });
-      // }
-
-      // if (values.dentureTeeth) {
-      //   warrantySelections.push({
-      //     category: "Denture",
-      //     years: values.dentureYears?.replace(" Years", "") || "",
-      //     monthlyAmount: 30.0,
-      //     selected: values.dentureTeeth,
-      //   });
-      // }
-
-
-
-
-
-      // const warrantyConfig = [
-      //   { key: "crownTeeth", category: "Crown", yearKey: "crownYears", monthlyAmount: 45 },
-      //   { key: "implantTeeth", category: "Implant", yearKey: "implantYears", monthlyAmount: 50 },
-      //   { key: "dentureTeeth", category: "Denture", yearKey: "dentureYears", monthlyAmount: 30 },
-      // ];
-
-      // // Build warrantySelections
-      // const warrantySelections = warrantyConfig
-      //   .filter(cfg => values[cfg.key] && values[cfg.key]?.length > 0) // only if teeth selected
-      //   .map(cfg => ({
-      //     category: cfg.category,
-      //     years: parseInt(values[cfg.yearKey]?.replace(" Years", "") || 0, 10),
-      //     monthlyAmount: cfg.monthlyAmount,
-      //   }));
-      // const warrantySelections = [];
-
-      // if (values.crownTeeth) {
-      //   warrantySelections.push({
-      //     category: "Crown",
-      //     years: values.crownYears
-      //       ? parseInt(values.crownYears.replace(/\D/g, ""), 10)
-      //       : "",
-      //     monthlyAmount: 45,
-      //   });
-      // }
-
-      // if (values.implantTeeth) {
-      //   warrantySelections.push({
-      //     category: "Implant",
-      //     years: values.implantYears
-      //       ? parseInt(values.implantYears.replace(/\D/g, ""), 10)
-      //       : "",
-      //     monthlyAmount: 50,
-      //   });
-      // }
-
-      // if (values.dentureTeeth) {
-      //   warrantySelections.push({
-      //     category: "Denture",
-      //     years: values.dentureYears
-      //       ? parseInt(values.dentureYears.replace(/\D/g, ""), 10)
-      //       : "",
-      //     monthlyAmount: 30,
-      //   });
-      // }
-
-      // console.log("Warranty Selections:", warrantySelections);
-
-
-
-
-
-
-      // const warrantySelections = [];
-
-      // const pushSelection = (field, yearsField, category, monthlyAmount) => {
-      //   if (values[field]) {
-      //     warrantySelections.push({
-      //       category,
-      //       years: values[yearsField]
-      //         ? parseInt(values[yearsField].replace(/\D/g, ""), 10) // convert "6 Years" -> 6
-      //         : null,
-      //       monthlyAmount,
-      //     });
-      //   }
-      // };
-
-      // pushSelection("crownTeeth", "crownYears", "Crown", 45.0);
-      // pushSelection("implantTeeth", "implantYears", "Implant", 50.0);
-      // pushSelection("dentureTeeth", "dentureYears", "Denture", 30.0);
-
-      // console.log("Warranty Selections:", warrantySelections);
-
-
-
-
-
       const warrantySelections = [];
 
       const pushSelection = (field, yearsField, category, monthlyAmount) => {
@@ -191,30 +51,6 @@ export const PatientForm = () => {
       pushSelection("crownTeeth", "crownYears", "Crown", 45.0);
       pushSelection("implantTeeth", "implantYears", "Implant", 50.0);
       pushSelection("dentureTeeth", "dentureYears", "Denture", 30.0);
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       // Final Payload
       const payload = {
         patientName: values.patientName,
@@ -239,9 +75,6 @@ export const PatientForm = () => {
         typeOfRestoration: values.typeOfRestoration,
         shade: values.shade,
         doctorSignature: values.doctorSignature || "",
- 
-
-
         crownTeeth: Array.isArray(values.crownTeeth)
           ? values.crownTeeth.filter(Boolean).join(",")
           : (values.crownTeeth || "").replace(/^,|,$/g, ""), // remove leading/trailing commas
@@ -279,7 +112,7 @@ export const PatientForm = () => {
           })
         );
         resetForm();
-        navigator('/patient-admin/claim-requests')
+        navigator('/patient-admin/claim-request')
       } else {
         dispatch(
           showToast({
@@ -315,50 +148,51 @@ export const PatientForm = () => {
             <div className="p-4  font-poppins font-medium text-sm  ">
 
               {/* Patient Info */}
-              {/* <FormSection FormSection title="Patient Information"> */}
-              <div className={InputLabeStyle}>
-                <InputField label="Patient Name" name="patientName" />
-                <InputField label="Phone Number" name='patientPhone' />
-                <InputField label="Email Address" type="email" name='patientEmail' />
-                <InputField label="Date of Birth" name='dateOfBirth' />
-              </div>
+              <FormSectionHeading title="Patient Information">
+                <div className={InputLabeStyle}>
+                  <InputField label="Patient Name" name="patientName" placeholder='Jane Doe' />
+                  <InputField label="Phone Number" name='patientPhone' placeholder='+1-555-123-4567' />
+                  <InputField label="Email Address" type="email" name='patientEmail' placeholder='jane@example.com' />
+                  <InputField label="Date of Birth" name='dateOfBirth' placeholder='YYYY-MM-DD' />
+                </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-                <InputField label="Address" className="lg:col-span-2" name='patientAddress' />
-                <InputField label="City" name='patientCity' />
-                <InputField label="State" name='patientState' />
-                <InputField label="Zip" name="patientZip" />
-              </div>
-              {/* </FormSection> */}
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+                  <InputField label="Address" className="lg:col-span-2" name='patientAddress' placeholder='123 Main St' />
+                  <InputField label="City" name='patientCity' placeholder='New York' />
+                  <InputField label="State" name='patientState' placeholder='NY' />
+                  <InputField label="Zip" name="patientZip" placeholder='10001' />
+                </div>
+              </FormSectionHeading>
 
               {/* Doctor Info */}
               <div className="mt-6">
-                {/* <FormSection title="Doctor Information"> */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                  <InputField label="Dr. Name:" name="doctorName" />
-                  <InputField label="Telephone:" name='doctorPhone' />
-                  <InputField label="Email Address" type="email" name='doctorEmail' />
-                </div>
+                <FormSectionHeading title="Doctor Information">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <InputField label="Dr. Name" name="doctorName" placeholder='Dr. Emily Smith' />
+                    <InputField label="Telephone" name='doctorPhone' placeholder='555-999-8888' />
+                    <InputField label="Email Address" type="email" name='doctorEmail' placeholder='dr.emily@clinic.com' />
+                  </div>
 
-                <div className={InputLabeStyle}>
-                  <InputField label="Address" className="" name='doctorAddress' />
-                  <InputField label="City" className="" name='doctorCity' />
-                  <InputField label="State" className="" name='doctorState' />
-                  <InputField label="Zip" className="" name='doctorZip' />
-                </div>
+                  <div className={InputLabeStyle}>
+                    <InputField label="Address" className="" name='doctorAddress' placeholder='Clinic St 5' />
+                    <InputField label="City" className="" name='doctorCity' placeholder='New York' />
 
-                <div className={InputLabeStyle}>
-                  <InputField label="License #" name='licenseNumber' />
-                  <InputField label="Total # of units" type="number" name='totalUnits' />
-                  <InputField label="Type of restoration" className="" name='typeOfRestoration' />
-                  <InputField label="Shade" className="ml-8" name='shade' />
-                </div>
+                    <InputField label="State" className="" name='doctorState' placeholder='NY' />
+                    <InputField label="Zip" className="" name='doctorZip' placeholder='10001' />
+                  </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <InputField label="Email Address" type="email" name='doctorSignatureEmail' />
-                  <InputField label="Dr. Signature" name='doctorSignature' />
-                </div>
-                {/* </FormSection> */}
+                  <div className={InputLabeStyle}>
+                    <InputField label="License #" name='licenseNumber' placeholder='LIC-56789' />
+                    <InputField label="Total # of units" type="number" name='totalUnits' placeholder='5' />
+                    <InputField label="Type of restoration" className="" name='typeOfRestoration' placeholder='Crown' />
+                    <InputField label="Shade" className="ml-8" name='shade' placeholder='A2' />
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <InputField label="Email Address" type="email" name='doctorSignatureEmail' placeholder='dr.emily@clinic.com' />
+                    <InputField label="Dr. Signature" name='doctorSignature' placeholder='signature.png' />
+                  </div>
+                </FormSectionHeading>
               </div>
             </div>
             {/* Warranty Options */}
@@ -486,90 +320,11 @@ export const PatientForm = () => {
                       ))}
                     </div>
                   </div>
-
-
-
-
-
-
-                  {/* Select From Options Form */}
-                  {/* <div className="p-6  bg-bgWhite font-poppins text-secondaryBrand">
-                    <h4>Please select from the following options:</h4>
-                    <div className="flex gap-10 md:flex-row flex-col ">
-                      {[
-                        "Total Crown/Bridges",
-                        "Total Implant Relate",
-                        "Total Denture/Partials",
-                      ].map((section, id) => (
-                        <div key={id} className="text-[#949494] justify-between">
-                          <InputField label={section} name='dentureTeeth' />
-                          <div className="flex gap-3 mt-4">
-                            {["3 Years", "6 Years", "12 Years"].map((option, id) => (
-                              <label key={id} className="flex flex-1 items-center">
-                                <input type="radio" value={option} name={section} />
-                                <span className="ml-2">{option}</span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                   
-                  </div> */}
-
-
-
-
-
-
-
-
-
-
-
-
-                  {/* Select From Options Form */}
-                  {/* <div className="pt-6 bg-bgWhite font-poppins text-secondaryBrand">
-                    <h4>Please select from the following options:</h4>
-
-                    <div className="flex gap-10 md:flex-row flex-col pt-8 ">
-                      {[
-                        { label: "Total Crown/Bridges", field: "crownTeeth", yearsField: "crownYears" },
-                        { label: "Total Implant Relate", field: "implantTeeth", yearsField: "implantYears" },
-                        { label: "Total Denture/Partials", field: "dentureTeeth", yearsField: "dentureYears" },
-                      ].map((section, id) => (
-                        <div key={id} className="text-[#949494] justify-between">
-                      
-                          <InputField label={section.label} name={section.field} />
-
-                         
-                          <div className="flex gap-3 mt-4">
-                            {["3 Years", "6 Years", "12 Years"].map((option, idx) => (
-                              <label key={idx} className="flex flex-1 items-center">
-                                <input
-                                  type="radio"
-                                  value={option}
-                                  name={section.yearsField}  // <-- unique field for Formik
-                                />
-                                <span className="ml-2">{option}</span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div> */}
-
-
-
-
-
-
                   <div className="pt-6 bg-bgWhite font-poppins text-secondaryBrand">
                     <h4>Please select from the following options:</h4>
 
-                    <div className="flex gap-10 md:flex-row flex-col pt-8 ">
+                    <div className="  flex gap-10 md:flex-row flex-col pt-8 ">
+                      {/* flex gap-10 md:flex-row  pt-8 */}
                       {[
                         {
                           label: "Total Crown/Bridges",
@@ -577,6 +332,7 @@ export const PatientForm = () => {
                           yearsField: "crownYears",
                           category: "Crown",
                           monthlyAmount: 45.0,
+                          
                         },
                         {
                           label: "Total Implant Relate",
@@ -595,18 +351,18 @@ export const PatientForm = () => {
                       ].map((section, id) => (
                         <div key={id} className="text-[#949494] justify-between">
                           {/* count input */}
-                          <InputField label={section.label} name={section.field} />
+                          <InputField label={section.label} name={section.field} placeholder='3'/>
 
                           {/* years selection */}
                           <div className="flex gap-3 mt-4">
                             {["3 Years", "6 Years", "12 Years"].map((option, idx) => (
-                              <label key={idx} className="flex flex-1 items-center">
+                              <label key={idx} className="flex flex-2 items-center">
                                 <Field
                                   type="radio"
                                   name={section.yearsField} // <-- tracked by Formik
                                   value={option}
                                 />
-                                <span className="ml-2">{option}</span>
+                                <span className="ml-2 text-sm">{option}</span>
                               </label>
                             ))}
                           </div>
@@ -614,18 +370,6 @@ export const PatientForm = () => {
                       ))}
                     </div>
                   </div>
-
-
-
-
-
-
-
-
-
-
-
-
                 </div>
 
                 <div className="lg:ml-36 ml-12">
@@ -643,25 +387,6 @@ export const PatientForm = () => {
               <h4 className="mb-8 font-medium">
                 Please select from the following options:
               </h4>
-              {/* <div className="flex gap-10 md:flex-row flex-col ">
-                {[
-                  "Total Crown/Bridges",
-                  "Total Implant Relate",
-                  "Total Denture/Partials",
-                ].map((section, id) => (
-                  <div key={id} className="text-[#949494] justify-between">
-                    <InputField label={section} />
-                    <div className="flex gap-3 mt-4">
-                      {["3 Years", "6 Years", "12 Years"].map((option, id) => (
-                        <label key={id} className="flex flex-1 items-center">
-                          <input type="radio" value={option} name={section} />
-                          <span className="ml-2">{option}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div> */}
 
               <div className="mt-6  font-normal text-xs italic">
                 <h4>
@@ -679,7 +404,7 @@ export const PatientForm = () => {
             <div className="p-2 mx-4 bg-bgWhite text-[#949494] border border-[#0000000D] font-poppins">
               {/* Heading */}
               <div className="border-b border-[#0000000D] pt-3 pl-2 pr-2 ">
-                <h2 className="text-sm font-semibold mb-4 text-primaryText">
+                <h2 className="text-xs font-semibold mb-4 text-primaryText font-poppins">
                   Patient Participation Enrollment Agreements
                 </h2>
               </div>
@@ -706,19 +431,19 @@ export const PatientForm = () => {
                 {/* Form fields */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 text-[#949494]">
                   <div>
-                    <InputField label="Credit Card #" name='creditCardMasked' />
+                    <InputField label="Credit Card #" name='creditCardMasked' placeholder='1111 1111 1111 1111' />
                   </div>
                   <div>
-                    <InputField label="CC Expiration Date" name='ccExpiry' />
+                    <InputField label="CC Expiration Date" name='ccExpiry' placeholder='2027-09' />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 text-[#949494]">
                   <div className="">
-                    <InputField label="Patient Signature" name='patientSignature' />
+                    <InputField label="Patient Signature" name='patientSignature' placeholder='signature.png' />
                   </div>
                   <div className=" ">
-                    <InputField label="Date" name='date' />
+                    <InputField label="Date" name='date' placeholder='YYYY-MM-DD' />
                   </div>
                 </div>
               </div>
@@ -745,12 +470,12 @@ export const PatientForm = () => {
               </div>
 
               <div className="flex gap-4 pt-10 items-center justify-center font-poppins ">
-                <button type="button" className="px-16 py-4 bg-card rounded-full text-primaryText font-medium">
+                <button type="button" className="px-16 py-4 bg-card rounded-full text-primaryText font-bold text-base  font-poppins capitalize">
                   Go Back
                 </button>
                 <button
                   type="submit"
-                  className="px-16 py-4 bg-secondaryBrand text-bgWhite rounded-full"
+                  className="px-16 py-4 capitalize bg-secondaryBrand text-bgWhite rounded-full font-poppins text-base font-bold"
                 >
                   Send Claim Request
                 </button>

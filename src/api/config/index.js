@@ -12,7 +12,8 @@ export const API_CONFIG = {
 export const ENDPOINTS = {
   DOCTOR: {
     STATS: "/api/dashboard/getDoctorStats",
-    ORDERS: "/api/doctororder/getOrders",
+    // ORDERS: "/api/doctororder/getOrders",
+    ORDERS: "/api/doctororder/getOrdersByDoctor",
     ORDER_BY_ID: "/api/doctororder/getOrderByID",
     GRAPH_STATS: "/api/dashboard/getDoctorGraph",
     PATIENTS: "/api/users/getPatientByDoctor",
@@ -24,8 +25,8 @@ export const ENDPOINTS = {
   },
   PATIENTS: {
     WARRANTIES_BY_PATIENT: "/api/doctororder/getOrdersByPatient",
-    CLAIMS_BY_PATIENT: "/api/claims", 
-    CLAIMS_BY_PATIENT_BYUSER: "/api/claims/by-user", 
+    CLAIMS_BY_PATIENT: "/api/claims",
+    CLAIMS_BY_PATIENT_BYUSER: "/api/claims/by-user",
     PATIENTS_PROFILE: "/api/users/getById",
     UPDATE_PROFILE: "/api/users/update-profile-info",
     CHANGE_PASSWORD: "/api/users/change-password",

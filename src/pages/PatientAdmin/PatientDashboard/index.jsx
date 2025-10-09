@@ -32,16 +32,24 @@ const PatientDashboardPage = () => {
       // profileURL: order?.profileURL,
       action: "View Detail",
       rewarrently: order?.remainingWarrenty,
+
     }));
   };
+  const getFilteredDataByStatus = (status) => {
+    if (status === "all") {
+      return warranties;
+    }
+    const filtered = warranties.filter((order) => order.status === status);
 
+    return filtered;
+  };
   const steps = [
     {
       name: "All",
       content: (
         <TableComponent
           headings={headingsPatientDashboardTable}
-          data={warranties}
+          data={getFilteredDataByStatus('all')}
           onActionClick={(row) => {
             setSelectedRow(row);
             setIsOpen(true);
@@ -50,11 +58,11 @@ const PatientDashboardPage = () => {
       ),
     },
     {
-      name: "Active",
+      name: "Pending",
       content: (
         <TableComponent
           headings={headingsPatientDashboardTable}
-          data={PatientDashTabledata}
+          data={getFilteredDataByStatus('PENDING')}
         />
       ),
     },
@@ -63,14 +71,14 @@ const PatientDashboardPage = () => {
       content: (
         <TableComponent
           headings={headingsPatientDashboardTable}
-          data={PatientDashTabledata}
+         data={getFilteredDataByStatus('EXPIRED')}
         />
       ),
     },
   ];
   useEffect(() => {
     const fetchOrderByID = async () => {
-      const response = await getWarrantiesPatients(profileData?.id);
+      const response = await getWarrantiesPatients(123);
 
       if (response.status === 200) {
         setWarranties(response.data.data);

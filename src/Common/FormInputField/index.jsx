@@ -49,7 +49,7 @@
 
 import { Field, ErrorMessage } from "formik";
 
-export function InputField({ label, name, type = "text", className = "" }) {
+export function InputField({ label, name, type = "text", className = "", placeholder }) {
   return (
     <div className={`flex flex-col ${className}`}>
       <label
@@ -63,6 +63,7 @@ export function InputField({ label, name, type = "text", className = "" }) {
         id={name}
         name={name}
         type={type}
+        placeholder={placeholder}
         className="py-2 pl-2 border-2 border-[#0000001A] rounded-md focus:outline-none"
       />
 

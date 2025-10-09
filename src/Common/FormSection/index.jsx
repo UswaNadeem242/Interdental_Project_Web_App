@@ -1,4 +1,4 @@
-export function FormSection({ title, children }) {
+export function FormSectionHeading({ title, children }) {
   return (
     <div className="border border-[#0000000D] mt-2">
       <div className="border-b border-[#0000000D] pt-3 pl-2 pr-2">

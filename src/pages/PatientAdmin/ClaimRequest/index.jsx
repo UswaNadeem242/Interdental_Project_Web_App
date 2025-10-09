@@ -38,7 +38,7 @@ const PatientClaimrequests = () => {
     const fetchPatients = async () => {
       try {
         const response = await getClaims();
- 
+
         if (response.status === 200) {
           setClaims(transformPatientsData(response.data.data));
 
@@ -51,13 +51,24 @@ const PatientClaimrequests = () => {
     fetchPatients();
   }, []);
 
+  const getFilteredDataByStatus = (status) => {
+    if (status === "all") {
+      return claims;
+    }
+    const filtered = claims.filter((order) => order.status === status);
+
+    return filtered;
+  };
+
+
   const steps = [
     {
       name: "All",
       content: (
         <TableComponent
           headings={headingsPatientClaimReq}
-          data={claims}
+          // data={claims}
+          data={getFilteredDataByStatus('all')}
           onActionClick={(row) => {
             setSelectedRow(row);
             setIsOpen(true);
@@ -70,7 +81,7 @@ const PatientClaimrequests = () => {
       content: (
         <TableComponent
           headings={headingsPatientClaimReq}
-          data={PatientClaimReqData}
+          data={getFilteredDataByStatus("accepted")}
         />
       ),
     },
@@ -79,7 +90,7 @@ const PatientClaimrequests = () => {
       content: (
         <TableComponent
           headings={headingsPatientClaimReq}
-          data={PatientClaimReqData}
+          data={getFilteredDataByStatus("pending")}
         />
       ),
     },
@@ -88,14 +99,21 @@ const PatientClaimrequests = () => {
       content: (
         <TableComponent
           headings={headingsPatientClaimReq}
-          data={PatientClaimReqData}
+          data={getFilteredDataByStatus("rejected")}
         />
       ),
     },
   ];
+  const slugify = (text) =>
+    text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")      // replace spaces with -
+      .replace(/[^\w-]+/g, "");
   return (
     <div>
-  
+
       <div className="bg-white rounded-2xl p-6">
         <TabsStepper
           steps={steps}
@@ -104,7 +122,8 @@ const PatientClaimrequests = () => {
               title="New Claim Request"
               icon={<PlusIcon />}
               // onClick={() => setIsOpen(true)}
-              href="/patient-admin/patient-form"
+              // href="/patient-admin/patient-form"
+              href={`/patient-admin/claim-request/${slugify("claim-request")}`}
               className="w-full md:w-auto rounded-md px-6 py-3 mb-5 font-poppins bg-[#F8F8F8] text-primaryText"
             />
           }
