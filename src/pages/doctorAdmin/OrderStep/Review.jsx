@@ -26,16 +26,25 @@ const ReviewOrder = ({ next }) => {
     return acc;
   }, {});
   // Calculate totalPrice for all selected teeth
-  const totalPrice = selectedTeeth.reduce((sum, toothId) => {
-    const tooth = teeth[toothId] || {};
-    return (
-      sum +
-      (tooth.materialPrice || 0) +
-      (tooth.digitalOptionsPrice || 0) +
-      (tooth.surgical_guidePrice || 0) +
-      (tooth.labPrice || 0) +
-      (tooth.crownPrice || tooth.crown?.price || 0)
-    );
+  // const totalPrice = selectedTeeth.reduce((sum, toothId) => {
+  //   const tooth = teeth[toothId] || {};
+  //   return (
+  //     sum +
+  //     (tooth.materialPrice || 0) +
+  //     (tooth.digitalOptionsPrice || 0) +
+  //     (tooth.surgical_guidePrice || 0) +
+  //     (tooth.labPrice || 0) +
+  //     (tooth.crownPrice || tooth.crown?.price || 0)
+  //   );
+  // }, 0);
+
+  const totalPrice = toothSelections.reduce((toothSum, tooth) => {
+    // for each tooth, sum its fields that have price
+    const toothTotal = Object.values(tooth)
+      .filter((field) => field && typeof field === "object" && field.price)
+      .reduce((sum, field) => sum + field.price, 0);
+
+    return toothSum + toothTotal;
   }, 0);
   // Utility function
   const getMaskedFullName = (firstName, lastName) => {
