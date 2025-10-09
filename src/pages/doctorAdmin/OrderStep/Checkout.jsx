@@ -114,7 +114,7 @@ const CheckoutForm = ({ next }) => {
       next();
     } catch (err) {
       console.error("❌ Error creating order:", err.response?.data || err.message);
-      setError(err.response?.data || "Something went wrong");
+      // setError(err.response?.data || "Something went wrong");
     } finally {
       setLoading(false);
     }
