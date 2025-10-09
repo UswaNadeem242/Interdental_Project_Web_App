@@ -105,7 +105,11 @@ export default function SearchBar({
   const handleSearch = (e) => {
     const value = e.target.value;
     setQuery(value);
-    if (onSearch) onSearch(value); // live search
+    if (onSearch) {
+      onSearch(value.trim());
+    }
+
+    // if (onSearch) onSearch(value); // live search
   };
 
   const handleSort = (order) => {

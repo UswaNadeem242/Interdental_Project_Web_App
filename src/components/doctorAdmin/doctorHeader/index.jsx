@@ -28,8 +28,8 @@ const DoctorHeader = ({ title, subTitle, role }) => {
     role === "doctor"
       ? "/doctor-admin/profile"
       : role === "admin"
-      ? "/admin-panel/profile-info "
-      : "/patient-admin/profile-settings";
+        ? "/admin-panel/profile-info "
+        : "/patient-admin/profile-settings";
   const profileImage = useSelector((state) => state.profile?.profileImage);
   const profileData = useSelector(
     (state) => state.profileData?.userProfileData
@@ -63,20 +63,36 @@ const DoctorHeader = ({ title, subTitle, role }) => {
               ? `Welcome back ${doctorProfile?.firstName || ""} ${doctorProfile?.lastName || ""}`
               : pageTitle}
           </h1>
-          {location.pathname !== "/patient-admin/profile-settings" && location.pathname !== "/patient-admin/term-condition" && location.pathname !== "/patient-admin/claim-request" && location.pathname !== "/patient-admin/claim-request/claim-request" && (
+          {/* {location.pathname !== "/patient-admin/profile-settings" && location.pathname !== "/patient-admin/term-condition" && location.pathname !== "/patient-admin/claim-request" && location.pathname !== "/patient-admin/claim-request/claim-request" && (
             <p className="text-secondaryText text-sm font-normal font-poppins">
               You have <span className="text-secondaryBrand font-normal">2 Unread</span> Notifications
             </p>
-          )}        </div>
+          )}         */}
+        </div>
         <div className="hidden md:flex flex-1"></div>
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
-           <img
+          {
+            profileImage ? <img
+              src={
+                profileImage || doctorProfile?.profileImage || "/default-avatar.png"
+              }
+              alt="userImg"
+              className="w-10 h-10 rounded-full"
+            /> : <img
+              src={
+                "/default-avatar.png"
+              }
+              alt="userImg"
+              className="w-10 h-10 rounded-full"
+            />
+          }
+          {/* <img
             src={
               profileImage || doctorProfile?.profileImage || "/default-avatar.png"
             }
             alt="userImg"
             className="w-10 h-10 rounded-full"
-          />
+          /> */}
           <NavLink to={roleLink} className="flex flex-col justify-center">
             <p className="text-sm font-semibold">
               {doctorProfile &&
