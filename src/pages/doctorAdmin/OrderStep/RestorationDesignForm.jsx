@@ -282,6 +282,7 @@ const DoctorOrder = () => {
                                   label="Case expected due date"
                                   type="date"
                                   name="dueDate"
+                                  min={new Date().toISOString().split("T")[0]}
                                   // value={values.dueDate || ""}
                                   // onChange={(e) => {
                                   //   const value = e.target.value;
