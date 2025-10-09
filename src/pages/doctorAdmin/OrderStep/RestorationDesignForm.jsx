@@ -57,7 +57,16 @@ const DoctorOrder = () => {
     patient,
   } = useSelector((state) => state.restoration);
   const [touched, setTouched] = useState({});
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(null);
+
+  // Debug: Log when selected changes
+  useEffect(() => {
+    console.log("RestorationDesignForm - selected changed:", selected);
+    if (selected) {
+      console.log("Selected object keys:", Object.keys(selected));
+      console.log("Selected name:", selected.name);
+    }
+  }, [selected]);
   const [isOpen, setIsOpen] = useState(false);
   const steps = [
     { id: "s1", title: "Restoration Design Form" },
@@ -171,8 +180,10 @@ const DoctorOrder = () => {
     }
   }, [doctorProfile]);
 
-  const handleDueDateChange = (e) => {
-    dispatch(setDueDate({ dueDate: e.target.value }));
+  const handleDueDateChange = (e, setFieldValue) => {
+    const value = e.target.value;
+    dispatch(setDueDate({ dueDate: value }));
+    setFieldValue("dueDate", value);
   };
   return (
     <>
@@ -275,9 +286,6 @@ const DoctorOrder = () => {
                                   onBlur={handleBlur}
                                   placeholder="Office Reference number"
                                 />
-                                <lable className="text-primaryText text-xs font-semibold font-poppins capitalize">
-                                  Case expected due date
-                                </lable>
                                 <LabeledInput
                                   label="Case expected due date"
                                   type="date"
@@ -296,11 +304,10 @@ const DoctorOrder = () => {
                                   //   );
                                   // }}
 
-                                  value={
-                                    doctor.find((d) => d.field === "dueDate")
-                                      ?.value || ""
+                                  value={values.dueDate || ""}
+                                  onChange={(e) =>
+                                    handleDueDateChange(e, setFieldValue)
                                   }
-                                  onChange={handleDueDateChange}
                                   onBlur={handleBlur}
                                 />
                                 {errors.dueDate && (
@@ -362,13 +369,17 @@ const DoctorOrder = () => {
                                     <ChevronDownIcon className="w-3 h-3" />
                                   </span>
                                 </button>
-                                {selected > 0 && (
-                                  <p className="py-2 px-2 text-sm text-secondaryBrand">
-                                    Smile Design :{" "}
-                                    {selected.length > 0
-                                      ? selected.join(", ")
-                                      : ""}
-                                  </p>
+                                {selected && (
+                                  <div className="py-2 px-2 text-sm text-secondaryBrand">
+                                    <p className="font-medium mb-1">
+                                      Selected Smile Design:
+                                    </p>
+                                    <p className="text-xs">
+                                      {selected.name ||
+                                        selected.label ||
+                                        "Unknown"}
+                                    </p>
+                                  </div>
                                 )}
                               </div>
                               <MaterialDropdown
@@ -401,7 +412,7 @@ const DoctorOrder = () => {
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                    !activeToothSelection.scannerType
+                                  !activeToothSelection.scannerType
                                     ? "Scanner Type is Required Select the Teeth"
                                     : ""
                                 }
@@ -611,24 +622,33 @@ const DoctorOrder = () => {
                                         }}
                                         label=" Denture"
                                         storageKey="digitalOptions"
-                                      // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
-                                      // error={
-                                      //   touched.digitalOptions &&
-                                      //   !toothSelections.find(
-                                      //     (t) => t.toothId === selectedTooth
-                                      //   )?.digitalOptions
-                                      //     ? "Digital Denture is Required Select the teeth"
-                                      //     : ""
-                                      // }
+                                        // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
+                                        // error={
+                                        //   touched.digitalOptions &&
+                                        //   !toothSelections.find(
+                                        //     (t) => t.toothId === selectedTooth
+                                        //   )?.digitalOptions
+                                        //     ? "Digital Denture is Required Select the teeth"
+                                        //     : ""
+                                        // }
                                       />
                                       <MaterialDropdown
                                         className2="relative z-0"
                                         className="w-full border    bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                         options={
-                                          (orders.find((p) => p.name === "Surgical Guide")?.children?.length > 0
-                                            ? orders.find((p) => p.name === "Surgical Guide")?.children
-                                            : [{ label: "Not Available", value: "" }]
-                                          )
+                                          orders.find(
+                                            (p) => p.name === "Surgical Guide"
+                                          )?.children?.length > 0
+                                            ? orders.find(
+                                                (p) =>
+                                                  p.name === "Surgical Guide"
+                                              )?.children
+                                            : [
+                                                {
+                                                  label: "Not Available",
+                                                  value: "",
+                                                },
+                                              ]
                                         }
                                         hideCheckForNotAvailable={true}
                                         // value={
@@ -1070,9 +1090,9 @@ const DoctorOrder = () => {
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.photogrammetryfiles
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.photogrammetryfiles
                                           ? "Photogrammetry files is required. Please select a tooth first."
                                           : ""
                                       }
