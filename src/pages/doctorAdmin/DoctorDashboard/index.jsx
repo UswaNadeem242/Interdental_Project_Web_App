@@ -38,6 +38,9 @@ const DoctorDashaboard = () => {
   const [error, setError] = useState(null);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("month");
 
+  const storedUser = localStorage.getItem("users");
+  const doctorData = storedUser ? JSON.parse(storedUser) : null;
+
   // Transform API orders data to match table format
   const transformOrdersData = (apiData) => {
     if (!apiData || !Array.isArray(apiData)) return [];
@@ -52,8 +55,7 @@ const DoctorDashaboard = () => {
         : "N/A",
       action: "View Detail",
       // dName: order?.doctorName || "N/A",
-      dName: `${order?.doctorFirstName || "-"} ${order?.doctorLastName || "-"
-        }`,
+      dName: `${order?.doctorFirstName || "-"} ${order?.doctorLastName || "-"}`,
       shipping: order?.expectedDeliveryDate
         ? new Date(order?.expectedDeliveryDate).toLocaleDateString()
         : "N/A",
@@ -69,7 +71,7 @@ const DoctorDashaboard = () => {
       email: order.email,
       linkName: "View Detail",
       icon: <UserIcon />,
-      profileURL: order?.profileURL
+      profileURL: order?.profileURL,
     }));
   };
 
@@ -109,6 +111,10 @@ const DoctorDashaboard = () => {
 
   useEffect(() => {
     let isMounted = true;
+    let doctor_id;
+    if (doctorData) {
+      doctor_id = doctorData.id;
+    }
 
     const fetchDashboardData = async () => {
       try {
@@ -119,7 +125,7 @@ const DoctorDashaboard = () => {
         const [statsResponse, ordersResponse, graphResponse, patientsResponse] =
           await Promise.all([
             getDoctorStats(),
-            getDoctorOrders(),
+            getDoctorOrders(doctor_id),
             getGrapgStats("month"),
             getDoctorPatients(),
           ]);
