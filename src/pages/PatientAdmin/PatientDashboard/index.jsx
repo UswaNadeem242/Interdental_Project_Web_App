@@ -27,7 +27,7 @@ const PatientDashboardPage = () => {
       tAmount: order?.totalAmount,
       status: order?.orderStatus,
       linkName: "View Detail",
-      ShoppingDate: order?.expectedDeliveryDate,
+      ShoppingDate: order?.expectedDeliveryDate?.split("T")[0],
       // address: order?.address || "abc....",
       // profileURL: order?.profileURL,
       action: "View Detail",
@@ -71,7 +71,7 @@ const PatientDashboardPage = () => {
       content: (
         <TableComponent
           headings={headingsPatientDashboardTable}
-         data={getFilteredDataByStatus('EXPIRED')}
+          data={getFilteredDataByStatus('EXPIRED')}
         />
       ),
     },

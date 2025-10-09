@@ -147,9 +147,9 @@ export default function TeethChart({
       const zoom = Math.round((window.outerWidth / window.innerWidth) * 100);
 
       if (zoom === 100) {
-        setLeftOffset("-left-3"); // 👈 when 100%
+        setLeftOffset("-left-2"); // 👈 when 100%
       } else if (zoom <= 80) {
-        setLeftOffset("left-10"); // 👈 when 80% or below
+        setLeftOffset("left-14"); // 👈 when 80% or below
       } else {
         setLeftOffset("left-0"); // fallback
       }
