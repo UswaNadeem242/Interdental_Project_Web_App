@@ -38,8 +38,10 @@ const CheckoutForm = ({ next }) => {
     quantity: item.quantity || 1,
     unitPrice: item.unitPrice || 0,
   }));
-  const storedUser = localStorage.getItem("user");
-  const userId = JSON.parse(localStorage.getItem("user"))?.id;
+  const userData = localStorage.getItem("users");
+  const parsedUserData = JSON.parse(userData);
+  const userId = parsedUserData.id;
+ 
   const buildRequestData = (data) => {
     // const doctorData = {};
     // (restoration.doctor || []).forEach(d => {
