@@ -29,7 +29,6 @@ const PatientPage = () => {
       phone: order?.phoneNumber,
       address: order?.address || "abc....",
       profileURL: order?.profileURL,
-
     }));
   };
   useEffect(() => {
@@ -39,7 +38,6 @@ const PatientPage = () => {
 
         if (response.status === 200) {
           setPatients(transformPatientsData(response.data.data));
-
         }
       } catch (error) {
         console.log(error);
@@ -71,7 +69,6 @@ const PatientPage = () => {
     }
     return filtered;
   }, [searchQuery, sortOrder, patients]);
- 
 
   return (
     <div>
@@ -82,7 +79,6 @@ const PatientPage = () => {
               title="Sort By"
               onSearch={setSearchQuery}
               onSort={setSortOrder}
-              
             />
           </div>
 
@@ -107,16 +103,23 @@ const PatientPage = () => {
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 title="Add New User"
-                Content={<AddPatientForm onClose={() => setIsOpen(false)} />}
+                Content={
+                  <AddPatientForm
+                  // onClose={() => setIsOpen(false)}
+                  // imgUpload="hidden"
+                  // skipImageValidation={true}
+                  />
+                }
               />
             </div>
           </div>
         </div>
         {/* <TableComponent headings={headingsPateint} data={filteredData} /> */}
-        <SecondTable headings={headingsPateint} data={filteredData} actionButton="active"
+        <SecondTable
+          headings={headingsPateint}
+          data={filteredData}
+          actionButton="active"
         />
-
-
       </div>
     </div>
   );

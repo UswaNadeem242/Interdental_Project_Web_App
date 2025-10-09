@@ -8,7 +8,11 @@ import { addPatient } from "../../../api/doctorDasboard";
 import Toast from "../../../components/Toast";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-export default function AddPatientForm({ onClose }) {
+export default function AddPatientForm({
+  onClose,
+  imgUpload,
+  skipImageValidation = false,
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -111,7 +115,7 @@ export default function AddPatientForm({ onClose }) {
 
       // API call using the new addPatient function
       const response = await addPatient(formData);
-      console.log('formdata:', formData);
+      console.log("formdata:", formData);
 
       // Check for success using the API function response format
       if (response.success) {
@@ -129,14 +133,12 @@ export default function AddPatientForm({ onClose }) {
         }, 2000);
       } else {
         showToast(
-          response?.data?.responseDesc || "Failed to add patient. Please try again.",
+          response?.data?.responseDesc ||
+            "Failed to add patient. Please try again.",
           "error"
         );
-
       }
-
-    }
-    catch (error) {
+    } catch (error) {
       console.error("API Error:", error);
       showToast("An error occurred. Please try again.", "error");
     } finally {
@@ -144,12 +146,12 @@ export default function AddPatientForm({ onClose }) {
     }
   };
 
-
   return (
     <div>
       <Formik
         initialValues={initialValues}
-        validationSchema={PatientvalidationSchema}
+        // validationSchema={PatientvalidationSchema}
+        validationSchema={PatientvalidationSchema(skipImageValidation)}
         onSubmit={handleSubmit}
       >
         {({
@@ -162,7 +164,8 @@ export default function AddPatientForm({ onClose }) {
         }) => (
           <Form className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white">
             {/* Photo Upload */}
-            <div className="col-span-6">
+
+            <div className={`col-span-6 ${imgUpload}`}>
               {!imagePreview ? (
                 <label className="inline-flex items-center px-6 py-4 bg-textField text-primaryText text-sm font-medium rounded-lg cursor-pointer transition w-full">
                   <div className="flex justify-between gap-3 items-center w-full">
@@ -295,7 +298,6 @@ export default function AddPatientForm({ onClose }) {
               />
             </div>
 
-
             <div className="col-span-12">
               <Field
                 as={TextInput}
@@ -311,7 +313,6 @@ export default function AddPatientForm({ onClose }) {
                 className="text-red-700 text-sm"
               />
             </div>
-
 
             {/* Password */}
             <div className="col-span-12">

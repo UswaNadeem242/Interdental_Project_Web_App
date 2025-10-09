@@ -60,23 +60,57 @@ const DoctorHeader = ({ title, subTitle, role }) => {
         <div>
           <h1 className="text-primaryText font-poppins text-lg md:text-2xl capitalize font-bold">
             {displayTitle
-              ? `Welcome back ${doctorProfile?.firstName || ""} ${doctorProfile?.lastName || ""}`
+              ? `Welcome back ${doctorProfile?.firstName || ""} ${
+                  doctorProfile?.lastName || ""
+                }`
               : pageTitle}
           </h1>
-          {location.pathname !== "/patient-admin/profile-settings" && location.pathname !== "/patient-admin/term-condition" && location.pathname !== "/patient-admin/claim-request" && location.pathname !== "/patient-admin/claim-request/claim-request" && (
-            <p className="text-secondaryText text-sm font-normal font-poppins">
-              You have <span className="text-secondaryBrand font-normal">2 Unread</span> Notifications
-            </p>
-          )}        </div>
+          {location.pathname !== "/patient-admin/profile-settings" &&
+            location.pathname !== "/patient-admin/term-condition" &&
+            location.pathname !== "/patient-admin/claim-request" &&
+            location.pathname !==
+              "/patient-admin/claim-request/claim-request" && (
+              <p className="text-secondaryText text-sm font-normal font-poppins">
+                You have{" "}
+                <span className="text-secondaryBrand font-normal">
+                  2 Unread
+                </span>{" "}
+                Notifications
+              </p>
+            )}{" "}
+        </div>
         <div className="hidden md:flex flex-1"></div>
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
-           <img
+          {/* <img
             src={
-              profileImage || doctorProfile?.profileImage || "/default-avatar.png"
+              profileImage ||
+              doctorProfile?.profileImage ||
+              "/default-avatar.png"
             }
             alt="userImg"
             className="w-10 h-10 rounded-full"
-          />
+          /> */}
+
+          {/*  */}
+          {profileImage || doctorProfile?.profileImage ? (
+            <img
+              src={profileImage || doctorProfile?.profileImage}
+              alt={`${doctorProfile?.firstName || ""} ${
+                doctorProfile?.lastName || ""
+              }`}
+              className="w-10 h-10 rounded-full object-cover border border-gray-300"
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-secondaryBrand flex items-center justify-center text-white font-semibold">
+              {doctorProfile
+                ? `${doctorProfile.firstName?.[0] || ""}${
+                    doctorProfile.lastName?.[0] || ""
+                  }`.toUpperCase()
+                : "?"}
+            </div>
+          )}
+
+          {/*  */}
           <NavLink to={roleLink} className="flex flex-col justify-center">
             <p className="text-sm font-semibold">
               {doctorProfile &&
@@ -97,7 +131,6 @@ const DoctorHeader = ({ title, subTitle, role }) => {
           </button>
         </div>
       </div>
-
     </>
   );
 };

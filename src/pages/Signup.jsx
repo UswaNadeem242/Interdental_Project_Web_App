@@ -29,10 +29,11 @@ const Signup = () => {
   const [toastType, setToastType] = useState("success");
   const [labs, setLabs] = useState([]);
   const [selectedLab, setSelectedLab] = useState("");
-  const [yearly, setYearly] = useState(false)
+  const [yearly, setYearly] = useState(false);
+  //
   const validate = () => {
     if (!firstName?.trim()) return "First name is required";
-    if (!lastName?.trim()) return "Last name is required";     // remove if not needed
+    if (!lastName?.trim()) return "Last name is required"; // remove if not needed
     if (!email?.trim()) return "Email is required";
     if (!phoneNumber?.trim()) return "Phone is required";
     if (!address) return "Address is required";
@@ -46,20 +47,23 @@ const Signup = () => {
     const numberRegex = /^[0-9]{10}$/;
     const zipRegex = /^[0-9]{5}$/;
     const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
-         if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
-    if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
+    if (!nameRegex.test(firstName))
+      return "Enter a valid First Name (letters only)";
+    if (!nameRegex.test(lastName))
+      return "Enter a valid Last Name (letters only)";
     if (!addressRegex.test(city)) return "Enter a City Name";
     if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";
     // if (!addressRegex.test(address)) return "Enter a valid Address";
     // Must contain at least one letter or digit
 
-
     if (!addressRegex.test(address)) {
       return "Enter a valid Address";
     }
 
-    if (!numberRegex.test(drLicenseNo)) return "Enter a valid 10-digit Doctor's License Number";
-    if (!numberRegex.test(officeRefNo)) return "Enter a valid 10-digit Office Reference number";
+    if (!numberRegex.test(drLicenseNo))
+      return "Enter a valid 10-digit Doctor's License Number";
+    if (!numberRegex.test(officeRefNo))
+      return "Enter a valid 10-digit Office Reference number";
     if (!password) return "Password is required";
     // if (!nameRegex.test(drLicenseNo)) return "Enter a Doctor's License Number";
     // if (!nameRegex.test(officeRefNo)) return "Enter a Office Reference number";
@@ -69,7 +73,11 @@ const Signup = () => {
     // Optional: phone 7–15 digits
     const phoneRegex = /^[0-9]{11}$/;
     if (!phoneNumber) return "Phone number is required";
-    if (!phoneRegex.test(phoneNumber)) return "Enter a valid 11-digit phone number";
+    if (!phoneRegex.test(phoneNumber))
+      return "Enter a valid 11-digit phone number";
+    if (drLicenseNo === officeRefNo)
+      return "Doctor's License Number and Office Reference Number cannot be the same.";
+
     return null;
   };
   const handleSignup = async () => {
@@ -89,27 +97,31 @@ const Signup = () => {
       address,
       drLicenseNo,
       officeRefNo,
-      lab: Number(selectedLab),            // send selected lab ID
+      lab: Number(selectedLab), // send selected lab ID
       role: "DOCTOR",
     };
     try {
-      const response = await axios.post(`${BASE_URL}/api/users/sign-up`, payload,
+      const response = await axios.post(
+        `${BASE_URL}/api/users/sign-up`,
+        payload,
         {
           headers: {
             Accept: "*/*",
           },
-        });
+        }
+      );
       setToastMessage("User Registered Successfully!");
       setToastType("success");
       setToastVisible(true);
       navigate("/login");
     } catch (error) {
       console.log("Signup error:", error);
-      setToastMessage(`Error: ${error.response?.data?.responseDesc || error.responseDesc}`);
+      setToastMessage(
+        `Error: ${error.response?.data?.responseDesc || error.responseDesc}`
+      );
       setToastType("error");
       setToastVisible(true);
     } finally {
-
     }
   };
   const [isLoadingLabs, setIsLoadingLabs] = useState(false);
@@ -120,14 +132,13 @@ const Signup = () => {
 
         const res = await axios.get(`${BASE_URL}/api/lab/getAll`);
         // Ensure raw is always an array
-        const raw =
-          Array.isArray(res.data)
-            ? res.data
-            : Array.isArray(res.data?.data)
-              ? res.data.data
-              : Array.isArray(res.data?.content)
-                ? res.data.content
-                : [];
+        const raw = Array.isArray(res.data)
+          ? res.data
+          : Array.isArray(res.data?.data)
+          ? res.data.data
+          : Array.isArray(res.data?.content)
+          ? res.data.content
+          : [];
 
         const options = raw.map((l) => ({
           label: l.name || l.labName || `Lab ${l.id}`,
@@ -158,11 +169,12 @@ const Signup = () => {
       {/* Image section - hidden on mobile */}
 
       <div className="hidden lg:flex flex-col items-start justify-start -space-y-12">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')} >
-
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <ArrowLeftIcon className="w- 5 h-5" />
           <img src="/assets/logo.png" alt="logo" />
-
         </div>
         <img
           className="w-[777px] h-[874px] rounded-[124px]"
@@ -176,9 +188,7 @@ const Signup = () => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="flex w-full justify-end pl-[620px]"
-        >
-
-        </svg>
+        ></svg>
       </div>
 
       {/* Signup form */}
@@ -194,8 +204,6 @@ const Signup = () => {
         </div>
 
         <div className="flex flex-col justify-center items-center w-full lg:w-[494px] gap-8">
-
-
           {/* Form */}
           <div className="w-full space-y-4">
             {/* Full width */}
@@ -229,14 +237,13 @@ const Signup = () => {
                 </label>
               </div>
 
-
               <div className="relative w-full">
                 <input
                   type="text"
                   id="lastName"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder=" "  // ek space zaroori hai
+                  placeholder=" " // ek space zaroori hai
                   className="peer w-full rounded-md  py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
                 />
                 <label
@@ -250,11 +257,7 @@ const Signup = () => {
                   Last Name
                 </label>
               </div>
-
-
-
             </div>
-
 
             {/* Email + Phone */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -299,7 +302,6 @@ const Signup = () => {
                   Phone
                 </label>
               </div>
-
             </div>
 
             {/* Address */}
@@ -323,7 +325,6 @@ const Signup = () => {
                 Address
               </label>
             </div>
-
 
             {/* City + Zip */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -367,20 +368,56 @@ const Signup = () => {
                   Zip
                 </label>
               </div>
-
             </div>
 
             {/* License + Office Ref */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="relative w-full">
+                {/* <input
+                  type="text"
+                  id="drLicenseNo"
+                  value={drLicenseNo}
+                  // onChange={(e) => setdrLicense(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setdrLicense(value);
+
+                    if (value && officeRefNo && value === officeRefNo) {
+                      setToastMessage(
+                        "Doctor's License# & Office Reference# can't be the same."
+                      );
+                      setToastType("error");
+                      setToastVisible(true);
+                    }
+                  }}
+                  placeholder=" "
+                  className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                /> */}
                 <input
                   type="text"
                   id="drLicenseNo"
                   value={drLicenseNo}
-                  onChange={(e) => setdrLicense(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setdrLicense(value);
+
+                    if (value && officeRefNo && value === officeRefNo) {
+                      setToastMessage(
+                        "Doctor's License# & Office Reference# can't be the same."
+                      );
+                      setToastType("error");
+                      setToastVisible(true);
+                    }
+                  }}
                   placeholder=" "
-                  className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                  className={`peer w-full rounded-md py-3 px-4 outline-none focus:border-secondaryBrand
+    ${
+      drLicenseNo.length > 10
+        ? "text-red-500 border-red-500"
+        : "text-textFieldHeading"
+    }`}
                 />
+
                 <label
                   htmlFor="drLicenseNo"
                   className="absolute left-3 top-3 text-gray-400 text-sm transition-all
@@ -394,14 +431,51 @@ const Signup = () => {
               </div>
 
               <div className="relative w-full">
+                {/* <input
+                  type="text"
+                  id="officeRefNo"
+                  value={officeRefNo}
+                  // onChange={(e) => setofficeRefNo(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setofficeRefNo(value);
+
+                    // Check only when both fields are non-empty AND exactly equal
+                    if (value && drLicenseNo && value === drLicenseNo) {
+                      setToastMessage(
+                        "Doctor's License# & Office Reference# can't be the same."
+                      );
+                      setToastType("error");
+                      setToastVisible(true);
+                    }
+                  }}
+                  placeholder=" "
+                  className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                /> */}
                 <input
                   type="text"
                   id="officeRefNo"
                   value={officeRefNo}
-                  onChange={(e) => setofficeRefNo(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setofficeRefNo(value);
+
+                    if (value && drLicenseNo && value === drLicenseNo) {
+                      setToastMessage(
+                        "Doctor's License# & Office Reference# can't be the same."
+                      );
+                      setToastType("error");
+                      setToastVisible(true);
+                    }
+                  }}
                   placeholder=" "
-                  className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                  className={`peer w-full rounded-md py-3 px-4 outline-none focus:border-secondaryBrand ${
+                    officeRefNo.length > 10
+                      ? "text-red-500  border-red-500"
+                      : "text-textFieldHeading"
+                  }`}
                 />
+
                 <label
                   htmlFor="officeRefNo"
                   className="absolute left-3 top-3 text-gray-400 text-sm transition-all
@@ -413,7 +487,6 @@ const Signup = () => {
                   Office Reference Number
                 </label>
               </div>
-
             </div>
 
             {/* Password */}
@@ -485,14 +558,8 @@ const Signup = () => {
               value={selectedLab} // ✅ must be single value (string/number)
               onChange={(opt) => setSelectedLab(opt.value)} // ✅ opt is full object
               label={isLoadingLabs ? "Loading labs..." : "Select Laboratory"}
-
               className="w-full rounded-md border  bg-white py-3 outline-none  px-4 text-textFieldHeading"
             />
-
-
-
-
-
           </div>
         </div>
         <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
@@ -502,7 +569,6 @@ const Signup = () => {
           >
             Sign Up
           </button>
-
 
           <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
             <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">
@@ -531,34 +597,9 @@ const Signup = () => {
         onClose={closeToast}
         type={toastType}
       />
-      {yearly && (
-        <YearlyPlanModel
-          yearly={yearly}
-          setYearly={setYearly}
-        />
-      )}
-
-
+      {yearly && <YearlyPlanModel yearly={yearly} setYearly={setYearly} />}
     </div>
   );
 };
 
 export default Signup;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
