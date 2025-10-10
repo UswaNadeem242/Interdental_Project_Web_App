@@ -78,6 +78,32 @@ const Signup = () => {
     if (drLicenseNo === officeRefNo)
       return "Doctor's License Number and Office Reference Number cannot be the same.";
 
+    // ✅ Password strength check
+
+    // ✅ Check 1: Minimum 8 characters
+    const lengthRegex = /^.{8,}$/;
+    if (!lengthRegex.test(password)) {
+      return "Password must be at least 8 characters long.";
+    }
+
+    // ✅ Check 2: At least one uppercase letter
+    const uppercaseRegex = /[A-Z]/;
+    if (!uppercaseRegex.test(password)) {
+      return "Password must include at least one uppercase letter.";
+    }
+
+    // ✅ Check 3: At least one number
+    const PswdNumberRegex = /\d/;
+    if (!PswdNumberRegex.test(password)) {
+      return "Password must include at least one number.";
+    }
+
+    // ✅ Check 4: At least one special character
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    if (!specialCharRegex.test(password)) {
+      return "Password must include at least one special character.";
+    }
+
     return null;
   };
   const handleSignup = async () => {
