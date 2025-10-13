@@ -26,19 +26,19 @@ function ProductLandingPage({ isLanding }) {
                   {/* Left side */}
                   {isEven ? (
                     <>
-                      <div className="flex justify-center items-center p-6">
+                      <div className="flex justify-center items-center p-6 md:ml-20">
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="max-w-[300px] h-auto object-contain"
+                          className="max-w-[350px] h-auto object-contain "
                         />
                       </div>
-                      <div className="flex flex-col justify-center max-w-[509px] mx-auto py-10">
+                      <div className="flex flex-col justify-center max-w-[509px] mx-auto py-10 md:ml-10">
                         <h3 className="text-base font-bold font-poppins md:text-3xl text-secondaryBrand">
                           {item.title}
                         </h3>
                         <p
-                          className={`mt-4 font-poppins md:text-xl text-base text-[#808080] ${
+                          className={`mt-4 font-poppins md:text-xl text-base text-justify  text-[#808080]  ${
                             item.multiline ? "whitespace-pre-line" : ""
                           }`}
                         >
@@ -48,23 +48,23 @@ function ProductLandingPage({ isLanding }) {
                     </>
                   ) : (
                     <>
-                      <div className="flex flex-col justify-center max-w-[509px] mx-auto p-6 py-10">
+                      <div className="flex flex-col justify-center max-w-[509px] mx-auto p-6 py-10 md:ml-60">
                         <h3 className="text-base font-bold font-poppins md:text-3xl text-secondaryBrand">
                           {item.title}
                         </h3>
                         <p
-                          className={`mt-4 font-poppins md:text-xl text-base text-[#808080] ${
+                          className={`mt-4 font-poppins md:text-xl font-normal text-base text-[#808080] text-justify  ${
                             item.multiline ? "whitespace-pre-line" : ""
                           }`}
                         >
                           {item.description}
                         </p>
                       </div>
-                      <div className="flex justify-center items-center p-6">
+                      <div className="flex justify-center items-center p-6 md:mr-52">
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="max-w-[300px] h-auto object-contain"
+                          className="max-w-[350px] h-auto object-contain "
                         />
                       </div>
                     </>
