@@ -199,33 +199,97 @@ const DoctorProfile = () => {
   };
 
   // Validation function
+  // const validateField = (name, value) => {
+  //   switch (name) {
+  //     case "first Name":
+  //       if (!value.trim()) return "First Name is required";
+  //       else return "";
+  //     case "email":
+  //       if (!value.trim()) return "Email is required";
+  //       else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
+  //         return "Invalid email address";
+  //       else return "";
+  //     case "phone":
+  //       if (!value.trim()) return "Phone number is required";
+  //       else if (!/^\+?\d{7,15}$/.test(value)) return "Invalid phone number";
+  //       else return "";
+  //     case "license":
+  //       if (!value.trim()) return "License number is required";
+  //       else return "";
+  //     case "reference":
+  //       if (!value.trim()) return "Office reference number is required";
+  //       else return "";
+  //     case "address":
+  //       if (!value.trim()) return "Address is required";
+  //       else return "";
+  //     default:
+  //       return "";
+  //   }
+  // };
+
+
+
   const validateField = (name, value) => {
+    let errorMsg = "";
+
     switch (name) {
-      case "first Name":
-        if (!value.trim()) return "First Name is required";
-        else return "";
+      case "firstName":   // ✅ keep the same field name from your first function
+        if (!value.trim()) {
+          errorMsg = "First name is required.";
+        } else if (value.length < 3) {
+          errorMsg = "First name must be at least 3 characters.";
+        } else if (value.length > 10) {
+          errorMsg = "First name cannot exceed 10 characters.";
+        } else if (!/^[A-Za-z]+$/.test(value)) {
+          errorMsg = "First name must contain only letters (no spaces or numbers).";
+        }
+        break;
+
+      case "lastName":   // ✅ new validation added from your second function
+        if (!value.trim()) {
+          errorMsg = "Last name is required.";
+        } else if (value.length < 3) {
+          errorMsg = "Last name must be at least 3 characters.";
+        } else if (value.length > 10) {
+          errorMsg = "Last name cannot exceed 10 characters.";
+        } else if (!/^[A-Za-z]+$/.test(value)) {
+          errorMsg = "Last name must contain only letters (no spaces or numbers).";
+        }
+        break;
+
       case "email":
-        if (!value.trim()) return "Email is required";
-        else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
-          return "Invalid email address";
-        else return "";
+        if (!value.trim()) errorMsg = "Email is required.";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+          errorMsg = "Invalid email address.";
+        break;
+
       case "phone":
-        if (!value.trim()) return "Phone number is required";
-        else if (!/^\+?\d{7,15}$/.test(value)) return "Invalid phone number";
-        else return "";
+        if (!value.trim()) {
+          errorMsg = "Phone number is required.";
+        } else if (!/^\d{11}$/.test(value)) {
+          errorMsg = "Phone number must be exactly 11 digits.";
+        }
+        break;
+
       case "license":
-        if (!value.trim()) return "License number is required";
-        else return "";
+        if (!value.trim()) errorMsg = "License number is required.";
+        break;
+
       case "reference":
-        if (!value.trim()) return "Office reference number is required";
-        else return "";
+        if (!value.trim()) errorMsg = "Office reference number is required.";
+        break;
+
       case "address":
-        if (!value.trim()) return "Address is required";
-        else return "";
+        if (!value.trim()) errorMsg = "Address is required.";
+        break;
+
       default:
-        return "";
+        errorMsg = "";
     }
+
+    return errorMsg;
   };
+
 
   // Handle input change
   const handleChange = (e) => {
@@ -335,9 +399,8 @@ const DoctorProfile = () => {
             />
             <label
               htmlFor="fileUpload"
-              className={`cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block ${
-                isUploadingImage ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block ${isUploadingImage ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
               {isUploadingImage ? "Uploading..." : "Upload new picture"}
             </label>
@@ -392,11 +455,10 @@ const DoctorProfile = () => {
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className={`bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${
-                    isUpdating
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-secondaryBrand"
-                  }`}
+                  className={`bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${isUpdating
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-secondaryBrand"
+                    }`}
                 >
                   {isUpdating ? "Save Change ..." : "Save Change"}
                 </button>

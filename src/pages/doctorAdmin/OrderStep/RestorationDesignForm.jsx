@@ -57,7 +57,16 @@ const DoctorOrder = () => {
     patient,
   } = useSelector((state) => state.restoration);
   const [touched, setTouched] = useState({});
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(null);
+
+  // Debug: Log when selected changes
+  useEffect(() => {
+    console.log("RestorationDesignForm - selected changed:", selected);
+    if (selected) {
+      console.log("Selected object keys:", Object.keys(selected));
+      console.log("Selected name:", selected.name);
+    }
+  }, [selected]);
   const [isOpen, setIsOpen] = useState(false);
   const steps = [
     { id: "s1", title: "Restoration Design Form" },
@@ -171,9 +180,21 @@ const DoctorOrder = () => {
     }
   }, [doctorProfile]);
 
-  const handleDueDateChange = (e) => {
-    dispatch(setDueDate({ dueDate: e.target.value }));
+  const handleDueDateChange = (e, setFieldValue) => {
+    const value = e.target.value;
+    dispatch(setDueDate({ dueDate: value }));
+    setFieldValue("dueDate", value);
   };
+
+  const today = new Date();
+const formattedToday = today.toISOString().split("T")[0];
+
+// Get the last date of the current month (for "max")
+const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+  .toISOString()
+  .split("T")[0];
+
+
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -275,14 +296,14 @@ const DoctorOrder = () => {
                                   onBlur={handleBlur}
                                   placeholder="Office Reference number"
                                 />
-                                <lable className="text-primaryText text-xs font-semibold font-poppins capitalize">
-                                  Case expected due date
-                                </lable>
                                 <LabeledInput
                                   label="Case expected due date"
                                   type="date"
                                   name="dueDate"
-                                  min={new Date().toISOString().split("T")[0]}
+                                  // min={new Date().toISOString().split("T")[0]}
+                                  min={formattedToday}          // ⬅️ prevents selecting past dates
+                                  max={lastDayOfMonth}
+
                                   // value={values.dueDate || ""}
                                   // onChange={(e) => {
                                   //   const value = e.target.value;
@@ -296,11 +317,10 @@ const DoctorOrder = () => {
                                   //   );
                                   // }}
 
-                                  value={
-                                    doctor.find((d) => d.field === "dueDate")
-                                      ?.value || ""
+                                  value={values.dueDate || ""}
+                                  onChange={(e) =>
+                                    handleDueDateChange(e, setFieldValue)
                                   }
-                                  onChange={handleDueDateChange}
                                   onBlur={handleBlur}
                                 />
                                 {errors.dueDate && (
@@ -320,7 +340,7 @@ const DoctorOrder = () => {
                                         className="p-1 rounded-full  text-secondaryBrand"
                                         onClick={() => setIsOpen(true)}
                                       >
-                                        <PlusIcon className="h-3 w-3" />
+                                        <PlusIcon className="h-3 w-3 " />
                                       </button>
                                       {/* Tooltip */}
                                       <div className="  absolute left-full top-1/2 -translate-y-1/2 ml-2   hidden group-hover:block  z-50">
@@ -362,13 +382,17 @@ const DoctorOrder = () => {
                                     <ChevronDownIcon className="w-3 h-3" />
                                   </span>
                                 </button>
-                                {selected > 0 && (
-                                  <p className="py-2 px-2 text-sm text-secondaryBrand">
-                                    Smile Design :{" "}
-                                    {selected.length > 0
-                                      ? selected.join(", ")
-                                      : ""}
-                                  </p>
+                                {selected && (
+                                  <div className="py-2 px-2 text-sm text-secondaryBrand">
+                                    <p className="font-medium mb-1">
+                                      Selected Smile Design:
+                                    </p>
+                                    <p className="text-xs">
+                                      {selected.name ||
+                                        selected.label ||
+                                        "Unknown"}
+                                    </p>
+                                  </div>
                                 )}
                               </div>
                               <MaterialDropdown
@@ -625,10 +649,19 @@ const DoctorOrder = () => {
                                         className2="relative z-0"
                                         className="w-full border    bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                         options={
-                                          (orders.find((p) => p.name === "Surgical Guide")?.children?.length > 0
-                                            ? orders.find((p) => p.name === "Surgical Guide")?.children
-                                            : [{ label: "Not Available", value: "" }]
-                                          )
+                                          orders.find(
+                                            (p) => p.name === "Surgical Guide"
+                                          )?.children?.length > 0
+                                            ? orders.find(
+                                              (p) =>
+                                                p.name === "Surgical Guide"
+                                            )?.children
+                                            : [
+                                              {
+                                                label: "Not Available",
+                                                value: "",
+                                              },
+                                            ]
                                         }
                                         hideCheckForNotAvailable={true}
                                         // value={

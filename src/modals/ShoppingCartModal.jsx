@@ -5,12 +5,15 @@ import { BASE_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import Toast from "../components/Toast";
+import { SmileDesignPicker } from "../components/doctorAdmin/DoctorModel/smile";
+import CartConfirmModel from "./cart-confirm-model";
+import { useDispatch } from "react-redux";
+import { showToast } from "../store/toast-slice";
 // import product2 from "../assets/product2.png";
 
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
   const modalRef = useRef(null);
-
   const [activeTab, setActiveTab] = useState("cart");
   const [openOrders, setOpenOrders] = useState(false);
   const [openPaymentMethod, setOpenPaymentMethod] = useState(false);
@@ -20,23 +23,20 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [country, setCountry] = useState("");
   const [showCoutries, setShowCoutries] = useState(false);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [street, setStreet] = useState("");
-
+  const [isopenCartModel, setIsOpenCartModel] = useState(false)
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [toastVisible, setToastVisible] = useState(false);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
   const [recipientName, setRecipientName] = useState("");
   const [paypalUsername, setPaypalUsername] = useState("");
   const [paypalContact, setPaypalContact] = useState("");
-
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const dispatch = useDispatch();
   const validateForm = () => {
     // ✅ Full Name
     if (!name || !/^[A-Za-z ]{2,50}$/.test(name)) {
@@ -130,7 +130,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
 
   const createOrder = async () => {
     //
- 
+
     try {
       const payload = {
         userId: user.id,
@@ -141,7 +141,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         orderItems: cart.items,
       };
 
-       const response = await axios.post(
+      const response = await axios.post(
         `${BASE_URL}/orders/createOrder`,
         payload,
         {
@@ -159,29 +159,13 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
       } else if (response.data.responseCode === "0000") {
         setActiveTab("order");
       }
-     } catch (error) {
+    } catch (error) {
       console.log(error);
     }
   };
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setIsModalOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
-
   const getCart = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/cart`, {
@@ -191,6 +175,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         },
       });
       setCart(response.data);
+
     } catch (error) {
       console.log(error);
     }
@@ -198,8 +183,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   useEffect(() => {
     getCart();
   }, []);
-  const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState(null);
+
 
   useEffect(() => {
     const loadCountries = async () => {
@@ -226,7 +210,6 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
 
     loadCountries();
   }, []);
-  console.log(countries);
 
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
@@ -248,58 +231,76 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const user = userData ? JSON.parse(userData) : null;
 
   // Debugging logs
- 
+
   // Safely log firstName only if user exists
   if (user && user.firstName) {
-    console.log(user.firstName, "sarhey de oghai");
+    console.log(user.firstName);
   }
 
+  const handleTabClick = (targetTab) => {
+    const tabOrder = ["cart", "checkout", "review", "order"];
+    const currentIndex = tabOrder.indexOf(activeTab);
+    const targetIndex = tabOrder.indexOf(targetTab);
+
+    // Allow moving backward freely
+    if (targetIndex <= currentIndex) {
+      setActiveTab(targetTab);
+    }
+    // Restrict moving forward
+    else {
+      dispatch(
+        showToast({
+          message: `Sorry, you can't move to this step yet.`,
+          type: "error",
+        })
+      );
+
+    }
+  };
+
   return (
-    <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50 ">
+    <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div
-        ref={modalRef}
+        // ref={modalRef}
         className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative "
       >
-         {/* Tabs */}
+        {/* Tabs */}
         <div className="flex justify-around w-[587px] h-[68.69px]  pb-[16px] pt-[8px]">
           <div className="flex justify-around w-[539.02px] h-[44.69px]">
             <div
-              onClick={() => setActiveTab("cart")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                activeTab === "cart"
-                  ? "border-b-[4.69px] border-secondaryBrand font-semibold"
-                  : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
-              }`}
+              onClick={() => handleTabClick("cart")}
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] 
+                 ${activeTab === "cart"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                  : "text-[#949494] border-b-[4.69px] border-cartColor "
+                }`}
             >
               Cart
             </div>
             <div
-              // onClick={() => setActiveTab("checkout")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                activeTab === "checkout"
-                  ? "border-b-[4.69px] border-secondaryBrand font-semibold"
-                  : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
-              }`}
+              onClick={() => handleTabClick("checkout")}
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${activeTab === "checkout"
+                ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                : "text-[#949494] border-b-[4.69px] border-cartColor "
+                }`}
             >
               Checkout
             </div>
             <div
-              // onClick={() => setActiveTab("checkout")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                activeTab === "review"
-                  ? "border-b-[4.69px] border-secondaryBrand font-semibold"
-                  : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
-              }`}
+              onClick={() => handleTabClick("review")}
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${activeTab === "review"
+                ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                : "text-[#949494] border-b-[4.69px] border-cartColor "
+                }`}
             >
               Review
             </div>
             <div
-              // onClick={() => setActiveTab("order")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                activeTab === "order"
-                  ? "border-b-[4.69px] border-secondaryBrand font-semibold"
-                  : "text-[#949494] border-b-[4.69px] border-[#0000000D]"
-              }`}
+              onClick={() => handleTabClick("order")}
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${activeTab === "order"
+                ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                : "text-[#949494] border-b-[4.69px] border-cartColor "
+                }`}
             >
               Completion
             </div>
@@ -321,8 +322,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   {cart?.items?.map((item) => (
                     <CartProduct item={item} getCart={getCart} />
                   ))}
-                  <div className="fixed bottom-0 w-[587px] h-[168px] rounded-[32px] border-[1px] border-[#0000000D] space-y-[24px] py-[24px] px-[32px] bg-[#FFFFFF]">
-                    <div className="flex justify-between items-center w-[523px] h-[39px] gap-[16px] border-b-[1px] border-[#0000000D]">
+                  <div className="fixed bottom-0 w-[587px] h-[168px] rounded-[32px] border-[1px] border-cartColor space-y-[24px] py-[24px] px-[32px] bg-[#FFFFFF]">
+                    <div className="flex justify-between items-center w-[523px] h-[39px] gap-[16px] border-b-[1px] border-cartColor">
                       <h1 className="font-poppins font-medium text-[16px] leading-[24px] text-[#1A1A1A]">
                         Subtotal
                       </h1>
@@ -355,35 +356,54 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   Buyer's Details
                 </h1>
                 <div className="flex flex-col justify-center items-center w-[587px] h-[122px] space-y-[16px]">
-                  <div className="flex justify-start items-center w-[587px] h-[53px] gap-[16px]">
+                  <div className="flex justify-start items-center w-[587px] h-[53px] gap-[16px]">    <div className="relative w-full">
                     <input
                       type="text"
-                      className="w-[285.5px] h-[53px] rounded-[8px] outline-none border-[1px] border-[#FFFFFF] gap-[10px] py-[10px] px-[15px]"
-                      placeholder="Full Name"
-                      name=""
-                      id=""
+                      id="fullName"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      placeholder=" "
                       required
+                      className="peer w-[285.5px] h-[53px] rounded-[8px]     py-[10px] px-[15px] outline-none text-textFieldHeading  "
                     />
-                    <input
-                      type="text"
-                      className="w-[285.5px] h-[53px] rounded-[8px] outline-none border-[1px] border-[#FFFFFF] gap-[10px] py-[10px] px-[15px]"
-                      placeholder="Contact Number"
-                      name=""
-                      id=""
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
+                    <label
+                      htmlFor="fullName"
+                      className="absolute left-[15px] top-[14px] text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-[14px] peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand"
+                    >
+                      Full Name
+                    </label>
+                  </div>
+                    <div className="relative w-full">
+                      <input
+                        type="text"
+                        id="contactNumber"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder=" "
+                        className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                      />
+                      <label
+                        htmlFor="contactNumber"
+                        className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand"
+                      >
+                        Contact Number
+                      </label>
+                    </div>
                   </div>
                   <input
                     type="text"
-                    className="w-[587px] h-[53px] rounded-[8px] outline-none border-[1px] border-[#FFFFFF] gap-[10px] py-[10px] px-[15px]"
+                    className="w-[587px] h-[53px] rounded-[8px] outline-none border-[1px] border-[#FFFFFF] gap-[10px] py-[10px] px-[15px] placeholder:text-textFieldHeading"
                     placeholder="Email Address"
                     name=""
                     id=""
-                    value={user.email}
-                    // onChange={(e) => setEmail(e.target.value)}
+                    value={user?.email}
+                  // onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -394,34 +414,49 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                 </h1>
                 <div className="flex flex-col justify-center items-center w-[587px] h-[122px] space-y-[16px]">
                   <div className="flex justify-start items-center w-[587px] h-[53px] gap-[16px]">
+
+
+
                     <div className="relative flex flex-col justify-start items-start space-y-2">
-                      <div className="flex justify-start items-center w-[285.5px] h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white">
+                      {/* Input + Flag */}
+                      <div className="relative flex justify-start items-center w-[285.5px] h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white border border-[#FFFFFF]">
                         {selectedCountry && (
                           <img
                             src={selectedCountry?.flag}
-                            alt="flags"
-                            className="w-[21px] h-[12.25px]"
+                            alt="flag"
+                            className="w-[21px] h-[12.25px] z-10"
                           />
                         )}
+
                         <input
                           type="text"
+                          id="country"
                           value={country}
                           onChange={(e) => handleInputChange(e.target.value)}
-                          className="w-full h-[53px] rounded-[8px] outline-none border-[1px] border-[#FFFFFF] "
-                          placeholder="Country"
-                          name=""
-                          id=""
+                          placeholder=" "
+                          className="peer w-full h-full bg-transparent outline-none border-none text-textFieldHeading"
                         />
+
+                        {/* Floating Label */}
+                        <label
+                          htmlFor="country"
+                          className={`absolute  text-gray-400 text-sm transition-all   px-1 pointer-events-none
+        ${country
+                              ? "-top-2 text-xs text-secondaryBrand"
+                              : "top-[15px] text-gray-400 text-sm"
+                            }
+        peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand`}
+                        >
+                          Country
+                        </label>
                       </div>
+
+                      {/* Dropdown */}
                       {showCoutries && (
-                        <div className="absolute top-12 flex flex-col justify-start items-start space-y-4 bg-white border-[1px] border-gray-100 w-full max-h-[250px] overflow-auto px-4 py-2">
+                        <div className="absolute top-12 flex flex-col justify-start items-start space-y-4 bg-white border border-gray-100 w-full max-h-[250px] overflow-auto px-4 py-2 z-20">
                           {countries
                             .sort((a, b) => a.name.localeCompare(b.name))
-                            .filter((c) =>
-                              c.name
-                                .toLowerCase()
-                                .includes(country.toLowerCase())
-                            )
+                            .filter((c) => c.name.toLowerCase().includes(country.toLowerCase()))
                             .map((country) => (
                               <div key={country.code} value={country.code}>
                                 <div
@@ -441,35 +476,79 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       )}
                     </div>
 
-                    <input
-                      type="text"
-                      className="w-[285.5px] h-[53px] rounded-[8px] outline-none border-[1px] border-[#FFFFFF] gap-[10px] py-[10px] px-[15px]"
-                      placeholder="State/Province"
-                      name=""
-                      id=""
-                      value={state}
-                      onChange={(e) => setState(e.target.value)}
-                    />
+
+
+                    <div className="relative w-full max-w-[285.5px]">
+                      <input
+                        type="text"
+                        id="state"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        placeholder=" "
+                        className="peer w-full h-[53px] rounded-[8px] border border-[#FFFFFF] bg-white py-[10px] px-[15px] outline-none text-textFieldHeading   transition-all"
+                      />
+
+                      <label
+                        htmlFor="state"
+                        className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none
+      ${state
+                            ? "-top-2 text-xs text-secondaryBrand"
+                            : "top-3 text-gray-400 text-sm"
+                          }
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand`}
+                      >
+                        State / Province
+                      </label>
+                    </div>
+
                   </div>
                   <div className="flex justify-start items-center w-[587px] h-[53px] gap-[16px]">
-                    <input
-                      type="text"
-                      className="w-[285.5px] h-[53px] rounded-[8px] outline-none border-[1px] border-[#FFFFFF] gap-[10px] py-[10px] px-[15px]"
-                      placeholder="City"
-                      name=""
-                      id=""
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      className="w-[285.5px] h-[53px] rounded-[8px] outline-none border-[1px] border-[#FFFFFF] gap-[10px] py-[10px] px-[15px]"
-                      placeholder="Street"
-                      name=""
-                      id=""
-                      value={street}
-                      onChange={(e) => setStreet(e.target.value)}
-                    />
+
+                    <div className="relative w-full max-w-[285.5px]">
+                      <input
+                        type="text"
+                        id="city"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        placeholder=" "
+                        className="peer w-full h-[53px] rounded-[8px] border border-[#FFFFFF] bg-white py-[10px] px-[15px] outline-none text-textFieldHeading   transition-all"
+                      />
+
+                      <label
+                        htmlFor="city"
+                        className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none
+      ${city
+                            ? "-top-2 text-xs text-secondaryBrand"
+                            : "top-3 text-gray-400 text-sm"
+                          }
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand`}
+                      >
+                        City
+                      </label>
+                    </div>
+                    <div className="relative w-full max-w-[285.5px]">
+                      <input
+                        type="text"
+                        id="street"
+                        value={street}
+                        onChange={(e) => setStreet(e.target.value)}
+                        placeholder=" "
+                        className="peer w-full h-[53px] rounded-[8px] border border-[#FFFFFF] bg-white py-[10px] px-[15px] outline-none text-textFieldHeading   transition-all"
+                      />
+
+                      <label
+                        htmlFor="street"
+                        className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none
+      ${street
+                            ? "-top-2 text-xs text-secondaryBrand"
+                            : "top-3 text-gray-400 text-sm"
+                          }
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand`}
+                      >
+                        Street
+                      </label>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -484,11 +563,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
                 > */}
                 <div
-                  className={`flex flex-col justify-start items-center bg-white w-[587px] ${
-                    openPaymentMethod ? "h-[322px]" : ""
-                  } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
+                  className={`flex flex-col justify-start items-center bg-white w-[587px] ${openPaymentMethod ? "h-[322px]" : ""
+                    } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
                 >
-                  <div className="flex justify-center items-center w-[587px] h-[53px] border-b-[1px] border-[#0000000D] py-[8px] px-[16px] gap-[8px]">
+                  <div className="flex justify-center items-center w-[587px] h-[53px] border-b-[1px] border-cartColor py-[8px] px-[16px] gap-[8px]">
                     <img src="/assets/paypal.png" alt="paypal" />
                     <h1 className="w-[509px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                       Paypal
@@ -508,9 +586,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     </svg>
                   </div>
                   <div
-                    className={`${
-                      openPaymentMethod ? "block" : "hidden"
-                    } flex flex-col justify-start items-start w-full h-auto p-[16px] space-y-[16px]`}
+                    className={`${openPaymentMethod ? "block" : "hidden"
+                      } flex flex-col justify-start items-start w-full h-auto p-[16px] space-y-[16px]`}
                   >
                     {/* Recipient Name */}
                     <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
@@ -597,14 +674,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div className="flex flex-col justify-start items-start space-y-[16px] w-full h-auto">
               {/* Your Orders */}
               <div
-                className={`flex flex-col w-full ${
-                  openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
-                } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
+                  } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
-                    openOrders && "border-b-[1px] border-[#0000000D]"
-                  }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${openOrders && "border-b-[1px] border-cartColor"
+                    }`}
                 >
                   <h1 className="w-[538px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Your Orders
@@ -625,9 +700,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </svg>
                 </div>
                 <div
-                  className={`${
-                    openOrders ? "block" : "hidden"
-                  } flex flex-col justify-center items-center w-[587px] h-auto gap-[24px] p-[16px] rounded-[16px]`}
+                  className={`${openOrders ? "block" : "hidden"
+                    } flex flex-col justify-center items-center w-[587px] h-auto gap-[24px] p-[16px] rounded-[16px]`}
                 >
                   {cart &&
                     cart?.items?.map((item) => (
@@ -655,14 +729,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               {/* Payment method */}
               <div
-                className={`flex flex-col w-full ${
-                  openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
-                } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
+                  } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
-                    openPaymentMethod && "border-b-[1px] border-[#0000000D]"
-                  }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${openPaymentMethod && "border-b-[1px] border-cartColor"
+                    }`}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Payment Method
@@ -683,9 +755,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </svg>
                 </div>
                 <div
-                  className={`${
-                    openPaymentMethod ? "block" : "hidden"
-                  } flex justify-start items-start w-[587px] h-[52px] gap-[8px] p-[16px] rounded-[16px]`}
+                  className={`${openPaymentMethod ? "block" : "hidden"
+                    } flex justify-start items-start w-[587px] h-[52px] gap-[8px] p-[16px] rounded-[16px]`}
                 >
                   <img
                     src="/assets/paypal.png"
@@ -699,16 +770,14 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               {/* Buyer's Details */}
               <div
-                className={`flex flex-col w-full ${
-                  openBuyerDetail
-                    ? "h-auto border-[1px] border-[#FFFFFF0D]"
-                    : ""
-                } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${openBuyerDetail
+                  ? "h-auto border-[1px] border-[#FFFFFF0D]"
+                  : ""
+                  } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
-                    openBuyerDetail && "border-b-[1px] border-[#0000000D]"
-                  }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${openBuyerDetail && "border-b-[1px] border-cartColor"
+                    }`}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Buyer's Details
@@ -729,9 +798,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </svg>
                 </div>
                 <div
-                  className={`${
-                    openBuyerDetail ? "block" : "hidden"
-                  } flex flex-col justify-start items-start w-[587px] h-[328px] gap-[16px] p-[16px] rounded-[16px]`}
+                  className={`${openBuyerDetail ? "block" : "hidden"
+                    } flex flex-col justify-start items-start w-[587px] h-[328px] gap-[16px] p-[16px] rounded-[16px]`}
                 >
                   <div className="w-[555px] h-[62px] flex flex-col justify-start items-start space-y-[6px]">
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
@@ -746,8 +814,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
                       Email Address
                     </p>
-                    <p className="font-poppins font-normal h-[40px] text-[14px] leading-[21px] text-[##434343]">
-                      {email}
+                    <p className="font-poppins font-normal   h-[40px] text-[14px] leading-[21px] text-[##434343]">
+                      {user?.email}
                     </p>
                   </div>
 
@@ -772,14 +840,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               {/* Cart Total */}
               <div
-                className={`flex flex-col w-full ${
-                  openCartTotal ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
-                } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${openCartTotal ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
+                  } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
-                    openCartTotal && "border-b-[1px] border-[#0000000D]"
-                  }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${openCartTotal && "border-b-[1px] border-cartColor"
+                    }`}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Cart Total
@@ -800,9 +866,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </svg>
                 </div>
                 <div
-                  className={`${
-                    openCartTotal ? "block" : "hidden"
-                  } flex flex-col justify-start items-start w-[555px] h-[138px] gap-[9px]`}
+                  className={`${openCartTotal ? "block" : "hidden"
+                    } flex flex-col justify-start items-start w-[555px] h-[138px] gap-[9px]`}
                 >
                   <div className="flex justify-start items-start w-[425px] h-[37px] py-[8px] px-[16px] gap-[10px]">
                     <p className="font-poppins font-normal text-[14px] w-[300px] leading-[21px] tet-[#434343]">
@@ -833,6 +898,20 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
             </div>
           )}
+          {activeTab === "review" && (
+            <div className="flex justify-center items-center w-[587px] h-[105px] rounded-[32px] py-[24px] px-[32px] gap-[24px]">
+              <button
+                onClick={() => {
+                  // createOrder();
+                  setIsOpenCartModel(true)
+                }}
+                className="flex justify-center items-center w-[523px] h-[57px] rounded-[99px] py-[18px] px-[129px] bg-[#001D58] text-white shadow-lg"
+              >
+                Confirm Order
+              </button>
+            </div>
+          )}
+
           {activeTab === "order" && (
             <div className="flex flex-col justify-center items-center w-[587px] h-auto rounded-[24px] p-[32px] gap-[24px] bg-white">
               <svg
@@ -882,7 +961,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               <div
                 onClick={() => {
                   setIsModalOpen(false);
+                  console.log('hello');
                   navigate("/shop");
+                  window.location.reload();
                 }}
                 className="flex justify-center items-center cursor-pointer w-[396px] h-[57px] rounded-[99px] gap-[8px] bg-secondaryBrand"
               >
@@ -893,18 +974,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             </div>
           )}
         </div>
-        {activeTab === "review" && (
-          <div className="flex justify-center items-center w-[587px] h-[105px] rounded-[32px] py-[24px] px-[32px] gap-[24px]">
-            <button
-              onClick={() => {
-                createOrder();
-              }}
-              className="flex justify-center items-center w-[523px] h-[57px] rounded-[99px] py-[18px] px-[129px] bg-[#001D58] text-white shadow-lg"
-            >
-              Confirm Order
-            </button>
-          </div>
-        )}
+
       </div>
       <Toast
         message={toastMessage}
@@ -912,6 +982,14 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         onClose={closeToast}
         type={toastType}
       />
+      {isopenCartModel && (
+        <CartConfirmModel
+          isopenCartModel={isopenCartModel}
+          setIsOpenCartModel={setIsOpenCartModel}
+          createOrder={createOrder}
+          activeTab={setActiveTab}
+        />
+      )}
     </div>
   );
 };

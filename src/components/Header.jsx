@@ -275,8 +275,8 @@ const Header = () => {
               >
                 <path
                   d="M12.8407 21.6973C12.5007 21.8173 11.9407 21.8173 11.6007 21.6973C8.7007 20.7073 2.2207 16.5773 2.2207 9.5773C2.2207 6.4873 4.7107 3.9873 7.7807 3.9873C9.6007 3.9873 11.2107 4.8673 12.2207 6.2273C13.2307 4.8673 14.8507 3.9873 16.6607 3.9873C19.7307 3.9873 22.2207 6.4873 22.2207 9.5773C22.2207 16.5773 15.7407 20.7073 12.8407 21.6973Z"
-                  stroke={wishlistCount ? "#001D58" : "#292D32"} // outline color
-                  fill={wishlistCount ? "#001D58" : "none"}      // fill when active
+                  stroke={wishlistCount ? "#FF0000" : "#292D32"} // outline color
+                  fill={wishlistCount ? "#FF0000" : "none"}      // fill when active
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"

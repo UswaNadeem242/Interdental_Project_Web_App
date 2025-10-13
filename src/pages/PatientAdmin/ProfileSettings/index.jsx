@@ -70,7 +70,7 @@ const ProfileSettings = () => {
       else if (value.length < 3) {
         errorMsg = "First name must be at least 3 characters.";
       }
-      else if (value.length > 20) {
+      else if (value.length > 10) {
         errorMsg = "First name cannot exceed 10 characters.";
       }
       else if (!/^[A-Za-z]+$/.test(value)) {
@@ -85,8 +85,8 @@ const ProfileSettings = () => {
       else if (value.length < 3) {
         errorMsg = "Last name must be at least 3 characters.";
       }
-      else if (value.length > 20) {
-        errorMsg = "Last name cannot exceed 20 characters.";
+      else if (value.length > 10) {
+        errorMsg = "Last name cannot exceed 10 characters.";
       }
       else if (!/^[A-Za-z]+$/.test(value)) {
         errorMsg = "Last name must contain only letters (no spaces or numbers).";
@@ -410,7 +410,7 @@ const ProfileSettings = () => {
                 className3={"text-secondaryText"}
               />
               {errors.firstName && (
-                <p className="text-red-700 text-sm">{errors.firstName}</p>
+                <p className="text-red-800 text-sm">{errors.firstName}</p>
               )}
             </div>
             <div className="md:col-span-6 col-span-12 space-y-4 ">

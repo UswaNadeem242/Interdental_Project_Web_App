@@ -5,8 +5,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Layout from "./layout/Layout";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
+import { BrowserRouter, Route, Routes } from "react-router-dom"; 
+import Header from "./pages/landing-page/header";
 import Footer from "./components/Footer";
 import Brands from "./pages/Brands";
 import Categories from "./pages/Categories";
@@ -53,6 +53,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Blog from "./pages/landing-page/blog";
 import LayZirPage from "./pages/landing-page/product/layzir";
 import AiditeZirconia from "./pages/landing-page/product/aidite-zirconia ";
+
 const MainLayout = ({ children }) => (
   <>
     <Header />

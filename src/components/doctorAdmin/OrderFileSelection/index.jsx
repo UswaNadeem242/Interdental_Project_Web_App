@@ -26,6 +26,12 @@ export const FileUploadSection = () => {
         setFiles((prev) => prev.filter((_, i) => i !== index));
     };
 
+    const formatFileName = (name, front = 10, back = 5) => {
+        if (!name) return "";
+        if (name.length <= front + back) return name;
+        return `${name.slice(0, front)}...${name.slice(-back)}`;
+    };
+
     return (
         <FormSection
             className="bg-textField py-3 px-2 border border-gray-200"
@@ -73,10 +79,18 @@ export const FileUploadSection = () => {
                             className="flex items-center justify-between py-1 px-2 text-sm text-[#989EC2] border border-gray-200 rounded-full"
                         >
                             {/* File name with icon */}
-                            <div className="flex items-center gap-2">
+                            {/* <div className="flex items-center gap-2">
                                 <ClipboardDocumentListIcon className="w-4 h-4" />
                                 <span className="truncate max-w-[200px]">{file.name}</span>
+                            </div> */}
+
+                            <div className="flex items-center gap-2">
+                                <ClipboardDocumentListIcon className="w-4 h-4" />
+                                <span className="text-sm font-poppins">
+                                    {formatFileName(file.name, 12, 8)}
+                                </span>
                             </div>
+
 
                             {/* ❌ Remove button */}
                             <button
