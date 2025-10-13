@@ -33,12 +33,12 @@ function ProductLandingPage({ isLanding }) {
                           className="max-w-[350px] h-auto object-contain "
                         />
                       </div>
-                      <div className="flex flex-col justify-center max-w-[509px] mx-auto py-10 md:ml-10">
-                        <h3 className="text-base font-bold font-poppins md:text-3xl text-secondaryBrand">
+                      <div className="flex flex-col justify-center  mx-auto py-10 md:ml-10">
+                        <h3 className="text-base font-bold font-poppins md:text-5xl text-secondaryBrand max-w-[574px] mb-2 ">
                           {item.title}
                         </h3>
                         <p
-                          className={`mt-4 font-poppins md:text-xl text-base text-justify  text-[#808080]  ${
+                          className={`mt-4 font-poppins md:text-xl text-base text-justify  text-[#808080] max-w-[509px]  ${
                             item.multiline ? "whitespace-pre-line" : ""
                           }`}
                         >
@@ -49,7 +49,7 @@ function ProductLandingPage({ isLanding }) {
                   ) : (
                     <>
                       <div className="flex flex-col justify-center max-w-[509px] mx-auto p-6 py-10 md:ml-60">
-                        <h3 className="text-base font-bold font-poppins md:text-3xl text-secondaryBrand">
+                        <h3 className="text-base font-bold font-poppins md:text-5xl text-secondaryBrand mb-2 ">
                           {item.title}
                         </h3>
                         <p
