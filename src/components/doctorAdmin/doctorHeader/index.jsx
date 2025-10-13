@@ -1,6 +1,6 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../auth/AuthContext";
-import { BellIcon } from "../../../icon/Bell";
+import {  BellIconSVG } from "../../../icon/Bell";
 import { LogoutIcon } from "../../../icon/LogoutIcon";
 import usePageTitle from "../../../Hooks/usePageTitle";
 import { useDispatch, useSelector } from "react-redux";
@@ -101,7 +101,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
             <p className="text-xs text-gray-500">{doctorProfile?.email}</p>
           </NavLink>
           <button className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center">
-            <BellIcon className="w-5 h-5" />
+            <BellIconSVG className="w-5 h-5" />
           </button>
         </div>
         <div className="hidden md:flex">

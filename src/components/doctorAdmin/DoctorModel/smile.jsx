@@ -10,19 +10,13 @@ export const SmileDesignPicker = ({
   
 }) => {
   const { orders: dropdowns } = useSelector((state) => state.dropdown);
-
-  console.log("dropdowns", dropdowns);
-
   const [smileItems, setSmileItems] = useState([]);
   const [selectedSmile, setSelectedSmile] = useState(null);
 
   // Load Smile Type from dropdownsa
   useEffect(() => {
     if (!dropdowns || !Array.isArray(dropdowns)) return;
-
     const smileGroup = dropdowns.find((item) => item.name === "Smile Type");
-    console.log("Found smileGroup:", smileGroup);
-
     if (smileGroup?.children && Array.isArray(smileGroup.children)) {
       console.log("Setting smileItems:", smileGroup.children);
       setSmileItems(smileGroup.children);
@@ -53,12 +47,6 @@ export const SmileDesignPicker = ({
       alert("Please select a smile design first");
     }
   };
-
-  // Debug: Check if smileItems are loaded
-  console.log("SmileDesignPicker - smileItems:", smileItems);
-  console.log("SmileDesignPicker - selectedSmile:", selectedSmile);
-  console.log("SmileDesignPicker - isModalOpen:", isModalOpen);
-  console.log("SmileDesignPicker - selectedSmile?.id:", selectedSmile?.id);
 
   if (!smileItems || smileItems.length === 0) {
     console.log("No smile items found, showing empty modal");

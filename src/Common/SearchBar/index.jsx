@@ -86,7 +86,7 @@
 // }
 
 //
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { SecondaryButton } from "../Button";
 import FilterIcon from "../../icon/FilterIcon";
@@ -101,17 +101,16 @@ export default function SearchBar({
 }) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-
   const handleSearch = (e) => {
     const value = e.target.value;
     setQuery(value);
+
+    // Trigger search immediately from first character
     if (onSearch) {
-      onSearch(value.trim());
+      onSearch(value.trim().toLowerCase());
     }
-
-    // if (onSearch) onSearch(value); // live search
   };
-
+ 
   const handleSort = (order) => {
     setIsOpen(false);
     if (onSort) onSort(order); // 🚀 send "asc" | "desc" to parent
@@ -131,22 +130,6 @@ export default function SearchBar({
         placeholder={placeholder || 'Search here ...'}
         className="flex-1 outline-none text-sm text-primaryText placeholder-primaryText bg-background"
       />
-
-      {/* Sort Button */}
-      {/* <SecondaryButton
-                title={title}
-                variant="outline"
-                size="sm"
-                onClick={onSort}
-                className="rounded-md px-2 py-2 bg-white text-[#344054] flex gap-2"
-                icon={<FilterIcon className="w-4 h-4" />}
-            >
-                {title}
-
-            </SecondaryButton> */}
-
-      {/* Input Field */}
-
       {/* Sort Dropdown */}
 
       <div className="relative">

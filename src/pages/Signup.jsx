@@ -46,7 +46,7 @@ const Signup = () => {
     const numberRegex = /^[0-9]{10}$/;
     const zipRegex = /^[0-9]{5}$/;
     const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
-         if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
+    if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
     if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
     if (!addressRegex.test(city)) return "Enter a City Name";
     if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";

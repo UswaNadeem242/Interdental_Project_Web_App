@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import { BASE_URL } from "../config";
 import { useAuth } from "../auth/AuthContext";
 import Toast from "./Toast";
+import { MinusIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 // import product1 from "../assets/product1.png";
 
 const CartProduct = ({ item, getCart }) => {
+  console.log('items:', item);
+
   const [count, setCount] = useState(item.quantity);
   const { fetchCartCount } = useAuth();
   const [toastVisible, setToastVisible] = useState(false);
@@ -22,7 +25,7 @@ const CartProduct = ({ item, getCart }) => {
           },
         }
       );
-       setToastMessage("Item removed from cart");
+      setToastMessage("Item removed from cart");
       fetchCartCount();
       setToastType("success");
       setToastVisible(true);
@@ -34,7 +37,7 @@ const CartProduct = ({ item, getCart }) => {
     }
   };
   const handleUpdateItem = async (status, items) => {
-     if (status === "add" && items.stockItem <= count) {
+    if (status === "add" && items.stockItem <= count) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
       setToastVisible(true);
@@ -63,121 +66,121 @@ const CartProduct = ({ item, getCart }) => {
         }
       );
       getCart();
-    } catch (error) {}
+    } catch (error) { }
   };
   const closeToast = () => {
     setToastVisible(false);
   };
   return (
-    <div className="flex justify-center items-center w-[587px] h-[188px] rounded-[16px] border-[1px] border-[#0000000D] space-y-[24px] p-[16px] bg-[#FFFFFF]">
-      <div className="flex justify-center items-center w-[555px] h-[156px] gap-[16px]">
+    <div className="flex justify-center items-center w-[587px] h-[188px] rounded-[16px] border-[1px] border-cartColor space-y-[24px] p-[16px] bg-[#FFFFFF]">
+      {/* <div className="flex justify-center items-center w-[555px] h-[156px] gap-[16px]">
         <div className="flex justify-between items-center w-[515px] h-[156px] gap-[16px] ">
           <img
             src={item?.imageUrl[0]}
             alt="product"
-            className="w-[115.13px] rounded-[20px] h-[131.94px]"
+            className="w-[115.13px]  h-[131.94px]"
           />
           <div className="flex flex-col justify-start items-start w-[373.87px] h-[156px] gap-[8px]">
-            <h1>{item.productName}</h1>
-            {/* <h1>Prouct description here</h1> */}
-            <h1>${item.price}</h1>
-            <div className="flex justify-between items-center w-[124px] h-[50px] rounded-[170px] border-[1px] border-[#0000000D] p-[8px]">
-              <svg
-                width="35"
-                height="35"
-                viewBox="0 0 35 35"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="cursor-pointer"
-                onClick={() => handleUpdateItem("subtract", item)}
-              >
-                <rect
-                  x="0.134766"
-                  y="0.690247"
-                  width="34"
-                  height="34"
-                  rx="17"
-                  fill="#F2F2F2"
-                />
-                <path
-                  d="M12.4688 17.6902H21.8021"
-                  stroke="#666666"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+            <h1 className="text-black text-base font-semibold font-poppins capitalize">{item.productName}</h1>
+            <p className="text-xs font-poppins capitalize text-secondaryText">{item?.description}</p>
+            <h1 className="text-primaryText font-poppins font-medium">${item.price}</h1>
+            <div className="flex justify-between items-center w-[124px] h-[50px] rounded-[170px] border-[1px] border-cartColor p-[8px]">
+              <button onClick={() => handleUpdateItem("subtract", item)} className="cursor-pointer bg-background w-9 h-9 flex justify-center items-center rounded-full">
+
+                <MinusIcon className="text-secondaryText w-5 h-5  " />
+              </button>
               <h1>{count}</h1>
-              <svg
-                width="35"
-                height="35"
-                viewBox="0 0 35 35"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="cursor-pointer"
-                onClick={() => handleUpdateItem("add", item)}
-              >
-                <rect
-                  x="0.134766"
-                  y="0.690247"
-                  width="34"
-                  height="34"
-                  rx="17"
-                  fill="#F2F2F2"
-                />
-                <path
-                  d="M12.4688 17.6902H21.8021M17.1354 13.0236V22.3569V13.0236Z"
-                  stroke="#1A1A1A"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+
+              <button o onClick={() => handleUpdateItem("add", item)} className="cursor-pointer bg-background w-9 h-9 flex justify-center items-center rounded-full ">
+                <PlusIcon className="text-secondaryText w-5 h-5 font-bold" />
+              </button>
             </div>
           </div>
         </div>
-        <svg
-          width="24"
-          height="25"
-          viewBox="0 0 24 25"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="cursor-pointer"
+        <button className="cursor-pointer border w-6 h-6  flex justify-center items-center rounded-full"
+          onClick={() => handleDeleteItem()}>
+
+          <XMarkIcon className="w-4 h-4" />
+        </button>
+      </div> */}
+
+
+
+
+
+
+
+
+      <div className="flex justify-center items-center w-[555px] h-[156px] gap-[16px]">
+        <div className="flex justify-between items-center w-[515px] h-[156px] gap-[16px]   p-3">
+          {/* Product Image */}
+          <img
+            src={item?.imageUrl[0]}
+            alt="product"
+            className="w-[115.13px] h-[131.94px] object-cover rounded-md"
+          />
+
+          {/* Product Details */}
+          <div className="flex flex-col justify-between w-[373.87px] h-full">
+            <div>
+              <h1 className="text-black text-base font-semibold font-poppins capitalize truncate">
+                {item.productName}
+              </h1>
+              <p
+                className="text-xs font-poppins capitalize text-secondaryText line-clamp-2 overflow-hidden"
+                style={{ maxHeight: "2.5rem" }} // prevents extra lines
+              >
+                {item?.description}
+              </p>
+            </div>
+
+            <h1 className="text-primaryText font-poppins font-medium">${item.price}</h1>
+
+            {/* Quantity Controls */}
+            <div className="flex justify-between items-center w-[124px] h-[50px] rounded-[170px] border border-cartColor p-2">
+              <button
+                onClick={() => handleUpdateItem("subtract", item)}
+                className="cursor-pointer bg-background w-9 h-9 flex justify-center items-center rounded-full"
+              >
+                <MinusIcon className="text-secondaryText w-5 h-5" />
+              </button>
+
+              <h1>{count}</h1>
+
+              <button
+                onClick={() => handleUpdateItem("add", item)}
+                className="cursor-pointer bg-background w-9 h-9 flex justify-center items-center rounded-full"
+              >
+                <PlusIcon className="text-secondaryText w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Delete Icon */}
+        <button
+          className="cursor-pointer border w-6 h-6 flex justify-center items-center rounded-full"
           onClick={() => handleDeleteItem()}
         >
-          <g clip-path="url(#clip0_13855_2364)">
-            <path
-              d="M12 23.6902C18.0748 23.6902 23 18.765 23 12.6902C23 6.6155 18.0748 1.69025 12 1.69025C5.92525 1.69025 1 6.6155 1 12.6902C1 18.765 5.92525 23.6902 12 23.6902Z"
-              stroke="#CCCCCC"
-              stroke-miterlimit="10"
-            />
-            <path
-              d="M16 8.69025L8 16.6902"
-              stroke="#666666"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M16 16.6902L8 8.69025"
-              stroke="#666666"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_13855_2364">
-              <rect
-                width="24"
-                height="24"
-                fill="white"
-                transform="translate(0 0.690247)"
-              />
-            </clipPath>
-          </defs>
-        </svg>
+          <XMarkIcon className="w-4 h-4" />
+        </button>
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <Toast
         message={toastMessage}
         isVisible={toastVisible}

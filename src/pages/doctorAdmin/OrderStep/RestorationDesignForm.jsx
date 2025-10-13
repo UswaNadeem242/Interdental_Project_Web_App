@@ -185,6 +185,16 @@ const DoctorOrder = () => {
     dispatch(setDueDate({ dueDate: value }));
     setFieldValue("dueDate", value);
   };
+
+  const today = new Date();
+const formattedToday = today.toISOString().split("T")[0];
+
+// Get the last date of the current month (for "max")
+const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+  .toISOString()
+  .split("T")[0];
+
+
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -290,7 +300,10 @@ const DoctorOrder = () => {
                                   label="Case expected due date"
                                   type="date"
                                   name="dueDate"
-                                  min={new Date().toISOString().split("T")[0]}
+                                  // min={new Date().toISOString().split("T")[0]}
+                                  min={formattedToday}          // ⬅️ prevents selecting past dates
+                                  max={lastDayOfMonth}
+
                                   // value={values.dueDate || ""}
                                   // onChange={(e) => {
                                   //   const value = e.target.value;
@@ -327,7 +340,7 @@ const DoctorOrder = () => {
                                         className="p-1 rounded-full  text-secondaryBrand"
                                         onClick={() => setIsOpen(true)}
                                       >
-                                        <PlusIcon className="h-3 w-3" />
+                                        <PlusIcon className="h-3 w-3 " />
                                       </button>
                                       {/* Tooltip */}
                                       <div className="  absolute left-full top-1/2 -translate-y-1/2 ml-2   hidden group-hover:block  z-50">
@@ -412,7 +425,7 @@ const DoctorOrder = () => {
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                  !activeToothSelection.scannerType
+                                    !activeToothSelection.scannerType
                                     ? "Scanner Type is Required Select the Teeth"
                                     : ""
                                 }
@@ -622,15 +635,15 @@ const DoctorOrder = () => {
                                         }}
                                         label=" Denture"
                                         storageKey="digitalOptions"
-                                        // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
-                                        // error={
-                                        //   touched.digitalOptions &&
-                                        //   !toothSelections.find(
-                                        //     (t) => t.toothId === selectedTooth
-                                        //   )?.digitalOptions
-                                        //     ? "Digital Denture is Required Select the teeth"
-                                        //     : ""
-                                        // }
+                                      // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
+                                      // error={
+                                      //   touched.digitalOptions &&
+                                      //   !toothSelections.find(
+                                      //     (t) => t.toothId === selectedTooth
+                                      //   )?.digitalOptions
+                                      //     ? "Digital Denture is Required Select the teeth"
+                                      //     : ""
+                                      // }
                                       />
                                       <MaterialDropdown
                                         className2="relative z-0"
@@ -640,15 +653,15 @@ const DoctorOrder = () => {
                                             (p) => p.name === "Surgical Guide"
                                           )?.children?.length > 0
                                             ? orders.find(
-                                                (p) =>
-                                                  p.name === "Surgical Guide"
-                                              )?.children
+                                              (p) =>
+                                                p.name === "Surgical Guide"
+                                            )?.children
                                             : [
-                                                {
-                                                  label: "Not Available",
-                                                  value: "",
-                                                },
-                                              ]
+                                              {
+                                                label: "Not Available",
+                                                value: "",
+                                              },
+                                            ]
                                         }
                                         hideCheckForNotAvailable={true}
                                         // value={
@@ -1090,9 +1103,9 @@ const DoctorOrder = () => {
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.photogrammetryfiles
+                                          !toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.photogrammetryfiles
                                           ? "Photogrammetry files is required. Please select a tooth first."
                                           : ""
                                       }

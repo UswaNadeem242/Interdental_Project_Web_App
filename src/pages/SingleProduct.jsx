@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-// import product6 from "../assets/product6.png";
-// import starFilled from "../assets/star-filled.png";
-// import starOutlined from "../assets/star-outlined.png";
-// import customer from "../assets/customer.png";
 import CustomerFeedback from "../components/CustomerFeedback";
 import RelatedProducts from "../components/RelatedProducts";
 import { useParams } from "react-router-dom";
@@ -16,6 +12,11 @@ import { BASE_URL } from "../config";
 import Toast from "../components/Toast";
 import { useAuth } from "../auth/AuthContext";
 import ShoppingCart from "../modals/ShoppingCartModal";
+import {
+  ChevronDownIcon,
+  MagnifyingGlassIcon, StarIcon
+
+} from "@heroicons/react/24/solid";
 
 const SingleProduct = () => {
   const { productId } = useParams();
@@ -175,9 +176,9 @@ const SingleProduct = () => {
 
 
   return (
-    <div className="flex justify-center  items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
+    <div className="flex justify-center  items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0 ">
       {/* justify-center  */}
-      <div className="flex flex-col justify-start items-center h-auto space-y-[32px] my-8 pt-[8px] ">
+      <div className="flex flex-col justify-start items-center h-auto space-y-[32px] my-8 pt-[8px] mt-20">
         {/*  w-[1312px]  pl-[100px]*/}
         <div className="flex justify-center items-center w-full h-[603.32px]  gap-[6.39px] rounded-2xl bg-white ">
           {/* p-[51.16px] */}
@@ -222,34 +223,42 @@ const SingleProduct = () => {
             </div>
             <div className="flex flex-col justify-start items-center w-[454.03px] h-[307.4px] space-y-[19.18px]">
               <div className="flex flex-col justify-center items-center w-[454px] h-[129.57px] border-b-[1px] border-[##E6E6E6] space-y-[15.99px]">
-                <div className="flex flex-col justify-center items-start w-[440.97px] h-[68.59px] space-y-[9.59px]">
-                  <div className="flex justify-start items-center w-[440.97px] h-[35px] gap-[6.39px]">
-                    <h1 className="font-poppins font-semibold text-[28.78px] w-[365px] h-[35px] leading-[34.53px] text-[#1A1A1A]">
-                      {product && product.name}
+               
+
+                <div className="flex flex-col justify-between w-[440.97px]  space-y-2">
+                  {/* Product Name + Stock */}
+                  <div className="flex justify-between items-center">
+                    <h1 className="font-poppins font-semibold text-[28.78px] leading-[34.53px] text-[#1A1A1A] w-[70%] ">
+                      {product?.name}
                     </h1>
-                    <div className="w-[69.58px] h-[33px] rounded-[34.37px] py-[8px] px-[12.79px] gap-[7.99px] bg-[#001D580D]">
-                      <h1 className="font-poppins font-normal text-secondaryBrand text-[11.19px] leading-[16.79px] w-[44px] h-[17px]">
-                        {product?.stockQuantity > 0 && "In Stock"}
-                      </h1>
-                    </div>
+
+                    {product?.stockQuantity > 0 && (
+                      <div className="bg-[#001D580D] rounded-full py-1 px-3">
+                        <h1 className="font-poppins text-secondaryBrand text-[11.19px] leading-[16.79px]">
+                          In Stock
+                        </h1>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex justify-center items-center w-[129.03px] h-[24px] gap-[6.39px]">
-                    <div className="flex w-[97.64px] h-[15.19px] gap-[5.42px]">
-                      <img src="/assets/star-filled.png" alt="star filled" />
-                      <img src="/assets/star-filled.png" alt="star filled" />
-                      <img src="/assets/star-filled.png" alt="star filled" />
-                      <img src="/assets/star-filled.png" alt="star outlined" />
-                      <img src="/assets/star-filled.png" alt="star outlined" />
+
+                  {/* Rating */}
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
+                      {[1, 2, 3].map((_, id) => (
+                        <StarIcon key={id} className="w-4 h-4 text-yellow-400" />
+                      ))}
                     </div>
-                    <h1 className="font-poppins font-semibold text-[15.99px] text-black leading-[23.98px]">
+                    <p className="font-poppins font-semibold text-[15.99px] text-black leading-[23.98px]">
                       5.0
-                    </h1>
+                    </p>
                   </div>
-                  <h1 className="font-poppins font-semibold text-[19.18px] leading-[28.78px] text-secondaryBrand">
-                    ${product && product.price}
+
+                  {/* Price */}
+                  <h1 className="font-poppins font-semibold text-[19.18px] leading-[28.78px] text-secondaryBrand pb-10">
+                    ${product?.price}
                   </h1>
                 </div>
-
+ 
                 {/* <div className="w-[454px] h-[1px] border-[1px] border-[##E6E6E6]"></div> */}
               </div>
               <div className="w-[454.03px] h-[51px]">
@@ -257,7 +266,7 @@ const SingleProduct = () => {
                   {product && product.description}
                 </h1>
               </div>
-              <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-[9.59px]">
+              <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-5 pt-10">
                 <div
                   onClick={() => {
                     if (user && user?.email) {
@@ -335,7 +344,7 @@ const SingleProduct = () => {
                   </svg>
                 </div>
               </div>
-              <div className="flex justify-start items-center w-full h-[18px] gap-[4.8px]">
+              <div className="flex justify-start items-center w-full h-[18px] gap-[4.8px] pt-8">
                 <h1 className="font-poppins font-semibold text-[12px] leading-[18px] text-[#1A1A1A]">
                   Category:
                 </h1>
