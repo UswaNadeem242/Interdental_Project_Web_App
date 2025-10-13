@@ -17,7 +17,7 @@ const Products = () => {
   const [isQuantityModalOpen, setIsQuantityModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModelShow, setIsmodelShow] = useState(false);
-  const [productId, setproductId] = useState('');
+  const [productId, setproductId] = useState("");
 
   const handleCheckboxChange = (productId, isChecked) => {
     setSelectedProducts((prevSelected) =>
@@ -44,7 +44,7 @@ const Products = () => {
         },
       });
       setProducts(response.data.data);
-     } catch (error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -65,7 +65,7 @@ const Products = () => {
       );
       alert("Product deleted successfully");
       getAllProducts();
-      setIsmodelShow(false)
+      setIsmodelShow(false);
     } catch (error) {
       console.log(error);
     }
@@ -228,11 +228,11 @@ const Products = () => {
                       {selectedProducts.includes(p.productId) && (
                         <div className="absolute -top-4 -right-12 z-50 flex justify-center items-center gap-[16px] w-[287px] h-[46px] rounded-[12px] border-[1px] border-[#001D58] bg-white py-[20px] px-[16px]">
                           <button
-                            onClick={() => 
-                              {setIsmodelShow(true)
+                            onClick={() => {
+                              setIsmodelShow(true);
 
-                                setproductId(p.productId)
-                              }}
+                              setproductId(p.productId);
+                            }}
                             className="flex justify-center items-center font-inter font-normal text-[14px] leading-[20px] text-black w-[148px] h-[38px] rounded-[8px] border-[1px] border-[#00000014 bg-white py-[8px] px-[16px] gap-[8px]"
                           >
                             Delete Product
@@ -274,7 +274,7 @@ const Products = () => {
         />
       )}
 
-       {isModelShow && (
+      {isModelShow && (
         <AreYouSureModel
           title=" Are You Sure"
           desc="Product will be deleted from the web. You won't be able to undo these changes."

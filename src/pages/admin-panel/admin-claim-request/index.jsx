@@ -89,9 +89,18 @@ const AdminClaimRequest = () => {
     {
       name: "Shipped",
       content: (
-        <TableComponent
-          headings={headingsAdminPanelOrders}
+        // <TableComponent
+        //   headings={headingsAdminPanelOrders}
+        //   data={filteredData}
+        //   actionHrefKey="detailUrl"
+        // />
+        <SecondTable
+          headings={headingsAdminPanelClaimReq}
           data={filteredData}
+          onActionClick={(row) => {
+            setSelectedRow(row);
+            setIsOpen(true);
+          }}
           actionHrefKey="detailUrl"
         />
       ),
@@ -99,9 +108,13 @@ const AdminClaimRequest = () => {
     {
       name: "completed",
       content: (
-        <TableComponent
-          headings={headingsAdminPanelOrders}
+        <SecondTable
+          headings={headingsAdminPanelClaimReq}
           data={filteredData}
+          onActionClick={(row) => {
+            setSelectedRow(row);
+            setIsOpen(true);
+          }}
           actionHrefKey="detailUrl"
         />
       ),

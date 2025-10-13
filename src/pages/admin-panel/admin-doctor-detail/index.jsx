@@ -22,8 +22,8 @@ const AdminPanelDoctorDetail = () => {
   ];
   return (
     <div className=" p-4 ">
-      <div className="grid grid-cols-12 gap-4">
-        <div className="bg-bgWhite p-6  font-poppins  col-span-4 rounded-2xl ">
+      <div className="grid md:grid-cols-12 grid-cols-1 gap-4">
+        <div className="bg-bgWhite p-6  font-poppins  md:col-span-4 col-span-1 rounded-2xl ">
           <AccountDetailForm
             name="Huynam Moinon"
             icon="/assets/user01.png"
@@ -39,7 +39,7 @@ const AdminPanelDoctorDetail = () => {
           />
         </div>
 
-        <div className="col-span-8 bg-bgWhite rounded-2xl">
+        <div className="md:col-span-8 col-span-1 bg-bgWhite rounded-2xl">
           <div className="py-6 px-2">
             <Stepper
               steps={stepss}

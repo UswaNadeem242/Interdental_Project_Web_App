@@ -53,30 +53,30 @@ const DoctorsAdminPanel = () => {
     {
       name: "New",
       content: (
-        <TableComponent
+        <SecondTable
           headings={headingsAdminPanelTable}
           data={filteredData}
-          actionHrefKey="detailUrl"
+          actionButton="active"
         />
       ),
     },
     {
       name: "Disabled",
       content: (
-        <TableComponent
+        <SecondTable
           headings={headingsAdminPanelTable}
           data={filteredData}
-          actionHrefKey="detailUrl"
+          actionButton="active"
         />
       ),
     },
     {
       name: "Deactivated",
       content: (
-        <TableComponent
+        <SecondTable
           headings={headingsAdminPanelTable}
           data={filteredData}
-          actionHrefKey="detailUrl"
+          actionButton="active"
         />
       ),
     },

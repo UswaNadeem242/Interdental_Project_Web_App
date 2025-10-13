@@ -40,7 +40,7 @@ const UpdateProduct = () => {
           },
         }
       );
- 
+
       setProduct(response.data.data);
       setName(response.data.data.name);
       setDescription(response.data.data.description);
@@ -93,7 +93,7 @@ const UpdateProduct = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-       setBrandsList(response.data.data);
+      setBrandsList(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -115,7 +115,7 @@ const UpdateProduct = () => {
       brandId,
       sku,
     };
-     if (
+    if (
       !name ||
       !description ||
       !price ||
