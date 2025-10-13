@@ -14,7 +14,6 @@ import { showToast } from "../store/toast-slice";
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
   const modalRef = useRef(null);
-
   const [activeTab, setActiveTab] = useState("cart");
   const [openOrders, setOpenOrders] = useState(false);
   const [openPaymentMethod, setOpenPaymentMethod] = useState(false);
@@ -24,18 +23,19 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [country, setCountry] = useState("");
   const [showCoutries, setShowCoutries] = useState(false);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [street, setStreet] = useState("");
-  const [isopenCartModel, setIsOpenCartModel] = useState(true)
+  const [isopenCartModel, setIsOpenCartModel] = useState(false)
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [toastVisible, setToastVisible] = useState(false);
   const [recipientName, setRecipientName] = useState("");
   const [paypalUsername, setPaypalUsername] = useState("");
   const [paypalContact, setPaypalContact] = useState("");
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
   const dispatch = useDispatch();
   const validateForm = () => {
     // ✅ Full Name
@@ -129,6 +129,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   const createOrder = async () => {
+    //
+
     try {
       const payload = {
         userId: user.id,
@@ -151,12 +153,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         }
       );
       if (response.data.responseCode === "1500") {
-        dispatch(
-          showToast({
-            message: response.data.responseMessage,
-            type: "error",
-          })
-        );
+        setToastMessage(response.data.responseMessage);
+        setToastType("error");
+        setToastVisible(true);
       } else if (response.data.responseCode === "0000") {
         setActiveTab("order");
       }
@@ -167,20 +166,6 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setIsModalOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
-
   const getCart = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/cart`, {
@@ -198,8 +183,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   useEffect(() => {
     getCart();
   }, []);
-  const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState(null);
+
 
   useEffect(() => {
     const loadCountries = async () => {
@@ -275,9 +259,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   return (
-    <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50 ">
+    <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div
-        ref={modalRef}
+        // ref={modalRef}
         className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative "
       >
         {/* Tabs */}
@@ -285,9 +269,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
           <div className="flex justify-around w-[539.02px] h-[44.69px]">
             <div
               onClick={() => handleTabClick("cart")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px]  ${activeTab === "cart"
-                ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
-                : "text-[#949494] border-b-[4.69px] border-cartColor "
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] 
+                 ${activeTab === "cart"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                  : "text-[#949494] border-b-[4.69px] border-cartColor "
                 }`}
             >
               Cart
@@ -975,8 +960,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               <div
                 onClick={() => {
-                  // setIsModalOpen(false);
+                  setIsModalOpen(false);
+                  console.log('hello');
                   navigate("/shop");
+                  window.location.reload();
                 }}
                 className="flex justify-center items-center cursor-pointer w-[396px] h-[57px] rounded-[99px] gap-[8px] bg-secondaryBrand"
               >
@@ -994,12 +981,13 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         isVisible={toastVisible}
         onClose={closeToast}
         type={toastType}
-      /> 
+      />
       {isopenCartModel && (
         <CartConfirmModel
           isopenCartModel={isopenCartModel}
           setIsOpenCartModel={setIsOpenCartModel}
           createOrder={createOrder}
+          activeTab={setActiveTab}
         />
       )}
     </div>

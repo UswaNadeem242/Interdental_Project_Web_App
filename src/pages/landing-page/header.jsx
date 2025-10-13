@@ -38,7 +38,7 @@ const Header = () => {
 
   // Safely log firstName only if user exists
   if (user && user.firstName) {
-    console.log(user.firstName, "sarhey de oghai");
+    console.log(user.firstName);
   }
 
   const closeToast = () => {

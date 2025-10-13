@@ -1,42 +1,18 @@
 
 import { useEffect, useRef } from 'react';
 import ConfirmIcon from '.././icon/confirmIcon'
-const CartConfirmModel = ({ isopenCartModel, setIsOpenCartModel, createOrder }) => {
-
-
-    // const handleCloseModal = () => console.log('heelo')
-
-    // const handleConfirm = async () => {
-    //     await createOrder();      // ✅ call createOrder here
-    //     // setIsOpenModel(false);    // close modal after API call
-    // };
-
-    // const handleCloseModal = () => {
-    //     console.log("Modal close clicked");
-    //     // setIsOpenModel(false); // ✅ actually close the modal
-    // };
-
-    // const handleConfirm = async () => {
-    //     console.log("Confirm clicked"); // ✅ check working
-    //     // await createOrder();
-    //     // setIsOpenModel(false); // ✅ close after success
-    // };
-
-    // if (!isopenModel) return null;
-
+const CartConfirmModel = ({ isopenCartModel, setIsOpenCartModel, createOrder, activeTab }) => {
 
     const handleCloseModal = () => {
-        console.log("Close button clicked");
-        // setIsOpenModel(false);
-    };
+        activeTab('checkout')
+        setIsOpenCartModel(false);
 
+    };
     const handleConfirm = async () => {
-        console.log("Confirm clicked");
-        // await createOrder();
+        await createOrder();
+        activeTab('order')
+        setIsOpenCartModel(false);
     };
-
-    console.log("Modal mounted, isopenModel:", isopenCartModel);
-
     if (!isopenCartModel) return null;
     return (
         <>
@@ -68,11 +44,10 @@ const CartConfirmModel = ({ isopenCartModel, setIsOpenCartModel, createOrder }) 
                             </button>
                             <button
                                 type='button'
-                                onClick={() => console.log('confirm')}
-                                // onClick={() => handleConfirm()}
+                                onClick={() => handleConfirm()}
                                 className=" px-4 py-4 rounded-full bg-secondaryBrand right-4 text-white text-sm font-poppins"
                             >
-                                Yes, Confirm Order 1234
+                                Yes, Confirm Order
                             </button>
                         </div>
 

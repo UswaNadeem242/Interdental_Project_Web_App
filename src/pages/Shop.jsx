@@ -10,56 +10,7 @@ import {
   MagnifyingGlassIcon, StarIcon
 
 } from "@heroicons/react/24/solid";
-const featureProducts = [
-  {
-    id: 1,
-    img: "/assets/product1.png",
-    title: "G Gold Lable 1 Mini",
-    price: 233.65,
-  },
-  {
-    id: 2,
-    img: "/assets/product2.png",
-    title: "G Gold Lable 1 Mini",
-    price: 739.65,
-  },
-  {
-    id: 3,
-    img: "/assets/product3.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 4,
-    img: "/assets/product4.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 5,
-    img: "/assets/product5.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 6,
-    img: "/assets/product6.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 7,
-    img: "/assets/product7.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-  {
-    id: 8,
-    img: "/assets/product8.png",
-    title: "G Gold Lable 1 Mini",
-    price: 634.23,
-  },
-];
+
 
 const Shop = () => {
   const navigate = useNavigate();
@@ -78,10 +29,8 @@ const Shop = () => {
   const [toastType, setToastType] = useState("success");
   const [toastVisible, setToastVisible] = useState(false);
   const { fetchWishlistCount, fetchCartCount } = useAuth();
-  const { productId } = useParams();
+  const [wishlist, setWishlist] = useState([]);
   const [product, setProduct] = useState({});
-  const userData = localStorage.getItem("users");
-  const user = userData ? JSON.parse(userData) : null;
   const handleMinChange = (e) => {
     const value = Math.min(Number(e.target.value), maxPrice - 1);
     setMinPrice(value);
@@ -192,7 +141,6 @@ const Shop = () => {
       matchesAvailability
     );
   });
-  console.log('filteredProducts', filteredProducts);
 
   // const handleCheckboxChange = (e) => {
   //   const { id, checked } = e.target;
@@ -209,53 +157,58 @@ const Shop = () => {
     // if same clicked again → uncheck
   };
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const handleAddtoWishlist = async (id, e) => {
+    e.stopPropagation();
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("❌ No token found in localStorage");
+      setToastMessage("Access denied! Please log in first");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    const productItem = filteredProducts?.find((item) => item?.productId === id);
 
 
+    if (!productItem) {
+      console.error("❌ No product matched this ID:", id);
+      return;
+    }
 
-  const handleAddtoWishlist = async () => {
-    console.log('hello');
-    console.log('filteredProducts', filteredProducts);
+    const payload = {
+      id: productItem?.productId,
+      productId: productItem?.productId,
+      productName: productItem?.product?.name,
+      price: productItem?.price,
+    };
+    const url = `${BASE_URL}/api/wishlist/add`;
+    console.log("🌐 API URL:", url);
 
     try {
-      const payload = {
-        id: filteredProducts?.productId,
-        productId: filteredProducts?.productId,
-        productName: filteredProducts?.product.name,
-        price: filteredProducts?.price,
-      };
-      const response = await axios.post(
-        `${BASE_URL}/api/wishlist/add`,
-        payload,
-        {
-          headers: {
-            Accept: "*/*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      console.log(response);
+      const response = await axios.post(url, payload, {
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setWishlist((prev) => [...prev, id]);
       fetchWishlistCount();
-      setToastMessage("Added to Wishlist !");
+      setToastMessage("Added to Wishlist!");
       setToastType("success");
       setToastVisible(true);
     } catch (error) {
-      setToastMessage(`Error: ${error}`);
-      setToastType("success");
+      console.error("❌ Wishlist API error:", error);
+      setToastMessage(`Error: ${error.response?.data?.message || error.message}`);
+      setToastType("error");
       setToastVisible(true);
     }
-
-
-    console.log('wishlist')
   };
   const handleAddtoCart = async (id) => {
     console.log('map id', id);
-    const filterMethode = filteredProducts?.filter((item) => item?.productId === id);
-    console.log('filterMethode', filterMethode);
-
-
-
-
+    const filterMethode = filteredProducts?.filter((item) => item?.productId === id)
     if (product.stockQuantity <= 0) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
@@ -264,7 +217,6 @@ const Shop = () => {
     }
     try {
       // setLoading(true);
-      console.log('filterMethode try', filterMethode[0]?.productId);
 
       const payload = {
         id: filterMethode[0]?.productId,
@@ -281,10 +233,6 @@ const Shop = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
-      if (isOpenCart === true) {
-        setIsModalOpen(true);
-      }
       setToastMessage("Added to Cart !");
       setToastType("success");
       setToastVisible(true);
@@ -490,106 +438,83 @@ const Shop = () => {
           <div>
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {filteredProducts.length > 0 ? (
-                filteredProducts.map((product, idx) => (
-                  <div
-                    key={idx}
-                    className="flex flex-col justify-between items-center bg-white rounded-lg shadow-sm p-4 cursor-pointer h-[430px]"
-                  >
-                    {/* Upper section (image + title + price) */}
-                    <div onClick={() => handleProduct(product)} className="flex flex-col items-center flex-grow">
-                      <img
-                        src={product.imageUrls[0]}
-                        alt="product"
-                        className="w-[263px] h-[260px] object-cover"
-                      />
+                filteredProducts.map((product, idx) => {
+                  const isInWishlist = wishlist.includes(product?.productId); // ✅ Check product in wishlist
 
-                      <div className="text-center mt-3 flex flex-col flex-grow justify-between">
-                        {/* Fixed height name section */}
-                        <h1 className="font-poppins font-semibold text-base text-black leading-snug line-clamp-2 ">
-                          {product.name}
-                        </h1>
+                  return (
+                    <div
+                      key={idx}
+                      className="flex flex-col justify-between items-center bg-white rounded-lg shadow-sm p-4 cursor-pointer h-[430px]"
+                    >
+                      {/* Upper Section */}
+                      <div
+                        onClick={() => handleProduct(product)}
+                        className="flex flex-col items-center flex-grow"
+                      >
+                        <img
+                          src={product.imageUrls[0]}
+                          alt="product"
+                          className="w-[263px] h-[260px] object-cover"
+                        />
 
-                        {/* Price + star */}
-                        <div className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD] flex gap-2 justify-center items-center">
-                          ${product.price}
-                          <span className="flex items-center gap-1">
-                            <StarIcon className="w-4 h-4 text-yellow-400" />
-                            <span className="text-xs font-poppins font-normal text-[#585858]">5.0</span>
-                          </span>
+                        <div className="text-center mt-3 flex flex-col flex-grow justify-between">
+                          <h1 className="font-poppins font-semibold text-base text-black leading-snug line-clamp-2">
+                            {product.name}
+                          </h1>
+
+                          <div className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD] flex gap-2 justify-center items-center">
+                            ${product.price}
+                            <span className="flex items-center gap-1">
+                              <StarIcon className="w-4 h-4 text-yellow-400" />
+                              <span className="text-xs font-poppins font-normal text-[#585858]">5.0</span>
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Lower section (buttons) — stays pinned at bottom */}
-                    <div className="flex items-center gap-3 mt-1">
-                      {/* <button className="text-xs text-secondaryBrand font-poppins bg-background px-10 py-4 rounded-full capitalize hover:bg-secondaryBrand hover:text-white">
-                        Add to Cart
-                      </button> */}
-
-
-                      <div onClick={() => handleAddtoCart(product?.productId)}
-                        //   onClick={() =>
-
-                        //     { 
-                        //     if (user && user?.email) {
-                        //       handleAddtoCart();
-                        //     } else {
-                        //       setToastMessage("Access denied! Please log in first");
-
-                        //       setToastType("error");
-                        //       setToastVisible(true);
-
-                        //     }
-                        //   }
-
-                        // }
-                        className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
-                      >
-                        <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-white">
-                          Add to Cart
-                        </h1>
-                      </div>
-                      <div
-                        onClick={() => {
-                          if (user && user?.email) {
-                            handleAddtoWishlist();
-                          } else {
-                            setToastMessage("Access denied! Please log in first");
-
-                            setToastType("error");
-                            setToastVisible(true);
-
-                          }
-                        }}
-                        className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]"
-                      >
-                        <svg
-                          width="27"
-                          height="27"
-                          viewBox="0 0 27 27"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="cursor-pointer"
+                      {/* Lower Section */}
+                      <div className="flex items-center gap-3 mt-1">
+                        <div
+                          onClick={() => handleAddtoCart(product?.productId)}
+                          className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] text-secondaryBrand hover:text-white bg-background hover:bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
                         >
-                          <path
-                            d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
-                            stroke="#001D58"
-                            stroke-width="1.92211"
-                          />
-                        </svg>
+                          <h1 className="font-poppins font-normal text-xs leading-[21px]">
+                            Add to Cart
+                          </h1>
+                        </div>
+
+                        {/* ❤️ Wishlist Button */}
+                        <button
+                          onClick={(e) => handleAddtoWishlist(product?.productId, e)}
+                          className={`w-[51.28px] h-[51.28px] p-[12.82px] rounded-[55.1px] flex items-center justify-center transition-all duration-300 bg-[#F8F8F8]
+              `}
+                        >
+                          <svg
+                            width="27"
+                            height="27"
+                            viewBox="0 0 27 27"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="cursor-pointer"
+                          >
+                            <path
+                              d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
+                              stroke={isInWishlist ? "#FF0000" : "#001D58"}
+                              strokeWidth="1.92211"
+                              fill={isInWishlist ? "#FF0000" : "none"}
+                            />
+                          </svg>
+                        </button>
                       </div>
                     </div>
-                  </div>
-
-                ))
+                  );
+                })
               ) : (
-                <div className="w-96 h-full flex justify-center items-center bg-white p-8 rounded-md ">
-                  <p className='text-2xl'>
-                    Sorry ! No Products Found In{" "}
-                  </p>
-
+                <div className="w-96 h-full flex justify-center items-center bg-white p-8 rounded-md">
+                  <p className="text-2xl">Sorry! No Products Found</p>
                 </div>
               )}
+
 
             </div>
           </div>
