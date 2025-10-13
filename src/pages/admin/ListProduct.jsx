@@ -226,7 +226,7 @@ const ListProduct = () => {
 
       // formData.append("images", images);
 
-       // API call
+      // API call
       const response = await axios.post(
         `${BASE_URL}/api/product/add`,
         formData,
@@ -247,7 +247,7 @@ const ListProduct = () => {
           navigate("/admin/products");
         }, 2000);
       } else if (response.data.responseCode === "1500") {
-         setToastMessage("Product Already Exsist");
+        setToastMessage("Product Already Exsist");
         setToastType("error");
         setToastVisible(true);
       }
@@ -388,7 +388,7 @@ const ListProduct = () => {
 
             {/* Uploaded Images */}
             <div className="flex flex-wrap gap-[16px] mt-[16px]">
-               {images.map((image, index) => (
+              {images.map((image, index) => (
                 <div key={index} className="relative w-[120px] h-[120px]">
                   <img
                     src={image.preview} // ✅ use preview url

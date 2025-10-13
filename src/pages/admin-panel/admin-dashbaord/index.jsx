@@ -18,6 +18,7 @@ import { AdminPanelProductCard } from "../../../Common/AdminPanelProductCard";
 
 function AdminPanelDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState("yearly");
+  const [selectedPlan, setSelectedPlan] = useState("yearly");
 
   const chartDataMap = {
     weekly: weeklyData,
@@ -28,22 +29,24 @@ function AdminPanelDashboard() {
   return (
     <div className="p-2">
       {/* Top stats cards */}
-      <div className="flex justify-center items-center gap-4">
+      <div className="flex flex-col md:flex-row md:justify-center items-center gap-4">
         {CardAdminPanelDashboard.map((item, id) => (
-          <CardComponet
-            key={id}
-            title={item?.title}
-            count={item?.count}
-            fromDate={item?.date}
-            toDate={item?.duedate}
-            icon={item?.icon}
-          />
+          <div className="w-full">
+            <CardComponet
+              key={id}
+              title={item?.title}
+              count={item?.count}
+              fromDate={item?.date}
+              toDate={item?.duedate}
+              icon={item?.icon}
+            />
+          </div>
         ))}
       </div>
 
-      <div className="flex flex-row gap-6">
+      <div className="flex md:flex-row flex-col gap-6">
         {/* Left Side */}
-        <div className="mt-8  w-4/6 flex flex-col gap-4 ">
+        <div className="mt-8  md:w-4/6 flex flex-col gap-4 ">
           <div>
             <div className="p-6 bg-bgWhite rounded-2xl">
               <ChartDropDown
@@ -79,10 +82,15 @@ function AdminPanelDashboard() {
         </div>
 
         {/* Right Side */}
-        <div className="mt-8 gap-4   w-1/3 font-poppins">
+        <div className="mt-8 gap-4   md:w-1/3 font-poppins">
           {/* Table Header */}
           <div className="bg-white rounded-2xl p-4">
-            <ChartDropDown title={"Plan Usage"} />
+            <ChartDropDown
+              title={"Plan Usage"}
+              selectedPeriod={selectedPlan}
+              setSelectedPeriod={setSelectedPlan}
+              onChange={(e) => setSelectedPlan(e.target.value)}
+            />
             <div className="flex p-4 gap-4 justify-center">
               <button className="px-6 py-3 bg-[#F8F8F8] rounded-3xl w-full font-semibold text-primaryText">
                 Doctor

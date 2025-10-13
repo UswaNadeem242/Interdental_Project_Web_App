@@ -76,9 +76,13 @@ const Subscriptions = () => {
     {
       name: "Trial",
       content: (
-        <TableComponent
-          headings={headingsAdminPanelOrders}
+        <SecondTable
+          headings={headingsSubscriptions}
           data={filteredData}
+          onActionClick={(row) => {
+            setSelectedRow(row);
+            setIsOpen(true);
+          }}
           actionHrefKey="detailUrl"
         />
       ),
@@ -86,9 +90,13 @@ const Subscriptions = () => {
     {
       name: "Expired",
       content: (
-        <TableComponent
-          headings={headingsAdminPanelOrders}
+        <SecondTable
+          headings={headingsSubscriptions}
           data={filteredData}
+          onActionClick={(row) => {
+            setSelectedRow(row);
+            setIsOpen(true);
+          }}
           actionHrefKey="detailUrl"
         />
       ),

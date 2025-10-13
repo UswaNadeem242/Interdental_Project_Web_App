@@ -12,6 +12,8 @@ import Subscriptions from "./admin-subscriptions/subscriptions";
 import AdminClaimRequest from "./admin-claim-request";
 import ClaimDetailAdminPanel from "./admin-claim-request/claim-detail-form";
 import ProfileInfoAdminPanel from "./admin-profile-info";
+import BlogAndArticles from "./blogs-and-articles";
+import BlogsDetailPage from "./blogs-and-articles/blogs-detail";
 
 const AdminPanel = () => {
   return (
@@ -31,6 +33,9 @@ const AdminPanel = () => {
 
         <Route path="/claim-detail-form" element={<ClaimDetailAdminPanel />} />
         <Route path="/profile-info" element={<ProfileInfoAdminPanel />} />
+        <Route path="/blogs-and-articles" element={<BlogAndArticles />} />
+        <Route path="/blogs-detail" element={<BlogsDetailPage />} />
+
         {/* // <Route path="/patient" element={<PatientPage />} />
         // <Route path="/claim-request" element={<ClaimRequest />} />
         // <Route path="/orders-details" element={<DoctorOrder />} />

@@ -129,6 +129,11 @@ export const menuAdminPanelItem = [
     path: "/admin-panel/claim-requests",
     icon: DashboardIcon,
   },
+  {
+    name: "Blogs & Articles",
+    path: "/admin-panel/blogs-and-articles",
+    icon: DashboardIcon,
+  },
   // {
   //   name: "Order Detail",
   //   path: "/admin-panel/order-detail",
