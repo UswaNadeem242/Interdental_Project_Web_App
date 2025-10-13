@@ -48,7 +48,7 @@ function ProductLandingPage({ isLanding }) {
                     </>
                   ) : (
                     <>
-                      <div className="flex flex-col justify-center max-w-[509px] mx-auto p-6 py-10 md:ml-60">
+                      <div className="flex flex-col justify-center max-w-[509px] mx-auto p-6 py-10 xl:ml-60">
                         <h3 className="text-base font-bold font-poppins md:text-5xl text-secondaryBrand mb-2 ">
                           {item.title}
                         </h3>
@@ -60,7 +60,7 @@ function ProductLandingPage({ isLanding }) {
                           {item.description}
                         </p>
                       </div>
-                      <div className="flex justify-center items-center p-6 md:mr-52">
+                      <div className="flex justify-center items-center p-6 lg:mr-52">
                         <img
                           src={item.image}
                           alt={item.title}
