@@ -226,12 +226,7 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
                 className="fixed top-0 -left-[63px] right-0 bottom-0 w-screen h-screen  flex items-center justify-center bg-black/80 backdrop-blur-sm z-[9999] overflow-hidden"
 
 
-                onClick={(e) => {
-                    // Close only when clicking on the backdrop
-                    if (e.target === e.currentTarget) {
-                        setIsModalOpen(false);
-                    }
-                }}
+
             >
                 <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg w-96 relative">
                     <div className="w-full">
