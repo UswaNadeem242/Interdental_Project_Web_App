@@ -26,10 +26,12 @@ const Contact = ({ isLanding }) => {
       <div className={isContactPage ? "pb-0 md:pb-20" : "pb-0 md:pb-0"}>
         {!isLanding && <Header />}
       </div>
-      <div className= {isContactPage ? "mx-8" : ""}>
+      <div className={isContactPage ? "mx-8" : ""}>
         <section
           className={`bg-white px-4 md:px-8 shadow-lg border rounded-xl w-full max-w-7xl mx-auto container  py-8 md:py-16
-        ${isContactPage ? " my-6 md:my-20 " : "py-0 my-28"}`}
+        ${isContactPage ? "  " : ""}`}
+        // my-6 md:my-20
+        // py-0 my-28
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 

@@ -6,7 +6,7 @@ import Twitter from "../icon/twitter";
 import Youtube from "../icon/youtube";
 import { socialIcons } from "../Constant";
 
-const Footer = () => {
+const Footer = ({ className }) => {
   const year = new Date().getFullYear();
   const socialIcons = [
     { id: 1, icon: <Instgram className="w-5 h-5 text-white" /> },
@@ -16,7 +16,7 @@ const Footer = () => {
   ];
   return (
     <div className="w-full bg-secondaryBrand text-white px-6 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-6xl mx-auto">
+      <div className={`grid grid-cols-1 md:grid-cols-4 gap-10 max-w-6xl mx-auto ${className}`}>
         {/* Column 1 - Branding */}
         <div className="space-y-4 text-left">
           <h1 className="font-poppins font-medium text-lg text-left">Lab</h1>

@@ -4,6 +4,7 @@ import Header from "../header";
 import { productsOption } from "../../../Constant";
 import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
+import ContactFooter from "../../../components/contact-footer";
 
 function ProductLandingPage({ isLanding }) {
   return (
@@ -77,7 +78,7 @@ function ProductLandingPage({ isLanding }) {
       </section>
       <UpperFooter />
 
-      <Footer />
+      <ContactFooter />
     </>
   );
 }

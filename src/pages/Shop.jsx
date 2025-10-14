@@ -42,7 +42,7 @@ const Shop = () => {
   };
 
   const handleProduct = (product) => {
-    navigate(`/product/${product.productId}`);
+    navigate(`/shop/${product.productId}`);
 
   };
 

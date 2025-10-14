@@ -27,7 +27,7 @@ function DoctorComponent() {
                     <p className='mt-4 text-sm md:text-xl font-normal text-secondaryText tracking-wide'>Our &nbsp; technicians &nbsp; combine &nbsp; advanced &nbsp; CAD/CAM technology  with artistic &nbsp; craftsmanship to &nbsp; ensure every case &nbsp; supports your &nbsp; reputation—and &nbsp; your bottom line.</p>
                     <p className='mt-4 text-sm md:text-xl font-normal text-secondaryText pb-4'>Register &nbsp; Now &nbsp; to &nbsp;unlock &nbsp; lab &nbsp;discounts, &nbsp;extended warranties, and new patient referrals.</p>
 
-                    <button onClick={() => navigate("/signup")} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+                    <button onClick={() => navigate("/doctor")} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
 
                         <h1 className="font-poppins font-semibold text-base text-[#434343]">
                             Learn more

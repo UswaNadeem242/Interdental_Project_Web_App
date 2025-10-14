@@ -4,7 +4,7 @@ import { HeroSection } from "./hero-section";
 import AboutUs from "./about-us";
 import DoctorComponent from "../../components/landing-page-component";
 import CircleIcon from "../../icon/circle-icon";
-import { implantCards } from "../../Constant";
+import { accordionData, implantCards } from "../../Constant";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import OurModules from "../../components/landing-page-component/our-modules";
@@ -14,6 +14,9 @@ import FrequentlyAskedQuestion from "../../components/frequently-asked-question"
 import UpperFooter from "../../components/upper-footer";
 import FeaturedProducts from "../../components/landing-page-component/featured-product";
 import { ThirdButtonUI } from "../../Common/Button";
+import Contact from "./contact";
+import Accordion from "../../Common/accordion";
+import ContactFooter from "../../components/contact-footer";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -196,12 +199,8 @@ const LandingPage = () => {
             ))}
           </div>
         </section>
-    
-
-          <FrequentlyAskedQuestion />
-      
-        <UpperFooter />
-        <Footer />
+        <FrequentlyAskedQuestion />
+        <ContactFooter className='bg-background' />
       </div>
     </>
   );
