@@ -266,7 +266,7 @@ function App() {
             <Route path="/about-us" element={<About isLanding={false} />} />
             <Route path="/contact-us" element={<Contact isLanding={false} />} />
             <Route
-              path="/product/:productId"
+              path="/shop/:productId"
               element={
                 <MainLayout>
                   <SingleProduct />
