@@ -177,15 +177,6 @@ const Header = () => {
                       })
                     );
 
-
-
-
-
-                    // setToastMessage("Access denied! Please log in first");
-
-                    // setToastType("error");
-                    // setToastVisible(true);
-
                   }
                 }}
               >
@@ -198,11 +189,7 @@ const Header = () => {
                   strokeLinejoin="round"
                 />
               </svg>
-              {/* {wishlistCount > 0 && (
-                <span className=" absolute right-0 top-12  w-5 h-5 text-xs font-bold text-white d rounded-full flex items-center justify-center">
-                  {wishlistCount}
-                </span>
-              )} */}
+
             </div>
 
             <div className="flex flex-col relative">
@@ -263,16 +250,12 @@ const Header = () => {
                 )}
               </div>
             ) : (
-              <>
-
-
-
-                <button
+              <>    <button
                   onClick={() => navigate("/login")}
                   // className="px-4 py-2 rounded-full bg-gray-100 text-secondaryText text-sm whitespace-nowrap font-semibold"
                   className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
                 >
-                  Log In
+                  Log In  
                 </button>
                 <button
                   onClick={() => navigate("/signup")}

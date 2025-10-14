@@ -21,7 +21,7 @@ function DoctorDeailsPage() {
   ];
   return (
     <div>
-      <Stepper steps={steps} />
+      <Stepper steps={steps} className='md:w-1/3' selectedColor='bg-white ' />
     </div>
   );
 }
