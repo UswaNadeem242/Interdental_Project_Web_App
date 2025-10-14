@@ -7,10 +7,9 @@ import Footer from "../components/Footer";
 import { useAuth } from "../auth/AuthContext";
 import {
   ChevronDownIcon,
-  MagnifyingGlassIcon, StarIcon
-
+  MagnifyingGlassIcon,
+  StarIcon,
 } from "@heroicons/react/24/solid";
-
 
 const Shop = () => {
   const navigate = useNavigate();
@@ -43,7 +42,6 @@ const Shop = () => {
 
   const handleProduct = (product) => {
     navigate(`/shop/${product.productId}`);
-
   };
 
   const getAllProducts = async () => {
@@ -93,7 +91,6 @@ const Shop = () => {
     }
   };
 
-
   const handleCategoryChange = (id, name) => {
     setSelectedCategory(id);
     setCategoryName(name);
@@ -103,7 +100,6 @@ const Shop = () => {
     setSelectedbrand(id);
     setBrandName(name);
   };
-
 
   const filteredProducts = products.filter((product) => {
     // Price filter
@@ -169,8 +165,9 @@ const Shop = () => {
       return;
     }
 
-    const productItem = filteredProducts?.find((item) => item?.productId === id);
-
+    const productItem = filteredProducts?.find(
+      (item) => item?.productId === id
+    );
 
     if (!productItem) {
       console.error("❌ No product matched this ID:", id);
@@ -201,14 +198,18 @@ const Shop = () => {
       setToastVisible(true);
     } catch (error) {
       console.error("❌ Wishlist API error:", error);
-      setToastMessage(`Error: ${error.response?.data?.message || error.message}`);
+      setToastMessage(
+        `Error: ${error.response?.data?.message || error.message}`
+      );
       setToastType("error");
       setToastVisible(true);
     }
   };
   const handleAddtoCart = async (id) => {
-    console.log('map id', id);
-    const filterMethode = filteredProducts?.filter((item) => item?.productId === id)
+    console.log("map id", id);
+    const filterMethode = filteredProducts?.filter(
+      (item) => item?.productId === id
+    );
     if (product.stockQuantity <= 0) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
@@ -248,9 +249,8 @@ const Shop = () => {
     getAllProducts();
     getAllCategories();
     getAllBrands();
-    fetchCartCount()
+    fetchCartCount();
   }, []);
-
 
   return (
     <div className="bg-background">
@@ -259,7 +259,6 @@ const Shop = () => {
       <div className="px-4 md:px-10   py-6 ">
         {/* Header */}
         <div className="flex justify-between items-center  mt-24">
-
           <button
             className="md:hidden flex items-center gap-2 border px-3 py-2 rounded-lg text-sm"
             onClick={() => setIsFilterOpen(true)}
@@ -272,21 +271,20 @@ const Shop = () => {
         <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8">
           {/* Sidebar (desktop static, mobile drawer) */}
           <div
-            className={`fixed inset-y-0 left-0 z-0  w-72 rounded-2xl bg-white shadow-lg transform transition-transform duration-300 md:static md:translate-x-0 md:shadow-none 
+            className={`fixed inset-y-0 left-0 z-0  w-72 rounded-2xl bg-white shadow-lg transform transition-transform duration-300 md:static md:translate-x-0 md:shadow-none
           ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}`}
           >
             {/* Mobile header */}
             <div className="flex justify-between items-center p-4 border-b md:hidden">
               <h2 className="font-semibold">Filters</h2>
-              <div
-                onClick={() => setIsFilterOpen(false)}
-              >x</div>
+              <div onClick={() => setIsFilterOpen(false)}>x</div>
             </div>
 
             {/* Filters content */}
             <div className="p-4 space-y-3 overflow-y-auto h-full">
-
-              <h2 className="font-semibold  border-b-[2px] border-background my-4">Filters</h2>
+              <h2 className="font-semibold  border-b-[2px] border-background my-4">
+                Filters
+              </h2>
               {/* 🔍 Search */}
               <div className="relative flex items-center border rounded-full px-3 py-2">
                 <input
@@ -321,7 +319,6 @@ const Shop = () => {
                         }}
                       ></div>
 
-
                       <input
                         type="range"
                         min="0"
@@ -352,10 +349,11 @@ const Shop = () => {
                       />
                       <label
                         htmlFor="inStock"
-                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${checked === "inStock"
-                          ? "text-secondaryBrand"
-                          : "text-[#949494]"
-                          }`}
+                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
+                          checked === "inStock"
+                            ? "text-secondaryBrand"
+                            : "text-[#949494]"
+                        }`}
                       >
                         In Stock
                       </label>
@@ -371,10 +369,11 @@ const Shop = () => {
                       />
                       <label
                         htmlFor="outOfStock"
-                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${checked === "outOfStock"
-                          ? "text-secondaryBrand"
-                          : "text-[#949494]"
-                          }`}
+                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
+                          checked === "outOfStock"
+                            ? "text-secondaryBrand"
+                            : "text-[#949494]"
+                        }`}
                       >
                         Out of Stock
                       </label>
@@ -391,11 +390,14 @@ const Shop = () => {
                     {filteredProducts.map((c) => (
                       <h1
                         key={c.categoryId}
-                        onClick={() => handleCategoryChange(c.categoryId, c.name)}
-                        className={`font-poppins text-[12px] leading-[18px] ${selectedCategory === c.categoryId
-                          ? "text-secondaryBrand  font-medium"
-                          : "text-secondaryText cursor-pointer font-normal"
-                          }`}
+                        onClick={() =>
+                          handleCategoryChange(c.categoryId, c.name)
+                        }
+                        className={`font-poppins text-[12px] leading-[18px] ${
+                          selectedCategory === c.categoryId
+                            ? "text-secondaryBrand  font-medium"
+                            : "text-secondaryText cursor-pointer font-normal"
+                        }`}
                       >
                         {c.name}
                       </h1>
@@ -412,10 +414,11 @@ const Shop = () => {
                         key={b.id}
                         onClick={() => handleBrandChange(b.id, b.name)}
                         // className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
-                        className={`font-poppins text-[12px] leading-[18px] ${selectedbrand === b.id
-                          ? "text-secondaryBrand  font-medium"
-                          : "text-secondaryText cursor-pointer font-normal"
-                          }`}
+                        className={`font-poppins text-[12px] leading-[18px] ${
+                          selectedbrand === b.id
+                            ? "text-secondaryBrand  font-medium"
+                            : "text-secondaryText cursor-pointer font-normal"
+                        }`}
                       >
                         {b.name}
                       </h1>
@@ -466,7 +469,9 @@ const Shop = () => {
                             ${product.price}
                             <span className="flex items-center gap-1">
                               <StarIcon className="w-4 h-4 text-yellow-400" />
-                              <span className="text-xs font-poppins font-normal text-[#585858]">5.0</span>
+                              <span className="text-xs font-poppins font-normal text-[#585858]">
+                                5.0
+                              </span>
                             </span>
                           </div>
                         </div>
@@ -485,7 +490,9 @@ const Shop = () => {
 
                         {/* ❤️ Wishlist Button */}
                         <button
-                          onClick={(e) => handleAddtoWishlist(product?.productId, e)}
+                          onClick={(e) =>
+                            handleAddtoWishlist(product?.productId, e)
+                          }
                           className={`w-[51.28px] h-[51.28px] p-[12.82px] rounded-[55.1px] flex items-center justify-center transition-all duration-300 bg-[#F8F8F8]
               `}
                         >
@@ -514,86 +521,13 @@ const Shop = () => {
                   <p className="text-2xl">Sorry! No Products Found</p>
                 </div>
               )}
-
-
             </div>
           </div>
-
         </div>
       </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <Footer />
-    </div >
+    </div>
   );
 };
 
