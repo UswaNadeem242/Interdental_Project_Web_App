@@ -66,8 +66,8 @@ const LandingPage = () => {
               <h1 className="text-secondaryBrand  text-5xl font-poppins font-semibold">InterOral.ai</h1>
             </div>
             <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 md:leading-[30px]">
-              InterOral.ai is an AI-driven platform that  <span className="hidden md:inline"><br /></span> seamlessly connects dentists, dental labs, and <span className="hidden md:inline"><br /></span> patients under one secure system. Dentists can  <span className="hidden md:inline"><br /></span> submit digital prescriptions, upload scans, and <span className="hidden md:inline"><br /></span> order implant parts, while labs efficiently receive <span className="hidden md:inline"><br /></span> and manage cases. Patients gain added value <span className="hidden md:inline"><br /></span> through extended warranty coverage, ensuring a <span className="hidden md:inline"><br /></span> smooth, connected, and compliant workflow for
-              <span className="hidden md:inline"><br /></span>
+              InterOral.ai &nbsp; is  &nbsp; an &nbsp; &nbsp; AI-driven &nbsp; platform &nbsp;  that  <span className="hidden md:inline"><br /></span> seamlessly connects dentists, dental labs, and <span className="hidden md:inline"><br /></span> patients &nbsp; under one &nbsp; secure system. &nbsp; Dentists  <span className="hidden md:inline"><br /></span> can submit digital prescriptions, upload scans, <span className="hidden md:inline"><br /></span> order &nbsp; implant &nbsp; parts,&nbsp;  while &nbsp; &nbsp; labs &nbsp; efficiently  <span className="hidden md:inline"><br /></span> receive &nbsp; and &nbsp;manage &nbsp; cases. &nbsp; Patients &nbsp; gain  <span className="hidden md:inline"><br /></span>added &nbsp; value &nbsp;  through &nbsp; extended  &nbsp; &nbsp;warranty    <span className="hidden md:inline"><br /></span>ensuring   a coverage,smooth, connected, and compliant workflow for
+
               all.</p>
             <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
 
@@ -196,7 +196,10 @@ const LandingPage = () => {
             ))}
           </div>
         </section>
-        <FrequentlyAskedQuestion />
+    
+
+          <FrequentlyAskedQuestion />
+      
         <UpperFooter />
         <Footer />
       </div>

@@ -21,19 +21,19 @@ function ImplantInterfeace() {
                     <p className='text-xl font-normal font-poppins text-black'>Benefit for dentists:</p>
                     <ul className="flex flex-col space-y-1">
                         <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-normal text-sm text-primaryText">
-                            No phone calls needed to order implant parts.
+                            Easy online ordering for parts.
                         </li>
                         <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-normal text-sm text-primaryText">
                             Eliminates errors in size and brand selection.
                         </li>
                         <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-normal text-sm text-primaryText">
-                            Saves 10-15 min to saves time
+                            Makes your workflow more efficient.
                         </li>
                         <li className="flex items-start gap-3 bg-white p-3 rounded-md font-poppins font-normal text-sm text-primaryText">
                             Case and parts are bundled and sent together to the lab.
                         </li>
-                    </ul>   
-                    <ThirdButtonUI title='Order Smarter'/>
+                    </ul>
+                    <ThirdButtonUI title='Order Smarter' />
                 </div>
             </section>
         </div>

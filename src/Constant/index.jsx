@@ -1669,7 +1669,14 @@ export const Doctorsteps = [
     id: 2,
     title: " Get Exclusive Benefits",
     description: [
-      "Get Exclusive benefits and access to our AI modules.some availble now some still under construction.Temporize.ai MasterCrown.ai, S - Guide.ai, Bite.ai",
+      "Get Exclusive benefits and access to our AI modules. some availble now some still under construction. ",
+      "Temporize.ai ",
+      "MasterCrown.ai",
+      "S-Guide.ai",
+      "Bite.ai"
+
+
+
     ],
   },
   {
@@ -1960,46 +1967,53 @@ export const shadesProductMultiPro = [
 
 export const accordionData = [
   {
-    title: "How do you generate $5 leads?",
+    title: "What is InterOral.ai?",
     description:
-      "Files must be submitted by 3:00 p.m. PST. Units will be received within 2 business days.",
+      "InterOral.ai is a connected ecosystem for dentists, labs, and patients. It brings together smart tools like AI prescription forms, implant part ordering, lab routing, and digital warranties — all in one secure platform.",
   },
   {
-    title: "How quickly can I see results?",
+    title: "Is InterOral.ai HIPAA compliant?",
     description: [
-      "Wall Thickness: <b>0.80 mm minimum</b>",
-      "Margin Thickness: <b>0.10 mm</b>",
-      "Margin Angle: <b>90° degrees</b>",
-      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+      "Yes. Every module within InterOral.ai is built with full HIPAA compliance and secure AWS hosting to protect patient data and keep your office audit-ready.",
     ],
   },
   {
-    title: "What’s included in your service?",
+    title: "How does the MakeMeSmile Warranty work?",
     description: [
-      "Wall Thickness: <b>0.80 mm minimum</b>",
-      "Margin Thickness: <b>0.10 mm</b>",
-      "Margin Angle: <b>90° degrees</b>",
-      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+      "The MakeMeSmile Warranty connects directly to your lab cases. Once a crown, implant, or restoration is completed, your patient can activate their warranty online and receive a digital certificate — all managed through your InterOral dashboard.",
     ],
   },
   {
-    title: "How do you ensure the leads are qualified?",
+    title: "Can labs and dentists both use the same system?",
     description: [
-      "Wall Thickness: <b>0.80 mm minimum</b>",
-      "Margin Thickness: <b>0.10 mm</b>",
-      "Margin Angle: <b>90° degrees</b>",
-      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+      "Exactly — that’s the point. Dentists use it to send digital prescriptions, and labs receive them instantly through the Dental Lab Alliance. Both sides see status updates, shipping details, and payments without phone calls or confusion.",
     ],
   },
   {
-    title: "Can this system work for my specific market?",
+    title: "What modules are included?",
     description: [
-      "Wall Thickness: <b>0.80 mm minimum</b>",
-      "Margin Thickness: <b>0.10 mm</b>",
-      "Margin Angle: <b>90° degrees</b>",
-      "Note: If walls/margins are too thin, failures may occur during the build process (i.e. cracks, holes).",
+
+      "Temporize.ai – AI-assisted temporaries and design previews",
+      "MasterCrown.ai – Precision crown design automation",
+      "Implant Interface – Easy online part ordering",
+      "MakeMeSmile Warranty – Patient-activated protection"
     ],
   },
+  {
+    title: " Can I upload 3Shape or ExoCAD files?",
+    description: [
+
+      "Yes. InterOral.ai supports uploads from 3Shape, ExoCAD, and most open-source STL formats. You can drag and drop directly into your case form — the system automatically recognizes the file type and routes it to the appropriate lab or design module."
+    ],
+  },
+  {
+    title: " Can I invite my existing lab to join the network?",
+    description: [
+
+      "Absolutely. If you already have a trusted lab, you can invite them to the DLA network from your dashboard. Once verified, they’ll receive cases directly through your InterOral portal with the same automation features."
+    ],
+  },
+
 ];
 
 export const teethOption = [

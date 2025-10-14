@@ -33,7 +33,7 @@ function OurModules() {
                 </div>
                 <div className="flex justify-center">
                     <img
-                        src="/assets/landing-page/landing1.png"
+                        src="/assets/landing-page/landing 1.png"
                         alt="Doctor Enrollment"
                         className="w-full max-w-md"
                     />
