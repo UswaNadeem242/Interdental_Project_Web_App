@@ -3,75 +3,35 @@ import React, { useState } from "react";
 // import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import EmailConfirmation from "../modals/EmailConfirmationModal";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="flex justify-start items-center gap-24 p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600]">
-      <div className="flex flex-col items-start justify-start -space-y-12">
+      {/* <div className="flex flex-col items-start justify-start -space-y-12">
         <img src="/assets/logo.png" alt="logo" />
         <img
-          className="w-[777px] h-[874px] rounded-[124px] "
+          className="  "
           src="/assets/loginrectangle.png"
           alt="locin rectangle image"
         />
-        <svg
-          width="157"
-          height="141"
-          viewBox="0 0 157 141"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="flex w-full justify-end pl-[620px]"
-        >
-          <g filter="url(#filter0_d_13132_1113)">
-            <rect
-              x="12"
-              y="12"
-              width="116.093"
-              height="117"
-              rx="58.0465"
-              fill="#94D3DD"
-            />
-          </g>
-          <defs>
-            <filter
-              id="filter0_d_13132_1113"
-              x="0"
-              y="0"
-              width="156.093"
-              height="157"
-              filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
-            >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
-              <feOffset dx="8" dy="8" />
-              <feGaussianBlur stdDeviation="10" />
-              <feComposite in2="hardAlpha" operator="out" />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 0.686275 0 0 0 0 0.854902 0 0 0 0 0.882353 0 0 0 0.2 0"
-              />
-              <feBlend
-                mode="normal"
-                in2="BackgroundImageFix"
-                result="effect1_dropShadow_13132_1113"
-              />
-              <feBlend
-                mode="normal"
-                in="SourceGraphic"
-                in2="effect1_dropShadow_13132_1113"
-                result="shape"
-              />
-            </filter>
-          </defs>
-        </svg>
+        
+      </div> */}
+      <div className="hidden lg:flex flex-col items-start justify-start -space-y-9">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')} >
+
+          <ArrowLeftIcon className="w- 5 h-5" />
+          <img src="/assets/logo.png" alt="logo" />
+
+        </div>
+        <img
+          className="mt-2 ml-7"
+          src="/assets/loginrectangle.png"
+          alt="login rectangle image"
+        />
+
       </div>
       <div className="flex flex-col justify-center items-center w-[494px] h-[581px] gap-[32px] top-[172px] left-[908px]">
         <div className="flex flex-col justify-center items-center w-[494px] h-[103px] gap-[32px]">
@@ -121,8 +81,8 @@ const ForgetPassword = () => {
               />
             </svg>
             <p
-            onClick={() => navigate("/login")}
-            className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
+              onClick={() => navigate("/login")}
+              className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
               Go back
             </p>
           </div>

@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import NotificationSettingsModal from "../../modals/NotificationSettingsModals";
 import { useAuth } from "../../auth/AuthContext";
 import ProfileModal from "../../modals/ProfileModal";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import ProfileChangePasswordModel from "../../modals/profile-change-password";
 
 const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
   const [isNotficationsOpen, setisNotificationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isPasswordProfile, setIsPasswordProfile] = useState(false);
   const { logout } = useAuth();
 
   const handleLogout = () => {
@@ -16,7 +19,7 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-[303px] h-[286px] rounded-[12px] p-[16px] gap-[16px] bg-[#FFFFFF] absolute right-0 top-[4px] z-10  shadow-[0_0_10px_#00000017]">
+    <div className="flex flex-col justify-center items-center w-[303px] h-[286px] rounded-[12px] p-[16px] gap-[16px] bg-[#FFFFFF] absolute right-0 top-[4px] z-0  shadow-[0_0_10px_#00000017]">
       <div className="flex flex-col justify-start items-start w-[271px] h-[214px] rounded-[16px] gap-[2px] py-[8px] shadow-[0_0_10px_#04060F0D]">
         <div
           onClick={() => setIsProfileOpen(true)}
@@ -40,21 +43,8 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
           <p className="w-[181px] h-[17px] font-inter font-normal text-[14px] text-[#434343] leading-[16.94px]">
             Profile
           </p>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.99978 13.2802L10.3464 8.93355C10.8598 8.42021 10.8598 7.58022 10.3464 7.06688L5.99978 2.72021"
-              stroke="#6D6D6D"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <ChevronRightIcon className='w-4 h-4' />
+
         </div>
         <div
           onClick={() => {
@@ -89,21 +79,7 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
           <p className="w-[181px] h-[17px] font-inter font-normal text-[#434343] text-[14px] leading-[16.94px]">
             My Orders
           </p>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.99978 13.2802L10.3464 8.93355C10.8598 8.42021 10.8598 7.58022 10.3464 7.06688L5.99978 2.72021"
-              stroke="#6D6D6D"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <ChevronRightIcon className='w-4 h-4' />
         </div>
         <div
           onClick={() => setisNotificationsOpen(true)}
@@ -137,24 +113,10 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
           <p className="w-[181px] h-[17px] font-inter font-normal text-[#434343] text-[14px] leading-[16.94px]">
             Notification Settings
           </p>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.99978 13.2802L10.3464 8.93355C10.8598 8.42021 10.8598 7.58022 10.3464 7.06688L5.99978 2.72021"
-              stroke="#6D6D6D"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <ChevronRightIcon className='w-4 h-4' />
         </div>
         <div
-          onClick={() => setIsProfileOpen(true)}
+          onClick={() => setIsPasswordProfile(true)}
           className="flex justify-between items-center cursor-pointer w-[271px] h-[48px] rounded-[10px] gap-[14px] py-[15px] px-[14px]"
         >
           <svg
@@ -190,21 +152,7 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
           <p className="w-[181px] h-[17px] font-inter font-normal text-[#434343] text-[14px] leading-[16.94px]">
             Change Password
           </p>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.99978 13.2802L10.3464 8.93355C10.8598 8.42021 10.8598 7.58022 10.3464 7.06688L5.99978 2.72021"
-              stroke="#6D6D6D"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <ChevronRightIcon className='w-4 h-4' />
         </div>
       </div>
       <div
@@ -245,6 +193,12 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
         <ProfileModal
           isModalOpen={isProfileOpen}
           setIsModalOpen={setIsProfileOpen}
+        />
+      )}
+      {isPasswordProfile && (
+        <ProfileChangePasswordModel
+          isPasswordProfile={isPasswordProfile}
+          setIsPasswordProfile={setIsPasswordProfile}
         />
       )}
     </div>
