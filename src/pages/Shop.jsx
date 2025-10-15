@@ -7,13 +7,16 @@ import Footer from "../components/Footer";
 import { useAuth } from "../auth/AuthContext";
 import {
   ChevronDownIcon,
-  MagnifyingGlassIcon, StarIcon
-
+  MagnifyingGlassIcon,
+  StarIcon,
 } from "@heroicons/react/24/solid";
-
+import { useDispatch } from "react-redux";
+import { showToast } from "../store/toast-slice"; // adjust path if needed
 
 const Shop = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [minPrice, setMinPrice] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [products, setProducts] = useState([]);
@@ -31,6 +34,8 @@ const Shop = () => {
   const { fetchWishlistCount, fetchCartCount } = useAuth();
   const [wishlist, setWishlist] = useState([]);
   const [product, setProduct] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const handleMinChange = (e) => {
     const value = Math.min(Number(e.target.value), maxPrice - 1);
     setMinPrice(value);
@@ -43,21 +48,37 @@ const Shop = () => {
 
   const handleProduct = (product) => {
     navigate(`/shop/${product.productId}`);
-
   };
+
+  // const getAllProducts = async () => {
+  //   try {
+  //     const response = await axios.get(`${BASE_URL}/api/product/getAll`, {
+  //       headers: {
+  //         Accept: "*/*",
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+
+  //     setProducts(response.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const getAllProducts = async () => {
     try {
+      setLoading(true); // start loading
       const response = await axios.get(`${BASE_URL}/api/product/getAll`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
       setProducts(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // stop loading regardless of success or error
     }
   };
 
@@ -93,7 +114,6 @@ const Shop = () => {
     }
   };
 
-
   const handleCategoryChange = (id, name) => {
     setSelectedCategory(id);
     setCategoryName(name);
@@ -103,7 +123,6 @@ const Shop = () => {
     setSelectedbrand(id);
     setBrandName(name);
   };
-
 
   const filteredProducts = products.filter((product) => {
     // Price filter
@@ -142,38 +161,41 @@ const Shop = () => {
     );
   });
 
-  // const handleCheckboxChange = (e) => {
-  //   const { id, checked } = e.target;
-  //   if (checked) {
-  //     setChecked(id);
-  //   } else {
-  //     setChecked(null);
-  //   }
-  // };
-
   const handleCheckboxChange = (e) => {
-    const { id } = e.target;
-    setChecked((prev) => (prev === id ? null : id));
-    // if same clicked again → uncheck
+    const { id, checked } = e.target;
+    if (checked) {
+      setChecked(id);
+    } else {
+      setChecked(null);
+    }
   };
+
+  // const handleCheckboxChange = (e) => {
+  //   const { id } = e.target;
+  //   setChecked((prev) => (prev === id ? null : id));
+  //   // if same clicked again → uncheck
+  // };
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   const handleAddtoWishlist = async (id, e) => {
     e.stopPropagation();
 
+    // make sure this is declared in your component scope
     const token = localStorage.getItem("token");
+
+    // 🔒 If user not logged in
     if (!token) {
-      console.error("❌ No token found in localStorage");
-      setToastMessage("Access denied! Please log in first");
-      setToastType("error");
-      setToastVisible(true);
+      dispatch(showToast({ message: "Login to access", type: "info" }));
       return;
     }
 
-    const productItem = filteredProducts?.find((item) => item?.productId === id);
-
+    const productItem = filteredProducts?.find(
+      (item) => item?.productId === id
+    );
 
     if (!productItem) {
       console.error("❌ No product matched this ID:", id);
+      dispatch(showToast({ message: "Product not found", type: "error" }));
       return;
     }
 
@@ -184,7 +206,6 @@ const Shop = () => {
       price: productItem?.price,
     };
     const url = `${BASE_URL}/api/wishlist/add`;
-    console.log("🌐 API URL:", url);
 
     try {
       const response = await axios.post(url, payload, {
@@ -194,21 +215,31 @@ const Shop = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+
       setWishlist((prev) => [...prev, id]);
       fetchWishlistCount();
-      setToastMessage("Added to Wishlist!");
-      setToastType("success");
-      setToastVisible(true);
+      dispatch(showToast({ message: "Added to Wishlist!", type: "success" }));
     } catch (error) {
       console.error("❌ Wishlist API error:", error);
-      setToastMessage(`Error: ${error.response?.data?.message || error.message}`);
-      setToastType("error");
-      setToastVisible(true);
+      dispatch(
+        showToast({
+          message: `Error: ${error.response?.data?.message || error.message}`,
+          type: "error",
+        })
+      );
     }
   };
+
   const handleAddtoCart = async (id) => {
-    console.log('map id', id);
-    const filterMethode = filteredProducts?.filter((item) => item?.productId === id)
+    console.log("map id", id);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      dispatch(showToast({ message: "Login to access", type: "info" }));
+      return;
+    }
+    const filterMethode = filteredProducts?.filter(
+      (item) => item?.productId === id
+    );
     if (product.stockQuantity <= 0) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
@@ -237,6 +268,7 @@ const Shop = () => {
       setToastType("success");
       setToastVisible(true);
       fetchCartCount();
+      dispatch(showToast({ message: "Added to Cart!", type: "success" }));
       // setLoading(false);
     } catch (error) {
       console.log(error);
@@ -248,9 +280,8 @@ const Shop = () => {
     getAllProducts();
     getAllCategories();
     getAllBrands();
-    fetchCartCount()
+    fetchCartCount();
   }, []);
-
 
   return (
     <div className="bg-background">
@@ -259,7 +290,6 @@ const Shop = () => {
       <div className="px-4 md:px-10   py-6 ">
         {/* Header */}
         <div className="flex justify-between items-center  mt-24">
-
           <button
             className="md:hidden flex items-center gap-2 border px-3 py-2 rounded-lg text-sm"
             onClick={() => setIsFilterOpen(true)}
@@ -272,21 +302,20 @@ const Shop = () => {
         <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8">
           {/* Sidebar (desktop static, mobile drawer) */}
           <div
-            className={`fixed inset-y-0 left-0 z-0  w-72 rounded-2xl bg-white shadow-lg transform transition-transform duration-300 md:static md:translate-x-0 md:shadow-none 
+            className={`fixed inset-y-0 left-0 z-0  w-72 rounded-2xl bg-white shadow-lg transform transition-transform duration-300 md:static md:translate-x-0 md:shadow-none
           ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}`}
           >
             {/* Mobile header */}
             <div className="flex justify-between items-center p-4 border-b md:hidden">
               <h2 className="font-semibold">Filters</h2>
-              <div
-                onClick={() => setIsFilterOpen(false)}
-              >x</div>
+              <div onClick={() => setIsFilterOpen(false)}>x</div>
             </div>
 
             {/* Filters content */}
             <div className="p-4 space-y-3 overflow-y-auto h-full">
-
-              <h2 className="font-semibold  border-b-[2px] border-background my-4">Filters</h2>
+              <h2 className="font-semibold  border-b-[2px] border-background my-4">
+                Filters
+              </h2>
               {/* 🔍 Search */}
               <div className="relative flex items-center border rounded-full px-3 py-2">
                 <input
@@ -321,7 +350,6 @@ const Shop = () => {
                         }}
                       ></div>
 
-
                       <input
                         type="range"
                         min="0"
@@ -352,10 +380,11 @@ const Shop = () => {
                       />
                       <label
                         htmlFor="inStock"
-                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${checked === "inStock"
-                          ? "text-secondaryBrand"
-                          : "text-[#949494]"
-                          }`}
+                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
+                          checked === "inStock"
+                            ? "text-secondaryBrand"
+                            : "text-[#949494]"
+                        }`}
                       >
                         In Stock
                       </label>
@@ -371,10 +400,11 @@ const Shop = () => {
                       />
                       <label
                         htmlFor="outOfStock"
-                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${checked === "outOfStock"
-                          ? "text-secondaryBrand"
-                          : "text-[#949494]"
-                          }`}
+                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
+                          checked === "outOfStock"
+                            ? "text-secondaryBrand"
+                            : "text-[#949494]"
+                        }`}
                       >
                         Out of Stock
                       </label>
@@ -391,11 +421,14 @@ const Shop = () => {
                     {filteredProducts.map((c) => (
                       <h1
                         key={c.categoryId}
-                        onClick={() => handleCategoryChange(c.categoryId, c.name)}
-                        className={`font-poppins text-[12px] leading-[18px] ${selectedCategory === c.categoryId
-                          ? "text-secondaryBrand  font-medium"
-                          : "text-secondaryText cursor-pointer font-normal"
-                          }`}
+                        onClick={() =>
+                          handleCategoryChange(c.categoryId, c.name)
+                        }
+                        className={`font-poppins text-[12px] leading-[18px] ${
+                          selectedCategory === c.categoryId
+                            ? "text-secondaryBrand  font-medium"
+                            : "text-secondaryText cursor-pointer font-normal"
+                        }`}
                       >
                         {c.name}
                       </h1>
@@ -412,10 +445,11 @@ const Shop = () => {
                         key={b.id}
                         onClick={() => handleBrandChange(b.id, b.name)}
                         // className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
-                        className={`font-poppins text-[12px] leading-[18px] ${selectedbrand === b.id
-                          ? "text-secondaryBrand  font-medium"
-                          : "text-secondaryText cursor-pointer font-normal"
-                          }`}
+                        className={`font-poppins text-[12px] leading-[18px] ${
+                          selectedbrand === b.id
+                            ? "text-secondaryBrand  font-medium"
+                            : "text-secondaryText cursor-pointer font-normal"
+                        }`}
                       >
                         {b.name}
                       </h1>
@@ -437,7 +471,11 @@ const Shop = () => {
           {/* Products Grid */}
           <div>
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {filteredProducts.length > 0 ? (
+              {loading ? (
+                <div className="w-full flex justify-center items-center h-[400px]">
+                  <p className="text-lg text-gray-500">Loading products...</p>
+                </div>
+              ) : filteredProducts.length > 0 ? (
                 filteredProducts.map((product, idx) => {
                   const isInWishlist = wishlist.includes(product?.productId); // ✅ Check product in wishlist
 
@@ -466,7 +504,9 @@ const Shop = () => {
                             ${product.price}
                             <span className="flex items-center gap-1">
                               <StarIcon className="w-4 h-4 text-yellow-400" />
-                              <span className="text-xs font-poppins font-normal text-[#585858]">5.0</span>
+                              <span className="text-xs font-poppins font-normal text-[#585858]">
+                                5.0
+                              </span>
                             </span>
                           </div>
                         </div>
@@ -485,9 +525,10 @@ const Shop = () => {
 
                         {/* ❤️ Wishlist Button */}
                         <button
-                          onClick={(e) => handleAddtoWishlist(product?.productId, e)}
-                          className={`w-[51.28px] h-[51.28px] p-[12.82px] rounded-[55.1px] flex items-center justify-center transition-all duration-300 bg-[#F8F8F8]
-              `}
+                          onClick={(e) =>
+                            handleAddtoWishlist(product?.productId, e)
+                          }
+                          className={`w-[51.28px] h-[51.28px] p-[12.82px] rounded-[55.1px] flex items-center justify-center transition-all duration-300 bg-[#F8F8F8]`}
                         >
                           <svg
                             width="27"
@@ -514,86 +555,13 @@ const Shop = () => {
                   <p className="text-2xl">Sorry! No Products Found</p>
                 </div>
               )}
-
-
             </div>
           </div>
-
         </div>
       </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <Footer />
-    </div >
+    </div>
   );
 };
 

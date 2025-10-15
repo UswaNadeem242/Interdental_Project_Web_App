@@ -14,8 +14,8 @@ import { useAuth } from "../auth/AuthContext";
 import ShoppingCart from "../modals/ShoppingCartModal";
 import {
   ChevronDownIcon,
-  MagnifyingGlassIcon, StarIcon
-
+  MagnifyingGlassIcon,
+  StarIcon,
 } from "@heroicons/react/24/solid";
 
 const SingleProduct = () => {
@@ -163,7 +163,6 @@ const SingleProduct = () => {
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
   // Retrieve user data from localStorage
   const userData = localStorage.getItem("users");
   const user = userData ? JSON.parse(userData) : null;
@@ -173,7 +172,6 @@ const SingleProduct = () => {
   // Safely log firstName only if user exists
   if (user && user.firstName) {
   }
-
 
   return (
     <div className="flex justify-center  items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0 ">
@@ -199,8 +197,8 @@ const SingleProduct = () => {
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
                 {product &&
-                  product.imageUrls &&
-                  product.imageUrls.length > 0 ? (
+                product.imageUrls &&
+                product.imageUrls.length > 0 ? (
                   product.imageUrls.map((url, index) => (
                     <SwiperSlide key={index}>
                       <img
@@ -223,8 +221,6 @@ const SingleProduct = () => {
             </div>
             <div className="flex flex-col justify-start items-center w-[454.03px] h-[307.4px] space-y-[19.18px]">
               <div className="flex flex-col justify-center items-center w-[454px] h-[129.57px] border-b-[1px] border-[##E6E6E6] space-y-[15.99px]">
-               
-
                 <div className="flex flex-col justify-between w-[440.97px]  space-y-2">
                   {/* Product Name + Stock */}
                   <div className="flex justify-between items-center">
@@ -245,7 +241,10 @@ const SingleProduct = () => {
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1">
                       {[1, 2, 3].map((_, id) => (
-                        <StarIcon key={id} className="w-4 h-4 text-yellow-400" />
+                        <StarIcon
+                          key={id}
+                          className="w-4 h-4 text-yellow-400"
+                        />
                       ))}
                     </div>
                     <p className="font-poppins font-semibold text-[15.99px] text-black leading-[23.98px]">
@@ -258,7 +257,7 @@ const SingleProduct = () => {
                     ${product?.price}
                   </h1>
                 </div>
- 
+
                 {/* <div className="w-[454px] h-[1px] border-[1px] border-[##E6E6E6]"></div> */}
               </div>
               <div className="w-[454.03px] h-[51px]">
@@ -287,7 +286,6 @@ const SingleProduct = () => {
 
                       setToastType("error");
                       setToastVisible(true);
-
                     }
                   }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
@@ -305,7 +303,6 @@ const SingleProduct = () => {
 
                       setToastType("error");
                       setToastVisible(true);
-
                     }
                   }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
@@ -323,7 +320,6 @@ const SingleProduct = () => {
 
                       setToastType("error");
                       setToastVisible(true);
-
                     }
                   }}
                   className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]"
@@ -363,19 +359,31 @@ const SingleProduct = () => {
           <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-primaryText p-4">
             Customer Feedback
           </h1>
-          <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll hidden ">
+          {/* <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll hidden ">
             {product &&
               product?.ratings &&
               product?.ratings.length > 0 &&
               product?.ratings.map((item) => <CustomerFeedback item={item} />)}
-
-
+          </div> */}
+          <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll">
+            {product?.ratings && product.ratings.length > 0 ? (
+              product.ratings.map((item) => (
+                <CustomerFeedback key={item.id} item={item} />
+              ))
+            ) : (
+              <p className="text-gray-500 text-sm font-poppins p-4 ml-1">
+                No customer feedback avaliable yet.
+              </p>
+            )}
           </div>
         </div>
+
         {relatedProducts?.length > 0 ? (
           <RelatedProducts relatedProducts={relatedProducts} />
         ) : (
-          <p>No Related Products Found.</p>
+          <p className="text-gray-500 text-sm font-poppins">
+            No Related Products Found.
+          </p>
         )}
       </div>
       <Toast

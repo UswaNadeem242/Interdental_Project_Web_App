@@ -425,7 +425,7 @@ const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                    !activeToothSelection.scannerType
+                                  !activeToothSelection.scannerType
                                     ? "Scanner Type is Required Select the Teeth"
                                     : ""
                                 }
@@ -635,15 +635,15 @@ const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
                                         }}
                                         label=" Denture"
                                         storageKey="digitalOptions"
-                                      // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
-                                      // error={
-                                      //   touched.digitalOptions &&
-                                      //   !toothSelections.find(
-                                      //     (t) => t.toothId === selectedTooth
-                                      //   )?.digitalOptions
-                                      //     ? "Digital Denture is Required Select the teeth"
-                                      //     : ""
-                                      // }
+                                        // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
+                                        // error={
+                                        //   touched.digitalOptions &&
+                                        //   !toothSelections.find(
+                                        //     (t) => t.toothId === selectedTooth
+                                        //   )?.digitalOptions
+                                        //     ? "Digital Denture is Required Select the teeth"
+                                        //     : ""
+                                        // }
                                       />
                                       <MaterialDropdown
                                         className2="relative z-0"
@@ -1103,9 +1103,9 @@ const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.photogrammetryfiles
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.photogrammetryfiles
                                           ? "Photogrammetry files is required. Please select a tooth first."
                                           : ""
                                       }

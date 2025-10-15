@@ -95,38 +95,82 @@ const Login = () => {
   ]
 
   return (
-    <div className="flex    flex-col lg:flex-row justify-start items-center lg:gap-20 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
-      {/* Image div - hidden on mobile, shown on lg screens and above */}
-      <div className="hidden lg:flex flex-col items-start justify-start -space-y-12">
+    // <div className="flex    flex-col lg:flex-row justify-start items-center lg:gap-20 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] ">
+    //    <div className="hidden lg:flex flex-col items-start justify-start -space-y-9">
+    //     <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')} >
+
+    //       <ArrowLeftIcon className="w- 5 h-5" />
+    //       <img src="/assets/logo.png" alt="logo" />
+
+    //     </div>        <img
+    //       className="" src="/assets/loginrectangle.png"
+    //       alt="login rectangle image"
+    //     />
+
+
+    //   </div>
+
+    //   <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[581px] gap-6 lg:gap-[32px]">
+    //     <img src="/assets/logo.png" alt="logo" className="block md:hidden" />
+    //     <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[103px] gap-4 lg:gap-[32px]">
+    //       <h1 className="font-poppins font-bold md:text-3xl text-sm leading-[66px] text-secondaryBrand ">
+    //         Log in
+    //       </h1>
+    //       <p className="font-poppins font-normal text-sm md:text-xs leading-[21px] text-[#949494]">
+    //         Welcome back! Please enter your credentials to continue.
+    //       </p>
+    //     </div>
+    //     <div>
+    //       <Stepper steps={step} className='md:w-[100%] ' selectedColor='bg-fouthBrand text-white ' />
+    //     </div>
+
+
+    //   </div>
+
+    // </div>
+
+
+    <div className="flex flex-col lg:flex-row justify-start items-center gap-6 lg:gap-24 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] ">
+      {/* Image section - hidden on mobile */}
+
+      <div className="hidden lg:flex flex-col items-start justify-start -space-y-9">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')} >
 
           <ArrowLeftIcon className="w- 5 h-5" />
           <img src="/assets/logo.png" alt="logo" />
 
-        </div>        <img
-          className="" src="/assets/loginrectangle.png"
+        </div>
+        <img
+          className="mt-2 ml-12"
+          src="/assets/loginrectangle.png"
           alt="login rectangle image"
         />
-        {/* w-[777px] h-[874px] rounded-[124px] */}
 
       </div>
 
-      <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[581px] gap-6 lg:gap-[32px]">
-        <img src="/assets/logo.png" alt="logo" className="block md:hidden" />
+      {/* Signup form */}
+      <div className="flex flex-col justify-center   items-center gap-6 lg:gap-8">
+        {/*  w-full lg:w-[494px] h-auto lg:h-[581px] */}
+
         <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[103px] gap-4 lg:gap-[32px]">
-          <h1 className="font-poppins font-bold md:text-3xl text-sm leading-[66px] text-secondaryBrand ">
+          <img src="/assets/logo.png" alt="logo" className="block lg:hidden" />
+          <h1 className="font-poppins font-bold text-3xl lg:text-[44px] leading-[66px] text-secondaryBrand">
             Log in
           </h1>
-          <p className="font-poppins font-normal text-sm md:text-xs leading-[21px] text-[#949494]">
-            Welcome back! Please enter your credentials to continue.
+          <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#949494] text-center">
+            Sign up to unlock all features and benefits.
           </p>
         </div>
-        <div>
-          <Stepper steps={step} className='md:w-[100%] ' selectedColor='bg-fouthBrand text-white ' />
+
+
+        <div className="">
+          <Stepper steps={step} className='md:w-[100%]' selectedColor='bg-fouthBrand text-white ' />
         </div>
-
-
       </div>
+
+      {/* Modal and Toast components */}
+
+
 
     </div>
   );
