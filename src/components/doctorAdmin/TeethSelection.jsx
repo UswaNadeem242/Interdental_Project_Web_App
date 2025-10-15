@@ -54,31 +54,99 @@ const TeethSelection = ({
   };
 
   return (
-    <div className="w-full overflow-hidden">
-      {/* Top row (1-16) */}
+    // <div className="w-full overflow-hidden">
+
+    //   <div className="flex justify-center items-center gap-0.5 mb-2 flex-wrap">
+    //     {teethData
+    //       .filter((tooth) => tooth.position === "top")
+    //       .map((tooth) => (
+    //         <div key={tooth.id} className="flex flex-col items-center m-0.5">
+
+    //           <span className="text-[10px] font-semibold text-gray-600 mb-0.5">
+    //             {tooth.id}
+    //           </span> 
+    //           <div
+    //             className={`
+    //               w-6 h-4 sm:w-8 sm:h-5 md:w-10 md:h-6
+    //               ${getToothColor(tooth)}
+    //               border border-gray-300 rounded-sm
+    //               flex items-center justify-center
+    //               ${
+    //                 selectedTeeth.includes(tooth.id)
+    //                   ? "ring-1 ring-blue-500"
+    //                   : ""
+    //               }
+    //             `}
+    //             title={tooth.name}
+    //           >
+    //             {showIds && (
+    //               <span className="text-[8px] sm:text-[10px] font-bold text-gray-700">
+    //                 {tooth.id}
+    //               </span>
+    //             )}
+    //           </div>
+    //         </div>
+    //       ))}
+    //   </div> 
+    //   <div className="flex justify-center items-center gap-0.5 flex-wrap">
+    //     {teethData
+    //       .filter((tooth) => tooth.position === "bottom")
+    //       .map((tooth) => (
+    //         <div key={tooth.id} className="flex flex-col items-center m-0.5">
+
+    //           <div
+    //             className={`
+    //               w-6 h-4 sm:w-8 sm:h-5 md:w-10 md:h-6
+    //               ${getToothColor(tooth)}
+    //               border border-gray-300 rounded-sm
+    //               flex items-center justify-center
+    //               ${
+    //                 selectedTeeth.includes(tooth.id)
+    //                   ? "ring-1 ring-blue-500"
+    //                   : ""
+    //               }
+    //             `}
+    //             title={tooth.name}
+    //           >
+    //             {showIds && (
+    //               <span className="text-[8px] sm:text-[10px] font-bold text-gray-700">
+    //                 {tooth.id}
+    //               </span>
+    //             )}
+    //           </div> 
+    //           <span className="text-[10px] font-semibold text-gray-600 mt-0.5">
+    //             {tooth.id}
+    //           </span>
+    //         </div>
+    //       ))}
+    //   </div> 
+    // </div>
+
+
+    // <div className="w-full overflow-hidden">
+    <div className="w-full overflow-visible relative">
+
+      {/* Top row */}
       <div className="flex justify-center items-center gap-0.5 mb-2 flex-wrap">
         {teethData
-          .filter((tooth) => tooth.position === "top")
+          .filter((t) => t.position === "top")
           .map((tooth) => (
-            <div key={tooth.id} className="flex flex-col items-center m-0.5">
-              {/* Tooth number above */}
+            <div key={tooth.id} className="flex flex-col items-center m-0.5 relative group">
               <span className="text-[10px] font-semibold text-gray-600 mb-0.5">
                 {tooth.id}
               </span>
-              {/* Tooth shape */}
+
+              {/* Tooth box */}
               <div
                 className={`
                   w-6 h-4 sm:w-8 sm:h-5 md:w-10 md:h-6
                   ${getToothColor(tooth)}
-                  border border-gray-300 rounded-sm
-                  flex items-center justify-center
-                  ${
-                    selectedTeeth.includes(tooth.id)
-                      ? "ring-1 ring-blue-500"
-                      : ""
+                  border rounded-sm flex items-center justify-center
+                  ${selectedTeeth.includes(tooth.id)
+                    ? "ring-1 ring-blue-500"
+                    : ""
                   }
                 `}
-                title={tooth.name}
               >
                 {showIds && (
                   <span className="text-[8px] sm:text-[10px] font-bold text-gray-700">
@@ -86,30 +154,35 @@ const TeethSelection = ({
                   </span>
                 )}
               </div>
+
+              {/* Tooltip (only for selected teeth) */}
+              {selectedTeeth.includes(tooth.id) && (
+                <div
+                  className="absolute bottom-8 bg-background text-secondaryBrand text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50"
+                >
+                  {tooth.name}
+                </div>
+              )}
             </div>
           ))}
       </div>
 
-      {/* Bottom row (17-32) */}
+      {/* Bottom row */}
       <div className="flex justify-center items-center gap-0.5 flex-wrap">
         {teethData
-          .filter((tooth) => tooth.position === "bottom")
+          .filter((t) => t.position === "bottom")
           .map((tooth) => (
-            <div key={tooth.id} className="flex flex-col items-center m-0.5">
-              {/* Tooth shape */}
+            <div key={tooth.id} className="flex flex-col items-center m-0.5 relative group">
               <div
                 className={`
                   w-6 h-4 sm:w-8 sm:h-5 md:w-10 md:h-6
                   ${getToothColor(tooth)}
-                  border border-gray-300 rounded-sm
-                  flex items-center justify-center
-                  ${
-                    selectedTeeth.includes(tooth.id)
-                      ? "ring-1 ring-blue-500"
-                      : ""
+                  border rounded-sm flex items-center justify-center
+                  ${selectedTeeth.includes(tooth.id)
+                    ? "ring-1 ring-blue-500"
+                    : ""
                   }
                 `}
-                title={tooth.name}
               >
                 {showIds && (
                   <span className="text-[8px] sm:text-[10px] font-bold text-gray-700">
@@ -117,15 +190,22 @@ const TeethSelection = ({
                   </span>
                 )}
               </div>
-              {/* Tooth number below */}
+
+              {/* Tooltip for selected */}
+              {selectedTeeth.includes(tooth.id) && (
+                <div
+                  className="absolute top-8 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50"
+                >
+                  {tooth.name}
+                </div>
+              )}
+
               <span className="text-[10px] font-semibold text-gray-600 mt-0.5">
                 {tooth.id}
               </span>
             </div>
           ))}
       </div>
-
-      {/* Display only - no selected teeth summary needed */}
     </div>
   );
 };
