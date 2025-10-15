@@ -99,12 +99,12 @@ const SingleProduct = () => {
 
   const [isOpenCart, setIsOpenCart] = useState(false);
 
-  const handleAddtoCart = async () => {
+  const handleAddtoCart = async (shouldOpenModal = false) => {
     if (product.stockQuantity <= 0) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
       setToastVisible(true);
-      return;
+      return false;
     }
     try {
       setLoading(true);
@@ -124,17 +124,23 @@ const SingleProduct = () => {
         },
       });
       console.log(response);
-      if (isOpenCart === true) {
-        setIsModalOpen(true);
-      }
+
       setToastMessage("Added to Cart !");
       setToastType("success");
       setToastVisible(true);
       fetchCartCount();
       setLoading(false);
+
+      // Open modal after successful cart operation
+      if (shouldOpenModal || isOpenCart === true) {
+        setIsModalOpen(true);
+      }
+
+      return true;
     } catch (error) {
       console.log(error);
       setLoading(false);
+      return false;
     }
   };
 
@@ -347,7 +353,7 @@ const SingleProduct = () => {
               </div>
               <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-5 pt-10">
                 <div
-                  onClick={() => {
+                  onClick={async () => {
                     if (user && user?.email) {
                       if (product.stockQuantity <= 0) {
                         setToastMessage("This item is currently out of stock.");
@@ -356,9 +362,10 @@ const SingleProduct = () => {
                         return;
                       } else {
                         setIsOpenCart(true);
-                        setLoading(true);
-                        setIsModalOpen(true);
-                        handleAddtoCart();
+                        const success = await handleAddtoCart(true);
+                        if (!success) {
+                          setIsOpenCart(false);
+                        }
                       }
                     } else {
                       setToastMessage("Access denied! Please log in first");
@@ -376,7 +383,7 @@ const SingleProduct = () => {
                 <div
                   onClick={() => {
                     if (user && user?.email) {
-                      handleAddtoCart();
+                      handleAddtoCart(false);
                     } else {
                       setToastMessage("Access denied! Please log in first");
 
