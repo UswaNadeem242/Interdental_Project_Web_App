@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config";
 import axios from "axios";
+import CartOrderIcon from "../icon/cart-order-icon";
 // import product8 from "../assets/product8.png";
 
 const Orders = () => {
@@ -42,6 +43,7 @@ const Orders = () => {
 
       return true;
     });
+ 
   const statusNames = {
     SHIPPED: "SHIPPED",
     PENDING: "PENDING",
@@ -83,20 +85,7 @@ const Orders = () => {
                 >
                   {/* Top section with date */}
                   <div className="flex justify-start items-center w-full h-[16px] gap-[8px] px-[8px]">
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M0.859778 1.84202C0.947102 1.58005 1.23026 1.43847 1.49223 1.52579L1.69516 1.59344C2.11274 1.73261 2.46563 1.85023 2.74311 1.97932C3.03807 2.11653 3.294 2.2866 3.48806 2.55585C3.68213 2.82509 3.76253 3.12167 3.79943 3.44488C3.81828 3.60994 3.82689 3.79501 3.83082 4.00014H10.9679C12.3378 4.00014 13.0228 4.00014 13.3192 4.44964C13.6156 4.89915 13.3458 5.52876 12.8061 6.78797L12.5204 7.45464C12.2685 8.04254 12.1425 8.33648 11.892 8.50164C11.6416 8.6668 11.3218 8.6668 10.6821 8.6668H3.93625C4.00625 9.02672 4.11667 9.23734 4.27346 9.39413C4.45797 9.57864 4.71702 9.69894 5.2062 9.7647C5.70977 9.83241 6.37718 9.83347 7.33412 9.83347H12.0008C12.2769 9.83347 12.5008 10.0573 12.5008 10.3335C12.5008 10.6096 12.2769 10.8335 12.0008 10.8335H7.29753C6.38581 10.8335 5.65093 10.8335 5.07295 10.7558C4.47288 10.6751 3.96763 10.5025 3.56635 10.1012C3.16508 9.69996 2.99248 9.19471 2.9118 8.59464C2.8341 8.01666 2.83411 7.28178 2.83412 6.37005L2.83412 4.58883C2.83412 4.1135 2.83336 3.79899 2.80589 3.55831C2.77987 3.33042 2.73444 3.22049 2.67682 3.14056C2.61921 3.06062 2.52929 2.98276 2.32132 2.88601C2.10168 2.78383 1.80355 2.68366 1.35261 2.53335L1.17601 2.47448C0.914034 2.38715 0.772454 2.10399 0.859778 1.84202Z"
-                        fill="#949494"
-                      />
-                    </svg>
+                    <CartOrderIcon />
                     <p className="font-poppins font-normal text-xs leading-[15px] text-[#434343]">
                       {new Date(order.createdAt).toDateString()}
                     </p>
@@ -105,15 +94,14 @@ const Orders = () => {
                   {/* Order body */}
                   <div className="flex justify-center items-center w-full h-[111px] border-t-[1px] border-[#0000001A] p-[8px] gap-[8px]">
                     <img
-                      src="/assets/product8.png"
+                      src={order?.orderItems[0]?.imageUrl || "/assets/product8.png"}
                       alt="product"
                       className="w-[95px] h-[95px]"
                     />
                     <div className="w-[403px] h-[89px] space-y-[4px] flex flex-col justify-center items-start">
                       <div className="w-[60px] h-[23px] py-[4px] px-[8px] rounded-[32px] bg-[#1F27EF0D]">
                         <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#1F27EF]">
-                          {/* {order.orderStatus} */}
-                          {/* {statusNames[order?.orderStatus] || order.orderStatus} */}
+
                           {order?.orderStatus === 'SHIPED' ? 'SHIPPED' : order?.orderStatus === 'PENDING' ? 'PENDING' : order?.orderStatus === 'DELIVERD' && 'DELIVERD'}
 
                         </p>
