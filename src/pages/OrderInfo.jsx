@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
-// import product8 from "../assets/product8.png";
-// import logopond from "../assets/logopond.png";
+import { NavLink, useParams } from "react-router-dom"; import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import FeedbackModal from "../modals/FeedbackModal";
 import axios from "axios";
 import { BASE_URL } from "../config";
@@ -39,22 +37,11 @@ const Orders = () => {
 
   return (
     <div className="flex justify-center items-center w-full h-auto py-8 bg-[#F8F8F8]">
-      {console.log("-=-=-=-==-orderId=-==-===--=", orders)}
-      <div className="flex flex-col justify-start items-start w-[1200px] h-[517px] p-[32px] space-y-[16px] rounded-[16px] bg-white ">
+      <div className="flex flex-col justify-start items-start w-[1200px] h-[517px] p-[32px] space-y-[16px] rounded-[16px] bg-white mt-20">
         <div className="flex justify-start items-center gap-2">
           <div className="flex justify-center items-center bg-[#F7F8F8] w-[32px] h-[32px] rounded-[8px]">
-            <svg
-              width="8"
-              height="14"
-              viewBox="0 0 8 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7.64143 0.198409C7.88193 0.438905 7.90379 0.815242 7.70702 1.08044L7.64143 1.15641L1.79824 6.99992L7.64143 12.8434C7.88193 13.0839 7.90379 13.4603 7.70702 13.7255L7.64143 13.8014C7.40094 14.0419 7.0246 14.0638 6.75941 13.867L6.68343 13.8014L0.360923 7.47892C0.120427 7.23842 0.0985632 6.86209 0.295333 6.59689L0.360923 6.52092L6.68343 0.198409C6.94798 -0.0661364 7.37689 -0.0661364 7.64143 0.198409Z"
-                fill="#4B4B4B"
-              />
-            </svg>
+            <ChevronLeftIcon className="w-5 h-5 text-gray-600" />
+            
           </div>
           <p className="font-poppins font-semibold text-[24px] leading-[36px] text-black">
             Order Detail
@@ -67,8 +54,8 @@ const Orders = () => {
               onClick={() => setSelectedIndex(index)}
               className={
                 index === selectedIndex
-                  ? "w-[342.67px] h-[39px] text-center font-poppins font-semibold text-[14px] leading-[21px] rounded-[12px] py-[8px] px-[16px] gap-[16px] text-[#434343] bg-[#F8F8F8]"
-                  : "w-[342.67px] h-[39px] text-center font-poppins font-normal text-[14px] leading-[21px] rounded-[12px] py-[8px] px-[16px] gap-[16px] text-[#949494]"
+                  ? "w-[342.67px] h-[39px] text-center font-poppins font-semibold text-[14px] leading-[21px] rounded-[12px] py-[8px] px-[16px] gap-[16px] text-[#434343] bg-[#F8F8F8] cursor-pointer"
+                  : "w-[342.67px] h-[39px] text-center font-poppins font-normal text-[14px] leading-[21px] rounded-[12px] py-[8px] px-[16px] gap-[16px] text-[#949494] cursor-pointer"
               }
             >
               <p className="">{tab}</p>
@@ -85,7 +72,6 @@ const Orders = () => {
                     alt="logo"
                     className="w-[26px] h-[26px] rounded-[14.82px] border-[0.91px] border-[#EF6A1F]"
                   />
-
                   <p>Black Beauty Store</p>
                 </div>
                 <div className="w-[512px] h-auto space-y-[16px] flex flex-col  items-start">
@@ -93,14 +79,14 @@ const Orders = () => {
                     orders?.orderItems.map((order) => (
                       <div className="flex w-[512px] h-[60px] gap-[4px] border-b-[1px] border-[#0000001A] pb-20">
                         <img
-                          src="/assets/product8.png"
+                          src={order?.imageUrl || "/assets/product8.png"}
                           alt="product"
-                          className="w-[60px] h-[60px] rounded-[7.75px] p-[5.16px] gap-[5.16px]"
+                          className="w-[60px] h-[60px] rounded-md p-[5.16px] gap-[5.16px]"
                         />
                         <div className="flex w-[444px] h-[46px] gap-[4px]">
                           <div className="flex flex-col justify-start items-start w-[357px] h-[46px] space-y-[4px]">
-                            <p>{order.productName}</p>
-                            <p>$ {order.unitPrice}</p>
+                            <p className="font-poppins font-normal text-sm text-primaryText">{order.productName}</p>
+                            <p className="text-sm font-semibold font-poppins capitalize text-primaryText">$ {order.unitPrice}</p>
                           </div>
                         </div>
                         <div
@@ -218,11 +204,10 @@ const Orders = () => {
                     />
                   </svg>
                   <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${
-                      orders.orderStatus === "PENDING"
-                        ? "bg-[#001D58]"
-                        : "bg-[#94D3DD]"
-                    }`}
+                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "PENDING"
+                      ? "bg-[#001D58]"
+                      : "bg-[#94D3DD]"
+                      }`}
                   ></div>
                   <svg
                     width="18"
@@ -239,13 +224,12 @@ const Orders = () => {
                     />
                   </svg>
                   <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${
-                      orders.orderStatus === "SHIPED"
-                        ? "bg-[#001D58]"
-                        : orders.orderStatus === "PENDING"
+                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "SHIPED"
+                      ? "bg-[#001D58]"
+                      : orders.orderStatus === "PENDING"
                         ? "bg-[#DDDDDD]"
                         : "bg-[#94D3DD]"
-                    }`}
+                      }`}
                   ></div>
                   <svg
                     width="19"
@@ -260,18 +244,17 @@ const Orders = () => {
                         orders.orderStatus === "SHIPED"
                           ? "#001D58"
                           : orders.orderStatus === "PENDING"
-                          ? "#DDDDDD"
-                          : "#94D3DD"
+                            ? "#DDDDDD"
+                            : "#94D3DD"
                       }
                     />
                   </svg>
 
                   <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${
-                      orders.orderStatus === "DELIVERD"
-                        ? "bg-[#94D3DD]"
-                        : "bg-[#DDDDDD]"
-                    }`}
+                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "DELIVERD"
+                      ? "bg-[#94D3DD]"
+                      : "bg-[#DDDDDD]"
+                      }`}
                   ></div>
                   <svg
                     width="18"
@@ -408,15 +391,15 @@ const Orders = () => {
                             orders.orderStatus === "SHIPED"
                               ? "#001D58"
                               : orders.orderStatus === "PENDING"
-                              ? "#949494"
-                              : "#94D3DD"
+                                ? "#949494"
+                                : "#94D3DD"
                           }
                           stroke={
                             orders.orderStatus === "SHIPED"
                               ? "#001D58"
                               : orders.orderStatus === "PENDING"
-                              ? "#949494"
-                              : "#94D3DD"
+                                ? "#949494"
+                                : "#94D3DD"
                           }
                           stroke-width="2"
                         />
@@ -426,8 +409,8 @@ const Orders = () => {
                             orders.orderStatus === "SHIPED"
                               ? "#001D58"
                               : orders.orderStatus === "PENDING"
-                              ? "#949494"
-                              : "#94D3DD"
+                                ? "#949494"
+                                : "#94D3DD"
                           }
                         />
                         <path
@@ -436,8 +419,8 @@ const Orders = () => {
                             orders.orderStatus === "SHIPED"
                               ? "#001D58"
                               : orders.orderStatus === "PENDING"
-                              ? "#949494"
-                              : "#94D3DD"
+                                ? "#949494"
+                                : "#94D3DD"
                           }
                         />
                       </g>
