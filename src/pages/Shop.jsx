@@ -245,6 +245,20 @@ const Shop = () => {
         // Find the wishlist item to get its ID
         const wishlistItem = wishlist.find((item) => item.productId === id);
 
+        if (!wishlistItem || !wishlistItem.id) {
+          console.error(
+            "❌ Wishlist item not found or missing ID:",
+            wishlistItem,
+          );
+          dispatch(
+            showToast({
+              message: "Error removing from wishlist",
+              type: "error",
+            }),
+          );
+          return;
+        }
+
         // Remove from wishlist using the wishlist item ID
         await axios.delete(
           `${BASE_URL}/api/wishlist/${wishlistItem.id}/remove`,
