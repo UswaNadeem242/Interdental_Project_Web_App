@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
 
   const login = (user, token) => {
-     localStorage.setItem("token", token);
+    localStorage.setItem("token", token);
     localStorage.setItem("users", JSON.stringify(user));
     setUser(user);
   };
@@ -24,7 +24,10 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setWishlistCount(response?.data?.items?.length);
+      const count = response?.data?.items?.length ?? 0;
+      console.log("Wishlist count:", count);
+
+      setWishlistCount(count); // fallback to 0
     } catch (err) {
       console.log("Error fetching wishlist count:", err);
     }
@@ -40,33 +43,43 @@ export const AuthProvider = ({ children }) => {
       const count = response?.data?.items?.length ?? 0;
 
       setCartCount(count); // fallback to 0
-     } catch (error) {
+    } catch (error) {
       console.error("Failed to fetch cart count:", error);
       setCartCount(0);
     }
   };
 
-  // 🔹 Refresh token every 10 minutes
+  // 🔹 Initial fetch on app load and refresh token every 10 minutes
   useEffect(() => {
-    const interval = setInterval(async () => {
-      const refreshToken = localStorage.getItem("token");
+    // Initial fetch of wishlist and cart counts
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchWishlistCount();
+      fetchCartCount();
+    }
 
-      if (!refreshToken) return;
+    const interval = setInterval(
+      async () => {
+        const refreshToken = localStorage.getItem("token");
 
-      try {
-        const res = await axios.post(`${BASE_URL}/api/auth/refresh`, {
-          token: refreshToken,
-        });
+        if (!refreshToken) return;
 
-        const { accessToken, refreshToken: user } = res.data;
+        try {
+          const res = await axios.post(`${BASE_URL}/api/auth/refresh`, {
+            token: refreshToken,
+          });
 
-        localStorage.setItem("token", accessToken);
-        if (user) setUser(user);
-      } catch (err) {
-        console.error("Auto refresh failed, logging out:", err);
-        logout();
-      }
-    }, 1 * 60 * 1000);
+          const { accessToken, refreshToken: user } = res.data;
+
+          localStorage.setItem("token", accessToken);
+          if (user) setUser(user);
+        } catch (err) {
+          console.error("Auto refresh failed, logging out:", err);
+          logout();
+        }
+      },
+      1 * 60 * 1000,
+    );
 
     return () => clearInterval(interval);
   }, []);
@@ -76,8 +89,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("users");
     localStorage.setItem("users", null);
     setUser(null);
-    fetchWishlistCount()
-    fetchCartCount()
+    fetchWishlistCount();
+    fetchCartCount();
   };
 
   return (

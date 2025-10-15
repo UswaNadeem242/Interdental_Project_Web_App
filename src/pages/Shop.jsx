@@ -91,7 +91,7 @@ const Shop = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setCategoriesList(response.data);
     } catch (error) {
@@ -177,20 +177,43 @@ const Shop = () => {
   // };
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const handleAddtoWishlist = async (id, e) => {
+  // Get wishlist items on component mount
+  const getWishlist = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const response = await axios.get(`${BASE_URL}/api/wishlist`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const wishlistItems = response.data.items || [];
+      console.log("🔍 Wishlist API response:", wishlistItems);
+      setWishlist(wishlistItems);
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
+  };
+
+  const handleToggleWishlist = async (id, e) => {
     e.stopPropagation();
 
-    // make sure this is declared in your component scope
     const token = localStorage.getItem("token");
-
-    // 🔒 If user not logged in
     if (!token) {
-      dispatch(showToast({ message: "Login to access", type: "info" }));
+      dispatch(
+        showToast({
+          message: "Access Denied. Please login first.",
+          type: "info",
+        }),
+      );
       return;
     }
 
     const productItem = filteredProducts?.find(
-      (item) => item?.productId === id
+      (item) => item?.productId === id,
     );
 
     if (!productItem) {
@@ -199,33 +222,60 @@ const Shop = () => {
       return;
     }
 
-    const payload = {
-      id: productItem?.productId,
-      productId: productItem?.productId,
-      productName: productItem?.product?.name,
-      price: productItem?.price,
-    };
-    const url = `${BASE_URL}/api/wishlist/add`;
+    const isInWishlist = wishlist.some((item) => item.productId === id);
 
     try {
-      const response = await axios.post(url, payload, {
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      if (isInWishlist) {
+        // Find the wishlist item to get its ID
+        const wishlistItem = wishlist.find((item) => item.productId === id);
 
-      setWishlist((prev) => [...prev, id]);
-      fetchWishlistCount();
-      dispatch(showToast({ message: "Added to Wishlist!", type: "success" }));
+        // Remove from wishlist using the wishlist item ID
+        await axios.delete(
+          `${BASE_URL}/api/wishlist/${wishlistItem.id}/remove`,
+          {
+            headers: {
+              Accept: "*/*",
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        setWishlist((prev) => prev.filter((item) => item.productId !== id));
+        fetchWishlistCount();
+        dispatch(
+          showToast({ message: "Removed from Wishlist!", type: "success" }),
+        );
+      } else {
+        // Add to wishlist
+        const payload = {
+          id: productItem?.productId,
+          productId: productItem?.productId,
+          productName: productItem?.name,
+          price: productItem?.price,
+        };
+
+        await axios.post(`${BASE_URL}/api/wishlist/add`, payload, {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setWishlist((prev) => [
+          ...prev,
+          { id: productItem?.productId, productId: productItem?.productId },
+        ]);
+        fetchWishlistCount();
+        dispatch(showToast({ message: "Added to Wishlist!", type: "success" }));
+      }
     } catch (error) {
       console.error("❌ Wishlist API error:", error);
       dispatch(
         showToast({
           message: `Error: ${error.response?.data?.message || error.message}`,
           type: "error",
-        })
+        }),
       );
     }
   };
@@ -234,11 +284,16 @@ const Shop = () => {
     console.log("map id", id);
     const token = localStorage.getItem("token");
     if (!token) {
-      dispatch(showToast({ message: "Login to access", type: "info" }));
+      dispatch(
+        showToast({
+          message: "Access Denied. Please login first.",
+          type: "info",
+        }),
+      );
       return;
     }
     const filterMethode = filteredProducts?.filter(
-      (item) => item?.productId === id
+      (item) => item?.productId === id,
     );
     if (product.stockQuantity <= 0) {
       setToastMessage("This item is currently out of stock.");
@@ -281,6 +336,7 @@ const Shop = () => {
     getAllCategories();
     getAllBrands();
     fetchCartCount();
+    getWishlist();
   }, []);
 
   return (
@@ -477,7 +533,9 @@ const Shop = () => {
                 </div>
               ) : filteredProducts.length > 0 ? (
                 filteredProducts.map((product, idx) => {
-                  const isInWishlist = wishlist.includes(product?.productId); // ✅ Check product in wishlist
+                  const isInWishlist = wishlist.some(
+                    (item) => item.productId === product?.productId,
+                  ); // ✅ Check product in wishlist
 
                   return (
                     <div
@@ -524,11 +582,15 @@ const Shop = () => {
                         </div>
 
                         {/* ❤️ Wishlist Button */}
-                        <button
+                        <div
                           onClick={(e) =>
-                            handleAddtoWishlist(product?.productId, e)
+                            handleToggleWishlist(product?.productId, e)
                           }
-                          className={`w-[51.28px] h-[51.28px] p-[12.82px] rounded-[55.1px] flex items-center justify-center transition-all duration-300 bg-[#F8F8F8]`}
+                          className={`flex justify-center items-center cursor-pointer w-[51.28px] h-[51.28px] p-[12.82px] gap-[12.81px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${
+                            isInWishlist
+                              ? "bg-red-50 shadow-md"
+                              : "bg-[#F8F8F8] hover:bg-red-50"
+                          }`}
                         >
                           <svg
                             width="27"
@@ -536,7 +598,7 @@ const Shop = () => {
                             viewBox="0 0 27 27"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
-                            className="cursor-pointer"
+                            className="cursor-pointer transition-all duration-300"
                           >
                             <path
                               d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
@@ -545,7 +607,7 @@ const Shop = () => {
                               fill={isInWishlist ? "#FF0000" : "none"}
                             />
                           </svg>
-                        </button>
+                        </div>
                       </div>
                     </div>
                   );
