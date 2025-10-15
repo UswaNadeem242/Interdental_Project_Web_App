@@ -325,7 +325,16 @@ const Shop = () => {
     const filterMethode = filteredProducts?.filter(
       (item) => item?.productId === id,
     );
-    if (product.stockQuantity <= 0) {
+
+    if (!filterMethode || filterMethode.length === 0) {
+      setToastMessage("Product not found.");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    const selectedProduct = filterMethode[0];
+    if (selectedProduct.stockQuantity <= 0) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
       setToastVisible(true);
@@ -335,12 +344,12 @@ const Shop = () => {
       // setLoading(true);
 
       const payload = {
-        id: filterMethode[0]?.productId,
-        productId: filterMethode[0]?.productId,
-        productName: filterMethode[0]?.name,
+        id: selectedProduct?.productId,
+        productId: selectedProduct?.productId,
+        productName: selectedProduct?.name,
         quantity: 1,
-        price: filterMethode[0]?.price,
-        totalPrice: product[0]?.price,
+        price: selectedProduct?.price,
+        totalPrice: selectedProduct?.price,
       };
       const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
         headers: {
@@ -357,6 +366,9 @@ const Shop = () => {
       // setLoading(false);
     } catch (error) {
       console.log(error);
+      setToastMessage("Failed to add item to cart.");
+      setToastType("error");
+      setToastVisible(true);
       // setLoading(false);
     }
   };

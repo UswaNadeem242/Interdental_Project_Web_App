@@ -40,13 +40,17 @@ const CartProduct = ({ item, getCart }) => {
     let newQuantity;
 
     if (status === "add") {
-      if (items.stockItem <= count) {
-        setToastMessage("This item is currently out of stock.");
+      // Check if increasing quantity would exceed available stock
+      const newCount = count + 1;
+      if (newCount > items.stockItem) {
+        setToastMessage(
+          `Cannot add more items. Only ${items.stockItem} ${items.stockItem === 1 ? "item is" : "items are"} available in stock.`,
+        );
         setToastType("error");
         setToastVisible(true);
         return;
       }
-      newQuantity = count + 1;
+      newQuantity = newCount;
       setCount(newQuantity);
     } else if (status === "subtract") {
       if (count <= 1) {
