@@ -6,7 +6,7 @@ const ReviewOrder = ({ next }) => {
   const restoration = useSelector((state) => state.restoration);
 
   const patient = restoration.patient;
-  console.log('patient:', patient);
+  console.log("patient:", patient);
 
   const [doctorProfile, setDoctorProfile] = useState(null);
   // Map doctor and patient arrays to objects for easier access
@@ -14,7 +14,6 @@ const ReviewOrder = ({ next }) => {
     acc[d.field] = d.value || "N/A";
     return acc;
   }, {});
-
 
   const toothSelections = restoration.toothSelections || [];
   const selectedTeeth = restoration.selectedTeeth || [];
@@ -51,7 +50,10 @@ const ReviewOrder = ({ next }) => {
     const mask = (str) => {
       if (!str?.trim()) return "";
       const clean = str.trim();
-      return clean.slice(0, 2).charAt(0).toUpperCase() + clean.slice(1, 2).toLowerCase();
+      return (
+        clean.slice(0, 2).charAt(0).toUpperCase() +
+        clean.slice(1, 2).toLowerCase()
+      );
     };
 
     return `${mask(firstName)}${mask(lastName)}` || "Unknown";
@@ -61,9 +63,7 @@ const ReviewOrder = ({ next }) => {
     if (!email) return "";
     const [localPart, domain] = email.split("@");
     if (!localPart || !domain) return email;
-    return (
-      localPart.slice(0, 3) + "*****@" + domain
-    );
+    return localPart.slice(0, 3) + "*****@" + domain;
   };
   useEffect(() => {
     const userData = localStorage.getItem("users");
@@ -129,7 +129,6 @@ const ReviewOrder = ({ next }) => {
     return first + middle + last;
   };
 
-
   return (
     <div className="">
       <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -150,7 +149,6 @@ const ReviewOrder = ({ next }) => {
                   Doctor’s Name
                 </p>
                 <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-
                   {getMaskedFullName(formData?.firstName, formData?.lastName)}
                 </p>
               </div>
@@ -160,7 +158,6 @@ const ReviewOrder = ({ next }) => {
                 </p>
                 <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
                   {maskNumber(formData?.reference)}
-
                 </p>
               </div>
               <div>
@@ -182,20 +179,25 @@ const ReviewOrder = ({ next }) => {
             </div>
           </div>
           <div className="border border-gray-200 p-4 font-poppins">
-            <h3 className="font-medium mb-2 text-[#434343]">Patient Information</h3>
+            <h3 className="font-medium mb-2 text-[#434343]">
+              Patient Information
+            </h3>
             <hr className="border-gray-200 my-2" />
             {patient ? (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                 <div>
                   <p className="text-[#949494]">Full Name</p>
-                  <p className="font-normal text-secondaryBrand">  {getMaskedFullName(patient?.name, patient?.lastName)}
+                  <p className="font-normal text-secondaryBrand">
+                    {" "}
+                    {getMaskedFullName(patient?.name, patient?.lastName)}
                   </p>
                 </div>
                 <div>
                   <p className="text-[#949494]">Subscription ID:</p>
-                  <p className="font-normal text-secondaryBrand">{patient?.id}#</p>
+                  <p className="font-normal text-secondaryBrand">
+                    {patient?.id}#
+                  </p>
                 </div>
-
               </div>
             ) : (
               <p className="text-gray-400 text-sm">No patient selected</p>
@@ -228,7 +230,10 @@ const ReviewOrder = ({ next }) => {
                 {selectedTeeth.map((toothId) => {
                   const tooth = teeth[toothId];
                   return (
-                    <p key={toothId} className="font-medium text-secondaryBrand text-xs font-poppins">
+                    <p
+                      key={toothId}
+                      className="font-medium text-secondaryBrand text-xs font-poppins"
+                    >
                       {tooth?.crown?.label || "No Crown"}
                     </p>
                   );
@@ -239,7 +244,9 @@ const ReviewOrder = ({ next }) => {
 
           {/* Customization Details */}
           <div className="border border-gray-200 font-poppins p-4">
-            <h3 className="font-medium mb-3 text-[#000000]">Customization Details</h3>
+            <h3 className="font-medium mb-3 text-[#000000]">
+              Customization Details
+            </h3>
             <hr className="border-gray-200 my-2" />
             <div className="space-y-4">
               {selectedTeeth.map((toothId) => {
@@ -255,7 +262,9 @@ const ReviewOrder = ({ next }) => {
                     </h4>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
                       <div>
-                        <p className="text-[#949494] text-xs font-poppins">Material:</p>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Material:
+                        </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
                           {tooth.materialOption?.label ||
                             tooth.material ||
@@ -263,7 +272,9 @@ const ReviewOrder = ({ next }) => {
                         </p>
                       </div>
                       <div>
-                        <p className="text-[#949494] text-xs font-poppins">Scanner Type:</p>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Scanner Type:
+                        </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
                           {tooth.scannerTypeOption?.label ||
                             tooth.scannerType ||
@@ -271,33 +282,51 @@ const ReviewOrder = ({ next }) => {
                         </p>
                       </div>
                       <div>
-                        <p className="text-[#949494] text-xs font-poppins">Digital Denture:</p>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Digital Denture:
+                        </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth?.digitalOptionsOption?.label || tooth?.digitalOptions || "N/A"}
+                          {tooth?.digitalOptionsOption?.label ||
+                            tooth?.digitalOptions ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[#949494] text-xs font-poppins">Surgical Guide:</p>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Surgical Guide:
+                        </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth?.surgical_guideOption?.label || tooth?.surgical_guide || "N/A"}
+                          {tooth?.surgical_guideOption?.label ||
+                            tooth?.surgical_guide ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[#949494] text-xs font-poppins">Digital Model:</p>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Digital Model:
+                        </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth?.digitalOptionsOption?.label || tooth?.digitalOptionsOption || "N/A"}
+                          {tooth?.digitalOptionsOption?.label ||
+                            tooth?.digitalOptionsOption ||
+                            "N/A"}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[#949494] text-xs font-poppins">Laboratory:</p>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Laboratory:
+                        </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
                           {tooth?.labOption?.label || tooth?.labOption || "N/A"}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[#949494] text-xs font-poppins">Photogrammetry:</p>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Photogrammetry:
+                        </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth?.photogrammetryfilesOption?.label || tooth?.photogrammetryfilesOption || "N/A"}
+                          {tooth?.photogrammetryfilesOption?.label ||
+                            tooth?.photogrammetryfilesOption ||
+                            "N/A"}
                         </p>
                       </div>
                       {/* <div>
@@ -315,13 +344,18 @@ const ReviewOrder = ({ next }) => {
 
           {/* Note */}
           <div className="border border-gray-200 p-4 sm:p-6">
-            <h3 className="font-medium mb-2 text-sm sm:text-base font-poppins text-[#434343]">Note</h3>
+            <h3 className="font-medium mb-2 text-sm sm:text-base font-poppins text-[#434343]">
+              Note
+            </h3>
             <hr className="border-gray-200 my-2" />
             <div className="grid grid-cols-1 gap-4 text-sm sm:text-base">
               <div>
-                <p className="text-[#949494] font-normal text-xs font-poppins pb-2">{getMaskedFullName(formData?.firstName, formData?.lastName)}
+                <p className="text-[#949494] font-normal text-xs font-poppins pb-2">
+                  {getMaskedFullName(formData?.firstName, formData?.lastName)}
                 </p>
-                <p className="font-normal text-secondaryBrand text-xs font-poppins">{note}</p>
+                <p className="font-normal text-secondaryBrand text-xs font-poppins">
+                  {note}
+                </p>
               </div>
             </div>
           </div>
@@ -330,43 +364,73 @@ const ReviewOrder = ({ next }) => {
         {/* Right Panel / Order Summary */}
         <div className="lg:col-span-5 bg-white rounded-xl border border-gray-200 p-6 flex flex-col justify-between font-poppins">
           <div>
-            <h2 className="text-lg font-semibold mb-4 text-[#1A1A1A]">Order Summary</h2>
+            <h2 className="text-lg font-semibold mb-4 text-[#1A1A1A]">
+              Order Summary
+            </h2>
             <div className="space-y-3 text-sm">
               {selectedTeeth?.map((toothId) => {
                 const tooth = teeth[toothId] || {};
                 return (
                   <div key={toothId} className="border-b border-gray-200 pb-2">
-                    <p className="font-semibold text-[#1A1A1A]">Tooth #{toothId}</p>
+                    <p className="font-semibold text-[#1A1A1A]">
+                      Tooth #{toothId}
+                    </p>
                     <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">{tooth?.materialOption?.label}</span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">${tooth?.materialPrice || 0}</span>
+                      <span className="text-[#828386] font-poppins text-sm">
+                        {tooth?.materialOption?.label}
+                      </span>
+                      <span className="text-[#1A1A1A] font-poppins text-sm">
+                        ${tooth?.materialPrice || 0}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">{tooth?.digitalOptionsOption?.label}</span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">${tooth?.digitalOptionsPrice || 0}</span>
+                      <span className="text-[#828386] font-poppins text-sm">
+                        {tooth?.digitalOptionsOption?.label}
+                      </span>
+                      <span className="text-[#1A1A1A] font-poppins text-sm">
+                        ${tooth?.digitalOptionsPrice || 0}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">{tooth?.surgical_guideOption?.label}</span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">${tooth?.surgical_guidePrice || 0}</span>
+                      <span className="text-[#828386] font-poppins text-sm">
+                        {tooth?.surgical_guideOption?.label}
+                      </span>
+                      <span className="text-[#1A1A1A] font-poppins text-sm">
+                        ${tooth?.surgical_guidePrice || 0}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">{tooth?.labOption?.label}</span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">${tooth?.labPrice || 0}</span>
+                      <span className="text-[#828386] font-poppins text-sm">
+                        {tooth?.labOption?.label}
+                      </span>
+                      <span className="text-[#1A1A1A] font-poppins text-sm">
+                        ${tooth?.labPrice || 0}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">{tooth?.crown?.label}</span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">${tooth?.crown?.price || 0}</span>
+                      <span className="text-[#828386] font-poppins text-sm">
+                        {tooth?.crown?.label}
+                      </span>
+                      <span className="text-[#1A1A1A] font-poppins text-sm">
+                        ${tooth?.crown?.price || 0}
+                      </span>
                     </div>
                   </div>
                 );
               })}
 
               <div className="flex justify-between">
-                <span className="text-[#828386] font-poppins text-sm">Subtotal :</span>
-                <span className="font-semibold text-[#1A1A1A]">${totalPrice}</span>
+                <span className="text-[#828386] font-poppins text-sm">
+                  Subtotal :
+                </span>
+                <span className="font-semibold text-[#1A1A1A]">
+                  ${totalPrice}
+                </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#828386] font-poppins text-sm">Shipping :</span>
+                <span className="text-[#828386] font-poppins text-sm">
+                  Shipping :
+                </span>
                 <span className="text-[#1A1A1A]">Free</span>
               </div>
               <div className="flex justify-between font-normal text-secondaryBrand text-lg mt-4 border-t border-gray-200 pt-2">
@@ -376,7 +440,10 @@ const ReviewOrder = ({ next }) => {
             </div>
           </div>
 
-          <button className="mt-6 w-full py-3 rounded-3xl bg-secondaryBrand text-white font-medium" onClick={next}>
+          <button
+            className="mt-6 w-full py-3 rounded-3xl bg-secondaryBrand text-white font-medium"
+            onClick={next}
+          >
             Checkout
           </button>
         </div>
