@@ -1,11 +1,8 @@
 import React from "react";
 import "./App.css";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Layout from "./layout/Layout";
-import { BrowserRouter, Route, Routes } from "react-router-dom"; 
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./pages/landing-page/header";
 import Footer from "./components/Footer";
 import Brands from "./pages/Brands";
@@ -19,7 +16,9 @@ import NewPassword from "./pages/NewPassword";
 import Orders from "./pages/Orders";
 import OrderInfo from "./pages/OrderInfo";
 import Admin from "./pages/admin/Admin";
-import ProtectedRoute from "./components/ProtectRoute";
+import PrivateRoute from "./components/PrivateRoute";
+import RoleRoute from "./components/RoleRoute";
+import PublicRoute from "./components/PublicRoute";
 import { AuthProvider } from "./auth/AuthContext";
 import Wishlist from "./pages/Wishlist";
 import LandingPage from "./pages/landing-page/landing-page";
@@ -53,6 +52,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Blog from "./pages/landing-page/blog";
 import LayZirPage from "./pages/landing-page/product/layzir";
 import AiditeZirconia from "./pages/landing-page/product/aidite-zirconia ";
+import { ERole } from "./constants/roles";
 
 const MainLayout = ({ children }) => (
   <>
@@ -178,18 +178,8 @@ function App() {
           <ScrollToTop />
           {/* <Header /> */}
           <Routes>
+            {/* Public Routes - No authentication required */}
             <Route path="/" element={<LandingPage />} />
-            {
-              /* <Route
-              path="/landing"
-              element={
-                <LandingPage />
-
-                // <MainLayout>
-                /* <Home /> */
-              // </MainLayout>
-              // test
-            }{" "}
             <Route
               path="/product"
               element={<ProductLandingPage isLanding={false} />}
@@ -214,7 +204,6 @@ function App() {
               path="/product/lay-zir"
               element={<LayZirPage isLanding={false} />}
             />
-            AiditeZirconia
             <Route
               path="/product/zidcard-ivoclar"
               element={<ZidcardIvoclar isLanding={false} />}
@@ -231,22 +220,6 @@ function App() {
               path="/our-products"
               element={<ArgenZ isLanding={false} />}
             />
-            <Route
-              path="/shop"
-              element={
-                // <MainLayout>
-                <Shop />
-                // </MainLayout>
-              }
-            />
-            {/* <Route
-              path="/product"
-              element={
-                // <MainLayout>
-                <ProductLandingPage />
-                // </MainLayout>
-              }
-            /> */}
             <Route
               path="/brands"
               element={
@@ -265,111 +238,147 @@ function App() {
             />
             <Route path="/about-us" element={<About isLanding={false} />} />
             <Route path="/contact-us" element={<Contact isLanding={false} />} />
-            <Route
-              path="/shop/:productId"
-              element={
-                <MainLayout>
-                  <SingleProduct />
-                </MainLayout>
-              }
-            />
-            <Route
-              path="/wishlist"
-              element={
-                <MainLayout>
-                  <Wishlist />
-                </MainLayout>
-              }
-            />
+
+            {/* Auth Routes - Public but redirect if authenticated */}
             <Route
               path="/login"
               element={
-                <SimpleLayout>
-                  <Login />
-                </SimpleLayout>
+                <PublicRoute>
+                  <SimpleLayout>
+                    <Login />
+                  </SimpleLayout>
+                </PublicRoute>
               }
             />
             <Route
               path="/signup"
               element={
-                <SimpleLayout>
-                  <Signup />
-                </SimpleLayout>
+                <PublicRoute>
+                  <SimpleLayout>
+                    <Signup />
+                  </SimpleLayout>
+                </PublicRoute>
               }
             />
             <Route
               path="/forgot-password"
               element={
-                <SimpleLayout>
-                  <ForgetPassword />
-                </SimpleLayout>
+                <PublicRoute>
+                  <SimpleLayout>
+                    <ForgetPassword />
+                  </SimpleLayout>
+                </PublicRoute>
               }
             />
             <Route
               path="/new-password"
               element={
-                <SimpleLayout>
-                  <NewPassword />
-                </SimpleLayout>
+                <PublicRoute>
+                  <SimpleLayout>
+                    <NewPassword />
+                  </SimpleLayout>
+                </PublicRoute>
+              }
+            />
+
+            {/* Customer Routes - Accessible by CUSTOMER role */}
+            <Route
+              path="/shop"
+              element={
+                <PrivateRoute requiredRoles={[ERole.CUSTOMER]}>
+                  <Shop />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/shop/:productId"
+              element={
+                <PrivateRoute requiredRoles={[ERole.CUSTOMER]}>
+                  <MainLayout>
+                    <SingleProduct />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/wishlist"
+              element={
+                <PrivateRoute requiredRoles={[ERole.CUSTOMER]}>
+                  <MainLayout>
+                    <Wishlist />
+                  </MainLayout>
+                </PrivateRoute>
               }
             />
             <Route
               path="/orders"
               element={
-                <MainLayout>
-                  <Orders />
-                </MainLayout>
+                <PrivateRoute requiredRoles={[ERole.CUSTOMER]}>
+                  <MainLayout>
+                    <Orders />
+                  </MainLayout>
+                </PrivateRoute>
               }
             />
             <Route
               path="/order-info/:orderId"
               element={
-                <MainLayout>
-                  <OrderInfo />
-                </MainLayout>
+                <PrivateRoute requiredRoles={[ERole.CUSTOMER]}>
+                  <MainLayout>
+                    <OrderInfo />
+                  </MainLayout>
+                </PrivateRoute>
               }
             />
-            <Route
-              path="/admin/*"
-              element={
-                <PlainLayoutUser>
-                  <ProtectedRoute>
-                    <Admin />
-                  </ProtectedRoute>
-                </PlainLayoutUser>
-              }
-            />
+
+            {/* Doctor Routes - Accessible by DOCTOR role only */}
             <Route
               path="/doctor-admin/*"
               element={
-                <PlainLayout>
-                  <ProtectedRoute>
+                <RoleRoute allowedRoles={[ERole.DOCTOR]}>
+                  <PlainLayout>
                     <ScrollToTop />
                     <DoctorAdmin />
-                  </ProtectedRoute>
-                </PlainLayout>
+                  </PlainLayout>
+                </RoleRoute>
               }
             />
+
+            {/* Patient Routes - Accessible by PATIENT role */}
             <Route
               path="/patient-admin/*"
               element={
-                <PlainLayoutPatient>
-                  <ProtectedRoute>
+                <RoleRoute allowedRoles={[ERole.PATIENT]}>
+                  <PlainLayoutPatient>
                     <ScrollToTop />
                     <PatientAdmin />
-                  </ProtectedRoute>
-                </PlainLayoutPatient>
+                  </PlainLayoutPatient>
+                </RoleRoute>
               }
             />
+
+            {/* Admin Panel Routes - Accessible by ADMIN role only */}
             <Route
               path="/admin-panel/*"
               element={
-                <PlainLayoutAdminPanel>
-                  <ProtectedRoute>
+                <RoleRoute allowedRoles={[ERole.ADMIN]} exactRole={true}>
+                  <PlainLayoutAdminPanel>
                     <ScrollToTop />
                     <AdminPanel />
-                  </ProtectedRoute>
-                </PlainLayoutAdminPanel>
+                  </PlainLayoutAdminPanel>
+                </RoleRoute>
+              }
+            />
+
+            {/* Legacy Admin Route - Accessible by ADMIN role */}
+            <Route
+              path="/admin/*"
+              element={
+                <RoleRoute allowedRoles={[ERole.ADMIN]}>
+                  <PlainLayoutUser>
+                    <Admin />
+                  </PlainLayoutUser>
+                </RoleRoute>
               }
             />
           </Routes>
