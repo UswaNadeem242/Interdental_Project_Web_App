@@ -2,7 +2,15 @@ import { TiltedArrowBlue } from "../../icon/TiltedArrowBlue";
 import { SecondaryButton } from "../Button";
 import { NavLink } from "react-router-dom";
 
-export const PatientCard = ({ title, name, email, linkName, icon, data }) => {
+export const PatientCard = ({
+  title,
+  name,
+  email,
+  linkName,
+  icon,
+  data,
+  className,
+}) => {
   return (
     <div className="p-4">
       <div className="p-4 border-b border-gray-200 flex items-center justify-between">
@@ -24,7 +32,7 @@ export const PatientCard = ({ title, name, email, linkName, icon, data }) => {
                 <img
                   src={item?.profileURL || "/assets/users.png"}
                   alt="image"
-                  className="w-10 h-10 rounded-full object-cover"
+                  className={`w-10 h-10 rounded-full object-cover ${className}`}
                 />
                 <div className="flex flex-col min-w-0">
                   <h2 className="font-poppins text-xs font-semibold text-gray-700 truncate">

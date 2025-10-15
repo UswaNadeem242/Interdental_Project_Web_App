@@ -12,9 +12,7 @@ const DoctorSignup = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [cPassword, setCPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [showCPassword, setShowCPassword] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhone] = useState("");
@@ -26,12 +24,52 @@ const DoctorSignup = () => {
     const [toastVisible, setToastVisible] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState("success");
-    const [labs, setLabs] = useState([]);
-    const [selectedLab, setSelectedLab] = useState("");
     const [yearly, setYearly] = useState(false)
+    // const validate = () => {
+    //     if (!firstName?.trim()) return "First name is required";
+    //     if (!lastName?.trim()) return "Last name is required";     // remove if not needed
+    //     if (!email?.trim()) return "Email is required";
+    //     if (!phoneNumber?.trim()) return "Phone is required";
+    //     if (!address) return "Address is required";
+    //     if (!city) return "City is required";
+    //     if (!zip) return "Zip Number is required";
+    //     if (!drLicenseNo) return "Doctor's License Number is required";
+    //     if (!officeRefNo) return "Office Reference number is required";
+    //     if (!password) return "Password is required"; 
+    //     const nameRegex = /^[A-Za-z]{3,}$/;
+    //     const numberRegex = /^[0-9]{10}$/;
+    //     const zipRegex = /^[0-9]{5}$/;
+    //     const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
+    //     if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
+    //     if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
+    //     if (!addressRegex.test(city)) return "Enter a City Name";
+    //     if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";
+    //     // if (!addressRegex.test(address)) return "Enter a valid Address";
+    //     // Must contain at least one letter or digit
+
+
+    //     if (!addressRegex.test(address)) {
+    //         return "Enter a valid Address";
+    //     }
+
+    //     if (!numberRegex.test(drLicenseNo)) return "Enter a valid 10-digit Doctor's License Number";
+    //     if (!numberRegex.test(officeRefNo)) return "Enter a valid 10-digit Office Reference number";
+    //     if (!password) return "Password is required";
+
+    //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    //     if (!emailRegex.test(email)) return "Enter a valid email address";
+    //     // Optional: phone 7–15 digits
+    //     const phoneRegex = /^[0-9]{11}$/;
+    //     if (!phoneNumber) return "Phone number is required";
+    //     if (!phoneRegex.test(phoneNumber)) return "Enter a valid 11-digit phone number";
+    //     return null;
+    // };
+
+
+
     const validate = () => {
         if (!firstName?.trim()) return "First name is required";
-        if (!lastName?.trim()) return "Last name is required";     // remove if not needed
+        if (!lastName?.trim()) return "Last name is required"; // remove if not needed
         if (!email?.trim()) return "Email is required";
         if (!phoneNumber?.trim()) return "Phone is required";
         if (!address) return "Address is required";
@@ -44,20 +82,23 @@ const DoctorSignup = () => {
         const numberRegex = /^[0-9]{10}$/;
         const zipRegex = /^[0-9]{5}$/;
         const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
-        if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
-        if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
+        if (!nameRegex.test(firstName))
+            return "Enter a valid First Name (letters only)";
+        if (!nameRegex.test(lastName))
+            return "Enter a valid Last Name (letters only)";
         if (!addressRegex.test(city)) return "Enter a City Name";
         if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";
         // if (!addressRegex.test(address)) return "Enter a valid Address";
         // Must contain at least one letter or digit
 
-
         if (!addressRegex.test(address)) {
             return "Enter a valid Address";
         }
 
-        if (!numberRegex.test(drLicenseNo)) return "Enter a valid 10-digit Doctor's License Number";
-        if (!numberRegex.test(officeRefNo)) return "Enter a valid 10-digit Office Reference number";
+        if (!numberRegex.test(drLicenseNo))
+            return "Enter a valid 10-digit Doctor's License Number";
+        if (!numberRegex.test(officeRefNo))
+            return "Enter a valid 10-digit Office Reference number";
         if (!password) return "Password is required";
         
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,9 +106,40 @@ const DoctorSignup = () => {
         // Optional: phone 7–15 digits
         const phoneRegex = /^[0-9]{11}$/;
         if (!phoneNumber) return "Phone number is required";
-        if (!phoneRegex.test(phoneNumber)) return "Enter a valid 11-digit phone number";
+        if (!phoneRegex.test(phoneNumber))
+            return "Enter a valid 11-digit phone number";
+        if (drLicenseNo === officeRefNo)
+            return "Doctor's License Number and Office Reference Number cannot be the same.";
+
+        // ✅ Password strength check
+
+        // ✅ Check 1: Minimum 8 characters
+        const lengthRegex = /^.{8,}$/;
+        if (!lengthRegex.test(password)) {
+            return "Password must be at least 8 characters long.";
+        }
+
+        // ✅ Check 2: At least one uppercase letter
+        const uppercaseRegex = /[A-Z]/;
+        if (!uppercaseRegex.test(password)) {
+            return "Password must include at least one uppercase letter.";
+        }
+
+        // ✅ Check 3: At least one number
+        const PswdNumberRegex = /\d/;
+        if (!PswdNumberRegex.test(password)) {
+            return "Password must include at least one number.";
+        }
+
+        // ✅ Check 4: At least one special character
+        const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+        if (!specialCharRegex.test(password)) {
+            return "Password must include at least one special character.";
+        }
+
         return null;
     };
+ 
     const handleSignup = async () => {
         const error = validate();
         if (error) {
@@ -84,7 +156,7 @@ const DoctorSignup = () => {
             phoneNumber,
             address,
             drLicenseNo,
-            officeRefNo, 
+            officeRefNo,
             role: "DOCTOR",
         };
         try {
@@ -107,42 +179,7 @@ const DoctorSignup = () => {
 
         }
     };
-    const [isLoadingLabs, setIsLoadingLabs] = useState(false);
-    // useEffect(() => {
-    //     const loadLabs = async () => {
-    //         try {
-    //             setIsLoadingLabs(true);
-
-    //             const res = await axios.get(`${BASE_URL}/api/lab/getAll`);
-    //             // Ensure raw is always an array
-    //             const raw =
-    //                 Array.isArray(res.data)
-    //                     ? res.data
-    //                     : Array.isArray(res.data?.data)
-    //                         ? res.data.data
-    //                         : Array.isArray(res.data?.content)
-    //                             ? res.data.content
-    //                             : [];
-
-    //             const options = raw.map((l) => ({
-    //                 label: l.name || l.labName || `Lab ${l.id}`,
-    //                 value: String(l.id),
-    //             }));
-
-    //             setLabs(options);
-    //             setSelectedLab(options.length > 0 ? options[0].value : "");
-    //         } catch (err) {
-    //             setToastMessage(
-    //                 `Could not load labs: ${err.response?.data?.message || err.message}`
-    //             );
-    //             setToastType("error");
-    //             setToastVisible(true);
-    //         } finally {
-    //             setIsLoadingLabs(false);
-    //         }
-    //     };
-    //     loadLabs();
-    // }, []);
+   
 
     const closeToast = () => {
         setToastVisible(false);

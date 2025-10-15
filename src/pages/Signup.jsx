@@ -36,7 +36,6 @@ const Signup = () => {
 
           <ArrowLeftIcon className="w- 5 h-5" />
           <img src="/assets/logo.png" alt="logo" />
-
         </div>
         <img
           className="mt-2 ml-12"
@@ -75,21 +74,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
