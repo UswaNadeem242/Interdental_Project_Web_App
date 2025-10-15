@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Layout from "./layout/Layout";
-import { BrowserRouter, Route, Routes } from "react-router-dom"; 
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./pages/landing-page/header";
 import Footer from "./components/Footer";
 import Brands from "./pages/Brands";

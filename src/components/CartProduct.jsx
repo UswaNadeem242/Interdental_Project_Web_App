@@ -9,7 +9,7 @@ import { MinusIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 const CartProduct = ({ item, getCart }) => {
   console.log("items:", item);
 
-  const [count, setCount] = useState(item.quantity);
+  const [count, setCount] = useState(Math.max(1, item.quantity || 1));
   const { fetchCartCount } = useAuth();
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -37,29 +37,37 @@ const CartProduct = ({ item, getCart }) => {
     }
   };
   const handleUpdateItem = async (status, items) => {
-    if (status === "add" && items.stockItem <= count) {
-      setToastMessage("This item is currently out of stock.");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    } else if (status === "add") {
-      setCount(count + 1);
-    } else if (status === "subtract") {
-      setCount(count - 1);
-      if (count === 1) {
-        // Show 0 briefly then remove item
-        setTimeout(() => {
-          handleDeleteItem();
-        }, 300);
+    let newQuantity;
+
+    if (status === "add") {
+      // Check if increasing quantity would exceed available stock
+      const newCount = count + 1;
+      if (newCount > items.stockItem) {
+        setToastMessage(
+          `Cannot add more items. Only ${items.stockItem} ${items.stockItem === 1 ? "item is" : "items are"} available in stock.`,
+        );
+        setToastType("error");
+        setToastVisible(true);
         return;
       }
+      newQuantity = newCount;
+      setCount(newQuantity);
+    } else if (status === "subtract") {
+      if (count <= 1) {
+        // If quantity is 1 or less, remove the item instead of going to 0
+        handleDeleteItem();
+        return;
+      }
+      newQuantity = Math.max(1, count - 1);
+      setCount(newQuantity);
     }
+
     try {
       const response = await axios.put(
         `${BASE_URL}/api/cart/${item.id}/update`,
         {
           cartItemId: item.id,
-          quantity: status === "add" ? count + 1 : count - 1,
+          quantity: newQuantity,
         },
         {
           headers: {
@@ -70,7 +78,14 @@ const CartProduct = ({ item, getCart }) => {
         },
       );
       getCart();
-    } catch (error) {}
+      fetchCartCount();
+    } catch (error) {
+      // Revert the count on error
+      setCount(item.quantity);
+      setToastMessage("Failed to update quantity");
+      setToastType("error");
+      setToastVisible(true);
+    }
   };
   const closeToast = () => {
     setToastVisible(false);

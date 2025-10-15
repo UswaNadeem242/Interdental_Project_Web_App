@@ -15,6 +15,7 @@ import Icons from "../components/Icons";
 
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
+  const { fetchCartCount } = useAuth();
   const modalRef = useRef(null);
   const [activeTab, setActiveTab] = useState("cart");
   const [openOrders, setOpenOrders] = useState(false);
@@ -153,7 +154,22 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         setToastType("error");
         setToastVisible(true);
       } else if (response.data.responseCode === "0000") {
-        setActiveTab("order");
+        // Server should clear cart after successful order creation
+        try {
+          // Refresh cart data from server to get updated (empty) cart
+          await getCart();
+          // Update cart count in header
+          fetchCartCount();
+        } catch (refreshError) {
+          console.log(
+            "Failed to refresh cart from server, clearing locally:",
+            refreshError,
+          );
+          // Fallback: clear cart locally if server refresh fails
+          setCart({ items: [], totalAmount: 0 });
+          fetchCartCount();
+        }
+        // Note: activeTab is handled by the confirm modal
       }
     } catch (error) {
       console.log(error);
@@ -175,6 +191,61 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
       console.log(error);
     }
   };
+  // Stock validation function
+  const validateCartStock = () => {
+    if (!cart?.items || cart.items.length === 0) {
+      setToastMessage("Your cart is empty.");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    const outOfStockItems = [];
+    const insufficientStockItems = [];
+
+    cart.items.forEach((item) => {
+      if (item.stockItem <= 0) {
+        outOfStockItems.push(item.productName);
+      } else if (item.quantity > item.stockItem) {
+        insufficientStockItems.push({
+          name: item.productName,
+          requested: item.quantity,
+          available: item.stockItem,
+        });
+      }
+    });
+
+    if (outOfStockItems.length > 0) {
+      setToastMessage(
+        `The following items are out of stock: ${outOfStockItems.join(", ")}. Please remove them from your cart.`,
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    if (insufficientStockItems.length > 0) {
+      const messages = insufficientStockItems.map(
+        (item) =>
+          `${item.name} (requested: ${item.requested}, available: ${item.available})`,
+      );
+      setToastMessage(
+        `Insufficient stock for: ${messages.join(", ")}. Please adjust quantities.`,
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleCheckoutClick = () => {
+    if (validateCartStock()) {
+      setActiveTab("checkout");
+    }
+  };
+
   useEffect(() => {
     getCart();
   }, []);
@@ -245,7 +316,13 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     if (targetIndex <= currentIndex) {
       setActiveTab(targetTab);
     }
-    // Restrict moving forward
+    // Special handling for checkout tab - validate stock
+    else if (targetTab === "checkout") {
+      if (validateCartStock()) {
+        setActiveTab(targetTab);
+      }
+    }
+    // Restrict moving forward to other tabs
     else {
       dispatch(
         showToast({
@@ -358,8 +435,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     </div>
                     <div className="flex justify-between items-center w-[523px] h-[57px] gap-[20px]">
                       <div
-                        onClick={() => setActiveTab("checkout")}
-                        className="flex justify-center items-center cursor-pointer w-[523px] h-[57px] rounded-[32px] gap-[20px] bg-secondaryBrand"
+                        onClick={handleCheckoutClick}
+                        className="flex justify-center items-center cursor-pointer w-[523px] h-[57px] rounded-[32px] gap-[20px] bg-secondaryBrand hover:bg-blue-700 transition-colors"
                       >
                         <h1 className="flex justify-center items-center leading-[21px] font-poppins font-semibold text-white text-[14px] w-full">
                           Checkout
