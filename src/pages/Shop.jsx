@@ -10,9 +10,13 @@ import {
   MagnifyingGlassIcon,
   StarIcon,
 } from "@heroicons/react/24/solid";
+import { useDispatch } from "react-redux";
+import { showToast } from "../store/toast-slice"; // adjust path if needed
 
 const Shop = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [minPrice, setMinPrice] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [products, setProducts] = useState([]);
@@ -30,6 +34,8 @@ const Shop = () => {
   const { fetchWishlistCount, fetchCartCount } = useAuth();
   const [wishlist, setWishlist] = useState([]);
   const [product, setProduct] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const handleMinChange = (e) => {
     const value = Math.min(Number(e.target.value), maxPrice - 1);
     setMinPrice(value);
@@ -44,18 +50,35 @@ const Shop = () => {
     navigate(`/shop/${product.productId}`);
   };
 
+  // const getAllProducts = async () => {
+  //   try {
+  //     const response = await axios.get(`${BASE_URL}/api/product/getAll`, {
+  //       headers: {
+  //         Accept: "*/*",
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+
+  //     setProducts(response.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const getAllProducts = async () => {
     try {
+      setLoading(true); // start loading
       const response = await axios.get(`${BASE_URL}/api/product/getAll`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
       setProducts(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // stop loading regardless of success or error
     }
   };
 
@@ -138,30 +161,31 @@ const Shop = () => {
     );
   });
 
-  // const handleCheckboxChange = (e) => {
-  //   const { id, checked } = e.target;
-  //   if (checked) {
-  //     setChecked(id);
-  //   } else {
-  //     setChecked(null);
-  //   }
-  // };
-
   const handleCheckboxChange = (e) => {
-    const { id } = e.target;
-    setChecked((prev) => (prev === id ? null : id));
-    // if same clicked again → uncheck
+    const { id, checked } = e.target;
+    if (checked) {
+      setChecked(id);
+    } else {
+      setChecked(null);
+    }
   };
+
+  // const handleCheckboxChange = (e) => {
+  //   const { id } = e.target;
+  //   setChecked((prev) => (prev === id ? null : id));
+  //   // if same clicked again → uncheck
+  // };
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   const handleAddtoWishlist = async (id, e) => {
     e.stopPropagation();
 
+    // make sure this is declared in your component scope
     const token = localStorage.getItem("token");
+
+    // 🔒 If user not logged in
     if (!token) {
-      console.error("❌ No token found in localStorage");
-      setToastMessage("Access denied! Please log in first");
-      setToastType("error");
-      setToastVisible(true);
+      dispatch(showToast({ message: "Login to access", type: "info" }));
       return;
     }
 
@@ -171,6 +195,7 @@ const Shop = () => {
 
     if (!productItem) {
       console.error("❌ No product matched this ID:", id);
+      dispatch(showToast({ message: "Product not found", type: "error" }));
       return;
     }
 
@@ -181,7 +206,6 @@ const Shop = () => {
       price: productItem?.price,
     };
     const url = `${BASE_URL}/api/wishlist/add`;
-    console.log("🌐 API URL:", url);
 
     try {
       const response = await axios.post(url, payload, {
@@ -191,22 +215,28 @@ const Shop = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+
       setWishlist((prev) => [...prev, id]);
       fetchWishlistCount();
-      setToastMessage("Added to Wishlist!");
-      setToastType("success");
-      setToastVisible(true);
+      dispatch(showToast({ message: "Added to Wishlist!", type: "success" }));
     } catch (error) {
       console.error("❌ Wishlist API error:", error);
-      setToastMessage(
-        `Error: ${error.response?.data?.message || error.message}`
+      dispatch(
+        showToast({
+          message: `Error: ${error.response?.data?.message || error.message}`,
+          type: "error",
+        })
       );
-      setToastType("error");
-      setToastVisible(true);
     }
   };
+
   const handleAddtoCart = async (id) => {
     console.log("map id", id);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      dispatch(showToast({ message: "Login to access", type: "info" }));
+      return;
+    }
     const filterMethode = filteredProducts?.filter(
       (item) => item?.productId === id
     );
@@ -238,6 +268,7 @@ const Shop = () => {
       setToastType("success");
       setToastVisible(true);
       fetchCartCount();
+      dispatch(showToast({ message: "Added to Cart!", type: "success" }));
       // setLoading(false);
     } catch (error) {
       console.log(error);
@@ -440,7 +471,11 @@ const Shop = () => {
           {/* Products Grid */}
           <div>
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {filteredProducts.length > 0 ? (
+              {loading ? (
+                <div className="w-full flex justify-center items-center h-[400px]">
+                  <p className="text-lg text-gray-500">Loading products...</p>
+                </div>
+              ) : filteredProducts.length > 0 ? (
                 filteredProducts.map((product, idx) => {
                   const isInWishlist = wishlist.includes(product?.productId); // ✅ Check product in wishlist
 
@@ -493,8 +528,7 @@ const Shop = () => {
                           onClick={(e) =>
                             handleAddtoWishlist(product?.productId, e)
                           }
-                          className={`w-[51.28px] h-[51.28px] p-[12.82px] rounded-[55.1px] flex items-center justify-center transition-all duration-300 bg-[#F8F8F8]
-              `}
+                          className={`w-[51.28px] h-[51.28px] p-[12.82px] rounded-[55.1px] flex items-center justify-center transition-all duration-300 bg-[#F8F8F8]`}
                         >
                           <svg
                             width="27"
