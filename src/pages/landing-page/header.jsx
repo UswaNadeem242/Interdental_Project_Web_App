@@ -207,7 +207,7 @@ const Header = () => {
               <div className="flex flex-col relative">
                 <div
                   onClick={() => setProfileDropdown(!profileDropdown)}
-                  className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
+                  className="flex justify-between items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
                 >
                   <svg
                     width="38"
@@ -238,7 +238,7 @@ const Header = () => {
                     {user?.email.split("@")[0].charAt(0).toUpperCase() +
                       user.email.split("@")[0].slice(1)}
                   </p>
-                  <ChevronDownIcon className="w-5 h-5" />
+                  <ChevronDownIcon className="w-5 h-5 pr-2" />
                 </div>
                 {profileDropdown && (
                   <div className="absolute right-0 top-12 mt-2 z-10">
@@ -251,12 +251,12 @@ const Header = () => {
               </div>
             ) : (
               <>    <button
-                  onClick={() => navigate("/login")}
-                  // className="px-4 py-2 rounded-full bg-gray-100 text-secondaryText text-sm whitespace-nowrap font-semibold"
-                  className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
-                >
-                  Log In  
-                </button>
+                onClick={() => navigate("/login")}
+                // className="px-4 py-2 rounded-full bg-gray-100 text-secondaryText text-sm whitespace-nowrap font-semibold"
+                className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
+              >
+                Log In
+              </button>
                 <button
                   onClick={() => navigate("/signup")}
                   // className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"

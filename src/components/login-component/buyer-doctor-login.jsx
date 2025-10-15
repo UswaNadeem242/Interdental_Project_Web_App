@@ -90,14 +90,12 @@ const BuyerDoctorLogin = () => {
     };
 
     return (
-        <div>
+        <div className="pt-5">
 
 
             {/* Login form */}
-            <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[581px] gap-6 lg:gap-[32px]">
-
-
-                <div className="flex flex-col justify-center items-center w-full px-4 lg:w-[494px] h-auto lg:h-[144px] gap-4 lg:gap-[16px]">
+            <div className="flex flex-col justify-center items-center w-full lg:w-[494px]    gap-6 lg:gap-8">
+                <div className="flex flex-col justify-center items-center w-full px-4 lg:w-[494px] gap-4 lg:gap-4">
                     <div className="relative w-full lg:w-[494px]">
                         <input
                             type="email"
