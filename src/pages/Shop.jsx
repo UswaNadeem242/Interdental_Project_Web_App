@@ -17,8 +17,7 @@ const Shop = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [minPrice, setMinPrice] = useState(null);
-  const [maxPrice, setMaxPrice] = useState(null);
+  const [priceValue, setPriceValue] = useState(500);
   const [products, setProducts] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [brandsList, setBrandsList] = useState([]);
@@ -36,14 +35,19 @@ const Shop = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const handleMinChange = (e) => {
-    const value = Math.min(Number(e.target.value), maxPrice - 1);
-    setMinPrice(value);
+  const handlePriceChange = (e) => {
+    const value = Number(e.target.value);
+    setPriceValue(value);
   };
 
-  const handleMaxChange = (e) => {
-    const value = Math.max(Number(e.target.value), minPrice + 1);
-    setMaxPrice(value);
+  const handleResetAll = () => {
+    setPriceValue(500);
+    setSelectedCategory(null);
+    setCategoryName("");
+    setSelectedbrand(null);
+    setBrandName("");
+    setSearchTerm("");
+    setChecked(null);
   };
 
   const handleProduct = (product) => {
@@ -115,21 +119,33 @@ const Shop = () => {
   };
 
   const handleCategoryChange = (id, name) => {
-    setSelectedCategory(id);
-    setCategoryName(name);
+    if (selectedCategory === id) {
+      // If same category is clicked, reset the filter
+      setSelectedCategory(null);
+      setCategoryName("");
+    } else {
+      // If different category is clicked, set it
+      setSelectedCategory(id);
+      setCategoryName(name);
+    }
   };
 
   const handleBrandChange = (id, name) => {
-    setSelectedbrand(id);
-    setBrandName(name);
+    if (selectedbrand === id) {
+      // If same brand is clicked, reset the filter
+      setSelectedbrand(null);
+      setBrandName("");
+    } else {
+      // If different brand is clicked, set it
+      setSelectedbrand(id);
+      setBrandName(name);
+    }
   };
 
   const filteredProducts = products.filter((product) => {
-    // Price filter
-    const isInPriceRange =
-      !minPrice && !maxPrice
-        ? true
-        : product.price >= minPrice && product.price <= maxPrice;
+    // Price filter - ensure product has valid price
+    const productPrice = parseFloat(product.price) || 0;
+    const isInPriceRange = productPrice <= priceValue;
 
     // Category filter
     const isInCategory = selectedCategory
@@ -369,59 +385,70 @@ const Shop = () => {
 
             {/* Filters content */}
             <div className="p-4 space-y-3 overflow-y-auto h-full">
-              <h2 className="font-semibold  border-b-[2px] border-background my-4">
-                Filters
-              </h2>
+              {/* Filter Header with Reset All Button */}
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="font-semibold text-xl text-[#404145]">Filter</h2>
+                <button
+                  onClick={handleResetAll}
+                  className="px-6 py-2 border-2 border-[#001D58] text-[#001D58] rounded-full font-medium hover:bg-[#001D58] hover:text-white transition-colors"
+                >
+                  Reset All
+                </button>
+              </div>
               {/* 🔍 Search */}
-              <div className="relative flex items-center border rounded-full px-3 py-2">
+              <div className="relative flex items-center bg-gray-100 rounded-full px-4 py-3 mb-6">
                 <input
                   type="text"
-                  placeholder="search "
+                  placeholder="search"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-                  className="w-full rounded-full outline-none border-none focus:ring-0 pr-8" // ⬅️ Add right padding
+                  className="w-full bg-transparent text-gray-500 text-lg outline-none border-none focus:ring-0 pr-12"
                 />
-                <div className="bg-secondaryBrand w-7 h-6 rounded-full flex items-center justify-center">
-                  <MagnifyingGlassIcon className="h-4 w-4 text-white" />
+                <div className="absolute right-2 bg-[#001D58] w-10 h-10 rounded-full flex items-center justify-center">
+                  <MagnifyingGlassIcon className="h-5 w-5 text-white" />
                 </div>
               </div>
-              <div>
-                <div className="flex flex-col justify-center items-start w-[258px] h-[99.33px] rounded-[17px] pr-[12px] py-[12px] gap-[16px] bg-white">
-                  <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
-                    Price Range
-                  </h1>
-                  <div className="w-full mx-auto">
-                    <div className="flex justify-between text-sm text-gray-600 mb-2">
-                      <span>${minPrice ? minPrice : 0}</span>
-                      <span>{maxPrice && `$${maxPrice}`}</span>
-                    </div>
+              {/* Price Range */}
+              <div className="mb-8 mt-1">
+                <h3 className="font-semibold text-lg text-[#404145] mb-4">
+                  Price Range
+                </h3>
+                <div className="">
+                  <div className="flex justify-between text-sm text-gray-600 mb-4">
+                    <span>$0</span>
+                    <span>${priceValue}</span>
+                  </div>
 
-                    <div className="relative h-2 bg-white border-background border rounded">
-                      {/* Active Range Bar */}
-                      <div
-                        className="absolute h-2 bg-blue-950/20 rounded border-background border"
-                        style={{
-                          left: `${(minPrice / 20000) * 100}%`,
-                          right: `${100 - (maxPrice / 20000) * 100}%`,
-                        }}
-                      ></div>
+                  <div className="relative h-2 bg-gray-300 rounded-full">
+                    {/* Active Range Bar */}
+                    <div
+                      className="absolute h-2 bg-[#001D58] rounded-full"
+                      style={{
+                        width: `${(priceValue / 1000) * 100}%`,
+                      }}
+                    ></div>
 
-                      <input
-                        type="range"
-                        min="0"
-                        max="20000"
-                        value={maxPrice}
-                        onChange={handleMaxChange}
-                        className="absolute top-0 w-full h-2 cursor-pointer appearance-none bg-transparent pointer-events-auto"
-                        style={{
-                          accentColor: "#001D58",
-                        }}
-                      />
-                    </div>
+                    {/* Slider Thumb */}
+                    <div
+                      className="absolute w-6 h-6 bg-[#001D58] rounded-full transform -translate-y-2 -translate-x-3 cursor-pointer shadow-lg"
+                      style={{
+                        left: `${(priceValue / 1000) * 100}%`,
+                      }}
+                    ></div>
+
+                    {/* Range Input */}
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      value={priceValue}
+                      onChange={handlePriceChange}
+                      className="absolute top-0 w-full h-2 cursor-pointer appearance-none bg-transparent pointer-events-auto z-10 opacity-0"
+                    />
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-center items-start w-[258px] h-[97px]   p-[12px] space-y-[16px]  border-t-[2px] border-background my-4">
+                <div className="flex flex-col justify-center items-start w-[258px] h-[97px] py-4 space-y-[16px]  border-t-[2px] border-background my-4">
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
                     Availability
                   </h1>
@@ -474,13 +501,13 @@ const Shop = () => {
                     Categories
                   </h1>
                   <div className=" max-h-[200px] overflow-y-auto pr-2 space-y-[8px] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    {filteredProducts.map((c) => (
+                    {categoriesList.map((c) => (
                       <h1
                         key={c.categoryId}
                         onClick={() =>
                           handleCategoryChange(c.categoryId, c.name)
                         }
-                        className={`font-poppins text-[12px] leading-[18px] ${
+                        className={`font-poppins text-[12px] cursor-pointer leading-[18px] ${
                           selectedCategory === c.categoryId
                             ? "text-secondaryBrand  font-medium"
                             : "text-secondaryText cursor-pointer font-normal"
@@ -501,7 +528,7 @@ const Shop = () => {
                         key={b.id}
                         onClick={() => handleBrandChange(b.id, b.name)}
                         // className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
-                        className={`font-poppins text-[12px] leading-[18px] ${
+                        className={`font-poppins text-[12px] cursor-pointer leading-[18px] ${
                           selectedbrand === b.id
                             ? "text-secondaryBrand  font-medium"
                             : "text-secondaryText cursor-pointer font-normal"
