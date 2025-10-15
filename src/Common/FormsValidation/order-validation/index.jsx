@@ -31,34 +31,8 @@ export const CheckoutvalidationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     state: Yup.string().required("State is required"),
     city: Yup.string().required("City is required"),
-    street: Yup.string().required("Street is required"),
-    // paymentMethod: Yup.string().required("Please select a payment method"),
-    // recipientName: Yup.string().when("paymentMethod", {
-    //     is: "paypal",
-    //     then: Yup.string().required("Recipient's Name is required"),
-    // }),
-    // paypalUsername: Yup.string().when("paymentMethod", {
-    //     is: "paypal",
-    //     then: Yup.string().required("Paypal Username is required"),
-    // }),
-    // paypalEmailPhone: Yup.string().when("paymentMethod", {
-    //     is: "paypal",
-    //     then: Yup.string().required("Paypal Email/Phone is required"),
-    // }),
-    // cardNumber: Yup.string().when("paymentMethod", {
-    //     is: "creditCard",
-    //     then: Yup.string().required("Card Number is required"),
-    // }),
-    // expiryDate: Yup.string().when("paymentMethod", {
-    //     is: "creditCard",
-    //     then: Yup.string().required("Expiry Date is required"),
-    // }),
-    // accountNumber: Yup.string().when("paymentMethod", {
-    //     is: "bankTransfer",
-    //     then: Yup.string().required("Account Number is required"),
-    // }),
-    // bankName: Yup.string().when("paymentMethod", {
-    //     is: "bankTransfer",
-    //     then: Yup.string().required("Bank Name is required"),
-    // }),
+    street: Yup.string().required("Street is required"), 
+    recipientName: Yup.string().required("Recipient's Name is required"),
+    paypalUsername: Yup.string().required("Paypal Username is required"),
+    paypalEmailPhone: Yup.string().required("Paypal Email/Phone is required"),
 });

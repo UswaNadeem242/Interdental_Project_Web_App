@@ -9,6 +9,7 @@ import { getOrderByID } from "../../../../api/doctorDasboard";
 export default function OrderDetailsForm({ id }) {
   const [selected, setSelected] = useState("");
   const [orderDetails, setOrderDetails] = useState(null);
+  console.log('orderDetails', orderDetails);
 
   // Helper function to format date as MM/DD/YYYY
   const formatDate = (dateString) => {
@@ -55,7 +56,23 @@ export default function OrderDetailsForm({ id }) {
   // Use selectedTooths from orderDetails instead of local state
 
   // No tooth selection needed - display only
+  const maskName = (name) => {
+    if (!name?.trim()) return "Unknown";
+    const clean = name.trim();
+    return (
+      clean.slice(0, 2).charAt(0).toUpperCase() +
+      clean.slice(1, 2).toLowerCase()
+    );
+  };
 
+  const maskLastName = (lastName) => {
+    if (!lastName?.trim()) return "Unknown";
+    const clean = lastName.trim();
+    return (
+      clean.slice(0, 2).charAt(0).toUpperCase() +
+      clean.slice(1, 2).toLowerCase()
+    );
+  };
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
       <div className="md:col-span-8 col-span-4 bg-white p-4 rounded-2xl">
@@ -75,30 +92,33 @@ export default function OrderDetailsForm({ id }) {
 
         <div>
           <div className="border border-gray-200  rounded-lg p-4 sm:p-5">
-            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-[#434343]">
+            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText">
               Doctor Info
             </h3>
             <hr className="border-gray-200 my-2" />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm sm:text-base text-center">
               <div>
-                <p className="text-[#949494] mb-2  font-normal md:text-sm text-xs font-poppins">
+                <p className="text-secondaryText    mb-2  font-normal md:text-sm text-xs font-poppins">
                   Contact Info
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins ">
-                  {orderDetails?.doctorName || "-"}
+                  {`${maskName(orderDetails?.doctorFirstName)}${maskLastName(
+                    orderDetails?.doctorLastName
+                  )}`}
+
                 </p>
               </div>
               <div>
-                <p className="text-[#949494] mb-2  font-normal md:text-sm text-xs font-poppins whitespace-nowrap">
+                <p className="text-secondaryText    mb-2  font-normal md:text-sm text-xs font-poppins whitespace-nowrap">
                   Office Registration
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {orderDetails?.doctorRegNumber || "-"}
+                  {orderDetails?.doctorRefNumber || "-"}
                 </p>
               </div>
 
               <div>
-                <p className="text-[#949494] mb-2 font-normal md:text-sm text-xs font-poppins">
+                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
                   Create Date
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -106,7 +126,7 @@ export default function OrderDetailsForm({ id }) {
                 </p>
               </div>
               <div>
-                <p className="text-[#949494] mb-2 font-normal md:text-sm text-xs font-poppins">
+                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
                   Due Date
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -119,30 +139,32 @@ export default function OrderDetailsForm({ id }) {
 
         <div className="mt-4">
           <div className="border border-gray-200  rounded-lg p-4 sm:p-6">
-            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-[#434343]">
+            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText">
               Patient Information
             </h3>
             <hr className="border-gray-200 my-2" />
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm sm:text-base">
               <div>
-                <p className="text-[#949494] mb-2 font-normal md:text-sm text-xs font-poppins">
-                  First Name:
+                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
+                  Patient Name:
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {orderDetails?.patientFirstName || "-"}
+                  {`${maskName(orderDetails?.patientFirstName)}${maskLastName(
+                    orderDetails?.patientLastName
+                  )}`}
                 </p>
               </div>
-              <div>
-                <p className="text-[#949494] mb-2 font-normal md:text-sm text-xs font-poppins">
+              {/* <div>
+                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
                   Last Name:
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
                   {orderDetails?.patientLastName || "-"}
                 </p>
-              </div>
+              </div> */}
 
               <div>
-                <p className="text-[#949494] mb-2 font-normal md:text-sm text-xs font-poppins">
+                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
                   Subscription ID:
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -156,7 +178,7 @@ export default function OrderDetailsForm({ id }) {
         <div className="mt-4">
           {/* tooth selection  */}
           <div className="border border-gray-200  rounded-lg p-4 mt-4">
-            <p className="text-sm font-medium font-poppins text-[#434343] mb-4">
+            <p className="text-sm font-medium font-poppins text-primaryText mb-4">
               Tooth Selection
             </p>
             <div className="py-4">
@@ -171,13 +193,13 @@ export default function OrderDetailsForm({ id }) {
 
         <div className="mt-4">
           <div className="border border-gray-200  rounded-lg p-4 sm:p-6">
-            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-[#434343]">
+            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText">
               Customization Details
             </h3>
             <hr className="border-gray-200 my-2" />
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm sm:text-base pb-2">
               <div>
-                <p className="text-[#949494] mb-2  font-normal md:text-sm text-xs font-poppins">
+                <p className="text-secondaryText    mb-2  font-normal md:text-sm text-xs font-poppins">
                   Material:
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -185,7 +207,7 @@ export default function OrderDetailsForm({ id }) {
                 </p>
               </div>
               <div>
-                <p className="text-[#949494] mb-2 font-normal md:text-sm text-xs font-poppins">
+                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
                   Colour:
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -194,7 +216,7 @@ export default function OrderDetailsForm({ id }) {
               </div>
 
               <div>
-                <p className="text-[#949494] mb-2 font-normal md:text-sm text-xs font-poppins">
+                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
                   Type:
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -205,7 +227,7 @@ export default function OrderDetailsForm({ id }) {
             <hr className="border-gray-200 my-2" />
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm sm:text-base   pt-2">
               <div>
-                <p className="text-[#949494] mb-2 font-normal md:text-sm text-xs font-poppins">
+                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
                   Manufacturer
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -213,7 +235,7 @@ export default function OrderDetailsForm({ id }) {
                 </p>
               </div>
               <div>
-                <p className="text-[#949494] mb-2 font-normal md:text-sm text-xs font-poppins">
+                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
                   Manufacture Process
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -223,14 +245,17 @@ export default function OrderDetailsForm({ id }) {
             </div>
           </div>
           <div className="border border-gray-200  rounded-lg p-4 sm:p-6 mt-4">
-            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-[#434343]">
+            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText ">
               Notes
             </h3>
             <hr className="border-gray-200 my-2" />
             <div className=" text-sm sm:text-base pb-2">
               <div>
-                <p className="text-[#949494]  font-normal md:text-sm text-xs font-poppins">
-                  {orderDetails?.doctorName || "-"}:
+                <p className="text-secondaryText     font-normal md:text-sm text-xs font-poppins ">
+                  {`${maskName(orderDetails?.doctorFirstName)}${maskLastName(
+                    orderDetails?.doctorLastName
+                  )}`}:
+
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
                   {orderDetails?.additionalNotes || "-"}
