@@ -334,10 +334,31 @@ const Shop = () => {
     }
 
     const selectedProduct = filterMethode[0];
-    if (selectedProduct.stockQuantity <= 0) {
-      setToastMessage("This item is currently out of stock.");
+    console.log("Selected product for stock check:", selectedProduct);
+    console.log("Stock quantity:", selectedProduct?.stockQuantity);
+
+    // Check if stock quantity exists and is valid
+    if (
+      !selectedProduct ||
+      selectedProduct.stockQuantity === undefined ||
+      selectedProduct.stockQuantity === null
+    ) {
+      setToastMessage("Unable to check stock availability.");
       setToastType("error");
       setToastVisible(true);
+      return;
+    }
+
+    if (selectedProduct.stockQuantity <= 0) {
+      setToastMessage("No stock remaining for this item!");
+      setToastType("error");
+      setToastVisible(true);
+      dispatch(
+        showToast({
+          message: "No stock remaining for this item!",
+          type: "error",
+        }),
+      );
       return;
     }
     try {
