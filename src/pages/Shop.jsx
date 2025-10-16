@@ -325,7 +325,7 @@ const Shop = () => {
         dispatch(
           showToast({
             message: "Access Denied. Please login first.",
-            type: "info",
+            type: "error",
           }),
         );
         return;
@@ -432,7 +432,7 @@ const Shop = () => {
         dispatch(
           showToast({
             message: "Access Denied. Please login first.",
-            type: "info",
+            type: "error",
           }),
         );
         return;
