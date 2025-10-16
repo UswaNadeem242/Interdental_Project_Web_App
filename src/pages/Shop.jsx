@@ -309,7 +309,7 @@ const Shop = () => {
       });
 
       const wishlistItems = response.data.items || [];
-      console.log("🔍 Wishlist API response:", wishlistItems);
+
       setWishlist(wishlistItems);
     } catch (error) {
       console.error("Error fetching wishlist:", error);
