@@ -1,7 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ProgressBar } from '../../../../Common/ProgressBar'
+import { getOrderTranckingByID } from '../../../../api/doctorDasboard';
 
-export default function TrackingOrder() {
+export default function TrackingOrder({ id }) {
+    const [orderTracking, setOrderTracking] = useState(null);
+
+    useEffect(() => {
+        const fetchOrderByID = async () => {
+            const response = await getOrderTranckingByID(id);
+
+            if (response.status === 200) {
+                setOrderTracking(response.data.data);
+            }
+        };
+        fetchOrderByID();
+    }, [id]);
+    console.log('orderTracking', orderTracking);
+
     return (
         <>
             <div className='bg-white p-8 mt-8 rounded-2xl'>

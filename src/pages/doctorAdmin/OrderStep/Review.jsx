@@ -6,7 +6,7 @@ const ReviewOrder = ({ next }) => {
   const restoration = useSelector((state) => state.restoration);
 
   const patient = restoration.patient;
-console.log('');
+ 
 
   const [doctorProfile, setDoctorProfile] = useState(null);
   // Map doctor and patient arrays to objects for easier access

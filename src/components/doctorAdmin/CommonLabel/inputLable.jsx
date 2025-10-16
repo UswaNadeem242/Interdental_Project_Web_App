@@ -17,14 +17,14 @@ export default function LabeledInput({
                 </label>
             )} */}
       <input
+        min={min}
+        max={max}
         type={type}
         name={name}
         value={value}
         // onChange={(e) => onChange?.(e.target.value)}
         onChange={onChange}
         placeholder={placeholder}
-        min={min}
-        max={max}
         className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder-[#949494]outline-none transition-shadow  outline-none placeholder:font-poppins placeholder:text-[10px] placeholder:capitalize"
       />
     </div>

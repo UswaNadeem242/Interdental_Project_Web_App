@@ -13,6 +13,13 @@ export default function OrderDetailsForm({ id }) {
   const [selected, setSelected] = useState("");
   const [orderDetails, setOrderDetails] = useState(null);
   const restoration = useSelector((state) => state.restoration);
+  const toothSelections = restoration.toothSelections || [];
+  const selectedTeeth = restoration.selectedTeeth || [];
+  const patient = restoration.patient;
+  const teeth = toothSelections.reduce((acc, t) => {
+    acc[t.toothId] = t;
+    return acc;
+  }, {});
   const doctor = restoration.doctor.reduce((acc, d) => {
     acc[d.field] = d.value || "N/A";
     return acc;
@@ -59,25 +66,15 @@ export default function OrderDetailsForm({ id }) {
   const handleSelect = (option) => {
     setSelected(option);
   };
-  // Use selectedTooths from orderDetails instead of local state
-  // No tooth selection needed - display only
-  const maskName = (name) => {
+
+  const maskNamePart = (name) => {
     if (!name?.trim()) return "Unknown";
     const clean = name.trim();
     return (
-      clean.slice(0, 2).charAt(0).toUpperCase() +
-      clean.slice(1, 2).toLowerCase()
+      clean.charAt(0).toUpperCase() + clean.slice(1, 2).toLowerCase()
     );
   };
 
-  const maskLastName = (lastName) => {
-    if (!lastName?.trim()) return "Unknown";
-    const clean = lastName.trim();
-    return (
-      clean.slice(0, 2).charAt(0).toUpperCase() +
-      clean.slice(1, 2).toLowerCase()
-    );
-  };
   const maskNumber = (num) => {
     if (!num) return "";
     const str = String(num).trim();
@@ -90,17 +87,14 @@ export default function OrderDetailsForm({ id }) {
 
     return first + middle + last;
   };
-
-
+  // download the pdf
   const handleDownloadPDF = async () => {
     const element = formRef.current;
-
     const downloadBtn = element.querySelector(".no-print");
     if (downloadBtn) {
       downloadBtn.style.display = "none";
       console.log("Button hidden"); // Add this to debug
     }
-
     // ✅ Capture fast (optimized settings)
     const canvas = await html2canvas(element, {
       scale: 1.5, // Lower scale → faster render, still clear enough
@@ -120,8 +114,19 @@ export default function OrderDetailsForm({ id }) {
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
     pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`Implant_Design_Form_${Date.now()}.pdf`);
+    pdf.save(`Implant_Design_Form.pdf`);
   };
+
+
+  const totalPrice = toothSelections.reduce((toothSum, tooth) => {
+    // for each tooth, sum its fields that have price
+    const toothTotal = Object.values(tooth)
+      .filter((field) => field && typeof field === "object" && field.price)
+      .reduce((sum, field) => sum + field.price, 0);
+
+    return toothSum + toothTotal;
+  }, 0);
+  console.log('totalPrice', totalPrice);
 
 
   return (
@@ -161,7 +166,7 @@ export default function OrderDetailsForm({ id }) {
                   Contact Info
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins ">
-                  {`${maskName(orderDetails?.doctorFirstName)}${maskLastName(
+                  {`${maskNamePart(orderDetails?.doctorFirstName)}${maskNamePart(
                     orderDetails?.doctorLastName
                   )}`}
 
@@ -212,7 +217,7 @@ export default function OrderDetailsForm({ id }) {
                   Patient Name:
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {`${maskName(orderDetails?.patientFirstName)}${maskLastName(
+                  {`${maskNamePart(orderDetails?.patientFirstName)}${maskNamePart(
                     orderDetails?.patientLastName
                   )}`}
                 </p>
@@ -221,7 +226,7 @@ export default function OrderDetailsForm({ id }) {
                   Subscription ID:
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {orderDetails?.subscriptionId || "-"}
+                  {patient?.id || "-"}#
                 </p>
               </div>
             </div>
@@ -255,52 +260,89 @@ export default function OrderDetailsForm({ id }) {
               Customization Details
             </h3>
             <hr className="border-gray-200 my-2" />
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm sm:text-base pb-2">
-              <div>
-                <p className="text-secondaryText    mb-2  font-normal md:text-sm text-xs font-poppins">
-                  Material:
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  Miles
-                </p>
-              </div>
-              <div>
-                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                  Colour:
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  Esther
-                </p>
-              </div>
+            {selectedTeeth.map((toothId) => {
+              const tooth = teeth[toothId] || {};
 
-              <div>
-                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                  Type:
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  466437#
-                </p>
-              </div>
-            </div>
-            <hr className="border-gray-200 my-2" />
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm sm:text-base   pt-2">
-              <div>
-                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                  Manufacturer
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  Miles
-                </p>
-              </div>
-              <div>
-                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                  Manufacture Process
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  Esther
-                </p>
-              </div>
-            </div>
+              return (
+                <div
+                  key={toothId}
+                  className="  p-3 rounded-lg"
+                >
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-[#949494] text-xs font-poppins">
+                        Material:
+                      </p>
+                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                        {tooth.materialOption?.label ||
+                          tooth.material ||
+                          "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[#949494] text-xs font-poppins">
+                        Scanner Type:
+                      </p>
+                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                        {tooth.scannerTypeOption?.label ||
+                          tooth.scannerType ||
+                          "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[#949494] text-xs font-poppins">
+                        Digital Denture:
+                      </p>
+                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                        {tooth?.digitalOptionsOption?.label ||
+                          tooth?.digitalOptions ||
+                          "N/A"}
+                      </p>
+                    </div>
+                    {/* <div>
+                      <p className="text-[#949494] text-xs font-poppins">
+                        Surgical Guide:
+                      </p>
+                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                        {tooth?.surgical_guideOption?.label ||
+                          tooth?.surgical_guide ||
+                          "N/A"}
+                      </p>
+                    </div> */}
+                    <div>
+                      <p className="text-[#949494] text-xs font-poppins">
+                        Digital Model:
+                      </p>
+                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                        {tooth?.digitalOptionsOption?.label ||
+                          tooth?.digitalOptionsOption ||
+                          "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[#949494] text-xs font-poppins">
+                        Laboratory:
+                      </p>
+                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                        {tooth?.labOption?.label || tooth?.labOption || "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[#949494] text-xs font-poppins">
+                        Photogrammetry:
+                      </p>
+                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                        {tooth?.photogrammetryfilesOption?.label ||
+                          tooth?.photogrammetryfilesOption ||
+                          "N/A"}
+                      </p>
+                    </div>
+
+                  </div>
+                </div>
+              );
+            })}
           </div>
           <div className="border border-gray-200  rounded-lg p-4 sm:p-6 mt-4">
             <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText ">
@@ -310,7 +352,7 @@ export default function OrderDetailsForm({ id }) {
             <div className=" text-sm sm:text-base pb-2">
               <div>
                 <p className="text-secondaryText     font-normal md:text-sm text-xs font-poppins ">
-                  {`${maskName(orderDetails?.doctorFirstName)}${maskLastName(
+                  {`${maskNamePart(orderDetails?.doctorFirstName)}${maskNamePart(
                     orderDetails?.doctorLastName
                   )}`}:
 
@@ -332,6 +374,7 @@ export default function OrderDetailsForm({ id }) {
             optionValue="value"
             onSelect={handleSelect}
             className="text-xs"
+            totalAmount={totalPrice}
           />
         </div>
 

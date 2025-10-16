@@ -16,7 +16,7 @@ function DoctorDeailsPage() {
     },
     {
       name: "track order",
-      content: <TrackingOrder />,
+      content: <TrackingOrder id={id} />,
     },
   ];
   return (
