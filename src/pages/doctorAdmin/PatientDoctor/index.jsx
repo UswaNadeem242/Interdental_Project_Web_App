@@ -12,13 +12,25 @@ import {
 import SearchBar from "../../../Common/SearchBar";
 import { getDoctorPatients } from "../../../api/doctorDasboard";
 import SecondTable from "../../../Common/second-table-component";
+import { EditDeleteDropdownMenu } from "../../../Common/DropDown/edit-delete";
 
 const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [patients, setPatients] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
 
+  const handleOpenForm = (row) => {
+    setSelectedData(row);
+    setShowForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    setSelectedData(null);
+  };
   const transformPatientsData = (apiData) => {
     if (!apiData || !Array.isArray(apiData)) return [];
     return apiData.map((order) => ({
@@ -119,7 +131,17 @@ const PatientPage = () => {
           headings={headingsPateint}
           data={filteredData}
           actionButton="active"
+          DropdownComponent={EditDeleteDropdownMenu}
         />
+
+
+
+        {showForm && (
+          <AddPatientForm
+            initialData={selectedData}
+            onClose={handleCloseForm}
+          />
+        )}
       </div>
     </div>
   );
