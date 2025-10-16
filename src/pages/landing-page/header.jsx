@@ -1,44 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-// import logo from "../assets/logo.png";
-// import vector from "../assets/Vector.png";
-// import search from "../assets/Search.png";
-import { useNavigate } from "react-router-dom";
-import ShoppingCart from "../modals/ShoppingCartModal";
-import ProfileDropdown from "./dropdowns/ProfileDropdown";
-import CategoriesDropdowon from "./dropdowns/CategoriesDropdown";
-import SearchBarDropdown from "./dropdowns/SearchBarDropdown";
-import NotificationsDropdown from "./dropdowns/NotificationsDropdown";
-import axios from "axios";
-import { BASE_URL } from "../config";
-import { useAuth } from "../auth/AuthContext";
-import AccountRequiredModal from "../modals/AccountRequiredModal";
-import BrandsDropdown from "./dropdowns/BrandsDropdown";
-import CategoriesMenu from "./dropdowns/CategoriesMenu";
-import Toast from "./Toast";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../../auth/AuthContext";
+import ProfileDropdown from "../../components/dropdowns/ProfileDropdown";
+import { navItems } from "../../Constant";
+import { ChevronDownIcon, UsersIcon } from "@heroicons/react/24/outline";
+import ProfileIcon from "../../icon/ProfileIcon";
+import { UserIcon } from "../../icon/UserIcon";
+
+import ShoppingCart from "../../modals/ShoppingCartModal";
+import NotificationsDropdown from "../../components/dropdowns/NotificationsDropdown";
+import { BellIconSVG } from "../../icon/Bell";
+import { showToast } from "../../store/toast-slice";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
-  const [profileDropdown, setProfileDropdown] = useState(false);
-  const [categoriesDropdown, setCategoriesDropdown] = useState(false);
-  const [searchDropdown, setSearchDropdown] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notificationsDropdown, setNotificationsDropdown] = useState(false);
-  const [categoriesList, setCategoriesList] = useState([]);
-  const [categoryId, setCategoryId] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [brandsDropdown, setBrandsDropdown] = useState(false);
-  const [categories, setCategories] = useState(false);
+
+  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
   const { wishlistCount, cartCount } = useAuth();
 
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState("success");
-  const [products, setProducts] = useState([]);
-  const closeToast = () => {
-    setToastVisible(false);
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+  // const { user } = useAuth();
+  const [profileDropdown, setProfileDropdown] = useState(false);
+
   // Retrieve user data from localStorage
   const userData = localStorage.getItem("users");
   const user = userData ? JSON.parse(userData) : null;
@@ -47,43 +37,8 @@ const Header = () => {
 
   // Safely log firstName only if user exists
   if (user && user.firstName) {
+    console.log(user.firstName);
   }
-  const getAllProducts = async () => {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}/api/products/getallproducts?page=0&size=10`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      setProducts(response.data.data.content);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const getAllCategories = async () => {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}/category/getAllCategories`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      setCategoriesList(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getAllCategories();
-    getAllProducts();
-  }, []);
 
   const handleCart = () => {
     setIsModalOpen(true);
@@ -96,125 +51,68 @@ const Header = () => {
     }
   };
   const handleNotifications = () => {
+    console.log("consle");
+
     if (user) {
       setNotificationsDropdown(!notificationsDropdown);
     } else {
       setIsActionModalOpen(true);
     }
   };
-
   return (
-    <div className="flex flex-col justify-center items-center h-[110.77px] w-full bg-white rounded-[8px] gap-[8px] pt-[20px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
-      <div className="flex w-full justify-around items-center">
-        {/*  h-[45.77px] px-[100px] gap-[94px] */}
-        <NavLink to="/" className="flex items-center gap-2">
-          {" "}
-          <img
-            src="/assets/logo.png"
-            alt="logo"
-            className="h-5 w-auto sm:h-5"
-            // w-[200px] h-[45.77px]
-          />
-        </NavLink>
-
-        <div className="flex w-[665.83px] gap-[32px]">
-          <div className="flex flex-col relative">
-            <div
-              onClick={() => setCategoriesDropdown(!categoriesDropdown)}
-              className="flex justify-center items-center cursor-pointer w-[126px] h-[42px] gap-[8px] px-[4px] py-[8px] rounded-[50px] border-[1px] border-[#0000001A]"
-            >
-              <h1 className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
-                {categoriesList.find((c) => c.categoryId === categoryId)
-                  ?.name || "Categories"}
-              </h1>
-              {/* <img src="/assets/vector.png" alt="vector" /> */}
-              <svg
-                width="10"
-                height="6"
-                viewBox="0 0 10 6"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-3 h-3"
-              >
-                <path
-                  d="M9 1.2077L5.70707 4.50063C5.31818 4.88952 4.68182 4.88952 4.29293 4.50063L1 1.2077"
-                  stroke="#434343"
-                  stroke-width="1.22449"
-                  stroke-miterlimit="10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-            {categoriesDropdown && (
-              <div className="absolute right-0 top-12 mt-2 z-10">
-                <CategoriesDropdowon
-                  categories={categoriesList}
-                  setCategoryId={setCategoryId}
-                  setCategoriesDropdown={setCategoriesDropdown}
-                />
-              </div>
-            )}
-          </div>
-
-          <div className="flex flex-col relative">
-            <div
-              onClick={() => setSearchDropdown(!searchDropdown)}
-              className="relative w-[531.83px]"
-            >
-              <input
-                type="text"
-                name=""
-                id=""
-                placeholder="Search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-[531.83px] h-[42px] border-[1px] border-[#0000001A] outline-none rounded-[53px] gap-[8px] px-[16px] py-[4px] placeholder:font-poppins placeholder:font-normal placeholder:text-14px placeholder:leading-[21px] text-[#434343]"
+    <>
+      <header className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[92%] md:w-[90%]">
+        {/* pill container */}
+        <div className="mx-auto flex items-center justify-between rounded-full bg-white/95  ring-1 ring-black/5 backdrop-blur px-3 sm:px-5 md:px-6 py-2.5">
+          {/* Mobile menu button */}
+          {/* shadow-lg */}
+          <button
+            className="inline-flex lg:hidden items-center justify-center h-10 w-10 rounded-full hover:bg-gray-100 transition"
+            aria-label="Open menu"
+            onClick={toggleMobileMenu}
+          >
+            <svg width="22" height="20" viewBox="0 0 22 20" fill="none">
+              <path
+                d="M1.62891 3.89404H20.3696M1.62891 10.0052H20.3696M1.62891 16.1163H20.3696"
+                stroke="#434343"
+                strokeWidth="1.83333"
+                strokeLinecap="round"
               />
-              <div className="absolute right-[8px] top-[20px] transform -translate-y-1/2 w-[34px] h-[34px] rounded-[22px] p-[8px] gap-[8px] bg-secondaryBrand">
-                {/* <img
-                  src="/assets/search.png"
-                  alt="search"
-                  className="w-[18px] h-[18px]"
-                /> */}
-                <svg
-                  width="19"
-                  height="18"
-                  viewBox="0 0 19 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9.08203 14.251C12.3957 14.251 15.082 11.5647 15.082 8.25098C15.082 4.93727 12.3957 2.25098 9.08203 2.25098C5.76832 2.25098 3.08203 4.93727 3.08203 8.25098C3.08203 11.5647 5.76832 14.251 9.08203 14.251Z"
-                    stroke="white"
-                    stroke-width="1.28571"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M16.5828 15.7508L13.3203 12.4883"
-                    stroke="white"
-                    stroke-width="1.28571"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
-            </div>
-            {searchDropdown && (
-              <div className="absolute right-0 top-12 mt-2 z-10">
-                <SearchBarDropdown
-                  products={products}
-                  categoryId={categoryId}
-                  searchQuery={searchQuery}
-                  setSearchDropdown={setSearchDropdown}
-                />
-              </div>
-            )}
+            </svg>
+          </button>
+
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <NavLink to="/" className="flex items-center gap-2">
+              <img
+                src="/assets/logo.png"
+                alt="Interdental Lab"
+                className="h-5 w-auto sm:h-5 "
+              />
+            </NavLink>
           </div>
-        </div>
-        <div className="flex justify-between items-center w-[258.17px] h-[34px] gap-[20.39px]">
-          <div className="flex gap-[20.39px] items-center">
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-1 text-[15px]">
+            {navItems.map(({ to, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) =>
+                  [
+                    "px-2.5 py-2 rounded-full transition text-sm whitespace-nowrap font-poppins",
+                    "text-secondaryText ",
+                    isActive ? "bg-background     font-semibold" : "",
+                  ].join(" ")
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
+          </nav>
+
+          {/* Desktop actions */}
+          <div className="hidden lg:flex items-center gap-3">
             <div className="relative">
               <svg
                 width="26"
@@ -227,10 +125,12 @@ const Header = () => {
                   if (user && user?.email) {
                     handleCart();
                   } else {
-                    setToastMessage("Access denied! Please log in first");
-
-                    setToastType("error");
-                    setToastVisible(true);
+                    dispatch(
+                      showToast({
+                        message: "Access denied! Please log in first",
+                        type: "error",
+                      }),
+                    );
                   }
                 }}
               >
@@ -266,10 +166,12 @@ const Header = () => {
                   if (user && user?.email) {
                     handleWishlist();
                   } else {
-                    setToastMessage("Access denied! Please log in first");
-
-                    setToastType("error");
-                    setToastVisible(true);
+                    dispatch(
+                      showToast({
+                        message: `Access denied! Please log in first`,
+                        type: "error",
+                      }),
+                    );
                   }
                 }}
               >
@@ -282,35 +184,14 @@ const Header = () => {
                   strokeLinejoin="round"
                 />
               </svg>
-              {wishlistCount > 0 && (
-                <span className=" absolute right-0 top-12  w-5 h-5 text-xs font-bold text-white d rounded-full flex items-center justify-center">
-                  {wishlistCount}
-                </span>
-              )}
             </div>
 
             <div className="flex flex-col relative">
-              <svg
-                width="25"
-                height="25"
-                viewBox="0 0 25 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="cursor-pointer"
-                onClick={() => handleNotifications()}
-              >
-                <path
-                  d="M19.3595 10.5968V9.89217C19.3595 6.02344 16.3378 2.88721 12.6104 2.88721C8.88291 2.88721 5.86122 6.02344 5.86122 9.89217V10.5968C5.86122 11.4424 5.62007 12.269 5.16815 12.9726L4.06071 14.6967C3.04918 16.2716 3.8214 18.4121 5.58071 18.9101C10.1831 20.2129 15.0376 20.2129 19.64 18.9101C21.3993 18.4121 22.1715 16.2716 21.16 14.6967L20.0526 12.9726C19.6006 12.269 19.3595 11.4424 19.3595 10.5968Z"
-                  stroke="#434343"
-                  stroke-width="1.5"
-                />
-                <path
-                  d="M8.11035 19.8872C8.76538 21.635 10.5328 22.8872 12.6104 22.8872C14.6879 22.8872 16.4553 21.635 17.1104 19.8872"
-                  stroke="#434343"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-              </svg>
+              <button onClick={() => handleNotifications()}>
+                {" "}
+                <BellIconSVG />
+              </button>
+
               {notificationsDropdown && (
                 <div className="absolute right-0 top-12 mt-1 z-10">
                   <NotificationsDropdown
@@ -319,240 +200,154 @@ const Header = () => {
                 </div>
               )}
             </div>
-          </div>
-          {user && user?.email ? (
-            <div className="flex flex-col relative">
-              <div
-                onClick={() => setProfileDropdown(!profileDropdown)}
-                className="flex justify-center items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
-              >
-                <svg
-                  width="38"
-                  height="38"
-                  viewBox="0 0 38 38"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+            {user && user?.email ? (
+              <div className="flex flex-col relative">
+                <div
+                  onClick={() => setProfileDropdown(!profileDropdown)}
+                  className="flex justify-between items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
                 >
-                  <rect width="38" height="38" rx="19" fill="#F8F8F8" />
-                  <ellipse
-                    cx="18.9997"
-                    cy="14.2502"
-                    rx="3.16667"
-                    ry="3.16667"
-                    stroke="#001D58"
-                    stroke-width="1.1875"
-                  />
-                  <ellipse
-                    cx="18.9997"
-                    cy="22.9582"
-                    rx="5.54167"
-                    ry="3.16667"
-                    stroke="#001D58"
-                    stroke-width="1.1875"
-                  />
-                </svg>
-
-                <p className="font-poppins font-normal text-[14px]  leading-[21px] text-[#393A44]">
-                  {user?.email.split("@")[0].charAt(0).toUpperCase() +
-                    user.email.split("@")[0].slice(1)}
-                </p>
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3.33301 6L7.99967 10L12.6663 6"
-                    stroke="#001D58"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
-              {profileDropdown && (
-                <div className="absolute right-0 top-12 mt-2 z-10">
-                  <ProfileDropdown
-                    isModalOpen={profileDropdown}
-                    setIsModalOpen={setProfileDropdown}
-                  />
+                  <svg
+                    width="38"
+                    height="38"
+                    viewBox="0 0 38 38"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect width="38" height="38" rx="19" fill="#F8F8F8" />
+                    <ellipse
+                      cx="18.9997"
+                      cy="14.2502"
+                      rx="3.16667"
+                      ry="3.16667"
+                      stroke="#001D58"
+                      stroke-width="1.1875"
+                    />
+                    <ellipse
+                      cx="18.9997"
+                      cy="22.9582"
+                      rx="5.54167"
+                      ry="3.16667"
+                      stroke="#001D58"
+                      stroke-width="1.1875"
+                    />
+                  </svg>
+                  <p className="font-poppins font-normal text-[14px]  leading-[21px] text-[#393A44]">
+                    {user?.email.split("@")[0].charAt(0).toUpperCase() +
+                      user.email.split("@")[0].slice(1)}
+                  </p>
+                  <ChevronDownIcon className="w-5 h-5 pr-2" />
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex justify-between items-center w-[125px]">
-              <div
-                onClick={() => navigate("/login")}
-                className="flex justify-center items-center  w-[65px] h-[34px] rounded-[37px] gap-[8px] bg-secondaryBrand"
-              >
-                <h1 className="flex justify-center items-center cursor-pointer leading-[18px] font-poppins font-normal text-white text-[12px] w-full whitespace-nowrap">
-                  Log in
-                </h1>
+                {profileDropdown && (
+                  <div className="absolute right-0 top-12 mt-2 z-10">
+                    <ProfileDropdown
+                      isModalOpen={profileDropdown}
+                      setIsModalOpen={setProfileDropdown}
+                    />
+                  </div>
+                )}
               </div>
-              <h1
-                onClick={() => navigate("/signup")}
-                className="flex justify-center items-center cursor-pointer leading-[18px] font-poppins font-normal text-black text-[12px] w-[60px]"
+            ) : (
+              <>
+                {" "}
+                <button
+                  onClick={() => navigate("/login")}
+                  // className="px-4 py-2 rounded-full bg-gray-100 text-secondaryText text-sm whitespace-nowrap font-semibold"
+                  className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
+                >
+                  Log In
+                </button>
+                <button
+                  onClick={() => navigate("/signup")}
+                  // className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
+                  className="x-4 py-2 rounded-full   text-black text-sm whitespace-nowrap font-semibold"
+                >
+                  sign up
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Spacer to keep layout balanced on desktop when center nav grows */}
+          <div className="w-10 lg:hidden" />
+        </div>
+
+        {/* Mobile drawer */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 z-40 bg-white">
+            <div className="flex items-center justify-between px-5 py-4 border-b">
+              <NavLink
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2"
               >
-                Sign Up
-              </h1>
+                <img
+                  src="/assets/logo.png"
+                  alt="Interdental Lab"
+                  className="h-5 w-auto"
+                />
+              </NavLink>
+              <button
+                onClick={toggleMobileMenu}
+                className="h-10 w-10 rounded-full hover:bg-gray-100 flex items-center justify-center"
+                aria-label="Close menu"
+              >
+                ✕
+              </button>
             </div>
-          )}
-        </div>
-      </div>
-      <div className="flex justify-center items-center w-full h-[37px] p-[8px] gap-[64px] bg-[#FAFAFA]">
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive
-              ? "font-poppins font-bold text-secondaryBrand leading-[21px]"
-              : "font-poppins font-normal text-tertiaryBrand leading-[21px]"
-          }
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to="/shop"
-          className={({ isActive }) =>
-            isActive
-              ? "font-poppins font-bold text-secondaryBrand leading-[21px]"
-              : "font-poppins font-normal text-tertiaryBrand leading-[21px]"
-          }
-        >
-          Shop
-        </NavLink>
-        <div className="flex flex-col relative">
-          <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[83px] h-[21px]">
-            <label
-              onClick={() => setBrandsDropdown(true)}
-              className={`${
-                brandsDropdown
-                  ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
-                  : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-              }`}
-            >
-              Brands
-            </label>
-            <svg
-              width="10"
-              height="6"
-              viewBox="0 0 10 6"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className={`${
-                brandsDropdown ? " text-secondaryBrand" : " text-tertiaryBrand"
-              }`}
-            >
-              <path
-                d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"
-                stroke="#434343"
-                stroke-width="1.22449"
-                stroke-miterlimit="10"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+
+            <div className="p-5 space-y-3 w-full h-screen  bg-white">
+              <div className="flex gap-3 mb-4">
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex-1 py-2.5 rounded-full bg-blue-900 text-white font-semibold"
+                >
+                  Log In
+                </button>
+                <button
+                  onClick={() => {
+                    navigate("/signup");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex-1 py-2.5 rounded-full  text-black font-semibold"
+                >
+                  sign up
+                </button>
+              </div>
+
+              <nav className="space-y-2 ">
+                {navItems.map(({ to, label }) => (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      [
+                        "block w-full px-4 py-3 rounded-xl border text-left",
+                        "border-gray-200 hover:bg-gray-50",
+                        isActive
+                          ? "bg-gray-50 text-blue-700 font-semibold"
+                          : "text-gray-700",
+                      ].join(" ")
+                    }
+                  >
+                    {label}
+                  </NavLink>
+                ))}
+              </nav>
+            </div>
           </div>
-          {brandsDropdown && (
-            <div className="absolute left-0 top-6 z-10">
-              <BrandsDropdown setBrandsDropdown={setBrandsDropdown} />
-            </div>
-          )}
-        </div>
-        <div className="flex flex-col relative">
-          <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[113px] h-[21px]">
-            <label
-              onClick={() => setCategories(true)}
-              className={`${
-                categories
-                  ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
-                  : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-              }`}
-            >
-              Categories
-            </label>
-            <svg
-              width="10"
-              height="6"
-              viewBox="0 0 10 6"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className={`${
-                categories ? " text-secondaryBrand" : " text-tertiaryBrand"
-              }`}
-            >
-              <path
-                d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"
-                stroke="#434343"
-                stroke-width="1.22449"
-                stroke-miterlimit="10"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-          {categories && (
-            <div className="absolute left-0 top-6 z-10">
-              <CategoriesMenu
-                setCategories={setCategories}
-                categoriesList={categoriesList}
-              />
-            </div>
-          )}
-        </div>
-        {/* <NavLink
-          to="/categories"
-          className={({ isActive }) =>
-            isActive
-              ? "font-poppins font-bold text-secondaryBrand leading-[21px]"
-              : "font-poppins font-normal text-tertiaryBrand leading-[21px]"
-          }
-        >
-          Categories
-        </NavLink> */}
-        <NavLink
-          to="/about-us"
-          className={({ isActive }) =>
-            isActive
-              ? "font-poppins font-bold text-secondaryBrand leading-[21px]"
-              : "font-poppins font-normal text-tertiaryBrand leading-[21px]"
-          }
-        >
-          About us
-        </NavLink>
-        {/* {NavMenu.map((item) => (
-          <nav className="">
-            <NavLink
-              className={({ isActive }) =>
-                isActive
-                  ? "font-poppins font-bold text-green-700 leading-[21px]"
-                  : "font-poppins font-bold text-primary leading-[21px]"
-              }
-            >
-              {item.title}
-            </NavLink>
-          </nav>
-        ))} */}
-      </div>
+        )}
+      </header>
       {isModalOpen && (
         <ShoppingCart
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
         />
       )}
-      {isActionModalOpen && (
-        <AccountRequiredModal
-          isModalOpen={isActionModalOpen}
-          setIsModalOpen={setIsActionModalOpen}
-        />
-      )}
-      <Toast
-        message={toastMessage}
-        isVisible={toastVisible}
-        onClose={closeToast}
-        type={toastType}
-      />
-    </div>
+    </>
   );
 };
 
