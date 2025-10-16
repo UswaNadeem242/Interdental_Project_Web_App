@@ -6,10 +6,6 @@ import TeethChart from "../../../components/doctorAdmin/TeethComponent";
 import StepperTabs from "../../../components/doctorAdmin/StepperTab";
 import ReviewOrder from "./Review";
 import CheckoutForm from "./Checkout";
-import {
-  // DIGITAL_DENTURE,
-  Digital_Option,
-} from "../../../Constant";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDropdowns } from "../../../store/slices/order-dropdown-slice/index";
 import { fetchTeeth } from "../../../store/slices/teeth-slice/index";
@@ -185,22 +181,12 @@ const DoctorOrder = () => {
     dispatch(setDueDate({ dueDate: value }));
     setFieldValue("dueDate", value);
   };
-
   const today = new Date();
+  // Format YYYY-MM-DD for <input type="date">
   const formattedToday = today.toISOString().split("T")[0];
 
-  //
-  // 🕒 Add 1 day to make sure user can't select today
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
 
-  // Format YYYY-MM-DD for <input type="date">
-  const formattedTomorrow = tomorrow.toISOString().split("T")[0];
 
-  // Get the last date of the current month (for "max")
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-    .toISOString()
-    .split("T")[0];
 
   return (
     <>
@@ -220,22 +206,46 @@ const DoctorOrder = () => {
               handleBlur,
               setFieldValue,
             }) => {
+              // const handleTabClick = async (index) => {
+              //   if (index === activeIndex) return;
+              //   const formErrors = await validateForm();
+              //   if (Object.keys(formErrors).length === 0) {
+              //     setActiveIndex(index);
+              //   } else {
+              //     if (currentStep) {
+              //       dispatch(
+              //         showToast({
+              //           message: `Please complete all required fields before proceeding to Review.`,
+              //           type: "error",
+              //         })
+              //       );
+              //     }
+              //   }
+              // };
+
               const handleTabClick = async (index) => {
-                if (index === activeIndex) return;
+                if (index === activeIndex) return; // same tab click - ignore
+
+                // Allow moving backward freely
+                if (index < activeIndex) {
+                  setActiveIndex(index);
+                  return;
+                }
+
+                // Prevent moving forward unless form is valid
                 const formErrors = await validateForm();
                 if (Object.keys(formErrors).length === 0) {
-                  setActiveIndex(index);
+                  setActiveIndex(index); // proceed to next tab
                 } else {
-                  if (currentStep) {
-                    dispatch(
-                      showToast({
-                        message: `Please complete all required fields before proceeding to Review.`,
-                        type: "error",
-                      })
-                    );
-                  }
+                  dispatch(
+                    showToast({
+                      message: `Please complete all required fields before proceeding to Review.`,
+                      type: "error",
+                    })
+                  );
                 }
               };
+
               return (
                 <>
                   <StepperTabs
@@ -303,40 +313,42 @@ const DoctorOrder = () => {
                                   onBlur={handleBlur}
                                   placeholder="Office Reference number"
                                 />
-
-                                
-                                <LabeledInput
-                                  label="Case expected due date"
-                                  type="date"
-                                  name="dueDate"
-                                  // min={new Date().toISOString().split("T")[0]}
-                                  // min={formattedToday}
-                                  min={formattedTomorrow}
-                                  max={lastDayOfMonth}
-                                  // value={values.dueDate || ""}
-                                  // onChange={(e) => {
-                                  //   const value = e.target.value;
-                                  //   const fieldName = e.target.name;
-                                  //   setFieldValue(fieldName, value);
-                                  //   dispatch(
-                                  //     setDoctorField({
-                                  //       field: fieldName,
-                                  //       value,
-                                  //     })
-                                  //   );
-                                  // }}
-
-                                  value={values.dueDate || ""}
-                                  onChange={(e) =>
-                                    handleDueDateChange(e, setFieldValue)
-                                  }
-                                  onBlur={handleBlur}
-                                />
-                                {errors.dueDate && (
-                                  <p className="text-red-800 text-xs capitalize">
-                                    {errors.dueDate}
-                                  </p>
-                                )}
+                                <FormSection
+                                  title="Created Date"
+                                  color="text-xs font-semibold"
+                                  className="border  border-none"
+                                  gap="gap-4"
+                                ></FormSection>
+                                <p className="w-full  rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm  text-gray-900 placeholder-[#949494]outline-none transition-shadow  outline-none placeholder:font-poppins placeholder:text-[10px] placeholder:capitalize">
+                                  {new Date().toLocaleDateString("en-US", {
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                    year: "numeric",
+                                  })}
+                                </p>
+                                <FormSection
+                                  title="Due Date"
+                                  color="text-xs font-semibold"
+                                  className="border  border-none"
+                                  gap="gap-4"
+                                >
+                                  <LabeledInput
+                                    label="Case expected due date"
+                                    type="date"
+                                    name="dueDate"
+                                    min={formattedToday}
+                                    value={values.dueDate || ""}
+                                    onChange={(e) =>
+                                      handleDueDateChange(e, setFieldValue)
+                                    }
+                                    onBlur={handleBlur}
+                                  />
+                                  {errors.dueDate && (
+                                    <p className="text-red-800 text-xs capitalize">
+                                      {errors.dueDate}
+                                    </p>
+                                  )}
+                                </FormSection>
                               </FormSection>
 
                               <FormSection
@@ -434,7 +446,7 @@ const DoctorOrder = () => {
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                  !activeToothSelection.scannerType
+                                    !activeToothSelection.scannerType
                                     ? "Select the Teeth first to select Scanner type"
                                     : ""
                                 }
@@ -474,100 +486,6 @@ const DoctorOrder = () => {
                             <section className="col-span-12 md:col-span-6 space-y-4">
                               <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
                                 <div className="grid grid-cols-2 gap-4 mt-5 mb-10">
-                                  {/* <MaterialDropdown
-                                    className=" w-full rounded-xl bg-white border border-gray-200   px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                    options={
-                                      orders.find((p) => p.name === "Denture")
-                                        ?.children || []
-                                    }
-                                    value={
-                                      toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.digitalOptions || ""
-                                    }
-                                    onChange={(option) => {
-                                      if (!selectedTooth) {
-                                        dispatch(
-                                          showToast({
-                                            message: `Please select a tooth first`,
-                                            type: "error",
-                                          })
-                                        );
-
-                                        return;
-                                      }
-                                      dispatch(
-                                        updateToothSelection({
-                                          toothId: selectedTooth,
-                                          field: "digitalOptions",
-                                          value: option.value,
-                                          price: option.price || 0,
-                                          option,
-                                        })
-                                      );
-                                      setTouched((prev) => ({
-                                        ...prev,
-                                        digitalOptions: false,
-                                      }));
-                                    }}
-                                    label=" Denture"
-                                    storageKey="digitalOptions"
-                                    // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
-                                    error={
-                                      touched.digitalOptions &&
-                                      !toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.digitalOptions
-                                        ? "Digital Denture is Required Select the teeth"
-                                        : ""
-                                    }
-                                  />
-                                  <MaterialDropdown
-                                    className="w-full rounded-xl border border-gray-200 cursor-not-allowed  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                    // options={
-                                    //   orders.find(
-                                    //     (p) => p.name === "Surgical Guide"
-                                    //   )?.children || []
-                                    // }
-                                    // value={
-                                    //   toothSelections.find(
-                                    //     (t) => t.toothId === selectedTooth
-                                    //   )?.surgical_guide || ""
-                                    // }
-                                    // onChange={(val) => {
-                                    //   if (!selectedTooth) {
-                                    //     dispatch(
-                                    //       showToast({
-                                    //         message: `Please select a tooth first`,
-                                    //         type: "error",
-                                    //       })
-                                    //     );
-
-                                    //     return;
-                                    //   }
-                                    //   handleDropdownChange(
-                                    //     "surgical_guide",
-                                    //     val
-                                    //   );
-                                    //   if (val) {
-                                    //     setTouched((prev) => ({
-                                    //       ...prev,
-                                    //       surgical_guide: false,
-                                    //     }));
-                                    //   }
-                                    // }}
-                                    label="Surgical Guide"
-                                    storageKey="surgical_guide"
-                                    // error={
-                                    //   touched.surgical_guide &&
-                                    //     !toothSelections.find(
-                                    //       (t) => t.toothId === selectedTooth
-                                    //     )?.surgical_guide
-                                    //     ? "Surgical Guide is Required. Please select a tooth."
-                                    //     : ""
-                                    // }
-                                    disabled={!selectedTooth}
-                                  /> */}
                                 </div>
                                 <div className="flex flex-wrap gap-2  justify-center flex-col">
                                   <p className="text-center">Select the teeth first </p>
@@ -645,15 +563,7 @@ const DoctorOrder = () => {
                                         }}
                                         label=" Denture"
                                         storageKey="digitalOptions"
-                                        // error={touched.digitalOptions && !toothSelections[selectedTeeth]?.digitalOptions ? "Digital Denture is Required Select the teeth" : ""}
-                                        // error={
-                                        //   touched.digitalOptions &&
-                                        //   !toothSelections.find(
-                                        //     (t) => t.toothId === selectedTooth
-                                        //   )?.digitalOptions
-                                        //     ? "Digital Denture is Required Select the teeth"
-                                        //     : ""
-                                        // }
+
                                       />
                                       <MaterialDropdown
                                         className2="relative z-0"
@@ -663,54 +573,19 @@ const DoctorOrder = () => {
                                             (p) => p.name === "Surgical Guide"
                                           )?.children?.length > 0
                                             ? orders.find(
-                                                (p) =>
-                                                  p.name === "Surgical Guide"
-                                              )?.children
+                                              (p) =>
+                                                p.name === "Surgical Guide"
+                                            )?.children
                                             : [
-                                                {
-                                                  label: "Not Available",
-                                                  value: "",
-                                                },
-                                              ]
+                                              {
+                                                label: "Not Available",
+                                                value: "",
+                                              },
+                                            ]
                                         }
                                         hideCheckForNotAvailable={true}
-                                        // value={
-                                        //   toothSelections.find(
-                                        //     (t) => t.toothId === selectedTooth
-                                        //   )?.surgical_guide || ""
-                                        // }
-                                        // onChange={(val) => {
-                                        //   if (!selectedTooth) {
-                                        //     dispatch(
-                                        //       showToast({
-                                        //         message: `Please select a tooth first`,
-                                        //         type: "error",
-                                        //       })
-                                        //     );
-
-                                        //     return;
-                                        //   }
-                                        //   handleDropdownChange(
-                                        //     "surgical_guide",
-                                        //     val
-                                        //   );
-                                        //   if (val) {
-                                        //     setTouched((prev) => ({
-                                        //       ...prev,
-                                        //       surgical_guide: false,
-                                        //     }));
-                                        //   }
-                                        // }}
                                         label="Surgical Guide"
                                         storageKey="surgical_guide"
-                                        // error={
-                                        //   touched.surgical_guide &&
-                                        //     !toothSelections.find(
-                                        //       (t) => t.toothId === selectedTooth
-                                        //     )?.surgical_guide
-                                        //     ? "Surgical Guide is Required. Please select a tooth."
-                                        //     : ""
-                                        // }
                                         disabled={!selectedTooth}
                                       />
 
@@ -811,21 +686,6 @@ const DoctorOrder = () => {
                                           console.log(selected)
                                         }
                                       />
-                                      {/* <MaterialDropdown
-                                        options={Digital_Option}
-                                        value={
-                                          toothSelections[selectedTeeth]
-                                            ?.digital_option || ""
-                                        }
-                                        onChange={(val) =>
-                                          handleDropdownChange(
-                                            "digital_option",
-                                            val
-                                          )
-                                        }
-                                        label=" Digital Model type"
-                                        className="w-full  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      /> */}
 
                                       <MaterialDropdown
                                         className2="relative z-0"
@@ -905,173 +765,6 @@ const DoctorOrder = () => {
                                         className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                       />
                                     </DropdownWrapper>
-
-                                    {/* <MaterialDropdown
-                                      options={
-                                        orders.find((p) => p.name === "Crown")
-                                          ?.children || []
-                                      }
-                                      value={
-                                        toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.crown?.value || ""
-                                      }
-                                      onChange={(val) => {
-                                        if (!selectedTooth) {
-                                          toast.error(
-                                            "Please select a tooth first",
-                                            {
-                                              position: "top-right",
-                                              autoClose: 3000,
-                                              hideProgressBar: false,
-                                              closeOnClick: true,
-                                              pauseOnHover: true,
-                                              draggable: true,
-                                              progress: undefined,
-                                            }
-                                          );
-                                          return;
-                                        }
-                                        const option = (
-                                          orders.find((p) => p.name === "Crown")
-                                            ?.children || []
-                                        ).find((c) => c.value === val);
-
-                                        handleDropdownChange("crown", {
-                                          value: option?.value || val,
-                                          label: option?.label || "",
-                                          price: option?.price || 0,
-                                          option, // pass the full object if needed in redux
-                                        });
-
-                                        setTouched((prev) => ({
-                                          ...prev,
-                                          crown: false,
-                                        }));
-                                      }}
-                                      label="Smart Crown"
-                                      storageKey="crown"
-                                      className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      error={
-                                        touched.crown &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.crown
-                                          ? "Crown is required. Please select a value."
-                                          : ""
-                                      }
-                                    /> */}
-                                    {/* <MaterialDropdown
-                                      options={
-                                        orders.find(
-                                          (p) => p.name === "Material"
-                                        )?.children || []
-                                      }
-                                      value={
-                                        toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.material || ""
-                                      }
-                                      onChange={(val) => {
-                                        if (!selectedTooth) {
-                                          dispatch(
-                                            showToast({
-                                              message: `Please select a tooth first`,
-                                              type: "error",
-                                            })
-                                          );
-
-                                          return;
-                                        }
-
-                                        handleDropdownChange("material", val);
-
-                                        if (val) {
-                                          setTouched((prev) => ({
-                                            ...prev,
-                                            material: false,
-                                          }));
-                                        }
-                                      }}
-                                      label="Material"
-                                      storageKey="material"
-                                      className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      error={
-                                        touched.material &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.material
-                                          ? "Material is required. Please select a tooth first"
-                                          : ""
-                                      }
-                                    /> */}
-                                    {/* <ShadeDropdown
-                                      shades={shadeGroups}
-                                      selectedTooth={selectedTooth}
-                                      touched={touched}
-                                      setTouched={setTouched}
-                                      onChange={(selected) =>
-                                        console.log(selected)
-                                      }
-                                    />
-                                    <MaterialDropdown
-                                      options={Digital_Option}
-                                      value={
-                                        toothSelections[selectedTeeth]
-                                          ?.digital_option || ""
-                                      }
-                                      onChange={(val) =>
-                                        handleDropdownChange(
-                                          "digital_option",
-                                          val
-                                        )
-                                      }
-                                      label=" Digital Model type"
-                                      className="w-full rounded-xl  bg-white  px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                    />
-                                    <MaterialDropdown
-                                      options={
-                                        orders.find(
-                                          (p) => p.name === "Participating Lab"
-                                        )?.children || []
-                                      }
-                                      value={
-                                        toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.lab || ""
-                                      } // ✅ correct selected value
-                                      onChange={(val) => {
-                                        if (!selectedTooth) {
-                                          dispatch(
-                                            showToast({
-                                              message: `Please select a tooth first`,
-                                              type: "error",
-                                            })
-                                          );
-                                          return;
-                                        }
-
-                                        handleDropdownChange("lab", val);
-
-                                        if (val) {
-                                          setTouched((prev) => ({
-                                            ...prev,
-                                            lab: false,
-                                          }));
-                                        }
-                                      }}
-                                      label="Dental lab alliance"
-                                      storageKey="Dental lab alliance"
-                                      className="w-full rounded-xl bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      error={
-                                        touched.lab &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.lab
-                                          ? "Participating Lab is required. Please select a tooth first."
-                                          : ""
-                                      }
-                                    /> */}
                                     <MaterialDropdown
                                       options={
                                         orders.find(
@@ -1113,9 +806,9 @@ const DoctorOrder = () => {
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.photogrammetryfiles
+                                          !toothSelections.find(
+                                            (t) => t.toothId === selectedTooth
+                                          )?.photogrammetryfiles
                                           ? "Please select a tooth first before selecting Photogrammetry files."
                                           : ""
                                       }
@@ -1230,23 +923,6 @@ const DoctorOrder = () => {
                                 </div>
                                 <button
                                   type="button"
-                                  // onClick={() => {
-                                  //   // ✅ validate form before next
-                                  //   console.log('erroe', errors);
-                                  //   validateForm().then((errors) => {
-                                  //     if (Object.keys(errors).length === 0) {
-                                  //       // no errors → submit → move next
-
-                                  //       handleSubmit();
-                                  //     } else {
-                                  //       // show toast instead of silently failing
-                                  //       toast.error("⚠️ Please fill all required fields", {
-                                  //         position: "bottom-right",
-                                  //         autoClose: 3000,
-                                  //       });
-                                  //     }
-                                  //   });
-                                  // }}
                                   onClick={() => next()}
                                   className="font-poppins w-full bg-[#0b2b62] px-6 py-3 text-sm font-medium text-[#F8F8F8] hover:bg-[#092b58]"
                                 >

@@ -12,27 +12,28 @@ import DoctorSignup from "../components/signup-component/doctor-signup";
 
 const Signup = () => {
   const navigate = useNavigate();
-
+ 
+  
   const step = [
     {
-      name: "Buyer",
-      content: <BuySignup />,
+      name: 'Buyer',
+      content: <BuySignup />
+
     },
     {
-      name: "Doctor",
-      content: <DoctorSignup />,
+      name: 'Doctor',
+      content: <DoctorSignup />
+
     },
-  ];
+  ]
 
   return (
     <div className="flex flex-col lg:flex-row justify-start items-center gap-6 lg:gap-24 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] ">
       {/* Image section - hidden on mobile */}
 
       <div className="hidden lg:flex flex-col items-start justify-start -space-y-9">
-        <div
-          className="flex items-center gap-2 cursor-pointer"
-          onClick={() => navigate("/")}
-        >
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')} >
+
           <ArrowLeftIcon className="w- 5 h-5" />
           <img src="/assets/logo.png" alt="logo" />
         </div>
@@ -41,6 +42,7 @@ const Signup = () => {
           src="/assets/loginrectangle.png"
           alt="login rectangle image"
         />
+
       </div>
 
       {/* Signup form */}
@@ -57,16 +59,16 @@ const Signup = () => {
           </p>
         </div>
 
+
         <div className="">
-          <Stepper
-            steps={step}
-            className="md:w-[100%]"
-            selectedColor="bg-fouthBrand text-white "
-          />
+          <Stepper steps={step} className='md:w-[100%]' selectedColor='bg-fouthBrand text-white ' />
         </div>
       </div>
 
       {/* Modal and Toast components */}
+
+
+
     </div>
   );
 };

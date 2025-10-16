@@ -27,10 +27,7 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      const count = response?.data?.items?.length ?? 0;
-      console.log("Wishlist count:", count);
-
-      setWishlistCount(count); // fallback to 0
+      setWishlistCount(response?.data?.items?.length);
     } catch (err) {
       console.log("Error fetching wishlist count:", err);
     }
@@ -52,37 +49,27 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Initial fetch on app load and refresh token every 10 minutes
+  // 🔹 Refresh token every 10 minutes
   useEffect(() => {
-    // Initial fetch of wishlist and cart counts
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetchWishlistCount();
-      fetchCartCount();
-    }
+    const interval = setInterval(async () => {
+      const refreshToken = localStorage.getItem("token");
 
-    const interval = setInterval(
-      async () => {
-        const refreshToken = localStorage.getItem("token");
+      if (!refreshToken) return;
 
-        if (!refreshToken) return;
+      try {
+        const res = await axios.post(`${BASE_URL}/api/auth/refresh`, {
+          token: refreshToken,
+        });
 
-        try {
-          const res = await axios.post(`${BASE_URL}/api/auth/refresh`, {
-            token: refreshToken,
-          });
+        const { accessToken, refreshToken: user } = res.data;
 
-          const { accessToken, refreshToken: user } = res.data;
-
-          localStorage.setItem("token", accessToken);
-          if (user) setUser(user);
-        } catch (err) {
-          console.error("Auto refresh failed, logging out:", err);
-          logout();
-        }
-      },
-      1 * 60 * 1000,
-    );
+        localStorage.setItem("token", accessToken);
+        if (user) setUser(user);
+      } catch (err) {
+        console.error("Auto refresh failed, logging out:", err);
+        logout();
+      }
+    }, 1 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);

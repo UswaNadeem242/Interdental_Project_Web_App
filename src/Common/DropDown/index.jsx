@@ -9,6 +9,7 @@ export default function DropDownComponent({
   optionLabel = "label",
   optionValue = "value",
   className,
+  totalAmount
 }) {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -47,7 +48,11 @@ export default function DropDownComponent({
               className="flex justify-between px-4 py-2 text-gray-700 cursor-pointer font-poppins hover:bg-gray-50"
             >
               <span>{option[optionLabel]}</span>
-              <span className="text-xs">{option[optionValue]}</span>
+              {option.value > 0 && (
+                <span className="text-xs text-secondaryBrand">
+                  {totalAmount}
+                </span>
+              )}
             </li>
           ))}
 
@@ -56,8 +61,8 @@ export default function DropDownComponent({
             <li className="flex justify-between px-4 py-3 text-gray-700 font-poppins border-t border-borderPrimary text-sm">
               <p>Total:</p>
               <p>
-                $
-                {options
+                ${totalAmount}
+                {/* {totalAmount
                   .reduce((total, option) => {
                     const value =
                       typeof option.value === "number"
@@ -65,7 +70,7 @@ export default function DropDownComponent({
                         : parseFloat(option.value) || 0;
                     return total + value;
                   }, 0)
-                  .toFixed(2)}
+                  .toFixed(2)} */}
               </p>
             </li>
           )}

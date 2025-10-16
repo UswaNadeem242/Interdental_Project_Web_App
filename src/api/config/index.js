@@ -15,6 +15,7 @@ export const ENDPOINTS = {
     // ORDERS: "/api/doctororder/getOrders",
     ORDERS: "/api/doctororder/getOrdersByDoctor",
     ORDER_BY_ID: "/api/doctororder/getOrderByID",
+    TRACKING_BY_ID: "/api/ordertracking",
     GRAPH_STATS: "/api/dashboard/getDoctorGraph",
     PATIENTS: "/api/users/getPatientByDoctor",
     ADD_PATIENT: "/api/users/addPatient",

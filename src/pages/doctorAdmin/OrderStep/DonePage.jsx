@@ -1,7 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const DonePage = () => {
+
+  const restoration = useSelector((state) => state.restoration);
+  console.log('restoration', restoration);
+
+
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-bgWhite p-4 ">
       <div className="flex flex-col items-center gap-6 text-center max-w-xl">

@@ -24,7 +24,7 @@ const Toast = ({ message, isVisible, onClose, type }) => {
   return (
     isVisible && (
       <div
-        className={`flex justify-start items-center fixed z-[9999999999999] top-5 left-1/2 transform -translate-x-1/2 w-[447px] max-h-[100px]  gap-[10px] p-[10px] bg-[#FFFFFF] shadow-lg ${getToastStyles()} transition-opacity duration-300 ease-in-out`}
+        className={`flex justify-start items-center fixed z-[9999999999999] top-5 left-1/2 transform -translate-x-1/2 w-[447px] h-[63px]  gap-[10px] p-[10px] bg-[#FFFFFF] shadow-lg ${getToastStyles()} transition-opacity duration-300 ease-in-out`}
       >
         {type === "success" && (
           <svg
@@ -62,7 +62,7 @@ const Toast = ({ message, isVisible, onClose, type }) => {
             />
           </svg>
         )}
-        <div className="flex flex-col justify-start items-start w-[359px] max-h-[100px]">
+        <div className="flex flex-col justify-start items-start w-[359px] h-[43px]">
           <h1
             className={`font-poppins font-semibold text-[14px] leading-[21px] ${
               type === "success" ? "text-[#4FAD2E]" : "text-[#E13434]"

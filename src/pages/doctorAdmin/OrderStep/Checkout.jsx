@@ -28,7 +28,6 @@ const CheckoutForm = ({ next }) => {
   });
   const dispatch = useDispatch();
   const restoration = useSelector((state) => state.restoration);
-  console.log('restoration', restoration);
 
   const { toothSelections, selectedTooth } = restoration; // destructure from Redux
   const flattenedItems = (restoration.doctorOrderItems || []).map((item, index) => ({
@@ -60,6 +59,8 @@ const CheckoutForm = ({ next }) => {
 
     // Get only the doctor ID
     const doctorId = doctorData?.id;
+    const doctorDate = doctorData?.dueDate;
+    console.log(doctorData);
 
     console.log('doctorData', doctorId);
     const patientId = restoration?.patient?.id || null;

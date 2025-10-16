@@ -7,9 +7,9 @@ import { MinusIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 // import product1 from "../assets/product1.png";
 
 const CartProduct = ({ item, getCart }) => {
-  console.log("items:", item);
+  console.log('items:', item);
 
-  const [count, setCount] = useState(Math.max(1, item.quantity || 1));
+  const [count, setCount] = useState(item.quantity);
   const { fetchCartCount } = useAuth();
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -23,7 +23,7 @@ const CartProduct = ({ item, getCart }) => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       );
       setToastMessage("Item removed from cart");
       fetchCartCount();
@@ -37,37 +37,25 @@ const CartProduct = ({ item, getCart }) => {
     }
   };
   const handleUpdateItem = async (status, items) => {
-    let newQuantity;
-
-    if (status === "add") {
-      // Check if increasing quantity would exceed available stock
-      const newCount = count + 1;
-      if (newCount > items.stockItem) {
-        setToastMessage(
-          `Cannot add more items. Only ${items.stockItem} ${items.stockItem === 1 ? "item is" : "items are"} available in stock.`,
-        );
-        setToastType("error");
-        setToastVisible(true);
-        return;
-      }
-      newQuantity = newCount;
-      setCount(newQuantity);
+    if (status === "add" && items.stockItem <= count) {
+      setToastMessage("This item is currently out of stock.");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    } else if (status === "add") {
+      setCount(count + 1);
     } else if (status === "subtract") {
-      if (count <= 1) {
-        // If quantity is 1 or less, remove the item instead of going to 0
+      if (count === 1) {
         handleDeleteItem();
-        return;
       }
-      newQuantity = Math.max(1, count - 1);
-      setCount(newQuantity);
+      setCount(count - 1);
     }
-
     try {
       const response = await axios.put(
         `${BASE_URL}/api/cart/${item.id}/update`,
         {
           cartItemId: item.id,
-          quantity: newQuantity,
+          quantity: status === "add" ? count + 1 : count - 1,
         },
         {
           headers: {
@@ -75,17 +63,10 @@ const CartProduct = ({ item, getCart }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       );
       getCart();
-      fetchCartCount();
-    } catch (error) {
-      // Revert the count on error
-      setCount(item.quantity);
-      setToastMessage("Failed to update quantity");
-      setToastType("error");
-      setToastVisible(true);
-    }
+    } catch (error) { }
   };
   const closeToast = () => {
     setToastVisible(false);
@@ -123,6 +104,13 @@ const CartProduct = ({ item, getCart }) => {
         </button>
       </div> */}
 
+
+
+
+
+
+
+
       <div className="flex justify-center items-center w-[555px] h-[156px] gap-[16px]">
         <div className="flex justify-between items-center w-[515px] h-[156px] gap-[16px]   p-3">
           {/* Product Image */}
@@ -146,9 +134,7 @@ const CartProduct = ({ item, getCart }) => {
               </p>
             </div>
 
-            <h1 className="text-primaryText font-poppins font-medium">
-              ${item.price}
-            </h1>
+            <h1 className="text-primaryText font-poppins font-medium">${item.price}</h1>
 
             {/* Quantity Controls */}
             <div className="flex justify-between items-center w-[124px] h-[50px] rounded-[170px] border border-cartColor p-2">
@@ -179,6 +165,21 @@ const CartProduct = ({ item, getCart }) => {
           <XMarkIcon className="w-4 h-4" />
         </button>
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <Toast
         message={toastMessage}

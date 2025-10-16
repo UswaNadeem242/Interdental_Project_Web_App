@@ -73,6 +73,18 @@ export const getOrderByID = async (id) => {
   }
 };
 
+export const getOrderTranckingByID = async (id) => {
+  try {
+    const endpoint = `${ENDPOINTS.DOCTOR.TRACKING_BY_ID}/${id}`;
+    const response = await api.get(endpoint);
+    return handleApiSuccess(response);
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+
+
 export const changePassword = async (bodyData) => {
   try {
     const endpoint = `${ENDPOINTS.DOCTOR.CHANGE_PASSWORD}`;
