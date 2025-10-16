@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 const defaultTeeth = [
   { id: 1, name: "UR 3rd Molar (Wisdom)" },
@@ -34,6 +34,7 @@ const defaultTeeth = [
   { id: 31, name: "LR 2nd Molar" },
   { id: 32, name: "LR 3rd Molar (Wisdom)" },
 ];
+
 const FDI_BY_UNIVERSAL = [
   18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28, 38, 37, 36,
   35, 34, 33, 32, 31, 41, 42, 43, 44, 45, 46, 47, 48,
@@ -46,6 +47,7 @@ const toPalmerFromFDI = (fdi) => {
   const q = Math.floor(fdi / 10);
   return `${PALMER_QTXT[q]} ${fdi % 10} ${PALMER_SYMBOL[PALMER_QTXT[q]]}`;
 };
+
 export default function TeethChart({
   teeth,
   onSelect,
@@ -55,14 +57,18 @@ export default function TeethChart({
   currentToothId = null,
 }) {
   const [selectedIds, setSelectedIds] = useState([]);
+  const [currentTooth, setCurrentTooth] = useState(null);
 
   // Use API data if provided, otherwise fall back to default teeth
+
   const teethData = teeth && teeth.length > 0 ? teeth : defaultTeeth;
   const toothSize = Math.max(40, Math.floor(sizePx * 0.1));
   const centerX = sizePx / 2;
   const centerY = sizePx / 2;
+
   const upper = teethData.slice(0, 16);
   const lower = teethData.slice(16);
+
   const upperPos = useMemo(
     () =>
       arcPositions(
@@ -104,7 +110,7 @@ export default function TeethChart({
   //     }
   // };
   // const [selectedIds, setSelectedIds] = useState([]);
-  const [currentTooth, setCurrentTooth] = useState(null);
+  // const [currentTooth, setCurrentTooth] = useState(null);
 
   // const toggle = (tooth) => {
   //     const next = selectedIds.includes(tooth.id)
@@ -124,82 +130,64 @@ export default function TeethChart({
   //         );
   //     }
   // };
-
   const toggle = (tooth) => {
     const next = selectedIds.includes(tooth.id)
       ? selectedIds.filter((id) => id !== tooth.id)
       : [...selectedIds, tooth.id];
-
     setSelectedIds(next);
     setCurrentTooth(tooth.id);
 
     if (onSelect) {
       const fdi = toFDI(tooth.id);
-      onSelect({ ...tooth, fdi, palmer: toPalmerFromFDI(fdi) }); // ✅ sirf clicked tooth bhejta hai
+      onSelect({ ...tooth, fdi, palmer: toPalmerFromFDI(fdi) });
     }
   };
 
-  const [leftOffset, setLeftOffset] = useState("left-0");
-
-  useEffect(() => {
-    const updateOffset = () => {
-      // Get zoom ratio: actual width vs devicePixelRatio
-      const zoom = Math.round((window.outerWidth / window.innerWidth) * 100);
-
-      if (zoom === 100) {
-        setLeftOffset("left-16"); // 👈 when 100%
-      } else if (zoom <= 80) {
-        setLeftOffset("left-16"); // 👈 when 80% or below
-      } else {
-        setLeftOffset("left-16"); // fallback
-      }
-    };
-
-    updateOffset();
-    window.addEventListener("resize", updateOffset);
-
-    return () => window.removeEventListener("resize", updateOffset);
-  }, []);
-
   return (
-    <div
-      className={`relative top-14 w-full max-w-[700px] aspect-square mx-auto transition-all duration-300 ${leftOffset}`}
-    >
-      {upper.map((t, i) => (
-        <ToothButton
-          key={t.id}
-          tooth={t}
-          fdi={toFDI(t.id)}
-          palmer={toPalmerFromFDI(toFDI(t.id))}
-          size={toothSize}
-          x={upperPos[i].x}
-          y={upperPos[i].y}
-          selected={selectedIds.includes(t.id)}
-          isCurrent={currentToothId === t.id}
-          onClick={() => toggle(t)}
-          showId={showIds}
-        />
-      ))}
-      {lower.map((t, i) => (
-        <ToothButton
-          key={t.id}
-          tooth={t}
-          fdi={toFDI(t.id)}
-          palmer={toPalmerFromFDI(toFDI(t.id))}
-          size={toothSize}
-          x={lowerPos[i].x}
-          y={lowerPos[i].y}
-          selected={selectedIds.includes(t.id)}
-          isCurrent={currentToothId === t.id}
-          onClick={() => toggle(t)}
-          showId={showIds}
-        />
-      ))}
+    <div className="relative top-14 flex justify-center items-center w-full">
+      <div
+        className="relative aspect-square transition-all duration-300"
+        style={{
+          width: `${sizePx}px`,
+          height: `${sizePx}px`,
+        }}
+      >
+        {upper.map((t, i) => (
+          <ToothButton
+            key={t.id}
+            tooth={t}
+            fdi={toFDI(t.id)}
+            palmer={toPalmerFromFDI(toFDI(t.id))}
+            size={toothSize}
+            x={upperPos[i].x}
+            y={upperPos[i].y}
+            selected={selectedIds.includes(t.id)}
+            isCurrent={currentToothId === t.id}
+            onClick={() => toggle(t)}
+            showId={showIds}
+          />
+        ))}
+        {lower.map((t, i) => (
+          <ToothButton
+            key={t.id}
+            tooth={t}
+            fdi={toFDI(t.id)}
+            palmer={toPalmerFromFDI(toFDI(t.id))}
+            size={toothSize}
+            x={lowerPos[i].x}
+            y={lowerPos[i].y}
+            selected={selectedIds.includes(t.id)}
+            isCurrent={currentToothId === t.id}
+            onClick={() => toggle(t)}
+            showId={showIds}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
-function arcPositions(count, degStart, degEnd, cx, cy, r, startId) {
+function arcPositions(count, degStart, degEnd, cx, cy, r) {
   const toRad = (d) => (d * Math.PI) / 180;
   return Array.from({ length: count }, (_, i) => {
     const t = count === 1 ? 0.5 : i / (count - 1);
@@ -224,14 +212,8 @@ function ToothButton({
   showId,
 }) {
   const getRingColor = () => {
-    if (isCurrent) return "ring-2 ring-red-600"; // Red for current
-    if (selected) return "ring-2 ring-green-600"; // Green for previous
-    return "";
-  };
-
-  const getShadowColor = () => {
-    if (isCurrent) return "drop-shadow-[0_0_6px_red]"; // Red shadow for current
-    if (selected) return "drop-shadow-[0_0_6px_green]"; // Green shadow for previous
+    if (isCurrent) return "ring-2 ring-red-600";
+    if (selected) return "ring-2 ring-green-600";
     return "";
   };
 
@@ -249,17 +231,7 @@ function ToothButton({
         top: y - size / 2,
       }}
     >
-      {/* Tooth image */}
-
       {tooth.id}
-
-      {/* <img
-                src={`/teeth/${tooth.id}.png`}
-                alt={tooth.id}
-                className={`object-contain mx-auto my-auto ${getShadowColor()}`}
-                style={{ width: "100%", height: "100%" }}
-            /> */}
-
       {selected && !isCurrent && (
         <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-xs px-2 py-1 rounded shadow-md border">
           <p className="font-semibold">{tooth.name}</p>
@@ -267,8 +239,6 @@ function ToothButton({
           <p>Palmer: {palmer}</p>
         </div>
       )}
-
-      {/* Optional ID */}
       {showId && (
         <span className="absolute top-0 left-0 text-[9px] bg-white/90 px-1 rounded shadow ring-1 ring-zinc-300">
           {fdi}

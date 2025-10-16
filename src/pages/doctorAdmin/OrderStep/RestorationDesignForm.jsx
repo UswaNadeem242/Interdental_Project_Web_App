@@ -189,18 +189,19 @@ const DoctorOrder = () => {
   const today = new Date();
   const formattedToday = today.toISOString().split("T")[0];
 
-  //
-  // 🕒 Add 1 day to make sure user can't select today
+  // Create a new Date object for tomorrow
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
 
   // Format YYYY-MM-DD for <input type="date">
   const formattedTomorrow = tomorrow.toISOString().split("T")[0];
 
+  const placeholderDate = "mm/dd/yy";
+
   // Get the last date of the current month (for "max")
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-    .toISOString()
-    .split("T")[0];
+  // const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+  //   .toISOString()
+  //   .split("T")[0];
 
   return (
     <>
@@ -303,40 +304,59 @@ const DoctorOrder = () => {
                                   onBlur={handleBlur}
                                   placeholder="Office Reference number"
                                 />
+                                <FormSection
+                                  title="Created Date"
+                                  color="text-xs font-semibold"
+                                  className="border  border-none"
+                                  gap="gap-4"
+                                ></FormSection>
+                                <p className="w-full  rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm  text-gray-900 placeholder-[#949494]outline-none transition-shadow  outline-none placeholder:font-poppins placeholder:text-[10px] placeholder:capitalize">
+                                  {new Date().toLocaleDateString("en-US", {
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                    year: "numeric",
+                                  })}
+                                </p>
+                                <FormSection
+                                  title="Due Date"
+                                  color="text-xs font-semibold"
+                                  className="border  border-none"
+                                  gap="gap-4"
+                                >
+                                  <LabeledInput
+                                    label="Case expected due date"
+                                    type="date"
+                                    name="dueDate"
+                                    // min={new Date().toISOString().split("T")[0]}
+                                    // min={formattedToday}
+                                    min={formattedTomorrow}
+                                    // max={lastDayOfMonth}
+                                    // placeholder={placeholderDate}
+                                    // value={values.dueDate || ""}
+                                    // onChange={(e) => {
+                                    //   const value = e.target.value;
+                                    //   const fieldName = e.target.name;
+                                    //   setFieldValue(fieldName, value);
+                                    //   dispatch(
+                                    //     setDoctorField({
+                                    //       field: fieldName,
+                                    //       value,
+                                    //     })
+                                    //   );
+                                    // }}
 
-                                
-                                <LabeledInput
-                                  label="Case expected due date"
-                                  type="date"
-                                  name="dueDate"
-                                  // min={new Date().toISOString().split("T")[0]}
-                                  // min={formattedToday}
-                                  min={formattedTomorrow}
-                                  max={lastDayOfMonth}
-                                  // value={values.dueDate || ""}
-                                  // onChange={(e) => {
-                                  //   const value = e.target.value;
-                                  //   const fieldName = e.target.name;
-                                  //   setFieldValue(fieldName, value);
-                                  //   dispatch(
-                                  //     setDoctorField({
-                                  //       field: fieldName,
-                                  //       value,
-                                  //     })
-                                  //   );
-                                  // }}
-
-                                  value={values.dueDate || ""}
-                                  onChange={(e) =>
-                                    handleDueDateChange(e, setFieldValue)
-                                  }
-                                  onBlur={handleBlur}
-                                />
-                                {errors.dueDate && (
-                                  <p className="text-red-800 text-xs capitalize">
-                                    {errors.dueDate}
-                                  </p>
-                                )}
+                                    value={values.dueDate || ""}
+                                    onChange={(e) =>
+                                      handleDueDateChange(e, setFieldValue)
+                                    }
+                                    onBlur={handleBlur}
+                                  />
+                                  {errors.dueDate && (
+                                    <p className="text-red-800 text-xs capitalize">
+                                      {errors.dueDate}
+                                    </p>
+                                  )}
+                                </FormSection>
                               </FormSection>
 
                               <FormSection
