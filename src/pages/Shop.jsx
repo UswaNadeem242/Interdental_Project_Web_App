@@ -17,8 +17,7 @@ const Shop = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [minPrice, setMinPrice] = useState(null);
-  const [maxPrice, setMaxPrice] = useState(null);
+  const [priceValue, setPriceValue] = useState(500);
   const [products, setProducts] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [brandsList, setBrandsList] = useState([]);
@@ -36,14 +35,19 @@ const Shop = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const handleMinChange = (e) => {
-    const value = Math.min(Number(e.target.value), maxPrice - 1);
-    setMinPrice(value);
+  const handlePriceChange = (e) => {
+    const value = Number(e.target.value);
+    setPriceValue(value);
   };
 
-  const handleMaxChange = (e) => {
-    const value = Math.max(Number(e.target.value), minPrice + 1);
-    setMaxPrice(value);
+  const handleResetAll = () => {
+    setPriceValue(500);
+    setSelectedCategory(null);
+    setCategoryName("");
+    setSelectedbrand(null);
+    setBrandName("");
+    setSearchTerm("");
+    setChecked(null);
   };
 
   const handleProduct = (product) => {
@@ -91,7 +95,7 @@ const Shop = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setCategoriesList(response.data);
     } catch (error) {
@@ -115,21 +119,33 @@ const Shop = () => {
   };
 
   const handleCategoryChange = (id, name) => {
-    setSelectedCategory(id);
-    setCategoryName(name);
+    if (selectedCategory === id) {
+      // If same category is clicked, reset the filter
+      setSelectedCategory(null);
+      setCategoryName("");
+    } else {
+      // If different category is clicked, set it
+      setSelectedCategory(id);
+      setCategoryName(name);
+    }
   };
 
   const handleBrandChange = (id, name) => {
-    setSelectedbrand(id);
-    setBrandName(name);
+    if (selectedbrand === id) {
+      // If same brand is clicked, reset the filter
+      setSelectedbrand(null);
+      setBrandName("");
+    } else {
+      // If different brand is clicked, set it
+      setSelectedbrand(id);
+      setBrandName(name);
+    }
   };
 
   const filteredProducts = products.filter((product) => {
-    // Price filter
-    const isInPriceRange =
-      !minPrice && !maxPrice
-        ? true
-        : product.price >= minPrice && product.price <= maxPrice;
+    // Price filter - ensure product has valid price
+    const productPrice = parseFloat(product.price) || 0;
+    const isInPriceRange = productPrice <= priceValue;
 
     // Category filter
     const isInCategory = selectedCategory
@@ -177,20 +193,43 @@ const Shop = () => {
   // };
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const handleAddtoWishlist = async (id, e) => {
+  // Get wishlist items on component mount
+  const getWishlist = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const response = await axios.get(`${BASE_URL}/api/wishlist`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const wishlistItems = response.data.items || [];
+      console.log("🔍 Wishlist API response:", wishlistItems);
+      setWishlist(wishlistItems);
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
+  };
+
+  const handleToggleWishlist = async (id, e) => {
     e.stopPropagation();
 
-    // make sure this is declared in your component scope
     const token = localStorage.getItem("token");
-
-    // 🔒 If user not logged in
     if (!token) {
-      dispatch(showToast({ message: "Login to access", type: "info" }));
+      dispatch(
+        showToast({
+          message: "Access Denied. Please login first.",
+          type: "info",
+        }),
+      );
       return;
     }
 
     const productItem = filteredProducts?.find(
-      (item) => item?.productId === id
+      (item) => item?.productId === id,
     );
 
     if (!productItem) {
@@ -199,33 +238,74 @@ const Shop = () => {
       return;
     }
 
-    const payload = {
-      id: productItem?.productId,
-      productId: productItem?.productId,
-      productName: productItem?.product?.name,
-      price: productItem?.price,
-    };
-    const url = `${BASE_URL}/api/wishlist/add`;
+    const isInWishlist = wishlist.some((item) => item.productId === id);
 
     try {
-      const response = await axios.post(url, payload, {
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      if (isInWishlist) {
+        // Find the wishlist item to get its ID
+        const wishlistItem = wishlist.find((item) => item.productId === id);
 
-      setWishlist((prev) => [...prev, id]);
-      fetchWishlistCount();
-      dispatch(showToast({ message: "Added to Wishlist!", type: "success" }));
+        if (!wishlistItem || !wishlistItem.id) {
+          console.error(
+            "❌ Wishlist item not found or missing ID:",
+            wishlistItem,
+          );
+          dispatch(
+            showToast({
+              message: "Error removing from wishlist",
+              type: "error",
+            }),
+          );
+          return;
+        }
+
+        // Remove from wishlist using the wishlist item ID
+        await axios.delete(
+          `${BASE_URL}/api/wishlist/${wishlistItem.id}/remove`,
+          {
+            headers: {
+              Accept: "*/*",
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        setWishlist((prev) => prev.filter((item) => item.productId !== id));
+        fetchWishlistCount();
+        dispatch(
+          showToast({ message: "Removed from Wishlist!", type: "success" }),
+        );
+      } else {
+        // Add to wishlist
+        const payload = {
+          id: productItem?.productId,
+          productId: productItem?.productId,
+          productName: productItem?.name,
+          price: productItem?.price,
+        };
+
+        await axios.post(`${BASE_URL}/api/wishlist/add`, payload, {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setWishlist((prev) => [
+          ...prev,
+          { id: productItem?.productId, productId: productItem?.productId },
+        ]);
+        fetchWishlistCount();
+        dispatch(showToast({ message: "Added to Wishlist!", type: "success" }));
+      }
     } catch (error) {
       console.error("❌ Wishlist API error:", error);
       dispatch(
         showToast({
           message: `Error: ${error.response?.data?.message || error.message}`,
           type: "error",
-        })
+        }),
       );
     }
   };
@@ -234,28 +314,63 @@ const Shop = () => {
     console.log("map id", id);
     const token = localStorage.getItem("token");
     if (!token) {
-      dispatch(showToast({ message: "Login to access", type: "info" }));
+      dispatch(
+        showToast({
+          message: "Access Denied. Please login first.",
+          type: "info",
+        }),
+      );
       return;
     }
     const filterMethode = filteredProducts?.filter(
-      (item) => item?.productId === id
+      (item) => item?.productId === id,
     );
-    if (product.stockQuantity <= 0) {
-      setToastMessage("This item is currently out of stock.");
+
+    if (!filterMethode || filterMethode.length === 0) {
+      setToastMessage("Product not found.");
       setToastType("error");
       setToastVisible(true);
+      return;
+    }
+
+    const selectedProduct = filterMethode[0];
+    console.log("Selected product for stock check:", selectedProduct);
+    console.log("Stock quantity:", selectedProduct?.stockQuantity);
+
+    // Check if stock quantity exists and is valid
+    if (
+      !selectedProduct ||
+      selectedProduct.stockQuantity === undefined ||
+      selectedProduct.stockQuantity === null
+    ) {
+      setToastMessage("Unable to check stock availability.");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    if (selectedProduct.stockQuantity <= 0) {
+      setToastMessage("No stock remaining for this item!");
+      setToastType("error");
+      setToastVisible(true);
+      dispatch(
+        showToast({
+          message: "No stock remaining for this item!",
+          type: "error",
+        }),
+      );
       return;
     }
     try {
       // setLoading(true);
 
       const payload = {
-        id: filterMethode[0]?.productId,
-        productId: filterMethode[0]?.productId,
-        productName: filterMethode[0]?.name,
+        id: selectedProduct?.productId,
+        productId: selectedProduct?.productId,
+        productName: selectedProduct?.name,
         quantity: 1,
-        price: filterMethode[0]?.price,
-        totalPrice: product[0]?.price,
+        price: selectedProduct?.price,
+        totalPrice: selectedProduct?.price,
       };
       const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
         headers: {
@@ -272,6 +387,9 @@ const Shop = () => {
       // setLoading(false);
     } catch (error) {
       console.log(error);
+      setToastMessage("Failed to add item to cart.");
+      setToastType("error");
+      setToastVisible(true);
       // setLoading(false);
     }
   };
@@ -281,6 +399,7 @@ const Shop = () => {
     getAllCategories();
     getAllBrands();
     fetchCartCount();
+    getWishlist();
   }, []);
 
   return (
@@ -313,59 +432,70 @@ const Shop = () => {
 
             {/* Filters content */}
             <div className="p-4 space-y-3 overflow-y-auto h-full">
-              <h2 className="font-semibold  border-b-[2px] border-background my-4">
-                Filters
-              </h2>
+              {/* Filter Header with Reset All Button */}
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="font-semibold text-xl text-[#404145]">Filter</h2>
+                <button
+                  onClick={handleResetAll}
+                  className="px-6 py-2 border-2 border-[#001D58] text-[#001D58] rounded-full font-medium hover:bg-[#001D58] hover:text-white transition-colors"
+                >
+                  Reset All
+                </button>
+              </div>
               {/* 🔍 Search */}
-              <div className="relative flex items-center border rounded-full px-3 py-2">
+              <div className="relative flex items-center bg-gray-100 rounded-full px-4 py-3 mb-6">
                 <input
                   type="text"
-                  placeholder="search "
+                  placeholder="search"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-                  className="w-full rounded-full outline-none border-none focus:ring-0 pr-8" // ⬅️ Add right padding
+                  className="w-full bg-transparent text-gray-500 text-lg outline-none border-none focus:ring-0 pr-12"
                 />
-                <div className="bg-secondaryBrand w-7 h-6 rounded-full flex items-center justify-center">
-                  <MagnifyingGlassIcon className="h-4 w-4 text-white" />
+                <div className="absolute right-2 bg-[#001D58] w-10 h-10 rounded-full flex items-center justify-center">
+                  <MagnifyingGlassIcon className="h-5 w-5 text-white" />
                 </div>
               </div>
-              <div>
-                <div className="flex flex-col justify-center items-start w-[258px] h-[99.33px] rounded-[17px] pr-[12px] py-[12px] gap-[16px] bg-white">
-                  <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
-                    Price Range
-                  </h1>
-                  <div className="w-full mx-auto">
-                    <div className="flex justify-between text-sm text-gray-600 mb-2">
-                      <span>${minPrice ? minPrice : 0}</span>
-                      <span>{maxPrice && `$${maxPrice}`}</span>
-                    </div>
+              {/* Price Range */}
+              <div className="mb-8 mt-1">
+                <h3 className="font-semibold text-lg text-[#404145] mb-4">
+                  Price Range
+                </h3>
+                <div className="">
+                  <div className="flex justify-between text-sm text-gray-600 mb-4">
+                    <span>$0</span>
+                    <span>${priceValue}</span>
+                  </div>
 
-                    <div className="relative h-2 bg-white border-background border rounded">
-                      {/* Active Range Bar */}
-                      <div
-                        className="absolute h-2 bg-blue-950/20 rounded border-background border"
-                        style={{
-                          left: `${(minPrice / 20000) * 100}%`,
-                          right: `${100 - (maxPrice / 20000) * 100}%`,
-                        }}
-                      ></div>
+                  <div className="relative h-2 bg-gray-300 rounded-full">
+                    {/* Active Range Bar */}
+                    <div
+                      className="absolute h-2 bg-[#001D58] rounded-full"
+                      style={{
+                        width: `${(priceValue / 1000) * 100}%`,
+                      }}
+                    ></div>
 
-                      <input
-                        type="range"
-                        min="0"
-                        max="20000"
-                        value={maxPrice}
-                        onChange={handleMaxChange}
-                        className="absolute top-0 w-full h-2 cursor-pointer appearance-none bg-transparent pointer-events-auto"
-                        style={{
-                          accentColor: "#001D58",
-                        }}
-                      />
-                    </div>
+                    {/* Slider Thumb */}
+                    <div
+                      className="absolute w-6 h-6 bg-[#001D58] rounded-full transform -translate-y-2 -translate-x-3 cursor-pointer shadow-lg"
+                      style={{
+                        left: `${(priceValue / 1000) * 100}%`,
+                      }}
+                    ></div>
+
+                    {/* Range Input */}
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      value={priceValue}
+                      onChange={handlePriceChange}
+                      className="absolute top-0 w-full h-2 cursor-pointer appearance-none bg-transparent pointer-events-auto z-10 opacity-0"
+                    />
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-center items-start w-[258px] h-[97px]   p-[12px] space-y-[16px]  border-t-[2px] border-background my-4">
+                <div className="flex flex-col justify-center items-start w-[258px] h-[97px] py-4 space-y-[16px]  border-t-[2px] border-background my-4">
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
                     Availability
                   </h1>
@@ -418,13 +548,13 @@ const Shop = () => {
                     Categories
                   </h1>
                   <div className=" max-h-[200px] overflow-y-auto pr-2 space-y-[8px] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    {filteredProducts.map((c) => (
+                    {categoriesList.map((c) => (
                       <h1
                         key={c.categoryId}
                         onClick={() =>
                           handleCategoryChange(c.categoryId, c.name)
                         }
-                        className={`font-poppins text-[12px] leading-[18px] ${
+                        className={`font-poppins text-[12px] cursor-pointer leading-[18px] ${
                           selectedCategory === c.categoryId
                             ? "text-secondaryBrand  font-medium"
                             : "text-secondaryText cursor-pointer font-normal"
@@ -445,7 +575,7 @@ const Shop = () => {
                         key={b.id}
                         onClick={() => handleBrandChange(b.id, b.name)}
                         // className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
-                        className={`font-poppins text-[12px] leading-[18px] ${
+                        className={`font-poppins text-[12px] cursor-pointer leading-[18px] ${
                           selectedbrand === b.id
                             ? "text-secondaryBrand  font-medium"
                             : "text-secondaryText cursor-pointer font-normal"
@@ -477,7 +607,9 @@ const Shop = () => {
                 </div>
               ) : filteredProducts.length > 0 ? (
                 filteredProducts.map((product, idx) => {
-                  const isInWishlist = wishlist.includes(product?.productId); // ✅ Check product in wishlist
+                  const isInWishlist = wishlist.some(
+                    (item) => item.productId === product?.productId,
+                  ); // ✅ Check product in wishlist
 
                   return (
                     <div
@@ -524,11 +656,15 @@ const Shop = () => {
                         </div>
 
                         {/* ❤️ Wishlist Button */}
-                        <button
+                        <div
                           onClick={(e) =>
-                            handleAddtoWishlist(product?.productId, e)
+                            handleToggleWishlist(product?.productId, e)
                           }
-                          className={`w-[51.28px] h-[51.28px] p-[12.82px] rounded-[55.1px] flex items-center justify-center transition-all duration-300 bg-[#F8F8F8]`}
+                          className={`flex justify-center items-center cursor-pointer w-[51.28px] h-[51.28px] p-[12.82px] gap-[12.81px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${
+                            isInWishlist
+                              ? "bg-red-50 shadow-md"
+                              : "bg-[#F8F8F8] hover:bg-red-50"
+                          }`}
                         >
                           <svg
                             width="27"
@@ -536,7 +672,7 @@ const Shop = () => {
                             viewBox="0 0 27 27"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
-                            className="cursor-pointer"
+                            className="cursor-pointer transition-all duration-300"
                           >
                             <path
                               d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
@@ -545,7 +681,7 @@ const Shop = () => {
                               fill={isInWishlist ? "#FF0000" : "none"}
                             />
                           </svg>
-                        </button>
+                        </div>
                       </div>
                     </div>
                   );

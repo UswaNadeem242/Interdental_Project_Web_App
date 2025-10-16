@@ -15,21 +15,23 @@ export default function Stepper({ steps, className, selectedColor }) {
                 key={name}
                 className={({ selected }) =>
                   `rounded-xl py-4 px-6 my-2 mx-2 text-xs border w-1/2 border-textField
-   focus:outline-none transition-colors duration-200 font-poppins capitalize 
-   ${selected
-                    ? `text-primary font-bold ${selectedColor}`
-                    : "text-primary font-normal text-[#949494]"
-                  }`
+   focus:outline-none transition-colors duration-200 font-poppins capitalize
+   ${
+     selected
+       ? `text-primary font-bold ${selectedColor}`
+       : "text-primary font-normal text-[#949494]"
+   }`
                 }
-
               >
                 {name}
               </Tab>
             ))}
           </TabList>
-          <TabPanels>
+          <TabPanels className="mt-6">
             {steps.map((step, idx) => (
-              <TabPanel key={idx}>{step.content}</TabPanel>
+              <TabPanel key={idx} className="pt-4">
+                {step.content}
+              </TabPanel>
             ))}
           </TabPanels>
         </TabGroup>
