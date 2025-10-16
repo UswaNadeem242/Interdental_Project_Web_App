@@ -88,35 +88,81 @@ export default function OrderDetailsForm({ id }) {
     return first + middle + last;
   };
   // download the pdf
+  // const handleDownloadPDF = async () => {
+  //   const element = formRef.current;
+  //   const downloadBtn = element.querySelector(".no-print");
+  //   if (downloadBtn) {
+  //     downloadBtn.style.display = "none";
+  //     console.log("Button hidden"); // Add this to debug
+  //   }
+  //   // ✅ Capture fast (optimized settings)
+  //   const canvas = await html2canvas(element, {
+  //     scale: 1.5, // Lower scale → faster render, still clear enough
+  //     useCORS: true,
+  //     backgroundColor: "#ffffff", // Ensures white background
+  //     logging: false,
+  //     removeContainer: true,
+  //   });
+
+  //   // ✅ Restore button visibility
+  //   if (downloadBtn) downloadBtn.style.display = "block";
+
+  //   const imgData = canvas.toDataURL("image/jpeg", 0.95);
+  //   const pdf = new jsPDF("p", "mm", "a4");
+
+  //   const pdfWidth = pdf.internal.pageSize.getWidth();
+  //   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+  //   pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+  //   pdf.save(`Implant_Design_Form.pdf`);
+  // };
   const handleDownloadPDF = async () => {
     const element = formRef.current;
     const downloadBtn = element.querySelector(".no-print");
-    if (downloadBtn) {
-      downloadBtn.style.display = "none";
-      console.log("Button hidden"); // Add this to debug
-    }
-    // ✅ Capture fast (optimized settings)
+
+    // Hide the download button during capture
+    if (downloadBtn) downloadBtn.style.display = "none";
+
+    // Wait a moment for reflow
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    // Capture the full element, not just the visible part
     const canvas = await html2canvas(element, {
-      scale: 1.5, // Lower scale → faster render, still clear enough
+      scale: 2, // High quality
       useCORS: true,
-      backgroundColor: "#ffffff", // Ensures white background
-      logging: false,
-      removeContainer: true,
+      backgroundColor: "#ffffff",
+      scrollY: -window.scrollY, // Prevent cropping
     });
 
-    // ✅ Restore button visibility
+    // Restore the button
     if (downloadBtn) downloadBtn.style.display = "block";
 
-    const imgData = canvas.toDataURL("image/jpeg", 0.95);
+    const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`Implant_Design_Form.pdf`);
+    const imgWidth = pdfWidth;
+    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    // Add the first page
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
+
+    // Add extra pages as needed
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+    }
+
+    pdf.save("Implant_Design_Form.pdf");
   };
-
 
   const totalPrice = toothSelections.reduce((toothSum, tooth) => {
     // for each tooth, sum its fields that have price
@@ -126,7 +172,6 @@ export default function OrderDetailsForm({ id }) {
 
     return toothSum + toothTotal;
   }, 0);
-  console.log('totalPrice', totalPrice);
 
 
   return (

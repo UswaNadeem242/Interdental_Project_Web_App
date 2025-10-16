@@ -2,7 +2,6 @@ import React from "react";
 import "./App.css";
 import "./index.css";
 import Login from "./pages/Login";
-import Layout from "./layout/Layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./pages/landing-page/header";
 import Footer from "./components/Footer";

@@ -206,22 +206,46 @@ const DoctorOrder = () => {
               handleBlur,
               setFieldValue,
             }) => {
+              // const handleTabClick = async (index) => {
+              //   if (index === activeIndex) return;
+              //   const formErrors = await validateForm();
+              //   if (Object.keys(formErrors).length === 0) {
+              //     setActiveIndex(index);
+              //   } else {
+              //     if (currentStep) {
+              //       dispatch(
+              //         showToast({
+              //           message: `Please complete all required fields before proceeding to Review.`,
+              //           type: "error",
+              //         })
+              //       );
+              //     }
+              //   }
+              // };
+
               const handleTabClick = async (index) => {
-                if (index === activeIndex) return;
+                if (index === activeIndex) return; // same tab click - ignore
+
+                // Allow moving backward freely
+                if (index < activeIndex) {
+                  setActiveIndex(index);
+                  return;
+                }
+
+                // Prevent moving forward unless form is valid
                 const formErrors = await validateForm();
                 if (Object.keys(formErrors).length === 0) {
-                  setActiveIndex(index);
+                  setActiveIndex(index); // proceed to next tab
                 } else {
-                  if (currentStep) {
-                    dispatch(
-                      showToast({
-                        message: `Please complete all required fields before proceeding to Review.`,
-                        type: "error",
-                      })
-                    );
-                  }
+                  dispatch(
+                    showToast({
+                      message: `Please complete all required fields before proceeding to Review.`,
+                      type: "error",
+                    })
+                  );
                 }
               };
+
               return (
                 <>
                   <StepperTabs
@@ -461,7 +485,7 @@ const DoctorOrder = () => {
                             </aside>
                             <section className="col-span-12 md:col-span-6 space-y-4">
                               <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
-                                <div className="grid grid-cols-2 gap-4 mt-5 mb-10"> 
+                                <div className="grid grid-cols-2 gap-4 mt-5 mb-10">
                                 </div>
                                 <div className="flex flex-wrap gap-2  justify-center flex-col">
                                   <p className="text-center">Select the teeth first </p>
