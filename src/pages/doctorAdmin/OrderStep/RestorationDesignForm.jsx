@@ -590,6 +590,7 @@ const DoctorOrder = () => {
                                   /> */}
                                 </div>
                                 <div className="flex flex-wrap gap-2  justify-center flex-col">
+                                  <p className="text-center">Select the teeth first </p>
                                   <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">
                                     upper Arch
                                   </button>

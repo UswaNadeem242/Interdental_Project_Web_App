@@ -12,6 +12,8 @@ import { BASE_URL } from "../config";
 import Toast from "../components/Toast";
 import { useAuth } from "../auth/AuthContext";
 import ShoppingCart from "../modals/ShoppingCartModal";
+import { useDispatch } from "react-redux";
+import { showToast } from "../store/toast-slice";
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
@@ -22,6 +24,7 @@ const SingleProduct = () => {
   const { productId } = useParams();
   const { fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } =
     useAuth();
+  const dispatch = useDispatch();
 
   const [product, setProduct] = useState({});
   const [categoriesList, setCategoriesList] = useState([]);
@@ -30,6 +33,8 @@ const SingleProduct = () => {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
 
   const getProduct = async () => {
     try {
@@ -40,7 +45,7 @@ const SingleProduct = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setProduct(response.data.data);
     } catch (error) {
@@ -57,7 +62,7 @@ const SingleProduct = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setCategoriesList(response.data);
     } catch (error) {
@@ -73,7 +78,7 @@ const SingleProduct = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setRelatedProducts(response.data);
     } catch (error) {
@@ -85,6 +90,7 @@ const SingleProduct = () => {
     getProduct();
     getAllCategories();
     getRelatedProducts();
+    getWishlist();
   }, [productId]);
 
   const closeToast = () => {
@@ -93,12 +99,12 @@ const SingleProduct = () => {
 
   const [isOpenCart, setIsOpenCart] = useState(false);
 
-  const handleAddtoCart = async () => {
+  const handleAddtoCart = async (shouldOpenModal = false) => {
     if (product.stockQuantity <= 0) {
       setToastMessage("This item is currently out of stock.");
       setToastType("error");
       setToastVisible(true);
-      return;
+      return false;
     }
     try {
       setLoading(true);
@@ -118,47 +124,127 @@ const SingleProduct = () => {
         },
       });
       console.log(response);
-      if (isOpenCart === true) {
-        setIsModalOpen(true);
-      }
+
       setToastMessage("Added to Cart !");
       setToastType("success");
       setToastVisible(true);
       fetchCartCount();
       setLoading(false);
+
+      // Open modal after successful cart operation
+      if (shouldOpenModal || isOpenCart === true) {
+        setIsModalOpen(true);
+      }
+
+      return true;
     } catch (error) {
       console.log(error);
       setLoading(false);
+      return false;
     }
   };
 
-  const handleAddtoWishlist = async () => {
+  // Get wishlist items on component mount
+  const getWishlist = async () => {
     try {
-      const payload = {
-        id: productId,
-        productId: productId,
-        productName: product.name,
-        price: product.price,
-      };
-      const response = await axios.post(
-        `${BASE_URL}/api/wishlist/add`,
-        payload,
-        {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const response = await axios.get(`${BASE_URL}/api/wishlist`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("🔍 Wishlist API response:", response.data.items);
+      console.log(
+        "🔍 Extracted wishlist IDs:",
+        response.data.items?.map((item) => item.productId),
+      );
+
+      setWishlist(response.data.items);
+      const productIds = response.data.items.map((item) => item.productId);
+      // Convert productId to number for comparison since API returns numbers
+      const currentProductId = parseInt(productId);
+      setIsInWishlist(productIds.includes(currentProductId));
+      console.log("🔍 Wishlist IDs:", productIds);
+      console.log("🔍 Current Product ID (converted):", currentProductId);
+      console.log("🔍 Is in wishlist:", productIds.includes(currentProductId));
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
+  };
+
+  const handleToggleWishlist = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        dispatch(
+          showToast({
+            message: "Access Denied. Please login first.",
+            type: "info",
+          }),
+        );
+        return;
+      }
+
+      if (isInWishlist) {
+        console.log(wishlist, "ids");
+        const getWishlistId = wishlist.find(
+          (item) => item.productId === parseInt(productId),
+        );
+
+        console.log("🔍 Wishlist ID:", getWishlistId.id);
+        // Remove from wishlist
+        await axios.delete(
+          `${BASE_URL}/api/wishlist/${getWishlistId.id}/remove`,
+          {
+            headers: {
+              Accept: "*/*",
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        setWishlist((prev) =>
+          prev.filter((itemId) => itemId !== parseInt(productId)),
+        );
+        setIsInWishlist(false);
+        fetchWishlistCount();
+        dispatch(
+          showToast({ message: "Removed from Wishlist!", type: "success" }),
+        );
+      } else {
+        // Add to wishlist
+        const payload = {
+          id: parseInt(productId),
+          productId: parseInt(productId),
+          productName: product.name,
+          price: product.price,
+        };
+
+        await axios.post(`${BASE_URL}/api/wishlist/add`, payload, {
           headers: {
             Accept: "*/*",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
-        }
-      );
-      fetchWishlistCount();
-      setToastMessage("Added to Wishlist !");
-      setToastType("success");
-      setToastVisible(true);
+        });
+
+        setWishlist((prev) => [...prev, parseInt(productId)]);
+        setIsInWishlist(true);
+        fetchWishlistCount();
+        dispatch(showToast({ message: "Added to Wishlist!", type: "success" }));
+      }
     } catch (error) {
-      setToastMessage(`Error: ${error}`);
-      setToastType("success");
-      setToastVisible(true);
+      console.error("❌ Wishlist API error:", error);
+      dispatch(
+        showToast({
+          message: `Error: ${error.response?.data?.message || error.message}`,
+          type: "error",
+        }),
+      );
     }
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -267,7 +353,7 @@ const SingleProduct = () => {
               </div>
               <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-5 pt-10">
                 <div
-                  onClick={() => {
+                  onClick={async () => {
                     if (user && user?.email) {
                       if (product.stockQuantity <= 0) {
                         setToastMessage("This item is currently out of stock.");
@@ -276,10 +362,10 @@ const SingleProduct = () => {
                         return;
                       } else {
                         setIsOpenCart(true);
-                        setLoading(true);
-                        setTimeout(() => {
-                          handleAddtoCart();
-                        }, [3000]);
+                        const success = await handleAddtoCart(true);
+                        if (!success) {
+                          setIsOpenCart(false);
+                        }
                       }
                     } else {
                       setToastMessage("Access denied! Please log in first");
@@ -297,7 +383,7 @@ const SingleProduct = () => {
                 <div
                   onClick={() => {
                     if (user && user?.email) {
-                      handleAddtoCart();
+                      handleAddtoCart(false);
                     } else {
                       setToastMessage("Access denied! Please log in first");
 
@@ -314,15 +400,21 @@ const SingleProduct = () => {
                 <div
                   onClick={() => {
                     if (user && user?.email) {
-                      handleAddtoWishlist();
+                      handleToggleWishlist();
                     } else {
-                      setToastMessage("Access denied! Please log in first");
-
-                      setToastType("error");
-                      setToastVisible(true);
+                      dispatch(
+                        showToast({
+                          message: "Access denied! Please log in first",
+                          type: "error",
+                        }),
+                      );
                     }
                   }}
-                  className="w-[51.28px] h-[51.28px] bg-[#F8F8F8] p-[12.82px] gap-[12.81px] rounded-[55.1px]"
+                  className={`flex justify-center items-center cursor-pointer w-[51.28px] h-[51.28px] p-[12.82px] gap-[12.81px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${
+                    isInWishlist
+                      ? "bg-red-50 shadow-md"
+                      : "bg-[#F8F8F8] hover:bg-red-50"
+                  }`}
                 >
                   <svg
                     width="27"
@@ -330,12 +422,13 @@ const SingleProduct = () => {
                     viewBox="0 0 27 27"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="cursor-pointer"
+                    className="cursor-pointer transition-all duration-300"
                   >
                     <path
                       d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
-                      stroke="#001D58"
-                      stroke-width="1.92211"
+                      stroke={isInWishlist ? "#FF0000" : "#001D58"}
+                      strokeWidth="1.92211"
+                      fill={isInWishlist ? "#FF0000" : "none"}
                     />
                   </svg>
                 </div>
@@ -347,7 +440,7 @@ const SingleProduct = () => {
                 <h1 className="font-poppins font-normal text-[12px] leading-[18px] text-[#808080]">
                   {product?.categoryId &&
                     categoriesList.find(
-                      (category) => category.categoryId === product.categoryId
+                      (category) => category.categoryId === product.categoryId,
                     )?.name}
                 </h1>
               </div>

@@ -9,14 +9,17 @@ import { SmileDesignPicker } from "../components/doctorAdmin/DoctorModel/smile";
 import CartConfirmModel from "./cart-confirm-model";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice";
+import * as Yup from "yup";
+import Icons from "../components/Icons";
 // import product2 from "../assets/product2.png";
 
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
+  const { fetchCartCount } = useAuth();
   const modalRef = useRef(null);
   const [activeTab, setActiveTab] = useState("cart");
   const [openOrders, setOpenOrders] = useState(false);
-  const [openPaymentMethod, setOpenPaymentMethod] = useState(false);
+  const [openPaymentMethod, setOpenPaymentMethod] = useState(true);
   const [openBuyerDetail, setOpenBuyerDetail] = useState(false);
   const [openCartTotal, setOpenCartTotal] = useState(false);
   const [cart, setCart] = useState({});
@@ -36,96 +39,90 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [paypalContact, setPaypalContact] = useState("");
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({});
   const dispatch = useDispatch();
-  const validateForm = () => {
-    // ✅ Full Name
-    if (!name || !/^[A-Za-z ]{2,50}$/.test(name)) {
-      setToastMessage(
-        "Full Name must be 2–50 characters (alphabets & spaces only)."
-      );
-      setToastType("error");
-      setToastVisible(true);
+
+  // Yup validation schema
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "Full Name must be at least 2 characters")
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "Full Name must contain only letters and spaces",
+      )
+      .required("Full Name is required"),
+    phone: Yup.string()
+      .matches(
+        /^[+]?[0-9][\d]{10}$/,
+        "Please enter a valid 11-digit phone number",
+      )
+      .required("Contact Number is required"),
+    country: Yup.string().required("Country is required"),
+    state: Yup.string()
+      .min(3, "State/Province must be at least 3 characters")
+      .matches(/^[a-zA-Z\s]+$/, "State/Province must contain only letters")
+      .required("State/Province is required"),
+    city: Yup.string()
+      .min(2, "City must be at least 2 characters")
+      .matches(/^[a-zA-Z\s\-'.]+$/, "City contains invalid characters")
+      .required("City is required"),
+    street: Yup.string()
+      .min(5, "Street address must be at least 5 characters")
+      .matches(
+        /^[a-zA-Z0-9\s#.,'-]+$/,
+        "Street address can contain letters, numbers, spaces, and # . , ' -",
+      )
+      .required("Street Address is required"),
+    recipientName: Yup.string()
+      .min(2, "Recipient's Name must be at least 2 characters")
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "Recipient's Name must contain only letters and spaces",
+      )
+      .required("Recipient's Name is required"),
+    paypalUsername: Yup.string()
+      .min(3, "PayPal Username must be at least 3 characters")
+      .required("PayPal Username is required"),
+    paypalContact: Yup.string()
+      .test(
+        "email-or-phone",
+        "Please enter a valid email or 11-digit phone number",
+        function (value) {
+          if (!value) return false;
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const phoneRegex = /^[+]?[0-9][\d]{10}$/;
+          return emailRegex.test(value) || phoneRegex.test(value);
+        },
+      )
+      .required("PayPal Email/Phone is required"),
+  });
+
+  const validateForm = async () => {
+    const formData = {
+      name,
+      phone,
+      country,
+      state,
+      city,
+      street,
+      recipientName,
+      paypalUsername,
+      paypalContact,
+    };
+
+    try {
+      await validationSchema.validate(formData, { abortEarly: false });
+      setValidationErrors({});
+      return true;
+    } catch (err) {
+      const errors = {};
+      err.inner.forEach((error) => {
+        errors[error.path] = error.message;
+      });
+      setValidationErrors(errors);
+
       return false;
     }
-
-    // ✅ Contact Number
-    if (!phone || !/^\+?[0-9]{10,15}$/.test(phone)) {
-      setToastMessage("Contact Number must be 10–15 digits (with optional +).");
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
-    // ✅ Country
-    if (!country) {
-      setToastMessage("Please select a Country.");
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
-    // ✅ State/Province
-    if (!state) {
-      setToastMessage("Please select a State/Province.");
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
-    // ✅ City
-    if (!city || !/^[A-Za-z ]{2,30}$/.test(city)) {
-      setToastMessage("City must be 2–30 characters (alphabets only).");
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
-    // ✅ Street
-    if (!street || !/^[A-Za-z0-9 ]{5,100}$/.test(street)) {
-      setToastMessage(
-        "Street must be 5–100 characters (alphanumeric & spaces)."
-      );
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
-    // ✅ Receptionist Name (PayPal)
-    if (!recipientName || !/^[A-Za-z ]{2,50}$/.test(recipientName)) {
-      setToastMessage("Receptionist Name must be 2–50 alphabets only.");
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
-    // ✅ PayPal Username
-    if (!paypalUsername || !/^[A-Za-z0-9]{5,30}$/.test(paypalUsername)) {
-      setToastMessage("PayPal Username must be 5–30 alphanumeric characters.");
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
-    // ✅ PayPal Email/Phone
-    if (!paypalContact) {
-      setToastMessage("PayPal Email/Phone is required.");
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
-    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paypalContact);
-    const isPhone = /^\+?[0-9]{10,15}$/.test(paypalContact);
-
-    if (!isEmail && !isPhone) {
-      setToastMessage("PayPal Contact must be a valid Email or Phone.");
-      setToastType("error");
-      setToastVisible(true);
-      return false;
-    }
-
-    // ✅ If all checks pass
-    return true;
   };
 
   const createOrder = async () => {
@@ -150,14 +147,29 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       if (response.data.responseCode === "1500") {
         setToastMessage(response.data.responseMessage);
         setToastType("error");
         setToastVisible(true);
       } else if (response.data.responseCode === "0000") {
-        setActiveTab("order");
+        // Server should clear cart after successful order creation
+        try {
+          // Refresh cart data from server to get updated (empty) cart
+          await getCart();
+          // Update cart count in header
+          fetchCartCount();
+        } catch (refreshError) {
+          console.log(
+            "Failed to refresh cart from server, clearing locally:",
+            refreshError,
+          );
+          // Fallback: clear cart locally if server refresh fails
+          setCart({ items: [], totalAmount: 0 });
+          fetchCartCount();
+        }
+        // Note: activeTab is handled by the confirm modal
       }
     } catch (error) {
       console.log(error);
@@ -179,6 +191,61 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
       console.log(error);
     }
   };
+  // Stock validation function
+  const validateCartStock = () => {
+    if (!cart?.items || cart.items.length === 0) {
+      setToastMessage("Your cart is empty.");
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    const outOfStockItems = [];
+    const insufficientStockItems = [];
+
+    cart.items.forEach((item) => {
+      if (item.stockItem <= 0) {
+        outOfStockItems.push(item.productName);
+      } else if (item.quantity > item.stockItem) {
+        insufficientStockItems.push({
+          name: item.productName,
+          requested: item.quantity,
+          available: item.stockItem,
+        });
+      }
+    });
+
+    if (outOfStockItems.length > 0) {
+      setToastMessage(
+        `The following items are out of stock: ${outOfStockItems.join(", ")}. Please remove them from your cart.`,
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    if (insufficientStockItems.length > 0) {
+      const messages = insufficientStockItems.map(
+        (item) =>
+          `${item.name} (requested: ${item.requested}, available: ${item.available})`,
+      );
+      setToastMessage(
+        `Insufficient stock for: ${messages.join(", ")}. Please adjust quantities.`,
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleCheckoutClick = () => {
+    if (validateCartStock()) {
+      setActiveTab("checkout");
+    }
+  };
+
   useEffect(() => {
     getCart();
   }, []);
@@ -187,7 +254,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     const loadCountries = async () => {
       try {
         const { data } = await axios.get(
-          "https://restcountries.com/v3.1/all?fields=cca2,name,flags"
+          "https://restcountries.com/v3.1/all?fields=cca2,name,flags",
         );
         const countryData = data.map((c) => ({
           code: c.cca2,
@@ -218,6 +285,11 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const handleInputChange = (e) => {
     setCountry(e);
     setShowCoutries(true);
+
+    // Clear selected country if input doesn't match
+    if (selectedCountry && selectedCountry.name !== e) {
+      setSelectedCountry(null);
+    }
   };
 
   const closeToast = () => {
@@ -244,29 +316,58 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     if (targetIndex <= currentIndex) {
       setActiveTab(targetTab);
     }
-    // Restrict moving forward
+    // Special handling for checkout tab - validate stock
+    else if (targetTab === "checkout") {
+      if (validateCartStock()) {
+        setActiveTab(targetTab);
+      }
+    }
+    // Restrict moving forward to other tabs
     else {
       dispatch(
         showToast({
           message: `Sorry, you can't move to this step yet.`,
           type: "error",
-        })
+        }),
       );
     }
   };
+
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isModalOpen]);
+
+  // Handle browser autofill for country field
+  useEffect(() => {
+    if (country && !selectedCountry) {
+      // Find matching country from the countries list
+      const matchingCountry = countries.find(
+        (c) => c.name.toLowerCase() === country.toLowerCase(),
+      );
+      if (matchingCountry) {
+        setSelectedCountry(matchingCountry);
+      }
+    }
+  }, [country, countries, selectedCountry]);
 
   return (
     <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div
         // ref={modalRef}
-        className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative "
+        className="flex flex-col justify-center items-center bg-[#FAFAFA] p-[32px] gap-[16px] shadow-lg w-[651px] h-full relative overflow-hidden"
       >
         {/* Tabs */}
         <div className="flex justify-around w-[587px] h-[68.69px]  pb-[16px] pt-[8px]">
           <div className="flex justify-around w-[539.02px] h-[44.69px]">
             <div
               onClick={() => handleTabClick("cart")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] 
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px]
                  ${
                    activeTab === "cart"
                      ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
@@ -334,8 +435,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     </div>
                     <div className="flex justify-between items-center w-[523px] h-[57px] gap-[20px]">
                       <div
-                        onClick={() => setActiveTab("checkout")}
-                        className="flex justify-center items-center cursor-pointer w-[523px] h-[57px] rounded-[32px] gap-[20px] bg-secondaryBrand"
+                        onClick={handleCheckoutClick}
+                        className="flex justify-center items-center cursor-pointer w-[523px] h-[57px] rounded-[32px] gap-[20px] bg-secondaryBrand hover:bg-blue-700 transition-colors"
                       >
                         <h1 className="flex justify-center items-center leading-[21px] font-poppins font-semibold text-white text-[14px] w-full">
                           Checkout
@@ -350,14 +451,14 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             </div>
           )}
           {activeTab === "checkout" && (
-            <div className="flex flex-col justify-start items-center w-[651px] h-auto mb-16 gap-[16px]">
+            <div className="flex flex-col justify-start items-center w-[651px] h-auto mb-32 gap-[16px] pb-16">
               {/* Buyer's Details */}
-              <div className="flex flex-col justify-start items-start w-[587px] h-[155px] space-y-[16px]">
+              <div className="flex flex-col justify-start items-start w-[587px] h-auto space-y-[16px]">
                 <h1 className="font-inter font-medium text-[14px] leading-[16.94px] text-[#000000]">
                   Buyer's Details
                 </h1>
-                <div className="flex flex-col justify-center items-center w-[587px] h-[122px] space-y-[16px]">
-                  <div className="flex justify-start items-center w-[587px] h-[53px] gap-[16px]">
+                <div className="flex flex-col justify-center items-center w-[587px] h-auto space-y-[16px]">
+                  <div className="flex justify-start items-start w-[587px] h-auto gap-[16px]">
                     {" "}
                     <div className="relative w-full">
                       <input
@@ -367,17 +468,26 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         onChange={(e) => setName(e.target.value)}
                         placeholder=" "
                         required
-                        className="peer w-[285.5px] h-[53px] rounded-[8px]     py-[10px] px-[15px] outline-none text-textFieldHeading  "
+                        className={`peer w-[285.5px] h-[53px] rounded-[8px] py-[10px] px-[15px] outline-none text-textFieldHeading border ${
+                          validationErrors.name
+                            ? "border-red-500"
+                            : "border-[#FFFFFF]"
+                        }`}
                       />
                       <label
                         htmlFor="fullName"
-                        className="absolute left-[15px] top-[14px] text-gray-400 text-sm transition-all
+                        className="absolute left-[15px] top-[14px] text-gray-400 text-sm transition-all bg-white px-1
       peer-placeholder-shown:top-[14px] peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
       peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand"
                       >
                         Full Name
                       </label>
+                      {validationErrors.name && (
+                        <div className="text-red-600 text-xs mt-1">
+                          {validationErrors.name}
+                        </div>
+                      )}
                     </div>
                     <div className="relative w-full">
                       <input
@@ -386,17 +496,26 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder=" "
-                        className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
+                        className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand border ${
+                          validationErrors.phone
+                            ? "border-red-500"
+                            : "border-[#FFFFFF]"
+                        }`}
                       />
                       <label
                         htmlFor="contactNumber"
-                        className="absolute left-3 top-3 text-gray-400 text-sm transition-all
-      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
-      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand"
+                        className="absolute left-[15px] top-[14px] text-gray-400 text-sm transition-all bg-white px-1
+        peer-placeholder-shown:top-[14px] peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+        peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+        peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand"
                       >
                         Contact Number
                       </label>
+                      {validationErrors.phone && (
+                        <div className="text-red-600 text-xs mt-1">
+                          {validationErrors.phone}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <input
@@ -411,15 +530,21 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                 </div>
               </div>
               {/* Shipping */}
-              <div className="flex flex-col justify-start items-start w-[587px] h-[155px] space-y-[16px]">
+              <div className="flex flex-col justify-start items-start w-[587px] h-auto space-y-[16px]">
                 <h1 className="font-inter font-medium text-[14px] leading-[16.94px] text-[#000000]">
                   Shipping
                 </h1>
-                <div className="flex flex-col justify-center items-center w-[587px] h-[122px] space-y-[16px]">
-                  <div className="flex justify-start items-center w-[587px] h-[53px] gap-[16px]">
-                    <div className="relative flex flex-col justify-start items-start space-y-2">
+                <div className="flex flex-col justify-center items-center w-[587px] h-auto space-y-[16px]">
+                  <div className="flex justify-start items-start w-[587px] h-auto gap-[16px]">
+                    <div className="relative flex flex-col justify-start items-start w-[285.5px]">
                       {/* Input + Flag */}
-                      <div className="relative flex justify-start items-center w-[285.5px] h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white border border-[#FFFFFF]">
+                      <div
+                        className={`relative flex justify-start items-center w-full h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white border ${
+                          validationErrors.country
+                            ? "border-red-500"
+                            : "border-[#FFFFFF]"
+                        }`}
+                      >
                         {selectedCountry && (
                           <img
                             src={selectedCountry?.flag}
@@ -440,7 +565,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         {/* Floating Label */}
                         <label
                           htmlFor="country"
-                          className={`absolute  text-gray-400 text-sm transition-all   px-1 pointer-events-none
+                          className={`absolute  text-gray-400 text-sm transition-all px-1 pointer-events-none bg-white
         ${
           country
             ? "-top-2 text-xs text-secondaryBrand"
@@ -460,7 +585,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                             .filter((c) =>
                               c.name
                                 .toLowerCase()
-                                .includes(country.toLowerCase())
+                                .includes(country.toLowerCase()),
                             )
                             .map((country) => (
                               <div key={country.code} value={country.code}>
@@ -479,21 +604,30 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                             ))}
                         </div>
                       )}
+                      {validationErrors.country && (
+                        <div className="text-red-600 text-xs mt-1">
+                          {validationErrors.country}
+                        </div>
+                      )}
                     </div>
 
-                    <div className="relative w-full max-w-[285.5px]">
+                    <div className="relative flex flex-col justify-start items-start w-[285.5px]">
                       <input
                         type="text"
                         id="state"
                         value={state}
                         onChange={(e) => setState(e.target.value)}
                         placeholder=" "
-                        className="peer w-full h-[53px] rounded-[8px] border border-[#FFFFFF] bg-white py-[10px] px-[15px] outline-none text-textFieldHeading   transition-all"
+                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${
+                          validationErrors.state
+                            ? "border-red-500"
+                            : "border-[#FFFFFF]"
+                        }`}
                       />
 
                       <label
                         htmlFor="state"
-                        className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none
+                        className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none bg-white px-1
       ${
         state
           ? "-top-2 text-xs text-secondaryBrand"
@@ -503,22 +637,31 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       >
                         State / Province
                       </label>
+                      {validationErrors.state && (
+                        <div className="text-red-600 text-xs mt-1">
+                          {validationErrors.state}
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="flex justify-start items-center w-[587px] h-[53px] gap-[16px]">
-                    <div className="relative w-full max-w-[285.5px]">
+                  <div className="flex justify-start items-start w-[587px] h-auto gap-[16px]">
+                    <div className="relative w-[285.5px] flex flex-col justify-start items-start">
                       <input
                         type="text"
                         id="city"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                         placeholder=" "
-                        className="peer w-full h-[53px] rounded-[8px] border border-[#FFFFFF] bg-white py-[10px] px-[15px] outline-none text-textFieldHeading   transition-all"
+                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${
+                          validationErrors.city
+                            ? "border-red-500"
+                            : "border-[#FFFFFF]"
+                        }`}
                       />
 
                       <label
                         htmlFor="city"
-                        className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none
+                        className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none bg-white px-1
       ${
         city
           ? "-top-2 text-xs text-secondaryBrand"
@@ -528,20 +671,29 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       >
                         City
                       </label>
+                      {validationErrors.city && (
+                        <div className="text-red-600 text-xs mt-1">
+                          {validationErrors.city}
+                        </div>
+                      )}
                     </div>
-                    <div className="relative w-full max-w-[285.5px]">
+                    <div className="relative w-[285.5px] flex flex-col justify-start items-start">
                       <input
                         type="text"
                         id="street"
                         value={street}
                         onChange={(e) => setStreet(e.target.value)}
                         placeholder=" "
-                        className="peer w-full h-[53px] rounded-[8px] border border-[#FFFFFF] bg-white py-[10px] px-[15px] outline-none text-textFieldHeading   transition-all"
+                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${
+                          validationErrors.street
+                            ? "border-red-500"
+                            : "border-[#FFFFFF]"
+                        }`}
                       />
 
                       <label
                         htmlFor="street"
-                        className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none
+                        className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none bg-white px-1
       ${
         street
           ? "-top-2 text-xs text-secondaryBrand"
@@ -551,6 +703,11 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       >
                         Street
                       </label>
+                      {validationErrors.street && (
+                        <div className="text-red-600 text-xs mt-1">
+                          {validationErrors.street}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -570,24 +727,17 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     openPaymentMethod ? "h-[322px]" : ""
                   } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
                 >
-                  <div className="flex justify-center items-center w-[587px] h-[53px] border-b-[1px] border-cartColor py-[8px] px-[16px] gap-[8px]">
+                  <div
+                    className="flex justify-center items-center w-[587px] h-[53px] border-b-[1px] border-cartColor py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50"
+                    onClick={() => setOpenPaymentMethod(!openPaymentMethod)}
+                  >
                     <img src="/assets/paypal.png" alt="paypal" />
                     <h1 className="w-[509px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
-                      Paypal
+                      PayPal *
                     </h1>
-                    <svg
-                      width="10"
-                      height="6"
-                      viewBox="0 0 10 6"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      onClick={() => setOpenPaymentMethod(!openPaymentMethod)}
-                    >
-                      <path
-                        d="M9.85828 0.590033C9.68649 0.418248 9.41768 0.402632 9.22825 0.543183L9.17398 0.590033L5 4.76379L0.826019 0.590033C0.654235 0.418248 0.38542 0.402632 0.195992 0.543183L0.141723 0.590033C-0.0300617 0.761818 -0.0456791 1.03063 0.0948725 1.22006L0.141723 1.27433L4.65785 5.79046C4.82964 5.96224 5.09845 5.97786 5.28788 5.83731L5.34215 5.79046L9.85828 1.27433C10.0472 1.08537 10.0472 0.778997 9.85828 0.590033Z"
-                        fill="#4B4B4B"
-                      />
-                    </svg>
+                    <Icons.ChevronDown
+                      className={`w-[10px] h-[6px] transform transition-transform ${openPaymentMethod ? "rotate-180" : ""}`}
+                    />
                   </div>
                   <div
                     className={`${
@@ -597,9 +747,15 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     {/* Recipient Name */}
                     <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
                       <p className="font-poppins font-medium text-[12px] text-[#434343]">
-                        Recipient's Name
+                        Recipient's Name *
                       </p>
-                      <div className="flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px]">
+                      <div
+                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${
+                          validationErrors.recipientName
+                            ? "border border-red-500"
+                            : ""
+                        }`}
+                      >
                         <input
                           type="text"
                           value={recipientName}
@@ -608,13 +764,24 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                           className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
                       </div>
+                      {validationErrors.recipientName && (
+                        <div className="text-red-600 text-xs">
+                          {validationErrors.recipientName}
+                        </div>
+                      )}
                     </div>
 
                     <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
                       <p className="font-poppins font-medium text-[12px] text-[#434343]">
-                        PayPal Username
+                        PayPal Username *
                       </p>
-                      <div className="flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px]">
+                      <div
+                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${
+                          validationErrors.paypalUsername
+                            ? "border border-red-500"
+                            : ""
+                        }`}
+                      >
                         <input
                           type="text"
                           value={paypalUsername}
@@ -623,13 +790,24 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                           className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
                       </div>
+                      {validationErrors.paypalUsername && (
+                        <div className="text-red-600 text-xs">
+                          {validationErrors.paypalUsername}
+                        </div>
+                      )}
                     </div>
 
                     <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
                       <p className="font-poppins font-medium text-[12px] text-[#434343]">
-                        E-mail / Phone Number
+                        E-mail / Phone Number *
                       </p>
-                      <div className="flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px]">
+                      <div
+                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${
+                          validationErrors.paypalContact
+                            ? "border border-red-500"
+                            : ""
+                        }`}
+                      >
                         <input
                           type="text"
                           value={paypalContact}
@@ -638,35 +816,34 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                           className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
                       </div>
+                      {validationErrors.paypalContact && (
+                        <div className="text-red-600 text-xs">
+                          {validationErrors.paypalContact}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
-              {!!validateForm && (
-                <div className="w-[261.5] h-[60px] flex flex-col justify-start items-start space-y-[8px]">
-                  <p className="font-poppins font-medium text-[14px] leading-[18px] text-[#B71212]">
-                    Please fill all required fields
-                  </p>
-                </div>
-              )}
+
               {/* Confirm order */}
-              <div className="flex justify-start items-center bg-[#FAFAFA] fixed bottom-0 w-[523px] h-[57px] gap-[20px] pb-[24px]">
+              <div className="flex justify-start items-center bg-[#FAFAFA] absolute bottom-0 left-0 right-0 h-[80px] gap-[20px] z-[100] pb-[24px] pt-[16px] px-[32px]">
                 <div
                   onClick={() => setActiveTab("cart")}
-                  className="flex justify-center items-center cursor-pointer w-[251.5px] h-[55px] rounded-[32px] gap-[8px] bg-[#0137641A]"
+                  className="flex justify-center items-center cursor-pointer w-full h-[55px] rounded-[32px] gap-[8px] bg-[#0137641A]"
                 >
                   <h1 className="flex justify-center items-center leading-[21px] font-poppins font-semibold text-[#013764] text-[14px] w-full">
                     Go Back
                   </h1>
                 </div>
                 <div
-                  onClick={() => {
-                    if (!validateForm()) return;
+                  onClick={async () => {
+                    if (!(await validateForm())) return;
 
                     // ✅ All validations passed
                     setActiveTab("review");
                   }}
-                  className="flex justify-center items-center cursor-pointer w-[251.5px] h-[55px] rounded-[32px] gap-[8px] bg-secondaryBrand"
+                  className="flex justify-center items-center cursor-pointer w-full h-[55px] rounded-[32px] gap-[8px] bg-secondaryBrand"
                 >
                   <h1 className="flex justify-center items-center leading-[21px] font-poppins font-semibold text-white text-[14px] w-full">
                     Next
@@ -684,27 +861,17 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                 } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50 ${
                     openOrders && "border-b-[1px] border-cartColor"
                   }`}
+                  onClick={() => setOpenOrders(!openOrders)}
                 >
                   <h1 className="w-[538px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Your Orders
                   </h1>
-                  <svg
-                    width="10"
-                    height="6"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    onClick={() => setOpenOrders(!openOrders)}
-                    className="cursor-pointer"
-                  >
-                    <path
-                      d="M9.85828 0.590033C9.68649 0.418248 9.41768 0.402632 9.22825 0.543183L9.17398 0.590033L5 4.76379L0.826019 0.590033C0.654235 0.418248 0.38542 0.402632 0.195992 0.543183L0.141723 0.590033C-0.0300617 0.761818 -0.0456791 1.03063 0.0948725 1.22006L0.141723 1.27433L4.65785 5.79046C4.82964 5.96224 5.09845 5.97786 5.28788 5.83731L5.34215 5.79046L9.85828 1.27433C10.0472 1.08537 10.0472 0.778997 9.85828 0.590033Z"
-                      fill="#4B4B4B"
-                    />
-                  </svg>
+                  <Icons.ChevronDown
+                    className={`w-[10px] h-[6px] transform transition-transform ${openOrders ? "rotate-180" : ""}`}
+                  />
                 </div>
                 <div
                   className={`${
@@ -788,27 +955,17 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                 } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50 ${
                     openBuyerDetail && "border-b-[1px] border-cartColor"
                   }`}
+                  onClick={() => setOpenBuyerDetail(!openBuyerDetail)}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Buyer's Details
                   </h1>
-                  <svg
-                    width="10"
-                    height="6"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    onClick={() => setOpenBuyerDetail(!openBuyerDetail)}
-                    className="cursor-pointer"
-                  >
-                    <path
-                      d="M9.85828 0.590033C9.68649 0.418248 9.41768 0.402632 9.22825 0.543183L9.17398 0.590033L5 4.76379L0.826019 0.590033C0.654235 0.418248 0.38542 0.402632 0.195992 0.543183L0.141723 0.590033C-0.0300617 0.761818 -0.0456791 1.03063 0.0948725 1.22006L0.141723 1.27433L4.65785 5.79046C4.82964 5.96224 5.09845 5.97786 5.28788 5.83731L5.34215 5.79046L9.85828 1.27433C10.0472 1.08537 10.0472 0.778997 9.85828 0.590033Z"
-                      fill="#4B4B4B"
-                    />
-                  </svg>
+                  <Icons.ChevronDown
+                    className={`w-[10px] h-[6px] transform transition-transform ${openBuyerDetail ? "rotate-180" : ""}`}
+                  />
                 </div>
                 <div
                   className={`${
@@ -859,27 +1016,17 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                 } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50 ${
                     openCartTotal && "border-b-[1px] border-cartColor"
                   }`}
+                  onClick={() => setOpenCartTotal(!openCartTotal)}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Cart Total
                   </h1>
-                  <svg
-                    width="10"
-                    height="6"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    onClick={() => setOpenCartTotal(!openCartTotal)}
-                    className="cursor-pointer"
-                  >
-                    <path
-                      d="M9.85828 0.590033C9.68649 0.418248 9.41768 0.402632 9.22825 0.543183L9.17398 0.590033L5 4.76379L0.826019 0.590033C0.654235 0.418248 0.38542 0.402632 0.195992 0.543183L0.141723 0.590033C-0.0300617 0.761818 -0.0456791 1.03063 0.0948725 1.22006L0.141723 1.27433L4.65785 5.79046C4.82964 5.96224 5.09845 5.97786 5.28788 5.83731L5.34215 5.79046L9.85828 1.27433C10.0472 1.08537 10.0472 0.778997 9.85828 0.590033Z"
-                      fill="#4B4B4B"
-                    />
-                  </svg>
+                  <Icons.ChevronDown
+                    className={`w-[10px] h-[6px] transform transition-transform ${openCartTotal ? "rotate-180" : ""}`}
+                  />
                 </div>
                 <div
                   className={`${
