@@ -22,7 +22,7 @@ const Home = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setProducts(response.data.data.content);
     } catch (error) {
@@ -33,9 +33,8 @@ const Home = () => {
     getAllProducts();
   }, []);
 
-   return (
+  return (
     <div className="flex flex-col justify-start items-center space-y-[65px] bg-gray-100 pb-16">
-
       <HeroSection />
       {/* <Brands /> */}
       <FeaturedProducts products={products} />
