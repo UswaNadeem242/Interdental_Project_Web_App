@@ -45,13 +45,13 @@ export const PatientCard = ({
               </div>
 
               {/* Right section: link */}
-              <NavLink
+              {/* <NavLink
                 to="/doctor-admin/patient"
                 className="text-[#278AE5] font-normal text-xs font-poppins flex items-center flex-shrink-0"
               >
                 <span className="mr-1">{item?.linkName}</span>
                 <TiltedArrowBlue />
-              </NavLink>
+              </NavLink> */}
             </div>
           );
         })}

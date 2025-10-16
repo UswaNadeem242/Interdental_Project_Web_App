@@ -23,7 +23,7 @@ export default function AddPatientForm({
   });
 
   const initialValues = {
-    photo: null,
+    // photo: null,
     username: "",
     lastName: "",
     address: "",
@@ -78,6 +78,8 @@ export default function AddPatientForm({
   // Form submit handler
   const handleSubmit = async (values, { setSubmitting }) => {
     // Validation check (following AddBrandModal pattern)
+    console.log('hello');
+
     if (
       !values.username ||
       !values.lastName ||
@@ -95,9 +97,9 @@ export default function AddPatientForm({
       const formData = new FormData();
 
       // Append the image file (File object from input) - exactly like AddBrandModal
-      if (uploadedImage) {
-        formData.append("image", uploadedImage);
-      }
+      // if (uploadedImage) {
+      //   formData.append("image", uploadedImage);
+      // }
 
       // Append the patient object with proper MIME type - exactly like AddBrandModal
       const patientData = {
@@ -128,13 +130,12 @@ export default function AddPatientForm({
           } else {
             console.log("onClose function not available");
           }
-
           window.location.reload();
         }, 2000);
       } else {
         showToast(
           response?.data?.responseDesc ||
-            "Failed to add patient. Please try again.",
+          "Failed to add patient. Please try again.",
           "error"
         );
       }
@@ -163,9 +164,9 @@ export default function AddPatientForm({
           isSubmitting,
         }) => (
           <Form className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white">
-            {/* Photo Upload */}
 
-            <div className={`col-span-6 ${imgUpload}`}>
+
+            {/* <div className={`col-span-6 ${imgUpload}`}>
               {!imagePreview ? (
                 <label className="inline-flex items-center px-6 py-4 bg-textField text-primaryText text-sm font-medium rounded-lg cursor-pointer transition w-full">
                   <div className="flex justify-between gap-3 items-center w-full">
@@ -187,7 +188,7 @@ export default function AddPatientForm({
                 </label>
               ) : (
                 <div className="flex flex-col items-center justify-center space-y-3">
-                  {/* Round Image Container with Delete Button */}
+                 
                   <div className="relative">
                     <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg">
                       <img
@@ -195,9 +196,7 @@ export default function AddPatientForm({
                         alt="Uploaded preview"
                         className="w-full h-full object-cover"
                       />
-                    </div>
-
-                    {/* Delete Button - Top Right */}
+                    </div> 
                     <button
                       type="button"
                       onClick={() => {
@@ -209,7 +208,7 @@ export default function AddPatientForm({
                     </button>
                   </div>
 
-                  {/* Upload New Profile Picture Button - Smaller */}
+                  
                   <label className="px-4 py-2 bg-secondaryBrand text-white text-sm font-medium rounded cursor-pointer transition whitespace-nowrap">
                     Upload new profile picture
                     <input
@@ -229,7 +228,7 @@ export default function AddPatientForm({
                 component="div"
                 className="text-red-700 text-sm mt-1"
               />
-            </div>
+            </div> */}
 
             {/* First Name */}
             <div className="col-span-12 grid grid-cols-12   gap-2">

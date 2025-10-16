@@ -187,13 +187,20 @@ const DoctorOrder = () => {
   };
 
   const today = new Date();
-const formattedToday = today.toISOString().split("T")[0];
+  const formattedToday = today.toISOString().split("T")[0];
 
-// Get the last date of the current month (for "max")
-const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-  .toISOString()
-  .split("T")[0];
+  //
+  // 🕒 Add 1 day to make sure user can't select today
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
 
+  // Format YYYY-MM-DD for <input type="date">
+  const formattedTomorrow = tomorrow.toISOString().split("T")[0];
+
+  // Get the last date of the current month (for "max")
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+    .toISOString()
+    .split("T")[0];
 
   return (
     <>
@@ -296,14 +303,16 @@ const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
                                   onBlur={handleBlur}
                                   placeholder="Office Reference number"
                                 />
+
+                                
                                 <LabeledInput
                                   label="Case expected due date"
                                   type="date"
                                   name="dueDate"
                                   // min={new Date().toISOString().split("T")[0]}
-                                  min={formattedToday}          // ⬅️ prevents selecting past dates
+                                  // min={formattedToday}
+                                  min={formattedTomorrow}
                                   max={lastDayOfMonth}
-
                                   // value={values.dueDate || ""}
                                   // onChange={(e) => {
                                   //   const value = e.target.value;
@@ -426,7 +435,7 @@ const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
                                 error={
                                   touched.scannerType &&
                                   !activeToothSelection.scannerType
-                                    ? "Scanner Type is Required Select the Teeth"
+                                    ? "Select the Teeth first to select Scanner type"
                                     : ""
                                 }
                               />
@@ -561,6 +570,7 @@ const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
                                   /> */}
                                 </div>
                                 <div className="flex flex-wrap gap-2  justify-center flex-col">
+                                  <p className="text-center">Select the teeth first </p>
                                   <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">
                                     upper Arch
                                   </button>
@@ -653,15 +663,15 @@ const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
                                             (p) => p.name === "Surgical Guide"
                                           )?.children?.length > 0
                                             ? orders.find(
-                                              (p) =>
-                                                p.name === "Surgical Guide"
-                                            )?.children
+                                                (p) =>
+                                                  p.name === "Surgical Guide"
+                                              )?.children
                                             : [
-                                              {
-                                                label: "Not Available",
-                                                value: "",
-                                              },
-                                            ]
+                                                {
+                                                  label: "Not Available",
+                                                  value: "",
+                                                },
+                                              ]
                                         }
                                         hideCheckForNotAvailable={true}
                                         // value={
@@ -1106,7 +1116,7 @@ const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
                                         !toothSelections.find(
                                           (t) => t.toothId === selectedTooth
                                         )?.photogrammetryfiles
-                                          ? "Photogrammetry files is required. Please select a tooth first."
+                                          ? "Please select a tooth first before selecting Photogrammetry files."
                                           : ""
                                       }
                                     />
