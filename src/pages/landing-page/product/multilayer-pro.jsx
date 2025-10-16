@@ -8,12 +8,16 @@ import {
 } from "../../../Constant";
 import Shades from "../../../Common/product-landing/shades-product-landing";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
+import BackButton from "../../../components/BackButton";
 
 function Multilayerpro({ isLanding }) {
   return (
     <div>
       <div className="pb-20">{!isLanding && <Header />} </div>
       <section className="container mx-auto  pb-10">
+        <div className="mt-4">
+          <BackButton variant="rounded" className="" text="Back" />
+        </div>
         <div className="w-full pt-10">
           <img
             src="/assets/landing-page/multiPro.png"
@@ -54,20 +58,18 @@ function Multilayerpro({ isLanding }) {
           <div className="w-full  px-6 py-8  rounded-2xl border">
             <div className="space-y-8 font-poppins">
               {/* Bionic Section */}
-              {
-                insideContent?.map((item, idx) => {
-                  return (
-                    <div key={idx}>
-                      <h2 className="text-xl sm:text-lg font-semibold text-black pb-5">
-                        {item?.title}
-                      </h2>
-                      <p className="text-secondaryText text-lg font-normal leading-relaxed">
-                        {item?.description}
-                      </p>
-                    </div>
-                  )
-                })
-              }
+              {insideContent?.map((item, idx) => {
+                return (
+                  <div key={idx}>
+                    <h2 className="text-xl sm:text-lg font-semibold text-black pb-5">
+                      {item?.title}
+                    </h2>
+                    <p className="text-secondaryText text-lg font-normal leading-relaxed">
+                      {item?.description}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -128,7 +130,8 @@ function Multilayerpro({ isLanding }) {
         <div className="flex justify-center">
           <h2 className="font-poppins text-black md:text-4xl text-base pb-10">
             {" "}
-            Recommended <span className="text-fouthBrand font-bold">Indications</span>
+            Recommended{" "}
+            <span className="text-fouthBrand font-bold">Indications</span>
           </h2>
         </div>
         <div className="flex flex-col items-center gap-8">
@@ -179,7 +182,7 @@ function Multilayerpro({ isLanding }) {
             <Shades
               shades={shadesProductMultiPro}
               title="Shades"
-              className='lg:grid-cols-8'
+              className="lg:grid-cols-8"
               description="3D Pro zir is available in 16 shades of the classical VITA shade guide and 3 bleach shades OM1/OM2/OM3. For individual further charac-terisation, Biomic Stain&Glaze can be used. 3D Pro zir simplifies the whole process in achieving highly aesthetic results."
             />
           </div>

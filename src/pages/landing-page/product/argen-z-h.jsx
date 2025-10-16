@@ -12,23 +12,24 @@ import Header from "../header";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
 import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
+import BackButton from "../../../components/BackButton";
 
 function ArgenZ({ isLanding }) {
   const Indication = [
-    { id: '1', title: 'Up to 14 Units  couple mispelled words' },
-    { id: '2', title: 'Full contour' },
-  ]
+    { id: "1", title: "Up to 14 Units  couple mispelled words" },
+    { id: "2", title: "Full contour" },
+  ];
   return (
     <>
-      <div className="pb-20 md:pb-36">{!isLanding && <Header />} </div>
+      {!isLanding && <div className="pb-20">{<Header />} </div>}
 
-      <div className="bg-bgWhite font-poppins w-11/12 flex flex-col gap-2 md:gap-10 mx-auto">
+      <div className="bg-bgWhite font-poppins w-11/12 flex flex-col gap-2 md:gap-5 mx-auto">
+        <div className="mt-4">
+          <BackButton variant="rounded" className="mb-4" text="Back" />
+        </div>
         <div className="w-full">
           <img src="/assets/Argen.png" alt="ArgrnImg" className="min-w-full" />
         </div>
-
-
-
 
         <div className="grid grid-cols-1 md:grid-cols-8 gap-8 py-12">
           {/* Left Image */}
@@ -102,7 +103,11 @@ function ArgenZ({ isLanding }) {
 
         {/* Shades */}
         <div className="mt-12">
-          <Shades shades={shadesProductLanding} title="Shades" className='lg:grid-cols-6' />
+          <Shades
+            shades={shadesProductLanding}
+            title="Shades"
+            className="lg:grid-cols-6"
+          />
         </div>
 
         {/* Dimensions*/}

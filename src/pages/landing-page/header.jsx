@@ -6,7 +6,7 @@ import { navItems } from "../../Constant";
 import { ChevronDownIcon, UsersIcon } from "@heroicons/react/24/outline";
 import ProfileIcon from "../../icon/ProfileIcon";
 import { UserIcon } from "../../icon/UserIcon";
-import Toast from "../../components/Toast";
+
 import ShoppingCart from "../../modals/ShoppingCartModal";
 import NotificationsDropdown from "../../components/dropdowns/NotificationsDropdown";
 import { BellIconSVG } from "../../icon/Bell";
@@ -17,11 +17,12 @@ const Header = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notificationsDropdown, setNotificationsDropdown] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const { wishlistCount, cartCount } = useAuth();
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -31,9 +32,7 @@ const Header = () => {
   // Retrieve user data from localStorage
   const userData = localStorage.getItem("users");
   const user = userData ? JSON.parse(userData) : null;
-  const [toastVisible, setToastVisible] = useState(false);
 
-  const [toastType, setToastType] = useState("success");
   // Debugging logs
 
   // Safely log firstName only if user exists
@@ -41,9 +40,6 @@ const Header = () => {
     console.log(user.firstName);
   }
 
-  const closeToast = () => {
-    setToastVisible(false);
-  };
   const handleCart = () => {
     setIsModalOpen(true);
   };
@@ -55,7 +51,7 @@ const Header = () => {
     }
   };
   const handleNotifications = () => {
-    console.log('consle');
+    console.log("consle");
 
     if (user) {
       setNotificationsDropdown(!notificationsDropdown);
@@ -117,7 +113,7 @@ const Header = () => {
 
           {/* Desktop actions */}
           <div className="hidden lg:flex items-center gap-3">
-            <div className="relative" >
+            <div className="relative">
               <svg
                 width="26"
                 height="25"
@@ -129,11 +125,12 @@ const Header = () => {
                   if (user && user?.email) {
                     handleCart();
                   } else {
-                    setToastMessage("Access denied! Please log in first");
-
-                    setToastType("error");
-                    setToastVisible(true);
-
+                    dispatch(
+                      showToast({
+                        message: "Access denied! Please log in first",
+                        type: "error",
+                      }),
+                    );
                   }
                 }}
               >
@@ -169,31 +166,31 @@ const Header = () => {
                   if (user && user?.email) {
                     handleWishlist();
                   } else {
-
                     dispatch(
                       showToast({
                         message: `Access denied! Please log in first`,
                         type: "error",
-                      })
+                      }),
                     );
-
                   }
                 }}
               >
                 <path
                   d="M12.8407 21.6973C12.5007 21.8173 11.9407 21.8173 11.6007 21.6973C8.7007 20.7073 2.2207 16.5773 2.2207 9.5773C2.2207 6.4873 4.7107 3.9873 7.7807 3.9873C9.6007 3.9873 11.2107 4.8673 12.2207 6.2273C13.2307 4.8673 14.8507 3.9873 16.6607 3.9873C19.7307 3.9873 22.2207 6.4873 22.2207 9.5773C22.2207 16.5773 15.7407 20.7073 12.8407 21.6973Z"
                   stroke={wishlistCount ? "#FF0000" : "#292D32"} // outline color
-                  fill={wishlistCount ? "#FF0000" : "none"}      // fill when active
+                  fill={wishlistCount ? "#FF0000" : "none"} // fill when active
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
-
             </div>
 
             <div className="flex flex-col relative">
-              <button onClick={() => handleNotifications()}> <BellIconSVG /></button>
+              <button onClick={() => handleNotifications()}>
+                {" "}
+                <BellIconSVG />
+              </button>
 
               {notificationsDropdown && (
                 <div className="absolute right-0 top-12 mt-1 z-10">
@@ -250,13 +247,15 @@ const Header = () => {
                 )}
               </div>
             ) : (
-              <>    <button
-                onClick={() => navigate("/login")}
-                // className="px-4 py-2 rounded-full bg-gray-100 text-secondaryText text-sm whitespace-nowrap font-semibold"
-                className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
-              >
-                Log In
-              </button>
+              <>
+                {" "}
+                <button
+                  onClick={() => navigate("/login")}
+                  // className="px-4 py-2 rounded-full bg-gray-100 text-secondaryText text-sm whitespace-nowrap font-semibold"
+                  className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
+                >
+                  Log In
+                </button>
                 <button
                   onClick={() => navigate("/signup")}
                   // className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
@@ -276,8 +275,16 @@ const Header = () => {
         {isMobileMenuOpen && (
           <div className="fixed inset-0 z-40 bg-white">
             <div className="flex items-center justify-between px-5 py-4 border-b">
-              <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2">
-                <img src="/assets/logo.png" alt="Interdental Lab" className="h-5 w-auto" />
+              <NavLink
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2"
+              >
+                <img
+                  src="/assets/logo.png"
+                  alt="Interdental Lab"
+                  className="h-5 w-auto"
+                />
               </NavLink>
               <button
                 onClick={toggleMobileMenu}
@@ -320,7 +327,9 @@ const Header = () => {
                       [
                         "block w-full px-4 py-3 rounded-xl border text-left",
                         "border-gray-200 hover:bg-gray-50",
-                        isActive ? "bg-gray-50 text-blue-700 font-semibold" : "text-gray-700",
+                        isActive
+                          ? "bg-gray-50 text-blue-700 font-semibold"
+                          : "text-gray-700",
                       ].join(" ")
                     }
                   >
@@ -338,12 +347,6 @@ const Header = () => {
           setIsModalOpen={setIsModalOpen}
         />
       )}
-      <Toast
-        message={toastMessage}
-        isVisible={toastVisible}
-        onClose={closeToast}
-        type={toastType}
-      />
     </>
   );
 };

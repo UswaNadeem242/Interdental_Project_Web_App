@@ -21,33 +21,43 @@ const Orders = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setOrders(response.data.orders);
-      console.log(response.data.orders);
+      console.log("Orders response:", response.data);
+      // Ensure we always set an array, even if API returns null/undefined
+      const ordersData = Array.isArray(response.data?.data)
+        ? response.data.data
+        : [];
+      setOrders(ordersData);
+      console.log("Setting orders:", ordersData);
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching orders:", error);
+      // Set empty array on error to prevent filter crashes
+      setOrders([]);
     }
   };
+  console.log("Orders:", orders);
   useEffect(() => {
     getAllOrders();
   }, []);
 
-  const filteredOrders = orders
-    // 1️⃣ Tab filter
-    .filter((order) => {
-      if (selectedIndex === 0) return true; // All
-      if (selectedIndex === 1) return order.orderStatus === "PENDING";
-      if (selectedIndex === 2) return order.orderStatus === "SHIPED";
-      if (selectedIndex === 3) return order.orderStatus === "DELIVERD";
-      return true;
-    })
-    // 2️⃣ Search filter
-    .filter((order) => {
-      if (!searchTerm) return true;
-      return (
-        order?.name &&
-        order?.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    });
+  const filteredOrders = Array.isArray(orders)
+    ? orders
+        .filter((order) => {
+          if (!order) return false; // Skip null/undefined orders
+          if (selectedIndex === 0) return true; // All
+          if (selectedIndex === 1) return order.orderStatus === "PENDING";
+          if (selectedIndex === 2) return order.orderStatus === "SHIPED";
+          if (selectedIndex === 3) return order.orderStatus === "DELIVERD";
+          return true;
+        })
+        // 2️⃣ Search filter
+        .filter((order) => {
+          if (!searchTerm) return true;
+          return (
+            order?.name &&
+            order?.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        })
+    : [];
 
   return (
     <div className="flex flex-col justify-center items-start ">
@@ -180,7 +190,7 @@ const Orders = () => {
                   <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">
                     {order.orderItems.reduce(
                       (acc, item) => acc + item.unitPrice,
-                      0
+                      0,
                     )}
                   </h1>
                   <h1 className="w-[116.84px] h-[88px] font-poppins font-normal text-[12px] leading-[18px] text-[#434343]">

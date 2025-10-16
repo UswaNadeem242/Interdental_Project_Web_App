@@ -41,17 +41,12 @@ import AdminPanel from "./pages/admin-panel/admin-panel";
 import "react-toastify/dist/ReactToastify.css";
 import Toastify from "./Common/react-toastify";
 import ProductLandingPage from "./pages/landing-page/product";
-import ArgebbPmma from "./pages/landing-page/product/argen-pmma";
 import ArgenZ from "./pages/landing-page/product/argen-z-h";
-import ZidcardIvoclar from "./pages/landing-page/product/zidcard-ivoclar";
-import ArgenzST from "./pages/landing-page/product/argenz-st";
-import Multilayerpro from "./pages/landing-page/product/multilayer-pro";
 import ImplantDenturesPage from "./pages/landing-page/blogs/sub-page";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Blog from "./pages/landing-page/blog";
-import LayZirPage from "./pages/landing-page/product/layzir";
-import AiditeZirconia from "./pages/landing-page/product/aidite-zirconia ";
+import ProductDetail from "./components/ProductDetail";
 import { ERole } from "./constants/roles";
 
 const MainLayout = ({ children }) => (
@@ -180,37 +175,13 @@ function App() {
           <Routes>
             {/* Public Routes - No authentication required */}
             <Route path="/" element={<LandingPage />} />
-            <Route
+            {/* <Route
               path="/product"
               element={<ProductLandingPage isLanding={false} />}
-            />
+            />*/}
             <Route
-              path="/product/argen-pmma"
-              element={<ArgebbPmma isLanding={false} />}
-            />
-            <Route
-              path="/product/argen-zh"
-              element={<ArgenZ isLanding={false} />}
-            />
-            <Route
-              path="/product/argenz-st"
-              element={<ArgenzST isLanding={false} />}
-            />
-            <Route
-              path="/product/multilayer-pro"
-              element={<Multilayerpro isLanding={false} />}
-            />
-            <Route
-              path="/product/lay-zir"
-              element={<LayZirPage isLanding={false} />}
-            />
-            <Route
-              path="/product/zidcard-ivoclar"
-              element={<ZidcardIvoclar isLanding={false} />}
-            />
-            <Route
-              path="/product/aidite-zirconia"
-              element={<AiditeZirconia isLanding={false} />}
+              path="/product/:id"
+              element={<ProductDetail isLanding={false} />}
             />
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
@@ -282,22 +253,13 @@ function App() {
             />
 
             {/* Customer Routes - Accessible by CUSTOMER role */}
-            <Route
-              path="/shop"
-              element={
-                <PrivateRoute requiredRoles={[ERole.CUSTOMER]}>
-                  <Shop />
-                </PrivateRoute>
-              }
-            />
+            <Route path="/shop" element={<Shop />} />
             <Route
               path="/shop/:productId"
               element={
-                <PrivateRoute requiredRoles={[ERole.CUSTOMER]}>
-                  <MainLayout>
-                    <SingleProduct />
-                  </MainLayout>
-                </PrivateRoute>
+                <MainLayout>
+                  <SingleProduct />
+                </MainLayout>
               }
             />
             <Route

@@ -30,15 +30,18 @@ const LandingPage = () => {
         "Downloadable warranty certificate",
         "Direct access to our support team",
       ],
-    },]
+    },
+  ];
   const slugify = (s) =>
-    s?.toLowerCase().trim()
+    s
+      ?.toLowerCase()
+      .trim()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-");
   return (
     <>
-      {/* <div>{<Header />} </div> */}
+      <div>{<Header />} </div>
       <div className="  font-poppins min-h-screen text-gray-800">
         <HeroSection />
         <AboutUs />
@@ -66,16 +69,51 @@ const LandingPage = () => {
           <div className="flex flex-col justify-start items-start w-full  space-y-4 sm:space-y-[16px] px-4 sm:px-0">
             {/* max-w-[575px] */}
             <div className="flex justify-start items-center gap-2 sm:gap-4 font-poppins font-bold sm:text-sm md:text-3xl lg:text-[40px]">
-              <h1 className="text-secondaryBrand  text-5xl font-poppins font-semibold">InterOral.ai</h1>
+              <h1 className="text-secondaryBrand  text-5xl font-poppins font-semibold">
+                InterOral.ai
+              </h1>
             </div>
             <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 md:leading-[30px]">
-              InterOral.ai &nbsp; is  &nbsp; an &nbsp; &nbsp; AI-driven &nbsp; platform &nbsp;  that  <span className="hidden md:inline"><br /></span> seamlessly connects dentists, dental labs, and <span className="hidden md:inline"><br /></span> patients &nbsp; under one &nbsp; secure system. &nbsp; Dentists  <span className="hidden md:inline"><br /></span> can submit digital prescriptions, upload scans, <span className="hidden md:inline"><br /></span> order &nbsp; implant &nbsp; parts,&nbsp;  while &nbsp; &nbsp; labs &nbsp; efficiently  <span className="hidden md:inline"><br /></span> receive &nbsp; and &nbsp;manage &nbsp; cases. &nbsp; Patients &nbsp; gain  <span className="hidden md:inline"><br /></span>added &nbsp; value &nbsp;  through &nbsp; extended  &nbsp; &nbsp;warranty    <span className="hidden md:inline"><br /></span>ensuring   a coverage,smooth, connected, and compliant workflow for
-
-              all.</p>
+              InterOral.ai &nbsp; is &nbsp; an &nbsp; &nbsp; AI-driven &nbsp;
+              platform &nbsp; that{" "}
+              <span className="hidden md:inline">
+                <br />
+              </span>{" "}
+              seamlessly connects dentists, dental labs, and{" "}
+              <span className="hidden md:inline">
+                <br />
+              </span>{" "}
+              patients &nbsp; under one &nbsp; secure system. &nbsp; Dentists{" "}
+              <span className="hidden md:inline">
+                <br />
+              </span>{" "}
+              can submit digital prescriptions, upload scans,{" "}
+              <span className="hidden md:inline">
+                <br />
+              </span>{" "}
+              order &nbsp; implant &nbsp; parts,&nbsp; while &nbsp; &nbsp; labs
+              &nbsp; efficiently{" "}
+              <span className="hidden md:inline">
+                <br />
+              </span>{" "}
+              receive &nbsp; and &nbsp;manage &nbsp; cases. &nbsp; Patients
+              &nbsp; gain{" "}
+              <span className="hidden md:inline">
+                <br />
+              </span>
+              added &nbsp; value &nbsp; through &nbsp; extended &nbsp;
+              &nbsp;warranty{" "}
+              <span className="hidden md:inline">
+                <br />
+              </span>
+              ensuring a coverage,smooth, connected, and compliant workflow for
+              all.
+            </p>
             <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-
-
-              <h1 className="font-poppins font-semibold text-base text-[#434343]" onClick={() => navigate("/about-us")}>
+              <h1
+                className="font-poppins font-semibold text-base text-[#434343]"
+                onClick={() => navigate("/about-us")}
+              >
                 View More
               </h1>
               <div className="rounded-full bg-secondaryBrand text-white p-2">
@@ -92,11 +130,9 @@ const LandingPage = () => {
         </div>
         <DoctorComponent />
         <div className="container mx-auto px-3 w-full py-28">
-
           <div className="flex justify-center ">
             <h1 className="text-primaryText text-base md:text-3xl font-normal font-poppins capitalize">
               THE
-
               <span className="md:text-3xl font-bold font-poppins text-secondaryBrand capitalize ml-2">
                 WARRANTY
               </span>
@@ -104,7 +140,9 @@ const LandingPage = () => {
           </div>
           <div className="flex justify-center pb-6">
             <p className="text-secondaryText text-sm font-poppins text-center max-w-3xl py-6">
-              Interoral.ai provides peace of mind and a unique practice growth opportunity with a comprehensive Warranty Plans and Referal Program
+              Interoral.ai provides peace of mind and a unique practice growth
+              opportunity with a comprehensive Warranty Plans and Referal
+              Program
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] gap-6 justify-items-center">
@@ -142,7 +180,7 @@ const LandingPage = () => {
                     </ul>
                   </div>
 
-                  <button className=" text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition" >
+                  <button className=" text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
                     Learn more
                   </button>
                 </div>
@@ -156,12 +194,11 @@ const LandingPage = () => {
           <div className="flex justify-between ">
             <h1 className="text-primaryText text-base md:text-3xl font-bold font-poppins capitalize ">
               Blog &
-
               <span className="md:text-3xl font-bold font-poppins text-fouthBrand capitalize ml-2">
                 Articles
               </span>
             </h1>
-            <ThirdButtonUI title='View more' href='/blog' />
+            <ThirdButtonUI title="View more" href="/blog" />
           </div>
           <div className="flex justify-start pb-6">
             <p className="text-primaryText text-sm font-poppins text-center max-w-3xl">
@@ -169,12 +206,14 @@ const LandingPage = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-12 grid-cols-2   gap-8 justify-items-center  ">
-
             {implantCards?.map((card, index) => (
               <div key={index} className="col-span-4">
-                <Link key={index}
-                  to={card?.href}>
-                  <img src={card.img} alt={card.title || "Implant card"} className="" />
+                <Link key={index} to={card?.href}>
+                  <img
+                    src={card.img}
+                    alt={card.title || "Implant card"}
+                    className=""
+                  />
                   {card.title && (
                     <>
                       <h3 className="text-xs font-medium font-poppins uppercase text-fouthBrand pt-5">
@@ -194,13 +233,12 @@ const LandingPage = () => {
                     </>
                   )}
                 </Link>
-
               </div>
             ))}
           </div>
         </section>
         <FrequentlyAskedQuestion />
-        <ContactFooter className='bg-background' />
+        <ContactFooter className="bg-background" />
       </div>
     </>
   );

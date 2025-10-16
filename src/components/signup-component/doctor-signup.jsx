@@ -1,533 +1,606 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountDeactivate from "../../modals/AccountDeactivateModal";
 import axios from "axios";
 import { BASE_URL } from "../../config";
 import Toast from "../../components/Toast";
 import YearlyPlanModel from "../../modals/yearly-plan";
-import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import Icons from "../../components/Icons";
+import * as Yup from "yup";
+import useFieldValidation from "../../Hooks/useFieldValidation";
 
 const DoctorSignup = () => {
-    const navigate = useNavigate();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhone] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [zip, setZip] = useState("");
-    const [drLicenseNo, setdrLicense] = useState("");
-    const [officeRefNo, setofficeRefNo] = useState("");
-    const [toastVisible, setToastVisible] = useState(false);
-    const [toastMessage, setToastMessage] = useState("");
-    const [toastType, setToastType] = useState("success");
-    const [yearly, setYearly] = useState(false)
-    // const validate = () => {
-    //     if (!firstName?.trim()) return "First name is required";
-    //     if (!lastName?.trim()) return "Last name is required";     // remove if not needed
-    //     if (!email?.trim()) return "Email is required";
-    //     if (!phoneNumber?.trim()) return "Phone is required";
-    //     if (!address) return "Address is required";
-    //     if (!city) return "City is required";
-    //     if (!zip) return "Zip Number is required";
-    //     if (!drLicenseNo) return "Doctor's License Number is required";
-    //     if (!officeRefNo) return "Office Reference number is required";
-    //     if (!password) return "Password is required"; 
-    //     const nameRegex = /^[A-Za-z]{3,}$/;
-    //     const numberRegex = /^[0-9]{10}$/;
-    //     const zipRegex = /^[0-9]{5}$/;
-    //     const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
-    //     if (!nameRegex.test(firstName)) return "Enter a valid First Name (letters only)";
-    //     if (!nameRegex.test(lastName)) return "Enter a valid Last Name (letters only)";
-    //     if (!addressRegex.test(city)) return "Enter a City Name";
-    //     if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";
-    //     // if (!addressRegex.test(address)) return "Enter a valid Address";
-    //     // Must contain at least one letter or digit
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [zip, setZip] = useState("");
+  const [drLicenseNo, setdrLicense] = useState("");
+  const [officeRefNo, setofficeRefNo] = useState("");
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+  const [yearly, setYearly] = useState(false);
 
+  // Yup validation schema
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(2, "First name must be at least 2 characters")
+      .max(25, "First name must not exceed 25 characters")
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "First name must contain only letters and spaces",
+      )
+      .required("First name is required"),
+    lastName: Yup.string()
+      .min(2, "Last name must be at least 2 characters")
+      .max(25, "Last name must not exceed 25 characters")
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "Last name must contain only letters and spaces",
+      )
+      .required("Last name is required"),
+    email: Yup.string()
+      .email("Enter a valid email address")
+      .required("Email is required"),
+    phoneNumber: Yup.string()
+      .min(10, "Phone number must be at least 10 digits")
+      .max(15, "Phone number must not exceed 15 digits")
+      .matches(/^[0-9]+$/, "Phone number must contain only digits")
+      .required("Phone number is required"),
+    address: Yup.string()
+      .min(10, "Address must be at least 10 characters")
+      .required("Address is required"),
+    city: Yup.string()
+      .min(2, "City must be at least 2 characters")
+      .max(25, "City must not exceed 25 characters")
+      .matches(/^[a-zA-Z\s]+$/, "City must contain only letters and spaces")
+      .required("City is required"),
+    zip: Yup.string()
+      .min(5, "Zip code must be at least 5 characters")
+      .max(10, "Zip code must not exceed 10 characters")
+      .matches(/^[0-9A-Za-z\s-]*$/, "Zip code contains invalid characters")
+      .required("Zip code is required"),
+    drLicenseNo: Yup.string()
+      .min(6, "Doctor's License Number must be at least 6 characters")
+      .max(20, "Doctor's License Number must not exceed 20 characters")
+      .matches(
+        /^[0-9A-Za-z]+$/,
+        "Doctor's License Number must contain only letters and numbers",
+      )
+      .required("Doctor's License Number is required"),
+    officeRefNo: Yup.string()
+      .min(6, "Office Reference Number must be at least 6 characters")
+      .max(20, "Office Reference Number must not exceed 20 characters")
+      .matches(
+        /^[0-9A-Za-z]+$/,
+        "Office Reference Number must contain only letters and numbers",
+      )
+      .required("Office Reference Number is required")
+      .test(
+        "different-from-license",
+        "Doctor's License Number and Office Reference Number cannot be the same",
+        function (value) {
+          return value !== this.parent.drLicenseNo;
+        },
+      ),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .matches(
+        /(?=.*[a-z])/,
+        "Password must contain at least one lowercase letter",
+      )
+      .matches(
+        /(?=.*[A-Z])/,
+        "Password must contain at least one uppercase letter",
+      )
+      .matches(/(?=.*\d)/, "Password must contain at least one number")
+      .matches(
+        /(?=.*[@$!%*?&])/,
+        "Password must contain at least one special character (@$!%*?&)",
+      )
+      .required("Password is required"),
+  });
 
-    //     if (!addressRegex.test(address)) {
-    //         return "Enter a valid Address";
-    //     }
+  const {
+    validationErrors,
+    validateField,
+    clearFieldError,
+    validateAllFields,
+  } = useFieldValidation(validationSchema);
 
-    //     if (!numberRegex.test(drLicenseNo)) return "Enter a valid 10-digit Doctor's License Number";
-    //     if (!numberRegex.test(officeRefNo)) return "Enter a valid 10-digit Office Reference number";
-    //     if (!password) return "Password is required";
+  const getFormData = () => ({
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    address,
+    city,
+    zip,
+    drLicenseNo,
+    officeRefNo,
+    password,
+  });
 
-    //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //     if (!emailRegex.test(email)) return "Enter a valid email address";
-    //     // Optional: phone 7–15 digits
-    //     const phoneRegex = /^[0-9]{11}$/;
-    //     if (!phoneNumber) return "Phone number is required";
-    //     if (!phoneRegex.test(phoneNumber)) return "Enter a valid 11-digit phone number";
-    //     return null;
-    // };
+  const handleFieldChange = async (fieldName, value, setter) => {
+    setter(value);
 
+    // Clear error immediately when user starts typing
+    if (validationErrors[fieldName]) {
+      clearFieldError(fieldName);
+    }
+  };
 
+  const handleFieldBlur = async (fieldName, value) => {
+    // Validate field when user leaves it
+    if (value.trim()) {
+      await validateField(fieldName, value, getFormData());
+    }
+  };
 
-    const validate = () => {
-        if (!firstName?.trim()) return "First name is required";
-        if (!lastName?.trim()) return "Last name is required"; // remove if not needed
-        if (!email?.trim()) return "Email is required";
-        if (!phoneNumber?.trim()) return "Phone is required";
-        if (!address) return "Address is required";
-        if (!city) return "City is required";
-        if (!zip) return "Zip Number is required";
-        if (!drLicenseNo) return "Doctor's License Number is required";
-        if (!officeRefNo) return "Office Reference number is required";
-        if (!password) return "Password is required"; 
-        const nameRegex = /^[A-Za-z]{3,}$/;
-        const numberRegex = /^[0-9]{10}$/;
-        const zipRegex = /^[0-9]{5}$/;
-        const addressRegex = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s,.'#\/&@-]+$/;
-        if (!nameRegex.test(firstName))
-            return "Enter a valid First Name (letters only)";
-        if (!nameRegex.test(lastName))
-            return "Enter a valid Last Name (letters only)";
-        if (!addressRegex.test(city)) return "Enter a City Name";
-        if (!zipRegex.test(zip)) return "Enter a valid 5-digit Zip Code";
-        // if (!addressRegex.test(address)) return "Enter a valid Address";
-        // Must contain at least one letter or digit
+  const handleSignup = async () => {
+    const error = await validateAllFields(getFormData());
+    if (error) {
+      return; // Field-level errors are shown instead of toast
+    }
 
-        if (!addressRegex.test(address)) {
-            return "Enter a valid Address";
-        }
-
-        if (!numberRegex.test(drLicenseNo))
-            return "Enter a valid 10-digit Doctor's License Number";
-        if (!numberRegex.test(officeRefNo))
-            return "Enter a valid 10-digit Office Reference number";
-        if (!password) return "Password is required";
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) return "Enter a valid email address";
-        // Optional: phone 7–15 digits
-        const phoneRegex = /^[0-9]{11}$/;
-        if (!phoneNumber) return "Phone number is required";
-        if (!phoneRegex.test(phoneNumber))
-            return "Enter a valid 11-digit phone number";
-        if (drLicenseNo === officeRefNo)
-            return "Doctor's License Number and Office Reference Number cannot be the same.";
-
-        // ✅ Password strength check
-
-        // ✅ Check 1: Minimum 8 characters
-        const lengthRegex = /^.{8,}$/;
-        if (!lengthRegex.test(password)) {
-            return "Password must be at least 8 characters long.";
-        }
-
-        // ✅ Check 2: At least one uppercase letter
-        const uppercaseRegex = /[A-Z]/;
-        if (!uppercaseRegex.test(password)) {
-            return "Password must include at least one uppercase letter.";
-        }
-
-        // ✅ Check 3: At least one number
-        const PswdNumberRegex = /\d/;
-        if (!PswdNumberRegex.test(password)) {
-            return "Password must include at least one number.";
-        }
-
-        // ✅ Check 4: At least one special character
-        const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-        if (!specialCharRegex.test(password)) {
-            return "Password must include at least one special character.";
-        }
-
-        return null;
-    };
- 
-    const handleSignup = async () => {
-        const error = validate();
-        if (error) {
-            setToastMessage(error);
-            setToastType("error");
-            setToastVisible(true);
-            return;
-        }
-        const payload = {
-            email,
-            password,
-            firstName,
-            lastName,
-            phoneNumber,
-            address,
-            drLicenseNo,
-            officeRefNo,
-            role: "DOCTOR",
-        };
-        try {
-            const response = await axios.post(`${BASE_URL}/api/users/sign-up`, payload,
-                {
-                    headers: {
-                        Accept: "*/*",
-                    },
-                });
-            setToastMessage("User Registered Successfully!");
-            setToastType("success");
-            setToastVisible(true);
-            navigate("/login");
-        } catch (error) {
-            console.log("Signup error:", error);
-            setToastMessage(`Error: ${error.response?.data?.responseDesc || error.responseDesc}`);
-            setToastType("error");
-            setToastVisible(true);
-        } finally {
-
-        }
-    };
-   
-
-    const closeToast = () => {
-        setToastVisible(false);
+    const payload = {
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNumber,
+      address,
+      city,
+      zip,
+      drLicenseNo,
+      officeRefNo,
+      role: "DOCTOR",
     };
 
-    return (
-        <div className="mt-3">
-            <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[581px] gap-6 lg:gap-[32px]">
-                <div className="flex flex-col justify-center items-center w-full lg:w-[494px] gap-8">
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/users/sign-up`,
+        payload,
+        {
+          headers: {
+            Accept: "*/*",
+          },
+        },
+      );
+      setToastMessage("User Registered Successfully!");
+      setToastType("success");
+      setToastVisible(true);
 
+      const { data } = response;
 
-                    {/* Form */}
-                    <div className="w-full space-y-4">
-                        {/* Full width */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      // Add delay before navigation to ensure toast is visible
+      setTimeout(() => {
+        navigate(`/login?role=${data.roles[0]?.name?.toLowerCase()}`);
+      }, 2000);
+    } catch (error) {
+      console.log("Signup error:", error);
+      setToastMessage(
+        `Error: ${error.response?.data?.responseDesc || error.responseDesc}`,
+      );
+      setToastType("error");
+      setToastVisible(true);
+    } finally {
+    }
+  };
 
-                            <div className="relative w-full">
-                                <input
-                                    type="text"
-                                    id="firstName"
-                                    value={firstName}
-                                    onChange={(e) => setFirstName(e.target.value)}
-                                    placeholder=" "
-                                    className="peer w-full rounded-md     py-3 px-4 text-textFieldHeading outline-none
-                "
-                                />
-                                <label
-                                    htmlFor="firstName"
-                                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+  const closeToast = () => {
+    setToastVisible(false);
+  };
+
+  return (
+    <div className="mt-3">
+      <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto  gap-6 lg:gap-[32px]">
+        <div className="flex flex-col justify-center items-center w-full lg:w-[494px] gap-8">
+          {/* Form */}
+          <div className="w-full space-y-4">
+            {/* Full width */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) =>
+                    handleFieldChange("firstName", e.target.value, setFirstName)
+                  }
+                  onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
+                  placeholder=" "
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                    validationErrors.firstName
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
+                />
+                <label
+                  htmlFor="firstName"
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
       peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
     "
-                                >
-                                    First Name
-                                </label>
-                            </div>
+                >
+                  First Name
+                </label>
+                {validationErrors.firstName && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {validationErrors.firstName}
+                  </div>
+                )}
+              </div>
 
-
-                            <div className="relative w-full">
-                                <input
-                                    type="text"
-                                    id="lastName"
-                                    value={lastName}
-                                    onChange={(e) => setLastName(e.target.value)}
-                                    placeholder=" "  // ek space zaroori hai
-                                    className="peer w-full rounded-md  py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
-                                />
-                                <label
-                                    htmlFor="lastName"
-                                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) =>
+                    handleFieldChange("lastName", e.target.value, setLastName)
+                  }
+                  onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
+                  placeholder=" "
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                    validationErrors.lastName
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
+                />
+                <label
+                  htmlFor="lastName"
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
       peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
     "
-                                >
-                                    Last Name
-                                </label>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                            <div className="relative w-full">
-                                <input
-                                    type="text"
-                                    id="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder=" "
-                                    className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
-                                />
-                                <label
-                                    htmlFor="email"
-                                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+                >
+                  Last Name
+                </label>
+                {validationErrors.lastName && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {validationErrors.lastName}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="email"
+                  value={email}
+                  onChange={(e) =>
+                    handleFieldChange("email", e.target.value, setEmail)
+                  }
+                  onBlur={(e) => handleFieldBlur("email", e.target.value)}
+                  placeholder=" "
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                    validationErrors.email
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
+                />
+                <label
+                  htmlFor="email"
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
       peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
     "
-                                >
-                                    Email
-                                </label>
-                            </div>
+                >
+                  Email
+                </label>
+                {validationErrors.email && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {validationErrors.email}
+                  </div>
+                )}
+              </div>
 
-                            <div className="relative w-full">
-                                <input
-                                    type="text"
-                                    id="phone"
-                                    value={phoneNumber}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    placeholder=" "
-                                    className="peer w-full rounded-md  py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
-                                />
-                                <label
-                                    htmlFor="phone"
-                                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="phone"
+                  value={phoneNumber}
+                  onChange={(e) =>
+                    handleFieldChange("phoneNumber", e.target.value, setPhone)
+                  }
+                  onBlur={(e) => handleFieldBlur("phoneNumber", e.target.value)}
+                  placeholder=" "
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                    validationErrors.phoneNumber
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
+                />
+                <label
+                  htmlFor="phone"
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
       peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
     "
-                                >
-                                    Phone
-                                </label>
-                            </div>
-
-                        </div>
-
-                        {/* Address */}
-                        <div className="relative w-full">
-                            <input
-                                type="text"
-                                id="address"
-                                value={address}
-                                onChange={(e) => setAddress(e.target.value)}
-                                placeholder=" "
-                                className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
-                            />
-                            <label
-                                htmlFor="address"
-                                className="absolute left-3 top-3 text-gray-400 text-sm transition-all
-      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
-      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
-    "
-                            >
-                                Address
-                            </label>
-                        </div>
-
-
-                        {/* City + Zip */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                            <div className="relative w-full">
-                                <input
-                                    type="text"
-                                    id="city"
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
-                                    placeholder=" "
-                                    className="peer w-full rounded-md  py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
-                                />
-                                <label
-                                    htmlFor="city"
-                                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all
-      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
-      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
-    "
-                                >
-                                    City
-                                </label>
-                            </div>
-                            <div className="relative w-full">
-                                <input
-                                    type="text"
-                                    id="zip"
-                                    value={zip}
-                                    onChange={(e) => setZip(e.target.value)}
-                                    placeholder=" "
-                                    className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
-                                />
-                                <label
-                                    htmlFor="zip"
-                                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all
-      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
-      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
-    "
-                                >
-                                    Zip
-                                </label>
-                            </div>
-
-                        </div>
-
-                        {/* License + Office Ref */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                            <div className="relative w-full">
-                                <input
-                                    type="text"
-                                    id="drLicenseNo"
-                                    value={drLicenseNo}
-                                    onChange={(e) => setdrLicense(e.target.value)}
-                                    placeholder=" "
-                                    className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
-                                />
-                                <label
-                                    htmlFor="drLicenseNo"
-                                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all
-      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
-      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
-    "
-                                >
-                                    Doctor's License Number
-                                </label>
-                            </div>
-
-                            <div className="relative w-full">
-                                <input
-                                    type="text"
-                                    id="officeRefNo"
-                                    value={officeRefNo}
-                                    onChange={(e) => setofficeRefNo(e.target.value)}
-                                    placeholder=" "
-                                    className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
-                                />
-                                <label
-                                    htmlFor="officeRefNo"
-                                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all
-      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
-      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
-    "
-                                >
-                                    Office Reference Number
-                                </label>
-                            </div>
-
-                        </div>
-
-                        {/* Password */}
-                        <div className="relative w-full">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder=" "
-                                className="peer w-full rounded-md   py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand"
-                            />
-                            <label
-                                htmlFor="password"
-                                className="absolute left-3 top-3 text-gray-400 text-sm transition-all
-      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
-      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
-    "
-                            >
-                                Password
-                            </label>
-
-                            {/* Eye Icon */}
-                            <div
-                                className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
-                                onClick={() => setShowPassword(!showPassword)}
-                            >
-                                {showPassword ? (
-                                    // Eye Open
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#808080"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                        <circle cx="12" cy="12" r="3" />
-                                    </svg>
-                                ) : (
-                                    // Eye Closed
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#808080"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
-                                        <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                                        <line x1="1" y1="1" x2="23" y2="23" /> {/* Diagonal line */}
-                                        <circle cx="12" cy="12" r="3" />
-                                    </svg>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
-                    <button
-                        onClick={() => handleSignup()}
-                        className="w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px]"
-                    >
-                        Sign Up
-                    </button>
-
-
-                    <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
-                        <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">
-                            Already have an account
-                        </p>
-                        <button
-                            onClick={() => navigate("/login")}
-                            className="w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] font-poppins font-semibold border-[1px] border-[#013764] text-secondaryBrand text-sm lg:text-[14px] leading-[21px]"
-                        >
-                            Log in
-                        </button>
-                    </div>
-                </div>
+                >
+                  Phone
+                </label>
+                {validationErrors.phoneNumber && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {validationErrors.phoneNumber}
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Modal and Toast components */}
-            {isModalOpen && (
-                <AccountDeactivate
-                    isModalOpen={isModalOpen}
-                    setIsModalOpen={setIsModalOpen}
-                />
-            )}
-            <Toast
-                message={toastMessage}
-                isVisible={toastVisible}
-                onClose={closeToast}
-                type={toastType}
-            />
-            {yearly && (
-                <YearlyPlanModel
-                    yearly={yearly}
-                    setYearly={setYearly}
-                />
-            )}
+            {/* Address */}
+            <div className="relative w-full">
+              <input
+                type="text"
+                id="address"
+                value={address}
+                onChange={(e) =>
+                  handleFieldChange("address", e.target.value, setAddress)
+                }
+                onBlur={(e) => handleFieldBlur("address", e.target.value)}
+                placeholder=" "
+                className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                  validationErrors.address
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                }`}
+              />
+              <label
+                htmlFor="address"
+                className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
+              >
+                Address
+              </label>
+              {validationErrors.address && (
+                <div className="text-red-600 text-xs mt-1">
+                  {validationErrors.address}
+                </div>
+              )}
+            </div>
 
+            {/* City + Zip */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="city"
+                  value={city}
+                  onChange={(e) =>
+                    handleFieldChange("city", e.target.value, setCity)
+                  }
+                  onBlur={(e) => handleFieldBlur("city", e.target.value)}
+                  placeholder=" "
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                    validationErrors.city
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
+                />
+                <label
+                  htmlFor="city"
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
+                >
+                  City
+                </label>
+                {validationErrors.city && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {validationErrors.city}
+                  </div>
+                )}
+              </div>
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="zip"
+                  value={zip}
+                  onChange={(e) =>
+                    handleFieldChange("zip", e.target.value, setZip)
+                  }
+                  onBlur={(e) => handleFieldBlur("zip", e.target.value)}
+                  placeholder=" "
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                    validationErrors.zip
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
+                />
+                <label
+                  htmlFor="zip"
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
+                >
+                  Zip
+                </label>
+                {validationErrors.zip && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {validationErrors.zip}
+                  </div>
+                )}
+              </div>
+            </div>
 
+            {/* License + Office Ref */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="drLicenseNo"
+                  value={drLicenseNo}
+                  onChange={(e) =>
+                    handleFieldChange(
+                      "drLicenseNo",
+                      e.target.value,
+                      setdrLicense,
+                    )
+                  }
+                  onBlur={(e) => handleFieldBlur("drLicenseNo", e.target.value)}
+                  placeholder=" "
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                    validationErrors.drLicenseNo
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
+                />
+                <label
+                  htmlFor="drLicenseNo"
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
+                >
+                  Doctor's License Number
+                </label>
+                {validationErrors.drLicenseNo && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {validationErrors.drLicenseNo}
+                  </div>
+                )}
+              </div>
+
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="officeRefNo"
+                  value={officeRefNo}
+                  onChange={(e) =>
+                    handleFieldChange(
+                      "officeRefNo",
+                      e.target.value,
+                      setofficeRefNo,
+                    )
+                  }
+                  onBlur={(e) => handleFieldBlur("officeRefNo", e.target.value)}
+                  placeholder=" "
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                    validationErrors.officeRefNo
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
+                />
+                <label
+                  htmlFor="officeRefNo"
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
+                >
+                  Office Reference Number
+                </label>
+                {validationErrors.officeRefNo && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {validationErrors.officeRefNo}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="relative w-full">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) =>
+                  handleFieldChange("password", e.target.value, setPassword)
+                }
+                onBlur={(e) => handleFieldBlur("password", e.target.value)}
+                placeholder=" "
+                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${
+                  validationErrors.password
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                }`}
+              />
+              <label
+                htmlFor="password"
+                className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
+    "
+              >
+                Password
+              </label>
+
+              {/* Eye Icon */}
+              <div
+                className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <Icons.Eye.Open /> : <Icons.Eye.Closed />}
+              </div>
+              {validationErrors.password && (
+                <div className="text-red-600 text-xs mt-1">
+                  {validationErrors.password}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-    );
+        <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
+          <button
+            onClick={() => handleSignup()}
+            className="w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px]"
+          >
+            Sign Up
+          </button>
+
+          <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
+            <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">
+              Already have an account
+            </p>
+            <button
+              onClick={() => navigate("/login")}
+              className="w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] font-poppins font-semibold border-[1px] border-[#013764] text-secondaryBrand text-sm lg:text-[14px] leading-[21px]"
+            >
+              Log in
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal and Toast components */}
+      {isModalOpen && (
+        <AccountDeactivate
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
+      {yearly && <YearlyPlanModel yearly={yearly} setYearly={setYearly} />}
+    </div>
+  );
 };
 
 export default DoctorSignup;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,7 +1,12 @@
 import axios from "axios";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { BASE_URL } from "../config";
-import { hasRole, hasAnyRole, hasRoleAccess, getHighestRole } from "../constants/roles";
+import {
+  hasRole,
+  hasAnyRole,
+  hasRoleAccess,
+  getHighestRole,
+} from "../constants/roles";
 
 const AuthContext = createContext(null);
 
@@ -109,8 +114,10 @@ export const AuthProvider = ({ children }) => {
   const getUserRoles = () => {
     if (!user) return [];
     // Handle different possible role property names with safe access
-    const roles = (user && typeof user === 'object') ?
-      (user['roles'] || user['Roles'] || user['role'] || user['Role']) : [];
+    const roles =
+      user && typeof user === "object"
+        ? user["roles"] || user["Roles"] || user["role"] || user["Role"]
+        : [];
     return Array.isArray(roles) ? roles : [];
   };
 
