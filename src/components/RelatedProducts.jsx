@@ -68,13 +68,13 @@ const RelatedProducts = ({ relatedProducts }) => {
   //   },
   // ];
   return (
-    <div className="flex flex-col justify-start items-start w-full py-4 h-[464.17px] gap-[40px]">
+    <div className="flex flex-col justify-start items-start w-full py-4 h-auto gap-[40px]">
       <h1 className="font-poppins font-semibold text-2xl text-[#1A1A1A]">
         Related Products
       </h1>
       {relatedProducts && relatedProducts.length > 0 ? (
-        <div className="flex w-[1312px] h-[388px] gap-[31px]">
-          <div className="flex w-[92%] h-[386px] gap-[31px]">
+        <div className="flex w-full h-[388px] gap-[31px]">
+          <div className="flex w-full h-[386px] gap-[31px]">
             <Swiper
               ref={swiperRef}
               spaceBetween={24}

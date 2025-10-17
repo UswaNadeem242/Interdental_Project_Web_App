@@ -28,7 +28,7 @@ const Toastify = () => {
     }
   }, [visible, message, type, dispatch]);
 
-  return <ToastContainer />;
+  return <ToastContainer style={{ zIndex: 99999 }} />;
 };
 
 export default Toastify;

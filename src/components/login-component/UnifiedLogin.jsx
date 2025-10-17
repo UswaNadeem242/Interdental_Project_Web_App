@@ -92,6 +92,8 @@ const UnifiedLogin = () => {
         navigate("/patient-admin/dashboard");
       } else if (userRole === "DOCTOR") {
         navigate("/doctor-admin/dashboard");
+      } else if (userRole === "ADMIN") {
+        navigate("/admin-panel/dashboard");
       } else if (userRole === "CUSTOMER") {
         navigate("/");
       } else {
@@ -124,7 +126,16 @@ const UnifiedLogin = () => {
               type="email"
               id="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                // Clear error when user starts typing
+                if (validationErrors.email) {
+                  setValidationErrors((prev) => ({
+                    ...prev,
+                    email: undefined,
+                  }));
+                }
+              }}
               placeholder=" "
               className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                 validationErrors.email
@@ -153,7 +164,16 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
               type={showPassword ? "text" : "password"}
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                // Clear error when user starts typing
+                if (validationErrors.password) {
+                  setValidationErrors((prev) => ({
+                    ...prev,
+                    password: undefined,
+                  }));
+                }
+              }}
               placeholder=" "
               className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${
                 validationErrors.password

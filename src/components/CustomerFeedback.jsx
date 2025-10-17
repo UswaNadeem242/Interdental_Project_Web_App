@@ -1,4 +1,5 @@
 import React from "react";
+import StarRating from "./StarRating";
 
 const CustomerFeedback = ({ item }) => {
   return (
@@ -6,25 +7,19 @@ const CustomerFeedback = ({ item }) => {
       <div className="flex gap-[10px] w-full h-[33.99px]">
         <img
           src="/assets/customer.png"
-          alt="customer image"
+          alt="customer"
           className="w-[33.98px] h-[31.97px]"
         />
         <div className="flex flex-col justify-start items-start w-[198.96px] h-[33.99px] space-y-[1.6px]">
-          <h1>{item?.name}</h1>
-          <div className="flex w-fit h-[12.79px]">
-            {[...Array(item.rating)].map((_, index) => (
-              <img
-                key={index}
-                src={
-                  index < item.rating
-                    ? "/assets/star-filled.png"
-                    : "/assets/star-empty.png"
-                }
-                alt={index < item.rating ? "star filled" : "star empty"}
-                className="w-[12.79px] h-[12.79px]"
-              />
-            ))}
-          </div>
+          <h1 className="font-poppins font-medium text-[14px] text-[#1A1A1A]">
+            {item?.name}
+          </h1>
+          <StarRating
+            rating={item?.rating || 0}
+            readOnly={true}
+            size="w-4 h-4"
+            maxRating={5}
+          />
         </div>
       </div>
       <h1 className="font-poppins font-normal text-[12px] leading-[18px] text-[#808080]">

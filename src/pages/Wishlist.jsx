@@ -7,16 +7,20 @@ import { StarIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice";
+import BackButton from "../components/BackButton";
+import ProductCardSkeleton from "../components/ProductCardSkeleton";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
 
   const [loading, setLoading] = useState(false);
+  const [addingToCart, setAddingToCart] = useState(null); // Track which item is being added
   const { fetchWishlistCount, fetchCartCount } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const getWishlist = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${BASE_URL}/api/wishlist`, {
         headers: {
           Accept: "*/*",
@@ -27,6 +31,8 @@ const Wishlist = () => {
       setWishlist(response.data.items);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,7 +106,7 @@ const Wishlist = () => {
     // }
 
     try {
-      setLoading(true);
+      setAddingToCart(item.productId);
       const payload = {
         id: item.productId,
         productId: item.productId,
@@ -130,7 +136,7 @@ const Wishlist = () => {
             type: "error",
           }),
         );
-        setLoading(false);
+        setAddingToCart(null);
         return;
       }
 
@@ -141,13 +147,13 @@ const Wishlist = () => {
             type: "error",
           }),
         );
-        setLoading(false);
+        setAddingToCart(null);
         return;
       }
 
       fetchCartCount();
       dispatch(showToast({ message: "Added to Cart!", type: "success" }));
-      setLoading(false);
+      setAddingToCart(null);
     } catch (error) {
       console.log(error);
       dispatch(
@@ -156,7 +162,7 @@ const Wishlist = () => {
           type: "error",
         }),
       );
-      setLoading(false);
+      setAddingToCart(null);
     }
   };
   const handleProductClick = (item) => {
@@ -167,11 +173,18 @@ const Wishlist = () => {
     <div className="min-h-screen bg-gray-100">
       <div className="flex justify-center items-center w-full   pb-36 px-20">
         <div className="w-[1320px] h-auto flex flex-col justify-start items-start space-y-4   mt-28">
+          <BackButton variant="rounded" className="mb-4" text="Back" />
           <h1 className="font-workSans font-semibold text-[20px] leading-[23.46px] tet-[#000000]">
             Wishlist
           </h1>
           <div className="flex flex-wrap justify-start items-center gap-[32px] w-full h-auto">
-            {wishlist.length === 0 ? (
+            {loading ? (
+              <>
+                {[...Array(6)].map((_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))}
+              </>
+            ) : wishlist.length === 0 ? (
               <div className="w-full flex justify-center items-center py-20">
                 <p className="font-poppins text-gray-500 text-2xl">
                   Your wishlist is empty...
@@ -211,10 +224,13 @@ const Wishlist = () => {
                         e.stopPropagation();
                         handleAddtoCart(item);
                       }}
-                      className="text-xs text-secondaryBrand font-poppins bg-background px-16 py-5 rounded-full capitalize hover:bg-secondaryBrand hover:text-white"
+                      disabled={addingToCart === item.productId}
+                      className="text-xs text-secondaryBrand font-poppins bg-background px-16 py-5 rounded-full capitalize hover:bg-secondaryBrand hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {/* <p className="font-poppins font-semibold text-[13px] leading-[21px] text-[#013764] "> */}
-                      {loading ? "Adding..." : "Add to Cart"}
+                      {addingToCart === item.productId
+                        ? "Adding..."
+                        : "Add to Cart"}
                     </button>
                     <svg
                       width="70"
