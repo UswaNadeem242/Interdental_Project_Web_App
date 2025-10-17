@@ -132,6 +132,7 @@ const PatientPage = () => {
           data={filteredData}
           actionButton="active"
           DropdownComponent={EditDeleteDropdownMenu}
+          onEdit={handleOpenForm}
         />
 
 

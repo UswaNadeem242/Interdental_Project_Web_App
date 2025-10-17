@@ -1,7 +1,7 @@
 import DeleteIcon from "../../icon/deleteIcon";
 import PenIcon from "../../icon/PenIcon";
 
-export const EditDeleteDropdownMenu = ({ onEdit, onDelete }) => {
+export const EditDeleteDropdownMenu = ({ onEdit, onDelete,  }) => {
     return (
         <div className="absolute right-0   w-32 bg-white border border-gray-200 rounded-md shadow-lg z-50">
             <ul className="py-1 text-sm text-gray-700 font-poppins">

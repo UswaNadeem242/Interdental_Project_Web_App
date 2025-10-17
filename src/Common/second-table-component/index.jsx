@@ -13,7 +13,8 @@ export default function SecondTable({
   actionHrefKey,
   onActionClick,
   actionButton,
-  DropdownComponent
+  DropdownComponent,
+  onEdit
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
@@ -243,6 +244,7 @@ export default function SecondTable({
                       <DropdownComponent
                         row={row}
                         onClose={() => setOpen(null)}
+                        onEdit={onEdit}
                       />
                     )}
 
