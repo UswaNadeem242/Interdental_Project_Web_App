@@ -176,7 +176,7 @@ const SingleProduct = () => {
         dispatch(
           showToast({
             message: "Access Denied. Please login first.",
-            type: "info",
+            type: "error",
           }),
         );
         return;
@@ -470,7 +470,7 @@ const SingleProduct = () => {
         <div
           className={`flex flex-col justify-start items-start w-full py-[20px] space-y-[25.58px] rounded-[16px] bg-white ${product?.ratings && product.ratings.length > 0 ? "h-[430.25px]" : "h-auto"}`}
         >
-          <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-primaryText p-4">
+          <h1 className="font-poppins font-semibold text-2xl leading-[27px] text-primaryText p-4">
             Customer Feedback
           </h1>
           {/* <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll hidden ">
@@ -520,13 +520,7 @@ const SingleProduct = () => {
           </div>
         </div>
 
-        {relatedProducts?.length > 0 ? (
-          <RelatedProducts relatedProducts={relatedProducts} />
-        ) : (
-          <p className="text-gray-500 text-sm font-poppins">
-            No Related Products Found.
-          </p>
-        )}
+        <RelatedProducts relatedProducts={relatedProducts || []} />
       </div>
 
       {isModalOpen && (

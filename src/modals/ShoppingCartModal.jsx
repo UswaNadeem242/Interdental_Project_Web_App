@@ -1013,8 +1013,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                               {item.productName}
                             </h1>
                             <h1 className="font-poppins font-normal w-[253px] h-auto text-[11.19px] leading-[16.79px] text-[#808080]">
-                              Keep The Soil Evenly Moist For The Healthiest
-                              Gro...
+                              {item.description}
                             </h1>
                           </div>
                           <h1>${item.price}</h1>

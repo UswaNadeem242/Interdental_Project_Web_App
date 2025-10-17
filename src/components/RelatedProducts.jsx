@@ -68,55 +68,90 @@ const RelatedProducts = ({ relatedProducts }) => {
   //   },
   // ];
   return (
-    <div className="flex flex-col justify-start items-start w-full h-[464.17px] gap-[40px]">
-      <h1 className="font-poppins font-semibold text-[30.46px] text-[#1A1A1A]">
+    <div className="flex flex-col justify-start items-start w-full py-4 h-[464.17px] gap-[40px]">
+      <h1 className="font-poppins font-semibold text-2xl text-[#1A1A1A]">
         Related Products
       </h1>
-      <div className="flex w-[1312px] h-[388px] gap-[31px]">
-        <div className="flex w-[92%] h-[386px] gap-[31px]">
-          <Swiper
-            ref={swiperRef}
-            spaceBetween={24}
-            slidesPerView={4}
-            centeredSlides={false}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            // pagination={{
-            //   clickable: true,
-            // }}
-            navigation={true}
-            modules={[Autoplay, Pagination, Navigation]}
-            className="w-[100%] h-[100%] flex justify-center items-center text-center"
-          >
-            {relatedProducts.map((product) => (
-              <SwiperSlide>
-                <div
-                  onClick={() => navigate(`/product/${product?.id}`)}
-                  onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
-                  onMouseLeave={() => swiperRef.current.swiper.autoplay.start()}
-                  className="flex flex-col justify-center items-center cursor-pointer bg-white w-[283.15px] h-[366px]  space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
-                >
-                  <img
-                    src={product?.img}
-                    alt="product"
-                    className="w-[263.15px] h-[260.45px]"
-                  />
-                  <div className="flex flex-col justify-center items-center space-y-[7.55px]">
-                    <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
-                      {product?.title}
-                    </h1>
-                    <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
-                      ${product?.price}
-                    </h1>
+      {relatedProducts && relatedProducts.length > 0 ? (
+        <div className="flex w-[1312px] h-[388px] gap-[31px]">
+          <div className="flex w-[92%] h-[386px] gap-[31px]">
+            <Swiper
+              ref={swiperRef}
+              spaceBetween={24}
+              slidesPerView={4}
+              centeredSlides={false}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
+              // pagination={{
+              //   clickable: true,
+              // }}
+              navigation={true}
+              modules={[Autoplay, Pagination, Navigation]}
+              className="w-[100%] h-[100%] flex justify-center items-center text-center"
+            >
+              {relatedProducts?.map((product) => (
+                <SwiperSlide key={product?.id}>
+                  <div
+                    onClick={() => navigate(`/product/${product?.id}`)}
+                    onMouseEnter={() =>
+                      swiperRef.current.swiper.autoplay.stop()
+                    }
+                    onMouseLeave={() =>
+                      swiperRef.current.swiper.autoplay.start()
+                    }
+                    className="flex flex-col justify-center items-center cursor-pointer bg-white w-[283.15px] h-[366px]  space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
+                  >
+                    <img
+                      src={product?.img}
+                      alt="product"
+                      className="w-[263.15px] h-[260.45px]"
+                    />
+                    <div className="flex flex-col justify-center items-center space-y-[7.55px]">
+                      <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
+                        {product?.title}
+                      </h1>
+                      <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
+                        ${product?.price}
+                      </h1>
+                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-12 px-4 w-full h-[388px]">
+          <div className="text-center space-y-4 max-w-md">
+            <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
+              <svg
+                className="w-8 h-8 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800 font-poppins mb-2">
+                No Related Products
+              </h3>
+              <p className="text-gray-600 text-sm font-poppins leading-relaxed">
+                There are no related products available for this item at the
+                moment. Check back later for recommendations.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

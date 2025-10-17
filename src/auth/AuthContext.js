@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
-
+  console.log(wishlistCount, "COUNT");
   const login = (user, token) => {
     localStorage.setItem("token", token);
     localStorage.setItem("users", JSON.stringify(user));
@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      console.log(response?.data?.items?.length, "WISHLIST_COUNT");
       setWishlistCount(response?.data?.items?.length);
     } catch (err) {
       console.log("Error fetching wishlist count:", err);
@@ -56,25 +57,28 @@ export const AuthProvider = ({ children }) => {
 
   // 🔹 Refresh token every 10 minutes
   useEffect(() => {
-    const interval = setInterval(async () => {
-      const refreshToken = localStorage.getItem("token");
+    const interval = setInterval(
+      async () => {
+        const refreshToken = localStorage.getItem("token");
 
-      if (!refreshToken) return;
+        if (!refreshToken) return;
 
-      try {
-        const res = await axios.post(`${BASE_URL}/api/auth/refresh`, {
-          token: refreshToken,
-        });
+        try {
+          const res = await axios.post(`${BASE_URL}/api/auth/refresh`, {
+            token: refreshToken,
+          });
 
-        const { accessToken, refreshToken: user } = res.data;
+          const { accessToken, refreshToken: user } = res.data;
 
-        localStorage.setItem("token", accessToken);
-        if (user) setUser(user);
-      } catch (err) {
-        console.error("Auto refresh failed, logging out:", err);
-        logout();
-      }
-    }, 1 * 60 * 1000);
+          localStorage.setItem("token", accessToken);
+          if (user) setUser(user);
+        } catch (err) {
+          console.error("Auto refresh failed, logging out:", err);
+          logout();
+        }
+      },
+      1 * 60 * 1000,
+    );
 
     return () => clearInterval(interval);
   }, []);

@@ -309,7 +309,7 @@ const Shop = () => {
       });
 
       const wishlistItems = response.data.items || [];
-      console.log("🔍 Wishlist API response:", wishlistItems);
+
       setWishlist(wishlistItems);
     } catch (error) {
       console.error("Error fetching wishlist:", error);
@@ -325,7 +325,7 @@ const Shop = () => {
         dispatch(
           showToast({
             message: "Access Denied. Please login first.",
-            type: "info",
+            type: "error",
           }),
         );
         return;
@@ -432,7 +432,7 @@ const Shop = () => {
         dispatch(
           showToast({
             message: "Access Denied. Please login first.",
-            type: "info",
+            type: "error",
           }),
         );
         return;

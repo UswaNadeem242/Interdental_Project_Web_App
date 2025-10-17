@@ -68,7 +68,7 @@ const Wishlist = () => {
       dispatch(
         showToast({
           message: "Access Denied. Please login first.",
-          type: "info",
+          type: "error",
         }),
       );
       return;

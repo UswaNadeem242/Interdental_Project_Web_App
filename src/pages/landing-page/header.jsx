@@ -12,17 +12,17 @@ import NotificationsDropdown from "../../components/dropdowns/NotificationsDropd
 import { BellIconSVG } from "../../icon/Bell";
 import { showToast } from "../../store/toast-slice";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notificationsDropdown, setNotificationsDropdown] = useState(false);
-
-  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const { wishlistCount, cartCount, fetchWishlistCount } = useAuth();
+  const [setIsActionModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-  const { wishlistCount, cartCount } = useAuth();
-
+  console.log(wishlistCount, "COUNT");
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -59,6 +59,13 @@ const Header = () => {
       setIsActionModalOpen(true);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchWishlistCount();
+    }
+  }, [user]);
+
   return (
     <>
       <header className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[92%] md:w-[90%]">
