@@ -462,17 +462,22 @@ const SingleProduct = () => {
 
         {/* Customer Feedback Section */}
         <div
-          className={`flex flex-col justify-start items-start w-full py-[20px] px-[24px] space-y-[25.58px] rounded-[16px] bg-white ${product?.ratings && product.ratings.length > 0 ? "h-[430.25px]" : "h-auto"}`}
+          className={`flex flex-col justify-start items-start w-full py-[20px] px-[24px] space-y-[25.58px] rounded-[16px] bg-white ${product?.ratings && product.ratings.length > 0 ? "h-auto" : "h-auto"}`}
         >
           <h1 className="font-poppins font-semibold text-xl leading-[27px] text-primaryText">
             Customer Feedback
           </h1>
           <div
-            className={`w-full space-y-[15.99px] ${product?.ratings && product.ratings.length > 0 ? "h-[276.71px] overflow-y-scroll pr-2" : "h-auto"}`}
+            className={`w-full space-y-[15.99px] ${product?.ratings && product.ratings.length > 0 ? "h-auto overflow-y-scroll pr-2" : "h-auto"}`}
           >
             {product?.ratings && product.ratings.length > 0 ? (
-              product.ratings.map((item) => (
-                <CustomerFeedback key={item.id} item={item} />
+              product.ratings.map((item, index) => (
+                <CustomerFeedback
+                  key={item.id}
+                  item={item}
+                  isLast={index === product.ratings.length - 1}
+                  isOnlyItem={product.ratings.length === 1}
+                />
               ))
             ) : (
               <div className="flex flex-col items-center justify-center py-12 px-4">
