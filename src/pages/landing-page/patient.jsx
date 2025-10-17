@@ -7,6 +7,7 @@ import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
 import CircleIcon from "../../icon/circle-icon";
 import UpperFooter from "../../components/upper-footer";
 import { concerns, plans, steps } from "../../Constant";
+import CheckCircle from "../../icon/CheckCircle";
 
 const Patients = ({ isLanding }) => {
   const navigate = useNavigate();
@@ -17,7 +18,8 @@ const Patients = ({ isLanding }) => {
         {/* Left Side: Text */}
         <div className="w-full md:w-1/2 text-gray-800">
           <h3 className="text-sm md:text-5xl font-bold text-secondaryBrand">
-            Protect Your Smile with MakeMeSmile
+            Protect Your Smile with
+            <span className="text-[#94D3DD]"> MakeMeSmile</span>
           </h3>
           <p className="text-primaryText text-[10px] whitespace-nowrap font-normal font-poppins py-4">
             Extended warranties up to 9 years- simple, affordable, and trusted
@@ -277,6 +279,7 @@ const Patients = ({ isLanding }) => {
             />
           </div>
         </div>
+        {/*  */}
       </div>
 
       <div className="px-5">
