@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useDispatch } from "react-redux";
 import Header from "./header";
 import Footer from "../../components/Footer";
 import { useLocation } from "react-router-dom";
@@ -9,9 +10,12 @@ import Twitter from "../../icon/twitter";
 import FacebookIcon from "../../icon/facebookIcon";
 import Instgram from "../../icon/instgram";
 import Linkedln from "../../icon/linkedln";
+import { BASE_URL } from "../../config";
+import { showToast } from "../../store/toast-slice";
 
 const Contact = ({ isLanding }) => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -19,7 +23,7 @@ const Contact = ({ isLanding }) => {
     description: "",
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ type: "", text: "" });
+  const [errors, setErrors] = useState({});
 
   const socialIcons = [
     { id: 1, icon: <Twitter className="w-5 h-5 text-black" /> },
@@ -30,49 +34,133 @@ const Contact = ({ isLanding }) => {
 
   const isContactPage = location.pathname === "/contact-us";
 
+  // Validate email format
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Check if all fields are filled and valid
+  const isFormValid = useMemo(() => {
+    return (
+      formData.firstName.trim() !== "" &&
+      formData.lastName.trim() !== "" &&
+      formData.email.trim() !== "" &&
+      isValidEmail(formData.email) &&
+      formData.description.trim() !== ""
+    );
+  }, [formData]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validate First Name
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+    } else if (formData.firstName.trim().length < 2) {
+      newErrors.firstName = "First name must be at least 2 characters";
+    }
+
+    // Validate Last Name
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+    } else if (formData.lastName.trim().length < 2) {
+      newErrors.lastName = "Last name must be at least 2 characters";
+    }
+
+    // Validate Email
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!isValidEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    // Validate Message
+    if (!formData.description.trim()) {
+      newErrors.description = "Message is required";
+    } else if (formData.description.trim().length < 10) {
+      newErrors.description = "Message must be at least 10 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate form before submission
+    if (!validateForm()) {
+      dispatch(
+        showToast({
+          message: "Please fill in all required fields correctly",
+          type: "error",
+        }),
+      );
+      return;
+    }
+
     setLoading(true);
-    setMessage({ type: "", text: "" });
 
     try {
-      const response = await fetch("http://localhost:8080/api/query", {
+      const response = await fetch(`${BASE_URL}/api/query`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "Bearer dDBlL3U1UFJCVEZRaVNLbWVyM2pTci9welBYUUJZQzVJbmVZU2dsS0ZPd3lnbGpLU3ZlMUxHREdZSG42eXluOEpLMnV1OWtZajcvbzZjSmxMRjB4MHcvUzZYUDJyZnBYQVMzTFczNTRhYTNpWnpybnp6eFRMTkdZK0tadWVHK3p4d1R6ZUJwWGppdzFEdTU3ckdpUFA1TzR2VlJlc1RkZm1vTVFuWDVWMzUzb2tDNnV5ZjBSRmdyb0RMVFlLckhzSGtGMFkyVXZDVW15UWlZclJoL1N6eEpnTWtsTGJUY24zRGhhRnhtYyswZHlsL2diZTNwOHhkdkJhcE84YktXSDlndzcxRlNmV285QjBoWm80aGJhM1E9PX50cnVl",
         },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        setMessage({ type: "success", text: "Message sent successfully!" });
+        dispatch(
+          showToast({
+            message: "Message sent successfully! We'll get back to you soon.",
+            type: "success",
+          }),
+        );
+        // Reset form
         setFormData({
           firstName: "",
           lastName: "",
           email: "",
           description: "",
         });
+        setErrors({});
       } else {
-        setMessage({
-          type: "error",
-          text: "Failed to send message. Please try again.",
-        });
+        const errorData = await response.json().catch(() => ({}));
+        dispatch(
+          showToast({
+            message:
+              errorData.message ||
+              "Failed to send message. Please try again later.",
+            type: "error",
+          }),
+        );
       }
     } catch (error) {
-      setMessage({
-        type: "error",
-        text: "An error occurred. Please try again.",
-      });
+      dispatch(
+        showToast({
+          message:
+            "Network error occurred. Please check your connection and try again.",
+          type: "error",
+        }),
+      );
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -140,66 +228,133 @@ const Contact = ({ isLanding }) => {
             <div className="bg-white p-2 md:p-4 rounded-lg">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    placeholder="First Name"
-                    required
-                    className="border border-gray-300 p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondaryBrand/50 focus:border-secondaryBrand outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins transition-all"
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    placeholder="Last Name"
-                    required
-                    className="border border-gray-300 p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondaryBrand/50 focus:border-secondaryBrand outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins transition-all"
-                  />
+                  <div className="flex flex-col">
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      placeholder="First Name"
+                      className={`border ${
+                        errors.firstName
+                          ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                          : "border-gray-300 focus:ring-secondaryBrand/50 focus:border-secondaryBrand"
+                      } p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins transition-all`}
+                    />
+                    {errors.firstName && (
+                      <span className="text-red-500 text-xs mt-1 font-poppins">
+                        {errors.firstName}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col">
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      placeholder="Last Name"
+                      className={`border ${
+                        errors.lastName
+                          ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                          : "border-gray-300 focus:ring-secondaryBrand/50 focus:border-secondaryBrand"
+                      } p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins transition-all`}
+                    />
+                    {errors.lastName && (
+                      <span className="text-red-500 text-xs mt-1 font-poppins">
+                        {errors.lastName}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="E-Mail Address"
-                  required
-                  className="w-full border border-gray-300 p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondaryBrand/50 focus:border-secondaryBrand outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins transition-all"
-                />
+                <div className="flex flex-col">
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="E-Mail Address"
+                    className={`w-full border ${
+                      errors.email
+                        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                        : "border-gray-300 focus:ring-secondaryBrand/50 focus:border-secondaryBrand"
+                    } p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins transition-all`}
+                  />
+                  {errors.email && (
+                    <span className="text-red-500 text-xs mt-1 font-poppins">
+                      {errors.email}
+                    </span>
+                  )}
+                </div>
 
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  placeholder="Message"
-                  rows="5"
-                  required
-                  className="w-full border border-gray-300 p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondaryBrand/50 focus:border-secondaryBrand outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins resize-none transition-all"
-                ></textarea>
-
-                {message.text && (
-                  <div
-                    className={`p-3 rounded-lg text-sm font-poppins ${
-                      message.type === "success"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {message.text}
-                  </div>
-                )}
+                <div className="flex flex-col">
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    placeholder="Message"
+                    rows="5"
+                    className={`w-full border ${
+                      errors.description
+                        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                        : "border-gray-300 focus:ring-secondaryBrand/50 focus:border-secondaryBrand"
+                    } p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins resize-none transition-all`}
+                  ></textarea>
+                  {errors.description && (
+                    <span className="text-red-500 text-xs mt-1 font-poppins">
+                      {errors.description}
+                    </span>
+                  )}
+                </div>
 
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="w-full sm:w-auto mt-4 bg-secondaryBrand text-white px-8 py-3 md:py-3.5 rounded-lg hover:bg-secondaryBrand/90 transition-all flex items-center justify-center gap-2 font-poppins capitalize disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+                  disabled={loading || !isFormValid}
+                  className={`w-full sm:w-auto mt-4 px-8 py-3 md:py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 font-poppins capitalize shadow-md ${
+                    loading || !isFormValid
+                      ? "bg-gray-400 cursor-not-allowed opacity-60"
+                      : "bg-secondaryBrand hover:bg-secondaryBrand/90 hover:shadow-lg"
+                  } text-white`}
                 >
-                  {loading ? "Sending..." : "Send"}
-                  <PaperAirplaneIcon className="w-5 h-5 stroke-white stroke-2" />
+                  {loading ? (
+                    <>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send
+                      <PaperAirplaneIcon className="w-5 h-5 stroke-white stroke-2" />
+                    </>
+                  )}
                 </button>
+
+                {!isFormValid && (
+                  <p className="text-xs text-gray-500 font-poppins mt-2">
+                    Please fill in all fields to enable the submit button
+                  </p>
+                )}
               </form>
             </div>
           </div>
