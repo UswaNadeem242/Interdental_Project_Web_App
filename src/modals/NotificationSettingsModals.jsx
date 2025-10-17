@@ -28,9 +28,6 @@ const NotifcationSettingsModal = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   return (
-
-
-
     <div
       className="fixed -left-[63px] top-0 right-0 w-screen  h-screen flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-sm z-[9999]"
       onClick={(e) => {
@@ -46,11 +43,14 @@ const NotifcationSettingsModal = ({ isModalOpen, setIsModalOpen }) => {
             <h1 className="font-poppins font-bold text-2xl w-full  text-primaryText text-center pb-4">
               How was the service
             </h1>
-            <p className="text-sm font-poppins font-normal text-secondaryText max-w-80 text-center ">Your opinion is very helpful for us. Help us be better by giving us an honest score below</p>
+            <p className="text-sm font-poppins font-normal text-secondaryText max-w-80 text-center ">
+              Your opinion is very helpful for us. Help us be better by giving
+              us an honest score below
+            </p>
             <div className="flex gap-2 justify-center py-3">
-              {
-                [1, 2, 3, 4, 5]?.map((item) => <StarIcon />)
-              }
+              {[1, 2, 3, 4, 5]?.map((item) => (
+                <StarIcon />
+              ))}
             </div>
           </div>
           <div className="flex flex-col items-start justify-start w-full">
@@ -67,32 +67,24 @@ const NotifcationSettingsModal = ({ isModalOpen, setIsModalOpen }) => {
             </form>
           </div>
 
-
-
           <div className="flex justify-between">
             <div>
-              <button onClick={() => handleCloseModal()} className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] bg-background    gap-2 sm:gap-4 p-2 font-poppins font-semibold text-base text-primaryText capitalize">
-                may be later  </button>
+              <button
+                onClick={() => handleCloseModal()}
+                className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] bg-background    gap-2 sm:gap-4 p-2 font-poppins font-semibold text-base text-primaryText capitalize"
+              >
+                may be later{" "}
+              </button>
             </div>
             <div>
               <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px]   bg-secondaryBrand  gap-2 sm:gap-4 p-2 font-poppins font-semibold text-base text-white">
-
                 Submit review
-
-
               </button>
             </div>
           </div>
-
-
         </div>
       </div>
-
-
-    </div >
-
-
-
+    </div>
   );
 };
 

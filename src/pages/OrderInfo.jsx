@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom"; import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import FeedbackModal from "../modals/FeedbackModal";
 import axios from "axios";
 import { BASE_URL } from "../config";
+import Icons from "../components/Icons";
 
 const Orders = () => {
   const tabs = ["Order Detail", "Track Order"];
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFeedbackOpen, SetIsFeedbackOpen] = useState(false);
-  const [isItemId, SetIsItemId] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
   const { orderId } = useParams();
-
+  const navigate = useNavigate();
   const [orders, setOrders] = useState();
 
   const getAllOrders = async () => {
@@ -22,7 +24,7 @@ const Orders = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setOrders(response.data);
       console.log(response.data.orders);
@@ -39,9 +41,11 @@ const Orders = () => {
     <div className="flex justify-center items-center w-full h-auto py-8 bg-[#F8F8F8]">
       <div className="flex flex-col justify-start items-start w-[1200px] h-[517px] p-[32px] space-y-[16px] rounded-[16px] bg-white mt-20">
         <div className="flex justify-start items-center gap-2">
-          <div className="flex justify-center items-center bg-[#F7F8F8] w-[32px] h-[32px] rounded-[8px]">
+          <div
+            onClick={() => navigate(-1)}
+            className="flex justify-center cursor-pointer items-center bg-[#F7F8F8] w-[32px] h-[32px] rounded-[8px]"
+          >
             <ChevronLeftIcon className="w-5 h-5 text-gray-600" />
-            
           </div>
           <p className="font-poppins font-semibold text-[24px] leading-[36px] text-black">
             Order Detail
@@ -76,7 +80,7 @@ const Orders = () => {
                 </div>
                 <div className="w-[512px] h-auto space-y-[16px] flex flex-col  items-start">
                   {orders &&
-                    orders?.orderItems.map((order) => (
+                    orders?.orderItems?.map((order) => (
                       <div className="flex w-[512px] h-[60px] gap-[4px] border-b-[1px] border-[#0000001A] pb-20">
                         <img
                           src={order?.imageUrl || "/assets/product8.png"}
@@ -85,21 +89,25 @@ const Orders = () => {
                         />
                         <div className="flex w-[444px] h-[46px] gap-[4px]">
                           <div className="flex flex-col justify-start items-start w-[357px] h-[46px] space-y-[4px]">
-                            <p className="font-poppins font-normal text-sm text-primaryText">{order.productName}</p>
-                            <p className="text-sm font-semibold font-poppins capitalize text-primaryText">$ {order.unitPrice}</p>
+                            <p className="font-poppins font-normal text-sm text-primaryText">
+                              {order.productName}
+                            </p>
+                            <p className="text-sm font-semibold font-poppins capitalize text-primaryText">
+                              $ {order.unitPrice}
+                            </p>
                           </div>
                         </div>
-                        <div
+                        <button
                           onClick={() => {
                             SetIsFeedbackOpen(true);
-                            SetIsItemId(order.productId);
+                            setSelectedProductId(order.productId);
                           }}
-                          className="flex justify-center items-center w-[113px] h-[23px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px]"
+                          className="flex justify-center items-center w-[113px] h-[23px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px] cursor-pointer hover:bg-[#F69B2630] transition-colors"
                         >
-                          <p className="ffont-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
+                          <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
                             Leave Review
                           </p>
-                        </div>
+                        </button>
                       </div>
                     ))}
                 </div>
@@ -191,87 +199,50 @@ const Orders = () => {
               <div className="border-[1px] border-[#0000000D] w-full"></div>
               <div className="flex flex-col justify-start items-start w-[1104px] h-[87px] py-[8px] px-[16px] space-y-[8px]">
                 <div className="flex justify-start items-center w-[820px] h-[18px] gap-[4px]">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9.00214 5.34523e-06C11.3021 5.34523e-06 13.6021 0.878755 15.3624 2.63764C16.199 3.4724 16.8627 4.46397 17.3155 5.55558C17.7684 6.6472 18.0015 7.81742 18.0015 8.99924C18.0015 10.1811 17.7684 11.3513 17.3155 12.4429C16.8627 13.5345 16.199 14.5261 15.3624 15.3608C14.5276 16.1974 13.536 16.8612 12.4444 17.314C11.3528 17.7669 10.1826 18 9.00076 18C7.81894 18 6.64872 17.7669 5.5571 17.314C4.46549 16.8612 3.47392 16.1974 2.63916 15.3608C1.80257 14.5261 1.13884 13.5345 0.685971 12.4429C0.233106 11.3513 0 10.1811 0 8.99924C0 7.81742 0.233106 6.6472 0.685971 5.55558C1.13884 4.46397 1.80257 3.4724 2.63916 2.63764C3.47366 1.80042 4.46541 1.13639 5.55739 0.683736C6.64937 0.231078 7.82006 -0.00128506 9.00214 5.34523e-06ZM13.0984 6.23014C12.9674 6.24268 12.8426 6.29211 12.7386 6.37268L7.68194 10.1644L5.33907 7.82296C4.83119 7.29433 3.83066 8.29347 4.36068 8.80135L7.1284 11.5691C7.24838 11.6825 7.40392 11.751 7.56862 11.7628C7.73333 11.7747 7.89707 11.7292 8.03206 11.6341L13.5675 7.48253C14.0325 7.14349 13.746 6.23982 13.1703 6.23152C13.1468 6.23032 13.1233 6.23032 13.0997 6.23152L13.0984 6.23014Z"
-                      fill="#94D3DD"
-                    />
-                  </svg>
+                  <Icons.OrderCheckIcon fill="#94D3DD" />
                   <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "PENDING"
-                      ? "bg-[#001D58]"
-                      : "bg-[#94D3DD]"
-                      }`}
-                  ></div>
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9.00214 5.34523e-06C11.3021 5.34523e-06 13.6021 0.878755 15.3624 2.63764C16.199 3.4724 16.8627 4.46397 17.3155 5.55558C17.7684 6.6472 18.0015 7.81742 18.0015 8.99924C18.0015 10.1811 17.7684 11.3513 17.3155 12.4429C16.8627 13.5345 16.199 14.5261 15.3624 15.3608C14.5276 16.1974 13.536 16.8612 12.4444 17.314C11.3528 17.7669 10.1826 18 9.00076 18C7.81894 18 6.64872 17.7669 5.5571 17.314C4.46549 16.8612 3.47392 16.1974 2.63916 15.3608C1.80257 14.5261 1.13884 13.5345 0.685971 12.4429C0.233106 11.3513 0 10.1811 0 8.99924C0 7.81742 0.233106 6.6472 0.685971 5.55558C1.13884 4.46397 1.80257 3.4724 2.63916 2.63764C3.47366 1.80042 4.46541 1.13639 5.55739 0.683736C6.64937 0.231078 7.82006 -0.00128506 9.00214 5.34523e-06ZM13.0984 6.23014C12.9674 6.24268 12.8426 6.29211 12.7386 6.37268L7.68194 10.1644L5.33907 7.82296C4.83119 7.29433 3.83066 8.29347 4.36068 8.80135L7.1284 11.5691C7.24838 11.6825 7.40392 11.751 7.56862 11.7628C7.73333 11.7747 7.89707 11.7292 8.03206 11.6341L13.5675 7.48253C14.0325 7.14349 13.746 6.23982 13.1703 6.23152C13.1468 6.23032 13.1233 6.23032 13.0997 6.23152L13.0984 6.23014Z"
-                      fill={
-                        orders.orderStatus === "PENDING" ? "#001D58" : "#94D3DD"
-                      }
-                    />
-                  </svg>
-                  <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "SHIPED"
-                      ? "bg-[#001D58]"
-                      : orders.orderStatus === "PENDING"
-                        ? "bg-[#DDDDDD]"
+                    className={`w-[250px] rounded-[10px] h-[2px] ${
+                      orders.orderStatus === "PENDING"
+                        ? "bg-[#001D58]"
                         : "bg-[#94D3DD]"
-                      }`}
+                    }`}
                   ></div>
-                  <svg
-                    width="19"
-                    height="18"
-                    viewBox="0 0 19 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9.66816 5.34523e-06C11.9681 5.34523e-06 14.2681 0.878755 16.0284 2.63764C16.865 3.4724 17.5287 4.46397 17.9816 5.55558C18.4344 6.6472 18.6675 7.81742 18.6675 8.99924C18.6675 10.1811 18.4344 11.3513 17.9816 12.4429C17.5287 13.5345 16.865 14.5261 16.0284 15.3608C15.1936 16.1974 14.202 16.8612 13.1104 17.314C12.0188 17.7669 10.8486 18 9.66678 18C8.48495 18 7.31473 17.7669 6.22312 17.314C5.1315 16.8612 4.13993 16.1974 3.30518 15.3608C2.46858 14.5261 1.80485 13.5345 1.35199 12.4429C0.899121 11.3513 0.666016 10.1811 0.666016 8.99924C0.666016 7.81742 0.899121 6.6472 1.35199 5.55558C1.80485 4.46397 2.46858 3.4724 3.30518 2.63764C4.13968 1.80042 5.13142 1.13639 6.22341 0.683736C7.31539 0.231078 8.48607 -0.00128506 9.66816 5.34523e-06ZM13.7644 6.23014C13.6334 6.24268 13.5086 6.29211 13.4046 6.37268L8.34796 10.1644L6.00508 7.82296C5.49721 7.29433 4.49668 8.29347 5.0267 8.80135L7.79442 11.5691C7.9144 11.6825 8.06993 11.751 8.23464 11.7628C8.39934 11.7747 8.56308 11.7292 8.69807 11.6341L14.2335 7.48253C14.6985 7.14349 14.412 6.23982 13.8363 6.23152C13.8128 6.23032 13.7893 6.23032 13.7658 6.23152L13.7644 6.23014Z"
-                      fill={
-                        orders.orderStatus === "SHIPED"
-                          ? "#001D58"
-                          : orders.orderStatus === "PENDING"
-                            ? "#DDDDDD"
-                            : "#94D3DD"
-                      }
-                    />
-                  </svg>
+                  <Icons.OrderCheckIcon
+                    fill={
+                      orders.orderStatus === "PENDING" ? "#001D58" : "#94D3DD"
+                    }
+                  />
+                  <div
+                    className={`w-[250px] rounded-[10px] h-[2px] ${
+                      orders.orderStatus === "SHIPED"
+                        ? "bg-[#001D58]"
+                        : orders.orderStatus === "PENDING"
+                          ? "bg-[#DDDDDD]"
+                          : "bg-[#94D3DD]"
+                    }`}
+                  ></div>
+                  <Icons.OrderCheckIconVariant
+                    fill={
+                      orders.orderStatus === "SHIPED"
+                        ? "#001D58"
+                        : orders.orderStatus === "PENDING"
+                          ? "#DDDDDD"
+                          : "#94D3DD"
+                    }
+                  />
 
                   <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "DELIVERD"
-                      ? "bg-[#94D3DD]"
-                      : "bg-[#DDDDDD]"
-                      }`}
+                    className={`w-[250px] rounded-[10px] h-[2px] ${
+                      orders.orderStatus === "DELIVERD"
+                        ? "bg-[#94D3DD]"
+                        : "bg-[#DDDDDD]"
+                    }`}
                   ></div>
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9.00019 5.34523e-06C11.3002 5.34523e-06 13.6001 0.878755 15.3604 2.63764C16.197 3.4724 16.8607 4.46397 17.3136 5.55558C17.7665 6.6472 17.9996 7.81742 17.9996 8.99924C17.9996 10.1811 17.7665 11.3513 17.3136 12.4429C16.8607 13.5345 16.197 14.5261 15.3604 15.3608C14.5257 16.1974 13.5341 16.8612 12.4425 17.314C11.3509 17.7669 10.1806 18 8.99881 18C7.81698 18 6.64676 17.7669 5.55515 17.314C4.46353 16.8612 3.47196 16.1974 2.63721 15.3608C1.80061 14.5261 1.13688 13.5345 0.684018 12.4429C0.231153 11.3513 -0.00195312 10.1811 -0.00195312 8.99924C-0.00195312 7.81742 0.231153 6.6472 0.684018 5.55558C1.13688 4.46397 1.80061 3.4724 2.63721 2.63764C3.47171 1.80042 4.46345 1.13639 5.55544 0.683736C6.64742 0.231078 7.8181 -0.00128506 9.00019 5.34523e-06ZM13.0964 6.23014C12.9654 6.24268 12.8407 6.29211 12.7366 6.37268L7.67999 10.1644L5.33712 7.82296C4.82924 7.29433 3.82871 8.29347 4.35873 8.80135L7.12645 11.5691C7.24643 11.6825 7.40196 11.751 7.56667 11.7628C7.73138 11.7747 7.89511 11.7292 8.03011 11.6341L13.5655 7.48253C14.0305 7.14349 13.7441 6.23982 13.1684 6.23152C13.1449 6.23032 13.1213 6.23032 13.0978 6.23152L13.0964 6.23014Z"
-                      fill={
-                        orders.orderStatus === "DELIVERD"
-                          ? "#94D3DD"
-                          : "#DDDDDD"
-                      }
-                    />
-                  </svg>
+                  <Icons.OrderCheckIcon
+                    fill={
+                      orders.orderStatus === "DELIVERD" ? "#94D3DD" : "#DDDDDD"
+                    }
+                  />
                 </div>
 
                 <div className="flex gap-[8px] w-[1032px] h-[37px]">
@@ -510,7 +481,7 @@ const Orders = () => {
         <FeedbackModal
           isModalOpen={isFeedbackOpen}
           setIsModalOpen={SetIsFeedbackOpen}
-          isItemId={isItemId}
+          productId={selectedProductId}
         />
       )}
     </div>

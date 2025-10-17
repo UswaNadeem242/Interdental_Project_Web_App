@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice"; // adjust path if needed
+import ProductCardSkeleton from "../components/ProductCardSkeleton";
 
 // Memoized ProductCard component to prevent unnecessary re-renders
 const ProductCard = memo(
@@ -46,7 +47,7 @@ const ProductCard = memo(
               <span className="flex items-center gap-1">
                 <StarIcon className="w-4 h-4 text-yellow-400" />
                 <span className="text-xs font-poppins font-normal text-[#585858]">
-                  5.0
+                  {product?.ratings[0]?.rating || 0}
                 </span>
               </span>
             </div>
@@ -550,7 +551,7 @@ const Shop = () => {
         <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8">
           {/* Sidebar (desktop static, mobile drawer) */}
           <div
-            className={`fixed inset-y-0 left-0 z-0  w-72 rounded-2xl bg-white shadow-lg transform transition-transform duration-300 md:static md:translate-x-0 md:shadow-none
+            className={`sticky top-0 w-72 rounded-2xl bg-white shadow-lg transform transition-transform duration-300 md:static md:translate-x-0 md:shadow-none
           ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}`}
           >
             {/* Mobile header */}
@@ -733,9 +734,11 @@ const Shop = () => {
           <div>
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {loading ? (
-                <div className="w-full flex justify-center items-center h-[400px]">
-                  <p className="text-lg text-gray-500">Loading products...</p>
-                </div>
+                <>
+                  {[...Array(6)].map((_, index) => (
+                    <ProductCardSkeleton key={index} />
+                  ))}
+                </>
               ) : filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                   <ProductCard

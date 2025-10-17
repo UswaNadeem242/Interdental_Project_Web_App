@@ -20,6 +20,8 @@ import {
   MagnifyingGlassIcon,
   StarIcon,
 } from "@heroicons/react/24/solid";
+import StarRating from "../components/StarRating";
+import Icons from "../components/Icons";
 
 const SingleProduct = () => {
   const { productId } = useParams();
@@ -34,6 +36,8 @@ const SingleProduct = () => {
 
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [wishlist, setWishlist] = useState([]);
+  const [userRating, setUserRating] = useState(0);
+  const [isSubmittingRating, setIsSubmittingRating] = useState(false);
 
   const getProduct = async () => {
     try {
@@ -92,6 +96,18 @@ const SingleProduct = () => {
     getWishlist();
   }, [productId]);
 
+  // Extract user rating when product data is loaded
+  useEffect(() => {
+    if (product && product.ratings && product.ratings.length > 0) {
+      const userData = localStorage.getItem("users");
+      const user = userData ? JSON.parse(userData) : null;
+
+      if (user) {
+        setUserRating(product?.ratings[0]?.rating);
+      }
+    }
+  }, [product]);
+
   const [isOpenCart, setIsOpenCart] = useState(false);
 
   const handleAddtoCart = async (shouldOpenModal = false) => {
@@ -140,6 +156,7 @@ const SingleProduct = () => {
     }
   };
 
+  console.log();
   // Get wishlist items on component mount
   const getWishlist = async () => {
     try {
@@ -263,18 +280,16 @@ const SingleProduct = () => {
   }
 
   return (
-    <div className="flex justify-center  items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0 ">
-      {/* justify-center  */}
-      <div className="flex flex-col justify-start items-center h-auto space-y-[16px] my-8 pt-[8px] mt-20">
+    <div className="flex justify-center items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
+      <div className="flex flex-col justify-start items-center h-auto space-y-[16px] my-8 pt-[8px] mt-20 w-full max-w-[1312px] px-4">
         {/* Back Button */}
-        <div className="w-full max-w-[1312px]">
-          <BackButton variant="rounded" className="mb-4" text="Back" />
+        <div className="w-full">
+          <BackButton variant="rounded" className="mb-4 mt-4" text="Back" />
         </div>
-        {/*  w-[1312px]  pl-[100px]*/}
-        <div className="flex justify-center items-center w-full h-[603.32px]  gap-[6.39px] rounded-2xl bg-white ">
-          {/* p-[51.16px] */}
-          <div className="flex justify-center items-center w-[1131px] h-[501px] gap-5">
-            <div className="w-[437px] h-[501px] top-[-0.16px] left-[150.71px]">
+        {/* Product Details */}
+        <div className="flex flex-col lg:flex-row justify-center items-center w-full min-h-[500px] gap-6 lg:gap-8 rounded-2xl bg-white p-4 md:p-6 lg:p-8">
+          {product && product.imageUrls && product.imageUrls.length > 0 && (
+            <div className="w-full lg:w-[437px] h-[300px] sm:h-[400px] lg:h-[501px] flex-shrink-0">
               <Swiper
                 spaceBetween={30}
                 centeredSlides={true}
@@ -289,198 +304,171 @@ const SingleProduct = () => {
                 modules={[Autoplay, Pagination, Navigation]}
                 className="w-[100%] h-[100%] flex justify-center items-center text-center"
               >
-                {product &&
-                product.imageUrls &&
-                product.imageUrls.length > 0 ? (
-                  product.imageUrls.map((url, index) => (
-                    <SwiperSlide key={index}>
-                      <img
-                        className="object-cover h-[100%] w-[100%] overflow-hidden rounded-2xl"
-                        src={url}
-                        alt={`product-${index}`}
-                      />
-                    </SwiperSlide>
-                  ))
-                ) : (
-                  <SwiperSlide>
+                {product.imageUrls.map((url, index) => (
+                  <SwiperSlide key={index}>
                     <img
                       className="object-cover h-[100%] w-[100%] overflow-hidden rounded-2xl"
-                      src="/assets/product6.png" // fallback
-                      alt="default product"
+                      src={url}
+                      alt={`product-${index}`}
                     />
                   </SwiperSlide>
-                )}
+                ))}
               </Swiper>
             </div>
-            <div className="flex flex-col justify-start items-center w-[454.03px] h-[307.4px] space-y-[19.18px]">
-              <div className="flex flex-col justify-center items-center w-[454px] h-[129.57px] border-b-[1px] border-[##E6E6E6] space-y-[15.99px]">
-                <div className="flex flex-col justify-between w-[440.97px]  space-y-2">
-                  {/* Product Name + Stock */}
-                  <div className="flex justify-between items-center">
-                    <h1 className="font-poppins font-semibold text-[28.78px] leading-[34.53px] text-[#1A1A1A] w-[70%]">
-                      {product?.name}
+          )}
+          <div className="flex flex-col justify-start items-start flex-1 w-full space-y-4 md:space-y-6">
+            <div className="flex flex-col justify-start items-start w-full border-b border-gray-200 pb-4 md:pb-6 space-y-3 md:space-y-4">
+              {/* Product Name + Stock */}
+              <div className="flex justify-between items-start gap-2 md:gap-4 w-full">
+                <h1 className="font-poppins font-semibold text-xl sm:text-2xl lg:text-3xl text-[#1A1A1A] flex-1">
+                  {product?.name}
+                </h1>
+                {product?.stockQuantity > 0 ? (
+                  <div className="bg-[#001D580D] rounded-full py-1 px-3 whitespace-nowrap">
+                    <h1 className="font-poppins text-secondaryBrand text-xs">
+                      In Stock
                     </h1>
-                    {product?.stockQuantity > 0 ? (
-                      <div className="bg-[#001D580D] rounded-full py-1 px-3">
-                        <h1 className="font-poppins text-secondaryBrand text-[11.19px] leading-[16.79px]">
-                          In Stock
-                        </h1>
-                      </div>
-                    ) : (
-                      <div className="bg-[#FF00000D] rounded-full py-1 px-3">
-                        <h1 className="font-poppins text-secondaryBrand text-[11.19px] leading-[16.79px]">
-                          Out of Stock
-                        </h1>
-                      </div>
-                    )}
                   </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1">
-                      {[1, 2, 3].map((_, id) => (
-                        <StarIcon
-                          key={id}
-                          className="w-4 h-4 text-yellow-400"
-                        />
-                      ))}
-                    </div>
-                    <p className="font-poppins font-semibold text-[15.99px] text-black leading-[23.98px]">
-                      5.0
-                    </p>
+                ) : (
+                  <div className="bg-[#FF00000D] rounded-full py-1 px-3 whitespace-nowrap">
+                    <h1 className="font-poppins text-red-600 text-xs">
+                      Out of Stock
+                    </h1>
                   </div>
+                )}
+              </div>
 
-                  {/* Price */}
-                  <h1 className="font-poppins font-semibold text-[19.18px] leading-[28.78px] text-secondaryBrand pb-10">
-                    ${product?.price}
-                  </h1>
+              {/* Rating - Display Only */}
+              {userRating > 0 && (
+                <div className="flex items-center gap-2 md:gap-3">
+                  <StarRating
+                    rating={userRating}
+                    readOnly={true}
+                    size="w-5 h-5 md:w-6 md:h-6"
+                  />
+                  <p className="font-poppins font-semibold text-sm md:text-base text-black">
+                    {userRating}.0
+                  </p>
                 </div>
+              )}
 
-                {/* <div className="w-[454px] h-[1px] border-[1px] border-[##E6E6E6]"></div> */}
-              </div>
-              <div className="w-[454.03px] h-[51px]">
-                <h1 className="font-poppins font-normal text-[11.19px] leading-[16.79px] text-[#808080]">
-                  {product && product.description}
-                </h1>
-              </div>
-              <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-5 pt-10">
-                <div
-                  onClick={async () => {
-                    if (user && user?.email) {
-                      if (product.stockQuantity <= 0) {
-                        dispatch(
-                          showToast({
-                            message: "Stock is less than the desired quantity",
-                            type: "error",
-                          }),
-                        );
-                        return;
-                      } else {
-                        setIsOpenCart(true);
-                        const success = await handleAddtoCart(true);
-                        if (!success) {
-                          setIsOpenCart(false);
-                        }
+              {/* Price */}
+              <h1 className="font-poppins font-semibold text-xl md:text-2xl text-secondaryBrand">
+                ${product?.price}
+              </h1>
+            </div>
+
+            {/* Description */}
+            <div className="w-full">
+              <p className="font-poppins text-xs sm:text-sm text-gray-600 leading-relaxed">
+                {product && product.description}
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4 w-full">
+              <div
+                onClick={async () => {
+                  if (user && user?.email) {
+                    if (product.stockQuantity <= 0) {
+                      dispatch(
+                        showToast({
+                          message: "Stock is less than the desired quantity",
+                          type: "error",
+                        }),
+                      );
+                      return;
+                    } else {
+                      setIsOpenCart(true);
+                      const success = await handleAddtoCart(true);
+                      if (!success) {
+                        setIsOpenCart(false);
                       }
-                    } else {
-                      dispatch(
-                        showToast({
-                          message: "Access denied! Please log in first",
-                          type: "error",
-                        }),
-                      );
                     }
-                  }}
-                  className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
-                >
-                  <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-secondaryBrand">
-                    {loading ? "Loading..." : "  Buy Now"}
-                  </h1>
-                </div>
-                <div
-                  onClick={() => {
-                    if (user && user?.email) {
-                      handleAddtoCart(false);
-                    } else {
-                      dispatch(
-                        showToast({
-                          message: "Access denied! Please log in first",
-                          type: "error",
-                        }),
-                      );
-                    }
-                  }}
-                  className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
-                >
-                  <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-white">
-                    {loading ? "Adding..." : "Add to Cart"}
-                  </h1>
-                </div>
-                <div
-                  onClick={() => {
-                    if (user && user?.email) {
-                      handleToggleWishlist();
-                    } else {
-                      dispatch(
-                        showToast({
-                          message: "Access denied! Please log in first",
-                          type: "error",
-                        }),
-                      );
-                    }
-                  }}
-                  className={`flex justify-center items-center cursor-pointer w-[51.28px] h-[51.28px] p-[12.82px] gap-[12.81px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${
-                    isInWishlist
-                      ? "bg-red-50 shadow-md"
-                      : "bg-[#F8F8F8] hover:bg-red-50"
-                  }`}
-                >
-                  <svg
-                    width="27"
-                    height="27"
-                    viewBox="0 0 27 27"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="cursor-pointer transition-all duration-300"
-                  >
-                    <path
-                      d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
-                      stroke={isInWishlist ? "#FF0000" : "#001D58"}
-                      strokeWidth="1.92211"
-                      fill={isInWishlist ? "#FF0000" : "none"}
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div className="flex justify-start items-center w-full h-[18px] gap-[4.8px] pt-8">
-                <h1 className="font-poppins font-semibold text-[12px] leading-[18px] text-[#1A1A1A]">
-                  Category:
-                </h1>
-                <h1 className="font-poppins font-normal text-[12px] leading-[18px] text-[#808080]">
-                  {product?.categoryId &&
-                    categoriesList.find(
-                      (category) => category.categoryId === product.categoryId,
-                    )?.name}
+                  } else {
+                    dispatch(
+                      showToast({
+                        message: "Access denied! Please log in first",
+                        type: "error",
+                      }),
+                    );
+                  }
+                }}
+                className="flex justify-center items-center cursor-pointer w-full sm:w-auto sm:flex-1 max-w-[200px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px] whitespace-nowrap"
+              >
+                <h1 className="font-poppins font-semibold text-xs sm:text-[14px] leading-[21px] text-secondaryBrand">
+                  {loading ? "Loading..." : "  Buy Now"}
                 </h1>
               </div>
+              <div
+                onClick={() => {
+                  if (user && user?.email) {
+                    handleAddtoCart(false);
+                  } else {
+                    dispatch(
+                      showToast({
+                        message: "Access denied! Please log in first",
+                        type: "error",
+                      }),
+                    );
+                  }
+                }}
+                className="flex justify-center items-center cursor-pointer w-full sm:w-auto sm:flex-1 max-w-[200px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px] whitespace-nowrap"
+              >
+                <h1 className="font-poppins font-semibold text-xs sm:text-[14px] leading-[21px] text-white">
+                  {loading ? "Adding..." : "Add to Cart"}
+                </h1>
+              </div>
+              <div
+                onClick={() => {
+                  if (user && user?.email) {
+                    handleToggleWishlist();
+                  } else {
+                    dispatch(
+                      showToast({
+                        message: "Access denied! Please log in first",
+                        type: "error",
+                      }),
+                    );
+                  }
+                }}
+                className={`flex justify-center items-center cursor-pointer w-[51.28px] h-[51.28px] p-[12.82px] gap-[12.81px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${
+                  isInWishlist
+                    ? "bg-red-50 shadow-md"
+                    : "bg-[#F8F8F8] hover:bg-red-50"
+                }`}
+                aria-label="Add to wishlist"
+              >
+                <Icons.WishlistHeart
+                  stroke={isInWishlist ? "#FF0000" : "#001D58"}
+                  fill={isInWishlist ? "#FF0000" : "none"}
+                  className="cursor-pointer transition-all duration-300"
+                />
+              </div>
+            </div>
+            <div className="flex items-center gap-2 w-full pt-2 md:pt-4">
+              <h1 className="font-poppins font-semibold text-xs sm:text-sm text-[#1A1A1A]">
+                Category:
+              </h1>
+              <h1 className="font-poppins text-xs sm:text-sm text-gray-600">
+                {product?.categoryId &&
+                  categoriesList.find(
+                    (category) => category.categoryId === product.categoryId,
+                  )?.name}
+              </h1>
             </div>
           </div>
         </div>
 
+        {/* Customer Feedback Section */}
         <div
-          className={`flex flex-col justify-start items-start w-full py-[20px] space-y-[25.58px] rounded-[16px] bg-white ${product?.ratings && product.ratings.length > 0 ? "h-[430.25px]" : "h-auto"}`}
+          className={`flex flex-col justify-start items-start w-full py-[20px] px-[24px] space-y-[25.58px] rounded-[16px] bg-white ${product?.ratings && product.ratings.length > 0 ? "h-[430.25px]" : "h-auto"}`}
         >
-          <h1 className="font-poppins font-semibold text-2xl leading-[27px] text-primaryText p-4">
+          <h1 className="font-poppins font-semibold text-xl leading-[27px] text-primaryText">
             Customer Feedback
           </h1>
-          {/* <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll hidden ">
-            {product &&
-              product?.ratings &&
-              product?.ratings.length > 0 &&
-              product?.ratings.map((item) => <CustomerFeedback item={item} />)}
-          </div> */}
           <div
-            className={`w-[1264px] space-y-[15.99px] ${product?.ratings && product.ratings.length > 0 ? "h-[276.71px] overflow-y-scroll" : "h-auto"}`}
+            className={`w-full space-y-[15.99px] ${product?.ratings && product.ratings.length > 0 ? "h-[276.71px] overflow-y-scroll pr-2" : "h-auto"}`}
           >
             {product?.ratings && product.ratings.length > 0 ? (
               product.ratings.map((item) => (
@@ -490,19 +478,7 @@ const SingleProduct = () => {
               <div className="flex flex-col items-center justify-center py-12 px-4">
                 <div className="text-center space-y-4 max-w-md">
                   <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-8 h-8 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                      />
-                    </svg>
+                    <Icons.NoReviewsIcon className="w-8 h-8 text-gray-400" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800 font-poppins mb-2">

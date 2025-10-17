@@ -7,17 +7,21 @@ import Footer from "../../components/Footer";
 import Header from "./header";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import ContributeBlogSection from "../../components/landing-page-component/contribute-blog-section.jsx";
+import ContributeBlogModal from "../../modals/ContributeBlogModal.jsx";
+
 function Blog({ isLanding }) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.id || "");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isContributeModalOpen, setIsContributeModalOpen] = useState(false);
   const cardsPerPage = 6;
   const currentTab = tabs.find((tab) => tab.id === activeTab) || tabs[0];
   const filteredCards =
     currentTab?.cards.filter(
       (card) =>
         card.title.toLowerCase().includes(search.toLowerCase()) ||
-        card.subtitle.toLowerCase().includes(search.toLowerCase())
+        card.subtitle.toLowerCase().includes(search.toLowerCase()),
     ) || [];
   const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
   const startIndex = (currentPage - 1) * cardsPerPage;
@@ -31,6 +35,8 @@ function Blog({ isLanding }) {
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-");
+
+  console.log(slugify("Hello World!"));
   return (
     <div className="">
       {!isLanding && <Header />}
@@ -159,9 +165,20 @@ function Blog({ isLanding }) {
           )}
         </div>
       </section>
+      <ContributeBlogSection
+        onOpenModal={() => setIsContributeModalOpen(true)}
+      />
       <FrequentlyAskedQuestion />
       <UpperFooter />
       <Footer />
+
+      {/* Contribute Blog Modal */}
+      {isContributeModalOpen && (
+        <ContributeBlogModal
+          isModalOpen={isContributeModalOpen}
+          setIsModalOpen={setIsContributeModalOpen}
+        />
+      )}
     </div>
   );
 }
