@@ -7,7 +7,7 @@ import { MinusIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 // import product1 from "../assets/product1.png";
 
 const CartProduct = ({ item, getCart }) => {
-  console.log("items:", item);
+  console.log('items:', item);
 
   const [count, setCount] = useState(item.quantity);
   const { fetchCartCount } = useAuth();
@@ -23,7 +23,7 @@ const CartProduct = ({ item, getCart }) => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       );
       setToastMessage("Item removed from cart");
       fetchCartCount();
@@ -45,14 +45,10 @@ const CartProduct = ({ item, getCart }) => {
     } else if (status === "add") {
       setCount(count + 1);
     } else if (status === "subtract") {
-      setCount(count - 1);
       if (count === 1) {
-        // Show 0 briefly then remove item
-        setTimeout(() => {
-          handleDeleteItem();
-        }, 300);
-        return;
+        handleDeleteItem();
       }
+      setCount(count - 1);
     }
     try {
       const response = await axios.put(
@@ -67,10 +63,10 @@ const CartProduct = ({ item, getCart }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       );
       getCart();
-    } catch (error) {}
+    } catch (error) { }
   };
   const closeToast = () => {
     setToastVisible(false);
@@ -108,6 +104,13 @@ const CartProduct = ({ item, getCart }) => {
         </button>
       </div> */}
 
+
+
+
+
+
+
+
       <div className="flex justify-center items-center w-[555px] h-[156px] gap-[16px]">
         <div className="flex justify-between items-center w-[515px] h-[156px] gap-[16px]   p-3">
           {/* Product Image */}
@@ -131,9 +134,7 @@ const CartProduct = ({ item, getCart }) => {
               </p>
             </div>
 
-            <h1 className="text-primaryText font-poppins font-medium">
-              ${item.price}
-            </h1>
+            <h1 className="text-primaryText font-poppins font-medium">${item.price}</h1>
 
             {/* Quantity Controls */}
             <div className="flex justify-between items-center w-[124px] h-[50px] rounded-[170px] border border-cartColor p-2">
@@ -164,6 +165,21 @@ const CartProduct = ({ item, getCart }) => {
           <XMarkIcon className="w-4 h-4" />
         </button>
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <Toast
         message={toastMessage}

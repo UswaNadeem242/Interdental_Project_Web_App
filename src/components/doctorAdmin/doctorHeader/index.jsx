@@ -1,6 +1,6 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../auth/AuthContext";
-import {  BellIconSVG } from "../../../icon/Bell";
+import { BellIconSVG } from "../../../icon/Bell";
 import { LogoutIcon } from "../../../icon/LogoutIcon";
 import usePageTitle from "../../../Hooks/usePageTitle";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,7 +40,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
 
     if (userData) {
       const parsedUserData = JSON.parse(userData);
-      const userId = parsedUserData.id;
+      const userId = parsedUserData?.id;
 
       const fetchDoctorProfile = async () => {
         const response = await getDoctorProfile(userId);
@@ -60,9 +60,8 @@ const DoctorHeader = ({ title, subTitle, role }) => {
         <div>
           <h1 className="text-primaryText font-poppins text-lg md:text-2xl capitalize font-bold">
             {displayTitle
-              ? `Welcome back ${doctorProfile?.firstName || ""} ${
-                  doctorProfile?.lastName || ""
-                }`
+              ? `Welcome back ${doctorProfile?.firstName || ""} ${doctorProfile?.lastName || ""
+              }`
               : pageTitle}
           </h1>
           {/* {location.pathname !== "/patient-admin/profile-settings" && location.pathname !== "/patient-admin/term-condition" && location.pathname !== "/patient-admin/claim-request" && location.pathname !== "/patient-admin/claim-request/claim-request" && (
@@ -87,16 +86,14 @@ const DoctorHeader = ({ title, subTitle, role }) => {
           {profileImage || doctorProfile?.profileImage ? (
             <img
               src={profileImage || doctorProfile?.profileImage}
-              alt={`${doctorProfile?.firstName || ""} ${
-                doctorProfile?.lastName || ""
-              }`}
+              alt={`${doctorProfile?.firstName || ""} ${doctorProfile?.lastName || ""
+                }`}
               className="w-10 h-10 rounded-full object-cover border border-gray-300"
             />
           ) : (
             <div className="w-10 h-10 rounded-full bg-secondaryBrand flex items-center justify-center text-white font-semibold">
               {doctorProfile
-                ? `${doctorProfile.firstName?.[0] || ""}${
-                    doctorProfile.lastName?.[0] || ""
+                ? `${doctorProfile.firstName?.[0] || ""}${doctorProfile.lastName?.[0] || ""
                   }`.toUpperCase()
                 : "?"}
             </div>

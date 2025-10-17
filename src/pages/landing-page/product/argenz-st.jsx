@@ -9,20 +9,24 @@ import {
 } from "../../../Constant";
 import Shades from "../../../Common/product-landing/shades-product-landing";
 import Dimensions from "../../../Common/product-landing/dimensions-product-landing";
-import Contact from "../contact";
+// import Contact from "../contact";
 import IndicationProductLanding from "../../../components/product-landing/IndicationProductLanding";
 import CompositionProductLanding from "../../../components/product-landing/CompositionProductLanding";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
+import BackButton from "../../../components/BackButton";
 
 function ArgenzST({ isLanding }) {
   const Indication = [
-    { id: '1', title: 'Up to 3-unit anterior bridges' },
-    { id: '2', title: 'Single unit posterior crowns' },
-  ]
+    { id: "1", title: "Up to 3-unit anterior bridges" },
+    { id: "2", title: "Single unit posterior crowns" },
+  ];
   return (
     <div>
       <div className="pb-20">{!isLanding && <Header />} </div>
       <section className="container mx-auto    pb-10">
+        <div className="mt-4">
+          <BackButton variant="rounded" className="" text="Back" />
+        </div>
         <div className="w-full pt-10">
           <img
             src="/assets/landing-page/1.3.png"
@@ -84,8 +88,6 @@ function ArgenzST({ isLanding }) {
       </section>
 
       <section className="continer mx-auto md:px-8 px-4  pb-10">
-
-
         <div
           className="flex flex-col my-10 lg:flex-row gap-6 items-center justify-center
 "
@@ -107,7 +109,11 @@ function ArgenzST({ isLanding }) {
       <section className="container  mx-auto  px-4 py-10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="py-10">
-            <Shades shades={shadesproductargenzst} title="Shades" className='lg:grid-cols-8' />
+            <Shades
+              shades={shadesproductargenzst}
+              title="Shades"
+              className="lg:grid-cols-8"
+            />
           </div>
 
           <div className="p-4">

@@ -7,6 +7,7 @@ import Toast from "../../components/Toast";
 import YearlyPlanModel from "../../modals/yearly-plan";
 import Icons from "../../components/Icons";
 import * as Yup from "yup";
+import useFieldValidation from "../../Hooks/useFieldValidation";
 
 const DoctorSignup = () => {
   const navigate = useNavigate();
@@ -26,8 +27,6 @@ const DoctorSignup = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [yearly, setYearly] = useState(false);
-
-  const [validationErrors, setValidationErrors] = useState({});
 
   // Yup validation schema
   const validationSchema = Yup.object().shape({
@@ -57,11 +56,6 @@ const DoctorSignup = () => {
       .required("Phone number is required"),
     address: Yup.string()
       .min(10, "Address must be at least 10 characters")
-      .max(100, "Address must not exceed 100 characters")
-      .matches(
-        /^[a-zA-Z0-9\s,.'#-]+$/,
-        "Address can only contain letters, numbers, spaces, commas, periods, apostrophes, hashes, and hyphens",
-      )
       .required("Address is required"),
     city: Yup.string()
       .min(2, "City must be at least 2 characters")
@@ -114,36 +108,44 @@ const DoctorSignup = () => {
       .required("Password is required"),
   });
 
-  const validateForm = async () => {
-    const formData = {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      address,
-      city,
-      zip,
-      drLicenseNo,
-      officeRefNo,
-      password,
-    };
+  const {
+    validationErrors,
+    validateField,
+    clearFieldError,
+    validateAllFields,
+  } = useFieldValidation(validationSchema);
 
-    try {
-      await validationSchema.validate(formData, { abortEarly: false });
-      setValidationErrors({});
-      return null;
-    } catch (err) {
-      const errors = {};
-      err.inner.forEach((error) => {
-        errors[error.path] = error.message;
-      });
-      setValidationErrors(errors);
-      return Object.values(errors)[0];
+  const getFormData = () => ({
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    address,
+    city,
+    zip,
+    drLicenseNo,
+    officeRefNo,
+    password,
+  });
+
+  const handleFieldChange = async (fieldName, value, setter) => {
+    setter(value);
+
+    // Clear error immediately when user starts typing
+    if (validationErrors[fieldName]) {
+      clearFieldError(fieldName);
+    }
+  };
+
+  const handleFieldBlur = async (fieldName, value) => {
+    // Validate field when user leaves it
+    if (value.trim()) {
+      await validateField(fieldName, value, getFormData());
     }
   };
 
   const handleSignup = async () => {
-    const error = await validateForm();
+    const error = await validateAllFields(getFormData());
     if (error) {
       return; // Field-level errors are shown instead of toast
     }
@@ -163,18 +165,24 @@ const DoctorSignup = () => {
     };
 
     try {
-      await axios.post(`${BASE_URL}/api/users/sign-up`, payload, {
-        headers: {
-          Accept: "*/*",
+      const response = await axios.post(
+        `${BASE_URL}/api/users/sign-up`,
+        payload,
+        {
+          headers: {
+            Accept: "*/*",
+          },
         },
-      });
+      );
       setToastMessage("User Registered Successfully!");
       setToastType("success");
       setToastVisible(true);
 
+      const { data } = response;
+
       // Add delay before navigation to ensure toast is visible
       setTimeout(() => {
-        navigate("/login");
+        navigate(`/login?role=${data.roles[0]?.name?.toLowerCase()}`);
       }, 2000);
     } catch (error) {
       console.log("Signup error:", error);
@@ -204,7 +212,10 @@ const DoctorSignup = () => {
                   type="text"
                   id="firstName"
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("firstName", e.target.value, setFirstName)
+                  }
+                  onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.firstName
@@ -234,7 +245,10 @@ const DoctorSignup = () => {
                   type="text"
                   id="lastName"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("lastName", e.target.value, setLastName)
+                  }
+                  onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.lastName
@@ -265,7 +279,10 @@ const DoctorSignup = () => {
                   type="text"
                   id="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("email", e.target.value, setEmail)
+                  }
+                  onBlur={(e) => handleFieldBlur("email", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.email
@@ -295,7 +312,10 @@ const DoctorSignup = () => {
                   type="text"
                   id="phone"
                   value={phoneNumber}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("phoneNumber", e.target.value, setPhone)
+                  }
+                  onBlur={(e) => handleFieldBlur("phoneNumber", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.phoneNumber
@@ -327,7 +347,10 @@ const DoctorSignup = () => {
                 type="text"
                 id="address"
                 value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange("address", e.target.value, setAddress)
+                }
+                onBlur={(e) => handleFieldBlur("address", e.target.value)}
                 placeholder=" "
                 className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                   validationErrors.address
@@ -359,7 +382,10 @@ const DoctorSignup = () => {
                   type="text"
                   id="city"
                   value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("city", e.target.value, setCity)
+                  }
+                  onBlur={(e) => handleFieldBlur("city", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.city
@@ -388,7 +414,10 @@ const DoctorSignup = () => {
                   type="text"
                   id="zip"
                   value={zip}
-                  onChange={(e) => setZip(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("zip", e.target.value, setZip)
+                  }
+                  onBlur={(e) => handleFieldBlur("zip", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.zip
@@ -421,7 +450,14 @@ const DoctorSignup = () => {
                   type="text"
                   id="drLicenseNo"
                   value={drLicenseNo}
-                  onChange={(e) => setdrLicense(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange(
+                      "drLicenseNo",
+                      e.target.value,
+                      setdrLicense,
+                    )
+                  }
+                  onBlur={(e) => handleFieldBlur("drLicenseNo", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.drLicenseNo
@@ -451,7 +487,14 @@ const DoctorSignup = () => {
                   type="text"
                   id="officeRefNo"
                   value={officeRefNo}
-                  onChange={(e) => setofficeRefNo(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange(
+                      "officeRefNo",
+                      e.target.value,
+                      setofficeRefNo,
+                    )
+                  }
+                  onBlur={(e) => handleFieldBlur("officeRefNo", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.officeRefNo
@@ -483,7 +526,10 @@ const DoctorSignup = () => {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange("password", e.target.value, setPassword)
+                }
+                onBlur={(e) => handleFieldBlur("password", e.target.value)}
                 placeholder=" "
                 className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${
                   validationErrors.password

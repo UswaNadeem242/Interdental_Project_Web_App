@@ -46,7 +46,7 @@ const Patients = ({ isLanding }) => {
             </li>
           </ul>
 
-          {/* <ThirdButtonUI title=" Register" href="/signup" /> */}
+          <ThirdButtonUI title=" Register" href="/signup" />
         </div>
 
         {/* Right Side: Image */}
@@ -119,7 +119,7 @@ const Patients = ({ isLanding }) => {
         </div>
 
         <div className="flex justify-center mt-8">
-          {/* <ThirdButtonUI title=" Register" href="/signup" /> */}
+          <ThirdButtonUI title=" Register" href="/signup" />
         </div>
       </div>
       <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
@@ -273,64 +273,10 @@ const Patients = ({ isLanding }) => {
           </div>
           <div className="col-span-6 flex justify-center">
             <img
-              src="/assets/landing-page/book.png"
+              src="/assets/landing-page/ebook-cover.png"
               alt="Patient"
-              className="w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 object-cover"
+              className="h-full object-cover"
             />
-          </div>
-        </div>
-        {/* Warranty Card  */}
-        <div className="flex flex-col items-center mt-16 mb-10 ">
-          <div className="text-3xl text-[#434343] font-normal">
-            THE{" "}
-            <span className="text-3xl font-bold text-[#001D58]">WARRANTY</span>
-          </div>
-          <div className="font-poppins text-[#434343] font-normal mx-28 mt-8 ">
-            {" "}
-            InterOral.ai provides peace of mind and a unique practice growth
-            opportunity with a comprehensive Warranty Plans
-          </div>
-        </div>
-        <div className="bg-[#FFFFFF] max-w-2xl  p-6 mx-auto rounded-2xl  flex justify-center overflow-hidden border border-gray-100 ">
-          {/* Left Image Section */}
-
-          <div className="">
-            <img
-              src="/assets/landing-page/rectangle.png" // replace with your actual image path
-              alt="Patient Smile"
-              className="object-cover w-full h-full rounded-l-2xl"
-            />
-          </div>
-
-          {/* Right Content Section */}
-          <div className="flex flex-col justify-between ml-4">
-            <div>
-              <h3 className="text-xl font-semibold text-[#434343]">
-                WARRANTY DASHBOARD
-              </h3>
-              <h2 className="text-2xl font-bold text-[#94D3DD] mt-4">
-                PATIENT
-              </h2>
-
-              <ul className="mt-3 space-y-2 text-gray-500 text-sm">
-                <li className="flex text-sm font-normal font-poppins text-[#949494] gap-2">
-                  <CheckCircle />
-                  Easy online activation
-                </li>
-                <li className="flex text-sm font-normal font-poppins text-[#949494] gap-2">
-                  <CheckCircle />
-                  Downloadable warranty certificate
-                </li>
-                <li className="flex text-sm font-normal font-poppins text-[#949494] gap-2">
-                  <CheckCircle />
-                  Direct access to our support team
-                </li>
-              </ul>
-            </div>
-
-            <button className="mt-4 max-w-36  bg-[#0A2D5E] text-white text-sm font-medium py-4 rounded-lg shadow hover:bg-[#083056] transition">
-              LEARN MORE
-            </button>
           </div>
         </div>
         {/*  */}

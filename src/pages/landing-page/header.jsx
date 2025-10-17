@@ -6,23 +6,23 @@ import { navItems } from "../../Constant";
 import { ChevronDownIcon, UsersIcon } from "@heroicons/react/24/outline";
 import ProfileIcon from "../../icon/ProfileIcon";
 import { UserIcon } from "../../icon/UserIcon";
-import Toast from "../../components/Toast";
+
 import ShoppingCart from "../../modals/ShoppingCartModal";
 import NotificationsDropdown from "../../components/dropdowns/NotificationsDropdown";
 import { BellIconSVG } from "../../icon/Bell";
 import { showToast } from "../../store/toast-slice";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notificationsDropdown, setNotificationsDropdown] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const { wishlistCount, cartCount, fetchWishlistCount } = useAuth();
+  const [setIsActionModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-  const { wishlistCount, cartCount } = useAuth();
-
+  console.log(wishlistCount, "COUNT");
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -32,9 +32,7 @@ const Header = () => {
   // Retrieve user data from localStorage
   const userData = localStorage.getItem("users");
   const user = userData ? JSON.parse(userData) : null;
-  const [toastVisible, setToastVisible] = useState(false);
 
-  const [toastType, setToastType] = useState("success");
   // Debugging logs
 
   // Safely log firstName only if user exists
@@ -42,9 +40,6 @@ const Header = () => {
     console.log(user.firstName);
   }
 
-  const closeToast = () => {
-    setToastVisible(false);
-  };
   const handleCart = () => {
     setIsModalOpen(true);
   };
@@ -64,6 +59,13 @@ const Header = () => {
       setIsActionModalOpen(true);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchWishlistCount();
+    }
+  }, [user]);
+
   return (
     <>
       <header className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[92%] md:w-[90%]">
@@ -130,10 +132,12 @@ const Header = () => {
                   if (user && user?.email) {
                     handleCart();
                   } else {
-                    setToastMessage("Access denied! Please log in first");
-
-                    setToastType("error");
-                    setToastVisible(true);
+                    dispatch(
+                      showToast({
+                        message: "Access denied! Please log in first",
+                        type: "error",
+                      }),
+                    );
                   }
                 }}
               >
@@ -350,12 +354,6 @@ const Header = () => {
           setIsModalOpen={setIsModalOpen}
         />
       )}
-      <Toast
-        message={toastMessage}
-        isVisible={toastVisible}
-        onClose={closeToast}
-        type={toastType}
-      />
     </>
   );
 };

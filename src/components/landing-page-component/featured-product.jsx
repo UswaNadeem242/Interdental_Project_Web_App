@@ -1,13 +1,26 @@
 import ProductCarousel from "../../Common/slider";
 
 const products = [
-  { title: "ARGEN Z HT+", image: "/assets/landing-page/teeth.png" },
-  { title: "ARGEN Z HT+", image: "/assets/landing-page/product2.png" },
+  {
+    title: "ARGEN PMMA",
+    image: "/assets/landing-page/teeth.png",
+    route: "/product/argen-pmma",
+  },
+  {
+    title: "MULTILAYER PRO",
+    image: "/assets/landing-page/product2.png",
+    route: "/product/multilayer-pro",
+  },
   {
     title: "ARGEN Z ST MULTILAYER",
     image: "/assets/landing-page/product3.png",
+    route: "/product/argenz-st",
   },
-  { title: "ZirCad", image: "/assets/landing-page/product4.png" },
+  {
+    title: "ZirCad Ivoclar",
+    image: "/assets/landing-page/product4.png",
+    route: "/product/zidcard-ivoclar",
+  },
 ];
 
 export default function FeaturedProducts() {

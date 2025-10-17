@@ -56,7 +56,7 @@ export const menuItems = [
 
 export const navItems = [
   { to: "/", label: "Home" },
-  { to: "/product", label: "Our Products" },
+  // { to: "/product", label: "Our Products" },
   { to: "/shop", label: "Shop" },
   { to: "/patient", label: "Patient" },
   { to: "/doctor", label: "Doctor" },
@@ -1673,10 +1673,7 @@ export const Doctorsteps = [
       "Temporize.ai ",
       "MasterCrown.ai",
       "S-Guide.ai",
-      "Bite.ai"
-
-
-
+      "Bite.ai",
     ],
   },
   {
@@ -1992,28 +1989,24 @@ export const accordionData = [
   {
     title: "What modules are included?",
     description: [
-
       "Temporize.ai – AI-assisted temporaries and design previews",
       "MasterCrown.ai – Precision crown design automation",
       "Implant Interface – Easy online part ordering",
-      "MakeMeSmile Warranty – Patient-activated protection"
+      "MakeMeSmile Warranty – Patient-activated protection",
     ],
   },
   {
     title: " Can I upload 3Shape or ExoCAD files?",
     description: [
-
-      "Yes. InterOral.ai supports uploads from 3Shape, ExoCAD, and most open-source STL formats. You can drag and drop directly into your case form — the system automatically recognizes the file type and routes it to the appropriate lab or design module."
+      "Yes. InterOral.ai supports uploads from 3Shape, ExoCAD, and most open-source STL formats. You can drag and drop directly into your case form — the system automatically recognizes the file type and routes it to the appropriate lab or design module.",
     ],
   },
   {
     title: " Can I invite my existing lab to join the network?",
     description: [
-
-      "Absolutely. If you already have a trusted lab, you can invite them to the DLA network from your dashboard. Once verified, they’ll receive cases directly through your InterOral portal with the same automation features."
+      "Absolutely. If you already have a trusted lab, you can invite them to the DLA network from your dashboard. Once verified, they’ll receive cases directly through your InterOral portal with the same automation features.",
     ],
   },
-
 ];
 
 export const teethOption = [
@@ -2128,7 +2121,7 @@ Our advanced 4D Pro Zirconia disc features an unparalleled four - dimensional gr
   {
     id: 7,
     title: "Aidite zirconia",
-    description: `3D Pro zir is fabricated with the most advanced production processes at Aidite, producing a layerless, natural shade gradient, with optimal strengthand translucency, transitioning from Cervical to Incisal areas of the restoration. 
+    description: `3D Pro zir is fabricated with the most advanced production processes at Aidite, producing a layerless, natural shade gradient, with optimal strengthand translucency, transitioning from Cervical to Incisal areas of the restoration.
 
 With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic results while being suitable for all indications from single crowns to 14 - unitbridge structures.`,
 

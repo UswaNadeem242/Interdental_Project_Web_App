@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, memo, useCallback } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../config";
 import axios from "axios";
@@ -13,12 +13,95 @@ import {
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice"; // adjust path if needed
 
+// Memoized ProductCard component to prevent unnecessary re-renders
+const ProductCard = memo(
+  ({ product, wishlistSet, onProductClick, onAddToCart, onToggleWishlist }) => {
+    const isInWishlist = wishlistSet.has(product?.productId);
+
+    return (
+      <div
+        key={product.productId}
+        className="flex flex-col justify-between items-center bg-white rounded-lg shadow-sm p-4 cursor-pointer h-[430px]"
+      >
+        {/* Upper Section */}
+        <div
+          onClick={() => onProductClick(product)}
+          className="flex flex-col items-center flex-grow"
+        >
+          <img
+            src={product.imageUrls[0]}
+            alt={product.name}
+            className="w-[263px] h-[260px] object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+
+          <div className="text-center mt-3 flex flex-col flex-grow justify-between">
+            <h1 className="font-poppins font-semibold text-base text-black leading-snug line-clamp-2">
+              {product.name}
+            </h1>
+
+            <div className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD] flex gap-2 justify-center items-center">
+              ${product.price}
+              <span className="flex items-center gap-1">
+                <StarIcon className="w-4 h-4 text-yellow-400" />
+                <span className="text-xs font-poppins font-normal text-[#585858]">
+                  5.0
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Lower Section */}
+        <div className="flex items-center gap-3 mt-1">
+          <div
+            onClick={() => onAddToCart(product?.productId)}
+            className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] text-secondaryBrand hover:text-white bg-background hover:bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
+          >
+            <h1 className="font-poppins font-normal text-xs leading-[21px]">
+              Add to Cart
+            </h1>
+          </div>
+
+          {/* ❤️ Wishlist Button */}
+          <div
+            onClick={(e) => onToggleWishlist(product?.productId, e)}
+            className={`flex justify-center items-center cursor-pointer w-[51.28px] h-[51.28px] p-[12.82px] gap-[12.81px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${
+              isInWishlist
+                ? "bg-red-50 shadow-md"
+                : "bg-[#F8F8F8] hover:bg-red-50"
+            }`}
+          >
+            <svg
+              width="27"
+              height="27"
+              viewBox="0 0 27 27"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="cursor-pointer transition-all duration-300"
+            >
+              <path
+                d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
+                stroke={isInWishlist ? "#FF0000" : "#001D58"}
+                strokeWidth="1.92211"
+                fill={isInWishlist ? "#FF0000" : "none"}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    );
+  },
+);
+
+ProductCard.displayName = "ProductCard";
+
 const Shop = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [minPrice, setMinPrice] = useState(null);
-  const [maxPrice, setMaxPrice] = useState(null);
+  const [priceValue, setPriceValue] = useState(500);
   const [products, setProducts] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [brandsList, setBrandsList] = useState([]);
@@ -28,27 +111,33 @@ const Shop = () => {
   const [brandName, setBrandName] = useState("");
   const [checked, setChecked] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState("success");
-  const [toastVisible, setToastVisible] = useState(false);
+
   const { fetchWishlistCount, fetchCartCount } = useAuth();
   const [wishlist, setWishlist] = useState([]);
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const handleMinChange = (e) => {
-    const value = Math.min(Number(e.target.value), maxPrice - 1);
-    setMinPrice(value);
+  const handlePriceChange = (e) => {
+    const value = Number(e.target.value);
+    setPriceValue(value);
   };
 
-  const handleMaxChange = (e) => {
-    const value = Math.max(Number(e.target.value), minPrice + 1);
-    setMaxPrice(value);
+  const handleResetAll = () => {
+    setPriceValue(500);
+    setSelectedCategory(null);
+    setCategoryName("");
+    setSelectedbrand(null);
+    setBrandName("");
+    setSearchTerm("");
+    setChecked(null);
   };
 
-  const handleProduct = (product) => {
-    navigate(`/shop/${product.productId}`);
-  };
+  const handleProduct = useCallback(
+    (product) => {
+      navigate(`/shop/${product.productId}`);
+    },
+    [navigate],
+  );
 
   // const getAllProducts = async () => {
   //   try {
@@ -115,51 +204,80 @@ const Shop = () => {
   };
 
   const handleCategoryChange = (id, name) => {
-    setSelectedCategory(id);
-    setCategoryName(name);
+    if (selectedCategory === id) {
+      // If same category is clicked, reset the filter
+      setSelectedCategory(null);
+      setCategoryName("");
+    } else {
+      // If different category is clicked, set it
+      setSelectedCategory(id);
+      setCategoryName(name);
+    }
   };
 
   const handleBrandChange = (id, name) => {
-    setSelectedbrand(id);
-    setBrandName(name);
+    if (selectedbrand === id) {
+      // If same brand is clicked, reset the filter
+      setSelectedbrand(null);
+      setBrandName("");
+    } else {
+      // If different brand is clicked, set it
+      setSelectedbrand(id);
+      setBrandName(name);
+    }
   };
 
-  const filteredProducts = products.filter((product) => {
-    // Price filter
-    const isInPriceRange =
-      !minPrice && !maxPrice
-        ? true
-        : product.price >= minPrice && product.price <= maxPrice;
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      // Price filter - ensure product has valid price
+      const productPrice = parseFloat(product.price) || 0;
+      const isInPriceRange = productPrice <= priceValue;
 
-    // Category filter
-    const isInCategory = selectedCategory
-      ? product.categoryId === selectedCategory
-      : true;
+      // Category filter
+      const isInCategory = selectedCategory
+        ? product.categoryId === selectedCategory
+        : true;
 
-    // Brand filter
-    const isInBrand = selectedbrand ? product.brandId === selectedbrand : true;
+      // Brand filter
+      const isInBrand = selectedbrand
+        ? product.brandId === selectedbrand
+        : true;
 
-    // Search filter
-    const matchesSearch = searchTerm
-      ? product.name.toLowerCase().includes(searchTerm.toLowerCase())
-      : true;
+      // Search filter
+      const matchesSearch = searchTerm
+        ? product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        : true;
 
-    // Availability filter
-    let matchesAvailability = true;
-    if (checked === "inStock") {
-      matchesAvailability = product.stockQuantity > 0;
-    } else if (checked === "outOfStock") {
-      matchesAvailability = product.stockQuantity === 0;
-    }
+      // Availability filter
+      let matchesAvailability = true;
+      if (checked === "inStock") {
+        matchesAvailability = product.stockQuantity > 0;
+      } else if (checked === "outOfStock") {
+        matchesAvailability = product.stockQuantity === 0;
+      }
 
-    return (
-      isInPriceRange &&
-      isInCategory &&
-      isInBrand &&
-      matchesSearch &&
-      matchesAvailability
-    );
-  });
+      return (
+        isInPriceRange &&
+        isInCategory &&
+        isInBrand &&
+        matchesSearch &&
+        matchesAvailability
+      );
+    });
+  }, [
+    products,
+    priceValue,
+    selectedCategory,
+    selectedbrand,
+    searchTerm,
+    checked,
+  ]);
+
+  // Memoized wishlist set for faster lookups
+  const wishlistSet = useMemo(
+    () => new Set(wishlist.map((item) => item.productId)),
+    [wishlist],
+  );
 
   const handleCheckboxChange = (e) => {
     const { id, checked } = e.target;
@@ -178,7 +296,7 @@ const Shop = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Get wishlist items on component mount
-  const getWishlist = async () => {
+  const getWishlist = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -191,145 +309,219 @@ const Shop = () => {
       });
 
       const wishlistItems = response.data.items || [];
-      console.log("🔍 Wishlist API response:", wishlistItems);
+
       setWishlist(wishlistItems);
     } catch (error) {
       console.error("Error fetching wishlist:", error);
     }
-  };
+  }, []);
 
-  const handleToggleWishlist = async (id, e) => {
-    e.stopPropagation();
+  const handleToggleWishlist = useCallback(
+    async (id, e) => {
+      e.stopPropagation();
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      dispatch(
-        showToast({
-          message: "Access Denied. Please login first.",
-          type: "info",
-        }),
+      const token = localStorage.getItem("token");
+      if (!token) {
+        dispatch(
+          showToast({
+            message: "Access Denied. Please login first.",
+            type: "error",
+          }),
+        );
+        return;
+      }
+
+      const productItem = filteredProducts?.find(
+        (item) => item?.productId === id,
       );
-      return;
-    }
 
-    const productItem = filteredProducts?.find(
-      (item) => item?.productId === id,
-    );
+      if (!productItem) {
+        console.error("❌ No product matched this ID:", id);
+        dispatch(showToast({ message: "Product not found", type: "error" }));
+        return;
+      }
 
-    if (!productItem) {
-      console.error("❌ No product matched this ID:", id);
-      dispatch(showToast({ message: "Product not found", type: "error" }));
-      return;
-    }
+      const isInWishlist = wishlist.some((item) => item.productId === id);
+      console.log(wishlist, "wishlst");
+      try {
+        if (isInWishlist) {
+          // Find the wishlist item to get its ID
+          const wishlistItem = wishlist.find((item) => item.productId === id);
 
-    const isInWishlist = wishlist.some((item) => item.productId === id);
+          if (!wishlistItem || !wishlistItem.id) {
+            console.error(
+              "❌ Wishlist item not found or missing ID:",
+              wishlistItem,
+            );
+            dispatch(
+              showToast({
+                message: "Error removing from wishlist",
+                type: "error",
+              }),
+            );
+            return;
+          }
 
-    try {
-      if (isInWishlist) {
-        // Find the wishlist item to get its ID
-        const wishlistItem = wishlist.find((item) => item.productId === id);
+          // Remove from wishlist using the wishlist item ID
+          const response = await axios.delete(
+            `${BASE_URL}/api/wishlist/${wishlistItem.id}/remove`,
+            {
+              headers: {
+                Accept: "*/*",
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
 
-        // Remove from wishlist using the wishlist item ID
-        await axios.delete(
-          `${BASE_URL}/api/wishlist/${wishlistItem.id}/remove`,
-          {
+          if (response.data.responseCode === "1500") {
+            dispatch(
+              showToast({
+                message: "Please try again later.",
+                type: "error",
+              }),
+            );
+            return;
+          }
+
+          fetchWishlistCount();
+          getWishlist(); // Refetch to get accurate data
+          dispatch(
+            showToast({ message: "Removed from Wishlist!", type: "success" }),
+          );
+        } else {
+          // Add to wishlist
+          const payload = {
+            id: productItem?.productId,
+            productId: productItem?.productId,
+            productName: productItem?.name,
+            price: productItem?.price,
+          };
+
+          await axios.post(`${BASE_URL}/api/wishlist/add`, payload, {
             headers: {
               Accept: "*/*",
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-          },
-        );
+          });
 
-        setWishlist((prev) => prev.filter((item) => item.productId !== id));
-        fetchWishlistCount();
+          fetchWishlistCount();
+          getWishlist(); // Refetch to get accurate data with correct IDs
+          dispatch(
+            showToast({ message: "Added to Wishlist!", type: "success" }),
+          );
+        }
+      } catch (error) {
+        console.error("❌ Wishlist API error:", error);
         dispatch(
-          showToast({ message: "Removed from Wishlist!", type: "success" }),
+          showToast({
+            message: `Error: ${error.response?.data?.message || error.message}`,
+            type: "error",
+          }),
         );
-      } else {
-        // Add to wishlist
-        const payload = {
-          id: productItem?.productId,
-          productId: productItem?.productId,
-          productName: productItem?.name,
-          price: productItem?.price,
-        };
+      }
+    },
+    [dispatch, filteredProducts, wishlist, fetchWishlistCount, getWishlist],
+  );
 
-        await axios.post(`${BASE_URL}/api/wishlist/add`, payload, {
+  const handleAddtoCart = useCallback(
+    async (id) => {
+      console.log("map id", id);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        dispatch(
+          showToast({
+            message: "Access Denied. Please login first.",
+            type: "error",
+          }),
+        );
+        return;
+      }
+      const filterMethode = filteredProducts?.filter(
+        (item) => item?.productId === id,
+      );
+
+      if (!filterMethode || filterMethode.length === 0) {
+        dispatch(
+          showToast({
+            message: "Product not found.",
+            type: "error",
+          }),
+        );
+        return;
+      }
+
+      const selectedProduct = filterMethode[0];
+
+      // Check if stock quantity exists and is valid
+      if (
+        !selectedProduct ||
+        selectedProduct.stockQuantity === undefined ||
+        selectedProduct.stockQuantity === null
+      ) {
+        dispatch(
+          showToast({
+            message: "Unable to check stock availability.",
+            type: "error",
+          }),
+        );
+        return;
+      }
+
+      if (selectedProduct.stockQuantity <= 0) {
+        dispatch(
+          showToast({
+            message: "Stock is less than the desired quantity",
+            type: "error",
+          }),
+        );
+        return;
+      }
+      try {
+        // setLoading(true);
+
+        const payload = {
+          id: selectedProduct?.productId,
+          productId: selectedProduct?.productId,
+          productName: selectedProduct?.name,
+          quantity: 1,
+          price: selectedProduct?.price,
+          totalPrice: selectedProduct?.price,
+        };
+        const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
           headers: {
             Accept: "*/*",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
-        setWishlist((prev) => [
-          ...prev,
-          { id: productItem?.productId, productId: productItem?.productId },
-        ]);
-        fetchWishlistCount();
-        dispatch(showToast({ message: "Added to Wishlist!", type: "success" }));
+        if (response.data.responseCode === "1500") {
+          dispatch(
+            showToast({
+              message: "Please try again later.",
+              type: "error",
+            }),
+          );
+          return;
+        }
+
+        fetchCartCount();
+        dispatch(showToast({ message: "Added to Cart!", type: "success" }));
+        // setLoading(false);
+      } catch (error) {
+        console.log(error);
+        dispatch(
+          showToast({
+            message: "Failed to add item to cart.",
+            type: "error",
+          }),
+        );
+        // setLoading(false);
       }
-    } catch (error) {
-      console.error("❌ Wishlist API error:", error);
-      dispatch(
-        showToast({
-          message: `Error: ${error.response?.data?.message || error.message}`,
-          type: "error",
-        }),
-      );
-    }
-  };
-
-  const handleAddtoCart = async (id) => {
-    console.log("map id", id);
-    const token = localStorage.getItem("token");
-    if (!token) {
-      dispatch(
-        showToast({
-          message: "Access Denied. Please login first.",
-          type: "info",
-        }),
-      );
-      return;
-    }
-    const filterMethode = filteredProducts?.filter(
-      (item) => item?.productId === id,
-    );
-    if (product.stockQuantity <= 0) {
-      setToastMessage("This item is currently out of stock.");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
-    try {
-      // setLoading(true);
-
-      const payload = {
-        id: filterMethode[0]?.productId,
-        productId: filterMethode[0]?.productId,
-        productName: filterMethode[0]?.name,
-        quantity: 1,
-        price: filterMethode[0]?.price,
-        totalPrice: product[0]?.price,
-      };
-      const response = await axios.post(`${BASE_URL}/api/cart/add`, payload, {
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      setToastMessage("Added to Cart !");
-      setToastType("success");
-      setToastVisible(true);
-      fetchCartCount();
-      dispatch(showToast({ message: "Added to Cart!", type: "success" }));
-      // setLoading(false);
-    } catch (error) {
-      console.log(error);
-      // setLoading(false);
-    }
-  };
+    },
+    [dispatch, filteredProducts, fetchCartCount],
+  );
 
   useEffect(() => {
     getAllProducts();
@@ -337,7 +529,7 @@ const Shop = () => {
     getAllBrands();
     fetchCartCount();
     getWishlist();
-  }, []);
+  }, [getWishlist]);
 
   return (
     <div className="bg-background">
@@ -363,65 +555,78 @@ const Shop = () => {
           >
             {/* Mobile header */}
             <div className="flex justify-between items-center p-4 border-b md:hidden">
-              <h2 className="font-semibold">Filters</h2>
+              <h2 className="font-semibold ">Filters</h2>
               <div onClick={() => setIsFilterOpen(false)}>x</div>
             </div>
 
             {/* Filters content */}
             <div className="p-4 space-y-3 overflow-y-auto h-full">
-              <h2 className="font-semibold  border-b-[2px] border-background my-4">
-                Filters
-              </h2>
+              {/* Filter Header with Reset All Button */}
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
+                  Filter
+                </h2>
+                <button
+                  onClick={handleResetAll}
+                  className="px-6 py-2 border-2 text-[14px] border-[#001D58] text-[#001D58] rounded-full font-medium hover:bg-[#001D58] hover:text-white transition-colors"
+                >
+                  Reset All
+                </button>
+              </div>
               {/* 🔍 Search */}
-              <div className="relative flex items-center border rounded-full px-3 py-2">
+              <div className="relative flex items-center bg-white border-gray-200 border rounded-full px-4 py-3 mb-6">
                 <input
                   type="text"
-                  placeholder="search "
+                  placeholder="search"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-                  className="w-full rounded-full outline-none border-none focus:ring-0 pr-8" // ⬅️ Add right padding
+                  className="w-full bg-transparent bg-white text-gray-500 text-lg outline-none border-none focus:ring-0 pr-12"
                 />
-                <div className="bg-secondaryBrand w-7 h-6 rounded-full flex items-center justify-center">
-                  <MagnifyingGlassIcon className="h-4 w-4 text-white" />
+                <div className="absolute right-2 bg-[#001D58] w-10 h-10 rounded-full flex items-center justify-center">
+                  <MagnifyingGlassIcon className="h-5 w-5 text-white" />
                 </div>
               </div>
-              <div>
-                <div className="flex flex-col justify-center items-start w-[258px] h-[99.33px] rounded-[17px] pr-[12px] py-[12px] gap-[16px] bg-white">
-                  <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
-                    Price Range
-                  </h1>
-                  <div className="w-full mx-auto">
-                    <div className="flex justify-between text-sm text-gray-600 mb-2">
-                      <span>${minPrice ? minPrice : 0}</span>
-                      <span>{maxPrice && `$${maxPrice}`}</span>
-                    </div>
+              {/* Price Range */}
+              <div className="mb-8 mt-3">
+                <h3 className="font-poppins font-semibold mb-2 text-[14px] leading-[21px] text-[#404145] h-[21px]">
+                  Price Range
+                </h3>
+                <div className="">
+                  <div className="flex justify-between text-sm text-gray-600 mb-4">
+                    <span>$0</span>
+                    <span>${priceValue}</span>
+                  </div>
 
-                    <div className="relative h-2 bg-white border-background border rounded">
-                      {/* Active Range Bar */}
-                      <div
-                        className="absolute h-2 bg-blue-950/20 rounded border-background border"
-                        style={{
-                          left: `${(minPrice / 20000) * 100}%`,
-                          right: `${100 - (maxPrice / 20000) * 100}%`,
-                        }}
-                      ></div>
+                  <div className="relative h-2 bg-gray-300 rounded-full">
+                    {/* Active Range Bar */}
+                    <div
+                      className="absolute h-2 bg-[#001D58] rounded-full"
+                      style={{
+                        width: `${(priceValue / 1000) * 100}%`,
+                      }}
+                    ></div>
 
-                      <input
-                        type="range"
-                        min="0"
-                        max="20000"
-                        value={maxPrice}
-                        onChange={handleMaxChange}
-                        className="absolute top-0 w-full h-2 cursor-pointer appearance-none bg-transparent pointer-events-auto"
-                        style={{
-                          accentColor: "#001D58",
-                        }}
-                      />
-                    </div>
+                    {/* Slider Thumb */}
+                    <div
+                      className="absolute w-6 h-6 bg-[#001D58] rounded-full transform -translate-y-2 -translate-x-3 cursor-pointer shadow-lg"
+                      style={{
+                        left: `${(priceValue / 1000) * 100}%`,
+                      }}
+                    ></div>
+
+                    {/* Range Input */}
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      value={priceValue}
+                      onChange={handlePriceChange}
+                      className="absolute top-0 w-full h-2 cursor-pointer appearance-none bg-transparent pointer-events-auto z-10 opacity-0"
+                    />
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-center items-start w-[258px] h-[97px]   p-[12px] space-y-[16px]  border-t-[2px] border-background my-4">
+                <div className="flex flex-col justify-center items-start w-[258px] h-[97px] py-4 space-y-[16px]  border-t-[2px] border-background my-4">
                   <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
                     Availability
                   </h1>
@@ -474,13 +679,13 @@ const Shop = () => {
                     Categories
                   </h1>
                   <div className=" max-h-[200px] overflow-y-auto pr-2 space-y-[8px] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    {filteredProducts.map((c) => (
+                    {categoriesList.map((c) => (
                       <h1
                         key={c.categoryId}
                         onClick={() =>
                           handleCategoryChange(c.categoryId, c.name)
                         }
-                        className={`font-poppins text-[12px] leading-[18px] ${
+                        className={`font-poppins text-[12px] cursor-pointer leading-[18px] ${
                           selectedCategory === c.categoryId
                             ? "text-secondaryBrand  font-medium"
                             : "text-secondaryText cursor-pointer font-normal"
@@ -501,7 +706,7 @@ const Shop = () => {
                         key={b.id}
                         onClick={() => handleBrandChange(b.id, b.name)}
                         // className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
-                        className={`font-poppins text-[12px] leading-[18px] ${
+                        className={`font-poppins text-[12px] cursor-pointer leading-[18px] ${
                           selectedbrand === b.id
                             ? "text-secondaryBrand  font-medium"
                             : "text-secondaryText cursor-pointer font-normal"
@@ -532,86 +737,16 @@ const Shop = () => {
                   <p className="text-lg text-gray-500">Loading products...</p>
                 </div>
               ) : filteredProducts.length > 0 ? (
-                filteredProducts.map((product, idx) => {
-                  const isInWishlist = wishlist.some(
-                    (item) => item.productId === product?.productId,
-                  ); // ✅ Check product in wishlist
-
-                  return (
-                    <div
-                      key={idx}
-                      className="flex flex-col justify-between items-center bg-white rounded-lg shadow-sm p-4 cursor-pointer h-[430px]"
-                    >
-                      {/* Upper Section */}
-                      <div
-                        onClick={() => handleProduct(product)}
-                        className="flex flex-col items-center flex-grow"
-                      >
-                        <img
-                          src={product.imageUrls[0]}
-                          alt="product"
-                          className="w-[263px] h-[260px] object-cover"
-                        />
-
-                        <div className="text-center mt-3 flex flex-col flex-grow justify-between">
-                          <h1 className="font-poppins font-semibold text-base text-black leading-snug line-clamp-2">
-                            {product.name}
-                          </h1>
-
-                          <div className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD] flex gap-2 justify-center items-center">
-                            ${product.price}
-                            <span className="flex items-center gap-1">
-                              <StarIcon className="w-4 h-4 text-yellow-400" />
-                              <span className="text-xs font-poppins font-normal text-[#585858]">
-                                5.0
-                              </span>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Lower Section */}
-                      <div className="flex items-center gap-3 mt-1">
-                        <div
-                          onClick={() => handleAddtoCart(product?.productId)}
-                          className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] text-secondaryBrand hover:text-white bg-background hover:bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
-                        >
-                          <h1 className="font-poppins font-normal text-xs leading-[21px]">
-                            Add to Cart
-                          </h1>
-                        </div>
-
-                        {/* ❤️ Wishlist Button */}
-                        <div
-                          onClick={(e) =>
-                            handleToggleWishlist(product?.productId, e)
-                          }
-                          className={`flex justify-center items-center cursor-pointer w-[51.28px] h-[51.28px] p-[12.82px] gap-[12.81px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${
-                            isInWishlist
-                              ? "bg-red-50 shadow-md"
-                              : "bg-[#F8F8F8] hover:bg-red-50"
-                          }`}
-                        >
-                          <svg
-                            width="27"
-                            height="27"
-                            viewBox="0 0 27 27"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="cursor-pointer transition-all duration-300"
-                          >
-                            <path
-                              d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
-                              stroke={isInWishlist ? "#FF0000" : "#001D58"}
-                              strokeWidth="1.92211"
-                              fill={isInWishlist ? "#FF0000" : "none"}
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })
+                filteredProducts.map((product) => (
+                  <ProductCard
+                    key={product.productId}
+                    product={product}
+                    wishlistSet={wishlistSet}
+                    onProductClick={handleProduct}
+                    onAddToCart={handleAddtoCart}
+                    onToggleWishlist={handleToggleWishlist}
+                  />
+                ))
               ) : (
                 <div className="w-96 h-full flex justify-center items-center bg-white p-8 rounded-md">
                   <p className="text-2xl">Sorry! No Products Found</p>

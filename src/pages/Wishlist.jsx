@@ -1,19 +1,20 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../config";
-import Toast from "../components/Toast";
+
 import { useAuth } from "../auth/AuthContext";
 import { StarIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { showToast } from "../store/toast-slice";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState("success");
+
   const [loading, setLoading] = useState(false);
-  const { fetchWishlistCount } = useAuth();
+  const { fetchWishlistCount, fetchCartCount } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const getWishlist = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/wishlist`, {
@@ -32,39 +33,76 @@ const Wishlist = () => {
   useEffect(() => {
     getWishlist();
   }, []);
-  const closeToast = () => {
-    setToastVisible(false);
-  };
+
   const handleRemoveItem = async (id) => {
     try {
-      const response = await axios.delete(
-        `${BASE_URL}/api/wishlist/${id}/remove`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      await axios.delete(`${BASE_URL}/api/wishlist/${id}/remove`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      dispatch(
+        showToast({
+          message: "Product Removed From Wishlist!",
+          type: "success",
+        }),
       );
-      setToastMessage("Product Removed From Wishlist !");
-      setToastType("success");
-      setToastVisible(true);
       fetchWishlistCount();
       getWishlist();
     } catch (error) {
       console.log(error);
-      setToastMessage(`Error: ${error}`);
-      setToastType("error");
-      setToastVisible(true);
+      dispatch(
+        showToast({
+          message: `Error: ${error}`,
+          type: "error",
+        }),
+      );
     }
   };
 
   const handleAddtoCart = async (item) => {
     console.log(item);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      dispatch(
+        showToast({
+          message: "Access Denied. Please login first.",
+          type: "error",
+        }),
+      );
+      return;
+    }
+
+    // Check if stock quantity exists and is valid
+    // if (
+    //   !item ||
+    //   item.stockQuantity === undefined ||
+    //   item.stockQuantity === null
+    // ) {
+    //   setToastMessage("Unable to check stock availability.");
+    //   setToastType("error");
+    //   setToastVisible(true);
+    //   return;
+    // }
+
+    // if (item.stockQuantity <= 0) {
+    //   setToastMessage("No stock remaining for this item!");
+    //   setToastType("error");
+    //   setToastVisible(true);
+    //   dispatch(
+    //     showToast({
+    //       message: "No stock remaining for this item!",
+    //       type: "error",
+    //     }),
+    //   );
+    //   return;
+    // }
+
     try {
       setLoading(true);
       const payload = {
-        id: item.id,
+        id: item.productId,
         productId: item.productId,
         productName: item.productName,
         quantity: 1,
@@ -79,14 +117,45 @@ const Wishlist = () => {
         },
       });
 
-      setToastMessage("Added to Cart !");
-      setToastType("success");
-      setToastVisible(true);
+      // {
+      //     "responseCode": "098",
+      //     "responseMessage": "Stock is less than the desired quantity"
+      // }
+      //
+
+      if (response.data.responseCode === "098") {
+        dispatch(
+          showToast({
+            message: response.data.responseMessage,
+            type: "error",
+          }),
+        );
+        setLoading(false);
+        return;
+      }
+
+      if (response.data.responseCode === "1500") {
+        dispatch(
+          showToast({
+            message: "Please try again later.",
+            type: "error",
+          }),
+        );
+        setLoading(false);
+        return;
+      }
+
+      fetchCartCount();
+      dispatch(showToast({ message: "Added to Cart!", type: "success" }));
       setLoading(false);
     } catch (error) {
-      setToastMessage(`Error: ${error}`);
-      setToastType("error");
-      setToastVisible(true);
+      console.log(error);
+      dispatch(
+        showToast({
+          message: "Failed to add item to cart.",
+          type: "error",
+        }),
+      );
       setLoading(false);
     }
   };
@@ -117,6 +186,7 @@ const Wishlist = () => {
                   <img
                     className="w-[263.15px]   h-[264px] bg-gray-400"
                     src={item?.imageUrls[0]}
+                    alt={item?.productName || "Product image"}
                   />
                   <div className="flex flex-col justify-center items-center space-y-[7.55px] w-[263.15px] h-auto">
                     <p className="font-poppins font-semibold text-[16px] leading-[24px] text-[#000000]">
@@ -137,7 +207,10 @@ const Wishlist = () => {
                   </div>
                   <div className="flex justify-start items-center    ">
                     <button
-                      onClick={() => handleAddtoCart(item)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddtoCart(item);
+                      }}
                       className="text-xs text-secondaryBrand font-poppins bg-background px-16 py-5 rounded-full capitalize hover:bg-secondaryBrand hover:text-white"
                     >
                       {/* <p className="font-poppins font-semibold text-[13px] leading-[21px] text-[#013764] "> */}
@@ -208,12 +281,6 @@ const Wishlist = () => {
             )}
           </div>
         </div>
-        <Toast
-          message={toastMessage}
-          isVisible={toastVisible}
-          onClose={closeToast}
-          type={toastType}
-        />
       </div>
     </div>
   );

@@ -7,9 +7,10 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import CustomerFeedback from "../components/CustomerFeedback";
 import RelatedProducts from "../components/RelatedProducts";
 import { useParams } from "react-router-dom";
+import BackButton from "../components/BackButton";
 import axios from "axios";
 import { BASE_URL } from "../config";
-import Toast from "../components/Toast";
+
 import { useAuth } from "../auth/AuthContext";
 import ShoppingCart from "../modals/ShoppingCartModal";
 import { useDispatch } from "react-redux";
@@ -30,9 +31,7 @@ const SingleProduct = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState("success");
+
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [wishlist, setWishlist] = useState([]);
 
@@ -93,18 +92,17 @@ const SingleProduct = () => {
     getWishlist();
   }, [productId]);
 
-  const closeToast = () => {
-    setToastVisible(false);
-  };
-
   const [isOpenCart, setIsOpenCart] = useState(false);
 
-  const handleAddtoCart = async () => {
+  const handleAddtoCart = async (shouldOpenModal = false) => {
     if (product.stockQuantity <= 0) {
-      setToastMessage("This item is currently out of stock.");
-      setToastType("error");
-      setToastVisible(true);
-      return;
+      dispatch(
+        showToast({
+          message: "Stock is less than the desired quantity.",
+          type: "error",
+        }),
+      );
+      return false;
     }
     try {
       setLoading(true);
@@ -124,17 +122,21 @@ const SingleProduct = () => {
         },
       });
       console.log(response);
-      if (isOpenCart === true) {
+
+      fetchCartCount();
+      dispatch(showToast({ message: "Added to Cart!", type: "success" }));
+      setLoading(false);
+
+      // Open modal after successful cart operation
+      if (shouldOpenModal) {
         setIsModalOpen(true);
       }
-      setToastMessage("Added to Cart !");
-      setToastType("success");
-      setToastVisible(true);
-      fetchCartCount();
-      setLoading(false);
+
+      return true;
     } catch (error) {
       console.log(error);
       setLoading(false);
+      return false;
     }
   };
 
@@ -162,9 +164,6 @@ const SingleProduct = () => {
       // Convert productId to number for comparison since API returns numbers
       const currentProductId = parseInt(productId);
       setIsInWishlist(productIds.includes(currentProductId));
-      console.log("🔍 Wishlist IDs:", productIds);
-      console.log("🔍 Current Product ID (converted):", currentProductId);
-      console.log("🔍 Is in wishlist:", productIds.includes(currentProductId));
     } catch (error) {
       console.error("Error fetching wishlist:", error);
     }
@@ -177,7 +176,7 @@ const SingleProduct = () => {
         dispatch(
           showToast({
             message: "Access Denied. Please login first.",
-            type: "info",
+            type: "error",
           }),
         );
         return;
@@ -188,6 +187,20 @@ const SingleProduct = () => {
         const getWishlistId = wishlist.find(
           (item) => item.productId === parseInt(productId),
         );
+
+        if (!getWishlistId || !getWishlistId.id) {
+          console.error(
+            "❌ Wishlist item not found or missing ID:",
+            getWishlistId,
+          );
+          dispatch(
+            showToast({
+              message: "Error removing from wishlist",
+              type: "error",
+            }),
+          );
+          return;
+        }
 
         console.log("🔍 Wishlist ID:", getWishlistId.id);
         // Remove from wishlist
@@ -201,11 +214,8 @@ const SingleProduct = () => {
           },
         );
 
-        setWishlist((prev) =>
-          prev.filter((itemId) => itemId !== parseInt(productId)),
-        );
-        setIsInWishlist(false);
         fetchWishlistCount();
+        getWishlist(); // Refetch to get accurate data
         dispatch(
           showToast({ message: "Removed from Wishlist!", type: "success" }),
         );
@@ -226,9 +236,8 @@ const SingleProduct = () => {
           },
         });
 
-        setWishlist((prev) => [...prev, parseInt(productId)]);
-        setIsInWishlist(true);
         fetchWishlistCount();
+        getWishlist(); // Refetch to get accurate data with correct IDs
         dispatch(showToast({ message: "Added to Wishlist!", type: "success" }));
       }
     } catch (error) {
@@ -256,7 +265,11 @@ const SingleProduct = () => {
   return (
     <div className="flex justify-center  items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0 ">
       {/* justify-center  */}
-      <div className="flex flex-col justify-start items-center h-auto space-y-[32px] my-8 pt-[8px] mt-20">
+      <div className="flex flex-col justify-start items-center h-auto space-y-[16px] my-8 pt-[8px] mt-20">
+        {/* Back Button */}
+        <div className="w-full max-w-[1312px]">
+          <BackButton variant="rounded" className="mb-4" text="Back" />
+        </div>
         {/*  w-[1312px]  pl-[100px]*/}
         <div className="flex justify-center items-center w-full h-[603.32px]  gap-[6.39px] rounded-2xl bg-white ">
           {/* p-[51.16px] */}
@@ -304,14 +317,19 @@ const SingleProduct = () => {
                 <div className="flex flex-col justify-between w-[440.97px]  space-y-2">
                   {/* Product Name + Stock */}
                   <div className="flex justify-between items-center">
-                    <h1 className="font-poppins font-semibold text-[28.78px] leading-[34.53px] text-[#1A1A1A] w-[70%] ">
+                    <h1 className="font-poppins font-semibold text-[28.78px] leading-[34.53px] text-[#1A1A1A] w-[70%]">
                       {product?.name}
                     </h1>
-
-                    {product?.stockQuantity > 0 && (
+                    {product?.stockQuantity > 0 ? (
                       <div className="bg-[#001D580D] rounded-full py-1 px-3">
                         <h1 className="font-poppins text-secondaryBrand text-[11.19px] leading-[16.79px]">
                           In Stock
+                        </h1>
+                      </div>
+                    ) : (
+                      <div className="bg-[#FF00000D] rounded-full py-1 px-3">
+                        <h1 className="font-poppins text-secondaryBrand text-[11.19px] leading-[16.79px]">
+                          Out of Stock
                         </h1>
                       </div>
                     )}
@@ -347,24 +365,30 @@ const SingleProduct = () => {
               </div>
               <div className="flex justify-center items-center w-[441px] h-[51.28px] gap-5 pt-10">
                 <div
-                  onClick={() => {
+                  onClick={async () => {
                     if (user && user?.email) {
                       if (product.stockQuantity <= 0) {
-                        setToastMessage("This item is currently out of stock.");
-                        setToastType("error");
-                        setToastVisible(true);
+                        dispatch(
+                          showToast({
+                            message: "Stock is less than the desired quantity",
+                            type: "error",
+                          }),
+                        );
                         return;
                       } else {
                         setIsOpenCart(true);
-                        setLoading(true);
-                        setIsModalOpen(true);
-                        handleAddtoCart();
+                        const success = await handleAddtoCart(true);
+                        if (!success) {
+                          setIsOpenCart(false);
+                        }
                       }
                     } else {
-                      setToastMessage("Access denied! Please log in first");
-
-                      setToastType("error");
-                      setToastVisible(true);
+                      dispatch(
+                        showToast({
+                          message: "Access denied! Please log in first",
+                          type: "error",
+                        }),
+                      );
                     }
                   }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] border-[1px] border-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
@@ -376,12 +400,14 @@ const SingleProduct = () => {
                 <div
                   onClick={() => {
                     if (user && user?.email) {
-                      handleAddtoCart();
+                      handleAddtoCart(false);
                     } else {
-                      setToastMessage("Access denied! Please log in first");
-
-                      setToastType("error");
-                      setToastVisible(true);
+                      dispatch(
+                        showToast({
+                          message: "Access denied! Please log in first",
+                          type: "error",
+                        }),
+                      );
                     }
                   }}
                   className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
@@ -441,8 +467,10 @@ const SingleProduct = () => {
           </div>
         </div>
 
-        <div className="flex flex-col justify-start items-start w-full h-[430.25px] py-[20px]  space-y-[25.58px] rounded-[16px] bg-white">
-          <h1 className="font-poppins font-semibold text-[18px] leading-[27px] text-primaryText p-4">
+        <div
+          className={`flex flex-col justify-start items-start w-full py-[20px] space-y-[25.58px] rounded-[16px] bg-white ${product?.ratings && product.ratings.length > 0 ? "h-[430.25px]" : "h-auto"}`}
+        >
+          <h1 className="font-poppins font-semibold text-2xl leading-[27px] text-primaryText p-4">
             Customer Feedback
           </h1>
           {/* <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll hidden ">
@@ -451,33 +479,50 @@ const SingleProduct = () => {
               product?.ratings.length > 0 &&
               product?.ratings.map((item) => <CustomerFeedback item={item} />)}
           </div> */}
-          <div className="w-[1264px] h-[276.71px] space-y-[15.99px] overflow-y-scroll">
+          <div
+            className={`w-[1264px] space-y-[15.99px] ${product?.ratings && product.ratings.length > 0 ? "h-[276.71px] overflow-y-scroll" : "h-auto"}`}
+          >
             {product?.ratings && product.ratings.length > 0 ? (
               product.ratings.map((item) => (
                 <CustomerFeedback key={item.id} item={item} />
               ))
             ) : (
-              <p className="text-gray-500 text-sm font-poppins p-4 ml-1">
-                No customer feedback avaliable yet.
-              </p>
+              <div className="flex flex-col items-center justify-center py-12 px-4">
+                <div className="text-center space-y-4 max-w-md">
+                  <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800 font-poppins mb-2">
+                      No Reviews Yet
+                    </h3>
+                    <p className="text-gray-600 text-sm font-poppins leading-relaxed">
+                      Be the first to share your experience with this product.
+                      Your feedback helps other customers make informed
+                      decisions.
+                    </p>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </div>
 
-        {relatedProducts?.length > 0 ? (
-          <RelatedProducts relatedProducts={relatedProducts} />
-        ) : (
-          <p className="text-gray-500 text-sm font-poppins">
-            No Related Products Found.
-          </p>
-        )}
+        <RelatedProducts relatedProducts={relatedProducts || []} />
       </div>
-      <Toast
-        message={toastMessage}
-        isVisible={toastVisible}
-        onClose={closeToast}
-        type={toastType}
-      />
+
       {isModalOpen && (
         <ShoppingCart
           isModalOpen={isModalOpen}

@@ -1,8 +1,14 @@
 import axios from "axios";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { BASE_URL } from "../config";
+import {
+  hasRole,
+  hasAnyRole,
+  hasRoleAccess,
+  getHighestRole,
+} from "../constants/roles";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -10,11 +16,13 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
-
+  const [loading, setLoading] = useState(true);
+  console.log(wishlistCount, "COUNT");
   const login = (user, token) => {
     localStorage.setItem("token", token);
     localStorage.setItem("users", JSON.stringify(user));
     setUser(user);
+    setLoading(false);
   };
 
   const fetchWishlistCount = async () => {
@@ -24,10 +32,8 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      const count = response?.data?.items?.length ?? 0;
-      console.log("Wishlist count:", count);
-
-      setWishlistCount(count); // fallback to 0
+      console.log(response?.data?.items?.length, "WISHLIST_COUNT");
+      setWishlistCount(response?.data?.items?.length);
     } catch (err) {
       console.log("Error fetching wishlist count:", err);
     }
@@ -49,15 +55,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Initial fetch on app load and refresh token every 10 minutes
+  // 🔹 Refresh token every 10 minutes
   useEffect(() => {
-    // Initial fetch of wishlist and cart counts
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetchWishlistCount();
-      fetchCartCount();
-    }
-
     const interval = setInterval(
       async () => {
         const refreshToken = localStorage.getItem("token");
@@ -87,10 +86,63 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("users");
-    localStorage.setItem("users", null);
     setUser(null);
-    fetchWishlistCount();
-    fetchCartCount();
+    setWishlistCount(0);
+    setCartCount(0);
+    setLoading(false);
+  };
+
+  // Initialize user from localStorage on app start
+  useEffect(() => {
+    const initializeAuth = () => {
+      try {
+        const token = localStorage.getItem("token");
+        const userData = localStorage.getItem("users");
+
+        if (token && userData) {
+          const parsedUser = JSON.parse(userData);
+          setUser(parsedUser);
+        }
+      } catch (error) {
+        console.error("Error initializing auth:", error);
+        logout();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
+  }, []);
+
+  // Helper functions for role management
+  const getUserRoles = () => {
+    if (!user) return [];
+    // Handle different possible role property names with safe access
+    const roles =
+      user && typeof user === "object"
+        ? user["roles"] || user["Roles"] || user["role"] || user["Role"]
+        : [];
+    return Array.isArray(roles) ? roles : [];
+  };
+
+  const hasUserRole = (role) => {
+    return hasRole(getUserRoles(), role);
+  };
+
+  const hasUserAnyRole = (roles) => {
+    return hasAnyRole(getUserRoles(), roles);
+  };
+
+  const hasUserRoleAccess = (route) => {
+    return hasRoleAccess(getUserRoles(), route);
+  };
+
+  const getUserHighestRole = () => {
+    return getHighestRole(getUserRoles());
+  };
+
+  const isAuthenticated = () => {
+    return !!user && !!localStorage.getItem("token");
   };
 
   return (
@@ -99,10 +151,18 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         logout,
+        loading,
         fetchWishlistCount,
         wishlistCount,
         cartCount,
         fetchCartCount,
+        // Role management functions
+        getUserRoles,
+        hasUserRole,
+        hasUserAnyRole,
+        hasUserRoleAccess,
+        getUserHighestRole,
+        isAuthenticated,
       }}
     >
       {children}

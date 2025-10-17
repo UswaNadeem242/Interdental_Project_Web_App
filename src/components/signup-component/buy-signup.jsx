@@ -5,6 +5,7 @@ import axios from "axios";
 import { BASE_URL } from "../../config";
 import Toast from "../../components/Toast";
 import YearlyPlanModel from "../../modals/yearly-plan";
+import useFieldValidation from "../../Hooks/useFieldValidation";
 
 import Icons from "../../components/Icons";
 import * as Yup from "yup";
@@ -23,7 +24,6 @@ const BuySignup = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [yearly, setYearly] = useState(false);
-  const [validationErrors, setValidationErrors] = useState({});
 
   // Yup validation schema
   const validationSchema = Yup.object().shape({
@@ -51,11 +51,6 @@ const BuySignup = () => {
       .required("Phone number is required"),
     address: Yup.string()
       .min(10, "Address must be at least 10 characters")
-      .max(100, "Address must not exceed 100 characters")
-      .matches(
-        /^[a-zA-Z0-9\s,.'#-]+$/,
-        "Address can only contain letters, numbers, spaces, commas, periods, apostrophes, hashes, and hyphens",
-      )
       .required("Address is required"),
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
@@ -75,31 +70,39 @@ const BuySignup = () => {
       .required("Password is required"),
   });
 
-  const validateForm = async () => {
-    const formData = {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      address,
-      password,
-    };
+  const {
+    validationErrors,
+    validateField,
+    clearFieldError,
+    validateAllFields,
+  } = useFieldValidation(validationSchema);
 
-    try {
-      await validationSchema.validate(formData, { abortEarly: false });
-      setValidationErrors({});
-      return null;
-    } catch (err) {
-      const errors = {};
-      err.inner.forEach((error) => {
-        errors[error.path] = error.message;
-      });
-      setValidationErrors(errors);
-      return Object.values(errors)[0]; // Return first error message
+  const getFormData = () => ({
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    address,
+    password,
+  });
+
+  const handleFieldChange = async (fieldName, value, setter) => {
+    setter(value);
+
+    // Clear error immediately when user starts typing
+    if (validationErrors[fieldName]) {
+      clearFieldError(fieldName);
+    }
+  };
+
+  const handleFieldBlur = async (fieldName, value) => {
+    // Validate field when user leaves it
+    if (value.trim()) {
+      await validateField(fieldName, value, getFormData());
     }
   };
   const handleSignup = async () => {
-    const error = await validateForm();
+    const error = await validateAllFields(getFormData());
     if (error) {
       return; // Just return without showing toast since field-level errors are shown
     }
@@ -113,18 +116,26 @@ const BuySignup = () => {
       role: "CUSTOMER",
     };
     try {
-      await axios.post(`${BASE_URL}/api/users/sign-up`, payload, {
-        headers: {
-          Accept: "*/*",
+      const response = await axios.post(
+        `${BASE_URL}/api/users/sign-up`,
+        payload,
+        {
+          headers: {
+            Accept: "*/*",
+          },
         },
-      });
+      );
       setToastMessage("User Registered Successfully!");
       setToastType("success");
       setToastVisible(true);
 
+      const { data } = response;
+      console.log(data, "[USER]");
       // Add delay before navigation to ensure toast is visible
       setTimeout(() => {
-        navigate("/login");
+        navigate(
+          `/login?role=${data.roles[0]?.name?.toLowerCase() === "customer" ? "buyer" : data.roles[0]?.name?.toLowerCase()}`,
+        );
       }, 2000);
     } catch (error) {
       console.log("Signup error:", error);
@@ -154,7 +165,10 @@ const BuySignup = () => {
                   type="text"
                   id="firstName"
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("firstName", e.target.value, setFirstName)
+                  }
+                  onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.firstName
@@ -185,7 +199,10 @@ const BuySignup = () => {
                   type="text"
                   id="lastName"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("lastName", e.target.value, setLastName)
+                  }
+                  onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
                   placeholder=" " // ek space zaroori hai
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.lastName
@@ -217,7 +234,10 @@ const BuySignup = () => {
                   type="text"
                   id="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("email", e.target.value, setEmail)
+                  }
+                  onBlur={(e) => handleFieldBlur("email", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.email
@@ -248,7 +268,10 @@ const BuySignup = () => {
                   type="text"
                   id="phone"
                   value={phoneNumber}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) =>
+                    handleFieldChange("phoneNumber", e.target.value, setPhone)
+                  }
+                  onBlur={(e) => handleFieldBlur("phoneNumber", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                     validationErrors.phoneNumber
@@ -281,7 +304,10 @@ const BuySignup = () => {
                 type="text"
                 id="address"
                 value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange("address", e.target.value, setAddress)
+                }
+                onBlur={(e) => handleFieldBlur("address", e.target.value)}
                 placeholder=" "
                 className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
                   validationErrors.address
@@ -312,7 +338,10 @@ const BuySignup = () => {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange("password", e.target.value, setPassword)
+                }
+                onBlur={(e) => handleFieldBlur("password", e.target.value)}
                 placeholder=" "
                 className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${
                   validationErrors.password

@@ -20,7 +20,7 @@ const CheckoutForm = ({ next }) => {
     recipientName: "",
     paypalUsername: "",
     paypalEmailPhone: "",
-    paymentMethod: "",
+    // paymentMethod: "",
     // cardNumber: "",
     // expiryDate: "",
     // accountNumber: "",
@@ -28,7 +28,6 @@ const CheckoutForm = ({ next }) => {
   });
   const dispatch = useDispatch();
   const restoration = useSelector((state) => state.restoration);
-  console.log('restoration', restoration);
 
   const { toothSelections, selectedTooth } = restoration; // destructure from Redux
   const flattenedItems = (restoration.doctorOrderItems || []).map((item, index) => ({
@@ -41,7 +40,7 @@ const CheckoutForm = ({ next }) => {
   const userData = localStorage.getItem("users");
   const parsedUserData = JSON.parse(userData);
   const userId = parsedUserData.id;
- 
+
   const buildRequestData = (data) => {
     // const doctorData = {};
     // (restoration.doctor || []).forEach(d => {
@@ -60,6 +59,8 @@ const CheckoutForm = ({ next }) => {
 
     // Get only the doctor ID
     const doctorId = doctorData?.id;
+    const doctorDate = doctorData?.dueDate;
+    console.log(doctorData);
 
     console.log('doctorData', doctorId);
     const patientId = restoration?.patient?.id || null;
@@ -162,9 +163,9 @@ const CheckoutForm = ({ next }) => {
                 city: "",
                 street: "",
                 // paymentMethod: "",
-                // recipientName: "",
-                // paypalUsername: "",
-                // paypalEmailPhone: "",
+                recipientName: "",
+                paypalUsername: "",
+                paypalEmailPhone: "",
                 // cardNumber: "",
                 // expiryDate: "",
                 // accountNumber: "",
@@ -174,7 +175,7 @@ const CheckoutForm = ({ next }) => {
             onSubmit={(values) => handleSubmit(values)}
 
           >
-            {({ values, setFieldValue, handleSubmit }) => (
+            {({ values, setFieldValue, handleSubmit, handleBlur }) => (
 
               <>
                 <form
@@ -206,7 +207,7 @@ const CheckoutForm = ({ next }) => {
                             placeholder="Full Name"
                             className="border rounded-lg px-3 py-2 w-full"
                           />
-                          <ErrorMessage name="name" component="div" className="text-red-600 text-xs mt-1" />
+                          <ErrorMessage name="name" component="div" className="text-red-800   text-xs mt-1" />
                         </div>
                         {/* <input
                           type="text"
@@ -226,7 +227,7 @@ const CheckoutForm = ({ next }) => {
                           <ErrorMessage
                             name="phone"
                             component="div"
-                            className="text-red-600 text-xs mt-1"
+                            className="text-red-800   text-xs mt-1"
                           />
                         </div>
                       </div>
@@ -240,7 +241,7 @@ const CheckoutForm = ({ next }) => {
                         <ErrorMessage
                           name="email"
                           component="div"
-                          className="text-red-600 text-xs mt-1"
+                          className="text-red-800   text-xs mt-1"
                         />
                       </div>
                     </div>
@@ -278,7 +279,7 @@ const CheckoutForm = ({ next }) => {
                           <ErrorMessage
                             name="state"
                             component="div"
-                            className="text-red-600 text-xs mt-1"
+                            className="text-red-800   text-xs mt-1"
                           />
                         </div>
 
@@ -292,7 +293,7 @@ const CheckoutForm = ({ next }) => {
                           <ErrorMessage
                             name="city"
                             component="div"
-                            className="text-red-600 text-xs mt-1"
+                            className="text-red-800   text-xs mt-1"
                           />
                         </div>
 
@@ -306,7 +307,7 @@ const CheckoutForm = ({ next }) => {
                           <ErrorMessage
                             name="street"
                             component="div"
-                            className="text-red-600 text-xs mt-1"
+                            className="text-red-800   text-xs mt-1"
                           />
                         </div>
 
@@ -407,13 +408,17 @@ const CheckoutForm = ({ next }) => {
                               <label className="block text-xs font-medium mb-1 text-primaryText">
                                 Recipient's Name
                               </label>
-                              <input
+
+                              <Field
                                 type="text"
                                 name="recipientName"
                                 placeholder="Enter Recipient's Name"
-                                value={formData.recipientName}
-                                onChange={handleChange}
                                 className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                              />
+                              <ErrorMessage
+                                name="recipientName"
+                                component="div"
+                                className="text-red-800   text-xs mt-1"
                               />
                             </div>
 
@@ -422,26 +427,33 @@ const CheckoutForm = ({ next }) => {
                                 <label className="block text-xs font-medium mb-1">
                                   Paypal Username
                                 </label>
-                                <input
+                                <Field
                                   type="text"
                                   name="paypalUsername"
                                   placeholder="Enter Paypal Username"
-                                  value={formData.paypalUsername}
-                                  onChange={handleChange}
                                   className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                                />
+                                <ErrorMessage
+                                  name="paypalUsername"
+                                  component="div"
+                                  className="text-red-800   text-xs mt-1"
                                 />
                               </div>
                               <div>
                                 <label className="block text-xs font-medium mb-1">
                                   E-mail/Phone number
                                 </label>
-                                <input
+                                <Field
                                   type="text"
                                   name="paypalEmailPhone"
                                   placeholder="Enter E-mail/Phone number"
-                                  value={formData.paypalEmailPhone}
-                                  onChange={handleChange}
                                   className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                                />
+
+                                <ErrorMessage
+                                  name="paypalEmailPhone"
+                                  component="div"
+                                  className="text-red-800   text-xs mt-1"
                                 />
                               </div>
                             </div>
@@ -568,7 +580,7 @@ const CheckoutForm = ({ next }) => {
                       >
                         {loading ? "Processing..." : "Place Order"}
                       </button>
-                      {error && <div className="text-red-600 mt-2 text-sm">{error}</div>}
+                      {error && <div className="text-red-800   mt-2 text-sm">{error}</div>}
                     </div>
                   </div>
                 </form>

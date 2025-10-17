@@ -57,7 +57,7 @@ const Header = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setProducts(response.data.data.content);
     } catch (error) {
@@ -73,7 +73,7 @@ const Header = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setCategoriesList(response.data);
     } catch (error) {
@@ -107,12 +107,14 @@ const Header = () => {
     <div className="flex flex-col justify-center items-center h-[110.77px] w-full bg-white rounded-[8px] gap-[8px] pt-[20px] shadow-[0_4px_8px_0_rgba(0,0,0,0.05)]">
       <div className="flex w-full justify-around items-center">
         {/*  h-[45.77px] px-[100px] gap-[94px] */}
-        <NavLink to="/" className="flex items-center gap-2"> <img
-          src="/assets/logo.png"
-          alt="logo"
-          className="h-5 w-auto sm:h-5"
-        // w-[200px] h-[45.77px]
-        />
+        <NavLink to="/" className="flex items-center gap-2">
+          {" "}
+          <img
+            src="/assets/logo.png"
+            alt="logo"
+            className="h-5 w-auto sm:h-5"
+            // w-[200px] h-[45.77px]
+          />
         </NavLink>
 
         <div className="flex w-[665.83px] gap-[32px]">
@@ -213,7 +215,7 @@ const Header = () => {
         </div>
         <div className="flex justify-between items-center w-[258.17px] h-[34px] gap-[20.39px]">
           <div className="flex gap-[20.39px] items-center">
-            <div className="relative" >
+            <div className="relative">
               <svg
                 width="26"
                 height="25"
@@ -229,7 +231,6 @@ const Header = () => {
 
                     setToastType("error");
                     setToastVisible(true);
-
                   }
                 }}
               >
@@ -269,14 +270,13 @@ const Header = () => {
 
                     setToastType("error");
                     setToastVisible(true);
-
                   }
                 }}
               >
                 <path
                   d="M12.8407 21.6973C12.5007 21.8173 11.9407 21.8173 11.6007 21.6973C8.7007 20.7073 2.2207 16.5773 2.2207 9.5773C2.2207 6.4873 4.7107 3.9873 7.7807 3.9873C9.6007 3.9873 11.2107 4.8673 12.2207 6.2273C13.2307 4.8673 14.8507 3.9873 16.6607 3.9873C19.7307 3.9873 22.2207 6.4873 22.2207 9.5773C22.2207 16.5773 15.7407 20.7073 12.8407 21.6973Z"
                   stroke={wishlistCount ? "#FF0000" : "#292D32"} // outline color
-                  fill={wishlistCount ? "#FF0000" : "none"}      // fill when active
+                  fill={wishlistCount ? "#FF0000" : "none"} // fill when active
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -425,10 +425,11 @@ const Header = () => {
           <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[83px] h-[21px]">
             <label
               onClick={() => setBrandsDropdown(true)}
-              className={`${brandsDropdown
-                ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
-                : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-                }`}
+              className={`${
+                brandsDropdown
+                  ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
+                  : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
+              }`}
             >
               Brands
             </label>
@@ -438,8 +439,9 @@ const Header = () => {
               viewBox="0 0 10 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`${brandsDropdown ? " text-secondaryBrand" : " text-tertiaryBrand"
-                }`}
+              className={`${
+                brandsDropdown ? " text-secondaryBrand" : " text-tertiaryBrand"
+              }`}
             >
               <path
                 d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"
@@ -461,10 +463,11 @@ const Header = () => {
           <div className="flex justify-between items-center cursor-pointer gap-[12px] w-[113px] h-[21px]">
             <label
               onClick={() => setCategories(true)}
-              className={`${categories
-                ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
-                : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
-                }`}
+              className={`${
+                categories
+                  ? "font-poppins font-bold cursor-pointer text-secondaryBrand leading-[21px]"
+                  : "font-poppins font-normal cursor-pointer text-tertiaryBrand leading-[21px]"
+              }`}
             >
               Categories
             </label>
@@ -474,8 +477,9 @@ const Header = () => {
               viewBox="0 0 10 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`${categories ? " text-secondaryBrand" : " text-tertiaryBrand"
-                }`}
+              className={`${
+                categories ? " text-secondaryBrand" : " text-tertiaryBrand"
+              }`}
             >
               <path
                 d="M9 1.48181L5.70707 4.77474C5.31818 5.16363 4.68182 5.16363 4.29293 4.77474L1 1.48181"

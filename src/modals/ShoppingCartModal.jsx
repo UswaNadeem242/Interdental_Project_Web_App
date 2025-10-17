@@ -11,10 +11,12 @@ import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice";
 import * as Yup from "yup";
 import Icons from "../components/Icons";
+import useFieldValidation from "../Hooks/useFieldValidation";
 // import product2 from "../assets/product2.png";
 
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
+  const { fetchCartCount } = useAuth();
   const modalRef = useRef(null);
   const [activeTab, setActiveTab] = useState("cart");
   const [openOrders, setOpenOrders] = useState(false);
@@ -38,7 +40,6 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [paypalContact, setPaypalContact] = useState("");
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [validationErrors, setValidationErrors] = useState({});
   const dispatch = useDispatch();
 
   // Yup validation schema
@@ -96,32 +97,44 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
       .required("PayPal Email/Phone is required"),
   });
 
-  const validateForm = async () => {
-    const formData = {
-      name,
-      phone,
-      country,
-      state,
-      city,
-      street,
-      recipientName,
-      paypalUsername,
-      paypalContact,
-    };
+  const {
+    validationErrors,
+    validateField,
+    clearFieldError,
+    validateAllFields,
+  } = useFieldValidation(validationSchema);
 
-    try {
-      await validationSchema.validate(formData, { abortEarly: false });
-      setValidationErrors({});
-      return true;
-    } catch (err) {
-      const errors = {};
-      err.inner.forEach((error) => {
-        errors[error.path] = error.message;
-      });
-      setValidationErrors(errors);
+  const getFormData = () => ({
+    name,
+    phone,
+    country,
+    state,
+    city,
+    street,
+    recipientName,
+    paypalUsername,
+    paypalContact,
+  });
 
-      return false;
+  const handleFieldChange = async (fieldName, value, setter) => {
+    setter(value);
+
+    // Clear error immediately when user starts typing
+    if (validationErrors[fieldName]) {
+      clearFieldError(fieldName);
     }
+  };
+
+  const handleFieldBlur = async (fieldName, value) => {
+    // Validate field when user leaves it
+    if (value.trim()) {
+      await validateField(fieldName, value, getFormData());
+    }
+  };
+
+  const validateForm = async () => {
+    const isValid = await validateAllFields(getFormData());
+    return isValid === null; // validateAllFields returns null for no errors, error message for errors
   };
 
   const createOrder = async () => {
@@ -153,7 +166,22 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
         setToastType("error");
         setToastVisible(true);
       } else if (response.data.responseCode === "0000") {
-        setActiveTab("order");
+        // Server should clear cart after successful order creation
+        try {
+          // Refresh cart data from server to get updated (empty) cart
+          await getCart();
+          // Update cart count in header
+          fetchCartCount();
+        } catch (refreshError) {
+          console.log(
+            "Failed to refresh cart from server, clearing locally:",
+            refreshError,
+          );
+          // Fallback: clear cart locally if server refresh fails
+          setCart({ items: [], totalAmount: 0 });
+          fetchCartCount();
+        }
+        // Note: activeTab is handled by the confirm modal
       }
     } catch (error) {
       console.log(error);
@@ -175,6 +203,61 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
       console.log(error);
     }
   };
+  // Stock validation function
+  const validateCartStock = () => {
+    if (!cart?.items || cart.items.length === 0) {
+      // setToastMessage("Your cart is empty.");
+      // setToastType("error");
+      // setToastVisible(true);
+      return false;
+    }
+
+    const outOfStockItems = [];
+    const insufficientStockItems = [];
+
+    cart.items.forEach((item) => {
+      if (item.stockItem <= 0) {
+        outOfStockItems.push(item.productName);
+      } else if (item.quantity > item.stockItem) {
+        insufficientStockItems.push({
+          name: item.productName,
+          requested: item.quantity,
+          available: item.stockItem,
+        });
+      }
+    });
+
+    if (outOfStockItems.length > 0) {
+      setToastMessage(
+        `The following items are out of stock: ${outOfStockItems.join(", ")}. Please remove them from your cart.`,
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    if (insufficientStockItems.length > 0) {
+      const messages = insufficientStockItems.map(
+        (item) =>
+          `${item.name} (requested: ${item.requested}, available: ${item.available})`,
+      );
+      setToastMessage(
+        `Insufficient stock for: ${messages.join(", ")}. Please adjust quantities.`,
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleCheckoutClick = () => {
+    if (validateCartStock()) {
+      setActiveTab("checkout");
+    }
+  };
+
   useEffect(() => {
     getCart();
   }, []);
@@ -205,6 +288,21 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     loadCountries();
   }, []);
 
+  // Retrieve user data from localStorage
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
+
+  // Preset form fields with user data
+  useEffect(() => {
+    if (user) {
+      // Only set if the fields are empty to allow user to override
+      if (user.phoneNumber && !phone) {
+        setPhone(user.phoneNumber);
+      }
+      // Preset name with firstName + lastName if available
+    }
+  }, [user, phone, name]);
+
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
     setCountry(country.name);
@@ -225,10 +323,6 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     setToastVisible(false);
   };
 
-  // Retrieve user data from localStorage
-  const userData = localStorage.getItem("users");
-  const user = userData ? JSON.parse(userData) : null;
-
   // Debugging logs
 
   // Safely log firstName only if user exists
@@ -237,6 +331,18 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   }
 
   const handleTabClick = (targetTab) => {
+    // Check if cart is empty and prevent clicking on other tabs
+    const isCartEmpty = !cart?.items || cart.items.length === 0;
+    if (isCartEmpty && targetTab !== "cart") {
+      dispatch(
+        showToast({
+          message: "Please add items to your cart before proceeding.",
+          type: "error",
+        }),
+      );
+      return;
+    }
+
     const tabOrder = ["cart", "checkout", "review", "order"];
     const currentIndex = tabOrder.indexOf(activeTab);
     const targetIndex = tabOrder.indexOf(targetTab);
@@ -245,7 +351,37 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     if (targetIndex <= currentIndex) {
       setActiveTab(targetTab);
     }
-    // Restrict moving forward
+    // Special handling for checkout tab - validate stock
+    else if (targetTab === "checkout") {
+      if (validateCartStock()) {
+        setActiveTab(targetTab);
+      }
+    }
+    // Special handling for review tab - must complete checkout first
+    else if (targetTab === "review") {
+      // Check if all required checkout fields are completed
+      if (
+        name &&
+        phone &&
+        country &&
+        state &&
+        city &&
+        street &&
+        recipientName &&
+        paypalUsername &&
+        paypalContact
+      ) {
+        setActiveTab(targetTab);
+      } else {
+        dispatch(
+          showToast({
+            message: "Please complete checkout before proceeding to review.",
+            type: "error",
+          }),
+        );
+      }
+    }
+    // Restrict moving forward to other tabs
     else {
       dispatch(
         showToast({
@@ -279,6 +415,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     }
   }, [country, countries, selectedCountry]);
 
+  console.log(user, "USER");
+
   return (
     <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div
@@ -294,7 +432,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                  ${
                    activeTab === "cart"
                      ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
-                     : "text-[#949494] border-b-[4.69px] border-cartColor "
+                     : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
                  }`}
             >
               Cart
@@ -302,9 +440,11 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div
               onClick={() => handleTabClick("checkout")}
               className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                activeTab === "checkout"
-                  ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
-                  : "text-[#949494] border-b-[4.69px] border-cartColor "
+                !cart?.items || cart.items.length === 0
+                  ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
+                  : activeTab === "checkout"
+                    ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                    : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
               }`}
             >
               Checkout
@@ -312,9 +452,11 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div
               onClick={() => handleTabClick("review")}
               className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                activeTab === "review"
-                  ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
-                  : "text-[#949494] border-b-[4.69px] border-cartColor "
+                !cart?.items || cart.items.length === 0
+                  ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
+                  : activeTab === "review"
+                    ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                    : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
               }`}
             >
               Review
@@ -322,9 +464,11 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div
               onClick={() => handleTabClick("order")}
               className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                activeTab === "order"
-                  ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
-                  : "text-[#949494] border-b-[4.69px] border-cartColor "
+                !cart?.items || cart.items.length === 0
+                  ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
+                  : activeTab === "order"
+                    ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                    : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
               }`}
             >
               Completion
@@ -358,8 +502,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     </div>
                     <div className="flex justify-between items-center w-[523px] h-[57px] gap-[20px]">
                       <div
-                        onClick={() => setActiveTab("checkout")}
-                        className="flex justify-center items-center cursor-pointer w-[523px] h-[57px] rounded-[32px] gap-[20px] bg-secondaryBrand"
+                        onClick={handleCheckoutClick}
+                        className="flex justify-center items-center cursor-pointer w-[523px] h-[57px] rounded-[32px] gap-[20px] bg-secondaryBrand hover:bg-blue-700 transition-colors"
                       >
                         <h1 className="flex justify-center items-center leading-[21px] font-poppins font-semibold text-white text-[14px] w-full">
                           Checkout
@@ -388,7 +532,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         type="text"
                         id="fullName"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) =>
+                          handleFieldChange("name", e.target.value, setName)
+                        }
+                        onBlur={(e) => handleFieldBlur("name", e.target.value)}
                         placeholder=" "
                         required
                         className={`peer w-[285.5px] h-[53px] rounded-[8px] py-[10px] px-[15px] outline-none text-textFieldHeading border ${
@@ -417,7 +564,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         type="text"
                         id="contactNumber"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) =>
+                          handleFieldChange("phone", e.target.value, setPhone)
+                        }
+                        onBlur={(e) => handleFieldBlur("phone", e.target.value)}
                         placeholder=" "
                         className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand border ${
                           validationErrors.phone
@@ -480,7 +630,17 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                           type="text"
                           id="country"
                           value={country}
-                          onChange={(e) => handleInputChange(e.target.value)}
+                          onChange={(e) => {
+                            handleInputChange(e.target.value);
+                            handleFieldChange(
+                              "country",
+                              e.target.value,
+                              () => {},
+                            );
+                          }}
+                          onBlur={(e) =>
+                            handleFieldBlur("country", e.target.value)
+                          }
                           placeholder=" "
                           className="peer w-full h-full bg-transparent outline-none border-none text-textFieldHeading"
                         />
@@ -539,7 +699,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         type="text"
                         id="state"
                         value={state}
-                        onChange={(e) => setState(e.target.value)}
+                        onChange={(e) =>
+                          handleFieldChange("state", e.target.value, setState)
+                        }
+                        onBlur={(e) => handleFieldBlur("state", e.target.value)}
                         placeholder=" "
                         className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${
                           validationErrors.state
@@ -573,7 +736,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         type="text"
                         id="city"
                         value={city}
-                        onChange={(e) => setCity(e.target.value)}
+                        onChange={(e) =>
+                          handleFieldChange("city", e.target.value, setCity)
+                        }
+                        onBlur={(e) => handleFieldBlur("city", e.target.value)}
                         placeholder=" "
                         className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${
                           validationErrors.city
@@ -605,7 +771,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         type="text"
                         id="street"
                         value={street}
-                        onChange={(e) => setStreet(e.target.value)}
+                        onChange={(e) =>
+                          handleFieldChange("street", e.target.value, setStreet)
+                        }
+                        onBlur={(e) =>
+                          handleFieldBlur("street", e.target.value)
+                        }
                         placeholder=" "
                         className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${
                           validationErrors.street
@@ -682,7 +853,16 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         <input
                           type="text"
                           value={recipientName}
-                          onChange={(e) => setRecipientName(e.target.value)}
+                          onChange={(e) =>
+                            handleFieldChange(
+                              "recipientName",
+                              e.target.value,
+                              setRecipientName,
+                            )
+                          }
+                          onBlur={(e) =>
+                            handleFieldBlur("recipientName", e.target.value)
+                          }
                           placeholder="Enter Recipient's Name"
                           className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
@@ -708,7 +888,16 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         <input
                           type="text"
                           value={paypalUsername}
-                          onChange={(e) => setPaypalUsername(e.target.value)}
+                          onChange={(e) =>
+                            handleFieldChange(
+                              "paypalUsername",
+                              e.target.value,
+                              setPaypalUsername,
+                            )
+                          }
+                          onBlur={(e) =>
+                            handleFieldBlur("paypalUsername", e.target.value)
+                          }
                           placeholder="Enter PayPal Username"
                           className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
@@ -734,7 +923,16 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         <input
                           type="text"
                           value={paypalContact}
-                          onChange={(e) => setPaypalContact(e.target.value)}
+                          onChange={(e) =>
+                            handleFieldChange(
+                              "paypalContact",
+                              e.target.value,
+                              setPaypalContact,
+                            )
+                          }
+                          onBlur={(e) =>
+                            handleFieldBlur("paypalContact", e.target.value)
+                          }
                           placeholder="Enter E-mail / Phone Number"
                           className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
@@ -815,8 +1013,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                               {item.productName}
                             </h1>
                             <h1 className="font-poppins font-normal w-[253px] h-auto text-[11.19px] leading-[16.79px] text-[#808080]">
-                              Keep The Soil Evenly Moist For The Healthiest
-                              Gro...
+                              {item.description}
                             </h1>
                           </div>
                           <h1>${item.price}</h1>

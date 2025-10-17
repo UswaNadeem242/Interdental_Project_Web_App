@@ -13,9 +13,9 @@ export const PatientvalidationSchema = (skipImageValidation = false) =>
     // photo: Yup.mixed().required("Photo is required"),
 
     // Edited to remove Upload Img Validation
-    photo: skipImageValidation
-      ? Yup.mixed().notRequired()
-      : Yup.mixed().required("Photo is required"),
+    // photo: skipImageValidation
+    //   ? Yup.mixed().notRequired()
+    //   : Yup.mixed().required("Photo is required"),
     //
     username: Yup.string()
       .matches(

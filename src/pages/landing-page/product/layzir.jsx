@@ -2,6 +2,7 @@ import Header from "../header";
 import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
+import BackButton from "../../../components/BackButton";
 function LayZirPage({ isLanding }) {
   const features = [
     "FDA Cleared",
@@ -14,6 +15,9 @@ function LayZirPage({ isLanding }) {
     <div>
       <div className="pb-20">{!isLanding && <Header />} </div>
       <section className="container mx-auto    pb-10">
+        <div className="mt-4">
+          <BackButton variant="rounded" className="" text="Back" />
+        </div>
         <div className="w-full pt-10">
           <img
             src="/assets/landing-page/LayZir.png"

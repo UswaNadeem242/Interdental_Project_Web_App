@@ -4,6 +4,7 @@ import Footer from "../../../components/Footer";
 import { teethOptionMutiple } from "../../../Constant";
 import Shades from "../../../Common/product-landing/shades-product-landing";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
+import BackButton from "../../../components/BackButton";
 
 function AiditeZirconia({ isLanding }) {
   const shadesProductMultiPro = [
@@ -34,7 +35,11 @@ function AiditeZirconia({ isLanding }) {
     <div>
       <div className="pb-20">{!isLanding && <Header />} </div>
       <section className="container mx-auto    pb-10">
-        <div className="w-full pt-10">
+        <div className="mt-4">
+          <BackButton variant="rounded" className="mb-4" text="Back" />
+        </div>
+
+        <div className="w-full pt-8">
           <img
             src="/assets/landing-page/zincornia.png"
             alt="img3"
@@ -213,7 +218,7 @@ function AiditeZirconia({ isLanding }) {
             <Shades
               shades={shadesProductMultiPro}
               title="Colour"
-              className='lg:grid-cols-9'
+              className="lg:grid-cols-9"
               description="3D Pro zir is available in 16 shades of the classical VITA shade guide and 3 bleach shades OM1/OM2/OM3. For individual further charac-terisation, Biomic Stain&Glaze can be used. 3D Pro zir simplifies the whole process in achieving highly aesthetic results."
             />
           </div>
