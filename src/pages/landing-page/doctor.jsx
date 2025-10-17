@@ -5,7 +5,11 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import DotIcon from "../../icon/dotIcon";
 import { Doctorsteps, steps } from "../../Constant";
 import Contact from "./contact";
-import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
+import {
+  PrimaryButtonUI,
+  SecondaryButton,
+  ThirdButtonUI,
+} from "../../Common/Button";
 const plans = [
   {
     id: "1",
@@ -50,7 +54,6 @@ const plans = [
       "Get discounted pricing on select cases",
       "Pick labs nationwide from dental lab alliance",
       "One time set up fee yes! 475.00",
-
     ],
     buttonStyle:
       "text-secondaryBrand border-secondaryBrand text-sm  font-semibold  font-popins",
@@ -70,8 +73,6 @@ const plans = [
     isReferral: true,
   },
 ];
-
-
 
 const Check = (props) => (
   <svg
@@ -93,7 +94,8 @@ const Check = (props) => (
 
 const Doctor = ({ isLanding }) => {
   const navigate = useNavigate();
-
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
 
   return (
     <>
@@ -120,13 +122,21 @@ const Doctor = ({ isLanding }) => {
             <h3 className="text-3xl md:text-5xl font-bold text-secondaryBrand">
               DOCTOR
             </h3>
-            <p className="font-poppins capitalize text-base  font-medium py-4">Partner with InterOral.ai- Smplify, save, and grow</p>
+            <p className="font-poppins capitalize text-base  font-medium py-4">
+              Partner with InterOral.ai- Smplify, save, and grow
+            </p>
             <p className="mt-4 text-sm md:text-lg text-secondaryText">
-              Join our platform to access lab discounts, extended warranties, AI design tools, and patient referrals — all in one streamlined system. Your Practice Benefits:
+              Join our platform to access lab discounts, extended warranties, AI
+              design tools, and patient referrals — all in one streamlined
+              system. Your Practice Benefits:
             </p>
             <ul className="list-disc custom-list list-inside text-secondaryText text-start p-4 rounded-md  text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
-              <li>Discounted by enrolling their patient to the MakeMeSmile program</li>
-              <li>Eligibility for 3–9 year patient warranties via MakeMeSmile</li>
+              <li>
+                Discounted by enrolling their patient to the MakeMeSmile program
+              </li>
+              <li>
+                Eligibility for 3–9 year patient warranties via MakeMeSmile
+              </li>
               <li>Increased visibility as a featured providere</li>
               <li>Case automation with our AI-powered Doctor Portal</li>
             </ul>
@@ -139,7 +149,21 @@ const Doctor = ({ isLanding }) => {
                 <ArrowRightIcon className="w-4 h-4" />
               </div>
             </button> */}
-            <ThirdButtonUI title=' Register' href='/signup' />
+
+            {/* <ThirdButtonUI title=" Register" href="/signup" /> */}
+            {user && user?.email ? (
+              <ThirdButtonUI
+                title=" Goto Wizard Page"
+                href="/doctor-admin/place-order"
+                className="pl-5"
+              />
+            ) : (
+              <ThirdButtonUI
+                title=" Register"
+                href="/signup"
+                className="pl-5"
+              />
+            )}
           </div>
         </section>
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center md:px-16 px-4 py-20">
@@ -153,13 +177,14 @@ const Doctor = ({ isLanding }) => {
             </h1>
 
             <p className="text-base font-medium font-poppins">
-              Smart Subscription Plans That Bring You Patients, Peace of Mind, and Lab Savings
+              Smart Subscription Plans That Bring You Patients, Peace of Mind,
+              and Lab Savings
             </p>
 
             <p className="text-sm font-poppins text-secondaryText">
-              Interoral.ai and Make Me Smile have teamed up to offer a subscription-based
-              program designed to support your practice with lab discounts, patient referrals,
-              and extended dental warranties.
+              Interoral.ai and Make Me Smile have teamed up to offer a
+              subscription-based program designed to support your practice with
+              lab discounts, patient referrals, and extended dental warranties.
             </p>
 
             <p className="text-sm font-poppins text-secondaryText">
@@ -172,7 +197,8 @@ const Doctor = ({ isLanding }) => {
               </li>
               <li className="flex items-start gap-3 bg-blue-300/10 p-3 rounded-md font-poppins font-medium">
                 <DotIcon className="w-5 h-5 shrink-0" />
-                Eligibility for 3–9 year patient warranties, building long-term trust and confidence
+                Eligibility for 3–9 year patient warranties, building long-term
+                trust and confidence
               </li>
               <li className="flex items-start gap-3 bg-blue-300/10 p-3 rounded-md font-poppins font-medium">
                 <DotIcon className="w-5 h-5 shrink-0" />
@@ -180,12 +206,15 @@ const Doctor = ({ isLanding }) => {
               </li>
               <li className="flex items-start gap-3 bg-blue-300/10 p-3 rounded-md font-poppins font-medium">
                 <DotIcon className="w-5 h-5 shrink-0" />
-                Increased visibility through featured listings as a participating provider on our platform
+                Increased visibility through featured listings as a
+                participating provider on our platform
               </li>
-
             </ul>
-            <p className="text-sm font-poppins text-secondaryText space-y-3">Whether you're looking to grow your patient base, improve patient satisfaction, or reduce lab expenses, our plans offer a flexible way to streamline your operations and increase your revenue.</p>
-
+            <p className="text-sm font-poppins text-secondaryText space-y-3">
+              Whether you're looking to grow your patient base, improve patient
+              satisfaction, or reduce lab expenses, our plans offer a flexible
+              way to streamline your operations and increase your revenue.
+            </p>
           </div>
           <div className="flex justify-center">
             <img
@@ -196,13 +225,16 @@ const Doctor = ({ isLanding }) => {
           </div>
         </section>
 
-
         <div className="py-8 sm:py-12 md:py-20 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
           <div className="text-center mb-6 sm:mb-12">
             <h2 className=" text-sm md:text-3xl font-semibold text-secondaryBrand max-w-[600px] mx-auto text-center">
-              Simplify Your <span className="text-fouthBrand">Practice</span>  with Our  <span className="text-secondaryBrand">Subscription Plans</span>
+              Simplify Your <span className="text-fouthBrand">Practice</span>{" "}
+              with Our{" "}
+              <span className="text-secondaryBrand">Subscription Plans</span>
             </h2>
-            <p className="text-secondaryText py-8 font-poppins text-sm  font-normal">Effortless Patient Management in Three Simple Steps</p>
+            <p className="text-secondaryText py-8 font-poppins text-sm  font-normal">
+              Effortless Patient Management in Three Simple Steps
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 relative">
@@ -218,7 +250,6 @@ const Doctor = ({ isLanding }) => {
                 <div className="flex items-center justify-center w-14 h-14 rounded-full bg-fouthBrand text-white text-xl font-bold mb-6">
                   {idx + 1}
                 </div>
-
 
                 <div className="mt-6 flex-1 w-full bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md hover:shadow-lg transition">
                   <h3 className="text-sm md:text-2xl font-poppins font-bold text-start text-secondaryBrand mb-4">
@@ -250,22 +281,42 @@ const Doctor = ({ isLanding }) => {
                           </li>
                         );
                       }
-                      return <li key={index} className='text-xs font-poppins font-normal text-secondaryText'>{desc}</li>;
+                      return (
+                        <li
+                          key={index}
+                          className="text-xs font-poppins font-normal text-secondaryText"
+                        >
+                          {desc}
+                        </li>
+                      );
                     })}
                   </ul>
                 </div>
               </div>
             ))}
           </div>
+          <div className="flex flex-col items-center mt-5">
+            <ThirdButtonUI
+              title="  Enroll The Office"
+              href="/signup"
+              className="pl-5"
+            />
+            <p className="text-[#949494] text-sm font-normal italic mt-3">
+              We’re HIPAA compliant
+            </p>
+          </div>
         </div>
-
-
-
 
         <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
           {/* Header */}
           <h2 className="text-base md:text-3xl font-normal text-primaryText capitalize text-center tracking-wide">
-            DOCTOR <span className="font-bold text-3xl font-poppins uppercase text-secondaryBrand">ENROLLMENT</span> <span className="text-3xl font-bold font-poppins uppercase text-fouthBrand ">PLANS </span>
+            DOCTOR{" "}
+            <span className="font-bold text-3xl font-poppins uppercase text-secondaryBrand">
+              ENROLLMENT
+            </span>{" "}
+            <span className="text-3xl font-bold font-poppins uppercase text-fouthBrand ">
+              PLANS{" "}
+            </span>
           </h2>
           {/* Plans Grid */}
           <div className="mx-auto mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-full">
@@ -278,8 +329,12 @@ const Doctor = ({ isLanding }) => {
                 <div>
                   {plan.isReferral ? (
                     <div className="bg-secondaryBrand text-white rounded-lg p-4 text-center">
-                      <p className="text-2xl  sm:text-xl font-bold font-poppins capitalize ">{plan.name}</p>
-                      <p className="text-base font-bold font-poppins ">{plan.duration}</p>
+                      <p className="text-2xl  sm:text-xl font-bold font-poppins capitalize ">
+                        {plan.name}
+                      </p>
+                      <p className="text-base font-bold font-poppins ">
+                        {plan.duration}
+                      </p>
                     </div>
                   ) : (
                     <>
@@ -287,16 +342,22 @@ const Doctor = ({ isLanding }) => {
                         {plan.name}
                       </h3>
                       <p className="mt-4 text-3xl font-bold font-poppins text-secondaryBrand text-center">
-                        {plan.price}<span className="text-sm font-semibold font-poppins text-secondaryBrand">/month</span>
+                        {plan.price}
+                        <span className="text-sm font-semibold font-poppins text-secondaryBrand">
+                          /month
+                        </span>
                       </p>
-
                     </>
                   )}
                   <ul className="mt-4 list-disc list-inside rounded-xl bg-blue-300/10 p-2 text-gray-700 space-y-2 text-sm sm:text-base mx-auto max-w-[20rem] custom-list">
                     {plan.features.map((f, i) => (
                       <li
                         key={i}
-                        className={`${plan.isReferral ? "text-secondaryBrand" : "text-secondaryBrand"} marker:text-secondaryBrand`}
+                        className={`${
+                          plan.isReferral
+                            ? "text-secondaryBrand"
+                            : "text-secondaryBrand"
+                        } marker:text-secondaryBrand`}
                       >
                         {f}
                       </li>
@@ -312,46 +373,83 @@ const Doctor = ({ isLanding }) => {
                     Select
                   </button>
                 )}
-
               </div>
             ))}
           </div>
           <p className="mt-4 sm:mt-6 text-sm md:text-base text-gray-600 text-center max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
-            If you do not see what you want, don&apos;t worry{' '}
+            If you do not see what you want, don&apos;t worry{" "}
             <a
               href="/contact-us"
               className="text-secondaryBrand font-bold underline hover:text-blue-600"
             >
               Contact Us
-            </a>{' '}
-            and we will create a personalized proposal that fits your business needs.
+            </a>{" "}
+            and we will create a personalized proposal that fits your business
+            needs.
           </p>
         </section>
 
         <div className="py-8 sm:py-12 md:pb-20 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-white">
           <div className="text-center mb-6 sm:mb-12">
             <h2 className=" text-sm md:text-3xl font-normal  text-primaryText max-w-[600px] mx-auto text-center">
-              Doctor <span className="text-secondaryBrand font-bold ">Portal</span> &  <span className=" text-fouthBrand font-bold">Plans</span>
+              Doctor{" "}
+              <span className="text-secondaryBrand font-bold ">Portal</span> &{" "}
+              <span className=" text-fouthBrand font-bold">Plans</span>
             </h2>
-            <p className="text-primaryText py-8 font-poppins text-xl font-bold">Precision Restorations. Smart Workflow. Smiling Patients.</p>
-            <p className="text-primaryText py-8 font-poppins text-base mx-auto  flex justify-center font-medium max-w-[750px] capitalize">Welcome to the  Interoral.ai and Make Me Smile™ platform—where aesthetics, innovation, and automation come together to support your practice. </p>
-            <p className="text-secondaryText max-w-[1033px]  text-center  mx-auto font-poppins text-sm  font-normal">Whether you're placing a single crown or managing full-arch restorations, our system ensures every case is accurate, streamlined, and protected.
-              Smart Prescription Wizard + Guided Assistant Need help filling out your case forms? Our AI-powered Prescription Wizard makes it simple to:</p>
+            <p className="text-primaryText py-8 font-poppins text-xl font-bold">
+              Precision Restorations. Smart Workflow. Smiling Patients.
+            </p>
+            <p className="text-primaryText py-8 font-poppins text-base mx-auto  flex justify-center font-medium max-w-[750px] capitalize">
+              Welcome to the Interoral.ai and Make Me Smile™ platform—where
+              aesthetics, innovation, and automation come together to support
+              your practice.{" "}
+            </p>
+            <p className="text-secondaryText max-w-[1033px]  text-center  mx-auto font-poppins text-sm  font-normal">
+              Whether you're placing a single crown or managing full-arch
+              restorations, our system ensures every case is accurate,
+              streamlined, and protected. Smart Prescription Wizard + Guided
+              Assistant Need help filling out your case forms? Our AI-powered
+              Prescription Wizard makes it simple to:
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
             {/* Top 3 Divs */}
             <div className="bg-blue-300/10 p-4 rounded col-span-4">
-              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Select teeth, materials, and shades</p>
+              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize">
+                <DotIcon className="w-5 h-5 shrink-0" /> Select teeth,
+                materials, and shades
+              </p>
             </div>
             <div className="bg-blue-300/10 p-4 rounded col-span-4">
-              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" /> Upload STL, DICOM, or PLY files</p>
+              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize">
+                <DotIcon className="w-5 h-5 shrink-0" /> Upload STL, DICOM, or
+                PLY files
+              </p>
             </div>
-            <div className="bg-blue-300/10 p-4 rounded col-span-4"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Auto-match compatible implant parts</p></div>
+            <div className="bg-blue-300/10 p-4 rounded col-span-4">
+              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize">
+                <DotIcon className="w-5 h-5 shrink-0" />
+                Auto-match compatible implant parts
+              </p>
+            </div>
             {/* Bottom 2 Divs (span across 3 columns) */}
-            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Generate prescription sheets and FedEx labels</p></div>
-            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center"><p className="flex gap-4 text-primaryText font-medium font-poppins capitalize"><DotIcon className="w-5 h-5 shrink-0" />Route your files directly to design and production labs</p></div>
+            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center">
+              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize">
+                <DotIcon className="w-5 h-5 shrink-0" />
+                Generate prescription sheets and FedEx labels
+              </p>
+            </div>
+            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center">
+              <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize">
+                <DotIcon className="w-5 h-5 shrink-0" />
+                Route your files directly to design and production labs
+              </p>
+            </div>
           </div>
-          <p className="text-sm font-poppins font-normal text-center pt-16">Bonus: Our built-in ChatGPT Assistant can guide you through the form step-by-step to prevent errors, answer questions, and ensure your cases are processed without delays.
+          <p className="text-sm font-poppins font-normal text-center pt-16">
+            Bonus: Our built-in ChatGPT Assistant can guide you through the form
+            step-by-step to prevent errors, answer questions, and ensure your
+            cases are processed without delays.
           </p>
           <div className="flex justify-center mb-6 sm:mb-12 mt-8">
             {/* <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
@@ -362,23 +460,47 @@ const Doctor = ({ isLanding }) => {
                 <ArrowRightIcon className="w-4 h-4" />
               </div>
             </button> */}
-            <ThirdButtonUI title='  Continue' href='/signup' />
+            <ThirdButtonUI title="  Continue" href="/signup" />
           </div>
 
-
+          {/* Join */}
+          <div className="flex flex-col items-center mt-40">
+            <p className="text-[#001D58] text-5xl font-normal">
+              Join{" "}
+              <span className="text-[#94D3DD] font-bold">InterOral.ai</span>{" "}
+              Today — Transform Your
+            </p>
+            <div className="text-[#94D3DD] font-bold text-5xl ">
+              Dental Experience!
+            </div>
+            <p className="text-[#949494] font-normal text-xl font-poppins mt-10 lg:max-w-3xl text-center">
+              Sign up now to access top-rated dental professionals, personalized
+              treatment plans, and exclusive offers for a healthier smile.
+            </p>
+            <SecondaryButton
+              title={"Join as Doctor!"}
+              className={`px-14 py-4 rounded-full bg-[#001D58] mt-10 text-sm font-semibold text-[#F8F8F8]`}
+              href={"/signup"}
+            />
+          </div>
         </div>
-      </div >
+      </div>
 
       <div className="px-5 bg-blue-300/5 py-10">
         <Contact />
       </div>
       <section className="container mx-auto px-4 my-16">
         <div className="flex justify-center">
-          <h3 className="text-secondaryBrand text-5xl font-normal font-poppins">Need a <span className="text-secondaryBrand text-5xl   font-bold font-poppins ">Custom Plan?</span></h3>
-
+          <h3 className="text-secondaryBrand text-5xl font-normal font-poppins">
+            Need a{" "}
+            <span className="text-secondaryBrand text-5xl   font-bold font-poppins ">
+              Custom Plan?
+            </span>
+          </h3>
         </div>
         <p className="text-xl font-normal font-poppins text-secondaryText max-w-[600px] mx-auto text-center py-8">
-          We’re happy to build a tailored solution for your team. Just Contact Us and let us know what you need.
+          We’re happy to build a tailored solution for your team. Just Contact
+          Us and let us know what you need.
         </p>
         <div className="flex justify-center">
           <PrimaryButtonUI
@@ -386,10 +508,8 @@ const Doctor = ({ isLanding }) => {
             className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
           />
         </div>
-
       </section>
       <Footer />
-
     </>
   );
 };

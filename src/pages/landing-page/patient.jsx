@@ -7,32 +7,46 @@ import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
 import CircleIcon from "../../icon/circle-icon";
 import UpperFooter from "../../components/upper-footer";
 import { concerns, plans, steps } from "../../Constant";
+import CheckCircle from "../../icon/CheckCircle";
 
 const Patients = ({ isLanding }) => {
   const navigate = useNavigate();
   return (
     <div className="bg-gray-50">
-
       {!isLanding && <Header />}
       <section className="py-8 sm:py-12 md:py-48 px-4 sm:px-6 md:px-8 lg:mx-12   flex flex-col md:flex-row items-center justify-between">
         {/* Left Side: Text */}
         <div className="w-full md:w-1/2 text-gray-800">
           <h3 className="text-sm md:text-5xl font-bold text-secondaryBrand">
-            Protect Your Smile with MakeMeSmile
+            Protect Your Smile with
+            <span className="text-[#94D3DD]"> MakeMeSmile</span>
           </h3>
-          <p className="text-primaryText text-[10px] whitespace-nowrap font-normal font-poppins py-4">Extended warranties up to 9 years- simple, affordable, and trusted by your dentist</p>
+          <p className="text-primaryText text-[10px] whitespace-nowrap font-normal font-poppins py-4">
+            Extended warranties up to 9 years- simple, affordable, and trusted
+            by your dentist
+          </p>
           <p className="mt-4  text-secondaryText text-sm font-normal font-poppins">
-            Your dental work is an investment in your health and your confidence. Life happens — crowns can chip, bridges may loosen, or implants may need attention. With MakeMeSmile, you don’t have to worry.
+            Your dental work is an investment in your health and your
+            confidence. Life happens — crowns can chip, bridges may loosen, or
+            implants may need attention. With MakeMeSmile, you don’t have to
+            worry.
           </p>
           <ul className=" pt-5 list-disc pl-4 pb-6">
-            <li className="text-secondaryText text-sm font-normal font-poppin">Peace of mind with coverage up to 9 years</li>
-            <li className="text-secondaryText text-sm font-normal font-poppin">Fast, simple claims if something happens</li>
-            <li className="text-secondaryText text-sm font-normal font-poppin">Trusted warranty lab: InterDentalUSA</li>
-            <li className="text-secondaryText text-sm font-normal font-poppin">Your dentist stays by your side — and so do we</li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">
+              Peace of mind with coverage up to 9 years
+            </li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">
+              Fast, simple claims if something happens
+            </li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">
+              Trusted warranty lab: InterDentalUSA
+            </li>
+            <li className="text-secondaryText text-sm font-normal font-poppin">
+              Your dentist stays by your side — and so do we
+            </li>
           </ul>
 
-          <ThirdButtonUI title=' Register' href='/signup' />
-
+          {/* <ThirdButtonUI title=" Register" href="/signup" /> */}
         </div>
 
         {/* Right Side: Image */}
@@ -62,9 +76,8 @@ const Patients = ({ isLanding }) => {
                 className="bg-background p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition"
               >
                 <h3 className="text-sm md:text-xl font-semibold text-secondaryBrand  mb-4">
-                  {concern.title} - <span className="text-fouthBrand">
-                    {concern?.subtitle}
-                  </span>
+                  {concern.title} -{" "}
+                  <span className="text-fouthBrand">{concern?.subtitle}</span>
                 </h3>
 
                 <p className="text-sm md:text-sm font-poppins  font-normal text-textColor">
@@ -96,30 +109,41 @@ const Patients = ({ isLanding }) => {
               </h3>
               <ul className="list-disc custom-list list-inside text-gray-600   font-poppins space-y-2 pl-2">
                 {step.description.map((desc, index) => (
-                  <li key={index} className="text-sm">{desc}</li>
+                  <li key={index} className="text-sm">
+                    {desc}
+                  </li>
                 ))}
               </ul>
             </div>
           ))}
-
-
         </div>
 
         <div className="flex justify-center mt-8">
-          <ThirdButtonUI title=' Register' href='/signup' />
-
+          {/* <ThirdButtonUI title=" Register" href="/signup" /> */}
         </div>
       </div>
       <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 text-center">
         {/* Section Header */}
         <h2 className="text-sm md:text-3xl  font-normal text-primaryText uppercase">
-          Choose Your <span className="text-sm md:text-3xl  font-bold text-secondaryBrand">
+          Choose Your{" "}
+          <span className="text-sm md:text-3xl  font-bold text-secondaryBrand">
             Patient
-          </span>  <span className="text-sm md:text-3xl  font-bold text-fouthBrand"> Warranty </span> <span className="text-sm md:text-3xl  font-bold text-primaryText"> Plan  </span>
+          </span>{" "}
+          <span className="text-sm md:text-3xl  font-bold text-fouthBrand">
+            {" "}
+            Warranty{" "}
+          </span>{" "}
+          <span className="text-sm md:text-3xl  font-bold text-primaryText">
+            {" "}
+            Plan{" "}
+          </span>
         </h2>
 
         <p className="mt-4 md:mt-4 font-poppins font-normal text-sm  text-primaryText max-w-[900px] mx-auto text-center">
-          Whether you're receiving a crown, bridge, denture, or implant, your smile deserves protection that lasts. Our Make Me Smile Warranty Program gives you long-term peace of mind—plus access to a network of trusted dentists and advanced dental labs.
+          Whether you're receiving a crown, bridge, denture, or implant, your
+          smile deserves protection that lasts. Our Make Me Smile Warranty
+          Program gives you long-term peace of mind—plus access to a network of
+          trusted dentists and advanced dental labs.
         </p>
 
         {/* Plans Grid */}
@@ -140,7 +164,9 @@ const Patients = ({ isLanding }) => {
               {/* Description as bullet list */}
               <ul className="list-disc custom-list list-inside text-secondaryBrand text-start p-4 rounded-md bg-blue-300/10 text-sm md:text-base font-poppins space-y-2 pl-2 mb-6">
                 {plan.description.map((desc, index) => (
-                  <li key={index} className="text-sm">{desc}</li>
+                  <li key={index} className="text-sm">
+                    {desc}
+                  </li>
                 ))}
               </ul>
 
@@ -154,27 +180,46 @@ const Patients = ({ isLanding }) => {
           ))}
         </div>
         <div>
-          <p className="mt-4 md:mt-4 text-secondaryText font-normal font-poppins max-w-[900px] mx-auto text-center ">If You do not see what you want. Don’t worry <a href='/contact' className='text-secondaryBrand'> Contact Us
-          </a> and we will create a personalized proposal that fit your business needs.</p>
+          <p className="mt-4 md:mt-4 text-secondaryText font-normal font-poppins max-w-[900px] mx-auto text-center ">
+            If You do not see what you want. Don’t worry{" "}
+            <a href="/contact" className="text-secondaryBrand">
+              {" "}
+              Contact Us
+            </a>{" "}
+            and we will create a personalized proposal that fit your business
+            needs.
+          </p>
         </div>
       </section>
       <div className="py-8 sm:py-12 md:py-40 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 bg-gray-50">
         <div className="text-center mb-6 sm:mb-12">
           <h2 className=" text-sm md:text-5xl font-semibold text-secondaryBrand">
-            Need <span className="text-fouthBrand font-poppins font-bold"> Help
-            </span>  Filling It Out?
+            Need{" "}
+            <span className="text-fouthBrand font-poppins font-bold">
+              {" "}
+              Help
+            </span>{" "}
+            Filling It Out?
           </h2>
         </div>
         <div>
-          <p className="text-secondaryText font-normal text-xl text-center max-w-[900px]  mx-auto">Use our built-in Smart Assistant to walk you through the form. From tooth selections to warranty terms, our AI guide ensures every detail is right.</p>
+          <p className="text-secondaryText font-normal text-xl text-center max-w-[900px]  mx-auto">
+            Use our built-in Smart Assistant to walk you through the form. From
+            tooth selections to warranty terms, our AI guide ensures every
+            detail is right.
+          </p>
 
-          <p className="text-secondaryText font-normal text-xl text-center max-w-[700px]  mx-auto pt-11">Ask questions live, get file upload tips, and make confident choices.</p>
+          <p className="text-secondaryText font-normal text-xl text-center max-w-[700px]  mx-auto pt-11">
+            Ask questions live, get file upload tips, and make confident
+            choices.
+          </p>
         </div>
         <div className="flex justify-center mt-7">
-          <PrimaryButtonUI title='Launch Guided Help' className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
+          <PrimaryButtonUI
+            title="Launch Guided Help"
+            className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
           />
         </div>
-
       </div>
 
       <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-16 ">
@@ -182,20 +227,48 @@ const Patients = ({ isLanding }) => {
           <div className="col-span-6  ">
             <h1 className="text-lg md:text-5xl font-poppins text-secondaryBrand">
               Patient eBook:{" "}
-              <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">Mastering</span> the{" "}
-              <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">Full Mouth</span>
+              <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">
+                Mastering
+              </span>{" "}
+              the{" "}
+              <span className="font-bold text-lg md:text-5xl font-poppins text-secondaryBrand">
+                Full Mouth
+              </span>
             </h1>
-            <p className="text-fouthBrand  text-3xl  font-poppins font-bold mt-5">5.99</p>
-            <p className="text-secondaryText  md:text-xl  text-base font-normal font-poppins pt-8 max-w-[500px] ">Packed with insights into restorative options, patient stories, and cost-saving tips, this guide helps you make smarter decisions for long-term dental care.</p>
-            <h3 className="text-secondaryBrand md:text-xl  text-base py-8 font-poppins font-semibold ">Includes:</h3>
+            <p className="text-fouthBrand  text-3xl  font-poppins font-bold mt-5">
+              5.99
+            </p>
+            <p className="text-secondaryText  md:text-xl  text-base font-normal font-poppins pt-8 max-w-[500px] ">
+              Packed with insights into restorative options, patient stories,
+              and cost-saving tips, this guide helps you make smarter decisions
+              for long-term dental care.
+            </p>
+            <h3 className="text-secondaryBrand md:text-xl  text-base py-8 font-poppins font-semibold ">
+              Includes:
+            </h3>
             <ul>
-              <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">  <CircleIcon className="text-secondaryBrand w-4 h-4" /> Full overview of crowns, implants, veneers, and bridges</li>
-              <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">  <CircleIcon className="text-secondaryBrand w-4 h-4" /> Tips on what to expect before and after treatment</li>
-              <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">  <CircleIcon className="text-secondaryBrand w-4 h-4" /> Bonus chapter: Top Questions to Ask Before Starting</li>
+              <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">
+                {" "}
+                <CircleIcon className="text-secondaryBrand w-4 h-4" /> Full
+                overview of crowns, implants, veneers, and bridges
+              </li>
+              <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">
+                {" "}
+                <CircleIcon className="text-secondaryBrand w-4 h-4" /> Tips on
+                what to expect before and after treatment
+              </li>
+              <li className="flex gap-3 text-secondaryText text-base font-poppins font-medium">
+                {" "}
+                <CircleIcon className="text-secondaryBrand w-4 h-4" /> Bonus
+                chapter: Top Questions to Ask Before Starting
+              </li>
             </ul>
 
             <div className=" mb-6 sm:mb-12 mt-8">
-              <PrimaryButtonUI title='Order the eBook Now' className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow " />
+              <PrimaryButtonUI
+                title="Order the eBook Now"
+                className="px-20 py-5 rounded-full font-poppins  font-normal text-xs bg-secondaryBrand text-white  shadow "
+              />
             </div>
           </div>
           <div className="col-span-6 flex justify-center">
@@ -205,24 +278,70 @@ const Patients = ({ isLanding }) => {
               className="w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 object-cover"
             />
           </div>
-
-
-
         </div>
+        {/* Warranty Card  */}
+        <div className="flex flex-col items-center mt-16 mb-10 ">
+          <div className="text-3xl text-[#434343] font-normal">
+            THE{" "}
+            <span className="text-3xl font-bold text-[#001D58]">WARRANTY</span>
+          </div>
+          <div className="font-poppins text-[#434343] font-normal mx-28 mt-8 ">
+            {" "}
+            InterOral.ai provides peace of mind and a unique practice growth
+            opportunity with a comprehensive Warranty Plans
+          </div>
+        </div>
+        <div className="bg-[#FFFFFF] max-w-2xl  p-6 mx-auto rounded-2xl  flex justify-center overflow-hidden border border-gray-100 ">
+          {/* Left Image Section */}
+
+          <div className="">
+            <img
+              src="/assets/landing-page/rectangle.png" // replace with your actual image path
+              alt="Patient Smile"
+              className="object-cover w-full h-full rounded-l-2xl"
+            />
+          </div>
+
+          {/* Right Content Section */}
+          <div className="flex flex-col justify-between ml-4">
+            <div>
+              <h3 className="text-xl font-semibold text-[#434343]">
+                WARRANTY DASHBOARD
+              </h3>
+              <h2 className="text-2xl font-bold text-[#94D3DD] mt-4">
+                PATIENT
+              </h2>
+
+              <ul className="mt-3 space-y-2 text-gray-500 text-sm">
+                <li className="flex text-sm font-normal font-poppins text-[#949494] gap-2">
+                  <CheckCircle />
+                  Easy online activation
+                </li>
+                <li className="flex text-sm font-normal font-poppins text-[#949494] gap-2">
+                  <CheckCircle />
+                  Downloadable warranty certificate
+                </li>
+                <li className="flex text-sm font-normal font-poppins text-[#949494] gap-2">
+                  <CheckCircle />
+                  Direct access to our support team
+                </li>
+              </ul>
+            </div>
+
+            <button className="mt-4 max-w-36  bg-[#0A2D5E] text-white text-sm font-medium py-4 rounded-lg shadow hover:bg-[#083056] transition">
+              LEARN MORE
+            </button>
+          </div>
+        </div>
+        {/*  */}
       </div>
 
-
-
       <div className="px-5">
-
         <Contact />
       </div>
       <UpperFooter />
       <Footer />
-
-
-
-    </div >
+    </div>
   );
 };
 
