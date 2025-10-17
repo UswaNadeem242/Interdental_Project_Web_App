@@ -319,12 +319,12 @@ const SingleProduct = () => {
           <div className="flex flex-col justify-start items-start flex-1 w-full space-y-4 md:space-y-6">
             <div className="flex flex-col justify-start items-start w-full border-b border-gray-200 pb-4 md:pb-6 space-y-3 md:space-y-4">
               {/* Product Name + Stock */}
-              <div className="flex justify-between items-start gap-2 md:gap-4 w-full">
-                <h1 className="font-poppins font-semibold text-xl sm:text-2xl lg:text-3xl text-[#1A1A1A] flex-1">
+              <div className="flex items-center gap-2 md:gap-4 w-full">
+                <h1 className="font-poppins font-semibold text-xl sm:text-2xl lg:text-3xl text-[#1A1A1A]">
                   {product?.name}
                 </h1>
                 {product?.stockQuantity > 0 ? (
-                  <div className="bg-[#001D580D] rounded-full py-1 px-3 whitespace-nowrap">
+                  <div className="bg-[#001D580D] rounded-full py-2 px-3 whitespace-nowrap">
                     <h1 className="font-poppins text-secondaryBrand text-xs">
                       In Stock
                     </h1>
