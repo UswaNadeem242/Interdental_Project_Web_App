@@ -61,7 +61,6 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
-        console.log("scroll", window.scrollY);
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -152,7 +151,6 @@ const Header = () => {
 
             <div
               onClick={() => {
-                console.log("wishlist clicked");
                 if (user && user?.email) {
                   handleWishlist();
                 } else {
