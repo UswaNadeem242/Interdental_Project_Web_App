@@ -15,13 +15,9 @@ import { useAuth } from "../auth/AuthContext";
 import ShoppingCart from "../modals/ShoppingCartModal";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice";
-import {
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-  StarIcon,
-} from "@heroicons/react/24/solid";
 import StarRating from "../components/StarRating";
 import Icons from "../components/Icons";
+import { useMemo } from "react";
 
 const SingleProduct = () => {
   const { productId } = useParams();
@@ -37,6 +33,7 @@ const SingleProduct = () => {
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const [userRating, setUserRating] = useState(0);
+  const [rating, setRating] = useState(0);
   const [isSubmittingRating, setIsSubmittingRating] = useState(false);
 
   const getProduct = async () => {
@@ -88,6 +85,20 @@ const SingleProduct = () => {
       setRelatedProducts(error.response.data.data);
     }
   };
+
+  let avgRating = useMemo(() => {
+    if (!product?.ratings || product?.ratings.length === 0) {
+      return 0;
+    }
+
+    const totalRating = product?.ratings.reduce(
+      (sum, item) => sum + item.rating,
+      0,
+    );
+    const averageRating = totalRating / product?.ratings?.length; // Division ensures it stays within 0-5
+
+    return averageRating.toFixed(1);
+  }, [product?.ratings]);
 
   useEffect(() => {
     getProduct();
@@ -156,8 +167,6 @@ const SingleProduct = () => {
     }
   };
 
-  console.log();
-  // Get wishlist items on component mount
   const getWishlist = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -342,12 +351,12 @@ const SingleProduct = () => {
               {userRating > 0 && (
                 <div className="flex items-center gap-2 md:gap-3">
                   <StarRating
-                    rating={userRating}
+                    rating={avgRating}
                     readOnly={true}
                     size="w-5 h-5 md:w-6 md:h-6"
                   />
                   <p className="font-poppins font-semibold text-sm md:text-base text-black">
-                    {userRating}.0
+                    {avgRating}
                   </p>
                 </div>
               )}
@@ -500,7 +509,6 @@ const SingleProduct = () => {
             )}
           </div>
         </div>
-
         <RelatedProducts relatedProducts={relatedProducts || []} />
       </div>
 

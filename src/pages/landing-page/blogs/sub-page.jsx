@@ -4,6 +4,7 @@ import Contact from "../contact";
 import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
 import BlogNext from "../../../components/landing-page-component/blog-next.jsx";
+import BackButton from "../../../components/BackButton";
 
 const sections = [
   {
@@ -54,67 +55,71 @@ const HeadingWithLeader = ({ children }) => (
 
 export default function ImplantDenturesPage() {
   return (
-    <div className="bg-blue-300/5">
-      <div className="container px-4 mx-auto py-8 sm:py-12 md:pt-32  sm:px-6 md:px-8">
-        {/*  flex flex-col md:flex-row items-center justify-between */}
+    <div className="bg-blue-300/5 ">
+      <div className="max-w-3xl px-4 mx-auto">
+        <div className="mx-auto py-8 sm:py-12">
+          {/*  flex flex-col md:flex-row items-center justify-between */}
 
-        <h1 className="text-5xl font-bold text-primaryText max-w-[700px]  text-center mx-auto">
-          What Are Implant-Retained Dentures?
-        </h1>
-        <p className="text-sm font-normal font-poppins text-primaryText text-center pt-4">
-          Dentures
-        </p>
+          <BackButton text="Back" />
+
+          <h1 className="text-5xl mt-8 font-bold text-primaryText max-w-[700px]  text-center mx-auto">
+            What Are Implant-Retained Dentures?
+          </h1>
+          <p className="text-sm font-normal font-poppins text-primaryText text-center pt-4">
+            Dentures
+          </p>
+        </div>
+        <section className=" text-gray-700 px-4 py-6 sm:py-10 md:py-14">
+          {/* Hero image */}
+          <div className="max-w-4xl mx-auto">
+            <img
+              src="/assets/landing-page/blog 1.png"
+              alt="Implant retained dentures"
+              className="w-full h-auto rounded-md"
+            />
+          </div>
+
+          {/* Intro paragraph (optional) */}
+          <p className="max-w-4xl mx-auto mt-4 sm:mt-6 text-sm md:text-base leading-relaxed text-gray-600">
+            Implant-retained dentures are revolutionizing tooth replacement,
+            blending the reliability of traditional dentures with advanced
+            dental implant technology. By addressing common issues associated
+            with conventional dentures, implant-supported dentures offer a more
+            secure, comfortable, and long-lasting solution.
+          </p>
+
+          {/* Content sections rendered via map */}
+          <div className="max-w-4xl mx-auto mt-8 md:mt-12 space-y-10 md:space-y-12">
+            {sections.map((sec) => (
+              <section key={sec.id} className="space-y-4">
+                <HeadingWithLeader>{sec.title}</HeadingWithLeader>
+
+                {sec.paras?.map((p, i) => (
+                  <p
+                    key={i}
+                    className="text-sm md:text-base leading-7 text-[#7C7C7C]"
+                  >
+                    {p}
+                  </p>
+                ))}
+
+                {sec.bullets && (
+                  <ul className="list-disc pl-5 text-sm md:text-base leading-7 text-[#7C7C7C] space-y-1">
+                    {sec.bullets.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
+          </div>
+        </section>
+        <BlogNext />
+        <FrequentlyAskedQuestion />
+
+        <UpperFooter />
+        <Footer />
       </div>
-      <section className=" text-gray-700 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20 py-6 sm:py-10 md:py-14">
-        {/* Hero image */}
-        <div className="max-w-4xl mx-auto">
-          <img
-            src="/assets/landing-page/blog 1.png"
-            alt="Implant retained dentures"
-            className="w-full h-auto rounded-md"
-          />
-        </div>
-
-        {/* Intro paragraph (optional) */}
-        <p className="max-w-4xl mx-auto mt-4 sm:mt-6 text-sm md:text-base leading-relaxed text-gray-600">
-          Implant-retained dentures are revolutionizing tooth replacement,
-          blending the reliability of traditional dentures with advanced dental
-          implant technology. By addressing common issues associated with
-          conventional dentures, implant-supported dentures offer a more secure,
-          comfortable, and long-lasting solution.
-        </p>
-
-        {/* Content sections rendered via map */}
-        <div className="max-w-4xl mx-auto mt-8 md:mt-12 space-y-10 md:space-y-12">
-          {sections.map((sec) => (
-            <section key={sec.id} className="space-y-4">
-              <HeadingWithLeader>{sec.title}</HeadingWithLeader>
-
-              {sec.paras?.map((p, i) => (
-                <p
-                  key={i}
-                  className="text-sm md:text-base leading-7 text-[#7C7C7C]"
-                >
-                  {p}
-                </p>
-              ))}
-
-              {sec.bullets && (
-                <ul className="list-disc pl-5 text-sm md:text-base leading-7 text-[#7C7C7C] space-y-1">
-                  {sec.bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
-              )}
-            </section>
-          ))}
-        </div>
-      </section>
-      <BlogNext />
-      <FrequentlyAskedQuestion />
-
-      <UpperFooter />
-      <Footer />
     </div>
   );
 }

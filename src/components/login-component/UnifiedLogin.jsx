@@ -269,7 +269,6 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
           >
             {loading ? "Logging in..." : "Login"}
           </button>
-
           <div className="flex flex-row justify-center items-center w-full lg:w-[494px] h-auto lg:h-[56px] gap-4 lg:gap-[16px]">
             <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center cursor-pointer hover:shadow-md transition-shadow">
               {/* <GoogleIcon className="w-5 h-6" />
@@ -278,14 +277,7 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
               </h1> */}
               <LoginWithGoogle />
             </div>
-            <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center cursor-pointer hover:shadow-md transition-shadow">
-              <FacebookIcon className="w-5 h-5 text-[#1976D2]" />
-              <h1 className="hidden lg:block text-sm font-poppins">
-                Login with Facebook
-              </h1>
-            </div>
-          </div>
-
+          </div>{" "}
           <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
             <p className="font-poppins font-normal text-sm leading-[21px] text-[#808080]">
               Don't Have account

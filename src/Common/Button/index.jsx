@@ -34,7 +34,7 @@ export function ThirdButtonUI({ title, href, className }) {
   const navigate = useNavigate();
   return (
     <button
-      className={` flex justify-between items-center   rounded-full border-2 border-fouthBrand gap-2 sm:gap-4 p-2 ${className}`}
+      className={` flex justify-between items-center   rounded-full border-2 border-fouthBrand gap-2 sm:gap-4 px-4 py-2 ${className}`}
       onClick={() => navigate(href)}
     >
       {/* w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px]  */}

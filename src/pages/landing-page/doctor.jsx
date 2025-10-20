@@ -101,7 +101,7 @@ const Doctor = ({ isLanding }) => {
     <>
       <div className="bg-gradient-to-b from-[#f7fefc] to-[#e2f7fb]">
         {!isLanding && <Header />}
-        <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 flex flex-col md:flex-row items-center justify-between">
+        <section className="bg-[#F9FCFF] py-8 sm:py-12 mt-10 md:py-16 px-4 sm:px-6 md:px-8 flex flex-col md:flex-row items-center justify-between">
           {/* Left Side: Image */}
           <div className="relative w-full md:w-1/2 flex justify-center items-center">
             {/* Circular Image */}

@@ -83,8 +83,6 @@ export const getOrderTranckingByID = async (id) => {
   }
 };
 
-
-
 export const changePassword = async (bodyData) => {
   try {
     const endpoint = `${ENDPOINTS.DOCTOR.CHANGE_PASSWORD}`;

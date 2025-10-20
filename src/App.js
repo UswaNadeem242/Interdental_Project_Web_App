@@ -208,7 +208,14 @@ function App() {
               }
             />
             <Route path="/about-us" element={<About isLanding={false} />} />
-            <Route path="/contact-us" element={<Contact isLanding={false} />} />
+            <Route
+              path="/contact-us"
+              element={
+                <div className="my-10">
+                  <Contact isLanding={false} />
+                </div>
+              }
+            />
 
             {/* Auth Routes - Public but redirect if authenticated */}
             <Route

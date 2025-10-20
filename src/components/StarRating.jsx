@@ -46,7 +46,7 @@ const StarRating = ({
       {[...Array(maxRating)].map((_, index) => {
         const starValue = index + 1;
         const isFilled = starValue <= displayRating;
-
+        console.log(isFilled, "isFilled");
         return (
           <StarIcon
             key={index}
