@@ -7,10 +7,12 @@ import FrequentlyAskedQuestion from "../components/frequently-asked-question";
 import Contact from "./landing-page/contact";
 import UpperFooter from "../components/upper-footer";
 import Footer from "../components/Footer";
+import { ThirdButtonUI } from "../Common/Button";
+import OurModules from "../components/landing-page-component/our-modules";
+import ImplantInterfeace from "../components/landing-page-component/implant-interface";
+import MakeSmile from "../components/landing-page-component/make-smile";
+import ContactFooter from "../components/contact-footer";
 const About = ({ isLanding }) => {
-
-
-
   return (
     <div className="">
       {!isLanding && <Header />}
@@ -35,16 +37,20 @@ const About = ({ isLanding }) => {
             </div>
 
             <p className="w-full max-w-[500px] font-poppins font-normal text-lg md:text-xl text-secondaryText leading-6 lg:leading-[30px]">
-              At Interdental Lab, we’re proud to serve as the founding lab partner within InterOral.ai. For over 15 years, we’ve specialized in advanced prosthetics, digital workflows, and full-mouth reconstruction. Together with MakeMeSmile’s patient warranty program, we manage warranty cases with precision and accountability, ensuring every restoration meets the highest standards.
+              At Interdental Lab, we’re proud to serve as the founding lab
+              partner within InterOral.ai. For over 15 years, we’ve specialized
+              in advanced prosthetics, digital workflows, and full-mouth
+              reconstruction. Together with MakeMeSmile’s patient warranty
+              program, we manage warranty cases with precision and
+              accountability, ensuring every restoration meets the highest
+              standards.
             </p>
 
             <p className="w-full max-w-[500px] font-poppins font-normal text-lg md:text-xl text-secondaryText leading-6 lg:leading-[30px]">
-              By combining our craftsmanship with InterOral.ai’s technology, we give dentists and patients confidence that every case is supported, protected, and delivered at the highest quality.
+              By combining our craftsmanship with InterOral.ai’s technology, we
+              give dentists and patients confidence that every case is
+              supported, protected, and delivered at the highest quality.
             </p>
-
-
-
-
           </div>
         </div>
 
@@ -52,7 +58,9 @@ const About = ({ isLanding }) => {
         <div className="flex justify-center items-center w-full max-w-[1512px]    border-t border-[#0000001A] bg-[#F8F8F8] py-8 sm:py-12 md:py-16   px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-6 lg:gap-[32px]">
           <div className="flex flex-col justify-start items-start w-full max-w-[1312px] gap-6 sm:gap-8 lg:gap-[64px]">
             <div className="flex justify-center items-center gap-2 sm:gap-4">
-              <h1 className="font-poppins font-normal text-sm md:text-5xl">Why</h1>
+              <h1 className="font-poppins font-normal text-sm md:text-5xl">
+                Why
+              </h1>
               <h1 className="font-poppins font-bold text-sm md:text-5xl text-secondaryBrand">
                 Interdental.ai
               </h1>
@@ -65,15 +73,24 @@ const About = ({ isLanding }) => {
                   A Note From Our Founder
                 </h1>
                 <p className="font-poppins font-normal text-sm md:text-xl text-secondaryText">
-                  “I built InterOral.ai because dentistry needed more than just another lab or another piece of software — it needed a platform. One place where dentists, labs, implant suppliers, and patients could connect seamlessly, with AI doing the heavy lifting behind the scenes.
+                  “I built InterOral.ai because dentistry needed more than just
+                  another lab or another piece of software — it needed a
+                  platform. One place where dentists, labs, implant suppliers,
+                  and patients could connect seamlessly, with AI doing the heavy
+                  lifting behind the scenes.
                 </p>
 
                 <p className="font-poppins font-normal text-sm md:text-xl text-secondaryText">
-
-                  At Interdental Lab, we’ve spent years perfecting restorations and standing behind our work. InterOral.ai is the natural extension of that — a smarter system that saves time, reduces costs, and gives patients peace of mind. This is the future we’re creating, and we’re just getting started.”
+                  At Interdental Lab, we’ve spent years perfecting restorations
+                  and standing behind our work. InterOral.ai is the natural
+                  extension of that — a smarter system that saves time, reduces
+                  costs, and gives patients peace of mind. This is the future
+                  we’re creating, and we’re just getting started.”
                 </p>
 
-                <p className="text-primaryText font-poppins font-normal text-sm md:text-xl">— Tony Sol, MDT, Founder</p>
+                <p className="text-primaryText font-poppins font-normal text-sm md:text-xl">
+                  — Tony Sol, MDT, Founder
+                </p>
               </div>
               <div className="flex flex-col w-full rounded-[16px] border border-[#0000001A] space-y-4 p-4 sm:p-6 lg:p-[24px]">
                 <h1 className="text-[#434343] font-poppins font-bold text-sm md:text-lg">
@@ -84,17 +101,14 @@ const About = ({ isLanding }) => {
                 </p>
               </div>
 
-
-
-
-
               {/* Card 2 */}
               <div className="flex flex-col w-full rounded-[16px] border border-[#0000001A] space-y-4 p-4 sm:p-6 lg:p-[24px]">
                 <h1 className="text-[#434343] font-poppins font-bold text-sm md:text-lg">
                   Quality services
                 </h1>
                 <p className="font-poppins font-normal text-sm md:text-lg text-secondaryText">
-                  We are proud to provide quality services, high standard products at realistic prices.
+                  We are proud to provide quality services, high standard
+                  products at realistic prices.
                 </p>
               </div>
 
@@ -104,7 +118,9 @@ const About = ({ isLanding }) => {
                   Products support
                 </h1>
                 <p className="font-poppins font-normal text-sm md:text-lg text-secondaryText">
-                  We always provide support to our products for customer’s convenience by giving them a complete technical knowledge and practical information.
+                  We always provide support to our products for customer’s
+                  convenience by giving them a complete technical knowledge and
+                  practical information.
                 </p>
               </div>
             </div>
@@ -128,10 +144,10 @@ const About = ({ isLanding }) => {
 
           <div className="flex justify-center pt-6">
             <p className="text-primaryText text-sm font-poppins text-center max-w-3xl">
-              Whether you're receiving a crown, bridge, denture, or implant, your
-              smile deserves protection that lasts. Our Make Me Smile Warranty Program
-              gives you long-term peace of mind—plus access to a network of trusted
-              dentists and advanced dental labs.
+              Whether you're receiving a crown, bridge, denture, or implant,
+              your smile deserves protection that lasts. Our Make Me Smile
+              Warranty Program gives you long-term peace of mind—plus access to
+              a network of trusted dentists and advanced dental labs.
             </p>
           </div>
 
@@ -189,23 +205,23 @@ const About = ({ isLanding }) => {
                 )}
               </div>
             ))}
-
           </div>
           <div className="flex justify-center pt-8">
-            <p className="text-primaryText text-sm font-poppins text-center max-w-3xl"> Interoral.ai helps you simplify case management, reduce lab and implant costs, streamline communication, and increase patient trust—all from one connected platform.</p>
+            <p className="text-primaryText text-sm font-poppins text-center max-w-3xl">
+              {" "}
+              Interoral.ai helps you simplify case management, reduce lab and
+              implant costs, streamline communication, and increase patient
+              trust—all from one connected platform.
+            </p>
           </div>
-
         </section>
-
-
 
         <section className="container px-4 mx-auto py-28 ">
           <div className="flex justify-center ">
             <h1 className="text-primaryText text-base md:text-3xl font-normal font-poppins capitalize">
               Our
-
               <span className="md:text-3xl font-bold font-poppins text-secondaryBrand capitalize ml-2">
-                SERVICES
+                MODULES
               </span>
             </h1>
           </div>
@@ -214,161 +230,16 @@ const About = ({ isLanding }) => {
               Explore our top-rated selections crafted just for you!
             </p>
           </div>
-
-          <div className="bg-background ">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-12">
-              {/* Left Content */}
-              <div className="flex justify-center">
-                <div className="max-w-md">
-                  <h4 className="text-secondaryBrand md:text-3xl text-lg font-bold font-poppins pb-6">
-                    Crown + Bridge
-                  </h4>
-                  <p className="font-poppins text-base md:text-lg text-[#808080]">
-                    Interoral.ai uses 3shape cad cam systems a leader in the industry,
-                    trusted, and AI driven program of "automate" Million units designed,
-                    laboratories can feel confident when outsourcing their restoration
-                    designs.
-                  </p>
-                </div>
-              </div>
-
-              {/* Right Image */}
-              <div className="flex justify-center">
-                <img
-                  src="/assets/landing-page/image 2.png"
-                  alt="Crown + Bridge"
-                  className="w-full max-w-sm md:max-w-md object-contain"
-                />
-              </div>
-            </div>
-
-          </div>
-
-        </section>
-
-        <section className="container px-4 mx-auto ">
-
-          <div className="">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              {/* Right Image */}
-              <div className="flex justify-center">
-                <img
-                  src="/assets/landing-page/image 3.png"
-                  alt="Crown + Bridge"
-                  className="w-auto  h-auto object-contain "
-                />
-              </div>
-              {/* Left Content */}
-              <div className="flex justify-center">
-                <div className="max-w-md">
-                  <h4 className="text-secondaryBrand md:text-3xl text-lg font-bold font-poppins pb-6">
-                    Guided Implant Surgery
-                  </h4>
-                  <p className="font-poppins text-base md:text-lg text-[#808080]">
-                    Service offers
-                    implant planning and surgical guide designs. With
-                    guided implant surgery, we will plan and design
-                    your surgical guide from single units, bridges,
-                    fully or pilot guided surgeries based on your
-                    instructions and needs.
-                  </p>
-                </div>
-              </div>
-
-
-            </div>
-
-          </div>
-
-        </section>
-        <section>
-          <div className="flex justify-center py-20">
-            <img
-              src="/assets/landing-page/image 4.png"
-              alt="Crown + Bridge"
-              className="w-auto  h-auto object-contain "
-            />
-          </div>
-        </section>
-
-        <section className="container px-4 mx-auto py-28  border-b border-background">
-          <div className="flex justify-center ">
-            <h1 className="text-primaryText text-base md:text-3xl font-normal font-poppins capitalize">
-              THE
-
-              <span className="md:text-3xl font-bold font-poppins text-secondaryBrand capitalize ml-2">
-                WARRANTY
-              </span>
-            </h1>
-          </div>
-          <div className="flex justify-center pb-6">
-            <p className="text-secondaryText text-sm font-poppins text-center max-w-3xl py-6">
-              Interoral.ai provides peace of mind and a unique practice growth opportunity with a comprehensive Warranty Plans and Referal Program
-            </p>
-          </div>
-
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6  px-8 ">
-              {warrantyCards.map((card, index) => (
-                <div
-                  key={index}
-                  className={`bg-white shadow-[0px_59px_124px_0px_rgba(0,0,0,0.06)] rounded-xl overflow-hidden grid grid-cols-1 sm:grid-cols-2`}
-                >
-                  {/* Image */}
-                  <div
-                    className={`w-full h-full ${index % 2 !== 0 ? "sm:order-2" : "sm:order-1"
-                      }`}
-                  >
-                    <img
-                      src={card.img}
-                      alt={card.title}
-                      className="w-full sm:w-[200px] md:w-[290px] lg:w-[250px] h-[150px] sm:h-[180px] md:h-[200px] lg:h-[237px] m-2 sm:m-4 rounded-lg object-cover"
-                    />
-                  </div>
-
-                  {/* Text */}
-                  <div
-                    className={`flex flex-col gap-5 p-4 ${index % 2 !== 0 ? "sm:order-1 sm:text-start" : "sm:order-2"
-                      }`}
-                  >
-                    <div>
-                      <h3 className="text-primaryText text-sm md:text-base font-semibold">
-                        {card.title}
-                      </h3>
-                      <p className="text-fouthBrand text-lg font-bold mb-4">
-                        {card.subtitle}
-                      </p>
-
-                      <ul className="space-y-2">
-                        {card.points.map((point, i) => (
-                          <li
-                            key={i}
-                            className="flex gap-2 items-center text-sm text-secondaryText"
-                          >
-                            <CircleIcon className="text-secondaryBrand w-4 h-4" />
-                            {point}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <button className="text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
-                      Learn more
-                    </button>
-                  </div>
-                </div>
-              ))}
-
-            </div>
-          </div>
-
+          {/* <div className="flex gap-4 mt-0 items-center justify-center "></div> */}
+          <MakeSmile />
+          <OurModules />
+          <ImplantInterfeace />
         </section>
 
         <section className="container px-4 mx-auto py-28 ">
           <div className="flex justify-center ">
             <h1 className="text-primaryText text-base md:text-3xl font-bold font-poppins capitalize ">
               Blog &
-
               <span className="md:text-3xl font-bold font-poppins text-fouthBrand capitalize ml-2 pt-4">
                 Articles
               </span>
@@ -382,10 +253,13 @@ const About = ({ isLanding }) => {
 
           {/* <div className="grid grid-cols-1 md:grid-cols-12 gap-6"> */}
           <div className="grid md:grid-cols-12 grid-cols-2   gap-8 justify-items-center max-w-6xl mx-auto">
-
             {implantCards?.map((card, index) => (
               <div key={index} className="col-span-4">
-                <img src={card.img} alt={card.title || "Implant card"} className="" />
+                <img
+                  src={card.img}
+                  alt={card.title || "Implant card"}
+                  className=""
+                />
 
                 {/* Show content only if available */}
                 {card.title && (
@@ -409,19 +283,15 @@ const About = ({ isLanding }) => {
               </div>
             ))}
           </div>
-
-
         </section>
       </div>
 
-      <FrequentlyAskedQuestion />
-      <UpperFooter />
-      <Footer />
+      {/* <FrequentlyAskedQuestion /> */}
+      <ContactFooter />
+      {/* <UpperFooter /> */}
+      {/* <Footer /> */}
     </div>
-
-
   );
 };
 
 export default About;
-
