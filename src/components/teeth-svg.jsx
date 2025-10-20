@@ -31,97 +31,93 @@ import ThirtyIconSvg from "../icon/teeth/thirty";
 import ThirtyOneIconSvg from "../icon/teeth/thirty-one";
 import ThirtyTwoIconSvg from "../icon/teeth/thirty-two";
 
-
 // Store all tooth SVG components in an array for dynamic mapping
 const toothComponents = [
-    OneIconSvg,
-    TwoIconSvg,
-    ThreeIconSvg,
-    FouthIconSvg,
-    FifthIconSvg,
-    SixIconSvg,
-    SevenIconSvg,
-    EightIconSvg,
-    NineIconSvg,
-    TenSvgIcon,
-    ElevenIconSvg,
-    TwelveIconSvg,
-    ThirteenIconSvg,
-    FourteenIconSvg,
-    FifteenSvgIcon,
-    SixteenIconSvg,
-    SeventeenIconSvg,
-    EighteenIconSvg,
-    NinteenIconSvg,
-    TwentyIconSvg,
-    TwentyOneIconSvg,
-    TwentyTwoIconSvg,
-    TwentyThreeIconSvg,
-    TwentyFourIconSvg,
-    TwentyFiveIconSvg,
-    TwentySixIconSvg,
-    TwentySevenIconSvg,
-    TwentyEightIconSvg,
-    TwentyNineIconSvg,
-    ThirtyIconSvg,
-    ThirtyOneIconSvg,
-    ThirtyTwoIconSvg
-
-    // ... add all 32 imports here
+  OneIconSvg,
+  TwoIconSvg,
+  ThreeIconSvg,
+  FouthIconSvg,
+  FifthIconSvg,
+  SixIconSvg,
+  SevenIconSvg,
+  EightIconSvg,
+  NineIconSvg,
+  TenSvgIcon,
+  ElevenIconSvg,
+  TwelveIconSvg,
+  ThirteenIconSvg,
+  FourteenIconSvg,
+  FifteenSvgIcon,
+  SixteenIconSvg,
+  SeventeenIconSvg,
+  EighteenIconSvg,
+  NinteenIconSvg,
+  TwentyIconSvg,
+  TwentyOneIconSvg,
+  TwentyTwoIconSvg,
+  TwentyThreeIconSvg,
+  TwentyFourIconSvg,
+  TwentyFiveIconSvg,
+  TwentySixIconSvg,
+  TwentySevenIconSvg,
+  TwentyEightIconSvg,
+  TwentyNineIconSvg,
+  ThirtyIconSvg,
+  ThirtyOneIconSvg,
+  ThirtyTwoIconSvg,
 ];
 
-export default function TeethSvg({ selectedTeeth = [], onToothClick = () => { }, fillColor = "#94D3DD", // ✅ Default highlight color
-    defaultColor = "white", }) {
-    const upperTeeth = Array.from({ length: 16 }, (_, i) => i + 1);
-    const lowerTeeth = Array.from({ length: 16 }, (_, i) => i + 17);
-    const isSelected = (num) => selectedTeeth.includes(num);
-    // Helper to render each tooth with dynamic props
-    const renderTooth = (num, i, isUpper = true) => {
-        const ToothComponent = toothComponents[num - 1]; // zero-based index
-        if (!ToothComponent) return null;
-        const color = isSelected(num) ? fillColor : defaultColor;
+export default function TeethSvg({
+  selectedTeeth = [],
+  onToothClick = () => {},
+  fillColor = "#94D3DD", // ✅ Default highlight color
+  defaultColor = "white",
+}) {
+  const upperTeeth = Array.from({ length: 16 }, (_, i) => i + 1);
+  const lowerTeeth = Array.from({ length: 16 }, (_, i) => i + 17);
+  const isSelected = (num) => selectedTeeth.includes(num);
+  // Helper to render each tooth with dynamic props
+  const renderTooth = (num, i, isUpper = true) => {
+    const ToothComponent = toothComponents[num - 1]; // zero-based index
+    if (!ToothComponent) return null;
+    const color = isSelected(num) ? fillColor : defaultColor;
 
+    const radius = 170; // ↓ smaller = closer curve
+    const total = 16;
+    const angleStep = Math.PI / (total + 1);
+    const angle = isUpper ? Math.PI - angleStep * (i + 1) : angleStep * (i + 1);
 
-
-        const radius = 150; // ↓ smaller = closer curve
-        const total = 16;
-        const angleStep = Math.PI / (total + 1);
-        const angle = isUpper
-            ? Math.PI - angleStep * (i + 1)
-            : angleStep * (i + 1);
-
-        const x = radius * Math.cos(angle);
-        const y = radius * Math.sin(angle) * (isUpper ? 1 : -1);
-
-        return (
-            <div
-                key={num}
-                onClick={() => onToothClick(num)}
-                className="absolute cursor-pointer transition-transform duration-300 hover:scale-110"
-                style={{
-                    left: `calc(50% + ${x}px)`,
-                    top: `calc(50% - ${y}px)`,
-                
-                    transform: `translate(-50%, -50%)`,
-                }}
-
-            >
-                <ToothComponent fillColor={color} />
-            </div>
-        );
-    };
+    const x = radius + 120 * Math.cos(angle);
+    const y = radius * Math.sin(angle) * (isUpper ? 1 : -1);
 
     return (
-        <div className="flex flex-col items-center justify-center gap-10 p-6">
-            {/* Upper jaw */}
-            <div className="flex justify-center gap-2">
-                {upperTeeth.map((num, i) => renderTooth(num, i, true))}
-            </div>
+      <div
+        key={num}
+        onClick={() => onToothClick(num)}
+        className="absolute cursor-pointer transition-transform duration-300 hover:scale-110"
+        style={{
+          left: `calc(50% + ${x}px)`,
+          top: `calc(50% - ${y}px)`,
 
-            {/* Lower jaw */}
-            <div className="flex justify-center gap-2">
-                {lowerTeeth.map((num, i) => renderTooth(num, i, false))}
-            </div>
-        </div>
+          transform: `translate(-990%, -10%)`,
+        }}
+      >
+        <ToothComponent fillColor={color} />
+      </div>
     );
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center gap-10 p-6">
+      {/* Upper jaw */}
+      <div className="flex justify-center gap-2">
+        {upperTeeth.map((num, i) => renderTooth(num, i, true))}
+      </div>
+
+      {/* Lower jaw */}
+      <div className="flex justify-center gap-2">
+        {lowerTeeth.map((num, i) => renderTooth(num, i, false))}
+      </div>
+    </div>
+  );
 }
