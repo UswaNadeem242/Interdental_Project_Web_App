@@ -57,8 +57,7 @@ const DoctorOrder = () => {
 
   // Debug: Log when selected changes
   useEffect(() => {
-    console.log("RestorationDesignForm - selected changed:", selected);
-    if (selected) {
+     if (selected) {
       console.log("Selected object keys:", Object.keys(selected));
       console.log("Selected name:", selected.name);
     }
@@ -385,6 +384,7 @@ const DoctorOrder = () => {
                                   onChange={(val) =>
                                     setFieldValue("patientFirstName", val)
                                   } // update formik
+                                  classNameWidth=' w-80'
                                 />
                                 {errors.patientFirstName &&
                                   touched.patientFirstName && (

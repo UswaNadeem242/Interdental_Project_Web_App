@@ -1,5 +1,5 @@
 
-function PatientTermCondition() {
+function DoctorTermCondition() {
   const pVarible = `text-[#686868] text-sm font-poppins font-normal py-4 col-span-6 md:col-span-12`
   const p2Varible = `text-[#686868] text-sm font-poppins font-normal py-2`
   const liVarible = `text-black text-sm font-semibold font-poppins `
@@ -91,4 +91,4 @@ function PatientTermCondition() {
   )
 }
 
-export default PatientTermCondition
+export default DoctorTermCondition

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import { InputField } from "../../../Common/FormInputField";
-import { InputField } from '../../../Common/FormInputField'
+import  InputField  from '../../../Common/FormInputField'
 import { FormSection, FormSectionHeading } from "../../../Common/FormSection";
 import { NavLink, useNavigate } from "react-router-dom";
 import { PatientClaimInitialValues, patientClaimValidationSchema } from "../../../Common/FormsValidation/patient-claim-validation";
@@ -494,10 +494,10 @@ export const PatientForm = () => {
                   <p className="text-[#8E8E8E] text-sm font-normal">
                     Yes, I understand and agree to the
                     <span className="text-secondaryBrand ">
-                      <NavLink to="/patient-admin/term-condition" className="underline">
+                      {/* <NavLink to="/patient-admin/term-condition" className="underline">
                         <span className="ml-1" />
                         Terms of Service.
-                      </NavLink>
+                      </NavLink> */}
                     </span>
                   </p>
                 </div>
