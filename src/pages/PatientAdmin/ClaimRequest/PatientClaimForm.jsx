@@ -1,90 +1,51 @@
-import { CloudUpload } from "../../../icon/CloudUpload";
-
-export default function PatientClaimForm() {
+ export default function PatientClaimForm() {
   return (
     <div className="bg-bgWhite">
-      <form className="space-y-5 font-poppins">
+      <div className="font-poppins text-sm  font-normal text-primaryText pb-3">Claim ID: <span className="font-bold">#12345</span></div>
+      <div className="space-y-3 font-poppins">
         {/* Product Name */}
         <div>
-          <label className="block text-sm mb-1  text-[#333A44]  font-semibold">
-            Product Name
-          </label>
-          <select className="w-full rounded-md border text-[#737791]  border-borderPrimary px-3 py-2 text-sm focus:outline-none">
-            <option className="">Select Product</option>
-          </select>
+          <h6 className="block text-sm mb-1  text-secondaryText  font-normal">
+            Patient name
+          </h6>
+          <p className="text-sm   text-primaryText  font-semibold pt-2"> Varga Dóra</p>
         </div>
 
         {/* Purchase Date */}
-        <div>
-          <label className="block text-sm  text-[#333A44]  font-semibold mb-1">
-            Purchase Date
-          </label>
-          <input
-            type="date"
-            className="w-full rounded-md border text-[#737791] border-gray-300 px-3 py-2 text-sm focus:outline-none"
-          />
+        <div className="border-t-2 border-background ">
+          <h6 className="block text-sm mb-1  text-secondaryText pt-3 font-normal">
+            Patient Email Address
+          </h6>
+          <p className="text-sm mb-1  text-primaryText  font-semibold pt-2"> VargaDóra123@gmail.com</p>
         </div>
 
         {/* Quantity */}
-        <div>
-          <label className="block text-sm  text-[#333A44]  font-semibold mb-1">
-            Quantity
-          </label>
-          <input
-            type="number"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none"
-          />
+        <div className="border-t-2 border-background ">
+          <h6 className="block text-sm mb-1 pt-3  text-secondaryText  font-normal">
+            Claim Submitted On
+          </h6>
+          <p className="text-sm mb-1  text-primaryText  font-semibold pt-2">12 Mar 2025</p>
         </div>
 
         {/* Reason for Claim */}
-        <div>
-          <label className="block text-sm  text-[#333A44]  font-semibold mb-1">
-            Reason for Claim
-          </label>
-          <input
-            type="text"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none"
-          />
+        <div className="border-t-2 border-background">
+          <h6 className="block text-sm mb-1  pt-3 text-secondaryText  font-normal">
+            Warranty Options
+          </h6>
+          <p className="text-sm mb-1  text-primaryText  font-semibold pt-2">Crown and Bridges, Onlays/Inlays & Veneers</p>
+          <div className="bg-[#94D3DD] w-7 h-7 flex justify-center items-center rounded-md ">2</div>
         </div>
 
-        {/* Upload Supporting Documents */}
-        <div>
-          <label className="block text-sm text-[#333A44]  font-semibold mb-2">
-            Upload Supporting Documents
-          </label>
-          {/* Hidden file input */}
-          <input id="file-upload" type="file" className="hidden" />
+        <div className="border-t-2 border-background ">
 
-          {/* Styled label as button */}
-          <label
-            htmlFor="file-upload"
-            className="flex items-center w-fit gap-2 px-4 py-3 rounded-md border border-gray-300 bg-[#F8F8F8]  text-sm font-medium text-gray-700 cursor-pointer"
-          >
-            {/* Upload Icon (SVG) */}
-            <CloudUpload />
-            Update Photo
-          </label>
+          <p className="text-sm mb-1  pt-3 text-primaryText  font-semibold ">Implant Related Crown & Bridges:</p>
+          <div className="bg-[#94D3DD] w-7 h-7 flex justify-center items-center rounded-md ">2</div>
         </div>
 
-        {/* Additional Notes */}
-        <div>
-          <label className="block text-sm  text-[#333A44]  font-semibold mb-1">
-            Additional Notes
-          </label>
-          <textarea
-            rows={4}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none"
-          ></textarea>
-        </div>
 
-        {/* Submit */}
-        <button
-          type="button"
-          className="w-full bg-[#001F54] text-white font-medium rounded-full py-3 text-sm"
-        >
-          Send
-        </button>
-      </form>
+
+
+      </div>
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 // import { InputField } from "../../../Common/FormInputField";
-import { InputField } from '../../../Common/FormInputField'
+import  InputField  from '../../../Common/FormInputField'
 import { FormSection, FormSectionHeading } from "../../../Common/FormSection";
 import { NavLink, useNavigate } from "react-router-dom";
-import { PatientClaimInitialValues, patientClaimValidationSchema } from "../../../Common/FormsValidation/patient-claim-validation";
+import { DoctorClaimInitialValues, PatientClaimInitialValues, patientClaimValidationSchema } from "../../../Common/FormsValidation/patient-claim-validation";
 import { Formik, Form, FieldArray, Field } from "formik";
 import { getClaimsByUser } from "../../../api/patient-dashaboard-api";
 import { showToast } from "../../../store/toast-slice";
@@ -140,7 +140,7 @@ export const PatientForm = () => {
   return (
     <div className="bg-bgWhite rounded-2xl">
       <Formik
-        initialValues={PatientClaimInitialValues}
+        initialValues={DoctorClaimInitialValues}
         validationSchema={patientClaimValidationSchema}
         onSubmit={handleSubmit}
       >
@@ -494,10 +494,10 @@ export const PatientForm = () => {
                   <p className="text-[#8E8E8E] text-sm font-normal">
                     Yes, I understand and agree to the
                     <span className="text-secondaryBrand ">
-                      <NavLink to="/patient-admin/term-condition" className="underline">
+                      {/* <NavLink to="/patient-admin/term-condition" className="underline">
                         <span className="ml-1" />
                         Terms of Service.
-                      </NavLink>
+                      </NavLink> */}
                     </span>
                   </p>
                 </div>

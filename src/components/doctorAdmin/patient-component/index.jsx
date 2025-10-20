@@ -7,7 +7,7 @@ import {
 import { useDispatch } from "react-redux";
 import { setSelectedPatient } from "../../../store/slices/restoration-slice";
 
-export function PatientDropdown({ className, dropdownClass, value, onChange }) {
+export function PatientDropdown({ className, dropdownClass, value, onChange, classNameWidth }) {
   const [patientsList, setPatientsList] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [open, setOpen] = useState(false);
@@ -132,7 +132,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
 
       {open && (
         <div className="absolute z-20 mt-1 w-full rounded-xl border border-gray-200 bg-white shadow-lg max-h-60 overflow-y-auto">
-          <div className="sticky top-0 bg-background p-2 w-80">
+          <div className={`sticky top-0 bg-background p-2 ${classNameWidth}`}>
             <div className="relative ">
               <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-secondaryText" />
               <input
@@ -153,7 +153,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange }) {
                   key={p.id}
                   type="button"
                   onClick={() => handleSelect(p)}
-                  className={`flex w-80 items-center gap-2 px-3 py-2 text-sm transition-colors
+                  className={`flex  items-center gap-2 px-3 py-2 text-sm transition-colors ${classNameWidth}
                     ${active ? "bg-indigo-50" : "hover:bg-gray-50"}
                     ${!isLast ? "border-b border-gray-200" : ""}`}
                 >

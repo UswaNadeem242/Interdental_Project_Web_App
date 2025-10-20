@@ -47,8 +47,9 @@ export const menuItems = [
   },
   { name: "Orders", path: "/doctor-admin/orders", icon: OrderIcon },
   { name: "Patient", path: "/doctor-admin/patient", icon: PatienIcon },
+ 
   {
-    name: "Claim Requests",
+     name: "Claim Requests",
     path: "/doctor-admin/claim-request",
     icon: ClaimIcon,
   },
@@ -71,11 +72,11 @@ export const menuPatientItem = [
     path: "/patient-admin/dashboard",
     icon: DashboardIcon,
   },
-  {
-    name: "Claim Requests",
-    path: "/patient-admin/claim-request",
-    icon: ClaimIcon,
-  },
+  // {
+  //   name: "Claim Requests",
+  //   path: "/patient-admin/claim-request",
+  //   icon: ClaimIcon,
+  // },
   {
     name: "Profile settings",
     path: "/patient-admin/profile-settings",
@@ -399,8 +400,7 @@ export const data = [
 
 export const headings = [
   { label: "Claim ID", key: "id" },
-  { label: "Patient Name", key: "name" },
-  { label: "Product Name", key: "product" },
+  { label: "Patient Name", key: "name" }, 
   { label: "Status", key: "status" },
   { label: "Submission Date", key: "submission" },
   { label: "Action", key: "action" },
