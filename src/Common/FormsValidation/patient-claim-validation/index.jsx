@@ -19,6 +19,10 @@ export const PatientClaimInitialValues = {
   doctorState: "",
   doctorZip: "",
 
+
+  crownTeeth: [],    // start empty
+  implantTeeth: [],
+
   licenseNumber: "",
   totalUnits: "",
   typeOfRestoration: "",
