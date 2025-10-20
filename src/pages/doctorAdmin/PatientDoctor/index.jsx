@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Drawers from "../../../Common/Drawers";
-import { PrimaryButtonUI } from "../../../Common/Button";
+import { PrimaryButtonUI, SecondaryButton } from "../../../Common/Button";
 import AddPatientForm from "./AddPatientForm";
 import TableComponent from "../../../Common/Table";
 import {
@@ -13,9 +13,11 @@ import SearchBar from "../../../Common/SearchBar";
 import { getDoctorPatients } from "../../../api/doctorDasboard";
 import SecondTable from "../../../Common/second-table-component";
 import { EditDeleteDropdownMenu } from "../../../Common/DropDown/edit-delete";
+import AddNoteForm from "./AddNoteForm";
 
 const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isNoteOpen, setIsNoteOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [patients, setPatients] = useState([]);
@@ -94,21 +96,28 @@ const PatientPage = () => {
             />
           </div>
 
-          <div className="flex flex-col  md:flex-row items-start md:items-center gap-2 ">
-            <div className="md:block hidden">
+          <div className="flex flex-col  md:flex-row  md:items-center gap-2  ">
+            <div className=" w-full">
+              <SecondaryButton
+                title={"Add Note"}
+                onClick={() => setIsNoteOpen(true)}
+                className="text-sm font-semibold text-[#001D58] px-4 py-2   border-2 border-[#001D58] rounded-md   text-center w-full"
+              />
+            </div>
+            <div className="w-full">
               <PrimaryButtonUI
                 title="Add New Patient"
                 onClick={() => setIsOpen(true)}
-                className="rounded-md px-8 py-3  font-semibold "
+                className="rounded-md px-8 py-3  font-semibold w-full "
               />
             </div>
-            <div className="md:hidden block w-full">
+            {/* <div className="md:hidden block w-full">
               <PrimaryButtonUI
                 title="Add New Patient"
                 onClick={() => setIsOpen(true)}
                 className="rounded-md px-8 py-3 w-full font-semibold "
               />
-            </div>
+            </div> */}
 
             <div>
               <Drawers
@@ -122,6 +131,13 @@ const PatientPage = () => {
                   // skipImageValidation={true}
                   />
                 }
+              />
+
+              <Drawers
+                isOpen={isNoteOpen}
+                onClose={() => setIsNoteOpen(false)}
+                title="Add Note"
+                Content={<AddNoteForm />}
               />
             </div>
           </div>

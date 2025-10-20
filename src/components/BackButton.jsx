@@ -51,7 +51,7 @@ const BackButton = ({
       case "minimal":
         return `${baseStyles} hover:text-gray-900`;
       case "rounded":
-        return `${baseStyles} bg-gray-100 hover:bg-gray-200 rounded-md`;
+        return `${baseStyles} bg-white hover:bg-gray-50 rounded-md`;
       default:
         return `${baseStyles} bg-gray-100 hover:bg-gray-200 rounded-md hover:shadow-sm`;
     }

@@ -15,6 +15,7 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
 
 const RelatedProducts = ({ relatedProducts }) => {
+  console.log(relatedProducts?.data, "{related}");
   const navigate = useNavigate();
   const swiperRef = useRef(null);
   // const relatedProducts = [
@@ -68,13 +69,13 @@ const RelatedProducts = ({ relatedProducts }) => {
   //   },
   // ];
   return (
-    <div className="flex flex-col justify-start items-start w-full py-4 h-[464.17px] gap-[40px]">
+    <div className="flex flex-col justify-start items-start w-full py-4 h-auto gap-[40px]">
       <h1 className="font-poppins font-semibold text-2xl text-[#1A1A1A]">
         Related Products
       </h1>
-      {relatedProducts && relatedProducts.length > 0 ? (
-        <div className="flex w-[1312px] h-[388px] gap-[31px]">
-          <div className="flex w-[92%] h-[386px] gap-[31px]">
+      {relatedProducts?.data && relatedProducts?.data?.length > 0 ? (
+        <div className="flex w-full h-[388px] gap-[31px]">
+          <div className="flex w-full h-[386px] gap-[31px]">
             <Swiper
               ref={swiperRef}
               spaceBetween={24}
@@ -91,7 +92,7 @@ const RelatedProducts = ({ relatedProducts }) => {
               modules={[Autoplay, Pagination, Navigation]}
               className="w-[100%] h-[100%] flex justify-center items-center text-center"
             >
-              {relatedProducts?.map((product) => (
+              {relatedProducts?.data?.map((product) => (
                 <SwiperSlide key={product?.id}>
                   <div
                     onClick={() => navigate(`/product/${product?.id}`)}

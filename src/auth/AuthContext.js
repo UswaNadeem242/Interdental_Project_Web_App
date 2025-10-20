@@ -17,12 +17,17 @@ export const AuthProvider = ({ children }) => {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
-  console.log(wishlistCount, "COUNT");
+
   const login = (user, token) => {
     localStorage.setItem("token", token);
     localStorage.setItem("users", JSON.stringify(user));
     setUser(user);
     setLoading(false);
+  };
+
+  const updateUser = (updatedUserData) => {
+    localStorage.setItem("users", JSON.stringify(updatedUserData));
+    setUser(updatedUserData);
   };
 
   const fetchWishlistCount = async () => {
@@ -151,6 +156,7 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         logout,
+        updateUser,
         loading,
         fetchWishlistCount,
         wishlistCount,

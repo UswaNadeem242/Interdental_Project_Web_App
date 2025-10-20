@@ -1,149 +1,612 @@
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import axios from "axios";
+import { BASE_URL } from "../config";
+import Icons from "../components/Icons";
+import { showToast } from "../store/toast-slice";
+import { useDispatch } from "react-redux";
+import { useAuth } from "../auth/AuthContext";
+import * as Yup from "yup";
+import useFieldValidation from "../Hooks/useFieldValidation";
 
-import { useState } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
 const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
-  const userData = localStorage.getItem("users");
-  const parsedUserData = JSON.parse(userData);
-  const [name, setName] = useState(parsedUserData?.firstName + " " + parsedUserData?.lastName);
-  const [email, setEmail] = useState(parsedUserData?.email);
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
+  const { user: parsedUserData, updateUser } = useAuth();
+  const isDoctor = parsedUserData?.roles?.includes("DOCTOR");
+  const dispatch = useDispatch();
 
+  const [formData, setFormData] = useState({
+    firstName: parsedUserData?.firstName || "",
+    lastName: parsedUserData?.lastName || "",
+    email: parsedUserData?.email || "",
+    phone: parsedUserData?.phoneNumber || "",
+    address: parsedUserData?.address || "",
+    officeRefNumber: parsedUserData?.officeRefNo || "",
+    doctorLicenceNumber: parsedUserData?.doctorLicenceNumber || "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(
+    parsedUserData?.profileImage || null,
+  );
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  // Yup validation schema
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(2, "First name must be at least 2 characters")
+      .max(25, "First name must not exceed 25 characters")
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "First name must contain only letters and spaces",
+      )
+      .required("First name is required"),
+    lastName: Yup.string()
+      .min(2, "Last name must be at least 2 characters")
+      .max(25, "Last name must not exceed 25 characters")
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "Last name must contain only letters and spaces",
+      )
+      .required("Last name is required"),
+    phone: Yup.string()
+      .matches(
+        /^[0-9]{10,15}$/,
+        "Please enter a valid phone number (10-15 digits)",
+      )
+      .required("Phone number is required"),
+    address: Yup.string()
+      .min(10, "Address must be at least 10 characters")
+      .required("Address is required"),
+    officeRefNumber: Yup.string().when([], {
+      is: () => isDoctor,
+      then: (schema) => schema.required("Office reference number is required"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    doctorLicenceNumber: Yup.string().when([], {
+      is: () => isDoctor,
+      then: (schema) => schema.required("Doctor licence number is required"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+  });
+
+  const {
+    validationErrors,
+    validateField,
+    clearFieldError,
+    validateAllFields,
+  } = useFieldValidation(validationSchema);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [isModalOpen]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Clear error when user starts typing
+    if (validationErrors[name]) {
+      clearFieldError(name);
+    }
   };
-  const handleConfirm = async () => {
 
+  const handleBlur = async (e) => {
+    const { name, value } = e.target;
+    // Validate field when user leaves it
+    if (value.trim()) {
+      await validateField(name, value, formData);
+    }
+  };
+
+  const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        dispatch(
+          showToast({
+            message: "Please select a valid image file",
+            type: "error",
+          }),
+        );
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        dispatch(
+          showToast({
+            message: "Image size should not exceed 5MB",
+            type: "error",
+          }),
+        );
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+
+      // Auto-upload the image
+      await uploadImage(file);
+    }
+  };
+
+  const uploadImage = async (file) => {
+    if (!file) return;
+
+    try {
+      setUploadingImage(true);
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+      const response = await axios.post(
+        `${BASE_URL}/api/users/updateUserProfileImage`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+
+      if (response.data) {
+        // Fetch updated user data
+        const userResponse = await axios.get(
+          `${BASE_URL}/api/users/getById/${parsedUserData.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          },
+        );
+
+        const updatedUserData = {
+          ...parsedUserData,
+          profileImage: userResponse?.data?.data?.profileImage,
+        };
+
+        console.log(updatedUserData, "[[updated]]");
+
+        updateUser(updatedUserData);
+
+        dispatch(
+          showToast({
+            message: "Profile image updated successfully!",
+            type: "success",
+          }),
+        );
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      dispatch(
+        showToast({
+          message: "Failed to upload image. Please try again.",
+          type: "error",
+        }),
+      );
+      // Reset preview on error
+      setImagePreview(parsedUserData?.profileImage || null);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleRemoveImage = async (e) => {
+    try {
+      setUploadingImage(true);
+      setIsRemoving(true);
+
+      const formData = new FormData();
+      // Create an empty blob to represent the removal of the image
+      const emptyBlob = new Blob([], { type: "image/jpeg" });
+      formData.append("profileImage", emptyBlob, "empty.jpg");
+
+      const response = await axios.post(
+        `${BASE_URL}/api/users/updateUserProfileImage`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+
+      if (response.data) {
+        const updatedUserData = {
+          ...parsedUserData,
+          profileImage: null,
+        };
+        console.log(updatedUserData);
+
+        updateUser(updatedUserData);
+        setImagePreview(null);
+
+        dispatch(
+          showToast({
+            message: "Profile image removed successfully!",
+            type: "success",
+          }),
+        );
+      }
+    } catch (error) {
+      console.error("Error removing image:", error);
+      dispatch(
+        showToast({
+          message: "Failed to remove image. Please try again.",
+          type: "error",
+        }),
+      );
+    } finally {
+      setUploadingImage(false);
+      setIsRemoving(false);
+    }
+  };
+
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();
+
+    // Validate all fields before submission
+    const validationError = await validateAllFields(formData);
+    if (validationError) {
+      dispatch(
+        showToast({
+          message: validationError,
+          type: "error",
+        }),
+      );
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const payload = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone,
+        address: formData.address,
+      };
+
+      if (isDoctor) {
+        payload.officeRefNumber = formData.officeRefNumber;
+        payload.doctorLicenceNumber = formData.doctorLicenceNumber;
+      }
+
+      const response = await axios.post(
+        `${BASE_URL}/api/users/update-profile-info`,
+        payload,
+        {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+
+      if (response.data) {
+        const updatedUserData = {
+          ...parsedUserData,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phoneNumber: formData.phone,
+          address: formData.address,
+          ...(isDoctor && {
+            officeRefNo: formData.officeRefNumber,
+            doctorLicenceNumber: formData.doctorLicenceNumber,
+          }),
+        };
+
+        updateUser(updatedUserData);
+
+        dispatch(
+          showToast({
+            message: "Profile updated successfully!",
+            type: "success",
+          }),
+        );
+        setIsModalOpen(false);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      dispatch(
+        showToast({
+          message: "Failed to update profile. Please try again.",
+          type: "error",
+        }),
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!isModalOpen) return null;
-  return (
-    <>
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4"
+      onClick={handleCloseModal}
+    >
       <div
-        className="fixed -left-[63px] top-0 right-0 w-screen  h-screen flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-sm z-[9999]"
-
-
-        onClick={(e) => {
-          // Close only when clicking on the backdrop
-          if (e.target === e.currentTarget) {
-            setIsModalOpen(false);
-          }
-        }}
+        className="bg-white rounded-3xl shadow-2xl w-full max-w-[600px] max-h-[95vh] flex flex-col relative"
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="   gap-[8px] p-[32px] rounded-[30px]">
-          <div className="flex flex-col justify-center items-center  bg-white py-[32px] px-[24px] rounded-[24px] shadow-lg w-[449px] h-[530px] gap-[23.06px] relative">
-            <div className="flex justify-center items-center w-[402.91px] h-[30px] gap-[49.01px]">
-              <h1 className="font-poppins font-bold text-[24px] w-full leading-[36px] text-[#434343]">
-                Your Account
-              </h1>
+        {/* Close Button */}
+        <button
+          onClick={handleCloseModal}
+          className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors z-10"
+        >
+          <Icons.Close className="w-6 h-6" fill="currentColor" />
+        </button>
 
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto flex-1">
+          <div className="p-8 md:p-12">
+            {/* Header */}
+            <h2 className="font-poppins font-semibold text-2xl md:text-3xl text-[#0F153E] mb-2">
+              Your Account
+            </h2>
+            <div className="w-full h-[1px] bg-gray-200 mb-8"></div>
 
-              <button onClick={handleCloseModal}>
-                <XMarkIcon className='bg-[#E5E5E5] w-7  h-7 text-[10px] rounded-[29px] p-[4px] gap-[10px] text-[#4F4F4F]' />
-              </button>
-
+            {/* Avatar */}
+            <div className="flex flex-col justify-center items-center mb-8">
+              <div className="relative">
+                {!imagePreview ? (
+                  // Show default ProfileAvatar when no image
+                  <label
+                    htmlFor="profile-image-upload"
+                    className="cursor-pointer hover:opacity-80 transition-opacity"
+                    title="Click to upload profile image"
+                  >
+                    <Icons.ProfileAvatar />
+                    <input
+                      id="profile-image-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                      disabled={uploadingImage}
+                    />
+                  </label>
+                ) : (
+                  // Show circular image with remove icon when image exists
+                  <div className="relative">
+                    <img
+                      src={imagePreview}
+                      alt="Profile"
+                      className="w-[140px] h-[140px] rounded-full object-cover border-2 border-[#001D58]"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      disabled={uploadingImage}
+                      className="absolute -top-2 -right-4 bg-red-500 hover:bg-red-600 rounded-full p-2 shadow-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Remove image"
+                    >
+                      <Icons.Close className="w-4 h-4" fill="white" />
+                    </button>
+                  </div>
+                )}
+              </div>
+              {uploadingImage && (
+                <p className="text-sm text-[#001D58] mt-2 font-poppins">
+                  {isRemoving ? "Removing image..." : "Uploading image..."}
+                </p>
+              )}
+              {!imagePreview && !uploadingImage && (
+                <p className="text-xs text-gray-500 mt-2 font-poppins text-center">
+                  Click to upload profile image
+                </p>
+              )}
             </div>
-            <div className="w-full border-[1px] border-[#0000001A]"></div>
-            <div className="w-[468px] h-[187px] flex justify-center items-center gap-[24px]">
-              <svg
-                width="124"
-                height="124"
-                viewBox="0 0 124 124"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="1.73226"
-                  y="1.73128"
-                  width="120.535"
-                  height="120.535"
-                  rx="60.2677"
-                  fill="white"
-                  stroke="#001D58"
-                  stroke-width="1.53548"
-                />
-                <path
-                  d="M62 62.499C67.5228 62.499 72 58.0219 72 52.499C72 46.9762 67.5228 42.499 62 42.499C56.4772 42.499 52 46.9762 52 52.499C52 58.0219 56.4772 62.499 62 62.499Z"
-                  stroke="#001D58"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M79.1803 82.499C79.1803 74.759 71.4803 68.499 62.0003 68.499C52.5203 68.499 44.8203 74.759 44.8203 82.499"
-                  stroke="#001D58"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <rect
-                  x="85"
-                  y="91.499"
-                  width="32"
-                  height="32"
-                  rx="16"
-                  fill="#001D58"
-                />
-                <path
-                  d="M108.151 111.08C108.151 111.364 108.038 111.636 107.838 111.836C107.637 112.037 107.365 112.15 107.082 112.15H94.2483C93.9646 112.15 93.6926 112.037 93.4921 111.836C93.2915 111.636 93.1788 111.364 93.1788 111.08V104.664C93.1788 104.38 93.2915 104.108 93.4921 103.907C93.6926 103.707 93.9646 103.594 94.2483 103.594H95.5017C96.3521 103.594 97.1676 103.255 97.7689 102.654L98.6565 101.769C98.8565 101.568 99.1276 101.456 99.4105 101.455H101.917C102.201 101.455 102.473 101.568 102.673 101.769L103.559 102.654C103.857 102.952 104.211 103.189 104.6 103.35C104.989 103.511 105.407 103.594 105.828 103.594H107.082C107.365 103.594 107.637 103.707 107.838 103.907C108.038 104.108 108.151 104.38 108.151 104.664V111.08ZM94.2483 102.525C93.681 102.525 93.137 102.75 92.7358 103.151C92.3347 103.552 92.1094 104.096 92.1094 104.664V111.08C92.1094 111.647 92.3347 112.191 92.7358 112.593C93.137 112.994 93.681 113.219 94.2483 113.219H107.082C107.649 113.219 108.193 112.994 108.594 112.593C108.995 112.191 109.22 111.647 109.22 111.08V104.664C109.22 104.096 108.995 103.552 108.594 103.151C108.193 102.75 107.649 102.525 107.082 102.525H105.828C105.261 102.525 104.717 102.299 104.316 101.898L103.431 101.012C103.029 100.611 102.486 100.386 101.918 100.386H99.4115C98.8443 100.386 98.3004 100.611 97.8993 101.012L97.0138 101.898C96.6128 102.299 96.0689 102.525 95.5017 102.525H94.2483Z"
-                  fill="white"
-                />
-                <path
-                  d="M100.667 110.012C99.9576 110.012 99.2775 109.731 98.7761 109.229C98.2747 108.728 97.9931 108.048 97.9931 107.339C97.9931 106.63 98.2747 105.95 98.7761 105.448C99.2775 104.947 99.9576 104.665 100.667 104.665C101.376 104.665 102.056 104.947 102.557 105.448C103.059 105.95 103.34 106.63 103.34 107.339C103.34 108.048 103.059 108.728 102.557 109.229C102.056 109.731 101.376 110.012 100.667 110.012ZM100.667 111.082C101.659 111.082 102.611 110.687 103.313 109.985C104.015 109.284 104.41 108.331 104.41 107.339C104.41 106.346 104.015 105.394 103.313 104.692C102.611 103.99 101.659 103.596 100.667 103.596C99.6739 103.596 98.7219 103.99 98.0199 104.692C97.318 105.394 96.9236 106.346 96.9236 107.339C96.9236 108.331 97.318 109.284 98.0199 109.985C98.7219 110.687 99.6739 111.082 100.667 111.082ZM95.3194 105.2C95.3194 105.342 95.2631 105.478 95.1628 105.578C95.0625 105.678 94.9265 105.735 94.7847 105.735C94.6429 105.735 94.5069 105.678 94.4066 105.578C94.3063 105.478 94.25 105.342 94.25 105.2C94.25 105.058 94.3063 104.922 94.4066 104.822C94.5069 104.721 94.6429 104.665 94.7847 104.665C94.9265 104.665 95.0625 104.721 95.1628 104.822C95.2631 104.922 95.3194 105.058 95.3194 105.2Z"
-                  fill="white"
-                />
-              </svg>
-            </div>
-            <div className="w-[468px] h-[187px] flex flex-col justify-start items-start mx-auto space-y-4">
-              <div className="flex flex-col justify-start items-start w-[468px] h-[82px] space-y-[8px]">
-                <label
-                  htmlFor=""
-                  className="font-poppins font-normal text-[14px] leading-[21px] text-[#949494]"
-                >
-                  Name
+
+            {/* Form */}
+            <form onSubmit={handleSaveChanges} className="space-y-6">
+              {/* First Name */}
+              <div>
+                <label className="block font-poppins font-medium text-[#434343] text-sm md:text-base mb-2">
+                  First Name
                 </label>
                 <input
                   type="text"
-                  name=""
-                  id=""
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="font-poppins font-normal text-[14px] leading-[21px] text-[#949494] w-[408px] h-[53px] outline-none border-[1px] border-[#0000000D] rounded-[32px] py-[16px] px-[24px]"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Enter your first name"
+                  className={`w-full px-4 py-3 border rounded-xl outline-none focus:border-[#001D58] transition-colors font-poppins text-sm md:text-base ${
+                    validationErrors.firstName
+                      ? "border-red-500"
+                      : "border-[#624C7926]"
+                  }`}
                 />
+                {validationErrors.firstName && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {validationErrors.firstName}
+                  </p>
+                )}
               </div>
-              <div className="flex flex-col justify-start items-start w-[468px] h-[82px] space-y-[8px]">
-                <label
-                  htmlFor=""
-                  className="font-poppins font-normal text-[14px] leading-[21px] text-[#949494]"
-                >
+
+              {/* Last Name */}
+              <div>
+                <label className="block font-poppins font-medium text-[#434343] text-sm md:text-base mb-2">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Enter your last name"
+                  className={`w-full px-4 py-3 border rounded-xl outline-none focus:border-[#001D58] transition-colors font-poppins text-sm md:text-base ${
+                    validationErrors.lastName
+                      ? "border-red-500"
+                      : "border-[#624C7926]"
+                  }`}
+                />
+                {validationErrors.lastName && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {validationErrors.lastName}
+                  </p>
+                )}
+              </div>
+
+              {/* Email (Disabled) */}
+              <div>
+                <label className="block font-poppins font-medium text-[#434343] text-sm md:text-base mb-2">
                   E-mail Address
                 </label>
                 <input
-                  type="text"
-                  name=""
-                  id=""
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="font-poppins font-normal text-[14px] leading-[21px] text-[#949494] w-[408px] h-[53px] outline-none border-[1px] border-[#0000000D] rounded-[32px] py-[16px] px-[24px]"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  disabled
+                  className="w-full px-4 py-3 border border-[#624C7926] rounded-xl outline-none font-poppins text-sm md:text-base bg-gray-100 text-gray-500 cursor-not-allowed"
                 />
               </div>
-            </div>
 
-            <div className="flex justify-center items-center  w-[402.91px] h-[57px] gap-[8px]">
-              <button
-                onClick={handleCloseModal}
-                className="flex justify-center items-center w-[402.91px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-[89px] bg-[#001D58] font-poppins font-semibold text-white text-[14px] leading-[21px]"
-              >
-                Save Changes
-              </button>
-            </div >
+              {/* Phone */}
+              <div>
+                <label className="block font-poppins font-medium text-[#434343] text-sm md:text-base mb-2">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Enter your phone number"
+                  className={`w-full px-4 py-3 border rounded-xl outline-none focus:border-[#001D58] transition-colors font-poppins text-sm md:text-base ${
+                    validationErrors.phone
+                      ? "border-red-500"
+                      : "border-[#624C7926]"
+                  }`}
+                />
+                {validationErrors.phone && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {validationErrors.phone}
+                  </p>
+                )}
+              </div>
+
+              {/* Address */}
+              <div>
+                <label className="block font-poppins font-medium text-[#434343] text-sm md:text-base mb-2">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Enter your address"
+                  className={`w-full px-4 py-3 border rounded-xl outline-none focus:border-[#001D58] transition-colors font-poppins text-sm md:text-base ${
+                    validationErrors.address
+                      ? "border-red-500"
+                      : "border-[#624C7926]"
+                  }`}
+                />
+                {validationErrors.address && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {validationErrors.address}
+                  </p>
+                )}
+              </div>
+
+              {/* Doctor Only Fields */}
+              {isDoctor && (
+                <>
+                  {/* Office Reference Number */}
+                  <div>
+                    <label className="block font-poppins font-medium text-[#434343] text-sm md:text-base mb-2">
+                      Office Reference Number
+                    </label>
+                    <input
+                      type="text"
+                      name="officeRefNumber"
+                      value={formData.officeRefNumber}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="Enter office reference number"
+                      className={`w-full px-4 py-3 border rounded-xl outline-none focus:border-[#001D58] transition-colors font-poppins text-sm md:text-base ${
+                        validationErrors.officeRefNumber
+                          ? "border-red-500"
+                          : "border-[#624C7926]"
+                      }`}
+                    />
+                    {validationErrors.officeRefNumber && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {validationErrors.officeRefNumber}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Doctor Licence Number */}
+                  <div>
+                    <label className="block font-poppins font-medium text-[#434343] text-sm md:text-base mb-2">
+                      Doctor Licence Number
+                    </label>
+                    <input
+                      type="text"
+                      name="doctorLicenceNumber"
+                      value={formData.doctorLicenceNumber}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="Enter doctor licence number"
+                      className={`w-full px-4 py-3 border rounded-xl outline-none focus:border-[#001D58] transition-colors font-poppins text-sm md:text-base ${
+                        validationErrors.doctorLicenceNumber
+                          ? "border-red-500"
+                          : "border-[#624C7926]"
+                      }`}
+                    />
+                    {validationErrors.doctorLicenceNumber && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {validationErrors.doctorLicenceNumber}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+            </form>
           </div>
         </div>
 
-
-      </div >
-
-    </>
+        {/* Sticky Footer with Save Button */}
+        <div className="sticky bottom-0 bg-white border-t border-gray-200 p-6 md:p-8 rounded-b-3xl">
+          <button
+            onClick={handleSaveChanges}
+            disabled={loading}
+            className="w-full bg-[#001D58] text-white font-poppins font-semibold text-sm md:text-base py-4 rounded-full hover:bg-[#002575] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
+          >
+            {loading ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body,
   );
 };
 
 export default ProfileModal;
-

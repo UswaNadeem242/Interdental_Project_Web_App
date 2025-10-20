@@ -184,7 +184,7 @@ const DoctorProfile = () => {
       } else {
         showToast(
           response.data?.responseMessage || "Failed to update profile image",
-          "error"
+          "error",
         );
         setProfileImagePreview(null);
       }
@@ -227,13 +227,11 @@ const DoctorProfile = () => {
   //   }
   // };
 
-
-
   const validateField = (name, value) => {
     let errorMsg = "";
 
     switch (name) {
-      case "firstName":   // ✅ keep the same field name from your first function
+      case "firstName": // ✅ keep the same field name from your first function
         if (!value.trim()) {
           errorMsg = "First name is required.";
         } else if (value.length < 3) {
@@ -241,11 +239,12 @@ const DoctorProfile = () => {
         } else if (value.length > 10) {
           errorMsg = "First name cannot exceed 10 characters.";
         } else if (!/^[A-Za-z]+$/.test(value)) {
-          errorMsg = "First name must contain only letters (no spaces or numbers).";
+          errorMsg =
+            "First name must contain only letters (no spaces or numbers).";
         }
         break;
 
-      case "lastName":   // ✅ new validation added from your second function
+      case "lastName": // ✅ new validation added from your second function
         if (!value.trim()) {
           errorMsg = "Last name is required.";
         } else if (value.length < 3) {
@@ -253,7 +252,8 @@ const DoctorProfile = () => {
         } else if (value.length > 10) {
           errorMsg = "Last name cannot exceed 10 characters.";
         } else if (!/^[A-Za-z]+$/.test(value)) {
-          errorMsg = "Last name must contain only letters (no spaces or numbers).";
+          errorMsg =
+            "Last name must contain only letters (no spaces or numbers).";
         }
         break;
 
@@ -289,7 +289,6 @@ const DoctorProfile = () => {
 
     return errorMsg;
   };
-
 
   // Handle input change
   const handleChange = (e) => {
@@ -399,8 +398,9 @@ const DoctorProfile = () => {
             />
             <label
               htmlFor="fileUpload"
-              className={`cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block ${isUploadingImage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={`cursor-pointer bg-textField text-textColor1 text-sm py-5 px-6 rounded-full font-semibold font-poppins inline-block ${
+                isUploadingImage ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               {isUploadingImage ? "Uploading..." : "Upload new picture"}
             </label>
@@ -455,10 +455,11 @@ const DoctorProfile = () => {
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className={`bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${isUpdating
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-secondaryBrand"
-                    }`}
+                  className={`bg-secondaryBrand text-white md:px-8 px-4  md:py-4 md:text-md text-sm py-2 rounded-full ${
+                    isUpdating
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-secondaryBrand"
+                  }`}
                 >
                   {isUpdating ? "Save Change ..." : "Save Change"}
                 </button>
@@ -506,14 +507,14 @@ const DoctorProfile = () => {
                 id="email"
                 name="email"
                 label="Email"
-                 disabled 
+                 disabled
                 placeholder="hanry463@gmail.com"
                 type="email"
                 className3={"text-secondaryText"}
                 value={formData.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                 
+
               /> */}
               <TextInput
                 id="email"

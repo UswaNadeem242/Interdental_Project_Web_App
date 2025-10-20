@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NotificationSettingsModal from "../../modals/NotificationSettingsModals";
+
 import { useAuth } from "../../auth/AuthContext";
 import ProfileModal from "../../modals/ProfileModal";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import ProfileChangePasswordModel from "../../modals/profile-change-password";
 import UserdropdownIcon from "../../icon/userdropdownIcon";
-import BoxIcon from "../../icon/BoxIcon";
 import BoxdropdownIcon from "../../icon/boxdropdownIcon";
 import { BellIconSVG } from "../../icon/Bell";
 import ToggleIcon from "../../icon/toggleIcon";
@@ -35,12 +34,11 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
           <div className="flex items-center gap-4">
             <UserdropdownIcon />
 
-
             <p className=" font-inter font-normal text-[14px] text-primaryText leading-[16.94px]">
               Profile
             </p>
-          </div>   <ChevronRightIcon className='w-4 h-4' />
-
+          </div>{" "}
+          <ChevronRightIcon className="w-4 h-4" />
         </div>
         <div
           onClick={() => {
@@ -56,14 +54,14 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
               My Orders
             </p>
           </div>
-          <ChevronRightIcon className='w-4 h-4' />
+          <ChevronRightIcon className="w-4 h-4" />
         </div>
         <div
           onClick={() => setisNotificationsOpen(true)}
           className="flex justify-between items-center cursor-pointer   h-[48px] rounded-[10px] gap-[14px] py-[15px] px-[14px]"
         >
           <div className="flex items-center gap-4">
-            <BellIconSVG className='w-5' />
+            <BellIconSVG className="w-5" />
 
             <p className="  font-inter font-normal text-primaryText text-[14px] leading-[16.94px]">
               Notifications
@@ -85,8 +83,7 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
             </p>
           </div>
 
-
-          <ChevronRightIcon className='w-4 h-4' />
+          <ChevronRightIcon className="w-4 h-4" />
         </div>
       </div>
       <div
@@ -117,12 +114,12 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
         </h1>
       </div>
 
-      {isNotficationsOpen && (
+      {/* {isNotficationsOpen && (
         <NotificationSettingsModal
           isModalOpen={isNotficationsOpen}
           setIsModalOpen={setisNotificationsOpen}
         />
-      )}
+      )}*/}
       {isProfileOpen && (
         <ProfileModal
           isModalOpen={isProfileOpen}
