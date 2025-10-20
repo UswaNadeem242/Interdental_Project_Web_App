@@ -8,6 +8,8 @@ import {
 import { SecondaryButton } from "../../../Common/Button";
 import { PlusIcon } from "../../../icon/PlusIcon";
 import { getClaims } from "../../../api/patient-dashaboard-api";
+import Drawers from "../../../Common/Drawers";
+import PatientClaimForm from "../../PatientAdmin/ClaimRequest/PatientClaimForm";
 
 const DoctorClaimRequests = () => {
     const [selectedRow, setSelectedRow] = useState(null);
@@ -116,14 +118,23 @@ const DoctorClaimRequests = () => {
                     newClaimBtn={
                         <SecondaryButton
                             title="New Claim Request"
-                            icon={<PlusIcon />} 
+                            icon={<PlusIcon />}
                             href={`/doctor-admin/claim-request/${slugify("claim-request")}`}
                             className="w-full md:w-auto rounded-md px-6 py-3 mb-5 font-poppins bg-[#F8F8F8] text-primaryText"
                         />
                     }
                 />
- 
+
             </div>
+
+
+            <Drawers
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                title="Claim Details"
+                status={selectedRow?.status}
+                Content={<PatientClaimForm row={selectedRow} />}
+            />
         </div>
     );
 };

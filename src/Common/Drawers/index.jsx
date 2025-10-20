@@ -17,13 +17,7 @@ export default function Drawers({
   const [open, setOpen] = useState(true);
  
   return (
-    <div>
-      {/* <button
-                onClick={() => setOpen(true)}
-                className="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10"
-            >
-                Open drawer
-            </button> */}
+    <div> 
       <Dialog open={isOpen} onClose={onClose} className="relative z-40">
         <DialogBackdrop
           transition
@@ -66,7 +60,7 @@ export default function Drawers({
                       <Xmark className="w-8 h-8 " />
                     </button>
                   </div>
-                  <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                  <div className="relative  flex-1 px-4 sm:px-6">
                     {Content}
                   </div>
                 </div>

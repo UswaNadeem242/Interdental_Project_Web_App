@@ -1,30 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Formik, Form, FieldArray, Field, useFormikContext } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 import { getClaimsByUser } from "../../../../api/patient-dashaboard-api";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import TeethSvg from "../../../../components/teeth-svg";
 import { FormSectionHeading } from "../../../../Common/FormSection";
-import { PatientClaimInitialValues, patientClaimValidationSchema } from "../../../../Common/FormsValidation/patient-claim-validation";
+import { DoctorClaimInitialValues, patientClaimValidationSchema } from "../../../../Common/FormsValidation/patient-claim-validation";
 import { showToast } from "../../../../store/toast-slice";
 import { PatientDropdown } from "../../../../components/doctorAdmin/patient-component";
 import { getDoctorProfile } from "../../../../api/doctorDasboard";
 import InputField from "../../../../Common/FormInputField";
-
 export const DoctorCalimsForm = () => {
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [selectedImplants, setSelectedImplants] = useState([]);
-  const [selectedDenture, setSelectedDenture] = useState(null);
   const [doctorProfile, setDoctorProfile] = useState(null);
   const [doctorProfileEmail, setDoctorProfileEmail] = useState(null);
-
   const dispatch = useDispatch();
   const navigator = useNavigate();
   const toggleSelection = (num, type) => {
     if (type === "teeth") {
-      // setSelectedTeeth((prev) =>
-      //   prev.includes(num) ? prev.filter((n) => n !== num) : [...prev, num]
-      // );
+
       setSelectedTeeth((prev) =>
         prev.includes(num) ? prev.filter((t) => t !== num) : [...prev, num]
       );
@@ -59,51 +54,21 @@ export const DoctorCalimsForm = () => {
       // Final Payload
       const payload = {
         patientName: values.patientName,
-        // patientPhone: values.patientPhone,
-        // patientEmail: values.patientEmail,
-        // dateOfBirth: values.dateOfBirth,
-        // patientAddress: values.patientAddress,
-        // patientCity: values.patientCity,
-        // patientState: values.patientState,
-        // patientZip: values.patientZip,
-
         doctorName: values.doctorName,
-        // doctorPhone: values.doctorPhone,
         doctorEmail: values.doctorEmail,
-        // doctorAddress: values.doctorAddress,
-        // doctorCity: values.doctorCity,
-        // doctorState: values.doctorState,
-        // doctorZip: values.doctorZip,
-
-        // licenseNumber: values.licenseNumber,
-        // totalUnits: values.totalUnits,
-        // typeOfRestoration: values.typeOfRestoration,
-        // shade: values.shade,
-        // doctorSignature: values.doctorSignature || "",
         crownTeeth: Array.isArray(values.crownTeeth)
           ? values.crownTeeth.filter(Boolean).join(",")
           : (values.crownTeeth || "").replace(/^,|,$/g, ""), // remove leading/trailing commas
-
         implantTeeth: Array.isArray(values.implantTeeth)
           ? values.implantTeeth.filter(Boolean).join(",")
           : (values.implantTeeth || "").replace(/^,|,$/g, ""),
 
-        // dentureTeeth: Array.isArray(values.dentureTeeth)
-        //   ? values.dentureTeeth.filter(Boolean).join(",")
-        //   : (values.dentureTeeth || "").replace(/^,|,$/g, ""),
-
-        // warrantySelections,
         warrantySelections: [
           ...(Array.isArray(values.crownTeeth) ? values.crownTeeth : []),
           ...(Array.isArray(values.implantTeeth) ? values.implantTeeth : [])
         ]
 
-        // paymentMethod: values.paymentMethod || "",
-        // creditCardMasked: values.creditCardMasked,
-        // ccExpiry: values.ccExpiry,
-        // createdAt: values.date,
 
-        // <-- injected here
       };
 
 
@@ -141,9 +106,6 @@ export const DoctorCalimsForm = () => {
       setSubmitting(false);
     }
   };
-
-
-
   useEffect(() => {
     const userData = localStorage.getItem("users");
     if (!userData) return;
@@ -166,14 +128,10 @@ export const DoctorCalimsForm = () => {
     fetchDoctorProfile();
   }, []);
 
-
-
-
-
   return (
     <div className="bg-bgWhite rounded-2xl">
       <Formik
-        initialValues={PatientClaimInitialValues}
+        initialValues={DoctorClaimInitialValues}
         validationSchema={patientClaimValidationSchema}
         onSubmit={handleSubmit}
         enableReinitialize
@@ -221,8 +179,6 @@ export const DoctorCalimsForm = () => {
                     readOnly
                     placeholder="Dr. Emily Smith"
                   />
-
-
                   <InputField
                     type="text"
                     label="Email Address"
@@ -231,8 +187,6 @@ export const DoctorCalimsForm = () => {
                     readOnly
                     placeholder="dr.emily@clinic.com"
                   />
-
-                  {/* <InputField label="Email Address" type="email" name='doctorEmail' placeholder='dr.emily@clinic.com' /> */}
                 </div>
               </FormSectionHeading>
 
@@ -256,14 +210,9 @@ export const DoctorCalimsForm = () => {
                       {errors.patientFirstName}
                     </p>
                   )}
-
-
               </FormSectionHeading>
 
-              {/* Doctor Info */}
-
             </div>
-              {/* Warranty Options */}
 
               <div className="pl-6 pr-6 pb-6 ml-2  bg-bgWhite font-poppins ">
                 <div className=" mt-6 grid grid-cols-1 lg:grid-cols-2 ">
@@ -274,10 +223,7 @@ export const DoctorCalimsForm = () => {
                         Warranty Options
                       </h2>
                     </div>
-                    {/* Crown */}
-                    <h3 className="mb-5 text-secondaryBrand  font-semibold">
-                      Schedule A
-                    </h3>
+
                     <h4 className="font-medium text-secondaryBrand mb-4">
                       Crown And Bridges, Onlays/Inlays And Veneers:
                       <span className="ml-5">{` ${selectedTeeth}`}</span>
@@ -344,7 +290,7 @@ export const DoctorCalimsForm = () => {
                     </div>
                   </div>
                   <div className="flex justify-end items-start w-full h-full">
-                    <div className="relative w-[380px] h-[380px]">
+                    <div className="relative w-[120px] h-[380px]">
                       <TeethSvg
                         selectedTeeth={combinedSelected}
                         onToothClick={handleSvgToothClick}
