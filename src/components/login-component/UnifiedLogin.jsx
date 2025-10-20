@@ -9,6 +9,7 @@ import FacebookIcon from "../../icon/facebookIcon";
 import { showToast } from "../../store/toast-slice";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import LoginWithGoogle from "../../Common/google-login";
 
 const UnifiedLogin = () => {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const UnifiedLogin = () => {
             "Content-Type": "application/json",
             Accept: "*/*",
           },
-        },
+        }
       );
       setLoading(false);
       if (
@@ -79,7 +80,7 @@ const UnifiedLogin = () => {
           showToast({
             message: "Invalid email or password. Please try again.",
             type: "error",
-          }),
+          })
         );
         return;
       }
@@ -99,7 +100,7 @@ const UnifiedLogin = () => {
           showToast({
             message: "Login failed",
             type: "error",
-          }),
+          })
         );
       }
     } catch (error) {
@@ -109,7 +110,7 @@ const UnifiedLogin = () => {
         showToast({
           message: "Invalid email or password. Please try again.",
           type: "error",
-        }),
+        })
       );
     }
   };
@@ -228,7 +229,7 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
                   showToast({
                     message: "Please Add the Email First",
                     type: "error",
-                  }),
+                  })
                 );
               }
             }}
@@ -251,10 +252,11 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
 
           <div className="flex flex-row justify-center items-center w-full lg:w-[494px] h-auto lg:h-[56px] gap-4 lg:gap-[16px]">
             <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center cursor-pointer hover:shadow-md transition-shadow">
-              <GoogleIcon className="w-5 h-6" />
+              {/* <GoogleIcon className="w-5 h-6" />
               <h1 className="hidden lg:block text-sm font-poppins">
                 Login with Google
-              </h1>
+              </h1> */}
+              <LoginWithGoogle />
             </div>
             <div className="flex w-full lg:w-[239px] h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center cursor-pointer hover:shadow-md transition-shadow">
               <FacebookIcon className="w-5 h-5 text-[#1976D2]" />
