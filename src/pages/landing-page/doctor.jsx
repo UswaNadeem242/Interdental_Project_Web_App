@@ -150,7 +150,6 @@ const Doctor = ({ isLanding }) => {
               </div>
             </button> */}
 
-            {/* <ThirdButtonUI title=" Register" href="/signup" /> */}
             {user && user?.email ? (
               <ThirdButtonUI
                 title=" Goto Wizard Page"
