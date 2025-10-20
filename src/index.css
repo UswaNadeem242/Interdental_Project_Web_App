@@ -82,19 +82,44 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .hide-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 
 ul.custom-list {
-  list-style-type: disc; /* bullet style */
-  list-style-position: outside; /* bullet stays outside */
-  padding-left: 1.5rem; /* space between bullet and text */
+  list-style-type: disc;
+  /* bullet style */
+  list-style-position: outside;
+  /* bullet stays outside */
+  padding-left: 1.5rem;
+  /* space between bullet and text */
 }
 
 ul.custom-list li {
-  margin-bottom: 0.5rem; /* spacing between items */
-  line-height: 1.5; /* better readability */
+  margin-bottom: 0.5rem;
+  /* spacing between items */
+  line-height: 1.5;
+  /* better readability */
 }
+
+
+/* globals.css */
+svg g[id^="tooth-"] {
+  transition: transform .12s ease, opacity .12s ease;
+}
+
+svg g[id^="tooth-"]:hover {
+  transform: scale(1.03);
+}
+
+/* if your SVG paths use currentColor for fill/stroke, the following helps */
+.tooth-selected {
+  color: #0F766E;
+}
+
+/* used when rendering via style.color */

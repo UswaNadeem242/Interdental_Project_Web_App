@@ -59,8 +59,9 @@ const CheckoutForm = ({ next }) => {
 
     // Get only the doctor ID
     const doctorId = doctorData?.id;
-    const doctorDate = doctorData?.dueDate;
-    console.log(doctorData);
+    const formattedDate = doctorData?.dueDate ? `${doctorData.dueDate}T00:00:00` : null;
+
+
 
     console.log('doctorData', doctorId);
     const patientId = restoration?.patient?.id || null;
@@ -76,7 +77,7 @@ const CheckoutForm = ({ next }) => {
       userId,
       totalAmount: restoration.totalPrice || 250.0,
       transactionId: null,
-      expectedDeliveryDate: "2025-09-30T00:00:00",
+      expectedDeliveryDate: formattedDate,
       // doctorName: doctorData.doctorName || "Dr. Default",
       // doctorRegNumber: doctorData.officeReg || "REG-0000",
       patientId: patientId,
