@@ -288,7 +288,7 @@ const SingleProduct = () => {
         </div>
         {/* Product Details */}
         <div className="flex flex-col lg:flex-row justify-center items-center w-full min-h-[500px] gap-6 lg:gap-8 rounded-2xl bg-white p-4 md:p-6 lg:p-8">
-          {product && product.imageUrls && product.imageUrls.length > 0 && (
+          {product && product.imageUrls && product.imageUrls.length > 0 ? (
             <div className="w-full lg:w-[437px] h-[300px] sm:h-[400px] lg:h-[501px] flex-shrink-0">
               <Swiper
                 spaceBetween={30}
@@ -315,6 +315,9 @@ const SingleProduct = () => {
                 ))}
               </Swiper>
             </div>
+          ) : (
+            <div className="w-full bg-gray-200 lg:w-[437px] h-[300px] rounded-2xl sm:h-[400px] lg:h-[501px] flex-shrink-0"/>
+              
           )}
           <div className="flex flex-col justify-start items-start flex-1 w-full space-y-4 md:space-y-6">
             <div className="flex flex-col justify-start items-start w-full border-b border-gray-200 pb-4 md:pb-6 space-y-3 md:space-y-4">
