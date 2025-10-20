@@ -18,6 +18,7 @@ import { showToast } from "../store/toast-slice";
 import StarRating from "../components/StarRating";
 import Icons from "../components/Icons";
 import { useMemo } from "react";
+import { calculateRating } from "../services/utils/calculateRating";
 
 const SingleProduct = () => {
   const { productId } = useParams();
@@ -87,17 +88,7 @@ const SingleProduct = () => {
   };
 
   let avgRating = useMemo(() => {
-    if (!product?.ratings || product?.ratings.length === 0) {
-      return 0;
-    }
-
-    const totalRating = product?.ratings.reduce(
-      (sum, item) => sum + item.rating,
-      0,
-    );
-    const averageRating = totalRating / product?.ratings?.length; // Division ensures it stays within 0-5
-
-    return averageRating.toFixed(1);
+  return calculateRating(product);
   }, [product?.ratings]);
 
   useEffect(() => {

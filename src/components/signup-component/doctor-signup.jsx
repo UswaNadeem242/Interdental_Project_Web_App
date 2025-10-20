@@ -50,9 +50,9 @@ const DoctorSignup = () => {
       .email("Enter a valid email address")
       .required("Email is required"),
     phoneNumber: Yup.string()
-      .min(10, "Phone number must be at least 10 digits")
+      .min(7, "Phone number must be at least 7 digits")
       .max(15, "Phone number must not exceed 15 digits")
-      .matches(/^[0-9]+$/, "Phone number must contain only digits")
+      .matches(/^[0-9]{7,15}$/i, "Phone number must contain only digits (7–15)")
       .required("Phone number is required"),
     address: Yup.string()
       .min(10, "Address must be at least 10 characters")
@@ -63,24 +63,24 @@ const DoctorSignup = () => {
       .matches(/^[a-zA-Z\s]+$/, "City must contain only letters and spaces")
       .required("City is required"),
     zip: Yup.string()
-      .min(5, "Zip code must be at least 5 characters")
-      .max(10, "Zip code must not exceed 10 characters")
-      .matches(/^[0-9A-Za-z\s-]*$/, "Zip code contains invalid characters")
+      .min(5, "ZIP code must be at least 5 digits")
+      .max(9, "ZIP code must not exceed 9 digits")
+      .matches(/^\d{5,9}$/i, "ZIP code must be 5–9 digits")
       .required("Zip code is required"),
     drLicenseNo: Yup.string()
-      .min(6, "Doctor's License Number must be at least 6 characters")
-      .max(20, "Doctor's License Number must not exceed 20 characters")
+      .min(5, "Doctor's License Number must be at least 5 characters")
+      .max(15, "Doctor's License Number must not exceed 15 characters")
       .matches(
-        /^[0-9A-Za-z]+$/,
-        "Doctor's License Number must contain only letters and numbers",
+        /^[A-Z]+-[0-9]+$/,
+        "Format must be LETTERS-hyphen-digits (e.g., PMC-12345)",
       )
       .required("Doctor's License Number is required"),
     officeRefNo: Yup.string()
       .min(6, "Office Reference Number must be at least 6 characters")
-      .max(20, "Office Reference Number must not exceed 20 characters")
+      .max(15, "Office Reference Number must not exceed 15 characters")
       .matches(
-        /^[0-9A-Za-z]+$/,
-        "Office Reference Number must contain only letters and numbers",
+        /^[A-Z0-9_-]+$/,
+        "Only uppercase letters, numbers, hyphen (-), underscore (_) allowed",
       )
       .required("Office Reference Number is required")
       .test(
@@ -102,8 +102,8 @@ const DoctorSignup = () => {
       )
       .matches(/(?=.*\d)/, "Password must contain at least one number")
       .matches(
-        /(?=.*[@$!%*?&])/,
-        "Password must contain at least one special character (@$!%*?&)",
+        /(?=.*[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~])/,
+        "Password must contain at least one special character",
       )
       .required("Password is required"),
   });

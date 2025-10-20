@@ -93,9 +93,9 @@ const RelatedProducts = ({ relatedProducts }) => {
               className="w-[100%] h-[100%] flex justify-center items-center text-center"
             >
               {relatedProducts?.data?.map((product) => (
-                <SwiperSlide key={product?.id}>
+                <SwiperSlide key={product?.productId}>
                   <div
-                    onClick={() => navigate(`/product/${product?.id}`)}
+                    onClick={() => navigate(`/shop/${product?.productId}`)}
                     onMouseEnter={() =>
                       swiperRef.current.swiper.autoplay.stop()
                     }
@@ -105,13 +105,13 @@ const RelatedProducts = ({ relatedProducts }) => {
                     className="flex flex-col justify-center items-center cursor-pointer bg-white w-[283.15px] h-[366px]  space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
                   >
                     <img
-                      src={product?.img}
+                      src={product?.imageUrls[0]}
                       alt="product"
                       className="w-[263.15px] h-[260.45px]"
                     />
                     <div className="flex flex-col justify-center items-center space-y-[7.55px]">
                       <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
-                        {product?.title}
+                        {product?.name}
                       </h1>
                       <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
                         ${product?.price}

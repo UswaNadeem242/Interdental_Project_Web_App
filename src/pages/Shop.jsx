@@ -13,6 +13,7 @@ import {
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice"; // adjust path if needed
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
+import { calculateRating } from "../services/utils/calculateRating";
 
 // Memoized ProductCard component to prevent unnecessary re-renders
 const ProductCard = memo(
@@ -47,7 +48,7 @@ const ProductCard = memo(
               <span className="flex items-center gap-1">
                 <StarIcon className="w-4 h-4 text-yellow-400" />
                 <span className="text-xs font-poppins font-normal text-[#585858]">
-                  {product?.ratings[0]?.rating || 0}
+                  {calculateRating(product)}
                 </span>
               </span>
             </div>
