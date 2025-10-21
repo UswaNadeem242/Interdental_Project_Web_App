@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { changePassword } from "../api/doctorDasboard";
 import Toast from "../components/Toast";
+import { createPortal } from "react-dom";
 
 const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile }) => {
     const handleCloseModal = () => {
@@ -213,7 +214,7 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
         updatePassword();
     };
 
-    return (
+    return createPortal(
         <>
             <Toast
                 isVisible={toast.isVisible}
@@ -223,10 +224,7 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
             />
 
             <div
-                className="fixed top-0 -left-[63px] right-0 bottom-0 w-screen h-screen  flex items-center justify-center bg-black/80 backdrop-blur-sm z-[9999] overflow-hidden"
-
-
-
+                className="fixed top-0 right-0 bottom-0 w-screen h-screen  flex items-center justify-center bg-black/80 backdrop-blur-sm z-[9999] overflow-hidden"
             >
                 <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg w-96 relative">
                     <div className="w-full">
@@ -436,7 +434,7 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
                     </form>
                 </div>
             </div>
-        </>
+        </>, document.body
     );
 };
 

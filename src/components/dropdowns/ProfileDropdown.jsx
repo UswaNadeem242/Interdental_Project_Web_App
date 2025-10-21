@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../auth/AuthContext";
@@ -17,6 +17,33 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPasswordProfile, setIsPasswordProfile] = useState(false);
   const { logout } = useAuth();
+  const dropdownRef = useRef(null);
+
+  // Custom outside click handler similar to NotificationsDropdown
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    const handleOutsideClick = (event) => {
+      // Don't close if clicking on the profile trigger area
+      if (event.target.closest('[data-profile-trigger="true"]')) {
+        return;
+      }
+
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsModalOpen(false);
+      }
+    };
+
+    // Use a longer delay to ensure the profile trigger click is processed first
+    const timeoutId = setTimeout(() => {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }, 200);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isModalOpen, setIsModalOpen]);
 
   const handleLogout = () => {
     logout();
@@ -24,7 +51,10 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-[303px] h-[286px] rounded-[12px] p-[16px] gap-[16px] bg-[#FFFFFF] absolute right-0 top-[4px] z-0  shadow-[0_0_10px_#00000017]">
+    <div 
+      ref={dropdownRef}
+      className="flex flex-col justify-center items-center w-[303px] h-[286px] rounded-[12px] p-[16px] gap-[16px] bg-[#FFFFFF] absolute right-0 top-[4px] z-0  shadow-[0_0_10px_#00000017]"
+    >
       <div className="w-64 h-[214px] rounded-[16px] gap-[2px] py-[8px] shadow-[0_0_10px_#04060F0D]">
         {/* flex flex-col justify-start items-start  w-[271px] */}
         <div

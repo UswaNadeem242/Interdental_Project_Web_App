@@ -41,14 +41,9 @@ const Header = () => {
       setIsActionModalOpen(true);
     }
   };
-  const handleNotifications = () => {
-    console.log("consle");
-
-    if (user) {
-      setNotificationsDropdown(!notificationsDropdown);
-    } else {
-      setIsActionModalOpen(true);
-    }
+  const handleNotifications = (e) => {
+    e.stopPropagation();
+    setNotificationsDropdown(!notificationsDropdown);
   };
 
   useEffect(() => {
@@ -74,15 +69,13 @@ const Header = () => {
   return (
     <>
       <header
-        className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${
-          isScrolled ? "top-0 w-full" : "top-4 w-[95%] sm:w-[92%] md:w-[90%]"
-        }`}
+        className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${isScrolled ? "top-0 w-full" : "top-4 w-[95%] sm:w-[92%] md:w-[90%]"
+          }`}
       >
         {/* pill container */}
         <div
-          className={`mx-auto flex items-center justify-between bg-white/95 ring-1 ring-black/5 backdrop-blur px-3 sm:px-5 md:px-6 py-2.5 transition-all duration-300 ${
-            isScrolled ? "rounded-none" : "rounded-full"
-          }`}
+          className={`mx-auto flex items-center justify-between bg-white/95 ring-1 ring-black/5 backdrop-blur px-3 sm:px-5 md:px-6 py-2.5 transition-all duration-300 ${isScrolled ? "rounded-none" : "rounded-full"
+            }`}
         >
           {/* Mobile menu button */}
           {/* shadow-lg */}
@@ -177,14 +170,18 @@ const Header = () => {
             </div>
 
             <div className="flex flex-col relative">
-              <button onClick={() => handleNotifications()}>
-                {" "}
-                <BellIconSVG />
+              <button
+                onClick={handleNotifications}
+                className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                data-bell-icon="true"
+              >
+                <BellIconSVG className="cursor-pointer" />
               </button>
 
               {notificationsDropdown && (
-                <div className="absolute right-0 top-12 mt-1 z-10">
+                <div className="absolute right-0 top-12 z-[100]">
                   <NotificationsDropdown
+                    notificationsDropdown={notificationsDropdown}
                     setNotificationsDropdown={setNotificationsDropdown}
                   />
                 </div>
@@ -193,19 +190,20 @@ const Header = () => {
             {user && user?.email ? (
               <div className="flex flex-col relative">
                 <div
+                  data-profile-trigger="true"
                   onClick={() => setProfileDropdown(!profileDropdown)}
-                  className="flex justify-between items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
+                  className="flex justify-between z-[100] items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
                 >
                   {user?.profileImage ? (
                     <img
                       src={user?.profileImage}
                       alt="User Avatar"
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 shrink-0 rounded-full"
                     />
                   ) : (
                     <Icons.UserAvatar />
                   )}
-                  <p className="font-poppins font-normal text-[14px]  leading-[21px] text-[#393A44]">
+                  <p className="font-poppins font-normal line-clamp-1 text-[14px]  leading-[21px] text-[#393A44]">
                     {user?.firstName} {user?.lastName}
                   </p>
                   <ChevronDownIcon className="w-5 h-5 pr-2" />

@@ -22,7 +22,7 @@ import { calculateRating } from "../services/utils/calculateRating";
 
 const SingleProduct = () => {
   const { productId } = useParams();
-  const { fetchWishlistCount, wishlistCount, fetchCartCount, cartCount } =
+  const { fetchWishlistCount, fetchCartCount } =
     useAuth();
   const dispatch = useDispatch();
 
@@ -34,8 +34,8 @@ const SingleProduct = () => {
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const [userRating, setUserRating] = useState(0);
-  const [rating, setRating] = useState(0);
-  const [isSubmittingRating, setIsSubmittingRating] = useState(false);
+
+  const [visibleReviewsCount, setVisibleReviewsCount] = useState(4);
 
   const getProduct = async () => {
     try {
@@ -96,6 +96,8 @@ const SingleProduct = () => {
     getAllCategories();
     getRelatedProducts();
     getWishlist();
+    // Reset visible reviews count when product changes
+    setVisibleReviewsCount(4);
   }, [productId]);
 
   // Extract user rating when product data is loaded
@@ -268,6 +270,11 @@ const SingleProduct = () => {
     }
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Handle loading more reviews
+  const handleLoadMoreReviews = () => {
+    setVisibleReviewsCount(prev => prev + 4);
+  };
 
   // Retrieve user data from localStorage
   const userData = localStorage.getItem("users");
@@ -470,18 +477,30 @@ const SingleProduct = () => {
           <h1 className="font-poppins font-semibold text-xl leading-[27px] text-primaryText">
             Customer Feedback
           </h1>
-          <div
-            className={`w-full space-y-[15.99px] ${product?.ratings && product.ratings.length > 0 ? "h-auto overflow-y-scroll pr-2" : "h-auto"}`}
-          >
+          <div className="w-full space-y-[15.99px]">
             {product?.ratings && product.ratings.length > 0 ? (
-              product.ratings.map((item, index) => (
-                <CustomerFeedback
-                  key={item.id}
-                  item={item}
-                  isLast={index === product.ratings.length - 1}
-                  isOnlyItem={product.ratings.length === 1}
-                />
-              ))
+              <>
+                {product.ratings.slice(0, visibleReviewsCount).map((item, index) => (
+                  <CustomerFeedback
+                    key={item.id}
+                    item={item}
+                    isLast={index === Math.min(visibleReviewsCount, product.ratings.length) - 1}
+                    isOnlyItem={product.ratings.length === 1}
+                  />
+                ))}
+                
+                {/* Load More Button */}
+                {visibleReviewsCount < product.ratings.length && (
+                  <div className="flex justify-center items-center pt-4">
+                    <button
+                      onClick={handleLoadMoreReviews}
+                      className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-poppins text-sm font-medium"
+                    >
+                      Load More Reviews ({product.ratings.length - visibleReviewsCount} remaining)
+                    </button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="flex flex-col items-center justify-center py-12 px-4">
                 <div className="text-center space-y-4 max-w-md">
