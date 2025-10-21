@@ -387,6 +387,7 @@ const Orders = () => {
       </div>
       {isFeedbackOpen && (
         <FeedbackModal
+          fetchOrders={getAllOrders}
           isModalOpen={isFeedbackOpen}
           setIsModalOpen={SetIsFeedbackOpen}
           productId={selectedProductId}

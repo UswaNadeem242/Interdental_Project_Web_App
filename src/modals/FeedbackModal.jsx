@@ -5,7 +5,7 @@ import StarRating from "../components/StarRating";
 import { showToast } from "../store/toast-slice";
 import { useDispatch } from "react-redux";
 
-const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId, selectedProduct, isViewReview }) => {
+const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId, selectedProduct, isViewReview, fetchOrders }) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -106,6 +106,9 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId, selectedProduct
             type: "success",
           }),
         );
+        if (fetchOrders && typeof fetchOrders === "function") {
+          fetchOrders();
+        }
       } else {
         dispatch(
           showToast({
@@ -130,7 +133,7 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId, selectedProduct
               {isViewReview ? "Your Review" : "How was the Service"}
             </h1>
             <p className="font-poppins font-normal text-center text-[14px] w-[324px] leading-[21px] text-[#949494]">
-              {isViewReview 
+              {isViewReview
                 ? "Here's the review you submitted for this product"
                 : "Your opinion is very helpful for us. Help us be better by giving us an honest score below"
               }
@@ -150,16 +153,15 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId, selectedProduct
             {ratingStatusText && (
               <p className="font-poppins text-sm font-semibold text-[#434343]">{ratingStatusText}</p>
             )}
-       
+
             <div className="w-[311px] rounded-[12px] flex flex-col justify-start items-start space-y-[8px]">
               <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                 Please share your experience
               </p>
               <textarea
                 placeholder={isViewReview ? "Your review" : "Enter your opinion"}
-                className={`w-[311px] h-[94px] px-4 py-2 border-[1px] border-[#624C7926] rounded-[12px] outline-none resize-none font-poppins text-sm ${
-                  isViewReview ? "bg-gray-50 cursor-not-allowed" : "bg-[#FFFFFF]"
-                }`}
+                className={`w-[311px] h-[94px] px-4 py-2 border-[1px] border-[#624C7926] rounded-[12px] outline-none resize-none font-poppins text-sm ${isViewReview ? "bg-gray-50 cursor-not-allowed" : "bg-[#FFFFFF]"
+                  }`}
                 value={review}
                 onChange={(e) => !isViewReview && setReview(e.target.value.slice(0, 300))}
                 maxLength={300}
