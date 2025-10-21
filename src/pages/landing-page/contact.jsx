@@ -206,7 +206,7 @@ const Contact = ({ isLanding }) => {
 
   // Confirmation Modal Component
   const ConfirmationModal = () => (
-    <div 
+    <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
@@ -246,7 +246,7 @@ const Contact = ({ isLanding }) => {
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 font-poppins">
             Message Sent Successfully!
           </h2>
-          
+
           {/* Support Team Message */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 text-left">
             <div className="flex items-start space-x-3">
@@ -291,11 +291,10 @@ const Contact = ({ isLanding }) => {
       <div className={isContactPage ? "pb-0 md:pb-20" : "pb-0 md:pb-0"}>
         {!isLanding && <Header />}
       </div>
-      <div className={isContactPage ? "mx-4 md:mx-8" : ""}>
+      <div className={`${isContactPage ? "mx-4 md:mx-8 pb-10" : ""}`}>
         <section
-          className={`bg-white px-4 md:px-8 shadow-lg border rounded-xl w-full max-w-7xl mx-auto container py-8 md:py-16 ${
-            isContactPage ? "" : ""
-          }`}
+          className={`bg-white px-4 md:px-8 shadow-lg border rounded-xl w-full max-w-7xl mx-auto container py-8 md:py-16 ${isContactPage ? "" : ""
+            }`}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {/* Contact Details */}
@@ -325,7 +324,7 @@ const Contact = ({ isLanding }) => {
                     <EnvelopeIcon className="w-5 h-5 stroke-white stroke-2" />
                   </div>
                   <span className="ml-4 text-[#4A5568] text-sm md:text-base font-poppins font-medium">
-                    eventfulcae@gmail.com
+                    contactus@interdentalusa.com
                   </span>
                 </div>
 
@@ -357,11 +356,10 @@ const Contact = ({ isLanding }) => {
                       onChange={handleChange}
                       placeholder=" "
                       maxLength={25}
-                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${
-                        errors.firstName
+                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${errors.firstName
                           ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                           : "border-gray-300 focus:border-secondaryBrand"
-                      } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
+                        } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
                     />
                     <label
                       htmlFor="firstName"
@@ -389,11 +387,10 @@ const Contact = ({ isLanding }) => {
                       onChange={handleChange}
                       placeholder=" "
                       maxLength={25}
-                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${
-                        errors.lastName
+                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${errors.lastName
                           ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                           : "border-gray-300 focus:border-secondaryBrand"
-                      } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
+                        } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
                     />
                     <label
                       htmlFor="lastName"
@@ -421,11 +418,10 @@ const Contact = ({ isLanding }) => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder=" "
-                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${
-                      errors.email
+                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${errors.email
                         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                         : "border-gray-300 focus:border-secondaryBrand"
-                    } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
+                      } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
                   />
                   <label
                     htmlFor="email"
@@ -453,11 +449,10 @@ const Contact = ({ isLanding }) => {
                     placeholder=" "
                     rows="5"
                     maxLength={500}
-                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${
-                      errors.description
+                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${errors.description
                         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                         : "border-gray-300 focus:border-secondaryBrand"
-                    } focus:ring-2 focus:ring-secondaryBrand/20 transition-all resize-none`}
+                      } focus:ring-2 focus:ring-secondaryBrand/20 transition-all resize-none`}
                   ></textarea>
                   <label
                     htmlFor="description"
@@ -482,11 +477,10 @@ const Contact = ({ isLanding }) => {
                 <button
                   type="submit"
                   disabled={loading || !isFormValid}
-                  className={`w-full sm:w-auto mt-4 px-8 py-3 md:py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 font-poppins capitalize shadow-md ${
-                    loading || !isFormValid
+                  className={`w-full sm:w-auto mt-4 px-8 py-3 md:py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 font-poppins capitalize shadow-md ${loading || !isFormValid
                       ? "bg-gray-400 cursor-not-allowed opacity-60"
                       : "bg-secondaryBrand hover:bg-secondaryBrand/90 hover:shadow-lg"
-                  } text-white`}
+                    } text-white`}
                 >
                   {loading ? (
                     <>
@@ -532,7 +526,7 @@ const Contact = ({ isLanding }) => {
       </div>
 
       {isContactPage ? <Footer /> : null}
-      
+
       {/* Confirmation Modal */}
       {showConfirmation && <ConfirmationModal />}
     </>

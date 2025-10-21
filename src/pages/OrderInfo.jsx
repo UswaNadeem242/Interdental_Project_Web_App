@@ -11,6 +11,8 @@ const Orders = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFeedbackOpen, SetIsFeedbackOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isViewReview, setIsViewReview] = useState(false);
   const [isShippingDetailsOpen, setIsShippingDetailsOpen] = useState(false);
   const { orderId } = useParams();
   const navigate = useNavigate();
@@ -70,48 +72,77 @@ const Orders = () => {
         {selectedIndex == 0 && (
           <div className="flex w-[1136px] gap-4">
             <div className="flex flex-col justify-between items-center w-[560px] h-auto rounded-[12px] gap-[16px]">
-              <div className="flex flex-col justify-start items-start w-[560px] h-[334px] rounded-[12px] border-[1px] p-[24px] space-y-[28px] bg-white border-[#0000000D]">
-                <div className="flex justify-start items-center gap-2">
-                  <img
-                    src="/assets/logopond.png"
-                    alt="logo"
-                    className="w-[26px] h-[26px] rounded-[14.82px] border-[0.91px] border-[#EF6A1F]"
-                  />
-                  <p>Black Beauty Store</p>
-                </div>
-                <div className="w-[512px] h-auto space-y-[16px] flex flex-col  items-start">
-                  {orders &&
-                    orders?.orderItems?.map((order) => (
-                      <div className="flex w-[512px] h-[60px] gap-[4px] border-b-[1px] border-[#0000001A] pb-20">
-                        <img
-                          src={order?.imageUrl || "/assets/product8.png"}
-                          alt="product"
-                          className="w-[60px] h-[60px] rounded-md p-[5.16px] gap-[5.16px]"
-                        />
-                        <div className="flex w-[444px] h-[46px] gap-[4px]">
-                          <div className="flex flex-col justify-start items-start w-[357px] h-[46px] space-y-[4px]">
-                            <p className="font-poppins font-normal text-sm text-primaryText">
-                              {order.productName}
-                            </p>
-                            <p className="text-sm font-semibold font-poppins capitalize text-primaryText">
-                              $ {order.unitPrice}
-                            </p>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => {
-                            SetIsFeedbackOpen(true);
-                            setSelectedProductId(order.productId);
-                          }}
-                          className="flex justify-center items-center w-[113px] h-[23px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px] cursor-pointer hover:bg-[#F69B2630] transition-colors"
-                        >
-                          <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
-                            Leave Review
-                          </p>
-                        </button>
+              <div className="flex flex-col justify-start items-start w-[560px] h-auto rounded-[12px] border-[1px] p-[24px] space-y-[28px] bg-white border-[#0000000D]">
+                {orders?.orderItems && (() => {
+                  // Group products by category
+                  const groupedProducts = orders.orderItems.reduce((acc, product) => {
+                    const category = product.categoryName || "Uncategorized";
+                    if (!acc[category]) {
+                      acc[category] = [];
+                    }
+                    acc[category].push(product);
+                    return acc;
+                  }, {});
+
+                  return Object.entries(groupedProducts).map(([categoryName, products], categoryIndex) => (
+                    <div key={categoryIndex} className="w-full space-y-[16px]">
+                      <div className="flex justify-start items-center">
+                        <p className="font-poppins font-semibold text-[16px] leading-[24px] text-[#434343]">
+                          {categoryName}
+                        </p>
                       </div>
-                    ))}
-                </div>
+                      <div className="w-full space-y-[16px] flex flex-col items-start">
+                        {products.map((order, index) => (
+                          <div key={index} className={`flex w-full h-[60px] gap-[4px] border-[#0000001A] pb-4 ${index !== products.length - 1 && "border-b-[1px]"}`}>
+                            <img
+                              src={order?.imageUrl?.[0] || "/assets/product8.png"}
+                              alt="product"
+                              className="w-[60px] h-[60px] rounded-md p-[5.16px] gap-[5.16px]"
+                            />
+                            <div className="flex w-[444px] h-[46px] gap-[4px]">
+                              <div className="flex flex-col justify-start items-start w-[357px] h-[46px] space-y-[4px]">
+                                <p className="font-poppins font-normal text-sm text-primaryText">
+                                  {order.productName}
+                                </p>
+                                <p className="text-sm font-semibold font-poppins capitalize text-primaryText">
+                                  $ {order.unitPrice}
+                                </p>
+                              </div>
+                            </div>
+                            {order.ratings && order.ratings.length > 0 ? (
+                              <button
+                                onClick={() => {
+                                  setSelectedProduct(order);
+                                  setIsViewReview(true);
+                                  SetIsFeedbackOpen(true);
+                                }}
+                                className="flex justify-center items-center w-[113px] h-[23px] rounded-[33px] border-[1px] border-[#10B981] bg-[#10B9811A] py-[4px] px-[8px] cursor-pointer hover:bg-[#10B98130] transition-colors"
+                              >
+                                <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#10B981]">
+                                  View Review
+                                </p>
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  setSelectedProduct(order);
+                                  setIsViewReview(false);
+                                  SetIsFeedbackOpen(true);
+                                  setSelectedProductId(order.productId);
+                                }}
+                                className="flex justify-center items-center w-[113px] h-[23px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px] cursor-pointer hover:bg-[#F69B2630] transition-colors"
+                              >
+                                <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
+                                  Leave Review
+                                </p>
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ));
+                })()}
               </div>
             </div>
             <div className="flex flex-col w-[560px] space-y-[16px]">
@@ -152,7 +183,7 @@ const Orders = () => {
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px]">
                 <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
@@ -166,7 +197,7 @@ const Orders = () => {
 
               {/* Shipping Details Collapsible Section */}
               <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] bg-white">
-                <div 
+                <div
                   className="flex justify-between items-center p-[16px] cursor-pointer transition-colors"
                   onClick={() => setIsShippingDetailsOpen(!isShippingDetailsOpen)}
                 >
@@ -179,7 +210,7 @@ const Orders = () => {
                     <ChevronDownIcon className="w-5 h-5 text-gray-600" />
                   )}
                 </div>
-                
+
                 {isShippingDetailsOpen && (
                   <div className="px-[16px] pb-[16px] space-y-[12px]">
                     <div className="space-y-[4px]">
@@ -234,11 +265,10 @@ const Orders = () => {
                 <div className="flex justify-start items-center w-[820px] h-[18px] gap-[4px]">
                   <Icons.OrderCheckIcon fill="#94D3DD" />
                   <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${
-                      orders.orderStatus === "PENDING"
+                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "PENDING"
                         ? "bg-[#001D58]"
                         : "bg-[#94D3DD]"
-                    }`}
+                      }`}
                   ></div>
                   <Icons.OrderCheckIcon
                     fill={
@@ -246,13 +276,12 @@ const Orders = () => {
                     }
                   />
                   <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${
-                      orders.orderStatus === "SHIPED"
+                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "SHIPED"
                         ? "bg-[#001D58]"
                         : orders.orderStatus === "PENDING"
                           ? "bg-[#DDDDDD]"
                           : "bg-[#94D3DD]"
-                    }`}
+                      }`}
                   ></div>
                   <Icons.OrderCheckIconVariant
                     fill={
@@ -265,11 +294,10 @@ const Orders = () => {
                   />
 
                   <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${
-                      orders.orderStatus === "DELIVERD"
+                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "DELIVERD"
                         ? "bg-[#94D3DD]"
                         : "bg-[#DDDDDD]"
-                    }`}
+                      }`}
                   ></div>
                   <Icons.OrderCheckIcon
                     fill={
@@ -362,6 +390,8 @@ const Orders = () => {
           isModalOpen={isFeedbackOpen}
           setIsModalOpen={SetIsFeedbackOpen}
           productId={selectedProductId}
+          selectedProduct={selectedProduct}
+          isViewReview={isViewReview}
         />
       )}
     </div>

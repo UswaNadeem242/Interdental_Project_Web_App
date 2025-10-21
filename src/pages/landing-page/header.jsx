@@ -41,14 +41,9 @@ const Header = () => {
       setIsActionModalOpen(true);
     }
   };
-  const handleNotifications = () => {
-    console.log("consle");
-
-    if (user) {
-      setNotificationsDropdown(!notificationsDropdown);
-    } else {
-      setIsActionModalOpen(true);
-    }
+  const handleNotifications = (e) => {
+    e.stopPropagation();
+    setNotificationsDropdown(!notificationsDropdown);
   };
 
   useEffect(() => {
@@ -177,14 +172,18 @@ const Header = () => {
             </div>
 
             <div className="flex flex-col relative">
-              <button onClick={() => handleNotifications()}>
-                {" "}
-                <BellIconSVG />
+              <button 
+                onClick={handleNotifications}
+                className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                data-bell-icon="true"
+              >
+                <BellIconSVG className="cursor-pointer" />
               </button>
 
               {notificationsDropdown && (
-                <div className="absolute right-0 top-12 mt-1 z-10">
+                <div className="absolute right-0 top-12 z-[100]">
                   <NotificationsDropdown
+                    notificationsDropdown={notificationsDropdown}
                     setNotificationsDropdown={setNotificationsDropdown}
                   />
                 </div>

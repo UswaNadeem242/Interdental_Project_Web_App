@@ -52,11 +52,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
       )
       .required("Full Name is required"),
     phone: Yup.string()
-      .matches(
-        /^[+]?[0-9][\d]{10}$/,
-        "Please enter a valid 11-digit phone number",
-      )
-      .required("Contact Number is required"),
+      .min(7, "Phone number must be at least 7 digits")
+      .max(15, "Phone number must not exceed 15 digits")
+      .matches(/^[0-9]{7,15}$/i, "Phone number must contain only digits (7–15)")
+      .required("Phone number is required"),
     country: Yup.string().required("Country is required"),
     state: Yup.string()
       .min(3, "State/Province must be at least 3 characters")
@@ -429,47 +428,43 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div
               onClick={() => handleTabClick("cart")}
               className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px]
-                 ${
-                   activeTab === "cart"
-                     ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
-                     : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
-                 }`}
+                 ${activeTab === "cart"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                  : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
+                }`}
             >
               Cart
             </div>
             <div
               onClick={() => handleTabClick("checkout")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                !cart?.items || cart.items.length === 0
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${!cart?.items || cart.items.length === 0
                   ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
                   : activeTab === "checkout"
                     ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
                     : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
-              }`}
+                }`}
             >
               Checkout
             </div>
             <div
               onClick={() => handleTabClick("review")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                !cart?.items || cart.items.length === 0
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${!cart?.items || cart.items.length === 0
                   ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
                   : activeTab === "review"
                     ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
                     : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
-              }`}
+                }`}
             >
               Review
             </div>
             <div
               onClick={() => handleTabClick("order")}
-              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${
-                !cart?.items || cart.items.length === 0
+              className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${!cart?.items || cart.items.length === 0
                   ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
                   : activeTab === "order"
                     ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
                     : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
-              }`}
+                }`}
             >
               Completion
             </div>
@@ -538,11 +533,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         onBlur={(e) => handleFieldBlur("name", e.target.value)}
                         placeholder=" "
                         required
-                        className={`peer w-[285.5px] h-[53px] rounded-[8px] py-[10px] px-[15px] outline-none text-textFieldHeading border ${
-                          validationErrors.name
+                        className={`peer w-[285.5px] h-[53px] rounded-[8px] py-[10px] px-[15px] outline-none text-textFieldHeading border ${validationErrors.name
                             ? "border-red-500"
                             : "border-[#FFFFFF]"
-                        }`}
+                          }`}
                       />
                       <label
                         htmlFor="fullName"
@@ -569,11 +563,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         }
                         onBlur={(e) => handleFieldBlur("phone", e.target.value)}
                         placeholder=" "
-                        className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand border ${
-                          validationErrors.phone
+                        className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand border ${validationErrors.phone
                             ? "border-red-500"
                             : "border-[#FFFFFF]"
-                        }`}
+                          }`}
                       />
                       <label
                         htmlFor="contactNumber"
@@ -598,7 +591,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     name=""
                     id=""
                     value={user?.email}
-                    // onChange={(e) => setEmail(e.target.value)}
+                  // onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -612,11 +605,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     <div className="relative flex flex-col justify-start items-start w-[285.5px]">
                       {/* Input + Flag */}
                       <div
-                        className={`relative flex justify-start items-center w-full h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white border ${
-                          validationErrors.country
+                        className={`relative flex justify-start items-center w-full h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white border ${validationErrors.country
                             ? "border-red-500"
                             : "border-[#FFFFFF]"
-                        }`}
+                          }`}
                       >
                         {selectedCountry && (
                           <img
@@ -635,7 +627,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                             handleFieldChange(
                               "country",
                               e.target.value,
-                              () => {},
+                              () => { },
                             );
                           }}
                           onBlur={(e) =>
@@ -649,11 +641,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         <label
                           htmlFor="country"
                           className={`absolute  text-gray-400 text-sm transition-all px-1 pointer-events-none bg-white
-        ${
-          country
-            ? "-top-2 text-xs text-secondaryBrand"
-            : "top-[15px] text-gray-400 text-sm"
-        }
+        ${country
+                              ? "-top-2 text-xs text-secondaryBrand"
+                              : "top-[15px] text-gray-400 text-sm"
+                            }
         peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand`}
                         >
                           Country
@@ -704,21 +695,19 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         }
                         onBlur={(e) => handleFieldBlur("state", e.target.value)}
                         placeholder=" "
-                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${
-                          validationErrors.state
+                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${validationErrors.state
                             ? "border-red-500"
                             : "border-[#FFFFFF]"
-                        }`}
+                          }`}
                       />
 
                       <label
                         htmlFor="state"
                         className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none bg-white px-1
-      ${
-        state
-          ? "-top-2 text-xs text-secondaryBrand"
-          : "top-3 text-gray-400 text-sm"
-      }
+      ${state
+                            ? "-top-2 text-xs text-secondaryBrand"
+                            : "top-3 text-gray-400 text-sm"
+                          }
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand`}
                       >
                         State / Province
@@ -741,21 +730,19 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         }
                         onBlur={(e) => handleFieldBlur("city", e.target.value)}
                         placeholder=" "
-                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${
-                          validationErrors.city
+                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${validationErrors.city
                             ? "border-red-500"
                             : "border-[#FFFFFF]"
-                        }`}
+                          }`}
                       />
 
                       <label
                         htmlFor="city"
                         className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none bg-white px-1
-      ${
-        city
-          ? "-top-2 text-xs text-secondaryBrand"
-          : "top-3 text-gray-400 text-sm"
-      }
+      ${city
+                            ? "-top-2 text-xs text-secondaryBrand"
+                            : "top-3 text-gray-400 text-sm"
+                          }
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand`}
                       >
                         City
@@ -778,21 +765,19 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                           handleFieldBlur("street", e.target.value)
                         }
                         placeholder=" "
-                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${
-                          validationErrors.street
+                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${validationErrors.street
                             ? "border-red-500"
                             : "border-[#FFFFFF]"
-                        }`}
+                          }`}
                       />
 
                       <label
                         htmlFor="street"
                         className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none bg-white px-1
-      ${
-        street
-          ? "-top-2 text-xs text-secondaryBrand"
-          : "top-3 text-gray-400 text-sm"
-      }
+      ${street
+                            ? "-top-2 text-xs text-secondaryBrand"
+                            : "top-3 text-gray-400 text-sm"
+                          }
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand`}
                       >
                         Street
@@ -817,9 +802,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
                 > */}
                 <div
-                  className={`flex flex-col justify-start items-center bg-white w-[587px] ${
-                    openPaymentMethod ? "h-[322px]" : ""
-                  } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
+                  className={`flex flex-col justify-start items-center bg-white w-[587px] ${openPaymentMethod ? "h-[322px]" : ""
+                    } rounded-[8px] border-[1px] border-[#FFFFFF0D]`}
                 >
                   <div
                     className="flex justify-center items-center w-[587px] h-[53px] border-b-[1px] border-cartColor py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50"
@@ -834,9 +818,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     />
                   </div>
                   <div
-                    className={`${
-                      openPaymentMethod ? "block" : "hidden"
-                    } flex flex-col justify-start items-start w-full h-auto p-[16px] space-y-[16px]`}
+                    className={`${openPaymentMethod ? "block" : "hidden"
+                      } flex flex-col justify-start items-start w-full h-auto p-[16px] space-y-[16px]`}
                   >
                     {/* Recipient Name */}
                     <div className="w-full flex flex-col justify-start items-start space-y-[8px]">
@@ -844,11 +827,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         Recipient's Name *
                       </p>
                       <div
-                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${
-                          validationErrors.recipientName
+                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${validationErrors.recipientName
                             ? "border border-red-500"
                             : ""
-                        }`}
+                          }`}
                       >
                         <input
                           type="text"
@@ -879,11 +861,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         PayPal Username *
                       </p>
                       <div
-                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${
-                          validationErrors.paypalUsername
+                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${validationErrors.paypalUsername
                             ? "border border-red-500"
                             : ""
-                        }`}
+                          }`}
                       >
                         <input
                           type="text"
@@ -914,11 +895,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         E-mail / Phone Number *
                       </p>
                       <div
-                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${
-                          validationErrors.paypalContact
+                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${validationErrors.paypalContact
                             ? "border border-red-500"
                             : ""
-                        }`}
+                          }`}
                       >
                         <input
                           type="text"
@@ -977,14 +957,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div className="flex flex-col justify-start items-start space-y-[16px] w-full h-auto">
               {/* Your Orders */}
               <div
-                className={`flex flex-col w-full ${
-                  openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
-                } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
+                  } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50 ${
-                    openOrders && "border-b-[1px] border-cartColor"
-                  }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50 ${openOrders && "border-b-[1px] border-cartColor"
+                    }`}
                   onClick={() => setOpenOrders(!openOrders)}
                 >
                   <h1 className="w-[538px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
@@ -995,9 +973,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   />
                 </div>
                 <div
-                  className={`${
-                    openOrders ? "block" : "hidden"
-                  } flex flex-col justify-center items-center w-[587px] h-auto gap-[24px] p-[16px] rounded-[16px]`}
+                  className={`${openOrders ? "block" : "hidden"
+                    } flex flex-col justify-center items-center w-[587px] h-auto gap-[24px] p-[16px] rounded-[16px]`}
                 >
                   {cart &&
                     cart?.items?.map((item) => (
@@ -1024,14 +1001,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               {/* Payment method */}
               <div
-                className={`flex flex-col w-full ${
-                  openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
-                } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${openOrders ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
+                  } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${
-                    openPaymentMethod && "border-b-[1px] border-cartColor"
-                  }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] ${openPaymentMethod && "border-b-[1px] border-cartColor"
+                    }`}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                     Payment Method
@@ -1052,9 +1027,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </svg>
                 </div>
                 <div
-                  className={`${
-                    openPaymentMethod ? "block" : "hidden"
-                  } flex justify-start items-start w-[587px] h-[52px] gap-[8px] p-[16px] rounded-[16px]`}
+                  className={`${openPaymentMethod ? "block" : "hidden"
+                    } flex justify-start items-start w-[587px] h-[52px] gap-[8px] p-[16px] rounded-[16px]`}
                 >
                   <img
                     src="/assets/paypal.png"
@@ -1068,16 +1042,14 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               {/* Buyer's Details */}
               <div
-                className={`flex flex-col w-full ${
-                  openBuyerDetail
+                className={`flex flex-col w-full ${openBuyerDetail
                     ? "h-auto border-[1px] border-[#FFFFFF0D]"
                     : ""
-                } rounded-[8px] gap-[8px] bg-white `}
+                  } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50 ${
-                    openBuyerDetail && "border-b-[1px] border-cartColor"
-                  }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50 ${openBuyerDetail && "border-b-[1px] border-cartColor"
+                    }`}
                   onClick={() => setOpenBuyerDetail(!openBuyerDetail)}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
@@ -1088,9 +1060,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   />
                 </div>
                 <div
-                  className={`${
-                    openBuyerDetail ? "block" : "hidden"
-                  } flex flex-col justify-start items-start w-[587px] h-[328px] gap-[16px] p-[16px] rounded-[16px]`}
+                  className={`${openBuyerDetail ? "block" : "hidden"
+                    } flex flex-col justify-start items-start w-[587px] h-[328px] gap-[16px] p-[16px] rounded-[16px]`}
                 >
                   <div className="w-[555px] h-[62px] flex flex-col justify-start items-start space-y-[6px]">
                     <p className="font-poppins font-normal h-[18px] text-[12px] leading-[18px] text-[#949494]">
@@ -1131,14 +1102,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               {/* Cart Total */}
               <div
-                className={`flex flex-col w-full ${
-                  openCartTotal ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
-                } rounded-[8px] gap-[8px] bg-white `}
+                className={`flex flex-col w-full ${openCartTotal ? "h-auto border-[1px] border-[#FFFFFF0D]" : ""
+                  } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
-                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50 ${
-                    openCartTotal && "border-b-[1px] border-cartColor"
-                  }`}
+                  className={`flex justify-start items-center w-[587px] h-[37px] py-[8px] px-[16px] gap-[8px] cursor-pointer hover:bg-gray-50 ${openCartTotal && "border-b-[1px] border-cartColor"
+                    }`}
                   onClick={() => setOpenCartTotal(!openCartTotal)}
                 >
                   <h1 className="w-[537px] font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
@@ -1149,9 +1118,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   />
                 </div>
                 <div
-                  className={`${
-                    openCartTotal ? "block" : "hidden"
-                  } flex flex-col justify-start items-start w-[555px] h-[138px] gap-[9px]`}
+                  className={`${openCartTotal ? "block" : "hidden"
+                    } flex flex-col justify-start items-start w-[555px] h-[138px] gap-[9px]`}
                 >
                   <div className="flex justify-start items-start w-[425px] h-[37px] py-[8px] px-[16px] gap-[10px]">
                     <p className="font-poppins font-normal text-[14px] w-[300px] leading-[21px] tet-[#434343]">

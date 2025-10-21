@@ -2,34 +2,55 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../config";
 
-const NotificationsDropdown = ({ setNotificationsDropdown }) => {
+const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown }) => {
   const dropdownRef = useRef(null);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const fetchNotifications = useCallback(async () => {
+  const [pagination, setPagination] = useState({
+    page: 0,
+    size: 10,
+    totalRecord: 0,
+    hasMore: false
+  });
+  
+  const fetchNotifications = useCallback(async (page = 0, append = false) => {
     setLoading(true);
     setError("");
     try {
       const res = await axios.get(
         `${BASE_URL}/api/notification`,
         {
-          params: { page: 0, size: 10 },
+          params: { page, size: pagination.size },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
 
-      const content = res?.data?.data?.content ?? [];
-      setNotifications(content);
+      const responseData = res?.data?.data;
+      const content = responseData?.data ?? [];
+      const totalRecord = responseData?.totalRecord ?? 0;
+      const currentPage = responseData?.page ?? 0;
+      
+      if (append) {
+        setNotifications(prev => [...prev, ...content]);
+      } else {
+        setNotifications(content);
+      }
+      
+      setPagination(prev => ({
+        ...prev,
+        page: currentPage,
+        totalRecord,
+        hasMore: (currentPage + 1) * pagination.size < totalRecord
+      }));
     } catch (e) {
       setError("Failed to load notifications");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [pagination.size]);
 
   const markAsRead = useCallback(
     async (notificationId) => {
@@ -44,56 +65,93 @@ const NotificationsDropdown = ({ setNotificationsDropdown }) => {
           }
         );
 
-        // Revalidate by refetching
-        fetchNotifications();
+        // Update notification in place instead of refetching
+        setNotifications(prev => 
+          prev.map(notification => 
+            notification.notificationId === notificationId 
+              ? { ...notification, read: true }
+              : notification
+          )
+        );
       } catch (_) {
         // no-op UI error; keep dropdown usable
       }
     },
-    [fetchNotifications]
+    []
   );
 
   useEffect(() => {
+    if (!notificationsDropdown) return;
+
     const handleOutsideClick = (event) => {
+      // Don't close if clicking on the bell icon
+      if (event.target.closest('[data-bell-icon="true"]')) {
+        return;
+      }
+      
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setNotificationsDropdown(false);
       }
     };
 
-    document.addEventListener("mousedown", handleOutsideClick);
+    // Use a longer delay to ensure the bell icon click is processed first
+    const timeoutId = setTimeout(() => {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }, 200);
 
     return () => {
+      clearTimeout(timeoutId);
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, []);
+  }, [notificationsDropdown, setNotificationsDropdown]);
+
+  const handleLoadMore = useCallback(() => {
+    if (pagination.hasMore && !loading) {
+      fetchNotifications(pagination.page + 1, true);
+    }
+  }, [fetchNotifications, pagination.hasMore, pagination.page, loading]);
 
   useEffect(() => {
-    fetchNotifications();
-  }, [fetchNotifications]);
+    if (notificationsDropdown) {
+      fetchNotifications(0, false);
+    }
+  }, [notificationsDropdown, fetchNotifications]);
 
   return (
     <div
       ref={dropdownRef}
-      className="w-[367px] h-[368px] bg-white rounded-[8px] border-[1px] space-y-[10px] p-[16px] border-[#0000000D] shadow-[0_0_0_1px_#0000000D]"
+      onClick={(e) => e.stopPropagation()}
+      className="w-[367px] max-h-[368px] bg-white rounded-[8px] border-[1px] border-[#0000000D] shadow-[0_0_0_1px_#0000000D] flex flex-col"
     >
-      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#000000]">
-        Notifications
-      </p>
-      {loading && (
-        <p className="text-sm text-gray-500">Loading...</p>
-      )}
-      {error && !loading && (
-        <p className="text-sm text-red-500">{error}</p>
-      )}
-      {!loading && !error && notifications.length === 0 && (
-        <p className="text-sm text-gray-500">No notifications</p>
-      )}
-      {!loading && !error && notifications.map((notification) => (
+      <div className="p-[16px] border-b border-[#0000000D]">
+        <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#000000]">
+          Notifications
+        </p>
+      </div>
+      
+      <div className="flex-1 overflow-y-auto">
+        {loading && notifications.length === 0 && (
+          <div className="p-4 text-center">
+            <p className="text-sm text-gray-500">Loading...</p>
+          </div>
+        )}
+        {error && !loading && (
+          <div className="p-4 text-center">
+            <p className="text-sm text-red-500">{error}</p>
+          </div>
+        )}
+        {!loading && !error && notifications.length === 0 && (
+          <div className="p-4 text-center">
+            <p className="text-sm text-gray-500">No notifications</p>
+          </div>
+        )}
+        {!loading && !error && notifications.map((notification) => (
         <div key={notification.notificationId} className="flex justify-center items-center w-[335px] min-h-[95px] py-[10px] border-b-[1px] border-[#0000000D] space-y-[10px]">
-          <div className="flex justify-start items-start w-[335px] min-h-[75px] gap-[10px]">
+          <div className="flex justify-start items-start w-[335px]  gap-[5px]">
             <svg
+              className="-mt-1"
               width="32"
-              height="33"
+              height="32"
               viewBox="0 0 32 33"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +174,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown }) => {
                 stroke-width="0.8"
               />
             </svg>
-            <div className="flex flex-col w-[293px] min-h-[75px] space-y-[4px]">
+            <div className="flex flex-col w-[293px] space-y-[4px]">
               <div className="flex items-center justify-between">
                 <p className="font-poppins font-medium text-[12px] leading-[18px] text-[#434343]">
                   {notification.title}
@@ -145,6 +203,20 @@ const NotificationsDropdown = ({ setNotificationsDropdown }) => {
           </div>
         </div>
       ))}
+      </div>
+      
+      {/* Load More Button */}
+      {pagination.hasMore && (
+        <div className="p-4 border-t border-[#0000000D]">
+          <button
+            onClick={handleLoadMore}
+            disabled={loading}
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-poppins text-sm"
+          >
+            {loading ? "Loading..." : "Load More"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
