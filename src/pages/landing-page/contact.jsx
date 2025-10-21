@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Header from "./header";
 import Footer from "../../components/Footer";
@@ -12,6 +12,8 @@ import Instgram from "../../icon/instgram";
 import Linkedln from "../../icon/linkedln";
 import { BASE_URL } from "../../config";
 import { showToast } from "../../store/toast-slice";
+import useFieldValidation from "../../Hooks/useFieldValidation";
+import * as Yup from "yup";
 
 const Contact = ({ isLanding }) => {
   const location = useLocation();
@@ -23,9 +25,42 @@ const Contact = ({ isLanding }) => {
     description: "",
   });
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [submittedData, setSubmittedData] = useState({});
+
+  // Yup validation schema
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(2, "First name must be at least 2 characters")
+      .max(25, "First name must not exceed 25 characters")
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "First name must contain only letters and spaces"
+      )
+      .required("First name is required"),
+    lastName: Yup.string()
+      .min(2, "Last name must be at least 2 characters")
+      .max(25, "Last name must not exceed 25 characters")
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "Last name must contain only letters and spaces"
+      )
+      .required("Last name is required"),
+    email: Yup.string()
+      .email("Please enter a valid email address")
+      .required("Email is required"),
+    description: Yup.string()
+      .min(10, "Message must be at least 10 characters")
+      .max(500, "Message must not exceed 500 characters")
+      .required("Message is required"),
+  });
+
+  const {
+    validationErrors,
+    validateField,
+    clearFieldError,
+    validateAllFields,
+  } = useFieldValidation(validationSchema);
 
   const socialIcons = [
     { id: 1, icon: <Twitter className="w-5 h-5 text-black" /> },
@@ -36,110 +71,37 @@ const Contact = ({ isLanding }) => {
 
   const isContactPage = location.pathname === "/contact-us";
 
-  // Validate email format
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const getFormData = () => ({
+    firstName: formData.firstName,
+    lastName: formData.lastName,
+    email: formData.email,
+    description: formData.description,
+  });
 
-  // Validate alphabets only for names
-  const isValidName = (name) => {
-    const nameRegex = /^[a-zA-Z\s]+$/;
-    return nameRegex.test(name);
-  };
+  const handleFieldChange = async (fieldName, value, setter) => {
+    setter(value);
 
-  // Check if all fields are filled and valid
-  const isFormValid = useMemo(() => {
-    return (
-      formData.firstName.trim() !== "" &&
-      formData.firstName.trim().length >= 2 &&
-      formData.firstName.trim().length <= 25 &&
-      isValidName(formData.firstName.trim()) &&
-      formData.lastName.trim() !== "" &&
-      formData.lastName.trim().length >= 2 &&
-      formData.lastName.trim().length <= 25 &&
-      isValidName(formData.lastName.trim()) &&
-      formData.email.trim() !== "" &&
-      isValidEmail(formData.email) &&
-      formData.description.trim() !== "" &&
-      formData.description.trim().length >= 10 &&
-      formData.description.trim().length <= 500
-    );
-  }, [formData]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    // Clear error for this field when user starts typing
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+    // Clear error immediately when user starts typing
+    if (validationErrors[fieldName]) {
+      clearFieldError(fieldName);
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    // Validate First Name
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "First name is required";
-    } else if (formData.firstName.trim().length < 2) {
-      newErrors.firstName = "First name must be at least 2 characters";
-    } else if (formData.firstName.trim().length > 25) {
-      newErrors.firstName = "First name must not exceed 25 characters";
-    } else if (!isValidName(formData.firstName.trim())) {
-      newErrors.firstName = "First name can only contain letters and spaces";
+  const handleFieldBlur = async (fieldName, value) => {
+    // Validate field when user leaves it
+    if (value.trim()) {
+      await validateField(fieldName, value, getFormData());
     }
-
-    // Validate Last Name
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
-    } else if (formData.lastName.trim().length < 2) {
-      newErrors.lastName = "Last name must be at least 2 characters";
-    } else if (formData.lastName.trim().length > 25) {
-      newErrors.lastName = "Last name must not exceed 25 characters";
-    } else if (!isValidName(formData.lastName.trim())) {
-      newErrors.lastName = "Last name can only contain letters and spaces";
-    }
-
-    // Validate Email
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!isValidEmail(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-
-    // Validate Message
-    if (!formData.description.trim()) {
-      newErrors.description = "Message is required";
-    } else if (formData.description.trim().length < 10) {
-      newErrors.description = "Message must be at least 10 characters";
-    } else if (formData.description.trim().length > 500) {
-      newErrors.description = "Message must not exceed 500 characters";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form before submission
-    if (!validateForm()) {
-      dispatch(
-        showToast({
-          message: "Please fill in all required fields correctly",
-          type: "error",
-        }),
-      );
-      return;
+    const error = await validateAllFields(getFormData());
+    if (error) {
+      return; // Just return without showing toast since field-level errors are shown
     }
 
     setLoading(true);
@@ -165,7 +127,6 @@ const Contact = ({ isLanding }) => {
           email: "",
           description: "",
         });
-        setErrors({});
       } else {
         const errorData = await response.json().catch(() => ({}));
         dispatch(
@@ -353,10 +314,15 @@ const Contact = ({ isLanding }) => {
                       name="firstName"
                       id="firstName"
                       value={formData.firstName}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        handleFieldChange("firstName", e.target.value, (value) =>
+                          setFormData(prev => ({ ...prev, firstName: value }))
+                        )
+                      }
+                      onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
                       placeholder=" "
                       maxLength={25}
-                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${errors.firstName
+                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.firstName
                           ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                           : "border-gray-300 focus:border-secondaryBrand"
                         } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
@@ -370,9 +336,9 @@ const Contact = ({ isLanding }) => {
                     >
                       First Name
                     </label>
-                    {errors.firstName && (
+                    {validationErrors.firstName && (
                       <span className="text-red-500 text-xs mt-1 font-poppins block">
-                        {errors.firstName}
+                        {validationErrors.firstName}
                       </span>
                     )}
                   </div>
@@ -384,10 +350,15 @@ const Contact = ({ isLanding }) => {
                       name="lastName"
                       id="lastName"
                       value={formData.lastName}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        handleFieldChange("lastName", e.target.value, (value) =>
+                          setFormData(prev => ({ ...prev, lastName: value }))
+                        )
+                      }
+                      onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
                       placeholder=" "
                       maxLength={25}
-                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${errors.lastName
+                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.lastName
                           ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                           : "border-gray-300 focus:border-secondaryBrand"
                         } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
@@ -401,9 +372,9 @@ const Contact = ({ isLanding }) => {
                     >
                       Last Name
                     </label>
-                    {errors.lastName && (
+                    {validationErrors.lastName && (
                       <span className="text-red-500 text-xs mt-1 font-poppins block">
-                        {errors.lastName}
+                        {validationErrors.lastName}
                       </span>
                     )}
                   </div>
@@ -416,9 +387,14 @@ const Contact = ({ isLanding }) => {
                     name="email"
                     id="email"
                     value={formData.email}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      handleFieldChange("email", e.target.value, (value) =>
+                        setFormData(prev => ({ ...prev, email: value }))
+                      )
+                    }
+                    onBlur={(e) => handleFieldBlur("email", e.target.value)}
                     placeholder=" "
-                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${errors.email
+                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.email
                         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                         : "border-gray-300 focus:border-secondaryBrand"
                       } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
@@ -432,9 +408,9 @@ const Contact = ({ isLanding }) => {
                   >
                     E-Mail Address
                   </label>
-                  {errors.email && (
+                  {validationErrors.email && (
                     <span className="text-red-500 text-xs mt-1 font-poppins block">
-                      {errors.email}
+                      {validationErrors.email}
                     </span>
                   )}
                 </div>
@@ -445,11 +421,16 @@ const Contact = ({ isLanding }) => {
                     name="description"
                     id="description"
                     value={formData.description}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      handleFieldChange("description", e.target.value, (value) =>
+                        setFormData(prev => ({ ...prev, description: value }))
+                      )
+                    }
+                    onBlur={(e) => handleFieldBlur("description", e.target.value)}
                     placeholder=" "
                     rows="5"
                     maxLength={500}
-                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${errors.description
+                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.description
                         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                         : "border-gray-300 focus:border-secondaryBrand"
                       } focus:ring-2 focus:ring-secondaryBrand/20 transition-all resize-none`}
@@ -463,9 +444,9 @@ const Contact = ({ isLanding }) => {
                   >
                     Message
                   </label>
-                  {errors.description && (
+                  {validationErrors.description && (
                     <span className="text-red-500 text-xs mt-1 font-poppins block">
-                      {errors.description}
+                      {validationErrors.description}
                     </span>
                   )}
                   {/* Character count */}
@@ -476,8 +457,8 @@ const Contact = ({ isLanding }) => {
 
                 <button
                   type="submit"
-                  disabled={loading || !isFormValid}
-                  className={`w-full sm:w-auto mt-4 px-8 py-3 md:py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 font-poppins capitalize shadow-md ${loading || !isFormValid
+                  disabled={loading}
+                  className={`w-full sm:w-auto mt-4 px-8 py-3 md:py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 font-poppins capitalize shadow-md ${loading
                       ? "bg-gray-400 cursor-not-allowed opacity-60"
                       : "bg-secondaryBrand hover:bg-secondaryBrand/90 hover:shadow-lg"
                     } text-white`}
@@ -514,11 +495,6 @@ const Contact = ({ isLanding }) => {
                   )}
                 </button>
 
-                {!isFormValid && (
-                  <p className="text-xs text-gray-500 font-poppins mt-2">
-                    Please fill in all fields to enable the submit button
-                  </p>
-                )}
               </form>
             </div>
           </div>

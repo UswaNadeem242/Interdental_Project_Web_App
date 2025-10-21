@@ -36,8 +36,28 @@ const Orders = () => {
     }
   };
 
+
+  const getOrderTrackingInfo = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/ordertracking/${orderId}`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      console.log(response.data, 'ORDER TRACKING INFO');
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getAllOrders();
+    getOrderTrackingInfo();
   }, []);
 
   return (
@@ -266,8 +286,8 @@ const Orders = () => {
                   <Icons.OrderCheckIcon fill="#94D3DD" />
                   <div
                     className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "PENDING"
-                        ? "bg-[#001D58]"
-                        : "bg-[#94D3DD]"
+                      ? "bg-[#001D58]"
+                      : "bg-[#94D3DD]"
                       }`}
                   ></div>
                   <Icons.OrderCheckIcon
@@ -277,10 +297,10 @@ const Orders = () => {
                   />
                   <div
                     className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "SHIPED"
-                        ? "bg-[#001D58]"
-                        : orders.orderStatus === "PENDING"
-                          ? "bg-[#DDDDDD]"
-                          : "bg-[#94D3DD]"
+                      ? "bg-[#001D58]"
+                      : orders.orderStatus === "PENDING"
+                        ? "bg-[#DDDDDD]"
+                        : "bg-[#94D3DD]"
                       }`}
                   ></div>
                   <Icons.OrderCheckIconVariant
@@ -295,8 +315,8 @@ const Orders = () => {
 
                   <div
                     className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "DELIVERD"
-                        ? "bg-[#94D3DD]"
-                        : "bg-[#DDDDDD]"
+                      ? "bg-[#94D3DD]"
+                      : "bg-[#DDDDDD]"
                       }`}
                   ></div>
                   <Icons.OrderCheckIcon

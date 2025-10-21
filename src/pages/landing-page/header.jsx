@@ -190,8 +190,9 @@ const Header = () => {
             {user && user?.email ? (
               <div className="flex flex-col relative">
                 <div
+                  data-profile-trigger="true"
                   onClick={() => setProfileDropdown(!profileDropdown)}
-                  className="flex justify-between items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
+                  className="flex justify-between z-[100] items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
                 >
                   {user?.profileImage ? (
                     <img
