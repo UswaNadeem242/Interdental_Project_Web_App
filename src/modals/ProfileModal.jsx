@@ -358,7 +358,7 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
       onClick={handleCloseModal}
     >
       <div
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-[640px] flex flex-col relative"
+        className="bg-white rounded-3xl shadow-2xl w-full max-w-[640px] max-h-[90vh] flex flex-col relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -369,14 +369,19 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
           <Icons.Close className="w-6 h-6" fill="currentColor" />
         </button>
 
-        {/* Content (no scroll) */}
-        <div className="flex-1">
-          <div className="p-6 md:p-8">
-            {/* Header */}
-            <h2 className="font-poppins font-semibold text-xl md:text-2xl text-[#0F153E] mb-1">
+        {/* Sticky Header */}
+        <div className="sticky rounded-t-3xl top-0 bg-white z-10">
+          <div className="flex items-center justify-between p-6 md:py-6 md:px-6 pb-0">
+            <h2 className="font-poppins font-semibold text-xl md:text-2xl text-[#0F153E]">
               Your Account
             </h2>
-            <div className="w-full h-[1px] bg-gray-200 mb-6"></div>
+          </div>
+          <div className="w-full h-[1px] bg-gray-200"></div>
+        </div>
+
+        {/* Content with proper scrolling */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-6 md:p-8">
 
             {/* Avatar */}
             <div className="flex flex-col justify-center items-center mb-6">
@@ -388,7 +393,7 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
                     className="cursor-pointer hover:opacity-80 transition-opacity"
                     title="Click to upload profile image"
                   >
-                    <div className="w-[96px] h-[96px] rounded-full border-2 border-[#001D58] flex items-center justify-center bg-gray-100">
+                    <div className="w-[112px] h-[112px] rounded-full border-2 border-[#001D58] flex items-center justify-center bg-gray-100">
                       <Icons.ProfileAvatar />
                     </div>
                     <input
