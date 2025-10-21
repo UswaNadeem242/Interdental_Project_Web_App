@@ -204,12 +204,12 @@ export const DoctorCalimsForm = () => {
                   onBlur={() => setFieldTouched("patientFirstName", true)}
                   classNameWidth='w-full'
                 />
-                {errors.patientFirstName &&
+                {/* {errors.patientFirstName &&
                   touched.patientFirstName && (
                     <p className="text-red-800 text-xs capitalize">
                       {errors.patientFirstName}
                     </p>
-                  )}
+                  )} */}
               </FormSectionHeading>
 
             </div>
