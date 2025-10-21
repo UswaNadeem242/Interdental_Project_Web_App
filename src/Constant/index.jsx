@@ -552,7 +552,7 @@ export const headingsOrder = [
   { label: "Doctor Name", key: "dName" },
   { label: "Patient Name", key: "pName" },
   { label: "Shopping Date", key: "shipping" },
-  { label: "Account Status", key: "status" },
+  { label: "Order Status", key: "status" },
   { label: "Action", key: "action" },
 ];
 

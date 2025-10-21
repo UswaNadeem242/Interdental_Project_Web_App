@@ -21,7 +21,7 @@ export const OrderValidationSchema = Yup.object().shape({
   photogrammetryfiles: Yup.string().required(
     "Photogrammetry files is required"
   ),
-  surgical_guide: Yup.string().required("Surgical Guide is required"),
+  // surgical_guide: Yup.string().required("Surgical Guide is required"),
   material: Yup.string().required("Material is required"),
   crown: Yup.string().required("Crown is required"),
   lab: Yup.string().required("Laboratory is required"),
