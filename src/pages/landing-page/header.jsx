@@ -69,15 +69,13 @@ const Header = () => {
   return (
     <>
       <header
-        className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${
-          isScrolled ? "top-0 w-full" : "top-4 w-[95%] sm:w-[92%] md:w-[90%]"
-        }`}
+        className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${isScrolled ? "top-0 w-full" : "top-4 w-[95%] sm:w-[92%] md:w-[90%]"
+          }`}
       >
         {/* pill container */}
         <div
-          className={`mx-auto flex items-center justify-between bg-white/95 ring-1 ring-black/5 backdrop-blur px-3 sm:px-5 md:px-6 py-2.5 transition-all duration-300 ${
-            isScrolled ? "rounded-none" : "rounded-full"
-          }`}
+          className={`mx-auto flex items-center justify-between bg-white/95 ring-1 ring-black/5 backdrop-blur px-3 sm:px-5 md:px-6 py-2.5 transition-all duration-300 ${isScrolled ? "rounded-none" : "rounded-full"
+            }`}
         >
           {/* Mobile menu button */}
           {/* shadow-lg */}
@@ -172,7 +170,7 @@ const Header = () => {
             </div>
 
             <div className="flex flex-col relative">
-              <button 
+              <button
                 onClick={handleNotifications}
                 className="p-1 rounded-full hover:bg-gray-100 transition-colors"
                 data-bell-icon="true"
@@ -205,7 +203,7 @@ const Header = () => {
                     <Icons.UserAvatar />
                   )}
                   <p className="font-poppins font-normal line-clamp-1 text-[14px]  leading-[21px] text-[#393A44]">
-                    {user?.firstName} asfasfas {user?.lastName}safasf2wq wqas fas f
+                    {user?.firstName} {user?.lastName}
                   </p>
                   <ChevronDownIcon className="w-5 h-5 pr-2" />
                 </div>

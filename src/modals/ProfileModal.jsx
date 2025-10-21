@@ -388,7 +388,7 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
                     className="cursor-pointer hover:opacity-80 transition-opacity"
                     title="Click to upload profile image"
                   >
-                    <div className="w-[96px] h-[96px] rounded-full overflow-hidden border-2 border-[#001D58] flex items-center justify-center bg-gray-100">
+                    <div className="w-[96px] h-[96px] rounded-full border-2 border-[#001D58] flex items-center justify-center bg-gray-100">
                       <Icons.ProfileAvatar />
                     </div>
                     <input
