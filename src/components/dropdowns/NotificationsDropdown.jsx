@@ -1,30 +1,57 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import axios from "axios";
+import { BASE_URL } from "../../config";
 
 const NotificationsDropdown = ({ setNotificationsDropdown }) => {
   const dropdownRef = useRef(null);
-  const notifications = [
-    {
-      id: 1,
-      Status: "Order Confirmation",
-      Description:
-        "Thank you for your purchase! Your order #6674 is confirmed. Track it in My Orders.",
-      Time: "15 May 2020 9:00 am",
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const fetchNotifications = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/api/notification`,
+        {
+          params: { page: 0, size: 10 },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const content = res?.data?.data?.content ?? [];
+      setNotifications(content);
+    } catch (e) {
+      setError("Failed to load notifications");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const markAsRead = useCallback(
+    async (notificationId) => {
+      try {
+        await axios.put(
+          `${BASE_URL}/api/notification/${notificationId}/read`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        // Revalidate by refetching
+        fetchNotifications();
+      } catch (_) {
+        // no-op UI error; keep dropdown usable
+      }
     },
-    {
-      id: 2,
-      Status: "Order Confirmation",
-      Description:
-        "Thank you for your purchase! Your order #6674 is confirmed. Track it in My Orders.",
-      Time: "15 May 2020 9:00 am",
-    },
-    {
-      id: 3,
-      Status: "Order Confirmation",
-      Description:
-        "Thank you for your purchase! Your order #6674 is confirmed. Track it in My Orders.",
-      Time: "15 May 2020 9:00 am",
-    },
-  ];
+    [fetchNotifications]
+  );
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -40,6 +67,10 @@ const NotificationsDropdown = ({ setNotificationsDropdown }) => {
     };
   }, []);
 
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
   return (
     <div
       ref={dropdownRef}
@@ -48,9 +79,18 @@ const NotificationsDropdown = ({ setNotificationsDropdown }) => {
       <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#000000]">
         Notifications
       </p>
-      {notifications.map((notification) => (
-        <div className="flex justify-center items-center w-[335px] h-[95px] py-[10px] border-b-[1px] border-[#0000000D] space-y-[10px]">
-          <div className="flex justify-start items-start w-[335px] h-[75px] gap-[10px]">
+      {loading && (
+        <p className="text-sm text-gray-500">Loading...</p>
+      )}
+      {error && !loading && (
+        <p className="text-sm text-red-500">{error}</p>
+      )}
+      {!loading && !error && notifications.length === 0 && (
+        <p className="text-sm text-gray-500">No notifications</p>
+      )}
+      {!loading && !error && notifications.map((notification) => (
+        <div key={notification.notificationId} className="flex justify-center items-center w-[335px] min-h-[95px] py-[10px] border-b-[1px] border-[#0000000D] space-y-[10px]">
+          <div className="flex justify-start items-start w-[335px] min-h-[75px] gap-[10px]">
             <svg
               width="32"
               height="33"
@@ -76,16 +116,31 @@ const NotificationsDropdown = ({ setNotificationsDropdown }) => {
                 stroke-width="0.8"
               />
             </svg>
-            <div className="flex flex-col w-[293px] h-[75px] space-y-[4px]">
-              <p className="font-poppins font-medium text-[12px] leading-[18px] text-[#434343]">
-                {notification.Status}
-              </p>
+            <div className="flex flex-col w-[293px] min-h-[75px] space-y-[4px]">
+              <div className="flex items-center justify-between">
+                <p className="font-poppins font-medium text-[12px] leading-[18px] text-[#434343]">
+                  {notification.title}
+                </p>
+                {!notification.read && (
+                  <span className="inline-block w-2 h-2 bg-blue-600 rounded-full" />
+                )}
+              </div>
               <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#949494]">
-                {notification.Description}
+                {notification.message}
               </p>
-              <p className="font-outfit font-normal text-[10px] leading-[12.6px] text-[#949494]">
-                {notification.Time}
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="font-outfit font-normal text-[10px] leading-[12.6px] text-[#949494]">
+                  {new Date(notification.createdAt).toLocaleString()}
+                </p>
+                {!notification.read && (
+                  <button
+                    onClick={() => markAsRead(notification.notificationId)}
+                    className="text-[10px] text-blue-700 hover:underline"
+                  >
+                    Mark as read
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

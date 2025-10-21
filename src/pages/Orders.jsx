@@ -4,6 +4,7 @@ import { BASE_URL } from "../config";
 import axios from "axios";
 import CartOrderIcon from "../icon/cart-order-icon";
 import BackButton from "../components/BackButton";
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 // import product8 from "../assets/product8.png";
 
 const Orders = () => {
@@ -48,13 +49,18 @@ const Orders = () => {
   return (
     <div className="flex justify-center w-full min-h-screen bg-[#F8F8F8] pt-28 pb-8 px-4">
       <div className="w-full max-w-[1312px]">
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <BackButton variant="rounded" text="Back" />
-        </div>
+        </div> */}
 
         {/* Orders Container */}
         <div className="flex flex-col justify-start items-start w-full h-auto p-6 md:p-8 space-y-4 rounded-2xl bg-white shadow-sm">
-          <h1 className="font-poppins font-semibold text-2xl text-black">
+          <h1 className="font-poppins flex gap-2 items-center  font-semibold text-2xl text-black">
+            <div
+              onClick={()=>navigate(-1)}
+            className="h-7 w-7 flex items-center cursor-pointer justify-center rounded-md bg-[#F7F8F8]">
+              <ChevronLeftIcon className="h-5 w-5 " />
+            </div>
             Orders
           </h1>
 
@@ -64,11 +70,10 @@ const Orders = () => {
               <button
                 key={index}
                 onClick={() => setSelectedIndex(index)}
-                className={`flex-1 py-2 px-4 rounded-lg font-poppins text-sm transition-colors ${
-                  index === selectedIndex
-                    ? "font-semibold text-[#434343] bg-[#F8F8F8]"
-                    : "font-normal text-[#949494] hover:bg-gray-50"
-                }`}
+                className={`flex-1 py-2 px-4 rounded-lg font-poppins text-sm transition-colors ${index === selectedIndex
+                  ? "font-semibold text-[#434343] bg-[#F8F8F8]"
+                  : "font-normal text-[#949494] hover:bg-gray-50"
+                  }`}
               >
                 {tab}
               </button>
@@ -111,7 +116,7 @@ const Orders = () => {
                               : order?.orderStatus === "PENDING"
                                 ? "PENDING"
                                 : order?.orderStatus === "DELIVERD" &&
-                                  "DELIVERD"}
+                                "DELIVERD"}
                           </p>
                         </div>
                         <p className="font-poppins font-semibold text-sm text-[#434343] line-clamp-1">

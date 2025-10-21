@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BASE_URL } from "../config";
 import axios from "axios";
 import StarRating from "../components/StarRating";
@@ -9,6 +9,8 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId }) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasRated, setHasRated] = useState(false);
+  const [showFiveStarAnim, setShowFiveStarAnim] = useState(false);
   const dispatch = useDispatch();
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -37,6 +39,32 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId }) => {
     }
     return () => document.body.classList.remove("overflow-hidden");
   }, [isModalOpen]);
+
+  // Determine if user already rated (local guard); server may also reject duplicates
+  useEffect(() => {
+    if (!productId) return;
+    const key = `rated_${productId}`;
+    const already = localStorage.getItem(key);
+    setHasRated(Boolean(already));
+  }, [productId]);
+
+  // Map rating to status text
+  const ratingStatusText = useMemo(() => {
+    if (rating <= 0) return "";
+    if (rating <= 2) return "Bad";
+    if (rating === 3) return "Good";
+    if (rating === 4) return "Very Good";
+    return "Excellent"; // 5
+  }, [rating]);
+
+  // Handle five star small celebration animation
+  useEffect(() => {
+    if (rating === 5) {
+      setShowFiveStarAnim(true);
+      const t = setTimeout(() => setShowFiveStarAnim(false), 1200);
+      return () => clearTimeout(t);
+    }
+  }, [rating]);
 
   const addRating = async () => {
     if (rating === 0) {
@@ -93,7 +121,7 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div className=" gap-[18px]">
         <div className="flex flex-col justify-center items-center  bg-white p-6 rounded-[24px] shadow-lg relative">
-          <div className="flex flex-col justify-center items-center mb-8  gap-[30px]">
+          <div className="flex flex-col justify-center items-center mb-8  gap-[24px]">
             <h1 className="font-poppins font-bold text-[24px] leading-[36px] text-[#434343]">
               How was the Service
             </h1>
@@ -104,11 +132,22 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId }) => {
             <div className="flex justify-center items-center w-full">
               <StarRating
                 rating={rating}
-                onChange={setRating}
+                onChange={(val) => {
+                  if (hasRated) return;
+                  setRating(val);
+                }}
                 size="w-10 h-10"
                 allowZero={false}
+                readOnly={hasRated}
               />
             </div>
+            {ratingStatusText && !hasRated && (
+              <p className="font-poppins text-sm font-semibold text-[#434343]">{ratingStatusText}</p>
+            )}
+            {hasRated && (
+              <p className="font-poppins text-sm text-[#434343]">You have already submitted a rating.</p>
+            )}
+       
             <div className="w-[311px] rounded-[12px] flex flex-col justify-start items-start space-y-[8px]">
               <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                 Please share your experience
@@ -117,8 +156,10 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId }) => {
                 placeholder="Enter your opinion"
                 className="w-[311px] h-[94px] px-4 py-2 bg-[#FFFFFF] border-[1px] border-[#624C7926] rounded-[12px] outline-none resize-none font-poppins text-sm"
                 value={review}
-                onChange={(e) => setReview(e.target.value)}
+                onChange={(e) => setReview(e.target.value.slice(0, 300))}
+                maxLength={300}
               />
+              <div className="w-full text-right text-xs text-gray-400 font-poppins">{review.length}/300</div>
             </div>
           </div>
 
@@ -138,10 +179,10 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId }) => {
             </button>
             <button
               onClick={handleSubmit}
-              disabled={isSubmitting || rating === 0}
+              disabled={isSubmitting || rating === 0 || hasRated}
               className="flex justify-center items-center w-[151.5px] h-[48px] gap-[10px] rounded-[28px] py-[17px] px-[4px] bg-secondaryBrand font-poppins font-semibold text-white text-[14px] leading-[21px] hover:bg-blue-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Submitting..." : "Submit Review"}
+              {isSubmitting ? "Submitting..." : hasRated ? "Already Rated" : "Submit Review"}
             </button>
           </div>
         </div>

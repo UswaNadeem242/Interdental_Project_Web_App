@@ -217,17 +217,16 @@ const DoctorSignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.firstName
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.firstName
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="firstName"
                   className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
-      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+        peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
       peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
     "
                 >
@@ -250,11 +249,10 @@ const DoctorSignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.lastName
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.lastName
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="lastName"
@@ -284,11 +282,10 @@ const DoctorSignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("email", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.email
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.email
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="email"
@@ -317,11 +314,10 @@ const DoctorSignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("phoneNumber", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.phoneNumber
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.phoneNumber
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="phone"
@@ -352,11 +348,10 @@ const DoctorSignup = () => {
                 }
                 onBlur={(e) => handleFieldBlur("address", e.target.value)}
                 placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                  validationErrors.address
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-secondaryBrand"
-                }`}
+                className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.address
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
               />
               <label
                 htmlFor="address"
@@ -387,11 +382,10 @@ const DoctorSignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("city", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.city
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.city
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="city"
@@ -419,11 +413,10 @@ const DoctorSignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("zip", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.zip
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.zip
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="zip"
@@ -459,11 +452,10 @@ const DoctorSignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("drLicenseNo", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.drLicenseNo
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.drLicenseNo
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="drLicenseNo"
@@ -496,11 +488,10 @@ const DoctorSignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("officeRefNo", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.officeRefNo
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.officeRefNo
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="officeRefNo"
@@ -531,11 +522,10 @@ const DoctorSignup = () => {
                 }
                 onBlur={(e) => handleFieldBlur("password", e.target.value)}
                 placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${
-                  validationErrors.password
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-secondaryBrand"
-                }`}
+                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${validationErrors.password
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
               />
               <label
                 htmlFor="password"

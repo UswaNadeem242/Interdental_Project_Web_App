@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { changePassword } from "../api/doctorDasboard";
 import Toast from "../components/Toast";
+import { createPortal } from "react-dom";
 
 const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
   const handleCloseModal = () => {
@@ -213,7 +214,8 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
     updatePassword();
   };
 
-  return (
+  return createPortal(
+
     <>
       <Toast
         isVisible={toast.isVisible}
@@ -222,46 +224,47 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
         onClose={hideToast}
       />
 
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-        <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg w-96 relative">
-          <div className="w-full">
-            <div className="flex justify-between items-center gap-[4px] pb-4 border-b outline-offset-[-0.50px] outline-black/10">
-              <p className="font-poppins font-medium text-[20px] leading-[30px] text-[#0D4041]">
-                Change Password
-              </p>
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
+        <div className="bg-white rounded-3xl shadow-2xl w-full max-w-[480px] flex flex-col relative">
+          {/* Close */}
+          <button
+            onClick={handleCloseModal}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
+          >
+            ✕
+          </button>
 
-              <button
-                onClick={handleCloseModal}
-                className="w-6 h-6 rounded-full bg-[#E5E5E5] right-4 text-gray-500 hover:text-gray-800"
-              >
-                ✕
-              </button>
-            </div>
-          </div>
-          <form onSubmit={handleSubmit} className="w-full rounded-3xl bg-white">
+          {/* Content */}
+          <div className="flex-1">
+            <div className="p-6 md:p-8">
+              <h2 className="font-poppins font-semibold text-xl md:text-2xl text-[#0F153E] mb-1">
+                Change Password
+              </h2>
+              <div className="w-full h-[1px] bg-gray-200 mb-6"></div>
+
+              <form onSubmit={handleSubmit} className="w-full rounded-3xl bg-white space-y-4">
             {/* Old Password */}
-            <div className="relative mb-4">
+            <div className="relative">
               <input
                 name="oldPassword"
                 value={formData.oldPassword}
                 onChange={handleChange}
                 placeholder="Old Password"
                 type={show.old ? "text" : "password"}
-                className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${
-                  errors.oldPassword ? "border-red-500" : "border-borderPrimary"
-                }`}
+                className={`w-full rounded-full border px-3.5 py-2.5 pr-10 text-[13px] md:text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.oldPassword ? "border-red-500" : "border-[#624C7926]"
+                  }`}
               />
               <button
                 type="button"
                 onClick={() => setShow({ ...show, old: !show.old })}
-                className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
+                className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
               >
                 {show.old ? (
                   // Eye Open Icon
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#808080"
@@ -276,8 +279,8 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
                   // Eye Closed Icon
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#808080"
@@ -295,34 +298,33 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
               </button>
             </div>
             {errors.oldPassword && (
-              <p className="text-red-500 text-xs mb-2 ml-2 break-words">
+              <p className="text-red-500 text-[11px] mb-1.5 ml-2 break-words">
                 {errors.oldPassword}
               </p>
             )}
 
             {/* New Password */}
-            <div className="relative mb-4">
+            <div className="relative">
               <input
                 name="newPassword"
                 value={formData.newPassword}
                 onChange={handleChange}
                 placeholder="New Password"
                 type={show.new ? "text" : "password"}
-                className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${
-                  errors.newPassword ? "border-red-500" : "border-borderPrimary"
-                }`}
+                className={`w-full rounded-full border px-3.5 py-2.5 pr-10 text-[13px] md:text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.newPassword ? "border-red-500" : "border-[#624C7926]"
+                  }`}
               />
               <button
                 type="button"
                 onClick={() => setShow({ ...show, new: !show.new })}
-                className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
+                className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
               >
                 {show.new ? (
                   // Eye Open Icon
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#808080"
@@ -337,8 +339,8 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
                   // Eye Closed Icon
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#808080"
@@ -356,36 +358,32 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
               </button>
             </div>
             {errors.newPassword && (
-              <p className="text-red-500 text-xs mb-2 ml-2 break-words">
+              <p className="text-red-500 text-[11px] mb-1.5 ml-2 break-words">
                 {errors.newPassword}
               </p>
             )}
 
             {/* Confirm Password */}
-            <div className="relative mb-4">
+            <div className="relative">
               <input
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="Confirm Password"
                 type={show.confirm ? "text" : "password"}
-                className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${
-                  errors.confirmPassword
-                    ? "border-red-500"
-                    : "border-borderPrimary"
-                }`}
+                className={`w-full rounded-full border px-3.5 py-2.5 pr-10 text-[13px] md:text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.confirmPassword ? "border-red-500" : "border-[#624C7926]"}`}
               />
               <button
                 type="button"
                 onClick={() => setShow({ ...show, confirm: !show.confirm })}
-                className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
+                className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
               >
                 {show.confirm ? (
                   // Eye Open Icon
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#808080"
@@ -400,8 +398,8 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
                   // Eye Closed Icon
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#808080"
@@ -419,22 +417,27 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
               </button>
             </div>
             {errors.confirmPassword && (
-              <p className="text-red-500 text-xs mb-2 ml-2 break-words">
+              <p className="text-red-500 text-[11px] mb-1.5 ml-2 break-words">
                 {errors.confirmPassword}
               </p>
             )}
 
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className=" w-full flex justify-center items-center bg-secondaryBrand text-white  h-10  rounded-full  border-[1px] border-secondaryBrand gap-2 py-5   px-2  text-xs font-poppins font-normal leading-[18px]"
-            >
-              Confirm
-            </button>
-          </form>
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="w-full flex justify-center items-center bg-[#001D58] text-white rounded-full border border-[#001D58] gap-2 py-3 px-2 text-sm font-poppins font-semibold hover:bg-[#002575] transition-colors"
+              >
+                Confirm
+              </button>
+            </form>
+            </div>
+          </div>
+
+          {/* Footer spacing to mirror ProfileModal */}
+          <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 md:p-6 rounded-b-3xl"></div>
         </div>
       </div>
-    </>
+    </>, document.body
   );
 };
 

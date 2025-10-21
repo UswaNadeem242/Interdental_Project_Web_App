@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import FeedbackModal from "../modals/FeedbackModal";
 import axios from "axios";
 import { BASE_URL } from "../config";
@@ -11,6 +11,7 @@ const Orders = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFeedbackOpen, SetIsFeedbackOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [isShippingDetailsOpen, setIsShippingDetailsOpen] = useState(false);
   const { orderId } = useParams();
   const navigate = useNavigate();
   const [orders, setOrders] = useState();
@@ -39,7 +40,7 @@ const Orders = () => {
 
   return (
     <div className="flex justify-center items-center w-full h-auto py-8 bg-[#F8F8F8]">
-      <div className="flex flex-col justify-start items-start w-[1200px] h-[517px] p-[32px] space-y-[16px] rounded-[16px] bg-white mt-20">
+      <div className="flex flex-col justify-start items-start w-[1200px] p-[32px] space-y-[16px] rounded-[16px] bg-white mt-20">
         <div className="flex justify-start items-center gap-2">
           <div
             onClick={() => navigate(-1)}
@@ -113,9 +114,9 @@ const Orders = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col justify-start items-center w-[560px] h-[313px] space-y-[16px]">
-              <div className="flex flex-col w-[560px] h-[163px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px] space-y-[16px]">
-                <div className="w-[528px] h-[33px] flex justify-between items-center py-[6px]">
+            <div className="flex flex-col w-[560px] space-y-[16px]">
+              <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px] space-y-[12px]">
+                <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                     Product Subtotal
                   </p>
@@ -123,7 +124,7 @@ const Orders = () => {
                     ${orders?.totalAmount}
                   </p>
                 </div>
-                <div className="w-[528px] h-[33px] flex justify-between items-center py-[6px]">
+                <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                     Sale tax
                   </p>
@@ -131,7 +132,7 @@ const Orders = () => {
                     $ 0.00
                   </p>
                 </div>
-                <div className="w-[528px] h-[33px] flex justify-between items-center py-[6px]">
+                <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                     Credit Card
                   </p>
@@ -141,8 +142,8 @@ const Orders = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col w-[560px] h-[65px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px] space-y-[16px]">
-                <div className="w-[528px] h-[33px] flex justify-between items-center py-[6px]">
+              <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px]">
+                <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                     Grand Total
                   </p>
@@ -151,8 +152,9 @@ const Orders = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col w-[560px] h-[65px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px] space-y-[16px]">
-                <div className="w-[528px] h-[33px] flex justify-between items-center py-[6px]">
+              
+              <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px]">
+                <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                     Order Status
                   </p>
@@ -160,6 +162,36 @@ const Orders = () => {
                     {orders?.orderStatus}
                   </p>
                 </div>
+              </div>
+
+              {/* Shipping Details Collapsible Section */}
+              <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] bg-white">
+                <div 
+                  className="flex justify-between items-center p-[16px] cursor-pointer transition-colors"
+                  onClick={() => setIsShippingDetailsOpen(!isShippingDetailsOpen)}
+                >
+                  <p className="font-poppins text-[14px] leading-[21px] text-[#434343]">
+                    Shipping Detail
+                  </p>
+                  {isShippingDetailsOpen ? (
+                    <ChevronUpIcon className="w-5 h-5 text-gray-600" />
+                  ) : (
+                    <ChevronDownIcon className="w-5 h-5 text-gray-600" />
+                  )}
+                </div>
+                
+                {isShippingDetailsOpen && (
+                  <div className="px-[16px] pb-[16px] space-y-[12px]">
+                    <div className="space-y-[4px]">
+                      <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#909198]">
+                        Shipping Address
+                      </p>
+                      <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
+                        {orders?.shippingAddress || "No shipping address provided"}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

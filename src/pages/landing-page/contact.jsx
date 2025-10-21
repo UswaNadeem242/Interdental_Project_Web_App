@@ -24,6 +24,8 @@ const Contact = ({ isLanding }) => {
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [submittedData, setSubmittedData] = useState({});
 
   const socialIcons = [
     { id: 1, icon: <Twitter className="w-5 h-5 text-black" /> },
@@ -40,14 +42,28 @@ const Contact = ({ isLanding }) => {
     return emailRegex.test(email);
   };
 
+  // Validate alphabets only for names
+  const isValidName = (name) => {
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    return nameRegex.test(name);
+  };
+
   // Check if all fields are filled and valid
   const isFormValid = useMemo(() => {
     return (
       formData.firstName.trim() !== "" &&
+      formData.firstName.trim().length >= 2 &&
+      formData.firstName.trim().length <= 25 &&
+      isValidName(formData.firstName.trim()) &&
       formData.lastName.trim() !== "" &&
+      formData.lastName.trim().length >= 2 &&
+      formData.lastName.trim().length <= 25 &&
+      isValidName(formData.lastName.trim()) &&
       formData.email.trim() !== "" &&
       isValidEmail(formData.email) &&
-      formData.description.trim() !== ""
+      formData.description.trim() !== "" &&
+      formData.description.trim().length >= 10 &&
+      formData.description.trim().length <= 500
     );
   }, [formData]);
 
@@ -75,6 +91,10 @@ const Contact = ({ isLanding }) => {
       newErrors.firstName = "First name is required";
     } else if (formData.firstName.trim().length < 2) {
       newErrors.firstName = "First name must be at least 2 characters";
+    } else if (formData.firstName.trim().length > 25) {
+      newErrors.firstName = "First name must not exceed 25 characters";
+    } else if (!isValidName(formData.firstName.trim())) {
+      newErrors.firstName = "First name can only contain letters and spaces";
     }
 
     // Validate Last Name
@@ -82,6 +102,10 @@ const Contact = ({ isLanding }) => {
       newErrors.lastName = "Last name is required";
     } else if (formData.lastName.trim().length < 2) {
       newErrors.lastName = "Last name must be at least 2 characters";
+    } else if (formData.lastName.trim().length > 25) {
+      newErrors.lastName = "Last name must not exceed 25 characters";
+    } else if (!isValidName(formData.lastName.trim())) {
+      newErrors.lastName = "Last name can only contain letters and spaces";
     }
 
     // Validate Email
@@ -96,6 +120,8 @@ const Contact = ({ isLanding }) => {
       newErrors.description = "Message is required";
     } else if (formData.description.trim().length < 10) {
       newErrors.description = "Message must be at least 10 characters";
+    } else if (formData.description.trim().length > 500) {
+      newErrors.description = "Message must not exceed 500 characters";
     }
 
     setErrors(newErrors);
@@ -128,12 +154,10 @@ const Contact = ({ isLanding }) => {
       });
 
       if (response.ok) {
-        dispatch(
-          showToast({
-            message: "Message sent successfully! We'll get back to you soon.",
-            type: "success",
-          }),
-        );
+        // Store submitted data for confirmation screen
+        setSubmittedData({ ...formData });
+        // Show confirmation screen
+        setShowConfirmation(true);
         // Reset form
         setFormData({
           firstName: "",
@@ -166,6 +190,101 @@ const Contact = ({ isLanding }) => {
       setLoading(false);
     }
   };
+
+  const handleBackToHome = () => {
+    setShowConfirmation(false);
+    setSubmittedData({});
+    if (isContactPage) {
+      window.location.href = "/";
+    }
+  };
+
+  const handleSubmitAnother = () => {
+    setShowConfirmation(false);
+    setSubmittedData({});
+  };
+
+  // Confirmation Modal Component
+  const ConfirmationModal = () => (
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          setShowConfirmation(false);
+        }
+      }}
+    >
+      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
+        {/* Close Button */}
+        <button
+          onClick={() => setShowConfirmation(false)}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div className="text-center">
+          {/* Success Icon */}
+          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
+            <svg
+              className="h-8 w-8 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+
+          {/* Success Message */}
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 font-poppins">
+            Message Sent Successfully!
+          </h2>
+          
+          {/* Support Team Message */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 text-left">
+            <div className="flex items-start space-x-3">
+              <div className="flex-shrink-0">
+                <svg className="w-6 h-6 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-blue-900 mb-2 font-poppins">
+                  What's Next?
+                </h3>
+                <p className="text-blue-800 font-poppins leading-relaxed">
+                  Our support team has received your message and will get back to you within 24–48 hours through your registered email address ({submittedData.email}). Please make sure to check your inbox and spam folder for our reply.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={handleBackToHome}
+              className="px-6 py-3 bg-secondaryBrand text-white rounded-lg hover:bg-secondaryBrand/90 transition-colors font-poppins font-medium"
+            >
+              Back to Home
+            </button>
+            <button
+              onClick={handleSubmitAnother}
+              className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-poppins font-medium"
+            >
+              Submit Another Message
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -226,87 +345,138 @@ const Contact = ({ isLanding }) => {
 
             {/* Contact Form */}
             <div className="bg-white p-2 md:p-4 rounded-lg">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex flex-col">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* First Name Field with Floating Label */}
+                  <div className="relative">
                     <input
                       type="text"
                       name="firstName"
+                      id="firstName"
                       value={formData.firstName}
                       onChange={handleChange}
-                      placeholder="First Name"
-                      className={`border ${
+                      placeholder=" "
+                      maxLength={25}
+                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${
                         errors.firstName
                           ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                          : "border-gray-300 focus:ring-secondaryBrand/50 focus:border-secondaryBrand"
-                      } p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins transition-all`}
+                          : "border-gray-300 focus:border-secondaryBrand"
+                      } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
                     />
+                    <label
+                      htmlFor="firstName"
+                      className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+                        peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+                        peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+                        peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand"
+                    >
+                      First Name
+                    </label>
                     {errors.firstName && (
-                      <span className="text-red-500 text-xs mt-1 font-poppins">
+                      <span className="text-red-500 text-xs mt-1 font-poppins block">
                         {errors.firstName}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex flex-col">
+                  {/* Last Name Field with Floating Label */}
+                  <div className="relative">
                     <input
                       type="text"
                       name="lastName"
+                      id="lastName"
                       value={formData.lastName}
                       onChange={handleChange}
-                      placeholder="Last Name"
-                      className={`border ${
+                      placeholder=" "
+                      maxLength={25}
+                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${
                         errors.lastName
                           ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                          : "border-gray-300 focus:ring-secondaryBrand/50 focus:border-secondaryBrand"
-                      } p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins transition-all`}
+                          : "border-gray-300 focus:border-secondaryBrand"
+                      } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
                     />
+                    <label
+                      htmlFor="lastName"
+                      className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+                        peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+                        peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+                        peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand"
+                    >
+                      Last Name
+                    </label>
                     {errors.lastName && (
-                      <span className="text-red-500 text-xs mt-1 font-poppins">
+                      <span className="text-red-500 text-xs mt-1 font-poppins block">
                         {errors.lastName}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="flex flex-col">
+                {/* Email Field with Floating Label */}
+                <div className="relative">
                   <input
                     type="email"
                     name="email"
+                    id="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="E-Mail Address"
-                    className={`w-full border ${
+                    placeholder=" "
+                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${
                       errors.email
                         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                        : "border-gray-300 focus:ring-secondaryBrand/50 focus:border-secondaryBrand"
-                    } p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins transition-all`}
+                        : "border-gray-300 focus:border-secondaryBrand"
+                    } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
                   />
+                  <label
+                    htmlFor="email"
+                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+                      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+                      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+                      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand"
+                  >
+                    E-Mail Address
+                  </label>
                   {errors.email && (
-                    <span className="text-red-500 text-xs mt-1 font-poppins">
+                    <span className="text-red-500 text-xs mt-1 font-poppins block">
                       {errors.email}
                     </span>
                   )}
                 </div>
 
-                <div className="flex flex-col">
+                {/* Message Field with Floating Label */}
+                <div className="relative">
                   <textarea
                     name="description"
+                    id="description"
                     value={formData.description}
                     onChange={handleChange}
-                    placeholder="Message"
+                    placeholder=" "
                     rows="5"
-                    className={`w-full border ${
+                    maxLength={500}
+                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${
                       errors.description
                         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                        : "border-gray-300 focus:ring-secondaryBrand/50 focus:border-secondaryBrand"
-                    } p-3 md:p-4 rounded-lg focus:outline-none focus:ring-2 outline-none placeholder:text-sm md:placeholder:text-base placeholder:font-poppins placeholder:text-gray-400 font-poppins resize-none transition-all`}
+                        : "border-gray-300 focus:border-secondaryBrand"
+                    } focus:ring-2 focus:ring-secondaryBrand/20 transition-all resize-none`}
                   ></textarea>
+                  <label
+                    htmlFor="description"
+                    className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+                      peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+                      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
+                      peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand"
+                  >
+                    Message
+                  </label>
                   {errors.description && (
-                    <span className="text-red-500 text-xs mt-1 font-poppins">
+                    <span className="text-red-500 text-xs mt-1 font-poppins block">
                       {errors.description}
                     </span>
                   )}
+                  {/* Character count */}
+                  <div className="text-right text-xs text-gray-400 mt-1 font-poppins">
+                    {formData.description.length}/500 characters
+                  </div>
                 </div>
 
                 <button
@@ -344,7 +514,7 @@ const Contact = ({ isLanding }) => {
                     </>
                   ) : (
                     <>
-                      Send
+                      Send Message
                       <PaperAirplaneIcon className="w-5 h-5 stroke-white stroke-2" />
                     </>
                   )}
@@ -362,6 +532,9 @@ const Contact = ({ isLanding }) => {
       </div>
 
       {isContactPage ? <Footer /> : null}
+      
+      {/* Confirmation Modal */}
+      {showConfirmation && <ConfirmationModal />}
     </>
   );
 };

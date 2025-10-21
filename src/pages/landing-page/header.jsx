@@ -200,13 +200,13 @@ const Header = () => {
                     <img
                       src={user?.profileImage}
                       alt="User Avatar"
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 shrink-0 rounded-full"
                     />
                   ) : (
                     <Icons.UserAvatar />
                   )}
-                  <p className="font-poppins font-normal text-[14px]  leading-[21px] text-[#393A44]">
-                    {user?.firstName} {user?.lastName}
+                  <p className="font-poppins font-normal line-clamp-1 text-[14px]  leading-[21px] text-[#393A44]">
+                    {user?.firstName} asfasfas {user?.lastName}safasf2wq wqas fas f
                   </p>
                   <ChevronDownIcon className="w-5 h-5 pr-2" />
                 </div>
