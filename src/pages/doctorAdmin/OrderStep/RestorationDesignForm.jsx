@@ -57,7 +57,7 @@ const DoctorOrder = () => {
 
   // Debug: Log when selected changes
   useEffect(() => {
-     if (selected) {
+    if (selected) {
       console.log("Selected object keys:", Object.keys(selected));
       console.log("Selected name:", selected.name);
     }
@@ -183,9 +183,6 @@ const DoctorOrder = () => {
   const today = new Date();
   // Format YYYY-MM-DD for <input type="date">
   const formattedToday = today.toISOString().split("T")[0];
-
-
-
 
   return (
     <>
@@ -384,7 +381,7 @@ const DoctorOrder = () => {
                                   onChange={(val) =>
                                     setFieldValue("patientFirstName", val)
                                   } // update formik
-                                  classNameWidth=' w-80'
+                                  classNameWidth=" w-80"
                                 />
                                 {errors.patientFirstName &&
                                   touched.patientFirstName && (
@@ -446,7 +443,7 @@ const DoctorOrder = () => {
                                 dropdownClass="text-secondaryBrand"
                                 error={
                                   touched.scannerType &&
-                                    !activeToothSelection.scannerType
+                                  !activeToothSelection.scannerType
                                     ? "Select the Teeth first to select Scanner type"
                                     : ""
                                 }
@@ -485,10 +482,11 @@ const DoctorOrder = () => {
                             </aside>
                             <section className="col-span-12 md:col-span-6 space-y-4">
                               <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
-                                <div className="grid grid-cols-2 gap-4 mt-5 mb-10">
-                                </div>
+                                <div className="grid grid-cols-2 gap-4 mt-5 mb-10"></div>
                                 <div className="flex flex-wrap gap-2  justify-center flex-col">
-                                  <p className="text-center">Select the teeth first </p>
+                                  <p className="text-center">
+                                    Select the teeth first{" "}
+                                  </p>
                                   <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">
                                     upper Arch
                                   </button>
@@ -563,7 +561,6 @@ const DoctorOrder = () => {
                                         }}
                                         label=" Denture"
                                         storageKey="digitalOptions"
-
                                       />
                                       <MaterialDropdown
                                         className2="relative z-0"
@@ -573,15 +570,15 @@ const DoctorOrder = () => {
                                             (p) => p.name === "Surgical Guide"
                                           )?.children?.length > 0
                                             ? orders.find(
-                                              (p) =>
-                                                p.name === "Surgical Guide"
-                                            )?.children
+                                                (p) =>
+                                                  p.name === "Surgical Guide"
+                                              )?.children
                                             : [
-                                              {
-                                                label: "Not Available",
-                                                value: "",
-                                              },
-                                            ]
+                                                {
+                                                  label: "Not Available",
+                                                  value: "",
+                                                },
+                                              ]
                                         }
                                         hideCheckForNotAvailable={true}
                                         label="Surgical Guide"
@@ -806,9 +803,9 @@ const DoctorOrder = () => {
                                       dropdownClass="text-secondaryBrand"
                                       error={
                                         touched.photogrammetryfiles &&
-                                          !toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.photogrammetryfiles
+                                        !toothSelections.find(
+                                          (t) => t.toothId === selectedTooth
+                                        )?.photogrammetryfiles
                                           ? "Please select a tooth first before selecting Photogrammetry files."
                                           : ""
                                       }
@@ -921,13 +918,31 @@ const DoctorOrder = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <button
+                                {/* <button
                                   type="button"
                                   onClick={() => next()}
                                   className="font-poppins w-full bg-[#0b2b62] px-6 py-3 text-sm font-medium text-[#F8F8F8] hover:bg-[#092b58]"
                                 >
                                   Checkout
+                                </button> */}
+                                <button
+                                  type="button"
+                                  onClick={next}
+                                  disabled={totalPrice === 0}
+                                  className={`font-poppins w-full px-6 py-3 text-sm font-medium ${
+                                    totalPrice > 0
+                                      ? "bg-[#0b2b62] text-[#F8F8F8] hover:bg-[#092b58]"
+                                      : "bg-[#0b2b62] text-[#F8F8F8] cursor-not-allowed"
+                                  }`}
+                                >
+                                  Checkout
                                 </button>
+
+                                {totalPrice === 0 && (
+                                  <p className="text-sm text-red-600 text-center mt-2 font-poppins">
+                                    Select all the items first to Checkout
+                                  </p>
+                                )}
                               </div>
                             </aside>
                           </div>

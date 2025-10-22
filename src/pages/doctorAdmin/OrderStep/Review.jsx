@@ -1,6 +1,50 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
+import ToothOne from "../../../icon/tooth-one";
+
+const topTeeth = {
+  1: ToothOne,
+  2: ToothOne,
+  3: ToothOne,
+  4: ToothOne,
+  5: ToothOne,
+  6: ToothOne,
+  7: ToothOne,
+  8: ToothOne,
+  9: ToothOne,
+  10: ToothOne,
+  11: ToothOne,
+  12: ToothOne,
+  13: ToothOne,
+  14: ToothOne,
+  15: ToothOne,
+  16: ToothOne,
+};
+
+const bottomTeeth = {
+  17: ToothOne,
+  18: ToothOne,
+  19: ToothOne,
+  20: ToothOne,
+  21: ToothOne,
+  22: ToothOne,
+  23: ToothOne,
+  24: ToothOne,
+  25: ToothOne,
+  26: ToothOne,
+  27: ToothOne,
+  28: ToothOne,
+  29: ToothOne,
+  30: ToothOne,
+  31: ToothOne,
+  32: ToothOne,
+};
+
+const toothMap = {
+  1: { normal: ToothOne, highlighted: ToothOne },
+  // 2: { normal: ToothTwo, highlighted: ToothTwoH },}
+};
 
 const ReviewOrder = ({ next }) => {
   const restoration = useSelector((state) => state.restoration);
@@ -103,7 +147,7 @@ const ReviewOrder = ({ next }) => {
       });
     }
   }, [doctorProfile]);
-  console.log('formData', formData);
+  console.log("formData", formData);
 
   // Utility function
   const formatDate = (dateString) => {
@@ -211,6 +255,28 @@ const ReviewOrder = ({ next }) => {
                   ? selectedTeeth.map((t) => `#${t}`).join(", ")
                   : "None"}
               </span>
+              {/* Upper 16 */}
+              <div className="flex gap-4 mt-4">
+                {Object.entries(topTeeth).map(([id, ToothComponent]) => (
+                  <div key={id} className="flex flex-col items-center">
+                    <ToothComponent
+                      highlighted={selectedTeeth.includes(Number(id))}
+                    />
+                    <span className="text-sm mt-1 text-gray-600">{id}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Lower 16 */}
+              <div className="flex gap-4 mt-4 mb-4">
+                {Object.entries(bottomTeeth).map(([id, ToothComponent]) => (
+                  <div key={id} className="flex flex-col items-center">
+                    <ToothComponent
+                      highlighted={selectedTeeth.includes(Number(id))}
+                    />
+                    <span className="text-sm text-gray-600 mt-1">{id}</span>
+                  </div>
+                ))}
+              </div>
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 md:text-sm text-base">
