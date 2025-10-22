@@ -50,9 +50,7 @@ const DoctorSignup = () => {
       .email("Enter a valid email address")
       .required("Email is required"),
     phoneNumber: Yup.string()
-      .min(7, "Phone number must be at least 7 digits")
-      .max(15, "Phone number must not exceed 15 digits")
-      .matches(/^[0-9]{7,15}$/i, "Phone number must contain only digits (7–15)")
+      .matches(/^[0-9]{7,15}$/, "Phone number must be 7-15 digits")
       .required("Phone number is required"),
     address: Yup.string()
       .min(10, "Address must be at least 10 characters")
@@ -63,47 +61,41 @@ const DoctorSignup = () => {
       .matches(/^[a-zA-Z\s]+$/, "City must contain only letters and spaces")
       .required("City is required"),
     zip: Yup.string()
-      .min(5, "ZIP code must be at least 5 digits")
-      .max(9, "ZIP code must not exceed 9 digits")
-      .matches(/^\d{5,9}$/i, "ZIP code must be 5–9 digits")
+      .matches(/^\d{5,9}$/, "ZIP code must be 5-9 digits")
       .required("Zip code is required"),
     drLicenseNo: Yup.string()
-      .min(5, "Doctor's License Number must be at least 5 characters")
-      .max(15, "Doctor's License Number must not exceed 15 characters")
-      .matches(
-        /^[A-Z]+-[0-9]+$/,
-        "Format must be LETTERS-hyphen-digits (e.g., PMC-12345)",
-      )
-      .required("Doctor's License Number is required"),
+      .required("Doctor's License Number is required")
+      .min(5, "Must be at least 5 characters")
+      .max(15, "Must not exceed 15 characters")
+      .matches(/^[A-Z]+-[0-9]+$/, "Format: LETTERS-hyphen-numbers (e.g., PMC-12345)"),
     officeRefNo: Yup.string()
-      .min(6, "Office Reference Number must be at least 6 characters")
-      .max(15, "Office Reference Number must not exceed 15 characters")
-      .matches(
-        /^[A-Z0-9_-]+$/,
-        "Only uppercase letters, numbers, hyphen (-), underscore (_) allowed",
-      )
       .required("Office Reference Number is required")
+      .min(6, "Must be at least 6 characters")
+      .max(15, "Must not exceed 15 characters")
+      .matches(/^[A-Z0-9_-]+$/, "Only letters, numbers, hyphens, and underscores allowed")
       .test(
         "different-from-license",
-        "Doctor's License Number and Office Reference Number cannot be the same",
+        "Cannot be same as License Number",
         function (value) {
-          return value !== this.parent.drLicenseNo;
+          const licenseValue = this.parent.drLicenseNo;
+          if (!value || !licenseValue) return true;
+          return value !== licenseValue;
         },
       ),
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
       .matches(
-        /(?=.*[a-z])/,
-        "Password must contain at least one lowercase letter",
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]).{8,}$/,
+        "Must contain uppercase, lowercase, number, and special character"
       )
-      .matches(
-        /(?=.*[A-Z])/,
-        "Password must contain at least one uppercase letter",
-      )
-      .matches(/(?=.*\d)/, "Password must contain at least one number")
-      .matches(
-        /(?=.*[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~])/,
-        "Password must contain at least one special character",
+      .test(
+        "special-char-limit",
+        "Maximum 8 special characters allowed",
+        function (value) {
+          if (!value) return true;
+          const specialCharCount = (value.match(/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/g) || []).length;
+          return specialCharCount <= 8;
+        }
       )
       .required("Password is required"),
   });

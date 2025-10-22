@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../config";
+import { useAuth } from "../../auth/AuthContext";
 
 const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown }) => {
   const dropdownRef = useRef(null);
@@ -13,6 +14,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
     totalRecord: 0,
     hasMore: false
   });
+  const { fetchUnreadNotificationsCount } = useAuth()
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const fetchNotifications = useCallback(async (page = 0, append = false) => {
@@ -39,10 +41,10 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
         setNotifications(content);
       }
       const totalPages = responseData?.page ?? 0;
-      
+
       const newCurrentPageNumber = append ? currentPageNumber + 1 : 0;
       setCurrentPageNumber(newCurrentPageNumber);
-      
+
       const hasMore = newCurrentPageNumber < totalPages - 1;
 
       setPagination(prev => ({
@@ -51,6 +53,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
         totalRecord,
         hasMore
       }));
+      
     } catch (e) {
       setError("Failed to load notifications");
     } finally {
@@ -80,6 +83,8 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
               : notification
           )
         );
+
+        fetchUnreadNotificationsCount();
       } catch (_) {
         // no-op UI error; keep dropdown usable
       }
@@ -99,7 +104,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
 
       // Close if clicking outside the dropdown
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-    
+
         setNotificationsDropdown(false);
       }
     };

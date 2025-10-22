@@ -6,7 +6,6 @@ import { BASE_URL } from "../../config";
 import Toast from "../../components/Toast";
 import YearlyPlanModel from "../../modals/yearly-plan";
 import useFieldValidation from "../../Hooks/useFieldValidation";
-
 import Icons from "../../components/Icons";
 import * as Yup from "yup";
 
@@ -47,9 +46,7 @@ const BuySignup = () => {
       .email("Enter a valid email address")
       .required("Email is required"),
     phoneNumber: Yup.string()
-      .min(7, "Phone number must be at least 7 digits")
-      .max(15, "Phone number must not exceed 15 digits")
-      .matches(/^[0-9]{7,15}$/i, "Phone number must contain only digits (7–15)")
+      .matches(/^[0-9]{7,15}$/, "Phone number must be 7-15 digits")
       .required("Phone number is required"),
     address: Yup.string()
       .min(10, "Address must be at least 10 characters")
@@ -57,17 +54,17 @@ const BuySignup = () => {
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
       .matches(
-        /(?=.*[#a-z])/,
-        "Password must contain at least one lowercase letter",
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]).{8,}$/,
+        "Must contain uppercase, lowercase, number, and special character"
       )
-      .matches(
-        /(?=.*[#A-Z])/,
-        "Password must contain at least one uppercase letter",
-      )
-      .matches(/(?=.*\d)/, "Password must contain at least one number")
-      .matches(
-        /(?=.*[#@$!%*?&])/,
-        "Password must contain at least one special character (@$!%*?&)",
+      .test(
+        "special-char-limit",
+        "Maximum 8 special characters allowed",
+        function (value) {
+          if (!value) return true;
+          const specialCharCount = (value.match(/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/g) || []).length;
+          return specialCharCount <= 8;
+        }
       )
       .required("Password is required"),
   });
@@ -173,8 +170,8 @@ const BuySignup = () => {
                   onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.firstName
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
                     }`}
                 />
                 <label
@@ -206,8 +203,8 @@ const BuySignup = () => {
                   onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
                   placeholder=" " // ek space zaroori hai
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.lastName
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
                     }`}
                 />
                 <label
@@ -240,8 +237,8 @@ const BuySignup = () => {
                   onBlur={(e) => handleFieldBlur("email", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.email
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
                     }`}
                 />
                 <label
@@ -273,8 +270,8 @@ const BuySignup = () => {
                   onBlur={(e) => handleFieldBlur("phoneNumber", e.target.value)}
                   placeholder=" "
                   className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.phoneNumber
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
                     }`}
                 />
                 <label
@@ -308,8 +305,8 @@ const BuySignup = () => {
                 onBlur={(e) => handleFieldBlur("address", e.target.value)}
                 placeholder=" "
                 className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.address
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-secondaryBrand"
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-secondaryBrand"
                   }`}
               />
               <label
@@ -341,8 +338,8 @@ const BuySignup = () => {
                 onBlur={(e) => handleFieldBlur("password", e.target.value)}
                 placeholder=" "
                 className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${validationErrors.password
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-secondaryBrand"
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-secondaryBrand"
                   }`}
               />
               <label

@@ -15,7 +15,7 @@ import useFieldValidation from "../Hooks/useFieldValidation";
 
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
-  const { fetchCartCount } = useAuth();
+  const { fetchCartCount ,fetchUnreadNotificationsCount} = useAuth();
   const [activeTab, setActiveTab] = useState("cart");
   const [openOrders, setOpenOrders] = useState(false);
   const [openPaymentMethod, setOpenPaymentMethod] = useState(true);
@@ -169,6 +169,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
           await getCart();
           // Update cart count in header
           fetchCartCount();
+          fetchUnreadNotificationsCount();
         } catch (refreshError) {
           console.log(
             "Failed to refresh cart from server, clearing locally:",
@@ -436,10 +437,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div
               onClick={() => handleTabClick("checkout")}
               className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${!cart?.items || cart.items.length === 0
-                  ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
-                  : activeTab === "checkout"
-                    ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
-                    : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
+                ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
+                : activeTab === "checkout"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                  : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
                 }`}
             >
               Checkout
@@ -447,10 +448,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div
               onClick={() => handleTabClick("review")}
               className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${!cart?.items || cart.items.length === 0
-                  ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
-                  : activeTab === "review"
-                    ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
-                    : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
+                ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
+                : activeTab === "review"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                  : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
                 }`}
             >
               Review
@@ -458,10 +459,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
             <div
               onClick={() => handleTabClick("order")}
               className={`py-2 px-4 font-poppins font-semibold text-[16px] leading-[24px] ${!cart?.items || cart.items.length === 0
-                  ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
-                  : activeTab === "order"
-                    ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
-                    : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
+                ? "text-[#C4C4C4] border-b-[4.69px] border-cartColor cursor-not-allowed opacity-50"
+                : activeTab === "order"
+                  ? "border-b-[4.69px] border-secondaryBrand font-semibold cursor-pointer"
+                  : "text-[#949494] border-b-[4.69px] border-cartColor cursor-pointer"
                 }`}
             >
               Completion
@@ -532,8 +533,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         placeholder=" "
                         required
                         className={`peer w-[285.5px] h-[53px] rounded-[8px] py-[10px] px-[15px] outline-none text-textFieldHeading border ${validationErrors.name
-                            ? "border-red-500"
-                            : "border-[#FFFFFF]"
+                          ? "border-red-500"
+                          : "border-[#FFFFFF]"
                           }`}
                       />
                       <label
@@ -562,8 +563,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         onBlur={(e) => handleFieldBlur("phone", e.target.value)}
                         placeholder=" "
                         className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand border ${validationErrors.phone
-                            ? "border-red-500"
-                            : "border-[#FFFFFF]"
+                          ? "border-red-500"
+                          : "border-[#FFFFFF]"
                           }`}
                       />
                       <label
@@ -604,8 +605,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       {/* Input + Flag */}
                       <div
                         className={`relative flex justify-start items-center w-full h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white border ${validationErrors.country
-                            ? "border-red-500"
-                            : "border-[#FFFFFF]"
+                          ? "border-red-500"
+                          : "border-[#FFFFFF]"
                           }`}
                       >
                         {selectedCountry && (
@@ -694,8 +695,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         onBlur={(e) => handleFieldBlur("state", e.target.value)}
                         placeholder=" "
                         className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${validationErrors.state
-                            ? "border-red-500"
-                            : "border-[#FFFFFF]"
+                          ? "border-red-500"
+                          : "border-[#FFFFFF]"
                           }`}
                       />
 
@@ -729,8 +730,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         onBlur={(e) => handleFieldBlur("city", e.target.value)}
                         placeholder=" "
                         className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${validationErrors.city
-                            ? "border-red-500"
-                            : "border-[#FFFFFF]"
+                          ? "border-red-500"
+                          : "border-[#FFFFFF]"
                           }`}
                       />
 
@@ -764,8 +765,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         }
                         placeholder=" "
                         className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${validationErrors.street
-                            ? "border-red-500"
-                            : "border-[#FFFFFF]"
+                          ? "border-red-500"
+                          : "border-[#FFFFFF]"
                           }`}
                       />
 
@@ -826,8 +827,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       </p>
                       <div
                         className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${validationErrors.recipientName
-                            ? "border border-red-500"
-                            : ""
+                          ? "border border-red-500"
+                          : ""
                           }`}
                       >
                         <input
@@ -860,8 +861,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       </p>
                       <div
                         className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${validationErrors.paypalUsername
-                            ? "border border-red-500"
-                            : ""
+                          ? "border border-red-500"
+                          : ""
                           }`}
                       >
                         <input
@@ -894,8 +895,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       </p>
                       <div
                         className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${validationErrors.paypalContact
-                            ? "border border-red-500"
-                            : ""
+                          ? "border border-red-500"
+                          : ""
                           }`}
                       >
                         <input
@@ -1041,8 +1042,8 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               {/* Buyer's Details */}
               <div
                 className={`flex flex-col w-full ${openBuyerDetail
-                    ? "h-auto border-[1px] border-[#FFFFFF0D]"
-                    : ""
+                  ? "h-auto border-[1px] border-[#FFFFFF0D]"
+                  : ""
                   } rounded-[8px] gap-[8px] bg-white `}
               >
                 <div
