@@ -51,6 +51,7 @@ const DoctorOrder = () => {
     doctorOrderItems,
     doctor,
     patient,
+    note,
   } = useSelector((state) => state.restoration);
   const [touched, setTouched] = useState({});
   const [selected, setSelected] = useState(null);
@@ -189,9 +190,26 @@ const DoctorOrder = () => {
       <div className="flex flex-col rounded-3xl justify-center items-start">
         <main className="flex-1 bg-white rounded-3xl p-4 sm:p-6 w-full">
           <Formik
-            initialValues=""
+            initialValues={{
+              officeReg: formData?.reference || "",
+              dueDate: doctor?.dueDate || "",
+              patientFirstName: patient?.name || "",
+              patientLastName: patient?.lastName || "",
+              scannerType: "",
+              digitalOptions: "",
+              surgical_guide: "",
+              Model_type: "",
+              material: "",
+              lab: "",
+              note: note || "",
+              crown: "",
+              photogrammetryfiles: "",
+            }}
             validationSchema={OrderValidationSchema}
-            onSubmit=""
+            onSubmit={(values, { setSubmitting }) => {
+              next();
+              setSubmitting(false);
+            }}
           >
             {({
               validateForm,
@@ -201,24 +219,8 @@ const DoctorOrder = () => {
               handleChange,
               handleBlur,
               setFieldValue,
+              handleSubmit,
             }) => {
-              // const handleTabClick = async (index) => {
-              //   if (index === activeIndex) return;
-              //   const formErrors = await validateForm();
-              //   if (Object.keys(formErrors).length === 0) {
-              //     setActiveIndex(index);
-              //   } else {
-              //     if (currentStep) {
-              //       dispatch(
-              //         showToast({
-              //           message: `Please complete all required fields before proceeding to Review.`,
-              //           type: "error",
-              //         })
-              //       );
-              //     }
-              //   }
-              // };
-
               const handleTabClick = async (index) => {
                 if (index === activeIndex) return; // same tab click - ignore
 
@@ -254,710 +256,652 @@ const DoctorOrder = () => {
 
                   {/* Tab Content */}
                   {activeIndex === 0 && (
-                    <Formik
-                      initialValues={{
-                        officeReg: "",
-                        dueDate: "",
-                        patientFirstName: "",
-                        patientLastName: "",
-                        scannerType: "",
-                        digitalOptions: "",
-                        surgical_guide: "",
-                        Model_type: "",
-                        material: "",
-                        lab: "",
-                        selectedTeeth: [], // 🟢 track selected teeth
-                        toothSelections: {},
-                        note: "",
-                        crown: "",
-                        photogrammetryfiles: "",
-                      }}
-                      validationSchema={OrderValidationSchema}
-                      validateOnChange={true} // 🚫 Validation har change pe na chale
-                      validateOnBlur={true}
-                      onSubmit={(values, { setSubmitting }) => {
-                        next();
-                        setSubmitting(false);
-                      }}
-                    >
-                      {({
-                        values,
-                        errors,
-                        touched,
-                        handleChange,
-                        handleSubmit,
-                        validateForm,
-                        setFieldValue,
-                        handleBlur,
-                      }) => (
-                        <Form onSubmit={handleSubmit} className="space-y-4">
-                          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 min-h-screen">
-                            {/* Left 3 */}
-                            <aside className="col-span-12 md:col-span-3 space-y-4">
-                              <FormSection
-                                title="Doctor Info"
-                                color="text-xs font-semibold"
-                                className="border border-gray-200 p-4"
-                                gap="gap-4"
-                              >
-                                {" "}
-                                <LabeledInput
-                                  type="text"
-                                  label="Office Reference number"
-                                  name="officeReg"
-                                  value={formData?.reference}
-                                  onBlur={handleBlur}
-                                  placeholder="Office Reference number"
-                                />
-                                <FormSection
-                                  title="Created Date"
-                                  color="text-xs font-semibold"
-                                  className="border  border-none"
-                                  gap="gap-4"
-                                ></FormSection>
-                                <p className="w-full  rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm  text-gray-900 placeholder-[#949494]outline-none transition-shadow  outline-none placeholder:font-poppins placeholder:text-[10px] placeholder:capitalize">
-                                  {new Date().toLocaleDateString("en-US", {
-                                    month: "2-digit",
-                                    day: "2-digit",
-                                    year: "numeric",
-                                  })}
+                    <Form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 min-h-screen">
+                        {/* Left 3 */}
+                        <aside className="col-span-12 md:col-span-3 space-y-4">
+                          <FormSection
+                            title="Doctor Info"
+                            color="text-xs font-semibold"
+                            className="border border-gray-200 p-4"
+                            gap="gap-4"
+                          >
+                            {" "}
+                            <LabeledInput
+                              type="text"
+                              label="Office Reference number"
+                              name="officeReg"
+                              value={values.officeReg}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Office Reference number"
+                            />
+                            <FormSection
+                              title="Created Date"
+                              color="text-xs font-semibold"
+                              className="border  border-none"
+                              gap="gap-4"
+                            ></FormSection>
+                            <p className="w-full  rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm  text-gray-900 placeholder-[#949494]outline-none transition-shadow  outline-none placeholder:font-poppins placeholder:text-[10px] placeholder:capitalize">
+                              {new Date().toLocaleDateString("en-US", {
+                                month: "2-digit",
+                                day: "2-digit",
+                                year: "numeric",
+                              })}
+                            </p>
+                            <FormSection
+                              title="Due Date"
+                              color="text-xs font-semibold"
+                              className="border  border-none"
+                              gap="gap-4"
+                            >
+                              <LabeledInput
+                                label="Case expected due date"
+                                type="date"
+                                name="dueDate"
+                                min={formattedToday}
+                                value={values.dueDate || ""}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  handleDueDateChange(e, setFieldValue);
+                                }}
+                                onBlur={handleBlur}
+                              />
+                              {errors.dueDate && touched.dueDate && (
+                                <p className="text-red-800 text-xs capitalize">
+                                  {errors.dueDate}
                                 </p>
-                                <FormSection
-                                  title="Due Date"
-                                  color="text-xs font-semibold"
-                                  className="border  border-none"
-                                  gap="gap-4"
-                                >
-                                  <LabeledInput
-                                    label="Case expected due date"
-                                    type="date"
-                                    name="dueDate"
-                                    min={formattedToday}
-                                    value={values.dueDate || ""}
-                                    onChange={(e) =>
-                                      handleDueDateChange(e, setFieldValue)
-                                    }
-                                    onBlur={handleBlur}
-                                  />
-                                  {errors.dueDate && (
-                                    <p className="text-red-800 text-xs capitalize">
-                                      {errors.dueDate}
-                                    </p>
-                                  )}
-                                </FormSection>
-                              </FormSection>
+                              )}
+                            </FormSection>
+                          </FormSection>
 
-                              <FormSection
-                                title={
-                                  <div className="flex justify-between items-center">
-                                    <span>Patient ID</span>
-                                    <div className="relative group">
-                                      <button
-                                        type="button"
-                                        className="p-1 rounded-full  text-secondaryBrand"
-                                        onClick={() => setIsOpen(true)}
-                                      >
-                                        <PlusIcon className="h-3 w-3 " />
-                                      </button>
-                                      {/* Tooltip */}
-                                      <div className="  absolute left-full top-1/2 -translate-y-1/2 ml-2   hidden group-hover:block  z-50">
-                                        {/* hidden group-hover:block */}
-                                        <div className="w-52 rounded-md bg-white font-normal px-4  py-1 text-[8.03px] text-secondaryText shadow">
-                                          Add New Patient if the patient is not
-                                          exist in the dropdown
-                                        </div>
-                                      </div>
+                          <FormSection
+                            title={
+                              <div className="flex justify-between items-center">
+                                <span>Patient ID</span>
+                                <div className="relative group">
+                                  <button
+                                    type="button"
+                                    className="p-1 rounded-full  text-secondaryBrand"
+                                    onClick={() => setIsOpen(true)}
+                                  >
+                                    <PlusIcon className="h-3 w-3 " />
+                                  </button>
+                                  {/* Tooltip */}
+                                  <div className="  absolute left-full top-1/2 -translate-y-1/2 ml-2   hidden group-hover:block  z-50">
+                                    {/* hidden group-hover:block */}
+                                    <div className="w-52 rounded-md bg-white font-normal px-4  py-1 text-[8.03px] text-secondaryText shadow">
+                                      Add New Patient if the patient is not
+                                      exist in the dropdown
                                     </div>
                                   </div>
-                                }
-                                color="text-xs font-semibold"
-                                className="border border-gray-200 p-4"
-                                gap="gap-0"
-                              >
-                                <PatientDropdown
-                                  className="w-full rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow"
-                                  dropdownClass="text-secondaryBrand"
-                                  value={values.patientFirstName} // Formik value
-                                  onChange={(val) =>
-                                    setFieldValue("patientFirstName", val)
-                                  } // update formik
-                                  classNameWidth=" w-80"
-                                />
-                                {errors.patientFirstName &&
-                                  touched.patientFirstName && (
-                                    <p className="text-red-800 text-xs capitalize">
-                                      {errors.patientFirstName}
-                                    </p>
-                                  )}
-                              </FormSection>
-                              <div className="bg-textField  rounded-md ">
-                                <button
-                                  onClick={() => setIsModalOpen(true)}
-                                  className="w-full bg-textField  font-poppins text-secondaryBrand rounded-lg px-4 py-3 text-left cursor-pointer border text-sm font-normal flex justify-between"
-                                >
-                                  Select Smile Design
-                                  <span>
-                                    <ChevronDownIcon className="w-3 h-3" />
-                                  </span>
-                                </button>
-                                {selected && (
-                                  <div className="py-2 px-2 text-sm text-secondaryBrand">
-                                    <p className="font-medium mb-1">
-                                      Selected Smile Design:
-                                    </p>
-                                    <p className="text-xs">
-                                      {selected.name ||
-                                        selected.label ||
-                                        "Unknown"}
-                                    </p>
-                                  </div>
-                                )}
-                              </div>
-                              <MaterialDropdown
-                                className="w-full rounded-md bg-textField px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
-                                options={
-                                  orders.find((p) => p.name === "Scanner")
-                                    ?.children || []
-                                }
-                                value={activeToothSelection.scannerType || ""}
-                                onChange={(option) => {
-                                  if (!selectedTooth) {
-                                    dispatch(
-                                      showToast({
-                                        message: `Please select a tooth first`,
-                                        type: "error",
-                                      })
-                                    );
-
-                                    return;
-                                  }
-                                  dispatch(
-                                    updateToothSelection({
-                                      toothId: selectedTooth,
-                                      field: "scannerType",
-                                      value: option.value,
-                                      price: option.price,
-                                      option,
-                                    })
-                                  );
-                                  if (option) {
-                                    setTouched((prev) => ({
-                                      ...prev,
-                                      scannerType: false,
-                                    }));
-                                  }
-                                }}
-                                label="Scanner Type"
-                                storageKey="scannerType"
-                                dropdownClass="text-secondaryBrand"
-                                error={
-                                  touched.scannerType &&
-                                  !activeToothSelection.scannerType
-                                    ? "Select the Teeth first to select Scanner type"
-                                    : ""
-                                }
-                              />
-                              <div>
-                                <FileUploadSection />
-                              </div>
-                              <FormSection
-                                title="Additional Notes"
-                                className="border border-gray-200 p-4"
-                                gap="gap-4"
-                              >
-                                <textarea
-                                  type="text"
-                                  rows={2}
-                                  name="note"
-                                  value={values.note}
-                                  placeholder="Write here"
-                                  maxLength={500}
-                                  className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none"
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    // Dispatch to Redux
-                                    dispatch(setNote(value));
-                                    // Update Formik state
-                                    handleChange(e);
-                                  }}
-                                  onBlur={handleBlur}
-                                />
-                                {errors.note && (
-                                  <p className="text-red-800 text-xs capitalize">
-                                    {errors.note}
-                                  </p>
-                                )}
-                              </FormSection>
-                            </aside>
-                            <section className="col-span-12 md:col-span-6 space-y-4">
-                              <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
-                                <div className="grid grid-cols-2 gap-4 mt-5 mb-10"></div>
-                                <div className="flex flex-wrap gap-2  justify-center flex-col">
-                                  <p className="text-center">
-                                    Select the teeth first{" "}
-                                  </p>
-                                  <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">
-                                    upper Arch
-                                  </button>
-                                  {/* <img src='/assets/doctor/image.png' /> */}
-                                  <div>
-                                    <TeethChart
-                                      teeth={teethData}
-                                      sizePx={chartSize}
-                                      initialSelectedIds={selectedTeeth}
-                                      currentToothId={selectedTooth}
-                                      onSelect={(tooth) => {
-                                        const id =
-                                          tooth?.id ||
-                                          tooth?.toothId ||
-                                          (typeof tooth === "number"
-                                            ? tooth
-                                            : null);
-                                        if (id) {
-                                          dispatch(selectTooth(id));
-                                        }
-                                      }}
-                                    />
-                                  </div>
-
-                                  {/* <button className="text-[#949494] text-sm font-normal pt-10  font-poppins">Lower Arch</button> */}
                                 </div>
                               </div>
-                            </section>
-                            {/* Right 3 */}
-                            <aside className="col-span-12 md:col-span-3 space-y-4 flex flex-col justify-between">
-                              <div className="flex  flex-col justify-between ">
-                                <div className="w-full">
-                                  <FormSection className="p-0">
-                                    <DropdownWrapper buttonLabel="Modules">
-                                      <MaterialDropdown
-                                        className2="relative z-0"
-                                        className=" w-full  bg-white border    px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                        options={
-                                          orders.find(
-                                            (p) => p.name === "Denture"
-                                          )?.children || []
-                                        }
-                                        value={
-                                          toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.digitalOptions || ""
-                                        }
-                                        onChange={(option) => {
-                                          if (!selectedTooth) {
-                                            dispatch(
-                                              showToast({
-                                                message: `Please select a tooth first`,
-                                                type: "error",
-                                              })
-                                            );
+                            }
+                            color="text-xs font-semibold"
+                            className="border border-gray-200 p-4"
+                            gap="gap-0"
+                          >
+                            <PatientDropdown
+                              className="w-full rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow"
+                              dropdownClass="text-secondaryBrand"
+                              value={values.patientFirstName} // Formik value
+                              onChange={(val) =>
+                                setFieldValue("patientFirstName", val)
+                              } // update formik
+                              classNameWidth=" w-80"
+                            />
+                            {errors.patientFirstName &&
+                              touched.patientFirstName && (
+                                <p className="text-red-800 text-xs capitalize">
+                                  {errors.patientFirstName}
+                                </p>
+                              )}
+                          </FormSection>
+                          <div className="bg-textField  rounded-md ">
+                            <button
+                              onClick={() => setIsModalOpen(true)}
+                              className="w-full bg-textField  font-poppins text-secondaryBrand rounded-lg px-4 py-3 text-left cursor-pointer border text-sm font-normal flex justify-between"
+                            >
+                              Select Smile Design
+                              <span>
+                                <ChevronDownIcon className="w-3 h-3" />
+                              </span>
+                            </button>
+                            {/*  */}
 
-                                            return;
-                                          }
-                                          dispatch(
-                                            updateToothSelection({
-                                              toothId: selectedTooth,
-                                              field: "digitalOptions",
-                                              value: option.value,
-                                              price: option.price || 0,
-                                              option,
-                                            })
-                                          );
-                                          setTouched((prev) => ({
-                                            ...prev,
-                                            digitalOptions: false,
-                                          }));
-                                        }}
-                                        label=" Denture"
-                                        storageKey="digitalOptions"
-                                      />
-                                      <MaterialDropdown
-                                        className2="relative z-0"
-                                        className="w-full border    bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                        options={
-                                          orders.find(
-                                            (p) => p.name === "Surgical Guide"
-                                          )?.children?.length > 0
-                                            ? orders.find(
-                                                (p) =>
-                                                  p.name === "Surgical Guide"
-                                              )?.children
-                                            : [
-                                                {
-                                                  label: "Not Available",
-                                                  value: "",
-                                                },
-                                              ]
-                                        }
-                                        hideCheckForNotAvailable={true}
-                                        label="Surgical Guide"
-                                        storageKey="surgical_guide"
-                                        disabled={!selectedTooth}
-                                      />
+                            {/*  */}
+                            {selected && (
+                              <div className="py-2 px-2 text-sm text-secondaryBrand">
+                                <p className="font-medium mb-1">
+                                  Selected Smile Design:
+                                </p>
+                                <p className="text-xs">
+                                  {selected.name || selected.label || "Unknown"}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                          <MaterialDropdown
+                            className="w-full rounded-md bg-textField px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
+                            options={
+                              orders.find((p) => p.name === "Scanner")
+                                ?.children || []
+                            }
+                            value={activeToothSelection.scannerType || ""}
+                            onChange={(option) => {
+                              if (!selectedTooth) {
+                                dispatch(
+                                  showToast({
+                                    message: `Please select a tooth first`,
+                                    type: "error",
+                                  })
+                                );
 
-                                      <MaterialDropdown
-                                        className2="relative z-0"
-                                        options={
-                                          orders.find((p) => p.name === "Crown")
-                                            ?.children || []
-                                        }
-                                        value={
-                                          toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.crown?.value || ""
-                                        }
-                                        onChange={(val) => {
-                                          if (!selectedTooth) {
-                                            toast.error(
-                                              "Please select a tooth first",
-                                              {
-                                                position: "top-right",
-                                                autoClose: 3000,
-                                                hideProgressBar: false,
-                                                closeOnClick: true,
-                                                pauseOnHover: true,
-                                                draggable: true,
-                                                progress: undefined,
-                                              }
-                                            );
-                                            return;
-                                          }
-                                          const option = (
-                                            orders.find(
-                                              (p) => p.name === "Crown"
-                                            )?.children || []
-                                          ).find((c) => c.value === val);
+                                return;
+                              }
+                              dispatch(
+                                updateToothSelection({
+                                  toothId: selectedTooth,
+                                  field: "scannerType",
+                                  value: option.value,
+                                  price: option.price,
+                                  option,
+                                })
+                              );
+                              if (option) {
+                                setTouched((prev) => ({
+                                  ...prev,
+                                  scannerType: false,
+                                }));
+                              }
+                            }}
+                            label="Scanner Type"
+                            storageKey="scannerType"
+                            dropdownClass="text-secondaryBrand"
+                            error={
+                              touched.scannerType &&
+                              !activeToothSelection.scannerType
+                                ? "Select the Teeth first to select Scanner type"
+                                : ""
+                            }
+                          />
+                          <div>
+                            <FileUploadSection />
+                          </div>
+                          <FormSection
+                            title="Additional Notes"
+                            className="border border-gray-200 p-4"
+                            gap="gap-4"
+                          >
+                            <textarea
+                              type="text"
+                              rows={2}
+                              name="note"
+                              value={values.note}
+                              placeholder="Write here"
+                              maxLength={500}
+                              className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none"
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                // Dispatch to Redux
+                                dispatch(setNote(value));
+                                // Update Formik state
+                                handleChange(e);
+                              }}
+                              onBlur={handleBlur}
+                            />
+                            {errors.note && touched.note && (
+                              <p className="text-red-800 text-xs capitalize">
+                                {errors.note}
+                              </p>
+                            )}
+                          </FormSection>
+                        </aside>
+                        <section className="col-span-12 md:col-span-6 space-y-4">
+                          <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
+                            <div className="grid grid-cols-2 gap-4 mt-5 mb-10"></div>
+                            <div className="flex flex-wrap gap-2  justify-center flex-col">
+                              <p className="text-center">
+                                Select the teeth first{" "}
+                              </p>
+                              <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">
+                                upper Arch
+                              </button>
+                              {/* <img src='/assets/doctor/image.png' /> */}
+                              <div>
+                                <TeethChart
+                                  teeth={teethData}
+                                  sizePx={chartSize}
+                                  initialSelectedIds={selectedTeeth}
+                                  currentToothId={selectedTooth}
+                                  onSelect={(tooth) => {
+                                    const id =
+                                      tooth?.id ||
+                                      tooth?.toothId ||
+                                      (typeof tooth === "number"
+                                        ? tooth
+                                        : null);
+                                    if (id) {
+                                      dispatch(selectTooth(id));
+                                    }
+                                  }}
+                                />
+                              </div>
 
-                                          handleDropdownChange("crown", {
-                                            value: option?.value || val,
-                                            label: option?.label || "",
-                                            price: option?.price || 0,
-                                            option, // pass the full object if needed in redux
-                                          });
-
-                                          setTouched((prev) => ({
-                                            ...prev,
-                                            crown: false,
-                                          }));
-                                        }}
-                                        label="Smart Crown"
-                                        storageKey="crown"
-                                        className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      />
-                                      <MaterialDropdown
-                                        className2="relative z-0"
-                                        options={
-                                          orders.find(
-                                            (p) => p.name === "Material"
-                                          )?.children || []
-                                        }
-                                        value={
-                                          toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.material || ""
-                                        }
-                                        onChange={(val) => {
-                                          if (!selectedTooth) {
-                                            dispatch(
-                                              showToast({
-                                                message: `Please select a tooth first`,
-                                                type: "error",
-                                              })
-                                            );
-
-                                            return;
-                                          }
-
-                                          handleDropdownChange("material", val);
-
-                                          if (val) {
-                                            setTouched((prev) => ({
-                                              ...prev,
-                                              material: false,
-                                            }));
-                                          }
-                                        }}
-                                        label="Material"
-                                        storageKey="material"
-                                        className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      />
-
-                                      <ShadeDropdown
-                                        className="relative"
-                                        shades={shadeGroups}
-                                        selectedTooth={selectedTooth}
-                                        touched={touched}
-                                        setTouched={setTouched}
-                                        onChange={(selected) =>
-                                          console.log(selected)
-                                        }
-                                      />
-
-                                      <MaterialDropdown
-                                        className2="relative z-0"
-                                        options={
-                                          orders.find(
-                                            (p) =>
-                                              p.name === "Digital Model Type"
-                                          )?.children || []
-                                        }
-                                        value={
-                                          toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.Model_type || ""
-                                        } // ✅ correct selected value
-                                        onChange={(val) => {
-                                          if (!selectedTooth) {
-                                            dispatch(
-                                              showToast({
-                                                message: `Please select a tooth first`,
-                                                type: "error",
-                                              })
-                                            );
-                                            return;
-                                          }
-
-                                          handleDropdownChange(
-                                            "Model_type",
-                                            val
-                                          );
-
-                                          if (val) {
-                                            setTouched((prev) => ({
-                                              ...prev,
-                                              Model_type: false,
-                                            }));
-                                          }
-                                        }}
-                                        label="Digital Model Type"
-                                        storageKey="Digital Model Type"
-                                        className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      />
-                                      <MaterialDropdown
-                                        className2="relative z-0"
-                                        options={
-                                          orders.find(
-                                            (p) =>
-                                              p.name === "Participating Lab"
-                                          )?.children || []
-                                        }
-                                        value={
-                                          toothSelections.find(
-                                            (t) => t.toothId === selectedTooth
-                                          )?.lab || ""
-                                        } // ✅ correct selected value
-                                        onChange={(val) => {
-                                          if (!selectedTooth) {
-                                            dispatch(
-                                              showToast({
-                                                message: `Please select a tooth first`,
-                                                type: "error",
-                                              })
-                                            );
-                                            return;
-                                          }
-
-                                          handleDropdownChange("lab", val);
-
-                                          if (val) {
-                                            setTouched((prev) => ({
-                                              ...prev,
-                                              lab: false,
-                                            }));
-                                          }
-                                        }}
-                                        label="Dental lab alliance"
-                                        storageKey="Dental lab alliance"
-                                        className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                      />
-                                    </DropdownWrapper>
-                                    <MaterialDropdown
-                                      options={
-                                        orders.find(
-                                          (p) =>
-                                            p.name === "Photogrammetry files"
-                                        )?.children || []
-                                      }
-                                      value={
-                                        toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.photogrammetryfiles || ""
-                                      } // ✅ get value from current tooth
-                                      onChange={(val) => {
-                                        if (!selectedTooth) {
-                                          dispatch(
-                                            showToast({
-                                              message: `Please select a tooth first`,
-                                              type: "error",
-                                            })
-                                          );
-                                          return;
-                                        }
-
-                                        handleDropdownChange(
-                                          "photogrammetryfiles",
-                                          val
+                              {/* <button className="text-[#949494] text-sm font-normal pt-10  font-poppins">Lower Arch</button> */}
+                            </div>
+                          </div>
+                        </section>
+                        {/* Right 3 */}
+                        <aside className="col-span-12 md:col-span-3 space-y-4 flex flex-col justify-between">
+                          <div className="flex  flex-col justify-between ">
+                            <div className="w-full">
+                              <FormSection className="p-0">
+                                <DropdownWrapper buttonLabel="Modules">
+                                  <MaterialDropdown
+                                    className2="relative z-0"
+                                    className=" w-full  bg-white border    px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    options={
+                                      orders.find((p) => p.name === "Denture")
+                                        ?.children || []
+                                    }
+                                    value={
+                                      toothSelections.find(
+                                        (t) => t.toothId === selectedTooth
+                                      )?.digitalOptions || ""
+                                    }
+                                    onChange={(option) => {
+                                      if (!selectedTooth) {
+                                        dispatch(
+                                          showToast({
+                                            message: `Please select a tooth first`,
+                                            type: "error",
+                                          })
                                         );
 
-                                        if (val) {
-                                          setTouched((prev) => ({
-                                            ...prev,
-                                            photogrammetryfiles: false,
-                                          }));
-                                        }
-                                      }}
-                                      label="Photogrammetry files"
-                                      storageKey="Photogrammetry files"
-                                      className="w-full rounded-xl bg-[#F8F8F8] border-none px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow "
-                                      dropdownClass="text-secondaryBrand"
-                                      error={
-                                        touched.photogrammetryfiles &&
-                                        !toothSelections.find(
-                                          (t) => t.toothId === selectedTooth
-                                        )?.photogrammetryfiles
-                                          ? "Please select a tooth first before selecting Photogrammetry files."
-                                          : ""
+                                        return;
                                       }
-                                    />
-                                  </FormSection>
-                                </div>
+                                      dispatch(
+                                        updateToothSelection({
+                                          toothId: selectedTooth,
+                                          field: "digitalOptions",
+                                          value: option.value,
+                                          price: option.price || 0,
+                                          option,
+                                        })
+                                      );
+                                      setTouched((prev) => ({
+                                        ...prev,
+                                        digitalOptions: false,
+                                      }));
+                                    }}
+                                    label=" Denture"
+                                    storageKey="digitalOptions"
+                                  />
+                                  <MaterialDropdown
+                                    className2="relative z-0"
+                                    className="w-full border    bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    options={
+                                      orders.find(
+                                        (p) => p.name === "Surgical Guide"
+                                      )?.children?.length > 0
+                                        ? orders.find(
+                                            (p) => p.name === "Surgical Guide"
+                                          )?.children
+                                        : [
+                                            {
+                                              label: "Not Available",
+                                              value: "",
+                                            },
+                                          ]
+                                    }
+                                    hideCheckForNotAvailable={true}
+                                    label="Surgical Guide"
+                                    storageKey="surgical_guide"
+                                    disabled={!selectedTooth}
+                                  />
 
-                                <div className="mt-96">
-                                  <div className="flex flex-col space-y-3">
-                                    {Object.entries(toothSelections).map(
-                                      ([toothId, values]) => (
-                                        <div
-                                          key={toothId}
-                                          className="space-y-1"
-                                        >
-                                          {/* Material */}
-                                          <div className="flex justify-between items-center py-1">
-                                            <p className="text-xs text-textFieldHeading">
-                                              {values.materialOption?.label ||
-                                                "No Material"}{" "}
-                                              x1
-                                            </p>
-                                            <p className="text-xs font-medium">
-                                              $
-                                              {values.materialPrice ||
-                                                values.materialOption?.price ||
-                                                0}
-                                            </p>
-                                          </div>
+                                  <MaterialDropdown
+                                    className2="relative z-0"
+                                    options={
+                                      orders.find((p) => p.name === "Crown")
+                                        ?.children || []
+                                    }
+                                    value={
+                                      toothSelections.find(
+                                        (t) => t.toothId === selectedTooth
+                                      )?.crown?.value || ""
+                                    }
+                                    onChange={(val) => {
+                                      if (!selectedTooth) {
+                                        toast.error(
+                                          "Please select a tooth first",
+                                          {
+                                            position: "top-right",
+                                            autoClose: 3000,
+                                            hideProgressBar: false,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            draggable: true,
+                                            progress: undefined,
+                                          }
+                                        );
+                                        return;
+                                      }
+                                      const option = (
+                                        orders.find((p) => p.name === "Crown")
+                                          ?.children || []
+                                      ).find((c) => c.value === val);
 
-                                          {/* Crown */}
-                                          <div className="flex justify-between items-center py-1">
-                                            <p className="text-xs text-textFieldHeading">
-                                              {values.crown?.label ||
-                                                "No Crown"}
-                                            </p>
-                                            <p className="text-xs font-medium">
-                                              ${values.crown?.price || 0}
-                                            </p>
-                                          </div>
+                                      handleDropdownChange("crown", {
+                                        value: option?.value || val,
+                                        label: option?.label || "",
+                                        price: option?.price || 0,
+                                        option, // pass the full object if needed in redux
+                                      });
 
-                                          {/* digital model */}
-                                          <div className="flex justify-between items-center py-1">
-                                            <p className="text-xs text-textFieldHeading">
-                                              {values.Model_typeOption?.label ||
-                                                "Digital Model Type"}
-                                            </p>
-                                            <p className="text-xs font-medium">
-                                              $
-                                              {values.Model_typeOption?.price ||
-                                                0}
-                                            </p>
-                                          </div>
+                                      setTouched((prev) => ({
+                                        ...prev,
+                                        crown: false,
+                                      }));
+                                    }}
+                                    label="Smart Crown"
+                                    storageKey="crown"
+                                    className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                  />
+                                  <MaterialDropdown
+                                    className2="relative z-0"
+                                    options={
+                                      orders.find((p) => p.name === "Material")
+                                        ?.children || []
+                                    }
+                                    value={
+                                      toothSelections.find(
+                                        (t) => t.toothId === selectedTooth
+                                      )?.material || ""
+                                    }
+                                    onChange={(val) => {
+                                      if (!selectedTooth) {
+                                        dispatch(
+                                          showToast({
+                                            message: `Please select a tooth first`,
+                                            type: "error",
+                                          })
+                                        );
 
-                                          {/* Digital Denture */}
-                                          <div className="flex justify-between items-center py-1">
-                                            <p className="text-xs text-textFieldHeading">
-                                              {values.digitalOptionsOption
-                                                ?.label || "No Digital Denture"}
-                                            </p>
-                                            <p className="text-xs font-medium">
-                                              $
-                                              {values.digitalOptionsOption
-                                                ?.price || 0}
-                                            </p>
-                                          </div>
+                                        return;
+                                      }
 
-                                          {/* Lab */}
-                                          <div className="flex justify-between items-center py-1">
-                                            <p className="text-xs text-textFieldHeading">
-                                              {values?.labOption?.label ||
-                                                "Participating Lab"}
-                                            </p>
-                                            <p className="text-xs font-medium">
-                                              ${values?.labOption?.price || 0}
-                                            </p>
-                                          </div>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                  <> </>
+                                      handleDropdownChange("material", val);
 
-                                  <div className="">
-                                    <div className="flex justify-between items-center py-3">
-                                      <p className="text-textFieldHeading text-xs font-poppins">
-                                        Subtotal:
-                                      </p>
-                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                        ${totalPrice.toFixed(2)}
-                                      </p>
+                                      if (val) {
+                                        setTouched((prev) => ({
+                                          ...prev,
+                                          material: false,
+                                        }));
+                                      }
+                                    }}
+                                    label="Material"
+                                    storageKey="material"
+                                    className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                  />
+
+                                  <ShadeDropdown
+                                    className="relative"
+                                    shades={shadeGroups}
+                                    selectedTooth={selectedTooth}
+                                    touched={touched}
+                                    setTouched={setTouched}
+                                    onChange={(selected) => {
+                                      console.log(selected);
+                                    }}
+                                  />
+
+                                  <MaterialDropdown
+                                    className2="relative z-0"
+                                    options={
+                                      orders.find(
+                                        (p) => p.name === "Digital Model Type"
+                                      )?.children || []
+                                    }
+                                    value={
+                                      toothSelections.find(
+                                        (t) => t.toothId === selectedTooth
+                                      )?.Model_type || ""
+                                    } // ✅ correct selected value
+                                    onChange={(val) => {
+                                      if (!selectedTooth) {
+                                        dispatch(
+                                          showToast({
+                                            message: `Please select a tooth first`,
+                                            type: "error",
+                                          })
+                                        );
+                                        return;
+                                      }
+
+                                      handleDropdownChange("Model_type", val);
+
+                                      if (val) {
+                                        setTouched((prev) => ({
+                                          ...prev,
+                                          Model_type: false,
+                                        }));
+                                      }
+                                    }}
+                                    label="Digital Model Type"
+                                    storageKey="Digital Model Type"
+                                    className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                  />
+                                  <MaterialDropdown
+                                    className2="relative z-0"
+                                    options={
+                                      orders.find(
+                                        (p) => p.name === "Participating Lab"
+                                      )?.children || []
+                                    }
+                                    value={
+                                      toothSelections.find(
+                                        (t) => t.toothId === selectedTooth
+                                      )?.lab || ""
+                                    } // ✅ correct selected value
+                                    onChange={(val) => {
+                                      if (!selectedTooth) {
+                                        dispatch(
+                                          showToast({
+                                            message: `Please select a tooth first`,
+                                            type: "error",
+                                          })
+                                        );
+                                        return;
+                                      }
+
+                                      handleDropdownChange("lab", val);
+
+                                      if (val) {
+                                        setTouched((prev) => ({
+                                          ...prev,
+                                          lab: false,
+                                        }));
+                                      }
+                                    }}
+                                    label="Dental lab alliance"
+                                    storageKey="Dental lab alliance"
+                                    className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                  />
+                                </DropdownWrapper>
+                                <MaterialDropdown
+                                  options={
+                                    orders.find(
+                                      (p) => p.name === "Photogrammetry files"
+                                    )?.children || []
+                                  }
+                                  value={
+                                    toothSelections.find(
+                                      (t) => t.toothId === selectedTooth
+                                    )?.photogrammetryfiles || ""
+                                  } // ✅ get value from current tooth
+                                  onChange={(val) => {
+                                    if (!selectedTooth) {
+                                      dispatch(
+                                        showToast({
+                                          message: `Please select a tooth first`,
+                                          type: "error",
+                                        })
+                                      );
+                                      return;
+                                    }
+
+                                    handleDropdownChange(
+                                      "photogrammetryfiles",
+                                      val
+                                    );
+
+                                    if (val) {
+                                      setTouched((prev) => ({
+                                        ...prev,
+                                        photogrammetryfiles: false,
+                                      }));
+                                    }
+                                  }}
+                                  label="Photogrammetry files"
+                                  storageKey="Photogrammetry files"
+                                  className="w-full rounded-xl bg-[#F8F8F8] border-none px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow "
+                                  dropdownClass="text-secondaryBrand"
+                                  error={
+                                    touched.photogrammetryfiles &&
+                                    !toothSelections.find(
+                                      (t) => t.toothId === selectedTooth
+                                    )?.photogrammetryfiles
+                                      ? "Please select a tooth first before selecting Photogrammetry files."
+                                      : ""
+                                  }
+                                />
+                              </FormSection>
+                            </div>
+
+                            <div className="mt-96">
+                              <div className="flex flex-col space-y-3">
+                                {Object.entries(toothSelections).map(
+                                  ([toothId, values]) => (
+                                    <div key={toothId} className="space-y-1">
+                                      {/* Material */}
+                                      <div className="flex justify-between items-center py-1">
+                                        <p className="text-xs text-textFieldHeading">
+                                          {values.materialOption?.label ||
+                                            "No Material"}{" "}
+                                          x1
+                                        </p>
+                                        <p className="text-xs font-medium">
+                                          $
+                                          {values.materialPrice ||
+                                            values.materialOption?.price ||
+                                            0}
+                                        </p>
+                                      </div>
+
+                                      {/* Crown */}
+                                      <div className="flex justify-between items-center py-1">
+                                        <p className="text-xs text-textFieldHeading">
+                                          {values.crown?.label || "No Crown"}
+                                        </p>
+                                        <p className="text-xs font-medium">
+                                          ${values.crown?.price || 0}
+                                        </p>
+                                      </div>
+
+                                      {/* digital model */}
+                                      <div className="flex justify-between items-center py-1">
+                                        <p className="text-xs text-textFieldHeading">
+                                          {values.Model_typeOption?.label ||
+                                            "Digital Model Type"}
+                                        </p>
+                                        <p className="text-xs font-medium">
+                                          ${values.Model_typeOption?.price || 0}
+                                        </p>
+                                      </div>
+
+                                      {/* Digital Denture */}
+                                      <div className="flex justify-between items-center py-1">
+                                        <p className="text-xs text-textFieldHeading">
+                                          {values.digitalOptionsOption?.label ||
+                                            "No Digital Denture"}
+                                        </p>
+                                        <p className="text-xs font-medium">
+                                          $
+                                          {values.digitalOptionsOption?.price ||
+                                            0}
+                                        </p>
+                                      </div>
+
+                                      {/* Lab */}
+                                      <div className="flex justify-between items-center py-1">
+                                        <p className="text-xs text-textFieldHeading">
+                                          {values?.labOption?.label ||
+                                            "Participating Lab"}
+                                        </p>
+                                        <p className="text-xs font-medium">
+                                          ${values?.labOption?.price || 0}
+                                        </p>
+                                      </div>
                                     </div>
-
-                                    <div className="flex justify-between items-center py-3 border-t">
-                                      <p className="text-textFieldHeading text-xs font-poppins">
-                                        Shipping:
-                                      </p>
-                                      <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                        {/* ${shipping.toFixed(2)} */}
-                                      </p>
-                                    </div>
-                                    <div className="flex justify-between items-center py-3 font-poppins">
-                                      <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
-                                        Total:
-                                      </p>
-
-                                      <p className="text-[#1A1A1A] font-semibold text-lg font-poppins">
-                                        ${totalPrice.toFixed(2)}
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                                {/* <button
-                                  type="button"
-                                  onClick={() => next()}
-                                  className="font-poppins w-full bg-[#0b2b62] px-6 py-3 text-sm font-medium text-[#F8F8F8] hover:bg-[#092b58]"
-                                >
-                                  Checkout
-                                </button> */}
-                                <button
-                                  type="button"
-                                  onClick={next}
-                                  disabled={totalPrice === 0}
-                                  className={`font-poppins w-full px-6 py-3 text-sm font-medium ${
-                                    totalPrice > 0
-                                      ? "bg-[#0b2b62] text-[#F8F8F8] hover:bg-[#092b58]"
-                                      : "bg-[#0b2b62] text-[#F8F8F8] cursor-not-allowed"
-                                  }`}
-                                >
-                                  Checkout
-                                </button>
-
-                                {totalPrice === 0 && (
-                                  <p className="text-sm text-red-600 text-center mt-2 font-poppins">
-                                    Select all the items first to Checkout
-                                  </p>
+                                  )
                                 )}
                               </div>
-                            </aside>
+                              <> </>
+
+                              <div className="">
+                                <div className="flex justify-between items-center py-3">
+                                  <p className="text-textFieldHeading text-xs font-poppins">
+                                    Subtotal:
+                                  </p>
+                                  <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                    ${totalPrice.toFixed(2)}
+                                  </p>
+                                </div>
+
+                                <div className="flex justify-between items-center py-3 border-t">
+                                  <p className="text-textFieldHeading text-xs font-poppins">
+                                    Shipping:
+                                  </p>
+                                  <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
+                                    {/* ${shipping.toFixed(2)} */}
+                                  </p>
+                                </div>
+                                <div className="flex justify-between items-center py-3 font-poppins">
+                                  <p className="text-[#4D4D4D] text-base font-normal   leading-normal">
+                                    Total:
+                                  </p>
+
+                                  <p className="text-[#1A1A1A] font-semibold text-lg font-poppins">
+                                    ${totalPrice.toFixed(2)}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={next}
+                              disabled={totalPrice === 0}
+                              className={`font-poppins w-full px-6 py-3 text-sm font-medium ${
+                                totalPrice > 0
+                                  ? "bg-[#0b2b62] text-[#F8F8F8] hover:bg-[#092b58]"
+                                  : "bg-[#0b2b62] text-[#F8F8F8] cursor-not-allowed"
+                              }`}
+                            >
+                              Checkout
+                            </button>
+
+                            {totalPrice === 0 && (
+                              <p className="text-sm text-red-600 text-center mt-2 font-poppins">
+                                Select all the items first to Checkout
+                              </p>
+                            )}
                           </div>
-                        </Form>
-                      )}
-                    </Formik>
+                        </aside>
+                      </div>
+                    </Form>
                   )}
                   {activeIndex === 1 && <ReviewOrder next={next} />}
                   {activeIndex === 2 && <CheckoutForm next={next} />}

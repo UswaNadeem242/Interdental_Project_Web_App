@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
-import ToothOne from "../../../icon/tooth-one";
+import { ToothOne, ToothTwo } from "../../../icon/tooth-one";
 
 const topTeeth = {
   1: ToothOne,
@@ -280,15 +280,15 @@ const ReviewOrder = ({ next }) => {
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 md:text-sm text-base">
-              <div>
+              {/* <div>
                 <p className="text-[#949494] font-normal text-xs font-poppins pb-2">
                   Abutment Type
                 </p>
                 <p className="font-medium text-secondaryBrand text-xs font-poppins">
                   Titanium Standard Abutment
                 </p>
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <p className="text-[#949494] font-normal text-xs font-poppins pb-2">
                   Crown Type
                 </p>
@@ -303,7 +303,7 @@ const ReviewOrder = ({ next }) => {
                     </p>
                   );
                 })}
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -348,7 +348,7 @@ const ReviewOrder = ({ next }) => {
                       </div>
                       <div>
                         <p className="text-[#949494] text-xs font-poppins">
-                          Digital Denture:
+                          Denture:
                         </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
                           {tooth?.digitalOptionsOption?.label ||
@@ -365,6 +365,22 @@ const ReviewOrder = ({ next }) => {
                             tooth?.surgical_guide ||
                             "N/A"}
                         </p>
+                      </div>
+                      <div>
+                        <p className="text-[#949494] font-normal text-xs font-poppins ">
+                          Smart Crown:
+                        </p>
+                        {selectedTeeth.map((toothId) => {
+                          const tooth = teeth[toothId];
+                          return (
+                            <p
+                              key={toothId}
+                              className="font-bold text-secondaryBrand font-poppins text-xs"
+                            >
+                              {tooth?.crown?.label || "No Crown"}
+                            </p>
+                          );
+                        })}
                       </div>
                       <div>
                         <p className="text-[#949494] text-xs font-poppins">
@@ -392,6 +408,15 @@ const ReviewOrder = ({ next }) => {
                           {tooth?.photogrammetryfilesOption?.label ||
                             tooth?.photogrammetryfilesOption ||
                             "N/A"}
+                        </p>
+                      </div>
+                      {/* Add Shade Section Here */}
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Shade:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          {tooth.shadeOption?.label || tooth.shade || "N/A"}
                         </p>
                       </div>
                       {/* <div>
