@@ -91,7 +91,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
     if (!notificationsDropdown) return;
 
     const handleOutsideClick = (event) => {
-      // Don't close if clicking on the bell icon
+ 
       if (event.target.closest('[data-bell-icon="true"]')) {
         return;
       }
@@ -101,7 +101,6 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
       }
     };
 
-    // Use a longer delay to ensure the bell icon click is processed first
     const timeoutId = setTimeout(() => {
       document.addEventListener("mousedown", handleOutsideClick);
     }, 200);

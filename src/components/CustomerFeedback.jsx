@@ -35,7 +35,7 @@ const CustomerFeedback = ({ item, isLast, isOnlyItem }) => {
           />
         </div>
       </div>
-      <h1 className="font-poppins mt-1 font-normal text-[12px] leading-[18px] text-[#808080]">
+      <h1 className="font-poppins mt-2 font-normal text-sm leading-[18px] text-[#808080]">
         {item?.review}
       </h1>
     </div>

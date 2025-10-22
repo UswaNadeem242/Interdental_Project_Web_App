@@ -20,7 +20,7 @@ module.exports = {
         borderPrimary: '#E5E5E5',
         textFieldHeading: '#828386',
         textColor: '#757575',
-        cartColor: '0000000D'
+        cartColor: '#0000000D'
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],

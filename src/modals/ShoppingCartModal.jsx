@@ -5,7 +5,6 @@ import { BASE_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import Toast from "../components/Toast";
-import { SmileDesignPicker } from "../components/doctorAdmin/DoctorModel/smile";
 import CartConfirmModel from "./cart-confirm-model";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice";
