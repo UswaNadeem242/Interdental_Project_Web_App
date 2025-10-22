@@ -25,9 +25,8 @@ const OrderDoctorPage = () => {
 
     return apiData.map((order) => ({
       id: `${order?.id}`,
-      pName: `${order?.patientFirstName || "-"} ${
-        order?.patientLastName || "-"
-      }`,
+      pName: `${order?.patientFirstName || "-"} ${order?.patientLastName || "-"
+        }`,
       product: "Argen HT",
       status: order?.orderStatus?.toLowerCase() || "pending",
       submission: order?.createdAt
@@ -42,6 +41,8 @@ const OrderDoctorPage = () => {
       detailUrl: `/doctor-admin/order-details/${order?.id}`,
     }));
   };
+
+
   const profileData = useSelector(
     (state) => state.profileData?.userProfileData
   );
@@ -92,6 +93,8 @@ const OrderDoctorPage = () => {
 
     return filtered;
   };
+  console.log('filteredData', filteredData);
+
   const steps = [
     {
       name: "All",

@@ -126,7 +126,7 @@ export default function AddPatientForm({
         // Close drawer and refresh page after success
         setTimeout(() => {
           if (onClose) {
-            // onClose(); // Close the drawer
+            onClose(); // Close the drawer
           } else {
             console.log("onClose function not available");
           }
@@ -231,7 +231,7 @@ export default function AddPatientForm({
             </div> */}
 
             {/* First Name */}
-            <div className="col-span-12 grid grid-cols-12   gap-2">
+            <div className="col-span-12 grid grid-cols-12 gap-2">
               <div className="col-span-12 sm:col-span-6">
                 <Field
                   as={TextInput}
