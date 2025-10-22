@@ -438,7 +438,7 @@ const DoctorSignup = () => {
                   onChange={(e) =>
                     handleFieldChange(
                       "drLicenseNo",
-                      e.target.value,
+                      e.target.value.toUpperCase(),
                       setdrLicense,
                     )
                   }
@@ -474,7 +474,7 @@ const DoctorSignup = () => {
                   onChange={(e) =>
                     handleFieldChange(
                       "officeRefNo",
-                      e.target.value,
+                      e.target.value.toUpperCase(),
                       setofficeRefNo,
                     )
                   }
