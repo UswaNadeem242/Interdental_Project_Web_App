@@ -363,7 +363,7 @@ const ReviewOrder = ({ next }) => {
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
                           {tooth?.surgical_guideOption?.label ||
                             tooth?.surgical_guide ||
-                            "N/A"}
+                            "Not Avaliable"}
                         </p>
                       </div>
                       <div>
