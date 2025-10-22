@@ -16,7 +16,6 @@ import useFieldValidation from "../Hooks/useFieldValidation";
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
   const { fetchCartCount } = useAuth();
-  const modalRef = useRef(null);
   const [activeTab, setActiveTab] = useState("cart");
   const [openOrders, setOpenOrders] = useState(false);
   const [openPaymentMethod, setOpenPaymentMethod] = useState(true);
@@ -84,11 +83,11 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     paypalContact: Yup.string()
       .test(
         "email-or-phone",
-        "Please enter a valid email or 11-digit phone number",
+        "Please enter a valid email or phone number (7-15 digits)",
         function (value) {
           if (!value) return false;
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          const phoneRegex = /^[+]?[0-9][\d]{10}$/;
+          const phoneRegex = /^[0-9]{7,15}$/;
           return emailRegex.test(value) || phoneRegex.test(value);
         },
       )

@@ -47,7 +47,9 @@ const BuySignup = () => {
       .email("Enter a valid email address")
       .required("Email is required"),
     phoneNumber: Yup.string()
-      .matches(/^[0-9]{11}$/, "Please enter a valid 11-digit phone number")
+      .min(7, "Phone number must be at least 7 digits")
+      .max(15, "Phone number must not exceed 15 digits")
+      .matches(/^[0-9]{7,15}$/i, "Phone number must contain only digits (7–15)")
       .required("Phone number is required"),
     address: Yup.string()
       .min(10, "Address must be at least 10 characters")
@@ -55,16 +57,16 @@ const BuySignup = () => {
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
       .matches(
-        /(?=.*[a-z])/,
+        /(?=.*[#a-z])/,
         "Password must contain at least one lowercase letter",
       )
       .matches(
-        /(?=.*[A-Z])/,
+        /(?=.*[#A-Z])/,
         "Password must contain at least one uppercase letter",
       )
       .matches(/(?=.*\d)/, "Password must contain at least one number")
       .matches(
-        /(?=.*[@$!%*?&])/,
+        /(?=.*[#@$!%*?&])/,
         "Password must contain at least one special character (@$!%*?&)",
       )
       .required("Password is required"),
@@ -170,11 +172,10 @@ const BuySignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.firstName
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.firstName
                       ? "border-red-500"
                       : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                    }`}
                 />
                 <label
                   htmlFor="firstName"
@@ -204,11 +205,10 @@ const BuySignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
                   placeholder=" " // ek space zaroori hai
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.lastName
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.lastName
                       ? "border-red-500"
                       : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                    }`}
                 />
                 <label
                   htmlFor="lastName"
@@ -239,11 +239,10 @@ const BuySignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("email", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.email
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.email
                       ? "border-red-500"
                       : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                    }`}
                 />
                 <label
                   htmlFor="email"
@@ -273,11 +272,10 @@ const BuySignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("phoneNumber", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.phoneNumber
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.phoneNumber
                       ? "border-red-500"
                       : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                    }`}
                 />
                 <label
                   htmlFor="phone"
@@ -309,11 +307,10 @@ const BuySignup = () => {
                 }
                 onBlur={(e) => handleFieldBlur("address", e.target.value)}
                 placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                  validationErrors.address
+                className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.address
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
-                }`}
+                  }`}
               />
               <label
                 htmlFor="address"
@@ -343,11 +340,10 @@ const BuySignup = () => {
                 }
                 onBlur={(e) => handleFieldBlur("password", e.target.value)}
                 placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${
-                  validationErrors.password
+                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${validationErrors.password
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
-                }`}
+                  }`}
               />
               <label
                 htmlFor="password"

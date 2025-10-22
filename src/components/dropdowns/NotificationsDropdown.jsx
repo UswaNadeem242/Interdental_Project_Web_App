@@ -91,22 +91,23 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
     if (!notificationsDropdown) return;
 
     const handleOutsideClick = (event) => {
- 
+      // Don't close if clicking on the bell icon trigger
       if (event.target.closest('[data-bell-icon="true"]')) {
+        console.log("clicked on the bell icon");
         return;
       }
 
+      // Close if clicking outside the dropdown
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    
         setNotificationsDropdown(false);
       }
     };
 
-    const timeoutId = setTimeout(() => {
-      document.addEventListener("mousedown", handleOutsideClick);
-    }, 200);
+    // Add event listener immediately without timeout
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      clearTimeout(timeoutId);
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [notificationsDropdown, setNotificationsDropdown]);
