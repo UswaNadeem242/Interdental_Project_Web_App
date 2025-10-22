@@ -6,8 +6,7 @@ export const fetchDropdowns = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await orderService.getDropDown();
-      console.log("res from dropdown slice", res);
-      const raw = res?.data?.data || [];
+       const raw = res?.data?.data || [];
       const mapped = raw.map((parent) => ({
         id: parent.id,
         name: parent.name,

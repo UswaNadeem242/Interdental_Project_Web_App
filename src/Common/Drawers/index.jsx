@@ -60,7 +60,7 @@ export default function Drawers({
                       <Xmark className="w-8 h-8 " />
                     </button>
                   </div>
-                  <div className="relative  flex-1 px-4 sm:px-6">
+                  <div className="relative  flex-1 px-4 sm:px-6 mt-5">
                     {Content}
                   </div>
                 </div>

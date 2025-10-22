@@ -421,7 +421,16 @@ const DoctorOrder = () => {
                                 }
                                 value={activeToothSelection.scannerType || ""}
                                 onChange={(option) => {
-                                  if (!selectedTooth) return; // make sure tooth is selected
+                                  if (!selectedTooth) {
+                                    dispatch(
+                                      showToast({
+                                        message: `Please select a tooth first`,
+                                        type: "error",
+                                      })
+                                    );
+
+                                    return;
+                                  }
                                   dispatch(
                                     updateToothSelection({
                                       toothId: selectedTooth,
