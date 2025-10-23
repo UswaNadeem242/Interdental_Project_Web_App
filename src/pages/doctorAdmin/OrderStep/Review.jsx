@@ -1,6 +1,50 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
+import { ToothOne, ToothTwo } from "../../../icon/tooth-one";
+
+const topTeeth = {
+  1: ToothOne,
+  2: ToothOne,
+  3: ToothOne,
+  4: ToothOne,
+  5: ToothOne,
+  6: ToothOne,
+  7: ToothOne,
+  8: ToothOne,
+  9: ToothOne,
+  10: ToothOne,
+  11: ToothOne,
+  12: ToothOne,
+  13: ToothOne,
+  14: ToothOne,
+  15: ToothOne,
+  16: ToothOne,
+};
+
+const bottomTeeth = {
+  17: ToothOne,
+  18: ToothOne,
+  19: ToothOne,
+  20: ToothOne,
+  21: ToothOne,
+  22: ToothOne,
+  23: ToothOne,
+  24: ToothOne,
+  25: ToothOne,
+  26: ToothOne,
+  27: ToothOne,
+  28: ToothOne,
+  29: ToothOne,
+  30: ToothOne,
+  31: ToothOne,
+  32: ToothOne,
+};
+
+const toothMap = {
+  1: { normal: ToothOne, highlighted: ToothOne },
+  // 2: { normal: ToothTwo, highlighted: ToothTwoH },}
+};
 
 const ReviewOrder = ({ next }) => {
   const restoration = useSelector((state) => state.restoration);
@@ -103,7 +147,7 @@ const ReviewOrder = ({ next }) => {
       });
     }
   }, [doctorProfile]);
-  console.log('formData', formData);
+  console.log("formData", formData);
 
   // Utility function
   const formatDate = (dateString) => {
@@ -211,18 +255,40 @@ const ReviewOrder = ({ next }) => {
                   ? selectedTeeth.map((t) => `#${t}`).join(", ")
                   : "None"}
               </span>
+              {/* Upper 16 */}
+              <div className="flex gap-4 mt-4">
+                {Object.entries(topTeeth).map(([id, ToothComponent]) => (
+                  <div key={id} className="flex flex-col items-center">
+                    <ToothComponent
+                      highlighted={selectedTeeth.includes(Number(id))}
+                    />
+                    <span className="text-sm mt-1 text-gray-600">{id}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Lower 16 */}
+              <div className="flex gap-4 mt-4 mb-4">
+                {Object.entries(bottomTeeth).map(([id, ToothComponent]) => (
+                  <div key={id} className="flex flex-col items-center">
+                    <ToothComponent
+                      highlighted={selectedTeeth.includes(Number(id))}
+                    />
+                    <span className="text-sm text-gray-600 mt-1">{id}</span>
+                  </div>
+                ))}
+              </div>
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 md:text-sm text-base">
-              <div>
+              {/* <div>
                 <p className="text-[#949494] font-normal text-xs font-poppins pb-2">
                   Abutment Type
                 </p>
                 <p className="font-medium text-secondaryBrand text-xs font-poppins">
                   Titanium Standard Abutment
                 </p>
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <p className="text-[#949494] font-normal text-xs font-poppins pb-2">
                   Crown Type
                 </p>
@@ -237,7 +303,7 @@ const ReviewOrder = ({ next }) => {
                     </p>
                   );
                 })}
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -282,7 +348,7 @@ const ReviewOrder = ({ next }) => {
                       </div>
                       <div>
                         <p className="text-[#949494] text-xs font-poppins">
-                          Digital Denture:
+                          Denture:
                         </p>
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
                           {tooth?.digitalOptionsOption?.label ||
@@ -297,8 +363,24 @@ const ReviewOrder = ({ next }) => {
                         <p className="font-bold text-secondaryBrand font-poppins text-xs">
                           {tooth?.surgical_guideOption?.label ||
                             tooth?.surgical_guide ||
-                            "N/A"}
+                            "Not Avaliable"}
                         </p>
+                      </div>
+                      <div>
+                        <p className="text-[#949494] font-normal text-xs font-poppins ">
+                          Smart Crown:
+                        </p>
+                        {selectedTeeth.map((toothId) => {
+                          const tooth = teeth[toothId];
+                          return (
+                            <p
+                              key={toothId}
+                              className="font-bold text-secondaryBrand font-poppins text-xs"
+                            >
+                              {tooth?.crown?.label || "No Crown"}
+                            </p>
+                          );
+                        })}
                       </div>
                       <div>
                         <p className="text-[#949494] text-xs font-poppins">
@@ -326,6 +408,15 @@ const ReviewOrder = ({ next }) => {
                           {tooth?.photogrammetryfilesOption?.label ||
                             tooth?.photogrammetryfilesOption ||
                             "N/A"}
+                        </p>
+                      </div>
+                      {/* Add Shade Section Here */}
+                      <div>
+                        <p className="text-[#949494] text-xs font-poppins">
+                          Shade:
+                        </p>
+                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                          {tooth.shadeOption?.label || tooth.shade || "N/A"}
                         </p>
                       </div>
                       {/* <div>
