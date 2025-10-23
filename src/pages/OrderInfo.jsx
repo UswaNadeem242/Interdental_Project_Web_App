@@ -175,6 +175,14 @@ const Orders = () => {
                     ${orders?.totalAmount}
                   </p>
                 </div>
+                <div className="flex justify-between items-center">
+                  <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
+                    Shipping 
+                  </p>
+                  <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
+                    free
+                  </p>
+                </div>
               </div>
 
               <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px]">

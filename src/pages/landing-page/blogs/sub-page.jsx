@@ -1,122 +1,144 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
 import Contact from "../contact";
 import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
 import BlogNext from "../../../components/landing-page-component/blog-next.jsx";
 import BackButton from "../../../components/BackButton";
+import api from "../../../api/intercepter";
 
-const sections = [
-  {
-    id: "why-choose",
-    title: "Why Choose Implant–Retained Dentures?",
-    paras: [
-      `Losing natural teeth affects both function and appearance. While traditional dentures serve a purpose, they can shift or move, which causes poor fit, discomfort, and instability when eating or speaking. Additionally, over time they do not stimulate the jawbone, leading to gradual bone loss and facial structure changes. Routine maintenance is also required to keep removable dentures clean and functional.`,
-      `Implant-retained dentures offer superior stabilization. Instead of relying on adhesives, these dentures are anchored by dental implants, which also provide added security. This eliminates many of the challenges posed by conventional dentures and significantly improves quality of life.`,
-    ],
-  },
-  {
-    id: "how-it-works",
-    title: "How Do Implant Dentures Work?",
-    paras: [
-      "Implant-supported dentures combine dental implants with custom-made dentures. Here's what the process looks like:",
-    ],
-    bullets: [
-      "Implant Placement: An oral surgeon inserts small titanium posts into the jawbone, acting as artificial tooth roots. If necessary, a bone graft may be performed to ensure implant stability.",
-      "Healing & Integration: Over several months, the implants undergo osseointegration, where they fuse with the jawbone to create a stable foundation.",
-      "Custom Denture Creation: Your dentures are designed to match your natural teeth, ensuring a comfortable fit and a natural appearance.",
-      "Secure Attachment: The dentures are firmly connected to the implants, eliminating the need for adhesives and preventing slippage.",
-      "Renewed Functionality: With implant-supported dentures, you can eat, speak, and smile with confidence, knowing your dentures will stay in place.",
-    ],
-  },
-  {
-    id: "why-choose-interoral",
-    title: "Why Choose InterOral.Ai?",
-    paras: [
-      "Implant-supported dentures combine dental implants with custom-made dentures. Here’s what the process looks like:",
-    ],
-    bullets: [
-      "Implant Placement: An oral surgeon inserts small titanium posts into the jawbone, acting as artificial tooth roots. If necessary, a bone graft may be performed to ensure implant stability. Typically, only two to four implants are needed to support a full arch of teeth.",
-      "Healing & Integration: Over several months, the implants undergo osseointegration, where they fuse with the jawbone to create a stable foundation.",
-      "Custom Denture Creation: Your dentures are designed to match your natural teeth, ensuring a comfortable fit and a youthful appearance.",
-      "Secure Attachment: The dentures are firmly connected to the implants, eliminating the need for adhesives and preventing slippage.",
-      "Restored Functionality: With implant-supported dentures, you can eat, speak, and smile with confidence, knowing your dentures will stay in place.",
-    ],
-  },
-];
 
-const HeadingWithLeader = ({ children }) => (
-  <h2 className="flex items-center gap-4 text-lg sm:text-xl md:text-2xl   text-secondaryBrand font-bold">
-    <span className="shrink-0">{children}</span>
-    {/* dotted leader to the right */}
-    {/* <span className="hidden sm:block grow border-t border-dotted border-gray-300"></span> */}
-  </h2>
-);
+export default function BlogDetailPage() {
+  const { id } = useParams();
+  const [blogData, setBlogData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-export default function ImplantDenturesPage() {
+  useEffect(() => {
+    const fetchBlogData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Fetch blog data by ID
+        const response = await api.get(`/api/blog/${id}`);
+        const blog = response.data.data;
+        
+        // Transform API data to match component structure
+        setBlogData({
+          id: blog.id,
+          title: blog.title,
+          category: blog.categoryName,
+          image: blog.imageUrl?.[0],
+          intro: blog.content ? blog.content.replace(/<[^>]*>/g, '').substring(0, 200) + '...' : '',
+          content: blog.content ? blog.content.replace(/<img[^>]*>/g, '') : ''
+        });
+      } catch (err) {
+        console.error('Error fetching blog data:', err);
+        setError('Failed to load blog content');
+        // Set error state if API fails
+        setBlogData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchBlogData();
+    } else {
+      // No ID provided, show error
+      setError('No blog ID provided');
+      setBlogData(null);
+      setLoading(false);
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="bg-blue-300/5 min-h-screen">
+        <div className="max-w-4xl px-4 mx-auto">
+          <div className="mx-auto py-4 sm:py-8">
+            <BackButton text="Back" />
+            <div className="animate-pulse py-8 sm:py-10">
+              <div className="h-8 sm:h-12 bg-gray-300 rounded mb-4"></div>
+              <div className="h-4 sm:h-6 bg-gray-300 rounded w-1/3 mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && !blogData) {
+    return (
+      <div className="bg-blue-300/5 min-h-screen">
+        <div className="max-w-4xl px-4 mx-auto">
+          <div className="mx-auto py-4 sm:py-8">
+            <BackButton text="Back" />
+            <div className="text-center">
+              <h1 className="text-xl sm:text-2xl font-bold text-red-600 mb-4">Error Loading Blog</h1>
+              <p className="text-gray-600 text-sm sm:text-base">{error}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!blogData) {
+    return (
+      <div className="bg-blue-300/5 min-h-screen">
+        <div className="max-w-4xl px-4 mx-auto">
+          <div className="mx-auto py-4 sm:py-8">
+            <BackButton text="Back" />
+            <div className="text-center">
+              <h1 className="text-xl sm:text-2xl font-bold text-red-600 mb-4">Blog Not Found</h1>
+              <p className="text-gray-600 text-sm sm:text-base">The requested blog could not be loaded.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-blue-300/5 ">
-      <div className="max-w-3xl px-4 mx-auto">
-        <div className="mx-auto py-8 sm:py-12">
-          {/*  flex flex-col md:flex-row items-center justify-between */}
-
+    <div className="bg-blue-300/5 min-h-screen">
+      <div className="max-w-4xl px-4 mx-auto">
+        <div className="mx-auto py-4 sm:py-8">
           <BackButton text="Back" />
 
-          <h1 className="text-5xl mt-8 font-bold text-primaryText max-w-[700px]  text-center mx-auto">
-            What Are Implant-Retained Dentures?
+          <h1 className="text-3xl sm:text-4xl md:text-5xl mt-6 sm:mt-8 font-bold text-primaryText max-w-[700px] text-center mx-auto leading-tight">
+            {blogData.title}
           </h1>
-          <p className="text-sm font-normal font-poppins text-primaryText text-center pt-4">
-            Dentures
+          <p className="text-sm sm:text-base font-normal font-poppins text-primaryText text-center pt-3 sm:pt-4">
+            {blogData.category}
           </p>
         </div>
-        <section className=" text-gray-700 px-4 py-6 sm:py-10 md:py-14">
+        
+        <section className="text-gray-700 px-2 sm:px-4 pb-4">
           {/* Hero image */}
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-sm sm:max-w-md md:max-w-lg mx-auto">
             <img
-              src="/assets/landing-page/blog 1.png"
-              alt="Implant retained dentures"
-              className="w-full h-auto rounded-md"
+              src={blogData.image}
+              alt={blogData.title}
+              className="w-full h-auto rounded-md shadow-sm"
             />
           </div>
 
-          {/* Intro paragraph (optional) */}
-          <p className="max-w-4xl mx-auto mt-4 sm:mt-6 text-sm md:text-base leading-relaxed text-gray-600">
-            Implant-retained dentures are revolutionizing tooth replacement,
-            blending the reliability of traditional dentures with advanced
-            dental implant technology. By addressing common issues associated
-            with conventional dentures, implant-supported dentures offer a more
-            secure, comfortable, and long-lasting solution.
-          </p>
-
           {/* Content sections rendered via map */}
-          <div className="max-w-4xl mx-auto mt-8 md:mt-12 space-y-10 md:space-y-12">
-            {sections.map((sec) => (
-              <section key={sec.id} className="space-y-4">
-                <HeadingWithLeader>{sec.title}</HeadingWithLeader>
-
-                {sec.paras?.map((p, i) => (
-                  <p
-                    key={i}
-                    className="text-sm md:text-base leading-7 text-[#7C7C7C]"
-                  >
-                    {p}
-                  </p>
-                ))}
-
-                {sec.bullets && (
-                  <ul className="list-disc pl-5 text-sm md:text-base leading-7 text-[#7C7C7C] space-y-1">
-                    {sec.bullets.map((b, i) => (
-                      <li key={i}>{b}</li>
-                    ))}
-                  </ul>
-                )}
-              </section>
-            ))}
+          <div className="max-w-4xl mx-auto mt-6 sm:mt-8 md:mt-12 space-y-6 sm:space-y-8 md:space-y-10">
+            {blogData.content && (
+              <div 
+                className="blog-content px-2 sm:px-0"
+                dangerouslySetInnerHTML={{ __html: blogData.content }}
+              />
+            )}
           </div>
         </section>
-        <BlogNext />
+        
+        <BlogNext currentBlogId={id} />
         <FrequentlyAskedQuestion />
-
         <UpperFooter />
         <Footer />
       </div>

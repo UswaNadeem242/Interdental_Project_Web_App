@@ -6,153 +6,55 @@ import { BASE_URL } from "../../config";
 import Toast from "../../components/Toast";
 import YearlyPlanModel from "../../modals/yearly-plan";
 import Icons from "../../components/Icons";
-import * as Yup from "yup";
-import useFieldValidation from "../../Hooks/useFieldValidation";
+import { doctorSignupValidationSchema } from "../../services/utils/validationSchemas";
+import { useFormik } from "formik";
 
 const DoctorSignup = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [zip, setZip] = useState("");
-  const [drLicenseNo, setdrLicense] = useState("");
-  const [officeRefNo, setofficeRefNo] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [yearly, setYearly] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Yup validation schema
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, "First name must be at least 2 characters")
-      .max(25, "First name must not exceed 25 characters")
-      .matches(
-        /^[a-zA-Z\s]+$/,
-        "First name must contain only letters and spaces",
-      )
-      .required("First name is required"),
-    lastName: Yup.string()
-      .min(2, "Last name must be at least 2 characters")
-      .max(25, "Last name must not exceed 25 characters")
-      .matches(
-        /^[a-zA-Z\s]+$/,
-        "Last name must contain only letters and spaces",
-      )
-      .required("Last name is required"),
-    email: Yup.string()
-      .email("Enter a valid email address")
-      .required("Email is required"),
-    phoneNumber: Yup.string()
-      .matches(/^[0-9]{7,15}$/, "Phone number must be 7-15 digits")
-      .required("Phone number is required"),
-    address: Yup.string()
-      .min(10, "Address must be at least 10 characters")
-      .required("Address is required"),
-    city: Yup.string()
-      .min(2, "City must be at least 2 characters")
-      .max(25, "City must not exceed 25 characters")
-      .matches(/^[a-zA-Z\s]+$/, "City must contain only letters and spaces")
-      .required("City is required"),
-    zip: Yup.string()
-      .matches(/^\d{5,9}$/, "ZIP code must be 5-9 digits")
-      .required("Zip code is required"),
-    drLicenseNo: Yup.string()
-      .required("Doctor's License Number is required")
-      .min(5, "Must be at least 5 characters")
-      .max(15, "Must not exceed 15 characters")
-      .matches(/^[A-Z]+-[0-9]+$/, "Format: LETTERS-hyphen-numbers (e.g., PMC-12345)"),
-    officeRefNo: Yup.string()
-      .required("Office Reference Number is required")
-      .min(6, "Must be at least 6 characters")
-      .max(15, "Must not exceed 15 characters")
-      .matches(/^[A-Z0-9_-]+$/, "Only letters, numbers, hyphens, and underscores allowed")
-      .test(
-        "different-from-license",
-        "Cannot be same as License Number",
-        function (value) {
-          const licenseValue = this.parent.drLicenseNo;
-          if (!value || !licenseValue) return true;
-          return value !== licenseValue;
-        },
-      ),
-    password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]).{8,}$/,
-        "Must contain uppercase, lowercase, number, and special character"
-      )
-      .test(
-        "special-char-limit",
-        "Maximum 8 special characters allowed",
-        function (value) {
-          if (!value) return true;
-          const specialCharCount = (value.match(/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/g) || []).length;
-          return specialCharCount <= 8;
-        }
-      )
-      .required("Password is required"),
+
+  // Formik setup with real-time validation
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      address: "",
+      city: "",
+      zip: "",
+      drLicenseNo: "",
+      officeRefNo: "",
+      password: "",
+    },
+    validationSchema: doctorSignupValidationSchema,
+    validateOnChange: true, // Real-time validation as user types
+    validateOnBlur: true,   // Validate when user leaves field
+    onSubmit: async (values) => {
+      await handleSignup(values);
+    },
   });
 
-  const {
-    validationErrors,
-    validateField,
-    clearFieldError,
-    validateAllFields,
-  } = useFieldValidation(validationSchema);
-
-  const getFormData = () => ({
-    firstName,
-    lastName,
-    email,
-    phoneNumber,
-    address,
-    city,
-    zip,
-    drLicenseNo,
-    officeRefNo,
-    password,
-  });
-
-  const handleFieldChange = async (fieldName, value, setter) => {
-    setter(value);
-
-    // Clear error immediately when user starts typing
-    if (validationErrors[fieldName]) {
-      clearFieldError(fieldName);
-    }
-  };
-
-  const handleFieldBlur = async (fieldName, value) => {
-    // Validate field when user leaves it
-    if (value.trim()) {
-      await validateField(fieldName, value, getFormData());
-    }
-  };
-
-  const handleSignup = async () => {
-    const error = await validateAllFields(getFormData());
-    if (error) {
-      return; // Field-level errors are shown instead of toast
-    }
-
+  const handleSignup = async (values) => {
+    setIsSubmitting(true);
     const payload = {
-      email,
-      password,
-      firstName,
-      lastName,
-      phoneNumber,
-      address,
-      city,
-      zip,
-      drLicenseNo,
-      officeRefNo,
+      email: values.email,
+      password: values.password,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      phoneNumber: values.phoneNumber,
+      address: values.address,
+      city: values.city,
+      zip: values.zip,
+      drLicenseNo: values.drLicenseNo,
+      officeRefNo: values.officeRefNo,
       role: "DOCTOR",
     };
 
@@ -184,6 +86,7 @@ const DoctorSignup = () => {
       setToastType("error");
       setToastVisible(true);
     } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -203,13 +106,12 @@ const DoctorSignup = () => {
                 <input
                   type="text"
                   id="firstName"
-                  value={firstName}
-                  onChange={(e) =>
-                    handleFieldChange("firstName", e.target.value, setFirstName)
-                  }
-                  onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
+                  name="firstName"
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.firstName
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.firstName && formik.touched.firstName
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
                     }`}
@@ -224,9 +126,9 @@ const DoctorSignup = () => {
                 >
                   First Name
                 </label>
-                {validationErrors.firstName && (
+                {formik.errors.firstName && formik.touched.firstName && (
                   <div className="text-red-600 text-xs mt-1">
-                    {validationErrors.firstName}
+                    {formik.errors.firstName}
                   </div>
                 )}
               </div>
@@ -235,13 +137,12 @@ const DoctorSignup = () => {
                 <input
                   type="text"
                   id="lastName"
-                  value={lastName}
-                  onChange={(e) =>
-                    handleFieldChange("lastName", e.target.value, setLastName)
-                  }
-                  onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
+                  name="lastName"
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.lastName
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.lastName && formik.touched.lastName
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
                     }`}
@@ -256,9 +157,9 @@ const DoctorSignup = () => {
                 >
                   Last Name
                 </label>
-                {validationErrors.lastName && (
+                {formik.errors.lastName && formik.touched.lastName && (
                   <div className="text-red-600 text-xs mt-1">
-                    {validationErrors.lastName}
+                    {formik.errors.lastName}
                   </div>
                 )}
               </div>
@@ -268,13 +169,12 @@ const DoctorSignup = () => {
                 <input
                   type="text"
                   id="email"
-                  value={email}
-                  onChange={(e) =>
-                    handleFieldChange("email", e.target.value, setEmail)
-                  }
-                  onBlur={(e) => handleFieldBlur("email", e.target.value)}
+                  name="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.email
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.email && formik.touched.email
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
                     }`}
@@ -289,9 +189,9 @@ const DoctorSignup = () => {
                 >
                   Email
                 </label>
-                {validationErrors.email && (
+                {formik.errors.email && formik.touched.email && (
                   <div className="text-red-600 text-xs mt-1">
-                    {validationErrors.email}
+                    {formik.errors.email}
                   </div>
                 )}
               </div>
@@ -300,13 +200,12 @@ const DoctorSignup = () => {
                 <input
                   type="text"
                   id="phone"
-                  value={phoneNumber}
-                  onChange={(e) =>
-                    handleFieldChange("phoneNumber", e.target.value, setPhone)
-                  }
-                  onBlur={(e) => handleFieldBlur("phoneNumber", e.target.value)}
+                  name="phoneNumber"
+                  value={formik.values.phoneNumber}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.phoneNumber
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.phoneNumber && formik.touched.phoneNumber
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
                     }`}
@@ -321,9 +220,9 @@ const DoctorSignup = () => {
                 >
                   Phone
                 </label>
-                {validationErrors.phoneNumber && (
+                {formik.errors.phoneNumber && formik.touched.phoneNumber && (
                   <div className="text-red-600 text-xs mt-1">
-                    {validationErrors.phoneNumber}
+                    {formik.errors.phoneNumber}
                   </div>
                 )}
               </div>
@@ -334,13 +233,12 @@ const DoctorSignup = () => {
               <input
                 type="text"
                 id="address"
-                value={address}
-                onChange={(e) =>
-                  handleFieldChange("address", e.target.value, setAddress)
-                }
-                onBlur={(e) => handleFieldBlur("address", e.target.value)}
+                name="address"
+                value={formik.values.address}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.address
+                className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.address && formik.touched.address
                   ? "border-red-500"
                   : "border-gray-300 focus:border-secondaryBrand"
                   }`}
@@ -355,9 +253,9 @@ const DoctorSignup = () => {
               >
                 Address
               </label>
-              {validationErrors.address && (
+              {formik.errors.address && formik.touched.address && (
                 <div className="text-red-600 text-xs mt-1">
-                  {validationErrors.address}
+                  {formik.errors.address}
                 </div>
               )}
             </div>
@@ -368,13 +266,12 @@ const DoctorSignup = () => {
                 <input
                   type="text"
                   id="city"
-                  value={city}
-                  onChange={(e) =>
-                    handleFieldChange("city", e.target.value, setCity)
-                  }
-                  onBlur={(e) => handleFieldBlur("city", e.target.value)}
+                  name="city"
+                  value={formik.values.city}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.city
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.city && formik.touched.city
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
                     }`}
@@ -389,9 +286,9 @@ const DoctorSignup = () => {
                 >
                   City
                 </label>
-                {validationErrors.city && (
+                {formik.errors.city && formik.touched.city && (
                   <div className="text-red-600 text-xs mt-1">
-                    {validationErrors.city}
+                    {formik.errors.city}
                   </div>
                 )}
               </div>
@@ -399,13 +296,12 @@ const DoctorSignup = () => {
                 <input
                   type="text"
                   id="zip"
-                  value={zip}
-                  onChange={(e) =>
-                    handleFieldChange("zip", e.target.value, setZip)
-                  }
-                  onBlur={(e) => handleFieldBlur("zip", e.target.value)}
+                  name="zip"
+                  value={formik.values.zip}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.zip
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.zip && formik.touched.zip
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
                     }`}
@@ -420,9 +316,9 @@ const DoctorSignup = () => {
                 >
                   Zip
                 </label>
-                {validationErrors.zip && (
+                {formik.errors.zip && formik.touched.zip && (
                   <div className="text-red-600 text-xs mt-1">
-                    {validationErrors.zip}
+                    {formik.errors.zip}
                   </div>
                 )}
               </div>
@@ -434,17 +330,14 @@ const DoctorSignup = () => {
                 <input
                   type="text"
                   id="drLicenseNo"
-                  value={drLicenseNo}
-                  onChange={(e) =>
-                    handleFieldChange(
-                      "drLicenseNo",
-                      e.target.value.toUpperCase(),
-                      setdrLicense,
-                    )
-                  }
-                  onBlur={(e) => handleFieldBlur("drLicenseNo", e.target.value)}
+                  name="drLicenseNo"
+                  value={formik.values.drLicenseNo}
+                  onChange={(e) => {
+                    formik.setFieldValue("drLicenseNo", e.target.value.toUpperCase());
+                  }}
+                  onBlur={formik.handleBlur}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.drLicenseNo
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.drLicenseNo && formik.touched.drLicenseNo
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
                     }`}
@@ -459,9 +352,9 @@ const DoctorSignup = () => {
                 >
                   Doctor's License Number
                 </label>
-                {validationErrors.drLicenseNo && (
+                {formik.errors.drLicenseNo && formik.touched.drLicenseNo && (
                   <div className="text-red-600 text-xs mt-1">
-                    {validationErrors.drLicenseNo}
+                    {formik.errors.drLicenseNo}
                   </div>
                 )}
               </div>
@@ -470,17 +363,14 @@ const DoctorSignup = () => {
                 <input
                   type="text"
                   id="officeRefNo"
-                  value={officeRefNo}
-                  onChange={(e) =>
-                    handleFieldChange(
-                      "officeRefNo",
-                      e.target.value.toUpperCase(),
-                      setofficeRefNo,
-                    )
-                  }
-                  onBlur={(e) => handleFieldBlur("officeRefNo", e.target.value)}
+                  name="officeRefNo"
+                  value={formik.values.officeRefNo}
+                  onChange={(e) => {
+                    formik.setFieldValue("officeRefNo", e.target.value.toUpperCase());
+                  }}
+                  onBlur={formik.handleBlur}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.officeRefNo
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.officeRefNo && formik.touched.officeRefNo
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
                     }`}
@@ -495,9 +385,9 @@ const DoctorSignup = () => {
                 >
                   Office Reference Number
                 </label>
-                {validationErrors.officeRefNo && (
+                {formik.errors.officeRefNo && formik.touched.officeRefNo && (
                   <div className="text-red-600 text-xs mt-1">
-                    {validationErrors.officeRefNo}
+                    {formik.errors.officeRefNo}
                   </div>
                 )}
               </div>
@@ -505,41 +395,42 @@ const DoctorSignup = () => {
 
             {/* Password */}
             <div className="relative w-full">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                value={password}
-                onChange={(e) =>
-                  handleFieldChange("password", e.target.value, setPassword)
-                }
-                onBlur={(e) => handleFieldBlur("password", e.target.value)}
-                placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${validationErrors.password
-                  ? "border-red-500"
-                  : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
-              />
-              <label
-                htmlFor="password"
-                className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder=" "
+                  className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${formik.errors.password && formik.touched.password
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
+                />
+                <label
+                  htmlFor="password"
+                  className="absolute left-3 top-3 text-gray-400 text-sm transition-all bg-white px-1
       peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
       peer-focus:-top-2 peer-focus:text-xs peer-focus:text-secondaryBrand
       peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-secondaryBrand
     "
-              >
-                Password
-              </label>
+                >
+                  Password
+                </label>
 
-              {/* Eye Icon */}
-              <div
-                className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <Icons.Eye.Open /> : <Icons.Eye.Closed />}
+                {/* Eye Icon */}
+                <div
+                  className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <Icons.Eye.Open /> : <Icons.Eye.Closed />}
+                </div>
               </div>
-              {validationErrors.password && (
+              {formik.errors.password && formik.touched.password && (
                 <div className="text-red-600 text-xs mt-1">
-                  {validationErrors.password}
+                  {formik.errors.password}
                 </div>
               )}
             </div>
@@ -547,10 +438,15 @@ const DoctorSignup = () => {
         </div>
         <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
           <button
-            onClick={() => handleSignup()}
-            className="w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px]"
+            type="button"
+            onClick={() => formik.handleSubmit()}
+            disabled={isSubmitting}
+            className={`w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px] transition-all duration-200 ${isSubmitting
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-secondaryBrand hover:bg-blue-800"
+              }`}
           >
-            Sign Up
+            {isSubmitting ? "Signing Up..." : "Sign Up"}
           </button>
 
           <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">

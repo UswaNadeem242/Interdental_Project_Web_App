@@ -60,9 +60,9 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
   return (
     <div
       ref={dropdownRef}
-      className="flex flex-col justify-center items-center w-[303px] h-[286px] rounded-[12px] p-[16px] gap-[16px] bg-[#FFFFFF] absolute right-0 top-[4px] z-0  shadow-[0_0_10px_#00000017]"
+      className="flex flex-col justify-center items-center w-[303px] h-fit rounded-[12px] p-[16px] gap-[16px] bg-[#FFFFFF] absolute right-0 top-[4px] z-0  shadow-[0_0_10px_#00000017]"
     >
-      <div className="w-64 h-[214px] rounded-[16px] gap-[2px] py-[8px] shadow-[0_0_10px_#04060F0D]">
+      <div className="w-64 rounded-[16px] gap-[2px] py-[8px] shadow-[0_0_10px_#04060F0D]">
         {/* flex flex-col justify-start items-start  w-[271px] */}
         <div
           onClick={() => setIsProfileOpen(true)}
@@ -93,21 +93,7 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
           </div>
           <ChevronRightIcon className="w-4 h-4" />
         </div>
-        <div
-          onClick={() => setisNotificationsOpen(true)}
-          className="flex justify-between items-center cursor-pointer   h-[48px] rounded-[10px] gap-[14px] py-[15px] px-[14px]"
-        >
-          <div className="flex items-center gap-4">
-            <BellIconSVG className="w-5" />
-
-            <p className="  font-inter font-normal text-primaryText text-[14px] leading-[16.94px]">
-              Notifications
-            </p>
-          </div>
-
-          <ToggleIcon />
-          {/* <ChevronRightIcon className='w-4 h-4' /> */}
-        </div>
+       
         <div
           onClick={() => setIsPasswordProfile(true)}
           className="flex justify-between items-center cursor-pointer   h-[48px] rounded-[10px] gap-[14px] py-[15px] px-[14px]"

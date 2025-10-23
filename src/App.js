@@ -42,7 +42,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Toastify from "./Common/react-toastify";
 import ProductLandingPage from "./pages/landing-page/product";
 import ArgenZ from "./pages/landing-page/product/argen-z-h";
-import ImplantDenturesPage from "./pages/landing-page/blogs/sub-page";
+import BlogDetailPage from "./pages/landing-page/blogs/sub-page";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Blog from "./pages/landing-page/blog";
@@ -186,7 +186,7 @@ function App() {
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
             <Route path="/blog" element={<Blog isLanding={false} />} />
-            <Route path="/blogs/:slug" element={<ImplantDenturesPage />} />
+            <Route path="/blogs/:id" element={<BlogDetailPage />} />
             <Route
               path="/our-products"
               element={<ArgenZ isLanding={false} />}

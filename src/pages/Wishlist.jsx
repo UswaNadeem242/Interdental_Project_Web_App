@@ -191,7 +191,7 @@ const Wishlist = () => {
                   <ProductCardSkeleton key={index} />
                 ))}
               </>
-            ) : wishlist.length === 0 ? (
+            ) : wishlist?.length === 0 || wishlist?.length === undefined ? (
               <div className="w-full flex justify-center items-center py-20">
                 <p className="font-poppins text-gray-500 text-2xl">
                   Your wishlist is empty...

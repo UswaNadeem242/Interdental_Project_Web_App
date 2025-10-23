@@ -8,9 +8,9 @@ import Toast from "../components/Toast";
 import CartConfirmModel from "./cart-confirm-model";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice";
-import * as Yup from "yup";
+import { shoppingCartValidationSchema } from "../services/utils/validationSchemas";
 import Icons from "../components/Icons";
-import useFieldValidation from "../Hooks/useFieldValidation";
+import { useFormik } from "formik";
 // import product2 from "../assets/product2.png";
 
 const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
@@ -24,115 +24,36 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [cart, setCart] = useState({});
   const [country, setCountry] = useState("");
   const [showCoutries, setShowCoutries] = useState(false);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [street, setStreet] = useState("");
   const [isopenCartModel, setIsOpenCartModel] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [toastVisible, setToastVisible] = useState(false);
-  const [recipientName, setRecipientName] = useState("");
-  const [paypalUsername, setPaypalUsername] = useState("");
-  const [paypalContact, setPaypalContact] = useState("");
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const dispatch = useDispatch();
 
-  // Yup validation schema
-  const validationSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(2, "Full Name must be at least 2 characters")
-      .matches(
-        /^[a-zA-Z\s]+$/,
-        "Full Name must contain only letters and spaces",
-      )
-      .required("Full Name is required"),
-    phone: Yup.string()
-      .min(7, "Phone number must be at least 7 digits")
-      .max(15, "Phone number must not exceed 15 digits")
-      .matches(/^[0-9]{7,15}$/i, "Phone number must contain only digits (7–15)")
-      .required("Phone number is required"),
-    country: Yup.string().required("Country is required"),
-    state: Yup.string()
-      .min(3, "State/Province must be at least 3 characters")
-      .matches(/^[a-zA-Z\s]+$/, "State/Province must contain only letters")
-      .required("State/Province is required"),
-    city: Yup.string()
-      .min(2, "City must be at least 2 characters")
-      .matches(/^[a-zA-Z\s\-'.]+$/, "City contains invalid characters")
-      .required("City is required"),
-    street: Yup.string()
-      .min(5, "Street address must be at least 5 characters")
-      .matches(
-        /^[a-zA-Z0-9\s#.,'-]+$/,
-        "Street address can contain letters, numbers, spaces, and # . , ' -",
-      )
-      .required("Street Address is required"),
-    recipientName: Yup.string()
-      .min(2, "Recipient's Name must be at least 2 characters")
-      .matches(
-        /^[a-zA-Z\s]+$/,
-        "Recipient's Name must contain only letters and spaces",
-      )
-      .required("Recipient's Name is required"),
-    paypalUsername: Yup.string()
-      .min(3, "PayPal Username must be at least 3 characters")
-      .required("PayPal Username is required"),
-    paypalContact: Yup.string()
-      .test(
-        "email-or-phone",
-        "Please enter a valid email or phone number (7-15 digits)",
-        function (value) {
-          if (!value) return false;
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          const phoneRegex = /^[0-9]{7,15}$/;
-          return emailRegex.test(value) || phoneRegex.test(value);
-        },
-      )
-      .required("PayPal Email/Phone is required"),
+
+  // Formik setup
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      phone: "",
+      country: "",
+      state: "",
+      city: "",
+      street: "",
+      recipientName: "",
+      paypalUsername: "",
+      paypalContact: "",
+    },
+    validationSchema: shoppingCartValidationSchema,
+    validateOnChange: true,   // Validate as user types
+    validateOnBlur: true,    // Validate when user leaves field
+    onSubmit: async (values) => {
+      // Handle form submission
+      setActiveTab("review");
+    },
   });
-
-  const {
-    validationErrors,
-    validateField,
-    clearFieldError,
-    validateAllFields,
-  } = useFieldValidation(validationSchema);
-
-  const getFormData = () => ({
-    name,
-    phone,
-    country,
-    state,
-    city,
-    street,
-    recipientName,
-    paypalUsername,
-    paypalContact,
-  });
-
-  const handleFieldChange = async (fieldName, value, setter) => {
-    setter(value);
-
-    // Clear error immediately when user starts typing
-    if (validationErrors[fieldName]) {
-      clearFieldError(fieldName);
-    }
-  };
-
-  const handleFieldBlur = async (fieldName, value) => {
-    // Validate field when user leaves it
-    if (value.trim()) {
-      await validateField(fieldName, value, getFormData());
-    }
-  };
-
-  const validateForm = async () => {
-    const isValid = await validateAllFields(getFormData());
-    return isValid === null; // validateAllFields returns null for no errors, error message for errors
-  };
 
   const createOrder = async () => {
     //
@@ -140,10 +61,10 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     try {
       const payload = {
         userId: user.id,
-        name: name,
-        address: `${country},${state},${city},${street}`,
+        name: formik.values.name,
+        address: `${formik.values.country},${formik.values.state},${formik.values.city},${formik.values.street}`,
         email: user.email,
-        phone: phone,
+        phone: formik.values.phone,
         orderItems: cart.items,
       };
 
@@ -294,21 +215,24 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   useEffect(() => {
     if (user) {
       // Only set if the fields are empty to allow user to override
-      if (user.phoneNumber && !phone) {
-        setPhone(user.phoneNumber);
+      if (user.phoneNumber && !formik.values.phone) {
+        formik.setFieldValue("phone", user.phoneNumber);
       }
       // Preset name with firstName + lastName if available
+      if (user.firstName && user.lastName && !formik.values.name) {
+        formik.setFieldValue("name", `${user.firstName} ${user.lastName}`);
+      }
     }
-  }, [user, phone, name]);
+  }, [user]);
 
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
-    setCountry(country.name);
+    formik.setFieldValue("country", country.name);
     setShowCoutries(false);
   };
 
   const handleInputChange = (e) => {
-    setCountry(e);
+    formik.setFieldValue("country", e);
     setShowCoutries(true);
 
     // Clear selected country if input doesn't match
@@ -359,15 +283,15 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     else if (targetTab === "review") {
       // Check if all required checkout fields are completed
       if (
-        name &&
-        phone &&
-        country &&
-        state &&
-        city &&
-        street &&
-        recipientName &&
-        paypalUsername &&
-        paypalContact
+        formik.values.name &&
+        formik.values.phone &&
+        formik.values.country &&
+        formik.values.state &&
+        formik.values.city &&
+        formik.values.street &&
+        formik.values.recipientName &&
+        formik.values.paypalUsername &&
+        formik.values.paypalContact
       ) {
         setActiveTab(targetTab);
       } else {
@@ -402,16 +326,16 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
 
   // Handle browser autofill for country field
   useEffect(() => {
-    if (country && !selectedCountry) {
+    if (formik.values.country && !selectedCountry) {
       // Find matching country from the countries list
       const matchingCountry = countries.find(
-        (c) => c.name.toLowerCase() === country.toLowerCase(),
+        (c) => c.name.toLowerCase() === formik.values.country.toLowerCase(),
       );
       if (matchingCountry) {
         setSelectedCountry(matchingCountry);
       }
     }
-  }, [country, countries, selectedCountry]);
+  }, [formik.values.country, countries, selectedCountry]);
 
   console.log(user, "USER");
 
@@ -525,14 +449,13 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       <input
                         type="text"
                         id="fullName"
-                        value={name}
-                        onChange={(e) =>
-                          handleFieldChange("name", e.target.value, setName)
-                        }
-                        onBlur={(e) => handleFieldBlur("name", e.target.value)}
+                        name="name"
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         placeholder=" "
                         required
-                        className={`peer w-[285.5px] h-[53px] rounded-[8px] py-[10px] px-[15px] outline-none text-textFieldHeading border ${validationErrors.name
+                        className={`peer w-[285.5px] h-[53px] rounded-[8px] py-[10px] px-[15px] outline-none text-textFieldHeading border ${formik.errors.name && formik.touched.name
                           ? "border-red-500"
                           : "border-[#FFFFFF]"
                           }`}
@@ -546,9 +469,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       >
                         Full Name
                       </label>
-                      {validationErrors.name && (
+                      {formik.errors.name && formik.touched.name && (
                         <div className="text-red-600 text-xs mt-1">
-                          {validationErrors.name}
+                          {formik.errors.name}
                         </div>
                       )}
                     </div>
@@ -556,13 +479,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       <input
                         type="text"
                         id="contactNumber"
-                        value={phone}
-                        onChange={(e) =>
-                          handleFieldChange("phone", e.target.value, setPhone)
-                        }
-                        onBlur={(e) => handleFieldBlur("phone", e.target.value)}
+                        name="phone"
+                        value={formik.values.phone}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         placeholder=" "
-                        className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand border ${validationErrors.phone
+                        className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none focus:border-secondaryBrand border ${formik.errors.phone && formik.touched.phone
                           ? "border-red-500"
                           : "border-[#FFFFFF]"
                           }`}
@@ -576,9 +498,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       >
                         Contact Number
                       </label>
-                      {validationErrors.phone && (
+                      {formik.errors.phone && formik.touched.phone && (
                         <div className="text-red-600 text-xs mt-1">
-                          {validationErrors.phone}
+                          {formik.errors.phone}
                         </div>
                       )}
                     </div>
@@ -604,7 +526,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                     <div className="relative flex flex-col justify-start items-start w-[285.5px]">
                       {/* Input + Flag */}
                       <div
-                        className={`relative flex justify-start items-center w-full h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white border ${validationErrors.country
+                        className={`relative flex justify-start items-center w-full h-[53px] gap-[10px] py-[10px] px-[15px] rounded-[8px] bg-white border ${formik.errors.country && formik.touched.country
                           ? "border-red-500"
                           : "border-[#FFFFFF]"
                           }`}
@@ -620,18 +542,13 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         <input
                           type="text"
                           id="country"
-                          value={country}
+                          name="country"
+                          value={formik.values.country}
                           onChange={(e) => {
                             handleInputChange(e.target.value);
-                            handleFieldChange(
-                              "country",
-                              e.target.value,
-                              () => { },
-                            );
+                            formik.handleChange(e);
                           }}
-                          onBlur={(e) =>
-                            handleFieldBlur("country", e.target.value)
-                          }
+                          onBlur={formik.handleBlur}
                           placeholder=" "
                           className="peer w-full h-full bg-transparent outline-none border-none text-textFieldHeading"
                         />
@@ -640,7 +557,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         <label
                           htmlFor="country"
                           className={`absolute  text-gray-400 text-sm transition-all px-1 pointer-events-none bg-white
-        ${country
+        ${formik.values.country
                               ? "-top-2 text-xs text-secondaryBrand"
                               : "top-[15px] text-gray-400 text-sm"
                             }
@@ -658,7 +575,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                             .filter((c) =>
                               c.name
                                 .toLowerCase()
-                                .includes(country.toLowerCase()),
+                                .includes(formik.values.country.toLowerCase()),
                             )
                             .map((country) => (
                               <div key={country.code} value={country.code}>
@@ -677,9 +594,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                             ))}
                         </div>
                       )}
-                      {validationErrors.country && (
+                      {formik.errors.country && formik.touched.country && (
                         <div className="text-red-600 text-xs mt-1">
-                          {validationErrors.country}
+                          {formik.errors.country}
                         </div>
                       )}
                     </div>
@@ -688,13 +605,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       <input
                         type="text"
                         id="state"
-                        value={state}
-                        onChange={(e) =>
-                          handleFieldChange("state", e.target.value, setState)
-                        }
-                        onBlur={(e) => handleFieldBlur("state", e.target.value)}
+                        name="state"
+                        value={formik.values.state}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         placeholder=" "
-                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${validationErrors.state
+                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${formik.errors.state && formik.touched.state
                           ? "border-red-500"
                           : "border-[#FFFFFF]"
                           }`}
@@ -703,7 +619,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       <label
                         htmlFor="state"
                         className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none bg-white px-1
-      ${state
+      ${formik.values.state
                             ? "-top-2 text-xs text-secondaryBrand"
                             : "top-3 text-gray-400 text-sm"
                           }
@@ -711,9 +627,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       >
                         State / Province
                       </label>
-                      {validationErrors.state && (
+                      {formik.errors.state && formik.touched.state && (
                         <div className="text-red-600 text-xs mt-1">
-                          {validationErrors.state}
+                          {formik.errors.state}
                         </div>
                       )}
                     </div>
@@ -723,13 +639,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       <input
                         type="text"
                         id="city"
-                        value={city}
-                        onChange={(e) =>
-                          handleFieldChange("city", e.target.value, setCity)
-                        }
-                        onBlur={(e) => handleFieldBlur("city", e.target.value)}
+                        name="city"
+                        value={formik.values.city}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         placeholder=" "
-                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${validationErrors.city
+                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${formik.errors.city && formik.touched.city
                           ? "border-red-500"
                           : "border-[#FFFFFF]"
                           }`}
@@ -738,7 +653,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       <label
                         htmlFor="city"
                         className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none bg-white px-1
-      ${city
+      ${formik.values.city
                             ? "-top-2 text-xs text-secondaryBrand"
                             : "top-3 text-gray-400 text-sm"
                           }
@@ -746,9 +661,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       >
                         City
                       </label>
-                      {validationErrors.city && (
+                      {formik.errors.city && formik.touched.city && (
                         <div className="text-red-600 text-xs mt-1">
-                          {validationErrors.city}
+                          {formik.errors.city}
                         </div>
                       )}
                     </div>
@@ -756,15 +671,12 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       <input
                         type="text"
                         id="street"
-                        value={street}
-                        onChange={(e) =>
-                          handleFieldChange("street", e.target.value, setStreet)
-                        }
-                        onBlur={(e) =>
-                          handleFieldBlur("street", e.target.value)
-                        }
+                        name="street"
+                        value={formik.values.street}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         placeholder=" "
-                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${validationErrors.street
+                        className={`peer w-full h-[53px] rounded-[8px] border bg-white py-[10px] px-[15px] outline-none text-textFieldHeading transition-all ${formik.errors.street && formik.touched.street
                           ? "border-red-500"
                           : "border-[#FFFFFF]"
                           }`}
@@ -773,7 +685,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       <label
                         htmlFor="street"
                         className={`absolute left-4 text-gray-400 text-sm transition-all pointer-events-none bg-white px-1
-      ${street
+      ${formik.values.street
                             ? "-top-2 text-xs text-secondaryBrand"
                             : "top-3 text-gray-400 text-sm"
                           }
@@ -781,9 +693,9 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       >
                         Street
                       </label>
-                      {validationErrors.street && (
+                      {formik.errors.street && formik.touched.street && (
                         <div className="text-red-600 text-xs mt-1">
-                          {validationErrors.street}
+                          {formik.errors.street}
                         </div>
                       )}
                     </div>
@@ -826,31 +738,24 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         Recipient's Name *
                       </p>
                       <div
-                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${validationErrors.recipientName
+                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${formik.errors.recipientName && formik.touched.recipientName
                           ? "border border-red-500"
                           : ""
                           }`}
                       >
                         <input
                           type="text"
-                          value={recipientName}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              "recipientName",
-                              e.target.value,
-                              setRecipientName,
-                            )
-                          }
-                          onBlur={(e) =>
-                            handleFieldBlur("recipientName", e.target.value)
-                          }
+                          name="recipientName"
+                          value={formik.values.recipientName}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           placeholder="Enter Recipient's Name"
                           className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
                       </div>
-                      {validationErrors.recipientName && (
+                      {formik.errors.recipientName && formik.touched.recipientName && (
                         <div className="text-red-600 text-xs">
-                          {validationErrors.recipientName}
+                          {formik.errors.recipientName}
                         </div>
                       )}
                     </div>
@@ -860,31 +765,24 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         PayPal Username *
                       </p>
                       <div
-                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${validationErrors.paypalUsername
+                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${formik.errors.paypalUsername && formik.touched.paypalUsername
                           ? "border border-red-500"
                           : ""
                           }`}
                       >
                         <input
                           type="text"
-                          value={paypalUsername}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              "paypalUsername",
-                              e.target.value,
-                              setPaypalUsername,
-                            )
-                          }
-                          onBlur={(e) =>
-                            handleFieldBlur("paypalUsername", e.target.value)
-                          }
+                          name="paypalUsername"
+                          value={formik.values.paypalUsername}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           placeholder="Enter PayPal Username"
                           className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
                       </div>
-                      {validationErrors.paypalUsername && (
+                      {formik.errors.paypalUsername && formik.touched.paypalUsername && (
                         <div className="text-red-600 text-xs">
-                          {validationErrors.paypalUsername}
+                          {formik.errors.paypalUsername}
                         </div>
                       )}
                     </div>
@@ -894,31 +792,24 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                         E-mail / Phone Number *
                       </p>
                       <div
-                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${validationErrors.paypalContact
+                        className={`flex justify-center items-center w-[539px] h-[44px] bg-[#F8F8F8] p-[12px] ${formik.errors.paypalContact && formik.touched.paypalContact
                           ? "border border-red-500"
                           : ""
                           }`}
                       >
                         <input
                           type="text"
-                          value={paypalContact}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              "paypalContact",
-                              e.target.value,
-                              setPaypalContact,
-                            )
-                          }
-                          onBlur={(e) =>
-                            handleFieldBlur("paypalContact", e.target.value)
-                          }
+                          name="paypalContact"
+                          value={formik.values.paypalContact}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           placeholder="Enter E-mail / Phone Number"
                           className="bg-transparent w-full h-full outline-none font-poppins text-[12px] text-[#434343]"
                         />
                       </div>
-                      {validationErrors.paypalContact && (
+                      {formik.errors.paypalContact && formik.touched.paypalContact && (
                         <div className="text-red-600 text-xs">
-                          {validationErrors.paypalContact}
+                          {formik.errors.paypalContact}
                         </div>
                       )}
                     </div>
@@ -937,12 +828,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                   </h1>
                 </div>
                 <div
-                  onClick={async () => {
-                    if (!(await validateForm())) return;
-
-                    // ✅ All validations passed
-                    setActiveTab("review");
-                  }}
+                  onClick={() => formik.handleSubmit()}
                   className="flex justify-center items-center cursor-pointer w-full h-[55px] rounded-[32px] gap-[8px] bg-secondaryBrand"
                 >
                   <h1 className="flex justify-center items-center leading-[21px] font-poppins font-semibold text-white text-[14px] w-full">
@@ -1067,7 +953,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       Full Name
                     </p>
                     <p className="font-poppins font-normal h-[40px] text-[14px] leading-[21px] text-[##434343]">
-                      {name}
+                      {formik.values.name}
                     </p>
                   </div>
 
@@ -1085,7 +971,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       Contact Number
                     </p>
                     <p className="font-poppins font-normal h-[40px] text-[14px] leading-[21px] text-[##434343]">
-                      {phone}
+                      {formik.values.phone}
                     </p>
                   </div>
 
@@ -1094,7 +980,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
                       Shipping Address
                     </p>
                     <p className="font-poppins font-normal h-[40px] text-[14px] leading-[21px] text-[##434343]">
-                      {selectedCountry?.name} , {street} , {city} , {state}
+                      {selectedCountry?.name} , {formik.values.street} , {formik.values.city} , {formik.values.state}
                     </p>
                   </div>
                 </div>
