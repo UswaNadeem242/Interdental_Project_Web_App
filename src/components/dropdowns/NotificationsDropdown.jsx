@@ -2,11 +2,14 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../config";
 import { useAuth } from "../../auth/AuthContext";
+import { NotificationsSkeleton } from "../Skeletons";
+import formatRelativeTime from "../../services/utils/formatRelativeTime";
 
 const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown }) => {
   const dropdownRef = useRef(null);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
   const [pagination, setPagination] = useState({
     page: 0,
@@ -18,7 +21,11 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const fetchNotifications = useCallback(async (page = 0, append = false) => {
-    setLoading(true);
+    if (append) {
+      setLoadingMore(true);
+    } else {
+      setLoading(true);
+    }
     setError("");
     try {
       const res = await axios.get(
@@ -58,6 +65,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
       setError("Failed to load notifications");
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   }, []);
 
@@ -145,9 +153,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
 
       <div className="flex-1 overflow-y-auto">
         {loading && notifications.length === 0 && (
-          <div className="p-4 text-center">
-            <p className="text-sm text-gray-500">Loading...</p>
-          </div>
+          <NotificationsSkeleton count={3} />
         )}
         {error && !loading && (
           <div className="p-4 text-center">
@@ -202,7 +208,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
                 </p>
                 <div className="flex items-center justify-between">
                   <p className="font-outfit font-normal text-[10px] leading-[12.6px] text-[#949494]">
-                    {new Date(notification.createdAt).toLocaleString()}
+                    {formatRelativeTime(notification.createdAt)}
                   </p>
                   {!notification.read && (
                     <button
@@ -217,17 +223,22 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
             </div>
           </div>
         ))}
+        
+        {/* Load More Skeleton */}
+        {loadingMore && (
+          <NotificationsSkeleton count={2} />
+        )}
       </div>
 
       {/* Load More Button */}
-      {pagination.hasMore && (
+      {pagination.hasMore && !loadingMore && (
         <div className="p-4 border-t border-[#0000000D]">
           <button
             onClick={handleLoadMore}
-            disabled={loading}
+            disabled={loading || loadingMore}
             className="w-full py-2 px-4 bg-brand text-white rounded-lg hover:bg-brand/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-poppins text-sm"
           >
-            {loading ? "Loading..." : "Load More"}
+            Load More
           </button>
         </div>
       )}

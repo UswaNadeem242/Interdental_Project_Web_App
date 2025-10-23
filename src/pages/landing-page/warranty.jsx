@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { warrantyCards } from "../../Constant";
 import CircleIcon from "../../icon/circle-icon";
+import { useNavigate } from "react-router-dom";
 
 const Warranty = () => {
+  const navigate = useNavigate();
+
+  const handleLearnMore = () => {
+    navigate("/patients");
+  };
+
   return (
     <section className="container px-4 mx-auto py-28  border-b border-background">
       <div className="flex justify-center ">
@@ -58,7 +65,10 @@ const Warranty = () => {
                   </ul>
                 </div>
 
-                <button className="mt-6 text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
+                <button 
+                  onClick={handleLearnMore}
+                  className="mt-6 text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition cursor-pointer"
+                >
                   Learn more
                 </button>
               </div>

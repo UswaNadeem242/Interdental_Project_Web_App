@@ -19,6 +19,7 @@ import StarRating from "../components/StarRating";
 import Icons from "../components/Icons";
 import { useMemo } from "react";
 import { calculateRating } from "../services/utils/calculateRating";
+import { ProductSkeleton } from "../components/Skeletons";
 
 const SingleProduct = () => {
   const { productId } = useParams();
@@ -292,55 +293,6 @@ const SingleProduct = () => {
 
   let productRatings=product?.ratings || []
 
-  // Skeleton loading component
-  const ProductSkeleton = () => (
-    <div className="flex flex-col lg:flex-row justify-center items-center w-full min-h-[500px] gap-6 lg:gap-8 rounded-2xl bg-white p-4 md:p-6 lg:p-8">
-      {/* Image Skeleton */}
-      <div className="w-full lg:w-[437px] h-[300px] sm:h-[400px] lg:h-[501px] flex-shrink-0">
-        <div className="w-full h-full bg-gray-200 rounded-2xl animate-pulse"></div>
-      </div>
-      
-      {/* Content Skeleton */}
-      <div className="flex flex-col justify-start items-start flex-1 w-full space-y-4 md:space-y-6">
-        <div className="flex flex-col justify-start items-start w-full border-b border-gray-200 pb-4 md:pb-6 space-y-3 md:space-y-4">
-          {/* Title Skeleton */}
-          <div className="flex items-center gap-2 md:gap-4 w-full">
-            <div className="h-8 bg-gray-200 rounded animate-pulse w-3/4"></div>
-            <div className="h-6 bg-gray-200 rounded-full animate-pulse w-20"></div>
-          </div>
-          
-          {/* Rating Skeleton */}
-          <div className="flex items-center gap-2 md:gap-3">
-            <div className="h-5 bg-gray-200 rounded animate-pulse w-24"></div>
-            <div className="h-5 bg-gray-200 rounded animate-pulse w-8"></div>
-          </div>
-          
-          {/* Price Skeleton */}
-          <div className="h-8 bg-gray-200 rounded animate-pulse w-24"></div>
-        </div>
-        
-        {/* Description Skeleton */}
-        <div className="w-full space-y-2">
-          <div className="h-4 bg-gray-200 rounded animate-pulse w-full"></div>
-          <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
-          <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2"></div>
-        </div>
-        
-        {/* Buttons Skeleton */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4 w-full">
-          <div className="h-12 bg-gray-200 rounded-full animate-pulse w-full sm:w-auto sm:flex-1 max-w-[200px]"></div>
-          <div className="h-12 bg-gray-200 rounded-full animate-pulse w-full sm:w-auto sm:flex-1 max-w-[200px]"></div>
-          <div className="w-[51.28px] h-[51.28px] bg-gray-200 rounded-full animate-pulse"></div>
-        </div>
-        
-        {/* Category Skeleton */}
-        <div className="flex items-center gap-2 w-full pt-2 md:pt-4">
-          <div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div>
-          <div className="h-4 bg-gray-200 rounded animate-pulse w-20"></div>
-        </div>
-      </div>
-    </div>
-  );
 
   if (productLoading) {
     return (

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { changePassword } from "../api/doctorDasboard";
 import Toast from "../components/Toast";
 import { createPortal } from "react-dom";
+import Icons from "../components/Icons";
 
 const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile }) => {
     const handleCloseModal = () => {
@@ -70,24 +71,40 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
     const validatePassword = (password) => {
         const errors = [];
 
+        // Check length first (most important)
         if (password.length < 8) {
-            errors.push("minimum 8 characters");
+            errors.push("Password must be at least 8 characters");
+            return errors; // Return early if length is insufficient
         }
 
+        if (password.length > 16) {
+            errors.push("Password must not exceed 16 characters");
+            return errors; // Return early if length exceeds limit
+        }
+
+        // Check format requirements only if length is valid
         if (!/[A-Z]/.test(password)) {
-            errors.push("at least 1 uppercase");
+            errors.push("Must contain uppercase letter");
         }
 
         if (!/[a-z]/.test(password)) {
-            errors.push("at least 1 lowercase");
+            errors.push("Must contain lowercase letter");
         }
 
         if (!/\d/.test(password)) {
-            errors.push("1 digit");
+            errors.push("Must contain a number");
         }
 
-        if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
-            errors.push("1 special character");
+        if (!/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/.test(password)) {
+            errors.push("Must contain special character");
+        }
+
+        // Check special character limit
+        if (password.length >= 8) {
+            const specialCharCount = (password.match(/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/g) || []).length;
+            if (specialCharCount > 8) {
+                errors.push("Maximum 8 special characters allowed");
+            }
         }
 
         return errors;
@@ -123,7 +140,7 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
                 if (passwordErrors.length > 0) {
                     setErrors((prev) => ({
                         ...prev,
-                        newPassword: `Password must have: ${passwordErrors.join(", ")}`,
+                        newPassword: passwordErrors[0], // Show only the first (most important) error
                     }));
                 } else {
                     setErrors((prev) => ({
@@ -206,9 +223,7 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
         } else {
             const newPasswordErrors = validatePassword(formData.newPassword);
             if (newPasswordErrors.length > 0) {
-                newErrors.newPassword = `Password must have: ${newPasswordErrors.join(
-                    ", "
-                )}`;
+                newErrors.newPassword = newPasswordErrors[0]; // Show only the first (most important) error
             }
         }
         // Validate confirmPassword
@@ -265,185 +280,99 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
                     <form onSubmit={handleSubmit} className="w-full rounded-3xl bg-white">
                         {/* Old Password */}
                         <div className="relative mb-4">
-                            <input
-                                name="oldPassword"
-                                value={formData.oldPassword}
-                                onChange={handleChange}
-                                placeholder="Old Password"
-                                type={show.old ? "text" : "password"}
-                                className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.oldPassword ? "border-red-500" : "border-borderPrimary"
-                                    }`}
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShow({ ...show, old: !show.old })}
-                                className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
-                            >
-                                {show.old ? (
-                                    // Eye Open Icon
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#808080"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                        <circle cx="12" cy="12" r="3" />
-                                    </svg>
-                                ) : (
-                                    // Eye Closed Icon
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#808080"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
-                                        <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                                        <path d="M1 1l22 22" />{" "}
-                                        {/* diagonal line crossing the eye */}
-                                        <circle cx="12" cy="12" r="3" />
-                                    </svg>
-                                )}
-                            </button>
+                            <div className="relative">
+                                <input
+                                    name="oldPassword"
+                                    value={formData.oldPassword}
+                                    onChange={handleChange}
+                                    placeholder="Old Password"
+                                    type={show.old ? "text" : "password"}
+                                    className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.oldPassword ? "border-red-500" : "border-borderPrimary"
+                                        }`}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShow({ ...show, old: !show.old })}
+                                    className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
+                                >
+                                    {show.old ? (
+                                        <Icons.Eye.Open className="w-5 h-5" fill="#808080" />
+                                    ) : (
+                                        <Icons.Eye.Closed className="w-5 h-5" fill="#808080" />
+                                    )}
+                                </button>
+                            </div>
+                            {errors.oldPassword && (
+                                <p className="text-red-500 mt-2 text-xs ml-2 break-words">
+                                    {errors.oldPassword}
+                                </p>
+                            )}
                         </div>
-                        {errors.oldPassword && (
-                            <p className="text-red-500 text-xs mb-2 ml-2 break-words">
-                                {errors.oldPassword}
-                            </p>
-                        )}
 
                         {/* New Password */}
                         <div className="relative mb-4">
-                            <input
-                                name="newPassword"
-                                value={formData.newPassword}
-                                onChange={handleChange}
-                                placeholder="New Password"
-                                type={show.new ? "text" : "password"}
-                                className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.newPassword ? "border-red-500" : "border-borderPrimary"
-                                    }`}
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShow({ ...show, new: !show.new })}
-                                className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
-                            >
-                                {show.new ? (
-                                    // Eye Open Icon
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#808080"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                        <circle cx="12" cy="12" r="3" />
-                                    </svg>
-                                ) : (
-                                    // Eye Closed Icon
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#808080"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
-                                        <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                                        <path d="M1 1l22 22" />{" "}
-                                        {/* diagonal line crossing the eye */}
-                                        <circle cx="12" cy="12" r="3" />
-                                    </svg>
-                                )}
-                            </button>
+                            <div className="relative">
+                                <input
+                                    name="newPassword"
+                                    value={formData.newPassword}
+                                    onChange={handleChange}
+                                    placeholder="New Password"
+                                    type={show.new ? "text" : "password"}
+                                    className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.newPassword ? "border-red-500" : "border-borderPrimary"
+                                        }`}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShow({ ...show, new: !show.new })}
+                                    className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
+                                >
+                                    {show.new ? (
+                                        <Icons.Eye.Open className="w-5 h-5" fill="#808080" />
+                                    ) : (
+                                        <Icons.Eye.Closed className="w-5 h-5" fill="#808080" />
+                                    )}
+                                </button>
+                            </div>
+                            {errors.newPassword && (
+                                <p className="text-red-500 text-xs mt-2 ml-2 break-words">
+                                    {errors.newPassword}
+                                </p>
+                            )}
                         </div>
-                        {errors.newPassword && (
-                            <p className="text-red-500 text-xs mb-2 ml-2 break-words">
-                                {errors.newPassword}
-                            </p>
-                        )}
 
                         {/* Confirm Password */}
                         <div className="relative mb-4">
-                            <input
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                placeholder="Confirm Password"
-                                type={show.confirm ? "text" : "password"}
-                                className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.confirmPassword
-                                    ? "border-red-500"
-                                    : "border-borderPrimary"
-                                    }`}
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShow({ ...show, confirm: !show.confirm })}
-                                className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
-                            >
-                                {show.confirm ? (
-                                    // Eye Open Icon
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#808080"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                        <circle cx="12" cy="12" r="3" />
-                                    </svg>
-                                ) : (
-                                    // Eye Closed Icon
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#808080"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M17.94 17.94C16.09 19.09 14.06 19.75 12 19.75c-7 0-11-7-11-7 1.65-3.3 4.66-5.68 8-6.7" />
-                                        <path d="M12 5c7 0 11 7 11 7-1.65 3.3-4.66 5.68-8 6.7" />
-                                        <path d="M1 1l22 22" />{" "}
-                                        {/* diagonal line crossing the eye */}
-                                        <circle cx="12" cy="12" r="3" />
-                                    </svg>
-                                )}
-                            </button>
+                            <div className="relative">
+                                <input
+                                    name="confirmPassword"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                    placeholder="Confirm Password"
+                                    type={show.confirm ? "text" : "password"}
+                                    className={`w-full rounded-full border px-4 py-3 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none ${errors.confirmPassword
+                                        ? "border-red-500"
+                                        : "border-borderPrimary"
+                                        }`}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShow({ ...show, confirm: !show.confirm })}
+                                    className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600"
+                                >
+                                    {show.confirm ? (
+                                        <Icons.Eye.Open className="w-5 h-5" fill="#808080" />
+                                    ) : (
+                                        <Icons.Eye.Closed className="w-5 h-5" fill="#808080" />
+                                    )}
+                                </button>
+                            </div>
+                            {errors.confirmPassword && (
+                                <p className="text-red-500 text-xs mt-2 ml-2 break-words">
+                                    {errors.confirmPassword}
+                                </p>
+                            )}
                         </div>
-                        {errors.confirmPassword && (
-                            <p className="text-red-500 text-xs mb-2 ml-2 break-words">
-                                {errors.confirmPassword}
-                            </p>
-                        )}
+
 
                         <button
                             type="submit"

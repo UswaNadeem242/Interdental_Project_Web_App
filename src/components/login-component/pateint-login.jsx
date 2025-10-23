@@ -4,12 +4,9 @@ import axios from "axios";
 import { BASE_URL } from "../../config";
 import { useAuth } from "../../auth/AuthContext";
 import AccountDeactivate from "../../modals/AccountDeactivateModal";
-import GoogleIcon from "../../icon/google";
-import FacebookIcon from "../../icon/facebookIcon";
 import { showToast } from "../../store/toast-slice";
 import { useDispatch } from "react-redux";
-import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import Stepper from "../../Common/TabsStepper/Stepper";
+
 const PateintLogin = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
@@ -77,7 +74,7 @@ const PateintLogin = () => {
                 );
             }
         } catch (error) {
-            console.log(error);
+            console.log(error);1
             // alert("Wrong credentials");
             setLoading(false);
         }

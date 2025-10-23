@@ -61,6 +61,7 @@ const DoctorOrder = () => {
     if (selected) {
       console.log("Selected object keys:", Object.keys(selected));
       console.log("Selected name:", selected.name);
+      console.log("Selected name:", selected.name);
     }
   }, [selected]);
   const [isOpen, setIsOpen] = useState(false);

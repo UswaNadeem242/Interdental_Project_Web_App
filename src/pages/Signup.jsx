@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import AccountDeactivate from "../modals/AccountDeactivateModal";
-import axios from "axios";
-import { BASE_URL } from "../config";
-import Toast from "../components/Toast";
-import YearlyPlanModel from "../modals/yearly-plan";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Stepper from "../Common/TabsStepper/Stepper";
 import BuySignup from "../components/signup-component/buy-signup";
@@ -12,8 +7,8 @@ import DoctorSignup from "../components/signup-component/doctor-signup";
 
 const Signup = () => {
   const navigate = useNavigate();
- 
-  
+
+
   const step = [
     {
       name: 'Buyer',

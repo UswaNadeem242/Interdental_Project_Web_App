@@ -1,7 +1,7 @@
 import React from "react";
 import Icons from "./Icons";
 import StarRating from "./StarRating";
-import { formatDistanceToNow } from "date-fns";
+import formatRelativeTime from "../services/utils/formatRelativeTime";
 
 const CustomerFeedback = ({ item, isLast, isOnlyItem }) => {
   return (
@@ -34,7 +34,7 @@ const CustomerFeedback = ({ item, isLast, isOnlyItem }) => {
         {/* createdAt right-top absolute */}
         {item?.createdAt && (
           <span className="absolute top-1 right-0 font-poppins text-xs text-gray-400">
-            {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}
+            {formatRelativeTime(item.createdAt)}
           </span>
         )}
       </div>

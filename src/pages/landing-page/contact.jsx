@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useFormik } from "formik";
 import Header from "./header";
 import Footer from "../../components/Footer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PhoneIcon } from "@heroicons/react/24/outline";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
@@ -12,152 +13,105 @@ import Instgram from "../../icon/instgram";
 import Linkedln from "../../icon/linkedln";
 import { BASE_URL } from "../../config";
 import { showToast } from "../../store/toast-slice";
-import useFieldValidation from "../../Hooks/useFieldValidation";
-import * as Yup from "yup";
+import { contactValidationSchema } from "../../services/utils/validationSchemas";
 
 const Contact = ({ isLanding }) => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    description: "",
-  });
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [submittedData, setSubmittedData] = useState({});
+  const navigate = useNavigate();
+  // Formik setup
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      description: "",
+    },
+    validationSchema: contactValidationSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
+    onSubmit: async (values) => {
+      setLoading(true);
 
-  // Yup validation schema
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, "First name must be at least 2 characters")
-      .max(25, "First name must not exceed 25 characters")
-      .matches(
-        /^[a-zA-Z\s]+$/,
-        "First name must contain only letters and spaces"
-      )
-      .required("First name is required"),
-    lastName: Yup.string()
-      .min(2, "Last name must be at least 2 characters")
-      .max(25, "Last name must not exceed 25 characters")
-      .matches(
-        /^[a-zA-Z\s]+$/,
-        "Last name must contain only letters and spaces"
-      )
-      .required("Last name is required"),
-    email: Yup.string()
-      .email("Please enter a valid email address")
-      .required("Email is required"),
-    description: Yup.string()
-      .min(10, "Message must be at least 10 characters")
-      .max(500, "Message must not exceed 500 characters")
-      .required("Message is required"),
+      try {
+        const response = await fetch(`${BASE_URL}/api/query`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+
+        if (response.ok) {
+          // Store submitted data for confirmation screen
+          setSubmittedData({ ...values });
+          // Show confirmation screen
+          setShowConfirmation(true);
+          // Reset form
+          formik.resetForm();
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          dispatch(
+            showToast({
+              message:
+                errorData.message ||
+                "Failed to send message. Please try again later.",
+              type: "error",
+            }),
+          );
+        }
+      } catch (error) {
+        dispatch(
+          showToast({
+            message:
+              "Network error occurred. Please check your connection and try again.",
+            type: "error",
+          }),
+        );
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
   });
 
-  const {
-    validationErrors,
-    validateField,
-    clearFieldError,
-    validateAllFields,
-  } = useFieldValidation(validationSchema);
-
   const socialIcons = [
-    { id: 1, icon: <Twitter className="w-5 h-5 text-black" /> },
-    { id: 2, icon: <FacebookIcon className="w-5 h-5 text-black" /> },
-    { id: 3, icon: <Instgram className="w-5 h-5 text-black" /> },
-    { id: 4, icon: <Linkedln className="w-5 h-5 text-black" /> },
+    { 
+      id: 1, 
+      icon: <Twitter className="w-5 h-5 text-black" />, 
+      url: "https://x.com/Interdentalusa1",
+      name: "Twitter"
+    },
+    { 
+      id: 2, 
+      icon: <FacebookIcon className="w-5 h-5 text-black" />, 
+      url: "https://www.facebook.com/MakeMeSmileUSA/?notif_id=1760724436032325&notif_t=page_user_activity&a…",
+      name: "Facebook"
+    },
+    { 
+      id: 3, 
+      icon: <Instgram className="w-5 h-5 text-black" />, 
+      url: "https://www.instagram.com/tonysol/",
+      name: "Instagram"
+    },
+    { 
+      id: 4, 
+      icon: <Linkedln className="w-5 h-5 text-black" />, 
+      url: "https://www.linkedin.com/in/tony-sol-a0b4a611/",
+      name: "LinkedIn"
+    },
   ];
 
   const isContactPage = location.pathname === "/contact-us";
 
-  const getFormData = () => ({
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    email: formData.email,
-    description: formData.description,
-  });
-
-  const handleFieldChange = async (fieldName, value, setter) => {
-    setter(value);
-
-    // Clear error immediately when user starts typing
-    if (validationErrors[fieldName]) {
-      clearFieldError(fieldName);
-    }
-  };
-
-  const handleFieldBlur = async (fieldName, value) => {
-    // Validate field when user leaves it
-    if (value.trim()) {
-      await validateField(fieldName, value, getFormData());
-    }
-  };
-
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validate form before submission
-    const error = await validateAllFields(getFormData());
-    if (error) {
-      return; // Just return without showing toast since field-level errors are shown
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await fetch(`${BASE_URL}/api/query`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        // Store submitted data for confirmation screen
-        setSubmittedData({ ...formData });
-        // Show confirmation screen
-        setShowConfirmation(true);
-        // Reset form
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          description: "",
-        });
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        dispatch(
-          showToast({
-            message:
-              errorData.message ||
-              "Failed to send message. Please try again later.",
-            type: "error",
-          }),
-        );
-      }
-    } catch (error) {
-      dispatch(
-        showToast({
-          message:
-            "Network error occurred. Please check your connection and try again.",
-          type: "error",
-        }),
-      );
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleBackToHome = () => {
     setShowConfirmation(false);
     setSubmittedData({});
-    if (isContactPage) {
-      window.location.href = "/";
-    }
+
+    window.location.href = "/";
   };
 
   const handleSubmitAnother = () => {
@@ -292,12 +246,16 @@ const Contact = ({ isLanding }) => {
                 {/* Social Media */}
                 <div className="flex flex-wrap gap-3 md:gap-4 pt-2">
                   {socialIcons.map((item) => (
-                    <div
+                    <a
                       key={item.id}
-                      className="bg-white border border-gray-200 w-10 h-10 md:w-12 md:h-12 rounded-full shadow-md hover:shadow-lg transition-shadow flex items-center justify-center cursor-pointer"
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white border border-gray-200 w-10 h-10 md:w-12 md:h-12 rounded-full shadow-md hover:shadow-lg flex items-center justify-center cursor-pointer hover:scale-105 transform transition-all duration-200"
+                      title={`Visit our ${item.name} page`}
                     >
                       {item.icon}
-                    </div>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -305,7 +263,7 @@ const Contact = ({ isLanding }) => {
 
             {/* Contact Form */}
             <div className="bg-white p-2 md:p-4 rounded-lg">
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={formik.handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {/* First Name Field with Floating Label */}
                   <div className="relative">
@@ -313,16 +271,12 @@ const Contact = ({ isLanding }) => {
                       type="text"
                       name="firstName"
                       id="firstName"
-                      value={formData.firstName}
-                      onChange={(e) =>
-                        handleFieldChange("firstName", e.target.value, (value) =>
-                          setFormData(prev => ({ ...prev, firstName: value }))
-                        )
-                      }
-                      onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
+                      value={formik.values.firstName}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       placeholder=" "
                       maxLength={25}
-                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.firstName
+                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.firstName && formik.touched.firstName
                           ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                           : "border-gray-300 focus:border-secondaryBrand"
                         } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
@@ -336,9 +290,9 @@ const Contact = ({ isLanding }) => {
                     >
                       First Name
                     </label>
-                    {validationErrors.firstName && (
+                    {formik.errors.firstName && formik.touched.firstName && (
                       <span className="text-red-500 text-xs mt-1 font-poppins block">
-                        {validationErrors.firstName}
+                        {formik.errors.firstName}
                       </span>
                     )}
                   </div>
@@ -349,16 +303,12 @@ const Contact = ({ isLanding }) => {
                       type="text"
                       name="lastName"
                       id="lastName"
-                      value={formData.lastName}
-                      onChange={(e) =>
-                        handleFieldChange("lastName", e.target.value, (value) =>
-                          setFormData(prev => ({ ...prev, lastName: value }))
-                        )
-                      }
-                      onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
+                      value={formik.values.lastName}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       placeholder=" "
                       maxLength={25}
-                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.lastName
+                      className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.lastName && formik.touched.lastName
                           ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                           : "border-gray-300 focus:border-secondaryBrand"
                         } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
@@ -372,9 +322,9 @@ const Contact = ({ isLanding }) => {
                     >
                       Last Name
                     </label>
-                    {validationErrors.lastName && (
+                    {formik.errors.lastName && formik.touched.lastName && (
                       <span className="text-red-500 text-xs mt-1 font-poppins block">
-                        {validationErrors.lastName}
+                        {formik.errors.lastName}
                       </span>
                     )}
                   </div>
@@ -386,15 +336,11 @@ const Contact = ({ isLanding }) => {
                     type="email"
                     name="email"
                     id="email"
-                    value={formData.email}
-                    onChange={(e) =>
-                      handleFieldChange("email", e.target.value, (value) =>
-                        setFormData(prev => ({ ...prev, email: value }))
-                      )
-                    }
-                    onBlur={(e) => handleFieldBlur("email", e.target.value)}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     placeholder=" "
-                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.email
+                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.email && formik.touched.email
                         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                         : "border-gray-300 focus:border-secondaryBrand"
                       } focus:ring-2 focus:ring-secondaryBrand/20 transition-all`}
@@ -408,9 +354,9 @@ const Contact = ({ isLanding }) => {
                   >
                     E-Mail Address
                   </label>
-                  {validationErrors.email && (
+                  {formik.errors.email && formik.touched.email && (
                     <span className="text-red-500 text-xs mt-1 font-poppins block">
-                      {validationErrors.email}
+                      {formik.errors.email}
                     </span>
                   )}
                 </div>
@@ -420,17 +366,13 @@ const Contact = ({ isLanding }) => {
                   <textarea
                     name="description"
                     id="description"
-                    value={formData.description}
-                    onChange={(e) =>
-                      handleFieldChange("description", e.target.value, (value) =>
-                        setFormData(prev => ({ ...prev, description: value }))
-                      )
-                    }
-                    onBlur={(e) => handleFieldBlur("description", e.target.value)}
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     placeholder=" "
                     rows="5"
                     maxLength={500}
-                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.description
+                    className={`peer w-full rounded-lg py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.description && formik.touched.description
                         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                         : "border-gray-300 focus:border-secondaryBrand"
                       } focus:ring-2 focus:ring-secondaryBrand/20 transition-all resize-none`}
@@ -444,14 +386,14 @@ const Contact = ({ isLanding }) => {
                   >
                     Message
                   </label>
-                  {validationErrors.description && (
+                  {formik.errors.description && formik.touched.description && (
                     <span className="text-red-500 text-xs mt-1 font-poppins block">
-                      {validationErrors.description}
+                      {formik.errors.description}
                     </span>
                   )}
                   {/* Character count */}
                   <div className="text-right text-xs text-gray-400 mt-1 font-poppins">
-                    {formData.description.length}/500 characters
+                    {formik.values.description.length}/500 characters
                   </div>
                 </div>
 

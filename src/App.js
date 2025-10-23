@@ -19,7 +19,9 @@ import Admin from "./pages/admin/Admin";
 import PrivateRoute from "./components/PrivateRoute";
 import RoleRoute from "./components/RoleRoute";
 import PublicRoute from "./components/PublicRoute";
+import ProtectedRoute from "./components/ProtectRoute";
 import { AuthProvider } from "./auth/AuthContext";
+import CompleteProfile from "./pages/CompleteProfile";
 import Wishlist from "./pages/Wishlist";
 import LandingPage from "./pages/landing-page/landing-page";
 import Patients from "./pages/landing-page/patient";
@@ -42,7 +44,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Toastify from "./Common/react-toastify";
 import ProductLandingPage from "./pages/landing-page/product";
 import ArgenZ from "./pages/landing-page/product/argen-z-h";
-import ImplantDenturesPage from "./pages/landing-page/blogs/sub-page";
+import BlogDetailPage from "./pages/landing-page/blogs/sub-page";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Blog from "./pages/landing-page/blog";
@@ -50,11 +52,11 @@ import ProductDetail from "./components/ProductDetail";
 import { ERole } from "./constants/roles";
 
 const MainLayout = ({ children }) => (
-  <>
+  <div className="flex flex-col min-h-screen">
     <Header />
-    {children}
+    <main className="flex-grow">{children}</main>
     <Footer />
-  </>
+  </div>
 );
 
 const PlainLayout = ({ children }) => {
@@ -186,7 +188,7 @@ function App() {
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
             <Route path="/blog" element={<Blog isLanding={false} />} />
-            <Route path="/blogs/:slug" element={<ImplantDenturesPage />} />
+            <Route path="/blogs/:id" element={<BlogDetailPage />} />
             <Route
               path="/our-products"
               element={<ArgenZ isLanding={false} />}
@@ -256,6 +258,16 @@ function App() {
                     <NewPassword />
                   </SimpleLayout>
                 </PublicRoute>
+              }
+            />
+
+            {/* Profile Completion - Requires authentication but not full protection */}
+            <Route
+              path="/complete-profile"
+              element={
+                <ProtectedRoute>
+                  <CompleteProfile />
+                </ProtectedRoute>
               }
             />
 

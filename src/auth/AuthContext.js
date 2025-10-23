@@ -183,6 +183,20 @@ export const AuthProvider = ({ children }) => {
     return !!user && !!localStorage.getItem("token");
   };
 
+  const isProfileComplete = () => {
+    if (!user) return false;
+    
+    const userRoles = getUserRoles();
+    
+    // For DOCTOR role, check if drLicenseNo and officeRefNo exist
+    if (userRoles.includes("DOCTOR")) {
+      return !!(user.drLicenseNo && user.officeRefNo);
+    }
+    
+    // For other roles, profile is considered complete
+    return true;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -204,6 +218,7 @@ export const AuthProvider = ({ children }) => {
         hasUserRoleAccess,
         getUserHighestRole,
         isAuthenticated,
+        isProfileComplete,
       }}
     >
       {children}
