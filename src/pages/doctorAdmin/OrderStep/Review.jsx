@@ -1,44 +1,77 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
-import { ToothOne, ToothTwo } from "../../../icon/tooth-one";
+import {
+  ToothOne,
+  ToothTwo,
+  ToothThree,
+  ToothFour,
+  ToothFive,
+  ToothSix,
+  ToothSeven,
+  ToothEight,
+  ToothNine,
+  ToothTen,
+  ToothEleven,
+  ToothTwelve,
+  ToothThirteen,
+  ToothFourteen,
+  ToothFifteen,
+  ToothSixteen,
+  ToothSeventeen,
+  ToothEighteen,
+  ToothNineteen,
+  ToothTwenty,
+  ToothTwentyOne,
+  ToothTwentyTwo,
+  ToothTwentyThree,
+  ToothTwentyFour,
+  ToothTwentyFive,
+  ToothTwentySix,
+  ToothTwentySeven,
+  ToothTwentyEight,
+  ToothTwentyNine,
+  ToothThirty,
+  ToothThirtyOne,
+  ToothThirtyTwo,
+} from "../../../icon/tooth-one";
 
 const topTeeth = {
   1: ToothOne,
-  2: ToothOne,
-  3: ToothOne,
-  4: ToothOne,
-  5: ToothOne,
-  6: ToothOne,
-  7: ToothOne,
-  8: ToothOne,
-  9: ToothOne,
-  10: ToothOne,
-  11: ToothOne,
-  12: ToothOne,
-  13: ToothOne,
-  14: ToothOne,
-  15: ToothOne,
-  16: ToothOne,
+  2: ToothTwo,
+  3: ToothThree,
+  4: ToothFour,
+  5: ToothFive,
+  6: ToothSix,
+  7: ToothSeven,
+  8: ToothEight,
+  9: ToothNine,
+  10: ToothTen,
+  11: ToothEleven,
+  12: ToothTwelve,
+  13: ToothThirteen,
+  14: ToothFourteen,
+  15: ToothFifteen,
+  16: ToothSixteen,
 };
 
 const bottomTeeth = {
-  17: ToothOne,
-  18: ToothOne,
-  19: ToothOne,
-  20: ToothOne,
-  21: ToothOne,
-  22: ToothOne,
-  23: ToothOne,
-  24: ToothOne,
-  25: ToothOne,
-  26: ToothOne,
-  27: ToothOne,
-  28: ToothOne,
-  29: ToothOne,
-  30: ToothOne,
-  31: ToothOne,
-  32: ToothOne,
+  17: ToothSeventeen,
+  18: ToothEighteen,
+  19: ToothNineteen,
+  20: ToothTwenty,
+  21: ToothTwentyOne,
+  22: ToothTwentyTwo,
+  23: ToothTwentyThree,
+  24: ToothTwentyFour,
+  25: ToothTwentyFive,
+  26: ToothTwentySix,
+  27: ToothTwentySeven,
+  28: ToothTwentyEight,
+  29: ToothTwentyNine,
+  30: ToothThirty,
+  31: ToothThirtyOne,
+  32: ToothThirtyTwo,
 };
 
 const toothMap = {
@@ -258,7 +291,10 @@ const ReviewOrder = ({ next }) => {
               {/* Upper 16 */}
               <div className="flex gap-4 mt-4">
                 {Object.entries(topTeeth).map(([id, ToothComponent]) => (
-                  <div key={id} className="flex flex-col items-center">
+                  <div
+                    key={id}
+                    className="flex flex-col items-center justify-end"
+                  >
                     <ToothComponent
                       highlighted={selectedTeeth.includes(Number(id))}
                     />
@@ -269,7 +305,10 @@ const ReviewOrder = ({ next }) => {
               {/* Lower 16 */}
               <div className="flex gap-4 mt-4 mb-4">
                 {Object.entries(bottomTeeth).map(([id, ToothComponent]) => (
-                  <div key={id} className="flex flex-col items-center">
+                  <div
+                    key={id}
+                    className="flex flex-col items-center justify-end"
+                  >
                     <ToothComponent
                       highlighted={selectedTeeth.includes(Number(id))}
                     />
