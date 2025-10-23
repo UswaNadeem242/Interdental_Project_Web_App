@@ -30,6 +30,7 @@ const SingleProduct = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [productLoading, setProductLoading] = useState(true);
 
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [wishlist, setWishlist] = useState([]);
@@ -39,6 +40,7 @@ const SingleProduct = () => {
 
   const getProduct = async () => {
     try {
+      setProductLoading(true);
       const response = await axios.get(
         `${BASE_URL}/api/product/get/${productId}`,
         {
@@ -51,6 +53,8 @@ const SingleProduct = () => {
       setProduct(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setProductLoading(false);
     }
   };
 
@@ -286,6 +290,72 @@ const SingleProduct = () => {
   if (user && user.firstName) {
   }
 
+  let productRatings=product?.ratings || []
+
+  // Skeleton loading component
+  const ProductSkeleton = () => (
+    <div className="flex flex-col lg:flex-row justify-center items-center w-full min-h-[500px] gap-6 lg:gap-8 rounded-2xl bg-white p-4 md:p-6 lg:p-8">
+      {/* Image Skeleton */}
+      <div className="w-full lg:w-[437px] h-[300px] sm:h-[400px] lg:h-[501px] flex-shrink-0">
+        <div className="w-full h-full bg-gray-200 rounded-2xl animate-pulse"></div>
+      </div>
+      
+      {/* Content Skeleton */}
+      <div className="flex flex-col justify-start items-start flex-1 w-full space-y-4 md:space-y-6">
+        <div className="flex flex-col justify-start items-start w-full border-b border-gray-200 pb-4 md:pb-6 space-y-3 md:space-y-4">
+          {/* Title Skeleton */}
+          <div className="flex items-center gap-2 md:gap-4 w-full">
+            <div className="h-8 bg-gray-200 rounded animate-pulse w-3/4"></div>
+            <div className="h-6 bg-gray-200 rounded-full animate-pulse w-20"></div>
+          </div>
+          
+          {/* Rating Skeleton */}
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="h-5 bg-gray-200 rounded animate-pulse w-24"></div>
+            <div className="h-5 bg-gray-200 rounded animate-pulse w-8"></div>
+          </div>
+          
+          {/* Price Skeleton */}
+          <div className="h-8 bg-gray-200 rounded animate-pulse w-24"></div>
+        </div>
+        
+        {/* Description Skeleton */}
+        <div className="w-full space-y-2">
+          <div className="h-4 bg-gray-200 rounded animate-pulse w-full"></div>
+          <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
+          <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2"></div>
+        </div>
+        
+        {/* Buttons Skeleton */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4 w-full">
+          <div className="h-12 bg-gray-200 rounded-full animate-pulse w-full sm:w-auto sm:flex-1 max-w-[200px]"></div>
+          <div className="h-12 bg-gray-200 rounded-full animate-pulse w-full sm:w-auto sm:flex-1 max-w-[200px]"></div>
+          <div className="w-[51.28px] h-[51.28px] bg-gray-200 rounded-full animate-pulse"></div>
+        </div>
+        
+        {/* Category Skeleton */}
+        <div className="flex items-center gap-2 w-full pt-2 md:pt-4">
+          <div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div>
+          <div className="h-4 bg-gray-200 rounded animate-pulse w-20"></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (productLoading) {
+    return (
+      <div className="flex justify-center items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
+        <div className="flex flex-col justify-start items-center h-auto space-y-[16px] my-8 pt-[8px] mt-20 w-full max-w-[1312px] px-4">
+          {/* Back Button */}
+          <div className="w-full">
+            <BackButton variant="rounded" className="mb-4 mt-4" text="Back" />
+          </div>
+          <ProductSkeleton />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex justify-center items-center bg-gradient-to-b from-cyan-50 to-emerald-50/0">
       <div className="flex flex-col justify-start items-center h-auto space-y-[16px] my-8 pt-[8px] mt-20 w-full max-w-[1312px] px-4">
@@ -478,25 +548,25 @@ const SingleProduct = () => {
             Customer Feedback
           </h1>
           <div className="w-full space-y-[15.99px]">
-            {product?.ratings && product.ratings.length > 0 ? (
+            {productRatings && productRatings.length > 0 ? (
               <>
-                {product.ratings.slice(0, visibleReviewsCount).map((item, index) => (
+                {productRatings.slice(0, visibleReviewsCount).map((item, index) => (
                   <CustomerFeedback
                     key={item.id}
                     item={item}
-                    isLast={index === Math.min(visibleReviewsCount, product.ratings.length) - 1}
-                    isOnlyItem={product.ratings.length === 1}
+                    isLast={index === Math.min(visibleReviewsCount, productRatings.length) - 1}
+                    isOnlyItem={productRatings.length === 1}
                   />
                 ))}
                 
                 {/* Load More Button */}
-                {visibleReviewsCount < product.ratings.length && (
-                  <div className="flex justify-center items-center pt-4">
+                {visibleReviewsCount < productRatings.length && (
+                  <div className="flex pt-4">
                     <button
                       onClick={handleLoadMoreReviews}
-                      className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-poppins text-sm font-medium"
+                      className="px-6 py-3 rounded-full bg-gray-100 text-brand transition-colors font-poppins text-sm font-medium"
                     >
-                      Load More Reviews ({product.ratings.length - visibleReviewsCount} remaining)
+                      Load More 
                     </button>
                   </div>
                 )}

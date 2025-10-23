@@ -16,7 +16,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notificationsDropdown, setNotificationsDropdown] = useState(false);
-  const { wishlistCount, cartCount, fetchWishlistCount, fetchCartCount } =
+  const { wishlistCount, cartCount, fetchWishlistCount, fetchCartCount, unreadNotificationsCount, fetchUnreadNotificationsCount } =
     useAuth();
   const [setIsActionModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,6 +50,7 @@ const Header = () => {
     if (user) {
       fetchWishlistCount();
       fetchCartCount();
+      fetchUnreadNotificationsCount();
     }
   }, [user]);
 
@@ -118,10 +119,11 @@ const Header = () => {
           </nav>
 
           {/* Desktop actions */}
-          <div className="hidden lg:flex items-center gap-3">
-            <div className="relative">
+          <div className="hidden lg:flex items-center gap-4">
+            {/* Cart Icon */}
+            <div className="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
               <Icons.ShoppingCartIcon
-                className="cursor-pointer"
+                className="cursor-pointer w-6 h-6"
                 onClick={() => {
                   if (user && user?.email) {
                     handleCart();
@@ -136,12 +138,13 @@ const Header = () => {
                 }}
               />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 w-5 h-5 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
                   {cartCount}
                 </span>
               )}
             </div>
 
+            {/* Wishlist Icon */}
             <div
               onClick={() => {
                 if (user && user?.email) {
@@ -155,27 +158,33 @@ const Header = () => {
                   );
                 }
               }}
-              className="relative"
+              className="relative p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
             >
               <Icons.WishlistHeart
-                className="cursor-pointer z-50"
+                className="w-6 h-6"
                 stroke={wishlistCount ? "#FF0000" : "#292D32"}
                 fill={wishlistCount ? "#FF0000" : "none"}
               />
               {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 w-5 h-5 text-xs font-bold text-white bg-[#FF0000] rounded-full flex items-center justify-center pointer-events-none">
+                <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-[#FF0000] rounded-full flex items-center justify-center shadow-lg pointer-events-none">
                   {wishlistCount}
                 </span>
               )}
             </div>
 
-            <div className="flex flex-col relative">
+            {/* Notifications Icon */}
+            <div className="relative">
               <button
                 onClick={handleNotifications}
-                className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
                 data-bell-icon="true"
               >
-                <BellIconSVG className="cursor-pointer" />
+                <BellIconSVG className="w-6 h-6 cursor-pointer" />
+                {unreadNotificationsCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
+                    {unreadNotificationsCount}
+                  </span>
+                )}
               </button>
 
               {notificationsDropdown && (

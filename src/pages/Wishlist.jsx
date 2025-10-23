@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../config";
 
 import { useAuth } from "../auth/AuthContext";
-import { StarIcon } from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, StarIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice";
@@ -173,10 +173,17 @@ const Wishlist = () => {
     <div className="min-h-screen bg-gray-100">
       <div className="flex justify-center items-center w-full   pb-36 px-20">
         <div className="w-[1320px] h-auto flex flex-col justify-start items-start space-y-4   mt-28">
-          <BackButton variant="rounded" className="mb-4" text="Back" />
-          <h1 className="font-workSans font-semibold text-[20px] leading-[23.46px] tet-[#000000]">
-            Wishlist
-          </h1>
+          <div className="flex justify-start items-center gap-2">
+            <div
+              onClick={() => navigate(-1)}
+              className="flex justify-center cursor-pointer items-center bg-[#F7F8F8] w-[32px] h-[32px] rounded-[8px]"
+            >
+              <ChevronLeftIcon className="w-5 h-5 text-gray-600" />
+            </div>
+            <p className="font-poppins font-semibold text-2xl leading-[36px] text-black">
+              Wishlist
+            </p>
+          </div>
           <div className="flex flex-wrap justify-start items-center gap-[32px] w-full h-auto">
             {loading ? (
               <>

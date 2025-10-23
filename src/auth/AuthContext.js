@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const login = (user, token) => {
@@ -31,6 +32,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const fetchWishlistCount = async () => {
+    if (!user) return;
+    
     try {
       const response = await axios.get(`${BASE_URL}/api/wishlist`, {
         headers: {
@@ -45,6 +48,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const fetchCartCount = async () => {
+    if (!user) return;
+    
     try {
       const response = await axios.get(`${BASE_URL}/api/cart`, {
         headers: {
@@ -57,6 +62,24 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Failed to fetch cart count:", error);
       setCartCount(0);
+    }
+  };
+
+  const fetchUnreadNotificationsCount = async () => {
+    if (!user) return;
+    
+    try {
+      const response = await axios.get(`${BASE_URL}/api/notification`, {
+        params: { page: 0, size: 1 },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const unreadCount = response?.data?.data?.unReadCount ?? 0;
+      setUnreadNotificationsCount(unreadCount);
+    } catch (error) {
+      console.error("Failed to fetch unread notifications count:", error);
+      setUnreadNotificationsCount(0);
     }
   };
 
@@ -94,6 +117,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setWishlistCount(0);
     setCartCount(0);
+    setUnreadNotificationsCount(0);
     setLoading(false);
   };
 
@@ -118,6 +142,15 @@ export const AuthProvider = ({ children }) => {
 
     initializeAuth();
   }, []);
+
+  // Fetch counts when user is available
+  useEffect(() => {
+    if (user) {
+      fetchWishlistCount();
+      fetchCartCount();
+      fetchUnreadNotificationsCount();
+    }
+  }, [user]);
 
   // Helper functions for role management
   const getUserRoles = () => {
@@ -162,6 +195,8 @@ export const AuthProvider = ({ children }) => {
         wishlistCount,
         cartCount,
         fetchCartCount,
+        unreadNotificationsCount,
+        fetchUnreadNotificationsCount,
         // Role management functions
         getUserRoles,
         hasUserRole,
