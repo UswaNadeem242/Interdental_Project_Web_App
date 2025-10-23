@@ -4,8 +4,7 @@ import axios from "axios";
 import { BASE_URL } from "../../config";
 import { useAuth } from "../../auth/AuthContext";
 import AccountDeactivate from "../../modals/AccountDeactivateModal";
-import GoogleIcon from "../../icon/google";
-import FacebookIcon from "../../icon/facebookIcon";
+
 import { showToast } from "../../store/toast-slice";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";

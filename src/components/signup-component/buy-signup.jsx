@@ -6,7 +6,6 @@ import { BASE_URL } from "../../config";
 import Toast from "../../components/Toast";
 import YearlyPlanModel from "../../modals/yearly-plan";
 import useFieldValidation from "../../Hooks/useFieldValidation";
-
 import Icons from "../../components/Icons";
 import * as Yup from "yup";
 
@@ -47,7 +46,7 @@ const BuySignup = () => {
       .email("Enter a valid email address")
       .required("Email is required"),
     phoneNumber: Yup.string()
-      .matches(/^[0-9]{11}$/, "Please enter a valid 11-digit phone number")
+      .matches(/^[0-9]{7,15}$/, "Phone number must be 7-15 digits")
       .required("Phone number is required"),
     address: Yup.string()
       .min(10, "Address must be at least 10 characters")
@@ -55,17 +54,17 @@ const BuySignup = () => {
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
       .matches(
-        /(?=.*[a-z])/,
-        "Password must contain at least one lowercase letter",
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]).{8,}$/,
+        "Must contain uppercase, lowercase, number, and special character"
       )
-      .matches(
-        /(?=.*[A-Z])/,
-        "Password must contain at least one uppercase letter",
-      )
-      .matches(/(?=.*\d)/, "Password must contain at least one number")
-      .matches(
-        /(?=.*[@$!%*?&])/,
-        "Password must contain at least one special character (@$!%*?&)",
+      .test(
+        "special-char-limit",
+        "Maximum 8 special characters allowed",
+        function (value) {
+          if (!value) return true;
+          const specialCharCount = (value.match(/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/g) || []).length;
+          return specialCharCount <= 8;
+        }
       )
       .required("Password is required"),
   });
@@ -154,10 +153,10 @@ const BuySignup = () => {
 
   return (
     <div className=" ">
-      <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[581px] gap-6 lg:gap-[32px]">
+      <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto gap-6 lg:gap-[32px]">
         <div className="flex flex-col justify-center items-center w-full lg:w-[494px] gap-8">
           {/* Form */}
-          <div className="w-full space-y-4">
+          <div className="w-full space-y-4 mt-4">
             {/* Full width */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="relative w-full">
@@ -170,11 +169,10 @@ const BuySignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("firstName", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.firstName
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.firstName
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="firstName"
@@ -204,11 +202,10 @@ const BuySignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("lastName", e.target.value)}
                   placeholder=" " // ek space zaroori hai
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.lastName
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.lastName
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="lastName"
@@ -239,11 +236,10 @@ const BuySignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("email", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.email
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.email
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="email"
@@ -273,11 +269,10 @@ const BuySignup = () => {
                   }
                   onBlur={(e) => handleFieldBlur("phoneNumber", e.target.value)}
                   placeholder=" "
-                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                    validationErrors.phoneNumber
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                  className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.phoneNumber
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-secondaryBrand"
+                    }`}
                 />
                 <label
                   htmlFor="phone"
@@ -309,11 +304,10 @@ const BuySignup = () => {
                 }
                 onBlur={(e) => handleFieldBlur("address", e.target.value)}
                 placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                  validationErrors.address
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-secondaryBrand"
-                }`}
+                className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${validationErrors.address
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
               />
               <label
                 htmlFor="address"
@@ -343,11 +337,10 @@ const BuySignup = () => {
                 }
                 onBlur={(e) => handleFieldBlur("password", e.target.value)}
                 placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${
-                  validationErrors.password
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-secondaryBrand"
-                }`}
+                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${validationErrors.password
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
               />
               <label
                 htmlFor="password"

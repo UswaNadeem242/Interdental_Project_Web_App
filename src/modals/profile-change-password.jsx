@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { changePassword } from "../api/doctorDasboard";
 import Toast from "../components/Toast";
 import { createPortal } from "react-dom";
@@ -29,6 +29,24 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
         newPassword: "",
         confirmPassword: "",
     });
+
+    const modalRef = useRef(null);
+
+    // Handle outside click to close modal
+    useEffect(() => {
+        if (!isPasswordProfile) return;
+
+        const handleOutsideClick = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setIsPasswordProfile(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, [isPasswordProfile, setIsPasswordProfile]);
 
     // Function to show toast messages
     const showToast = (message, type = "success") => {
@@ -226,7 +244,10 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
             <div
                 className="fixed top-0 right-0 bottom-0 w-screen h-screen  flex items-center justify-center bg-black/80 backdrop-blur-sm z-[9999] overflow-hidden"
             >
-                <div className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg w-96 relative">
+                <div 
+                    ref={modalRef}
+                    className="flex flex-col justify-center items-center gap-[24px] bg-white p-[32px] rounded-[24px] shadow-lg w-96 relative"
+                >
                     <div className="w-full">
                         <div className="flex justify-between items-center gap-[4px] pb-4 border-b outline-offset-[-0.50px] outline-black/10">
                             <p className="font-poppins font-medium text-[20px] leading-[30px] text-[#0D4041]">

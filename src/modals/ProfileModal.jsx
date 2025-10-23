@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import axios from "axios";
 import { BASE_URL } from "../config";
@@ -30,6 +30,7 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
   );
   const [uploadingImage, setUploadingImage] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
+  const modalRef = useRef(null);
 
   // Yup validation schema
   const validationSchema = Yup.object().shape({
@@ -85,6 +86,22 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
     }
     return () => document.body.classList.remove("overflow-hidden");
   }, [isModalOpen]);
+
+  // Handle outside click to close modal
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    const handleOutsideClick = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isModalOpen, setIsModalOpen]);
 
   const handleChange = (e) => {
     const { name } = e.target;
@@ -358,6 +375,7 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
       onClick={handleCloseModal}
     >
       <div
+        ref={modalRef}
         className="bg-white rounded-3xl shadow-2xl w-full max-w-[640px] max-h-[90vh] flex flex-col relative"
         onClick={(e) => e.stopPropagation()}
       >

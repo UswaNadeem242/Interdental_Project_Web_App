@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../auth/AuthContext";
@@ -19,7 +19,7 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
   const { logout } = useAuth();
   const dropdownRef = useRef(null);
 
-  // Custom outside click handler similar to NotificationsDropdown
+  // Handle outside click to close dropdown
   useEffect(() => {
     if (!isModalOpen) return;
 
@@ -29,21 +29,28 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
         return;
       }
 
+      // Don't close if clicking on modal elements (modals have their own outside click handlers)
+      if (event.target.closest('[role="dialog"]') || 
+          event.target.closest('.modal') ||
+          event.target.closest('[data-modal="true"]')) {
+        return;
+      }
+
+      // Don't close if any modal is open
+      if (isProfileOpen || isPasswordProfile) {
+        return;
+      }
+
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsModalOpen(false);
       }
     };
 
-    // Use a longer delay to ensure the profile trigger click is processed first
-    const timeoutId = setTimeout(() => {
-      document.addEventListener("mousedown", handleOutsideClick);
-    }, 200);
-
+    document.addEventListener("mousedown", handleOutsideClick);
     return () => {
-      clearTimeout(timeoutId);
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [isModalOpen, setIsModalOpen]);
+  }, [isModalOpen, setIsModalOpen, isProfileOpen, isPasswordProfile]);
 
   const handleLogout = () => {
     logout();
@@ -51,7 +58,7 @@ const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   return (
-    <div 
+    <div
       ref={dropdownRef}
       className="flex flex-col justify-center items-center w-[303px] h-[286px] rounded-[12px] p-[16px] gap-[16px] bg-[#FFFFFF] absolute right-0 top-[4px] z-0  shadow-[0_0_10px_#00000017]"
     >
