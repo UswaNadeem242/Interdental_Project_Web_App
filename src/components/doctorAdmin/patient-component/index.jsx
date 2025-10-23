@@ -99,7 +99,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
     return localPart.slice(0, 3) + "*****@" + domain;
   };
   return (
-    <div className={`relative w-full ${className || ""}`} ref={dropdownRef}>
+    <div className={`relative  ${className || ""}`} ref={dropdownRef}>
       {/* Button */}
       <button
         type="button"

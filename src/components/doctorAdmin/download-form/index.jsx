@@ -12,6 +12,7 @@ export default function DownloadPdfForm({ id }) {
     const [selected, setSelected] = useState("");
     const [orderDetails, setOrderDetails] = useState(null);
     const restoration = useSelector((state) => state.restoration);
+     
     const toothSelections = restoration.toothSelections || [];
     const selectedTeeth = restoration.selectedTeeth || [];
     const patient = restoration.patient;
@@ -187,11 +188,11 @@ export default function DownloadPdfForm({ id }) {
                 </div>
 
                 <div >
-                    <div className="border border-gray-200  rounded-lg p-4 sm:p-5">
+                    <div className="">
 
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm sm:text-base text-center">
+                        <div className="grid grid-cols-2  gap-4 text-sm sm:text-base border-t border-x border-gray-200 p-4">
                             <div className="flex gap-4 items-center">
-                                <p className="text-secondaryText    mb-2  font-normal md:text-sm text-xs font-poppins">
+                                <p className="text-secondaryText   font-normal md:text-sm text-xs font-poppins">
                                     Doctor Info
                                 </p>
                                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins ">
@@ -201,7 +202,7 @@ export default function DownloadPdfForm({ id }) {
 
                                 </p>
                             </div>
-                            <div>
+                            <div className="flex gap-4 items-center">
                                 <p className="text-secondaryText    mb-2  font-normal md:text-sm text-xs font-poppins whitespace-nowrap">
                                     Office Registration
                                 </p>
@@ -210,9 +211,23 @@ export default function DownloadPdfForm({ id }) {
                                     {maskNumber(orderDetails?.doctorRefNumber) || "-"}
                                 </p>
                             </div>
-
+                        </div>
+                        <div className=" border-t border-x border-gray-200 p-3">
                             <div>
-                                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
+                                <p className="text-secondaryText  font-normal md:text-sm text-xs font-poppins">
+                                    Patient Name:
+                                </p>
+                                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
+                                    {`${maskNamePart(orderDetails?.patientFirstName)}${maskNamePart(
+                                        orderDetails?.patientLastName
+                                    )}`}
+                                </p>
+                            </div>
+
+                        </div>
+                        <div className="grid grid-cols-2  gap-4 text-sm sm:text-base  border border-gray-200 p-3">
+                            <div>
+                                <p className="text-secondaryText  font-normal md:text-sm text-xs font-poppins">
                                     Create Date
                                 </p>
                                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -220,7 +235,7 @@ export default function DownloadPdfForm({ id }) {
                                 </p>
                             </div>
                             <div>
-                                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
+                                <p className="text-secondaryText mb-2 font-normal md:text-sm text-xs font-poppins">
                                     Due Date
                                 </p>
                                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
@@ -234,33 +249,7 @@ export default function DownloadPdfForm({ id }) {
                     </div>
                 </div>
 
-                <div className="mt-4">
-                    <div className="border border-gray-200  rounded-lg p-4 sm:p-6">
-                        <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText">
-                            Patient Information
-                        </h3>
-                        <hr className="border-gray-200 my-2" />
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm sm:text-base">
-                            <div>
-                                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                                    Patient Name:
-                                </p>
-                                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                                    {`${maskNamePart(orderDetails?.patientFirstName)}${maskNamePart(
-                                        orderDetails?.patientLastName
-                                    )}`}
-                                </p>
-                            </div>   <div>
-                                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                                    Subscription ID:
-                                </p>
-                                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                                    {patient?.id || "-"}#
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
                 <div className="mt-4">
                     {/* tooth selection  */}
@@ -284,11 +273,114 @@ export default function DownloadPdfForm({ id }) {
                 </div>
 
                 <div className="mt-4">
-                    <div className="border border-gray-200  rounded-lg p-4 sm:p-6">
+                    <div className="border border-gray-200  p-2">
+                        <div className="grid grid-cols-2 gap-8 text-sm sm:text-base whitespace-nowrap">
+                            <div className="flex gap-2 items-center overflow-hidden text-ellipsis">
+                                <p className="text-secondaryText font-normal md:text-sm font-poppins">
+                                    Selected Smile Design:
+                                </p>
+                                <p className="font-normal text-secondaryBrand text-sm font-poppins">
+                                    Smile Design_7
+                                </p>
+                            </div>
+
+                            <div className="flex gap-2 items-center overflow-hidden text-ellipsis">
+                                <p className="text-secondaryText font-normal md:text-sm text-xs font-poppins">
+                                    Scanner Type:                                </p>
+                                <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
+                                    Not Available                                </p>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div className="mt-3">
                         <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText">
                             Customization Details
                         </h3>
-                        <hr className="border-gray-200 my-2" />
+
+                        <div className="border border-gray-200 p-2">
+
+
+                            <div className="grid grid-cols-2 gap-2 text-sm sm:text-base whitespace-nowrap border-b border-gray- pb-2">
+                                <div className="flex gap-2 items-center overflow-hidden text-ellipsis ">
+                                    <p className="text-secondaryText font-normal text-sm font-poppins">
+                                        Denture type:
+                                    </p>
+                                    <p className="font-normal text-secondaryBrand text-sm font-poppins">
+                                        Partial Denture
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-2 items-center overflow-hidden text-ellipsis">
+                                    <p className="text-secondaryText font-normal text-sm font-poppins">
+                                        Surgical guide:
+                                    </p>
+                                    <p className="font-normal text-secondaryBrand text-sm  font-poppins">
+                                        Not Available
+                                    </p>
+                                </div>
+                            </div>
+
+
+
+                            <div className="grid grid-cols-2 gap-2 text-sm sm:text-base whitespace-nowrap border-b border-gray-200 pb-2 ">
+                                <div className="flex gap-2 items-center overflow-hidden text-ellipsis">
+                                    <p className="text-secondaryText font-normal text-sm font-poppins">
+                                        Smart Crown:
+                                    </p>
+                                    <p className="font-normal text-secondaryBrand text-sm font-poppins">
+                                        Full Crown</p>
+                                </div>
+
+                                <div className="flex gap-2 items-center overflow-hidden text-ellipsis">
+                                    <p className="text-secondaryText font-normal text-sm font-poppins">
+                                        Material:
+                                    </p>
+                                    <p className="font-normal text-secondaryBrand text-sm  font-poppins">
+                                        Ivovlar Prime Cad
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 text-sm sm:text-base whitespace-nowrap border-b border-gray-200 pb-2">
+                                <div className="flex gap-2 items-center overflow-hidden text-ellipsis">
+                                    <p className="text-secondaryText font-normal only-of-type:text-sm font-poppins">
+                                        Shade:</p>
+                                    <p className="font-normal text-secondaryBrand text-sm font-poppins">
+                                        A2 (Vita Classic Shades)
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-2 items-center overflow-hidden text-ellipsis">
+                                    <p className="text-secondaryText font-normal md:text-sm text-xs font-poppins">Digital Model Type  </p>
+                                    <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
+                                        full arch
+                                    </p>
+                                </div>
+                            </div>
+
+
+
+                            <div className="grid grid-cols-2 gap-2 text-sm whitespace-nowrap  pt-2">
+                                <div className="flex gap-2 items-center overflow-hidden text-ellipsis">
+                                    <p className="text-secondaryText font-normal md:text-sm font-poppins">
+                                        Dental Lab Alliance:</p>
+                                    <p className="font-normal text-secondaryBrand text-sm font-poppins">
+                                        Ceramic Arts Dental Lab</p>
+                                </div>
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+
+
                         {selectedTeeth.map((toothId) => {
                             const tooth = teeth[toothId] || {};
 
@@ -297,7 +389,6 @@ export default function DownloadPdfForm({ id }) {
                                     key={toothId}
                                     className="  p-3 rounded-lg"
                                 >
-
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
                                         <div>
                                             <p className="text-[#949494] text-xs font-poppins">
@@ -373,19 +464,13 @@ export default function DownloadPdfForm({ id }) {
                             );
                         })}
                     </div>
-                    <div className="border border-gray-200  rounded-lg p-4 sm:p-6 mt-4">
+                    <div className="mt-4">
                         <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText ">
-                            Notes
+                            Additional Notes
                         </h3>
                         <hr className="border-gray-200 my-2" />
                         <div className=" text-sm sm:text-base pb-2">
                             <div>
-                                <p className="text-secondaryText     font-normal md:text-sm text-xs font-poppins ">
-                                    {`${maskNamePart(orderDetails?.doctorFirstName)}${maskNamePart(
-                                        orderDetails?.doctorLastName
-                                    )}`}:
-
-                                </p>
                                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
                                     {orderDetails?.additionalNotes || "-"}
                                 </p>

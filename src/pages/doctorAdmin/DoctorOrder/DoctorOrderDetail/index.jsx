@@ -13,7 +13,7 @@ function DoctorDeailsPage() {
   const steps = [
     {
       name: "Order detail",
-      content: <DownloadPdfForm id={id} />,
+      content: <OrderDetailsForm id={id} />,
     },
     {
       name: "track order",
