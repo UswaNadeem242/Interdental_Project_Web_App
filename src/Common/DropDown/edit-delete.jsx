@@ -1,7 +1,7 @@
 import DeleteIcon from "../../icon/deleteIcon";
 import PenIcon from "../../icon/PenIcon";
 
-export const EditDeleteDropdownMenu = ({ onEdit, onDelete, onClose }) => {
+export const EditDeleteDropdownMenu = ({ onEdit, onDelete, onClose  }) => {
     const handleEdit = () => {
         onEdit();
         onClose(); // ✅ close dropdown after edit click

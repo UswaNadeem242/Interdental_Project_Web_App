@@ -3,8 +3,8 @@ import React from "react";
 export function ToothOne({ highlighted }) {
   return (
     <svg
-      width="28"
-      height="43"
+      width="30"
+      height="40"
       viewBox="0 0 28 43"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

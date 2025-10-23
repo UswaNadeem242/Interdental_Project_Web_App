@@ -245,8 +245,8 @@ export default function SecondTable({
                       <DropdownComponent
                         row={row}
                         onClose={() => setOpen(null)}
-                        onEdit={onEdit}
-                        onDelete={onDelete}
+                        onEdit={() => onEdit(row)}       // ✅ pass this row’s data
+                        onDelete={() => onDelete(row)}
                       />
                     )}
 

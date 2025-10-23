@@ -8,11 +8,11 @@ import { useSelector } from "react-redux";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-export default function DownloadPdfForm({ id }) {
+export default function DownloadPdfForm({ id, ref }) {
     const [selected, setSelected] = useState("");
     const [orderDetails, setOrderDetails] = useState(null);
     const restoration = useSelector((state) => state.restoration);
-     
+
     const toothSelections = restoration.toothSelections || [];
     const selectedTeeth = restoration.selectedTeeth || [];
     const patient = restoration.patient;
@@ -175,7 +175,7 @@ export default function DownloadPdfForm({ id }) {
 
 
     return (
-        <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
+        <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 " ref={ref}>
             <div className="md:col-span-8 col-span-4 bg-white p-4 rounded-2xl" ref={formRef}>
                 <div className="flex justify-between items-center pb-4">
                     <div>

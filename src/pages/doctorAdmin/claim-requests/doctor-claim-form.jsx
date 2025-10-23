@@ -49,7 +49,6 @@ export default function DocotrClaimForm({ row }) {
                     </h6>
                     <p className="text-sm   text-primaryText  font-semibold pt-2"> {patientName ? patientName : 'NUll'}</p>
                 </div>
-
                 {/* Purchase Date */}
                 <div className="border-t-2 border-background ">
                     <h6 className="block text-sm mb-1  text-secondaryText pt-3 font-normal">
@@ -57,7 +56,6 @@ export default function DocotrClaimForm({ row }) {
                     </h6>
                     <p className="text-sm mb-1  text-primaryText  font-semibold pt-2">{patientEmail ? patientEmail : 'Null'}</p>
                 </div>
-
                 {/* Quantity */}
                 <div className="border-t-2 border-background ">
                     <h6 className="block text-sm mb-1 pt-3  text-secondaryText  font-normal">
@@ -65,11 +63,8 @@ export default function DocotrClaimForm({ row }) {
                     </h6>
                     <p className="text-sm mb-1  text-primaryText  font-semibold pt-2">{createdAt ? createdAt.slice(0, 10) : 'Null'}</p>
                 </div>
-
                 {/* Reason for Claim */}
                 <div className=" ">
-
-
                     {/* Warranty Options */}
                     <div className="border-t-2 border-background">
                         <h6 className="block text-sm mb-1 pt-3 text-secondaryText font-normal">
@@ -78,12 +73,7 @@ export default function DocotrClaimForm({ row }) {
                         <p className="text-sm mb-1 text-primaryText font-semibold pt-2 p-2">
                             Crown and Bridges, Onlays/Inlays & Veneers
                         </p>
-
                         {/* ✅ Render multiple implant teeth as individual boxes */}
-
-
-
-
                         <div className="flex flex-wrap gap-2 pt-2">
                             {crownTeeth
                                 ? crownTeeth
@@ -99,13 +89,11 @@ export default function DocotrClaimForm({ row }) {
                                 : <p className="text-xs text-gray-400">No crown teeth selected</p>}
                         </div>
                     </div>
-
                     {/* Implant Related Crown & Bridges */}
                     <div className="border-t-2 border-background">
                         <p className="text-sm mb-1 pt-3 text-primaryText font-semibold">
                             Implant Related Crown & Bridges:
                         </p>
-
                         {/* ✅ Render multiple crown teeth as individual boxes */}
                         <div className="flex flex-wrap gap-2 pt-2">
                             {implantTeeth

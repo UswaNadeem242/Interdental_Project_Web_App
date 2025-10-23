@@ -10,7 +10,7 @@ import {
   headingsPateint,
 } from "../../../Constant";
 import SearchBar from "../../../Common/SearchBar";
-import { getDoctorPatients } from "../../../api/doctorDasboard";
+import { deletePatientUser, getDoctorPatients } from "../../../api/doctorDasboard";
 import SecondTable from "../../../Common/second-table-component";
 import { EditDeleteDropdownMenu } from "../../../Common/DropDown/edit-delete";
 import AddNoteForm from "./AddNoteForm";
@@ -25,19 +25,49 @@ const PatientPage = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [patients, setPatients] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [selectedData, setSelectedData] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
 
-  const handleOpenForm = (row) => {
-    setSelectedData(row);
+  const handleOpenForm = (rowData) => {
+    setSelectedData(rowData);
     setShowForm(true);
+  };
 
-  };
-  const handleOpenDelete = (item) => {
-    setSelectedItem(item);
+
+  const handleOpenDelete = async (row) => {
+    console.log('row delete:', row);
+
+
+    const confirmDelete = window.confirm(`Are you sure you want to delete ${row.name}?`);
+    if (!confirmDelete) return;
+
+    try {
+      const response = await deletePatientUser(row.id);
+
+      console.log(response);
+      if (response.success) {
+
+        // showToast("User deleted successfully!", "success");
+
+        // ✅ Update table instantly without reload
+        // setFilteredData((prev) => prev.filter((user) => user.id !== row.id));
+         setSelectedItem(item);
     setShowDeleteModal(true);
+      } else {
+        showToast("Failed to delete user", "error");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      // showToast("Something went wrong!", "error");
+    }
   };
+
+
+  // const handleOpenDelete = (item) => {
+  //   setSelectedItem(item);
+  //   setShowDeleteModal(true);
+  // };
 
   const handleConfirmDelete = () => {
     console.log("Deleting item:", selectedItem);
@@ -47,6 +77,7 @@ const PatientPage = () => {
   const transformPatientsData = (apiData) => {
     if (!apiData || !Array.isArray(apiData)) return [];
     return apiData.map((order) => ({
+      id: order?.id,
       name: `${order?.firstName || "-"} ${order?.lastName || "-"}`,
       email: order?.email,
       status: order?.status,
@@ -153,7 +184,6 @@ const PatientPage = () => {
           data={filteredData}
           actionButton="active"
           DropdownComponent={EditDeleteDropdownMenu}
-
           onEdit={handleOpenForm}
           onDelete={handleOpenDelete}
         />
@@ -164,7 +194,7 @@ const PatientPage = () => {
             // initialData={selectedData
             title="Update Patient"
             onClose={() => setShowForm(false)}
-            Content={<EditPatientForm />}
+            Content={<EditPatientForm userData={selectedData} />}
 
           />
         )}
