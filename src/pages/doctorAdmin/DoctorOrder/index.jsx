@@ -93,8 +93,7 @@ const OrderDoctorPage = () => {
 
     return filtered;
   };
-  console.log('filteredData', filteredData);
-
+ 
   const steps = [
     {
       name: "All",

@@ -11,72 +11,30 @@ import { PatientDropdown } from "../../../../components/doctorAdmin/patient-comp
 import { getDoctorProfile } from "../../../../api/doctorDasboard";
 import InputField from "../../../../Common/FormInputField";
 export const DoctorCalimsForm = () => {
-  const [selectedTeeth, setSelectedTeeth] = useState([]);
-  const [selectedImplants, setSelectedImplants] = useState([]);
   const [doctorProfile, setDoctorProfile] = useState(null);
   const [doctorProfileEmail, setDoctorProfileEmail] = useState(null);
   const dispatch = useDispatch();
   const navigator = useNavigate();
-  const toggleSelection = (num, type) => {
-    if (type === "teeth") {
-
-      setSelectedTeeth((prev) =>
-        prev.includes(num) ? prev.filter((t) => t !== num) : [...prev, num]
-      );
-    } else if (type === "implants") {
-      setSelectedImplants((prev) =>
-        prev.includes(num) ? prev.filter((n) => n !== num) : [...prev, num]
-      );
-    }
-  };
-
   // API OF THE FORM
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const warrantySelections = [];
-
-      const pushSelection = (field, yearsField, category, monthlyAmount) => {
-        const teethValue = values[field];
-
-        if (teethValue && teethValue.toString().trim() !== "") {
-          warrantySelections.push({
-            category,
-            years: values[yearsField]
-              ? parseInt(values[yearsField].replace(/\D/g, ""), 10) // convert "6 Years" -> 6
-              : null,
-            monthlyAmount,
-          });
-        }
-      };
-      pushSelection("crownTeeth", "crownYears", "Crown", 45.0);
-      pushSelection("implantTeeth", "implantYears", "Implant", 50.0);
-      pushSelection("dentureTeeth", "dentureYears", "Denture", 30.0);
-      // Final Payload
+      // ✅ Prepare final payload in backend format
       const payload = {
-        patientName: values.patientName,
-        doctorName: values.doctorName,
-        doctorEmail: values.doctorEmail,
+        patientId: values?.patient?.id, // make sure Formik stores this
         crownTeeth: Array.isArray(values.crownTeeth)
           ? values.crownTeeth.filter(Boolean).join(",")
-          : (values.crownTeeth || "").replace(/^,|,$/g, ""), // remove leading/trailing commas
+          : (values.crownTeeth || "").replace(/^,|,$/g, ""),
         implantTeeth: Array.isArray(values.implantTeeth)
           ? values.implantTeeth.filter(Boolean).join(",")
           : (values.implantTeeth || "").replace(/^,|,$/g, ""),
-
-        warrantySelections: [
-          ...(Array.isArray(values.crownTeeth) ? values.crownTeeth : []),
-          ...(Array.isArray(values.implantTeeth) ? values.implantTeeth : [])
-        ]
-
-
       };
 
-      // Example API call
+      console.log("Submitting payload:", payload);
+
       const response = await getClaimsByUser(payload);
-      console.log(response);
+      console.log('response', response);
 
       if (response.success) {
-
         dispatch(
           showToast({
             message: `Claim submitted successfully!`,
@@ -84,11 +42,11 @@ export const DoctorCalimsForm = () => {
           })
         );
         resetForm();
-        navigator('/doctor-admin/claim-request')
+        navigator("/doctor-admin/claim-request");
       } else {
         dispatch(
           showToast({
-            message: `response?.data?.responseDesc || "Failed to submit claim.`,
+            message: "Failed to submit claim.",
             type: "error",
           })
         );
@@ -105,6 +63,7 @@ export const DoctorCalimsForm = () => {
       setSubmitting(false);
     }
   };
+
   useEffect(() => {
     const userData = localStorage.getItem("users");
     if (!userData) return;
@@ -132,11 +91,11 @@ export const DoctorCalimsForm = () => {
     <div className="bg-bgWhite rounded-2xl">
       <Formik
         initialValues={DoctorClaimInitialValues}
-        validationSchema={patientClaimValidationSchema}
+        // validationSchema={patientClaimValidationSchema}
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {({ values, isSubmitting, setFieldValue, errors, setFieldTouched }) => {
+        {({ values, isSubmitting, setFieldValue, errors, setFieldTouched, touched }) => {
 
           const combinedSelected = [...values.crownTeeth, ...values.implantTeeth];
           const handleSvgToothClick = (num) => {
@@ -195,22 +154,20 @@ export const DoctorCalimsForm = () => {
                 <PatientDropdown
                   className="w-2/4 rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow "
                   dropdownClass="text-secondaryBrand"
-                  value={values.patientFirstName} // Formik value
+                  value={values?.patient} // Formik value 
                   onChange={(val) => {
-                    setFieldValue("patientFirstName", val);
-                    setFieldTouched("patientFirstName", true, true)
-                  }
-                  }
-                  onBlur={() => setFieldTouched("patientFirstName", true)}
+                     setFieldValue("patient", val);
+                  }}
+                  onBlur={() => setFieldTouched("patient", true)}
                   classNameWidth='w-full'
                 />
-                {/* {errors.patientFirstName &&
-                  touched.patientFirstName && (
-                    <p className="text-red-800 text-xs capitalize">
-                      {errors.patientFirstName}
-                    </p>
-                  )} */}
               </FormSectionHeading>
+
+              {(!values?.patient || values?.patient?.length === 0) && (
+                <p className="text-red-500 text-xs mt-1">
+                  Please select at least one Patient
+                </p>
+              )}
 
             </div>
 
@@ -226,7 +183,6 @@ export const DoctorCalimsForm = () => {
 
                     <h4 className="font-medium text-secondaryBrand mb-4">
                       Crown And Bridges, Onlays/Inlays And Veneers:
-                      <span className="ml-5">{` ${selectedTeeth}`}</span>
                     </h4>
 
                     <div className="flex flex-row flex-wrap gap-2 mb-6 ">
@@ -251,15 +207,22 @@ export const DoctorCalimsForm = () => {
                                 </button>
                               );
                             })}
+
                           </div>
                         )}
+
                       </FieldArray>
+
+                      {(!values.crownTeeth || values.crownTeeth.length === 0) && (
+                        <p className="text-red-500 text-xs mt-1">
+                          Please select at least one Crown tooth.
+                        </p>
+                      )}
                     </div>
 
                     {/* Implant */}
                     <h4 className="font-medium text-secondaryBrand mb-4">
                       Implant Related Crown And Bridges:
-                      <span className="ml-6">{` ${selectedImplants}`}</span>
                     </h4>
                     <div className="flex flex-row flex-wrap gap-2 mb-6">
                       <FieldArray name="implantTeeth">
@@ -281,12 +244,19 @@ export const DoctorCalimsForm = () => {
                                 >
                                   {num}
                                 </button>
+
                               );
                             })}
+
+
                           </div>
                         )}
                       </FieldArray>
-
+                      {(!values.implantTeeth || values.implantTeeth.length === 0) && (
+                        <p className="text-red-500 text-xs mt-1">
+                          Please select at least one implant tooth.
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="flex justify-end items-start w-full h-full">

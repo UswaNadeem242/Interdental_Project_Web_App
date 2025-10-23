@@ -18,6 +18,8 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
     const fetchPatients = async () => {
       try {
         const response = await getDoctorPatients();
+         console.log('response' , response);
+        
         if (response.status === 200) {
           const patients = response.data.data.map((order) => {
             const firstName = order?.firstName?.trim() || "";
@@ -40,6 +42,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
     };
     fetchPatients();
   }, []);
+   
   // close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -51,13 +54,15 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const selectedPatient = patientsList.find((p) => p.id === value);
+  // const selectedPatient = patientsList.find((p) => p.id === value);
 
   const handleSelect = (patient) => {
-    onChange(patient.id); // update formik value
+    onChange(patient); // update formik value
     setOpen(false);
     dispatch(setSelectedPatient(patient));
   };
+  const selectedPatient = patientsList.find((p) => p.id === value?.id);
+
   // Filter patients by search term
   useEffect(() => {
     if (!searchTerm.trim()) {
