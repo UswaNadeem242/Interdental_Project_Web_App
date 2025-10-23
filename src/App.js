@@ -19,7 +19,9 @@ import Admin from "./pages/admin/Admin";
 import PrivateRoute from "./components/PrivateRoute";
 import RoleRoute from "./components/RoleRoute";
 import PublicRoute from "./components/PublicRoute";
+import ProtectedRoute from "./components/ProtectRoute";
 import { AuthProvider } from "./auth/AuthContext";
+import CompleteProfile from "./pages/CompleteProfile";
 import Wishlist from "./pages/Wishlist";
 import LandingPage from "./pages/landing-page/landing-page";
 import Patients from "./pages/landing-page/patient";
@@ -50,11 +52,11 @@ import ProductDetail from "./components/ProductDetail";
 import { ERole } from "./constants/roles";
 
 const MainLayout = ({ children }) => (
-  <>
+  <div className="flex flex-col min-h-screen">
     <Header />
-    {children}
+    <main className="flex-grow">{children}</main>
     <Footer />
-  </>
+  </div>
 );
 
 const PlainLayout = ({ children }) => {
@@ -256,6 +258,16 @@ function App() {
                     <NewPassword />
                   </SimpleLayout>
                 </PublicRoute>
+              }
+            />
+
+            {/* Profile Completion - Requires authentication but not full protection */}
+            <Route
+              path="/complete-profile"
+              element={
+                <ProtectedRoute>
+                  <CompleteProfile />
+                </ProtectedRoute>
               }
             />
 

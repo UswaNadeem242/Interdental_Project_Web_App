@@ -8,6 +8,7 @@ import YearlyPlanModel from "../../modals/yearly-plan";
 import Icons from "../../components/Icons";
 import { doctorSignupValidationSchema } from "../../services/utils/validationSchemas";
 import { useFormik } from "formik";
+import SignupWithGoogle from "../../Common/google-login/signup-with-google";
 
 const DoctorSignup = () => {
   const navigate = useNavigate();
@@ -436,7 +437,7 @@ const DoctorSignup = () => {
             </div>
           </div>
         </div>
-        <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 lg:gap-[32px]">
+        <div className="px-4  items-center flex flex-col w-full lg:w-[494px] h-auto gap-6 lg:gap-[32px]">
           <button
             type="button"
             onClick={() => formik.handleSubmit()}
@@ -449,7 +450,19 @@ const DoctorSignup = () => {
             {isSubmitting ? "Signing Up..." : "Sign Up"}
           </button>
 
-          <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
+          {/* Divider */}
+          <div className="flex flex-row justify-center items-center w-full lg:w-[494px] gap-4">
+            <div className="flex-1 h-[1px] bg-gray-300"></div>
+            <p className="font-poppins font-normal text-sm text-[#808080]">OR</p>
+            <div className="flex-1 h-[1px] bg-gray-300"></div>
+          </div>
+
+          {/* Google Signup */}
+          <div className="w-full lg:w-[494px]">
+            <SignupWithGoogle role="DOCTOR" />
+          </div>
+
+          <div className="flex flex-col justify-center items-center w-full h-auto space-y-4 lg:space-y-[16px]">
             <p className="font-poppins font-normal text-sm lg:text-[14px] leading-[21px] text-[#808080]">
               Already have an account
             </p>

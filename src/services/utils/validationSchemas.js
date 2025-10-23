@@ -286,6 +286,43 @@ export const shoppingCartValidationSchema = Yup.object().shape({
     .required("PayPal Email/Phone is required"),
 });
 
+// Doctor Profile Completion Validation Schema
+export const doctorProfileCompletionSchema = Yup.object().shape({
+  phoneNumber: Yup.string()
+    .matches(/^[0-9]{7,15}$/, "Phone number must be 7-15 digits")
+    .required("Phone number is required"),
+  address: Yup.string()
+    .min(10, "Address must be at least 10 characters")
+    .required("Address is required"),
+  city: Yup.string()
+    .min(2, "City must be at least 2 characters")
+    .max(25, "City must not exceed 25 characters")
+    .matches(/^[a-zA-Z\s]+$/, "City must contain only letters and spaces")
+    .required("City is required"),
+  zip: Yup.string()
+    .matches(/^\d{5,9}$/, "ZIP code must be 5-9 digits")
+    .required("Zip code is required"),
+  drLicenseNo: Yup.string()
+    .required("Doctor's License Number is required")
+    .min(5, "Must be at least 5 characters")
+    .max(15, "Must not exceed 15 characters")
+    .matches(/^[A-Z]+-[0-9]+$/, "Format: LETTERS-hyphen-numbers (e.g., PMC-12345)"),
+  officeRefNo: Yup.string()
+    .required("Office Reference Number is required")
+    .min(6, "Must be at least 6 characters")
+    .max(15, "Must not exceed 15 characters")
+    .matches(/^[A-Z0-9_-]+$/, "Only letters, numbers, hyphens, and underscores allowed")
+    .test(
+      "different-from-license",
+      "Cannot be same as License Number",
+      function (value) {
+        const licenseValue = this.parent.drLicenseNo;
+        if (!value || !licenseValue) return true;
+        return value !== licenseValue;
+      },
+    ),
+});
+
 export default {
   contactValidationSchema,
   loginValidationSchema,
@@ -294,4 +331,5 @@ export default {
   profileValidationSchema,
   changePasswordValidationSchema,
   shoppingCartValidationSchema,
+  doctorProfileCompletionSchema,
 };

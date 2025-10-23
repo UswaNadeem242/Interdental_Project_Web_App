@@ -37,10 +37,12 @@ const Orders = () => {
   };
 
 
+  const [trackingData, setTrackingData] = useState(null);
+
   const getOrderTrackingInfo = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/ordertracking/${orderId}`,
+        `${BASE_URL}/api/ordertracking/byOrderId/${orderId}`,
         {
           headers: {
             Accept: "*/*",
@@ -49,6 +51,7 @@ const Orders = () => {
         },
       );
       console.log(response.data, 'ORDER TRACKING INFO');
+      setTrackingData(response.data);
     }
     catch (error) {
       console.log(error);
@@ -61,8 +64,8 @@ const Orders = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center w-full h-auto py-8 bg-[#F8F8F8]">
-      <div className="flex flex-col justify-start items-start w-[1200px] p-[32px] space-y-[16px] rounded-[16px] bg-white mt-20">
+    <div className="flex justify-center items-start w-full min-h-screen bg-[#F8F8F8] py-8">
+      <div className="flex flex-col justify-start items-start w-full max-w-[1200px] p-[32px] mt-20 space-y-[16px] rounded-[16px] bg-white">
         <div className="flex justify-start items-center gap-2">
           <div
             onClick={() => navigate(-1)}
@@ -90,9 +93,9 @@ const Orders = () => {
           ))}
         </div>
         {selectedIndex == 0 && (
-          <div className="flex w-[1136px] gap-4">
-            <div className="flex flex-col justify-between items-center w-[560px] h-auto rounded-[12px] gap-[16px]">
-              <div className="flex flex-col justify-start items-start w-[560px] h-auto rounded-[12px] border-[1px] p-[24px] space-y-[28px] bg-white border-[#0000000D]">
+          <div className="flex w-full gap-6">
+            <div className="flex flex-col w-[60%] h-auto rounded-[12px] gap-[16px]">
+              <div className="flex flex-col justify-start items-start w-full h-auto rounded-[12px] border-[1px] p-[24px] space-y-[28px] bg-white border-[#0000000D]">
                 {orders?.orderItems && (() => {
                   // Group products by category
                   const groupedProducts = orders.orderItems.reduce((acc, product) => {
@@ -113,50 +116,33 @@ const Orders = () => {
                       </div>
                       <div className="w-full space-y-[16px] flex flex-col items-start">
                         {products.map((order, index) => (
-                          <div key={index} className={`flex w-full h-[60px] gap-[4px] border-[#0000001A] pb-4 ${index !== products.length - 1 && "border-b-[1px]"}`}>
+                          <div key={index} className={`flex w-full items-center gap-4 border-[#0000001A] pb-4 ${index !== products.length - 1 && "border-b-[1px]"}`}>
                             <img
                               src={order?.imageUrl?.[0] || "/assets/product8.png"}
                               alt="product"
-                              className="w-[60px] h-[60px] rounded-md p-[5.16px] gap-[5.16px]"
+                              className="w-[60px] h-[60px] rounded-md object-cover flex-shrink-0"
                             />
-                            <div className="flex w-[444px] h-[46px] gap-[4px]">
-                              <div className="flex flex-col justify-start items-start w-[357px] h-[46px] space-y-[4px]">
-                                <p className="font-poppins font-normal text-sm text-primaryText">
-                                  {order.productName}
-                                </p>
-                                <p className="text-sm font-semibold font-poppins capitalize text-primaryText">
-                                  $ {order.unitPrice}
-                                </p>
-                              </div>
+                            <div className="flex-1 flex flex-col justify-center space-y-1">
+                              <p className="font-poppins font-normal text-sm text-primaryText">
+                                {order.productName}
+                              </p>
+                              <p className="text-sm font-semibold font-poppins capitalize text-primaryText">
+                                $ {order.unitPrice}
+                              </p>
                             </div>
-                            {order.ratings && order.ratings.length > 0 ? (
-                              <button
-                                onClick={() => {
-                                  setSelectedProduct(order);
-                                  setIsViewReview(true);
-                                  SetIsFeedbackOpen(true);
-                                }}
-                                className="flex justify-center items-center w-[113px] h-[23px] rounded-[33px] border-[1px] border-[#10B981] bg-[#10B9811A] py-[4px] px-[8px] cursor-pointer hover:bg-[#10B98130] transition-colors"
-                              >
-                                <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#10B981]">
-                                  View Review
-                                </p>
-                              </button>
-                            ) : (
-                              <button
-                                onClick={() => {
-                                  setSelectedProduct(order);
-                                  setIsViewReview(false);
-                                  SetIsFeedbackOpen(true);
-                                  setSelectedProductId(order.productId);
-                                }}
-                                className="flex justify-center items-center w-[113px] h-[23px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px] cursor-pointer hover:bg-[#F69B2630] transition-colors"
-                              >
-                                <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
-                                  Leave Review
-                                </p>
-                              </button>
-                            )}
+                            <button
+                              onClick={() => {
+                                setSelectedProduct(order);
+                                setIsViewReview(false);
+                                SetIsFeedbackOpen(true);
+                                setSelectedProductId(order.productId);
+                              }}
+                              className="flex justify-center items-center w-[113px] h-[32px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px] cursor-pointer hover:bg-[#F69B2630] transition-colors flex-shrink-0"
+                            >
+                              <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
+                                Leave Review
+                              </p>
+                            </button>
                           </div>
                         ))}
                       </div>
@@ -165,8 +151,8 @@ const Orders = () => {
                 })()}
               </div>
             </div>
-            <div className="flex flex-col w-[560px] space-y-[16px]">
-              <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px] space-y-[12px]">
+            <div className="flex flex-col w-[40%] space-y-[16px]">
+              <div className="flex flex-col w-full rounded-[12px] border-[1px] border-[#0000000D] p-[16px] space-y-[12px]">
                 <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                     Product Subtotal
@@ -185,7 +171,7 @@ const Orders = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px]">
+              <div className="flex flex-col w-full rounded-[12px] border-[1px] border-[#0000000D] p-[16px]">
                 <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                     Grand Total
@@ -196,7 +182,7 @@ const Orders = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] p-[16px]">
+              <div className="flex flex-col w-full rounded-[12px] border-[1px] border-[#0000000D] p-[16px]">
                 <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
                     Order Status
@@ -208,7 +194,7 @@ const Orders = () => {
               </div>
 
               {/* Shipping Details Collapsible Section */}
-              <div className="flex flex-col w-[560px] rounded-[12px] border-[1px] border-[#0000000D] bg-white">
+              <div className="flex flex-col w-full rounded-[12px] border-[1px] border-[#0000000D] bg-white">
                 <div
                   className="flex justify-between items-center p-[16px] cursor-pointer transition-colors"
                   onClick={() => setIsShippingDetailsOpen(!isShippingDetailsOpen)}
@@ -253,7 +239,7 @@ const Orders = () => {
                     Expected Delivery Date
                   </p>
                   <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
-                    {orders?.expectedDeliveryDate || "23 Sep 2023"}
+                    {orders?.expectedDeliveryDate || "TBD"}
                   </p>
                 </div>
                 <div className="hidden md:block h-[24px] border-[1px] border-[#0000000D]"></div>
@@ -262,133 +248,167 @@ const Orders = () => {
                     Tracking ID
                   </p>
                   <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
-                    {orders?.trackingId || "TYRGSH465Y6443"}
+                    {trackingData?.data?.[0]?.trackingId || orders?.trackingId || "N/A"}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col justify-start items-start space-y-[8px] w-[1136px] h-[148px] rounded-[8px] border-[1px] border-[#0000000D] py-[8px] px-[16px] bg-white">
-              <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
+            <div className="flex flex-col justify-start items-start space-y-[16px] w-full rounded-[8px] border-[1px] border-[#0000000D] py-[16px] px-[24px] bg-white">
+              <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-[#393A44]">
                 Order Status
               </h1>
-              <div className="border-[1px] border-[#0000000D] w-full"></div>
-              <div className="flex flex-col justify-start items-start w-[1104px] h-[87px] py-[8px] px-[16px] space-y-[8px]">
-                <div className="flex justify-start items-center w-[820px] h-[18px] gap-[4px]">
-                  <Icons.OrderCheckIcon fill="#94D3DD" />
-                  <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "PENDING"
-                      ? "bg-[#001D58]"
-                      : "bg-[#94D3DD]"
+              <div className="border-[1px] border-[#E5E7EB] w-full"></div>
+              
+              {/* Progress Bar and Labels Container */}
+              <div className="flex w-full py-[16px] px-[8px]">
+                {/* Order Placed (BOOKED) */}
+                <div className="flex flex-col items-start gap-[12px] flex-1">
+                  <div className="flex items-center w-full">
+                    <Icons.OrderCheckIcon 
+                      fill={
+                        orders?.orderStatus === "BOOKED" || 
+                        orders?.orderStatus === "PENDING" ||
+                        orders?.orderStatus === "SHIPED" ||
+                        orders?.orderStatus === "DELIVERD"
+                          ? "#7DD3DD" 
+                          : "#DDDDDD"
+                      } 
+                    />
+                    <div 
+                      className={`flex-1 h-[2px] mx-[8px] ${
+                        orders?.orderStatus === "BOOKED" || 
+                        orders?.orderStatus === "PENDING" ||
+                        orders?.orderStatus === "SHIPED" ||
+                        orders?.orderStatus === "DELIVERD"
+                          ? "bg-[#7DD3DD]" 
+                          : "bg-[#DDDDDD]"
                       }`}
-                  ></div>
-                  <Icons.OrderCheckIcon
-                    fill={
-                      orders.orderStatus === "PENDING" ? "#001D58" : "#94D3DD"
-                    }
-                  />
-                  <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "SHIPED"
-                      ? "bg-[#001D58]"
-                      : orders.orderStatus === "PENDING"
-                        ? "bg-[#DDDDDD]"
-                        : "bg-[#94D3DD]"
-                      }`}
-                  ></div>
-                  <Icons.OrderCheckIconVariant
-                    fill={
-                      orders.orderStatus === "SHIPED"
-                        ? "#001D58"
-                        : orders.orderStatus === "PENDING"
-                          ? "#DDDDDD"
-                          : "#94D3DD"
-                    }
-                  />
-
-                  <div
-                    className={`w-[250px] rounded-[10px] h-[2px] ${orders.orderStatus === "DELIVERD"
-                      ? "bg-[#94D3DD]"
-                      : "bg-[#DDDDDD]"
-                      }`}
-                  ></div>
-                  <Icons.OrderCheckIcon
-                    fill={
-                      orders.orderStatus === "DELIVERD" ? "#94D3DD" : "#DDDDDD"
-                    }
-                  />
-                </div>
-
-                <div className="flex gap-[8px] w-[1032px] h-[37px]">
-                  <div className="flex justify-start items-center w-[237px] h-[68px] gap-[8px]">
-                    <Icons.OrderPending fill="#94D3DD" />
-                    <div className="flex flex-col justify-start items-start space-y-[1px] ">
-                      <p className="font-poppins font-semibold text-[12px] leading-[18px]">
+                    ></div>
+                  </div>
+                  <div className="flex items-start gap-[8px]">
+                    <Icons.OrderPending 
+                      fill={
+                        orders?.orderStatus === "BOOKED" || 
+                        orders?.orderStatus === "PENDING" ||
+                        orders?.orderStatus === "SHIPED" ||
+                        orders?.orderStatus === "DELIVERD"
+                          ? "#7DD3DD" 
+                          : "#DDDDDD"
+                      } 
+                    />
+                    <div className="flex flex-col space-y-[2px]">
+                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                         Order Placed
                       </p>
-                      {/* <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#949494]">
-                        12 sep 2024, 04:25 PM
-                      </p> */}
                     </div>
                   </div>
-                  <div className="flex justify-start items-center w-[237px] h-[68px] gap-[8px]">
-                    <Icons.OrderInProgress
-                      stroke={
-                        orders.orderStatus === "PENDING" ? "#001D58" : "#94D3DD"
-                      }
-                    />
+                </div>
 
-                    <div className="flex flex-col justify-start items-start space-y-[1px] ">
-                      <p className="font-poppins font-semibold text-[12px] leading-[18px]">
+                {/* In Progress (PENDING) */}
+                <div className="flex flex-col items-start gap-[12px] flex-1">
+                  <div className="flex items-center w-full">
+                    <Icons.OrderCheckIcon 
+                      fill={
+                        orders?.orderStatus === "PENDING" ||
+                        orders?.orderStatus === "SHIPED" ||
+                        orders?.orderStatus === "DELIVERD"
+                          ? "#7DD3DD" 
+                          : "#DDDDDD"
+                      } 
+                    />
+                    <div 
+                      className={`flex-1 h-[2px] mx-[8px] ${
+                        orders?.orderStatus === "SHIPED" ||
+                        orders?.orderStatus === "DELIVERD"
+                          ? "bg-[#001D58]" 
+                          : "bg-[#DDDDDD]"
+                      }`}
+                    ></div>
+                  </div>
+                  <div className="flex items-start gap-[8px]">
+                    <Icons.OrderInProgress 
+                      stroke={
+                        orders?.orderStatus === "PENDING" ||
+                        orders?.orderStatus === "SHIPED" ||
+                        orders?.orderStatus === "DELIVERD"
+                          ? "#7DD3DD" 
+                          : "#DDDDDD"
+                      } 
+                    />
+                    <div className="flex flex-col space-y-[2px]">
+                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                         In Progress
                       </p>
-                      {/* <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#949494]">
-                        12 sep 2024, 04:25 PM
-                      </p> */}
                     </div>
                   </div>
-                  <div className="flex justify-start items-center w-[237px] h-[68px] gap-[8px]">
-                    <Icons.OrderShipped
+                </div>
+
+                {/* Shipped (SHIPED) */}
+                <div className="flex flex-col items-start gap-[12px] flex-1">
+                  <div className="flex items-center w-full">
+                    <Icons.OrderCheckIcon 
                       fill={
-                        orders.orderStatus === "SHIPED"
-                          ? "#001D58"
-                          : orders.orderStatus === "PENDING"
-                            ? "#949494"
-                            : "#94D3DD"
+                        orders?.orderStatus === "SHIPED" ||
+                        orders?.orderStatus === "DELIVERD"
+                          ? "#001D58" 
+                          : "#DDDDDD"
+                      } 
+                    />
+                    <div 
+                      className={`flex-1 h-[2px] mx-[8px] ${
+                        orders?.orderStatus === "DELIVERD"
+                          ? "bg-[#001D58]" 
+                          : "bg-[#DDDDDD]"
+                      }`}
+                    ></div>
+                  </div>
+                  <div className="flex items-start gap-[8px]">
+                    <Icons.OrderShipped 
+                      fill={
+                        orders?.orderStatus === "SHIPED" ||
+                        orders?.orderStatus === "DELIVERD"
+                          ? "#001D58" 
+                          : "#DDDDDD"
                       }
                       stroke={
-                        orders.orderStatus === "SHIPED"
-                          ? "#001D58"
-                          : orders.orderStatus === "PENDING"
-                            ? "#949494"
-                            : "#94D3DD"
+                        orders?.orderStatus === "SHIPED" ||
+                        orders?.orderStatus === "DELIVERD"
+                          ? "#001D58" 
+                          : "#DDDDDD"
                       }
                     />
-
-                    <div className="flex flex-col justify-start items-start space-y-[1px] ">
-                      <p className="font-poppins font-semibold text-[12px] leading-[18px]">
+                    <div className="flex flex-col space-y-[2px]">
+                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                         Shipped
                       </p>
-                      {/* <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#949494]">
-                        12 sep 2024, 04:25 PM
-                      </p> */}
                     </div>
                   </div>
-                  <div className="flex justify-start items-center w-[237px] h-[68px] gap-[8px]">
-                    <Icons.OrderDelivered
-                      fill={
-                        orders.orderStatus === "DELIVERD"
-                          ? "#94D3DD"
-                          : "#949494"
-                      }
-                    />
+                </div>
 
-                    <div className="flex flex-col justify-start items-start space-y-[1px] ">
-                      <p className="font-poppins font-semibold text-[12px] leading-[18px]">
+                {/* Delivered (DELIVERD) */}
+                <div className="flex flex-col items-start gap-[12px]">
+                  <div className="flex items-center">
+                    <Icons.OrderCheckIcon 
+                      fill={
+                        orders?.orderStatus === "DELIVERD"
+                          ? "#001D58" 
+                          : "#DDDDDD"
+                      } 
+                    />
+                  </div>
+                  <div className="flex items-start gap-[8px]">
+                    <Icons.OrderDelivered 
+                      fill={
+                        orders?.orderStatus === "DELIVERD"
+                          ? "#001D58" 
+                          : "#DDDDDD"
+                      } 
+                    />
+                    <div className="flex flex-col space-y-[2px]">
+                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
                         Delivered
                       </p>
-                      {/* <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#949494]">
-                        12 sep 2024, 04:25 PM
-                      </p> */}
                     </div>
                   </div>
                 </div>

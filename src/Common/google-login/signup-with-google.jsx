@@ -5,13 +5,13 @@ import { BASE_URL } from "../../config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 
-export default function LoginWithGoogle() {
+export default function SignupWithGoogle({ role }) {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const googleLogin = useGoogleLogin({
+  const googleSignup = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(" Google Token Received:", tokenResponse);
+      console.log("Google Token Received:", tokenResponse);
 
       const accessToken = tokenResponse.access_token;
 
@@ -20,19 +20,18 @@ export default function LoginWithGoogle() {
           "https://www.googleapis.com/oauth2/v3/userinfo",
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
-        // console.log(" Google User:", googleUser);
 
+        console.log("Google User:", googleUser);
 
-        console.log(" Google User:", googleUser);
         const payload = {
           email: googleUser.email,
           firstName: googleUser.given_name,
           lastName: googleUser.family_name,
           googleId: googleUser.sub,
-          role: "DOCTOR",
+          role: role, // DOCTOR or CUSTOMER
         };
 
-        // console.log("Sending payload to backend /social-sign-in ...");
+        console.log("Sending payload to backend /social-sign-in ...");
         const { data } = await axios.post(
           `${BASE_URL}/api/users/social-sign-in`,
           payload
@@ -42,46 +41,43 @@ export default function LoginWithGoogle() {
 
         const { users, accessToken: backendAccessToken } = data.data;
 
-        //  Use context to store login
+        // Use context to store login
         login(users, backendAccessToken);
 
-        // Check profile completeness and redirect accordingly
-        const userRole = users.roles[0];
-        
-        if (userRole === "DOCTOR") {
-          // Check if doctor profile is complete
+        // Check if profile is complete for DOCTOR role
+        if (role === "DOCTOR") {
           const isComplete = users.drLicenseNo && users.officeRefNo;
           
           if (!isComplete) {
+            // Redirect to complete profile page
             navigate("/complete-profile");
           } else {
+            // Redirect to doctor dashboard
             navigate("/doctor-admin/dashboard");
           }
-        } else if (userRole === "PATIENT") {
-          navigate("/patient-admin/dashboard");
-        } else if (userRole === "ADMIN") {
-          navigate("/admin-panel/dashboard");
-        } else if (userRole === "CUSTOMER") {
+        } else if (role === "CUSTOMER") {
+          // Redirect to home for customer
           navigate("/");
         } else {
+          // Fallback for other roles
           navigate("/");
         }
       } catch (error) {
-        console.error("Error during login flow:", error);
+        console.error("Error during signup flow:", error);
       }
     },
-    onError: () => console.log("Google login failed"),
+    onError: () => console.log("Google signup failed"),
     scope: "openid email profile",
   });
 
   return (
-    <button onClick={() => googleLogin()}>
-      <span className="flex gap-2 items-center ">
+    <button onClick={() => googleSignup()} className="w-full">
+      <div className="flex w-full h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center items-center cursor-pointer hover:shadow-md transition-shadow">
         <GoogleIcon className="w-5 h-6" />
         <h1 className="hidden lg:block text-sm font-poppins">
-          Login with Google
+          Sign up with Google
         </h1>
-      </span>
+      </div>
     </button>
   );
 }

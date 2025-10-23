@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -13,11 +13,14 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 // import product7 from "../assets/product7.png";
 // import product8 from "../assets/product8.png";
 import { useNavigate } from "react-router-dom";
+import Icons from "./Icons";
 
 const RelatedProducts = ({ relatedProducts }) => {
   console.log(relatedProducts?.data, "{related}");
   const navigate = useNavigate();
   const swiperRef = useRef(null);
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
   // const relatedProducts = [
   //   {
   //     id: 1,
@@ -75,7 +78,7 @@ const RelatedProducts = ({ relatedProducts }) => {
       </h1>
       {relatedProducts?.data && relatedProducts?.data?.length > 0 ? (
         <div className="flex w-full h-[388px] gap-[31px]">
-          <div className="flex w-full h-[386px] gap-[31px]">
+          <div className="relative flex w-full h-[386px] gap-[31px]">
             <Swiper
               ref={swiperRef}
               spaceBetween={24}
@@ -88,11 +91,22 @@ const RelatedProducts = ({ relatedProducts }) => {
               // pagination={{
               //   clickable: true,
               // }}
-              navigation={true}
+              navigation={{
+                nextEl: '.swiper-button-next-custom',
+                prevEl: '.swiper-button-prev-custom',
+              }}
+              onSlideChange={(swiper) => {
+                setIsBeginning(swiper.isBeginning);
+                setIsEnd(swiper.isEnd);
+              }}
+              onSwiper={(swiper) => {
+                setIsBeginning(swiper.isBeginning);
+                setIsEnd(swiper.isEnd);
+              }}
               modules={[Autoplay, Pagination, Navigation]}
               className="w-[100%] h-[100%] flex justify-center items-center text-center"
             >
-              {relatedProducts?.data?.map((product) => (
+              {[...relatedProducts?.data,...relatedProducts?.data,...relatedProducts?.data]?.map((product) => (
                 <SwiperSlide key={product?.productId}>
                   <div
                     onClick={() => navigate(`/shop/${product?.productId}`)}
@@ -121,6 +135,29 @@ const RelatedProducts = ({ relatedProducts }) => {
                 </SwiperSlide>
               ))}
             </Swiper>
+            
+            {/* Custom Navigation Buttons */}
+            <button 
+              className={`swiper-button-prev-custom absolute -left-10 top-1/2 -translate-y-1/2 z-10 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-colors ${
+                isBeginning 
+                  ? 'bg-gray-100 cursor-not-allowed' 
+                  : 'bg-white hover:bg-gray-50 cursor-pointer'
+              }`}
+              disabled={isBeginning}
+            >
+              <Icons.Arrow.Left className={`w-8 h-8 ${isBeginning ? 'text-gray-400' : 'text-gray-700'}`} />
+            </button>
+            
+             <button 
+               className={`swiper-button-next-custom absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-colors ${
+                 isEnd 
+                   ? 'bg-gray-100 cursor-not-allowed' 
+                   : 'bg-white hover:bg-gray-50 cursor-pointer'
+               }`}
+               disabled={isEnd}
+             >
+               <Icons.Arrow.Right className={`w-8 h-8 ${isEnd ? 'text-gray-400' : 'text-gray-700'}`} />
+             </button>
           </div>
         </div>
       ) : (
