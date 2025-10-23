@@ -33,6 +33,8 @@ import Drawers from "../../../Common/Drawers";
 import AddPatientForm from "../PatientDoctor/AddPatientForm";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
 import { DropdownWrapper } from "../../../Common/drop-down-wrapper";
+import TeethSvg from "../../../components/teeth-svg";
+import RestorationTeethSvg from "../../../components/restoration-page-teeth";
 const DoctorOrder = () => {
   const dispatch = useDispatch();
   const navigator = useNavigate();
@@ -60,6 +62,7 @@ const DoctorOrder = () => {
   useEffect(() => {
     if (selected) {
       console.log("Selected object keys:", Object.keys(selected));
+      console.log("Selected name:", selected.name);
       console.log("Selected name:", selected.name);
     }
   }, [selected]);
@@ -185,6 +188,8 @@ const DoctorOrder = () => {
   // Format YYYY-MM-DD for <input type="date">
   const formattedToday = today.toISOString().split("T")[0];
 
+  //
+
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -271,7 +276,7 @@ const DoctorOrder = () => {
                               type="text"
                               label="Office Reference number"
                               name="officeReg"
-                              value={values.officeReg}
+                              value={formData?.reference}
                               onChange={handleChange}
                               onBlur={handleBlur}
                               placeholder="Office Reference number"
@@ -469,7 +474,7 @@ const DoctorOrder = () => {
                                 upper Arch
                               </button>
                               {/* <img src='/assets/doctor/image.png' /> */}
-                              <div>
+                              {/* <div>
                                 <TeethChart
                                   teeth={teethData}
                                   sizePx={chartSize}
@@ -486,6 +491,26 @@ const DoctorOrder = () => {
                                       dispatch(selectTooth(id));
                                     }
                                   }}
+                                />
+                              </div> */}
+
+                              <div className="mt-40 ml-56 min-h-[320px] ">
+                                <RestorationTeethSvg
+                                  selectedTeeth={selectedTeeth}
+                                  // onToothClick={handleSvgToothClick}
+                                  onToothClick={(tooth) => {
+                                    const id =
+                                      tooth?.id ||
+                                      tooth?.toothId ||
+                                      (typeof tooth === "number"
+                                        ? tooth
+                                        : null);
+                                    if (id) {
+                                      dispatch(selectTooth(id));
+                                    }
+                                  }}
+                                  fillColor="#94D3DD"
+                                  defaultColor="#ffffff"
                                 />
                               </div>
 
