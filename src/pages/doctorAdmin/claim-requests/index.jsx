@@ -31,7 +31,6 @@ const DoctorClaimRequests = () => {
             };
         });
     };
-
     useEffect(() => {
         const fetchPatients = async () => {
             try {
