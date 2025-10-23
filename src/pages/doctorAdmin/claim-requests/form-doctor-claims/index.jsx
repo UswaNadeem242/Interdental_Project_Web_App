@@ -71,7 +71,6 @@ export const DoctorCalimsForm = () => {
 
       };
 
-
       // Example API call
       const response = await getClaimsByUser(payload);
       console.log(response);
@@ -85,7 +84,7 @@ export const DoctorCalimsForm = () => {
           })
         );
         resetForm();
-        navigator('/patient-admin/claim-request')
+        navigator('/doctor-admin/claim-request')
       } else {
         dispatch(
           showToast({
@@ -116,6 +115,7 @@ export const DoctorCalimsForm = () => {
     const fetchDoctorProfile = async () => {
       try {
         const response = await getDoctorProfile(userId);
+
         const profile = response.data.data;
         const fullName = `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim();
         setDoctorProfile(fullName);
@@ -193,7 +193,7 @@ export const DoctorCalimsForm = () => {
               {/* Patient Info */}
               <FormSectionHeading title="Patient Information">
                 <PatientDropdown
-                  className="w-2/4 rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow"
+                  className="w-2/4 rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow "
                   dropdownClass="text-secondaryBrand"
                   value={values.patientFirstName} // Formik value
                   onChange={(val) => {

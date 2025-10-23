@@ -31,7 +31,6 @@ const DoctorClaimRequests = () => {
             };
         });
     };
-
     useEffect(() => {
         const fetchPatients = async () => {
             try {
@@ -109,6 +108,10 @@ const DoctorClaimRequests = () => {
             .trim()
             .replace(/\s+/g, "-")      // replace spaces with -
             .replace(/[^\w-]+/g, "");
+
+
+    console.log('claims', claims);
+
     return (
         <div>
 

@@ -6,8 +6,7 @@ export const fetchTeeth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await orderService.getTooth();
-      console.log("res from teeth slice", res);
-      const raw = res?.data?.data || res?.data || [];
+       const raw = res?.data?.data || res?.data || [];
       return Array.isArray(raw)
         ? raw.map((t, idx) => ({
             id: Number(t.toothNumber) || t.id || idx + 1,

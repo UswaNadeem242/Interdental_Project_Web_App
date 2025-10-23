@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { setProfileData } from "../../../store/slices/profileData-slice";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
+import NotificationsDropdown from "../../dropdowns/NotificationsDropdown";
 
 const DoctorHeader = ({ title, subTitle, role }) => {
   const navigate = useNavigate();
@@ -17,9 +18,12 @@ const DoctorHeader = ({ title, subTitle, role }) => {
     logout();
     navigate("/login");
   };
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
   const [doctorProfile, setDoctorProfile] = useState(null);
   const pageTitle = usePageTitle();
   const displayTitle = pageTitle?.toLowerCase().includes("dashboard");
+  const [notificationsDropdown, setNotificationsDropdown] = useState(false);
 
   const roleLink =
     // role === "doctor"
@@ -53,6 +57,11 @@ const DoctorHeader = ({ title, subTitle, role }) => {
       fetchDoctorProfile();
     }
   }, []);
+  const handleNotifications = () => {
+    if (user) {
+      setNotificationsDropdown(!notificationsDropdown);
+    }
+  };
 
   return (
     <>
@@ -107,7 +116,9 @@ const DoctorHeader = ({ title, subTitle, role }) => {
             </p>
             <p className="text-xs text-gray-500">{doctorProfile?.email}</p>
           </NavLink>
-          <button className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center">
+
+
+          <button className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center" onClick={handleNotifications}>
             <BellIconSVG className="w-5 h-5" />
           </button>
         </div>
@@ -120,6 +131,13 @@ const DoctorHeader = ({ title, subTitle, role }) => {
           </button>
         </div>
       </div>
+      {notificationsDropdown && (
+        <div className="absolute right-16 top-20 mt-1 z-10">
+          <NotificationsDropdown
+            setNotificationsDropdown={setNotificationsDropdown}
+          />
+        </div>
+      )}
     </>
   );
 };

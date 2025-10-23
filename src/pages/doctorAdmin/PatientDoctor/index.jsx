@@ -14,6 +14,9 @@ import { getDoctorPatients } from "../../../api/doctorDasboard";
 import SecondTable from "../../../Common/second-table-component";
 import { EditDeleteDropdownMenu } from "../../../Common/DropDown/edit-delete";
 import AddNoteForm from "./AddNoteForm";
+import AreYouSureModel from "../../../modals/AreYouSureModel";
+import DeleteModel from "../../../modals/delete-model";
+import EditPatientForm from "./edit-pateint";
 
 const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,15 +26,23 @@ const PatientPage = () => {
   const [patients, setPatients] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleOpenForm = (row) => {
     setSelectedData(row);
     setShowForm(true);
+
+  };
+  const handleOpenDelete = (item) => {
+    setSelectedItem(item);
+    setShowDeleteModal(true);
   };
 
-  const handleCloseForm = () => {
-    setShowForm(false);
-    setSelectedData(null);
+  const handleConfirmDelete = () => {
+    console.log("Deleting item:", selectedItem);
+    // Add your delete logic here (API call, state update, etc.)
+    setShowDeleteModal(false);
   };
   const transformPatientsData = (apiData) => {
     if (!apiData || !Array.isArray(apiData)) return [];
@@ -111,13 +122,7 @@ const PatientPage = () => {
                 className="rounded-md px-8 py-3  font-semibold w-full "
               />
             </div>
-            {/* <div className="md:hidden block w-full">
-              <PrimaryButtonUI
-                title="Add New Patient"
-                onClick={() => setIsOpen(true)}
-                className="rounded-md px-8 py-3 w-full font-semibold "
-              />
-            </div> */}
+
 
             <div>
               <Drawers
@@ -148,15 +153,31 @@ const PatientPage = () => {
           data={filteredData}
           actionButton="active"
           DropdownComponent={EditDeleteDropdownMenu}
+
           onEdit={handleOpenForm}
+          onDelete={handleOpenDelete}
         />
 
-
-
         {showForm && (
-          <AddPatientForm
-            initialData={selectedData}
-            onClose={handleCloseForm}
+          <Drawers
+            isOpen={showForm}
+            // initialData={selectedData
+            title="Update Patient"
+            onClose={() => setShowForm(false)}
+            Content={<EditPatientForm />}
+
+          />
+        )}
+
+        {showDeleteModal && (
+          <DeleteModel
+            title='Are you sure ? '
+            desc='This action cannot be undone. Once deleted, all related data will be permanently removed from the system.
+Please confirm if you still want to proceed. '
+            isOpen={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onConfirm={handleConfirmDelete}
+            item={selectedItem}
           />
         )}
       </div>

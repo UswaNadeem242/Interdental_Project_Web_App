@@ -6,6 +6,7 @@ import Stepper from '../../../../Common/TabsStepper/Stepper';
 import OrderDetailsForm from './OrderDetailsForm';
 import TrackingOrder from './TrackingOrder';
 import { useParams } from 'react-router-dom';
+import DownloadPdfForm from '../../../../components/doctorAdmin/download-form';
 
 function DoctorDeailsPage() {
   const { id } = useParams();

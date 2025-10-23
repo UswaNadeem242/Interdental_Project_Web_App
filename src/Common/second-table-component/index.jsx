@@ -14,7 +14,8 @@ export default function SecondTable({
   onActionClick,
   actionButton,
   DropdownComponent,
-  onEdit
+  onEdit,
+  onDelete
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
@@ -245,6 +246,7 @@ export default function SecondTable({
                         row={row}
                         onClose={() => setOpen(null)}
                         onEdit={onEdit}
+                        onDelete={onDelete}
                       />
                     )}
 

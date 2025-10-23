@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { CheckIcon } from "@heroicons/react/24/solid";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { showToast } from "../../../store/toast-slice";
 
 export const SmileDesignPicker = ({
   isModalOpen,
   setIsModalOpen,
   selected,
   setSelected,
-  
 }) => {
   const { orders: dropdowns } = useSelector((state) => state.dropdown);
   const [smileItems, setSmileItems] = useState([]);
   const [selectedSmile, setSelectedSmile] = useState(null);
-
+  const dispatch = useDispatch();
   // Load Smile Type from dropdownsa
   useEffect(() => {
     if (!dropdowns || !Array.isArray(dropdowns)) return;
     const smileGroup = dropdowns.find((item) => item.name === "Smile Type");
     if (smileGroup?.children && Array.isArray(smileGroup.children)) {
-      console.log("Setting smileItems:", smileGroup.children);
       setSmileItems(smileGroup.children);
 
       // Initialize selectedSmile from selected prop
@@ -31,10 +30,18 @@ export const SmileDesignPicker = ({
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleSelect = (smile) => {
-    console.log("handleSelect called with smile:", smile);
+    console.log(smile);
     // Update local state for UI only
-    setSelectedSmile(smile);
-    console.log("setSelectedSmile called with:", smile);
+
+    if (smile.parentId === selectedSmile?.parentId) {
+      console.log("Nothing");
+      setSelectedSmile(null);
+      return null;
+    } else {
+      console.log("SOmething");
+      setSelectedSmile(smile);
+      return null;
+    }
   };
 
   const handleConfirm = () => {
@@ -44,7 +51,12 @@ export const SmileDesignPicker = ({
       setSelected(selectedSmile);
       setIsModalOpen(false);
     } else {
-      alert("Please select a smile design first");
+      dispatch(
+        showToast({
+          message: `Please Select a Smile Design Image first.`,
+          type: "error",
+        })
+      );
     }
   };
 
@@ -95,32 +107,28 @@ export const SmileDesignPicker = ({
 
         {/* Smile Design Grid */}
         <div className="grid grid-cols-4 gap-4">
-          {smileItems.map((smile) => {
-            console.log("Rendering smile:", smile);
+          {smileItems.map((smile, i) => {
             return (
               <label
                 key={smile.id}
                 onClick={() => handleSelect(smile)}
-                className={`relative border rounded-lg p-2 flex flex-col items-center cursor-pointer transition ${
-                  selectedSmile?.id === smile.id
-                    ? "border-blue-600 ring-1 ring-blue-600"
-                    : "border-gray-200"
+                // className={`relative border rounded-lg p-2 flex flex-col items-center cursor-pointer transition-all duration-200 ease-in-out ${selectedSmile?.id === smile.id
+                //   ? "border-blue-600 ring-1 ring-blue-600"
+                //   : "border-gray-200"
+                //   }`}
+                className={`relative border rounded-lg p-2 flex flex-col items-center cursor-pointer transition-all duration-200 ease-in-out ${
+                  selectedSmile?.parentId === smile?.parentId
+                    ? "border-secondaryBrand border-2"
+                    : "border-background border-2"
                 }`}
               >
-                {/* Custom radio button */}
-                <input
-                  type="radio"
-                  name="smileDesign"
-                  checked={selectedSmile?.id === smile.id}
-                  onChange={() => handleSelect(smile)}
-                  className="hidden peer"
-                />
-
                 <div className="flex gap-1 items-center justify-center">
                   <div className="top-2 left-2 w-4 h-4 text-center border border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-600">
                     <CheckIcon
                       className={`w-5 h-5 text-[#001D58] ${
-                        selectedSmile?.id === smile.id ? "block" : "hidden"
+                        selectedSmile?.parentId === smile.parentId
+                          ? "block"
+                          : "hidden"
                       }`}
                     />
                   </div>
@@ -140,14 +148,6 @@ export const SmileDesignPicker = ({
         </div>
 
         {/* Selected Smile Summary */}
-        {selectedSmile && (
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-            <p className="text-sm font-medium text-blue-800">
-              Selected Smile Design:
-            </p>
-            <p className="text-xs text-blue-600 mt-1">{selectedSmile.name}</p>
-          </div>
-        )}
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-3 mt-6">
