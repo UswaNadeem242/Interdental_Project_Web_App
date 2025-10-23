@@ -162,13 +162,10 @@ const PatientPage = () => {
                 title="Add New User"
                 Content={
                   <AddPatientForm
-                  // onClose={() => setIsOpen(false)}
-                  // imgUpload="hidden"
-                  // skipImageValidation={true}
+                  
                   />
                 }
               />
-
               <Drawers
                 isOpen={isNoteOpen}
                 onClose={() => setIsNoteOpen(false)}
@@ -178,8 +175,7 @@ const PatientPage = () => {
             </div>
           </div>
         </div>
-        {/* <TableComponent headings={headingsPateint} data={filteredData} /> */}
-        <SecondTable
+         <SecondTable
           headings={headingsPateint}
           data={filteredData}
           actionButton="active"
@@ -187,7 +183,6 @@ const PatientPage = () => {
           onEdit={handleOpenForm}
           onDelete={handleOpenDelete}
         />
-
         {showForm && (
           <Drawers
             isOpen={showForm}
