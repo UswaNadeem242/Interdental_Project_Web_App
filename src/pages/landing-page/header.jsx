@@ -241,7 +241,7 @@ const Header = () => {
                   // className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
                   className="x-4 py-2 rounded-full   text-black text-sm whitespace-nowrap font-semibold"
                 >
-                  sign up
+                  Sign up
                 </button>
               </>
             )}

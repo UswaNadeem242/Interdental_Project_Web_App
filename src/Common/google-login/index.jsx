@@ -22,6 +22,8 @@ export default function LoginWithGoogle() {
         );
         // console.log(" Google User:", googleUser);
 
+
+        console.log(" Google User:", googleUser);
         const payload = {
           email: googleUser.email,
           firstName: googleUser.given_name,

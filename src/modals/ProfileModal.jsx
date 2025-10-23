@@ -363,12 +363,12 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-2 sm:p-4"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-1 sm:p-4"
       onClick={handleCloseModal}
     >
       <div
         ref={modalRef}
-        className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-[95vw] sm:max-w-[640px] max-h-[95vh] flex flex-col relative"
+        className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-[95vw] sm:max-w-[640px] max-h-[95vh] min-h-[50vh] flex flex-col relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -386,8 +386,8 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
           </h2>
         </div>
 
-        {/* Content - No scrolling */}
-        <div className="flex-1 p-4 sm:p-6">
+        {/* Content - Scrollable */}
+        <div className="flex-1 p-4 sm:p-6 overflow-y-auto">
           {/* Avatar */}
           <div className="flex flex-col justify-center items-center mb-4 sm:mb-6">
             <div className="relative">
@@ -622,7 +622,7 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
         </div>
 
         {/* Footer with Save Button */}
-        <div className="border-t border-gray-200 p-3 sm:p-4 md:p-6 rounded-b-2xl sm:rounded-b-3xl">
+        <div className="border-t border-gray-200 p-3 sm:p-4 md:p-6 rounded-b-2xl sm:rounded-b-3xl flex-shrink-0">
           <button
             type="submit"
             onClick={() => formik.handleSubmit()}
