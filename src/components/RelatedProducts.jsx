@@ -21,56 +21,7 @@ const RelatedProducts = ({ relatedProducts }) => {
   const swiperRef = useRef(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
-  // const relatedProducts = [
-  //   {
-  //     id: 1,
-  //     img: "/assets/product1.png",
-  //     title: "G Gold Lable 1 Mini",
-  //     price: 233.65,
-  //   },
-  //   {
-  //     id: 2,
-  //     img: "/assets/product2.png",
-  //     title: "G Gold Lable 1 Mini",
-  //     price: 739.65,
-  //   },
-  //   {
-  //     id: 3,
-  //     img: "/assets/product3.png",
-  //     title: "G Gold Lable 1 Mini",
-  //     price: 634.23,
-  //   },
-  //   {
-  //     id: 4,
-  //     img: "/assets/product4.png",
-  //     title: "G Gold Lable 1 Mini",
-  //     price: 634.23,
-  //   },
-  //   {
-  //     id: 5,
-  //     img: "/assets/product5.png",
-  //     title: "G Gold Lable 1 Mini",
-  //     price: 634.23,
-  //   },
-  //   {
-  //     id: 6,
-  //     img: "/assets/product6.png",
-  //     title: "G Gold Lable 1 Mini",
-  //     price: 634.23,
-  //   },
-  //   {
-  //     id: 7,
-  //     img: "/assets/product7.png",
-  //     title: "G Gold Lable 1 Mini",
-  //     price: 634.23,
-  //   },
-  //   {
-  //     id: 8,
-  //     img: "/assets/product8.png",
-  //     title: "G Gold Lable 1 Mini",
-  //     price: 634.23,
-  //   },
-  // ];
+  
   return (
     <div className="flex flex-col justify-start items-start w-full py-4 h-auto gap-[40px]">
       <h1 className="font-poppins font-semibold text-2xl text-[#1A1A1A]">
@@ -106,7 +57,7 @@ const RelatedProducts = ({ relatedProducts }) => {
               modules={[Autoplay, Pagination, Navigation]}
               className="w-[100%] h-[100%] flex justify-center items-center text-center"
             >
-              {[...relatedProducts?.data,...relatedProducts?.data,...relatedProducts?.data]?.map((product) => (
+              {[...relatedProducts?.data]?.map((product) => (
                 <SwiperSlide key={product?.productId}>
                   <div
                     onClick={() => navigate(`/shop/${product?.productId}`)}

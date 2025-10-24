@@ -150,7 +150,6 @@ function Blog({ isLanding }) {
             {error && !loading && (
               <div className="text-center py-12 sm:py-16">
                 <p className="text-red-600 font-poppins text-base sm:text-lg mb-4">{error}</p>
-                <p className="text-gray-500 font-poppins text-sm sm:text-base">Using fallback content...</p>
               </div>
             )}
 
