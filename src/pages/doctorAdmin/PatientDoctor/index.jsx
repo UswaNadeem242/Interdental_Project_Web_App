@@ -10,13 +10,15 @@ import {
   headingsPateint,
 } from "../../../Constant";
 import SearchBar from "../../../Common/SearchBar";
-import { getDoctorPatients } from "../../../api/doctorDasboard";
+import { deletePatientUser, getDoctorPatients } from "../../../api/doctorDasboard";
 import SecondTable from "../../../Common/second-table-component";
 import { EditDeleteDropdownMenu } from "../../../Common/DropDown/edit-delete";
 import AddNoteForm from "./AddNoteForm";
 import AreYouSureModel from "../../../modals/AreYouSureModel";
 import DeleteModel from "../../../modals/delete-model";
 import EditPatientForm from "./edit-pateint";
+import { showToast } from "../../../store/toast-slice";
+import { useDispatch } from "react-redux";
 
 const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,28 +27,44 @@ const PatientPage = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [patients, setPatients] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [selectedData, setSelectedData] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const handleOpenForm = (row) => {
-    setSelectedData(row);
+  const [selectedData, setSelectedData] = useState(null);
+  const dispatch = useDispatch();
+  const handleOpenForm = (rowData) => {
+    setSelectedData(rowData);
     setShowForm(true);
-
   };
   const handleOpenDelete = (item) => {
     setSelectedItem(item);
     setShowDeleteModal(true);
   };
+  // Step 2: When user confirms in modal — perform actual delete API call
+  const handleConfirmDelete = async () => {
+    if (!selectedItem) return;
 
-  const handleConfirmDelete = () => {
-    console.log("Deleting item:", selectedItem);
-    // Add your delete logic here (API call, state update, etc.)
-    setShowDeleteModal(false);
+    try {
+      const response = await deletePatientUser(selectedItem.id);
+
+      if (response.success) {
+        setShowDeleteModal(false);
+        window.location.reload();
+      } else {
+        dispatch(
+          showToast({
+            message: `Failed to delete user`,
+            type: "error",
+          })
+        );
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
   };
   const transformPatientsData = (apiData) => {
     if (!apiData || !Array.isArray(apiData)) return [];
     return apiData.map((order) => ({
+      id: order?.id,
       name: `${order?.firstName || "-"} ${order?.lastName || "-"}`,
       email: order?.email,
       status: order?.status,
@@ -122,8 +140,6 @@ const PatientPage = () => {
                 className="rounded-md px-8 py-3  font-semibold w-full "
               />
             </div>
-
-
             <div>
               <Drawers
                 isOpen={isOpen}
@@ -131,13 +147,10 @@ const PatientPage = () => {
                 title="Add New User"
                 Content={
                   <AddPatientForm
-                  // onClose={() => setIsOpen(false)}
-                  // imgUpload="hidden"
-                  // skipImageValidation={true}
+
                   />
                 }
               />
-
               <Drawers
                 isOpen={isNoteOpen}
                 onClose={() => setIsNoteOpen(false)}
@@ -147,24 +160,21 @@ const PatientPage = () => {
             </div>
           </div>
         </div>
-        {/* <TableComponent headings={headingsPateint} data={filteredData} /> */}
         <SecondTable
           headings={headingsPateint}
           data={filteredData}
           actionButton="active"
           DropdownComponent={EditDeleteDropdownMenu}
-
           onEdit={handleOpenForm}
           onDelete={handleOpenDelete}
         />
-
         {showForm && (
           <Drawers
             isOpen={showForm}
             // initialData={selectedData
             title="Update Patient"
             onClose={() => setShowForm(false)}
-            Content={<EditPatientForm />}
+            Content={<EditPatientForm userData={selectedData} />}
 
           />
         )}
@@ -173,7 +183,7 @@ const PatientPage = () => {
           <DeleteModel
             title='Are you sure ? '
             desc='This action cannot be undone. Once deleted, all related data will be permanently removed from the system.
-Please confirm if you still want to proceed. '
+                Please confirm if you still want to proceed. '
             isOpen={showDeleteModal}
             onClose={() => setShowDeleteModal(false)}
             onConfirm={handleConfirmDelete}

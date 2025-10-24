@@ -1,4 +1,4 @@
- export default function PatientClaimForm() {
+export default function PatientClaimForm() {
   return (
     <div className="bg-bgWhite">
       <div className="font-poppins text-sm  font-normal text-primaryText pb-3">Claim ID: <span className="font-bold">#12345</span></div>

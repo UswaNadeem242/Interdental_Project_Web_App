@@ -1,10 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { ToothOne, ToothTwo } from "../../icon/tooth-one";
-
-const topTeeth = {
-  1: ToothOne,
-  2: ToothTwo,
-};
 
 const defaultTeeth = [
   { id: 1, name: "UR 3rd Molar (Wisdom)" },

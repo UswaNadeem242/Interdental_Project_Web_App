@@ -50,9 +50,9 @@ const DoctorHeader = ({ title, subTitle, role }) => {
         const response = await getDoctorProfile(userId);
 
         if (response.status === 200) {
-          dispatch(setProfileData(response.data.data));
+          dispatch(setProfileData(response?.data?.data));
         }
-        setDoctorProfile(response.data.data);
+        setDoctorProfile(response?.data?.data);
       };
       fetchDoctorProfile();
     }

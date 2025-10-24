@@ -19,6 +19,7 @@ function DoctorDeailsPage() {
       name: "track order",
       content: <TrackingOrder id={id} />,
     },
+     
   ];
   return (
     <div>

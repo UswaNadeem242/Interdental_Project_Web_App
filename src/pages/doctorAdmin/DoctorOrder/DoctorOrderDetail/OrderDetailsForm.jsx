@@ -159,80 +159,155 @@ export default function OrderDetailsForm({ id }) {
   };
   // download the pdf
   // const handleDownloadPDF = async () => {
+
   //   const element = formRef.current;
-  //   const downloadBtn = element.querySelector(".no-print");
-  //   if (downloadBtn) {
-  //     downloadBtn.style.display = "none";
-  //     console.log("Button hidden"); // Add this to debug
-  //   }
-  //   // ✅ Capture fast (optimized settings)
+  //   if (!element) return;
+
+  //   // Make sure it's hidden but still rendered
+  //   element.style.display = "block";
+  //   element.style.position = "absolute";
+  //   element.style.left = "-9999px";
+
+  //   // Wait a bit for rendering
+  //   await new Promise((resolve) => setTimeout(resolve, 300));
+
+  //   // Capture hidden element
   //   const canvas = await html2canvas(element, {
-  //     scale: 1.5, // Lower scale → faster render, still clear enough
+  //     scale: 2,
   //     useCORS: true,
-  //     backgroundColor: "#ffffff", // Ensures white background
-  //     logging: false,
-  //     removeContainer: true,
+  //     backgroundColor: "#ffffff",
   //   });
 
-  //   // ✅ Restore button visibility
-  //   if (downloadBtn) downloadBtn.style.display = "block";
-
-  //   const imgData = canvas.toDataURL("image/jpeg", 0.95);
+  //   const imgData = canvas.toDataURL("image/png");
   //   const pdf = new jsPDF("p", "mm", "a4");
-
   //   const pdfWidth = pdf.internal.pageSize.getWidth();
-  //   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  //   const pdfHeight = pdf.internal.pageSize.getHeight();
+  //   const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-  //   pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-  //   pdf.save(`Implant_Design_Form.pdf`);
+  //   let heightLeft = imgHeight;
+  //   let position = 0;
+
+  //   pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+  //   heightLeft -= pdfHeight;
+
+  //   while (heightLeft > 0) {
+  //     position = heightLeft - imgHeight;
+  //     pdf.addPage();
+  //     pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+  //     heightLeft -= pdfHeight;
+  //   }
+
+  //   pdf.save("Implant_Design_Form.pdf");
+
+  //   // Reset hidden state (optional)
+  //   element.style.display = "none";
   // };
+
+
+  // const handleDownloadPDF = async () => {
+  //   console.log('heelo');
+
+  //   const element = formRef.current;
+  //   if (!element) return;
+
+  //   try {
+  //     // Temporarily show the element for capture
+  //     element.style.visibility = "visible";
+  //     element.style.position = "absolute";
+  //     element.style.left = "-9999px";
+
+  //     // Wait for layout/rendering
+  //     await new Promise((resolve) => setTimeout(resolve, 300));
+
+  //     // Capture the form using html2canvas
+  //     const canvas = await html2canvas(element, {
+  //       scale: 2,
+  //       useCORS: true,
+  //       backgroundColor: "#ffffff",
+  //     });
+
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF("p", "mm", "a4");
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+  //     let heightLeft = imgHeight;
+  //     let position = 0;
+
+  //     pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+  //     heightLeft -= pdf.internal.pageSize.getHeight();
+
+  //     while (heightLeft > 0) {
+  //       position = heightLeft - imgHeight;
+  //       pdf.addPage();
+  //       pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+  //       heightLeft -= pdf.internal.pageSize.getHeight();
+  //     }
+
+  //     pdf.save("Implant_Design_Form.pdf");
+  //   } catch (error) {
+  //     console.error("PDF generation failed:", error);
+  //   } finally {
+  //     // Hide again
+  //     element.style.visibility = "hidden";
+  //   }
+  // };
+
+
+
+
   const handleDownloadPDF = async () => {
     const element = formRef.current;
-    const downloadBtn = element.querySelector(".no-print");
+    if (!element) return;
 
-    // Hide the download button during capture
-    if (downloadBtn) downloadBtn.style.display = "none";
+    try {
+      // 🟢 Ensure all fonts are loaded
+      await document.fonts.ready;
 
-    // Wait a moment for reflow
-    await new Promise((resolve) => setTimeout(resolve, 300));
+      // 🕐 Small delay for layout to stabilize
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-    // Capture the full element, not just the visible part
-    const canvas = await html2canvas(element, {
-      scale: 2, // High quality
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      scrollY: -window.scrollY, // Prevent cropping
-    });
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: true,
+      });
 
-    // Restore the button
-    if (downloadBtn) downloadBtn.style.display = "block";
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+      let heightLeft = imgHeight;
+      let position = 0;
 
-    const imgWidth = pdfWidth;
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    let heightLeft = imgHeight;
-    let position = 0;
-
-    // Add the first page
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
-
-    // Add extra pages as needed
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
       heightLeft -= pdfHeight;
-    }
 
-    pdf.save("Implant_Design_Form.pdf");
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      pdf.save("Implant_Design_Form.pdf");
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+    }
   };
+
+
+
+
+
+
+
+
+
 
   const totalPrice = toothSelections.reduce((toothSum, tooth) => {
     // for each tooth, sum its fields that have price
@@ -245,23 +320,30 @@ export default function OrderDetailsForm({ id }) {
 
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
-      <div
-        className="md:col-span-8 col-span-4 bg-white p-4 rounded-2xl"
-        ref={formRef}
-      >
+      <div className="md:col-span-8 col-span-4 bg-white p-4 rounded-2xl">
         <div className="flex justify-between items-center pb-4">
           <div>
             <h4 className="text-[#1A1A1A] font-semibold text-sm font-poppins">
               Implant Design Form:
             </h4>
           </div>
-          {/* <div>
-            <SecondaryButton
-              title="Download Form"
-              className="border text-secondaryBrand font-medium text-xs border-secondaryBrand rounded-full  px-6 py-3"
-              onClick={handleDownloadPDF}
-            />
-          </div> */}
+         
+          <div
+            
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "210mm", // A4 width
+              backgroundColor: "#fff",
+              zIndex: -9999,
+              opacity: 0,
+              pointerEvents: "none",
+            }}
+          >
+            <DownloadPdfForm ref={formRef} />
+          </div>
+
           <button
             onClick={handleDownloadPDF}
             className="border text-secondaryBrand font-medium text-xs border-secondaryBrand rounded-full px-6 py-3 no-print"

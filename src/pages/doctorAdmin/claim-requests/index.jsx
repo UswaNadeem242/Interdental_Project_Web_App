@@ -10,6 +10,7 @@ import { PlusIcon } from "../../../icon/PlusIcon";
 import { getClaims } from "../../../api/patient-dashaboard-api";
 import Drawers from "../../../Common/Drawers";
 import PatientClaimForm from "../../PatientAdmin/ClaimRequest/PatientClaimForm";
+import DocotrClaimForm from "./doctor-claim-form";
 
 const DoctorClaimRequests = () => {
     const [selectedRow, setSelectedRow] = useState(null);
@@ -25,27 +26,28 @@ const DoctorClaimRequests = () => {
                 name: order?.patientName || "-",
                 dName: order?.doctorName || "-",
                 pEmail: order?.patientEmail || "-",
-                dEmail: order?.doctorEmail || "-",
+                submission: order?.createdAt
+                    ? new Date(order.createdAt).toISOString().split("T")[0]
+                    : "-",
+                status: order?.orderStatus?.toLowerCase() || "pending",
                 // date: order?.ccExpiry || "-",
                 action: "View Detail",
+                originalData: order,
             };
         });
     };
     useEffect(() => {
-        const fetchPatients = async () => {
+        const fetchClaims = async () => {
             try {
                 const response = await getClaims();
-
                 if (response.status === 200) {
                     setClaims(transformPatientsData(response.data.data));
-
                 }
             } catch (error) {
                 console.log(error);
             }
         };
-
-        fetchPatients();
+        fetchClaims();
     }, []);
 
     const getFilteredDataByStatus = (status) => {
@@ -53,7 +55,6 @@ const DoctorClaimRequests = () => {
             return claims;
         }
         const filtered = claims.filter((order) => order.status === status);
-
         return filtered;
     };
 
@@ -67,9 +68,10 @@ const DoctorClaimRequests = () => {
                     // data={claims}
                     data={getFilteredDataByStatus('all')}
                     onActionClick={(row) => {
-                        setSelectedRow(row);
+                        setSelectedRow(row.originalData); // ✅ full data sent to Drawer
                         setIsOpen(true);
                     }}
+
                 />
             ),
         },
@@ -77,8 +79,14 @@ const DoctorClaimRequests = () => {
             name: "Accepted",
             content: (
                 <TableComponent
-                    headings={headingsPatientClaimReq}
-                    data={getFilteredDataByStatus("accepted")}
+                    headings={headings}
+                    // data={claims}
+                    data={getFilteredDataByStatus('accepted')}
+                    onActionClick={(row) => {
+                        setSelectedRow(row.originalData); // ✅ full data sent to Drawer
+                        setIsOpen(true);
+                    }}
+
                 />
             ),
         },
@@ -86,8 +94,14 @@ const DoctorClaimRequests = () => {
             name: "Pending",
             content: (
                 <TableComponent
-                    headings={headingsPatientClaimReq}
-                    data={getFilteredDataByStatus("pending")}
+                    headings={headings}
+                    // data={claims}
+                    data={getFilteredDataByStatus('pending')}
+                    onActionClick={(row) => {
+                        setSelectedRow(row.originalData); // ✅ full data sent to Drawer
+                        setIsOpen(true);
+                    }}
+
                 />
             ),
         },
@@ -95,8 +109,14 @@ const DoctorClaimRequests = () => {
             name: "Rejected",
             content: (
                 <TableComponent
-                    headings={headingsPatientClaimReq}
-                    data={getFilteredDataByStatus("rejected")}
+                    headings={headings}
+                    // data={claims}
+                    data={getFilteredDataByStatus('rejected')}
+                    onActionClick={(row) => {
+                        setSelectedRow(row.originalData); // ✅ full data sent to Drawer
+                        setIsOpen(true);
+                    }}
+
                 />
             ),
         },
@@ -108,10 +128,6 @@ const DoctorClaimRequests = () => {
             .trim()
             .replace(/\s+/g, "-")      // replace spaces with -
             .replace(/[^\w-]+/g, "");
-
-
-    console.log('claims', claims);
-
     return (
         <div>
 
@@ -136,7 +152,7 @@ const DoctorClaimRequests = () => {
                 onClose={() => setIsOpen(false)}
                 title="Claim Details"
                 status={selectedRow?.status}
-                Content={<PatientClaimForm row={selectedRow} />}
+                Content={<DocotrClaimForm row={selectedRow} />}
             />
         </div>
     );

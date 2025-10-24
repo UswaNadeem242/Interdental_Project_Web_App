@@ -289,11 +289,11 @@ const ReviewOrder = ({ next }) => {
                   : "None"}
               </span>
               {/* Upper 16 */}
-              <div className="flex flex-wrap gap-3 mt-4 justify-center ">
+              <div className="flex gap-4 mt-4">
                 {Object.entries(topTeeth).map(([id, ToothComponent]) => (
                   <div
                     key={id}
-                    className="flex flex-col items-center justify-end "
+                    className="flex flex-col items-center justify-end"
                   >
                     <ToothComponent
                       highlighted={selectedTeeth.includes(Number(id))}
@@ -303,7 +303,7 @@ const ReviewOrder = ({ next }) => {
                 ))}
               </div>
               {/* Lower 16 */}
-              <div className="flex flex-wrap gap-[10px] mt-4 mb-4 justify-center">
+              <div className="flex gap-4 mt-4 mb-4">
                 {Object.entries(bottomTeeth).map(([id, ToothComponent]) => (
                   <div
                     key={id}

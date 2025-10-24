@@ -112,3 +112,25 @@ export const addPatient = async (formData) => {
     return handleApiError(error);
   }
 };
+
+
+export const updateUserPatient = async (bodyData) => {
+  try {
+    const endpoint = `${ENDPOINTS.DOCTOR.UPDATE_PATIENT}`;
+    const response = await api.post(endpoint, bodyData);
+    return handleApiSuccess(response);
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+
+export const deletePatientUser = async (id) => {
+  try {
+    const endpoint = `${ENDPOINTS.DOCTOR.DELETE_PATIENT}/${id}/remove`;
+    const response = await api.post(endpoint);
+    return handleApiSuccess(response);
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
