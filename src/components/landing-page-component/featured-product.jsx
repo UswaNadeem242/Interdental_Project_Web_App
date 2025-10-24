@@ -27,7 +27,7 @@ export default function FeaturedProducts() {
   return (
     <section className="py-20 bg-white">
       <div className="text-center mb-8">
-        <h2 className="text-5xl font-normal font-poppins ">
+        <h2 className="text-lg md:text-5xl font-normal font-poppins ">
           Our{" "}
           <span className="text-secondaryBrand font-bold font-poppins">
             Featured

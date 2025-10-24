@@ -18,7 +18,7 @@ const About = ({ isLanding }) => {
       {!isLanding && <Header />}
       <div className="flex flex-col justify-center items-center w-full h-full">
         {/* About Us Section */}
-        <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-[1511px] h-auto sm:h-[814px] border-t border-[#0000001A] bg-white py-8 sm:py-12 md:py-16 lg:py-[132px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4 sm:gap-8">
+        <div className="flex flex-col lg:flex-row justify-center items-center w-full   border-t border-[#0000001A] bg-white py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8  gap-4 sm:gap-8 mt-20 ">
           {/* Image */}
           <img
             src="/assets/landing-page/about-us-1.png"
