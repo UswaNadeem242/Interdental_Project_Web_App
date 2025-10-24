@@ -4,18 +4,22 @@ import { Link } from 'react-router-dom'
 import api from '../../api/intercepter'
 
 function BlogNext({ currentBlogId }) {
-    const [blogs, setBlogs] = useState([])
     const [loading, setLoading] = useState(true)
     const [prevBlog, setPrevBlog] = useState(null)
     const [nextBlog, setNextBlog] = useState(null)
 
     useEffect(() => {
-        const fetchBlogs = async () => {
+        const fetchAdjacentBlogs = async () => {
             try {
                 setLoading(true)
-                const response = await api.get('/api/blog')
-                const blogData = response.data?.data || []
-                setBlogs(blogData)
+                
+                // Fetch a small set of blogs around the current one
+                // We'll fetch 3 pages worth to find adjacent blogs
+                const response = await api.get('/api/blog', {
+                    params: { page: 0, size: 100 } // Fetch more blogs to find adjacent ones
+                })
+                
+                const blogData = response.data?.data?.data || []
                 
                 // Find current blog index
                 const currentIndex = blogData.findIndex(blog => blog.id === parseInt(currentBlogId))
@@ -34,16 +38,29 @@ function BlogNext({ currentBlogId }) {
                     } else {
                         setNextBlog(null)
                     }
+                } else {
+                    // If current blog not found in first 100, try to find by ID comparison
+                    // Assuming newer blogs have higher IDs
+                    const currentId = parseInt(currentBlogId)
+                    const sortedBlogs = [...blogData].sort((a, b) => b.id - a.id) // Sort by ID descending (newest first)
+                    
+                    const currentIdx = sortedBlogs.findIndex(blog => blog.id === currentId)
+                    if (currentIdx !== -1) {
+                        setPrevBlog(currentIdx > 0 ? sortedBlogs[currentIdx - 1] : null)
+                        setNextBlog(currentIdx < sortedBlogs.length - 1 ? sortedBlogs[currentIdx + 1] : null)
+                    }
                 }
             } catch (error) {
-                console.error('Error fetching blogs:', error)
+                console.error('Error fetching adjacent blogs:', error)
+                setPrevBlog(null)
+                setNextBlog(null)
             } finally {
                 setLoading(false)
             }
         }
 
         if (currentBlogId) {
-            fetchBlogs()
+            fetchAdjacentBlogs()
         }
     }, [currentBlogId])
     if (loading) {

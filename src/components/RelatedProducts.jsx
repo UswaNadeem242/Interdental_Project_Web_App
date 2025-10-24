@@ -21,27 +21,23 @@ const RelatedProducts = ({ relatedProducts }) => {
   const swiperRef = useRef(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
-  
   return (
-    <div className="flex flex-col justify-start items-start w-full py-4 h-auto gap-[40px]">
-      <h1 className="font-poppins font-semibold text-2xl text-[#1A1A1A]">
+    <div className="flex flex-col justify-start items-start w-full py-4 h-auto gap-6 md:gap-10">
+      <h1 className="font-poppins font-semibold text-xl md:text-2xl text-[#1A1A1A] px-4 md:px-0">
         Related Products
       </h1>
       {relatedProducts?.data && relatedProducts?.data?.length > 0 ? (
-        <div className="flex w-full h-[388px] gap-[31px]">
-          <div className="relative flex w-full h-[386px] gap-[31px]">
+        <div className="flex w-full min-h-[350px] md:min-h-[388px]">
+          <div className="relative flex w-full px-4 md:px-0">
             <Swiper
               ref={swiperRef}
-              spaceBetween={24}
-              slidesPerView={4}
+              spaceBetween={16}
+              slidesPerView={1}
               centeredSlides={false}
               autoplay={{
                 delay: 3000,
                 disableOnInteraction: false,
               }}
-              // pagination={{
-              //   clickable: true,
-              // }}
               navigation={{
                 nextEl: '.swiper-button-next-custom',
                 prevEl: '.swiper-button-prev-custom',
@@ -54,8 +50,22 @@ const RelatedProducts = ({ relatedProducts }) => {
                 setIsBeginning(swiper.isBeginning);
                 setIsEnd(swiper.isEnd);
               }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                  spaceBetween: 16,
+                },
+                768: {
+                  slidesPerView: 3,
+                  spaceBetween: 20,
+                },
+                1024: {
+                  slidesPerView: 4,
+                  spaceBetween: 24,
+                },
+              }}
               modules={[Autoplay, Pagination, Navigation]}
-              className="w-[100%] h-[100%] flex justify-center items-center text-center"
+              className="w-full h-full flex justify-center items-center text-center"
             >
               {[...relatedProducts?.data]?.map((product) => (
                 <SwiperSlide key={product?.productId}>
@@ -67,18 +77,18 @@ const RelatedProducts = ({ relatedProducts }) => {
                     onMouseLeave={() =>
                       swiperRef.current.swiper.autoplay.start()
                     }
-                    className="flex flex-col justify-center items-center cursor-pointer bg-white w-[283.15px] h-[366px]  space-y-[24px] border-[1px] border-[#0000000D] rounded-[16px]"
+                    className="flex flex-col justify-center items-center cursor-pointer bg-white w-full max-w-[283.15px] mx-auto h-[340px] sm:h-[366px] p-4 space-y-4 sm:space-y-6 border-[1px] border-[#0000000D] rounded-[16px] hover:shadow-lg transition-shadow duration-300"
                   >
                     <img
                       src={product?.imageUrls[0]}
-                      alt="product"
-                      className="w-[263.15px] h-[260.45px]"
+                      alt={product?.name}
+                      className="w-full max-w-[263.15px] h-[200px] sm:h-[260.45px] object-cover rounded-lg"
                     />
-                    <div className="flex flex-col justify-center items-center space-y-[7.55px]">
-                      <h1 className="font-poppins font-semibold text-[16px] leading-[24px] text-black">
+                    <div className="flex flex-col justify-center items-center space-y-2">
+                      <h1 className="font-poppins font-semibold text-sm sm:text-[16px] leading-tight text-black text-center line-clamp-2 px-2">
                         {product?.name}
                       </h1>
-                      <h1 className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD]">
+                      <h1 className="font-poppins font-bold text-lg sm:text-[20px] leading-[30px] text-[#94D3DD]">
                         ${product?.price}
                       </h1>
                     </div>
@@ -87,27 +97,27 @@ const RelatedProducts = ({ relatedProducts }) => {
               ))}
             </Swiper>
             
-            {/* Custom Navigation Buttons */}
+            {/* Custom Navigation Buttons - Hidden on mobile */}
             <button 
-              className={`swiper-button-prev-custom absolute -left-10 top-1/2 -translate-y-1/2 z-10 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-colors ${
+              className={`swiper-button-prev-custom hidden md:flex absolute -left-6 lg:-left-10 top-1/2 -translate-y-1/2 z-10 w-12 h-12 lg:w-16 lg:h-16 rounded-full shadow-lg items-center justify-center transition-colors ${
                 isBeginning 
                   ? 'bg-gray-100 cursor-not-allowed' 
                   : 'bg-white hover:bg-gray-50 cursor-pointer'
               }`}
               disabled={isBeginning}
             >
-              <Icons.Arrow.Left className={`w-8 h-8 ${isBeginning ? 'text-gray-400' : 'text-gray-700'}`} />
+              <Icons.Arrow.Left className={`w-6 h-6 lg:w-8 lg:h-8 ${isBeginning ? 'text-gray-400' : 'text-gray-700'}`} />
             </button>
             
              <button 
-               className={`swiper-button-next-custom absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-colors ${
+               className={`swiper-button-next-custom hidden md:flex absolute -right-2 lg:-right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 lg:w-16 lg:h-16 rounded-full shadow-lg items-center justify-center transition-colors ${
                  isEnd 
                    ? 'bg-gray-100 cursor-not-allowed' 
                    : 'bg-white hover:bg-gray-50 cursor-pointer'
                }`}
                disabled={isEnd}
              >
-               <Icons.Arrow.Right className={`w-8 h-8 ${isEnd ? 'text-gray-400' : 'text-gray-700'}`} />
+               <Icons.Arrow.Right className={`w-6 h-6 lg:w-8 lg:h-8 ${isEnd ? 'text-gray-400' : 'text-gray-700'}`} />
              </button>
           </div>
         </div>

@@ -41,9 +41,6 @@ export default function DownloadPdfForm({ id, ref }) {
             return "-";
         }
     };
-
-
-
     useEffect(() => {
         const fetchOrderByID = async () => {
             const response = await getOrderByID(id);
@@ -54,9 +51,6 @@ export default function DownloadPdfForm({ id, ref }) {
         };
         fetchOrderByID();
     }, [id]);
-
-
-
     const maskNamePart = (name) => {
         if (!name?.trim()) return "Unknown";
         const clean = name.trim();

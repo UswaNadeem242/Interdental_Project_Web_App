@@ -537,11 +537,11 @@ const Shop = () => {
     <div className="bg-background">
       {/* bg-gradient-to-b from-cyan-50 to-emerald-50/0 */}
       <Header />
-      <div className="px-4 md:px-10   py-6 ">
+      <div className="px-4 md:px-10 py-6 ">
         {/* Header */}
-        <div className="flex justify-between items-center  mt-24">
+        <div className="flex justify-between items-center  mt-20">
           <button
-            className="md:hidden flex items-center gap-2 border px-3 py-2 rounded-lg text-sm"
+            className="md:hidden flex items-center gap-2 border mb-4 px-3 py-2 rounded-lg text-sm"
             onClick={() => setIsFilterOpen(true)}
           >
             Filter
@@ -552,25 +552,32 @@ const Shop = () => {
         <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8">
           {/* Sidebar (desktop static, mobile drawer) */}
           <div
-            className={`sticky top-0 w-72 rounded-2xl bg-white shadow-lg transform transition-transform duration-300 md:static md:translate-x-0 md:shadow-none
+            className={`fixed top-0 left-0 h-full w-72 rounded-r-2xl bg-white shadow-2xl transform transition-transform duration-300 z-50 md:static md:translate-x-0 md:shadow-none md:rounded-2xl md:z-auto overflow-y-auto
           ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}`}
           >
             {/* Mobile header */}
-            <div className="flex justify-between items-center p-4 border-b md:hidden">
-              <h2 className="font-semibold ">Filters</h2>
-              <div onClick={() => setIsFilterOpen(false)}>x</div>
+            <div className="flex justify-between items-center p-4 border-b md:hidden sticky top-0 bg-white z-10">
+              <h2 className="font-semibold text-lg">Filters</h2>
+              <button 
+                onClick={() => setIsFilterOpen(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
             {/* Filters content */}
             <div className="p-4 space-y-3 overflow-y-auto h-full">
               {/* Filter Header with Reset All Button */}
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+                <h2 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
                   Filter
                 </h2>
                 <button
                   onClick={handleResetAll}
-                  className="px-6 py-2 border-2 text-[14px] border-[#001D58] text-[#001D58] rounded-full font-medium hover:bg-[#001D58] hover:text-white transition-colors"
+                  className="px-4 sm:px-6 py-2 border-2 text-[12px] sm:text-[14px] border-[#001D58] text-[#001D58] rounded-full font-medium hover:bg-[#001D58] hover:text-white transition-colors whitespace-nowrap"
                 >
                   Reset All
                 </button>
@@ -726,14 +733,14 @@ const Shop = () => {
           {/* Overlay for mobile */}
           {isFilterOpen && (
             <div
-              className="fixed inset-0 bg-black/40 md:hidden"
+              className="fixed inset-0 bg-black/50 md:hidden z-40"
               onClick={() => setIsFilterOpen(false)}
             />
           )}
 
           {/* Products Grid */}
           <div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {loading ? (
                 <>
                   {[...Array(6)].map((_, index) => (
@@ -752,8 +759,11 @@ const Shop = () => {
                   />
                 ))
               ) : (
-                <div className="w-96 h-full flex justify-center items-center bg-white p-8 rounded-md">
-                  <p className="text-2xl">Sorry! No Products Found</p>
+                <div className="col-span-2 sm:col-span-2 lg:col-span-3 flex justify-center items-center bg-white p-8 rounded-md min-h-[300px]">
+                  <div className="text-center">
+                    <p className="text-xl sm:text-2xl font-poppins text-gray-600">Sorry! No Products Found</p>
+                    <p className="text-sm text-gray-500 mt-2">Try adjusting your filters</p>
+                  </div>
                 </div>
               )}
             </div>
