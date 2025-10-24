@@ -21,7 +21,6 @@ const RelatedProducts = ({ relatedProducts }) => {
   const swiperRef = useRef(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
-  
   return (
     <div className="flex flex-col justify-start items-start w-full py-4 h-auto gap-6 md:gap-10">
       <h1 className="font-poppins font-semibold text-xl md:text-2xl text-[#1A1A1A] px-4 md:px-0">
