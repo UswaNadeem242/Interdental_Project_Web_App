@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import api from '../../api/intercepter'
 
 function BlogNext({ currentBlogId }) {
+    const [blogs, setBlogs] = useState([])
     const [loading, setLoading] = useState(true)
     const [prevBlog, setPrevBlog] = useState(null)
     const [nextBlog, setNextBlog] = useState(null)
