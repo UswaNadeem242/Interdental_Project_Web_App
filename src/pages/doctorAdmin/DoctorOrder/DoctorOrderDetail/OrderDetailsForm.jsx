@@ -89,50 +89,155 @@ export default function OrderDetailsForm({ id }) {
     return first + middle + last;
   };
   // download the pdf
+  // const handleDownloadPDF = async () => {
+
+  //   const element = formRef.current;
+  //   if (!element) return;
+
+  //   // Make sure it's hidden but still rendered
+  //   element.style.display = "block";
+  //   element.style.position = "absolute";
+  //   element.style.left = "-9999px";
+
+  //   // Wait a bit for rendering
+  //   await new Promise((resolve) => setTimeout(resolve, 300));
+
+  //   // Capture hidden element
+  //   const canvas = await html2canvas(element, {
+  //     scale: 2,
+  //     useCORS: true,
+  //     backgroundColor: "#ffffff",
+  //   });
+
+  //   const imgData = canvas.toDataURL("image/png");
+  //   const pdf = new jsPDF("p", "mm", "a4");
+  //   const pdfWidth = pdf.internal.pageSize.getWidth();
+  //   const pdfHeight = pdf.internal.pageSize.getHeight();
+  //   const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+  //   let heightLeft = imgHeight;
+  //   let position = 0;
+
+  //   pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+  //   heightLeft -= pdfHeight;
+
+  //   while (heightLeft > 0) {
+  //     position = heightLeft - imgHeight;
+  //     pdf.addPage();
+  //     pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+  //     heightLeft -= pdfHeight;
+  //   }
+
+  //   pdf.save("Implant_Design_Form.pdf");
+
+  //   // Reset hidden state (optional)
+  //   element.style.display = "none";
+  // };
+
+
+  // const handleDownloadPDF = async () => {
+  //   console.log('heelo');
+
+  //   const element = formRef.current;
+  //   if (!element) return;
+
+  //   try {
+  //     // Temporarily show the element for capture
+  //     element.style.visibility = "visible";
+  //     element.style.position = "absolute";
+  //     element.style.left = "-9999px";
+
+  //     // Wait for layout/rendering
+  //     await new Promise((resolve) => setTimeout(resolve, 300));
+
+  //     // Capture the form using html2canvas
+  //     const canvas = await html2canvas(element, {
+  //       scale: 2,
+  //       useCORS: true,
+  //       backgroundColor: "#ffffff",
+  //     });
+
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF("p", "mm", "a4");
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+  //     let heightLeft = imgHeight;
+  //     let position = 0;
+
+  //     pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+  //     heightLeft -= pdf.internal.pageSize.getHeight();
+
+  //     while (heightLeft > 0) {
+  //       position = heightLeft - imgHeight;
+  //       pdf.addPage();
+  //       pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+  //       heightLeft -= pdf.internal.pageSize.getHeight();
+  //     }
+
+  //     pdf.save("Implant_Design_Form.pdf");
+  //   } catch (error) {
+  //     console.error("PDF generation failed:", error);
+  //   } finally {
+  //     // Hide again
+  //     element.style.visibility = "hidden";
+  //   }
+  // };
+
+
+
+
   const handleDownloadPDF = async () => {
-     
     const element = formRef.current;
     if (!element) return;
 
-    // Make sure it's hidden but still rendered
-    element.style.display = "block";
-    element.style.position = "absolute";
-    element.style.left = "-9999px";
+    try {
+      // 🟢 Ensure all fonts are loaded
+      await document.fonts.ready;
 
-    // Wait a bit for rendering
-    await new Promise((resolve) => setTimeout(resolve, 300));
+      // 🕐 Small delay for layout to stabilize
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-    // Capture hidden element
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-    });
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: true,
+      });
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
 
-    let heightLeft = imgHeight;
-    let position = 0;
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
-    heightLeft -= pdfHeight;
+      let heightLeft = imgHeight;
+      let position = 0;
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
       heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      pdf.save("Implant_Design_Form.pdf");
+    } catch (err) {
+      console.error("PDF generation failed:", err);
     }
-
-    pdf.save("Implant_Design_Form.pdf");
-
-    // Reset hidden state (optional)
-    element.style.display = "none";
   };
+
+
+
+
+
+
+
+
 
 
   const totalPrice = toothSelections.reduce((toothSum, tooth) => {
@@ -154,14 +259,20 @@ export default function OrderDetailsForm({ id }) {
               Implant Design Form:
             </h4>
           </div>
-          {/* <div>
-            <SecondaryButton
-              title="Download Form"
-              className="border text-secondaryBrand font-medium text-xs border-secondaryBrand rounded-full  px-6 py-3"
-              onClick={handleDownloadPDF}
-            />
-          </div> */}
-          <div style={{ display: "none" }}>
+         
+          <div
+            
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "210mm", // A4 width
+              backgroundColor: "#fff",
+              zIndex: -9999,
+              opacity: 0,
+              pointerEvents: "none",
+            }}
+          >
             <DownloadPdfForm ref={formRef} />
           </div>
 

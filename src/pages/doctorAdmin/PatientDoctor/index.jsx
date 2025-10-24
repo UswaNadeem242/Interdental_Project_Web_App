@@ -17,6 +17,8 @@ import AddNoteForm from "./AddNoteForm";
 import AreYouSureModel from "../../../modals/AreYouSureModel";
 import DeleteModel from "../../../modals/delete-model";
 import EditPatientForm from "./edit-pateint";
+import { showToast } from "../../../store/toast-slice";
+import { useDispatch } from "react-redux";
 
 const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,51 +30,36 @@ const PatientPage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
-
+  const dispatch = useDispatch();
   const handleOpenForm = (rowData) => {
     setSelectedData(rowData);
     setShowForm(true);
   };
-
-
-  const handleOpenDelete = async (row) => {
-    console.log('row delete:', row);
-
-
-    const confirmDelete = window.confirm(`Are you sure you want to delete ${row.name}?`);
-    if (!confirmDelete) return;
+  const handleOpenDelete = (item) => {
+    setSelectedItem(item);
+    setShowDeleteModal(true);
+  };
+  // Step 2: When user confirms in modal — perform actual delete API call
+  const handleConfirmDelete = async () => {
+    if (!selectedItem) return;
 
     try {
-      const response = await deletePatientUser(row.id);
+      const response = await deletePatientUser(selectedItem.id);
 
-      console.log(response);
       if (response.success) {
-
-        // showToast("User deleted successfully!", "success");
-
-        // ✅ Update table instantly without reload
-        // setFilteredData((prev) => prev.filter((user) => user.id !== row.id));
-         setSelectedItem(item);
-    setShowDeleteModal(true);
+        setShowDeleteModal(false);
+        window.location.reload();
       } else {
-        showToast("Failed to delete user", "error");
+        dispatch(
+          showToast({
+            message: `Failed to delete user`,
+            type: "error",
+          })
+        );
       }
     } catch (error) {
       console.error("Delete error:", error);
-      // showToast("Something went wrong!", "error");
     }
-  };
-
-
-  // const handleOpenDelete = (item) => {
-  //   setSelectedItem(item);
-  //   setShowDeleteModal(true);
-  // };
-
-  const handleConfirmDelete = () => {
-    console.log("Deleting item:", selectedItem);
-    // Add your delete logic here (API call, state update, etc.)
-    setShowDeleteModal(false);
   };
   const transformPatientsData = (apiData) => {
     if (!apiData || !Array.isArray(apiData)) return [];
@@ -153,8 +140,6 @@ const PatientPage = () => {
                 className="rounded-md px-8 py-3  font-semibold w-full "
               />
             </div>
-
-
             <div>
               <Drawers
                 isOpen={isOpen}
@@ -162,7 +147,7 @@ const PatientPage = () => {
                 title="Add New User"
                 Content={
                   <AddPatientForm
-                  
+
                   />
                 }
               />
@@ -175,7 +160,7 @@ const PatientPage = () => {
             </div>
           </div>
         </div>
-         <SecondTable
+        <SecondTable
           headings={headingsPateint}
           data={filteredData}
           actionButton="active"
@@ -198,7 +183,7 @@ const PatientPage = () => {
           <DeleteModel
             title='Are you sure ? '
             desc='This action cannot be undone. Once deleted, all related data will be permanently removed from the system.
-Please confirm if you still want to proceed. '
+                Please confirm if you still want to proceed. '
             isOpen={showDeleteModal}
             onClose={() => setShowDeleteModal(false)}
             onConfirm={handleConfirmDelete}
