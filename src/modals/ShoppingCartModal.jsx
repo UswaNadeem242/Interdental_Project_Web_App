@@ -337,8 +337,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
     }
   }, [formik.values.country, countries, selectedCountry]);
 
-  console.log(user, "USER");
-
+ 
   return (
     <div className="fixed top-0 right-0 inset-0 flex items-center justify-end bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div
@@ -1097,8 +1096,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
               </div>
               <div
                 onClick={() => {
-                  setIsModalOpen(false);
-                  console.log("hello");
+                  setIsModalOpen(false); 
                   navigate("/shop");
                   window.location.reload();
                 }}

@@ -10,7 +10,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const FeaturedProducts = ({ products }) => {
-  console.log(products, "PD");
+ 
   const navigate = useNavigate();
   return (
     // h-[906px] change needs to be done on parent div

@@ -16,8 +16,7 @@ import { useNavigate } from "react-router-dom";
 import Icons from "./Icons";
 
 const RelatedProducts = ({ relatedProducts }) => {
-  console.log(relatedProducts?.data, "{related}");
-  const navigate = useNavigate();
+   const navigate = useNavigate();
   const swiperRef = useRef(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);

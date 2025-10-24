@@ -41,8 +41,7 @@ const ProfileSettings = () => {
         // if (response.status === 200) {
         //   // dispatch(setProfileData(response.data.data));
         //   setProfileData(response.data.data)
-        // }
-        console.log('useEffect doctor:', response);
+        // } 
 
         setPatientProfile(response.data.data);
       };

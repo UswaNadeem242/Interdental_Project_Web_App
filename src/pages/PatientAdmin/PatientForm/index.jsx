@@ -96,13 +96,11 @@ export const PatientForm = () => {
         // createdAt: values.date,
 
         // warrantySelections, // <-- injected here
-      };
-
-      console.log("Final Payload 👉", payload);
+      }; 
 
       // Example API call
       const response = await getClaimsByUser(payload);
-      console.log(response);
+     
 
       if (response.success) {
 

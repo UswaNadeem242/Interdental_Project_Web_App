@@ -74,7 +74,7 @@ const PateintLogin = () => {
                 );
             }
         } catch (error) {
-            console.log(error);1
+            console.log(error);
             // alert("Wrong credentials");
             setLoading(false);
         }

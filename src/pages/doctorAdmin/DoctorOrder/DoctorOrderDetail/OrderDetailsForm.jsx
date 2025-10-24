@@ -42,6 +42,7 @@ import {
   ToothThirtyOne,
   ToothThirtyTwo,
 } from "../../../../icon/tooth-one";
+import DownloadPdfForm from "../../../../components/doctorAdmin/download-form";
 
 const topTeeth = {
   1: ToothOne,
@@ -157,81 +158,50 @@ export default function OrderDetailsForm({ id }) {
 
     return first + middle + last;
   };
-  // download the pdf
-  // const handleDownloadPDF = async () => {
-  //   const element = formRef.current;
-  //   const downloadBtn = element.querySelector(".no-print");
-  //   if (downloadBtn) {
-  //     downloadBtn.style.display = "none";
-  //     console.log("Button hidden"); // Add this to debug
-  //   }
-  //   // ✅ Capture fast (optimized settings)
-  //   const canvas = await html2canvas(element, {
-  //     scale: 1.5, // Lower scale → faster render, still clear enough
-  //     useCORS: true,
-  //     backgroundColor: "#ffffff", // Ensures white background
-  //     logging: false,
-  //     removeContainer: true,
-  //   });
-
-  //   // ✅ Restore button visibility
-  //   if (downloadBtn) downloadBtn.style.display = "block";
-
-  //   const imgData = canvas.toDataURL("image/jpeg", 0.95);
-  //   const pdf = new jsPDF("p", "mm", "a4");
-
-  //   const pdfWidth = pdf.internal.pageSize.getWidth();
-  //   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-  //   pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-  //   pdf.save(`Implant_Design_Form.pdf`);
-  // };
+ 
+  
+  
   const handleDownloadPDF = async () => {
     const element = formRef.current;
-    const downloadBtn = element.querySelector(".no-print");
-
-    // Hide the download button during capture
-    if (downloadBtn) downloadBtn.style.display = "none";
-
-    // Wait a moment for reflow
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    // Capture the full element, not just the visible part
-    const canvas = await html2canvas(element, {
-      scale: 2, // High quality
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      scrollY: -window.scrollY, // Prevent cropping
-    });
-
-    // Restore the button
-    if (downloadBtn) downloadBtn.style.display = "block";
-
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-
-    const imgWidth = pdfWidth;
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    let heightLeft = imgHeight;
-    let position = 0;
-
-    // Add the first page
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
-
-    // Add extra pages as needed
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight;
+    if (!element) {
+      console.error("formRef is missing or null");
+      return;
     }
 
-    pdf.save("Implant_Design_Form.pdf");
+    try {
+      // Give React time to fully render the hidden component
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      pdf.save("Implant_Design_Form.pdf");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
   };
 
   const totalPrice = toothSelections.reduce((toothSum, tooth) => {
@@ -262,6 +232,25 @@ export default function OrderDetailsForm({ id }) {
               onClick={handleDownloadPDF}
             />
           </div> */}
+
+          <div
+
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "210mm", // A4 width
+              backgroundColor: "#fff",
+              zIndex: -9999,
+              opacity: 0,
+              pointerEvents: "none",
+            }}
+          >
+            <DownloadPdfForm ref={formRef} />
+          </div>
+
+
+
           <button
             onClick={handleDownloadPDF}
             className="border text-secondaryBrand font-medium text-xs border-secondaryBrand rounded-full px-6 py-3 no-print"

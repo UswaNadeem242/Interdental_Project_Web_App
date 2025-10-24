@@ -5,9 +5,7 @@ export default function PatientDetailForm({ warranties }) {
 
   const getRewarrentlyById = (warranties, id) => {
     return warranties.find(item => item.id === id)?.rewarrently || null;
-  };
-
-  console.log(getRewarrentlyById(warranties, "#41")); // "98.69926389997437"
+  }; 
 
 
   return (

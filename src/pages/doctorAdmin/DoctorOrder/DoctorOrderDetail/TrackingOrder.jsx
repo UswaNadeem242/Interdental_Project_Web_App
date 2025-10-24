@@ -99,8 +99,7 @@ export default function TrackingOrder({ id }) {
       }
     };
     fetchOrderByID();
-  }, [id]);
-  console.log("orderTracking", orderTracking);
+  }, [id]); 
 
   return (
     <>

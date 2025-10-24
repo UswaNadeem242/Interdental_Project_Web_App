@@ -117,8 +117,6 @@ export default function AddPatientForm({
 
       // API call using the new addPatient function
       const response = await addPatient(formData);
-      console.log("formdata:", formData);
-
       // Check for success using the API function response format
       if (response.success) {
         showToast("Patient added successfully!", "success");

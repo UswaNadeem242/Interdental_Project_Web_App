@@ -29,8 +29,7 @@ const Orders = () => {
           },
         },
       );
-      setOrders(response.data);
-      console.log(response.data.orders);
+      setOrders(response.data); 
     } catch (error) {
       console.log(error);
     }
@@ -50,8 +49,7 @@ const Orders = () => {
           },
         },
       );
-      console.log(response.data, 'ORDER TRACKING INFO');
-      setTrackingData(response.data);
+       setTrackingData(response.data);
     }
     catch (error) {
       console.log(error);
