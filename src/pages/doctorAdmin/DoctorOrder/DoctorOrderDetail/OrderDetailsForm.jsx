@@ -42,6 +42,7 @@ import {
   ToothThirtyOne,
   ToothThirtyTwo,
 } from "../../../../icon/tooth-one";
+import DownloadPdfForm from "../../../../components/doctorAdmin/download-form";
 
 const topTeeth = {
   1: ToothOne,
