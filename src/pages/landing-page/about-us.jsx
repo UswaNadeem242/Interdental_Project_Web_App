@@ -42,7 +42,7 @@ const AboutUs = () => {
           onClick={() => navigate("/about-us")}
           className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2 "
         >
-          <h1 className="font-poppins font-semibold text-base text-[#434343]">
+          <h1 className="font-poppins font-semibold text-sm md:text-base text-[#434343]">
             Learn more
           </h1>
           <div className="rounded-full bg-secondaryBrand text-white p-2">
