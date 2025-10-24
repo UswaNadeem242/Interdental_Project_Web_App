@@ -69,7 +69,7 @@ const LandingPage = () => {
           <div className="flex flex-col justify-start items-start w-full  space-y-4 sm:space-y-[16px] px-4 sm:px-0">
             {/* max-w-[575px] */}
             <div className="flex justify-start items-center gap-2 sm:gap-4 font-poppins font-bold sm:text-sm md:text-3xl lg:text-[40px]">
-              <h1 className="text-secondaryBrand  text-5xl font-poppins font-semibold">
+              <h1 className="text-secondaryBrand text-xl md:text-5xl font-poppins font-semibold">
                 InterOral.ai
               </h1>
             </div>

@@ -143,12 +143,13 @@ export default function RestorationTeethSvg({
     const angle = isUpper ? Math.PI - angleStep * (i + 1) : angleStep * (i + 1);
     const x = radius + 120 * Math.cos(angle);
     const y = radius * Math.sin(angle) * (isUpper ? 1 : -1);
+    const popupAbove = isUpper;
 
     return (
       <div
         key={num}
         // also keep native tooltip on hover that shows the name
-        title={`${name}`}
+        title={`${name}, FDI: ${fdi}, Palmer:${palmer}`}
         onClick={() => onToothClick(num)}
         className="absolute cursor-pointer transition-transform duration-300"
         style={{
@@ -161,7 +162,24 @@ export default function RestorationTeethSvg({
         <div className="inline-block transform-gpu transition-transform duration-200 hover:scale-110">
           <ToothComponent fillColor={color} />
         </div>
+        {/* {isSelected(num) && (
+          <div
+            className="absolute left-1/2 z-30 w-max min-w-[140px] max-w-xs -translate-x-1/2 rounded bg-white border shadow-md text-xs"
+            style={
+              popupAbove
+                ? { bottom: `calc(100% + 10px)` }
+                : { top: `calc(100% + 10px)` }
+            }
+          >
+            <div className="p-2">
+              <p className="font-semibold text-sm leading-tight">{name}</p>
+              <p className="text-[11px] leading-tight mt-1">FDI: {fdi}</p>
+              <p className="text-[11px] leading-tight">Palmer: {palmer}</p>
+            </div>
+          </div>
+        )} */}
       </div>
+      /* Popup shown only when selected */
     );
   };
 

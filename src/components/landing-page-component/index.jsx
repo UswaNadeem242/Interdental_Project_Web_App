@@ -12,11 +12,11 @@ function DoctorComponent() {
           <img
             src={"/assets/landing-page/doctor-image.png"}
             alt="Doctor"
-            className="w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] object-cover"
+            className="w-[300px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] object-cover"
           />
         </div>
         <div className="mt-6 sm:mt-8 md:mt-0 md:ml-8 lg:ml-16 w-full md:w-1/2 text-gray-800">
-          <h3 className="text-3xl md:text-5xl font-bold text-secondaryBrand">
+          <h3 className="text-xl md:text-5xl font-bold text-secondaryBrand">
             DOCTOR
           </h3>
           <p className="mt-4 text-sm md:text-xl font-normal text-secondaryText">

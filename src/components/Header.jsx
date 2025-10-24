@@ -57,7 +57,7 @@ const Header = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       );
       setProducts(response.data.data.content);
     } catch (error) {
@@ -73,7 +73,7 @@ const Header = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       );
       setCategoriesList(response.data);
     } catch (error) {
