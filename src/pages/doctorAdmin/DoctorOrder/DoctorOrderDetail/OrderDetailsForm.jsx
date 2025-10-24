@@ -8,7 +8,78 @@ import { getOrderByID } from "../../../../api/doctorDasboard";
 import { useSelector } from "react-redux";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import DownloadPdfForm from "../../../../components/doctorAdmin/download-form";
+import {
+  ToothOne,
+  ToothTwo,
+  ToothThree,
+  ToothFour,
+  ToothFive,
+  ToothSix,
+  ToothSeven,
+  ToothEight,
+  ToothNine,
+  ToothTen,
+  ToothEleven,
+  ToothTwelve,
+  ToothThirteen,
+  ToothFourteen,
+  ToothFifteen,
+  ToothSixteen,
+  ToothSeventeen,
+  ToothEighteen,
+  ToothNineteen,
+  ToothTwenty,
+  ToothTwentyOne,
+  ToothTwentyTwo,
+  ToothTwentyThree,
+  ToothTwentyFour,
+  ToothTwentyFive,
+  ToothTwentySix,
+  ToothTwentySeven,
+  ToothTwentyEight,
+  ToothTwentyNine,
+  ToothThirty,
+  ToothThirtyOne,
+  ToothThirtyTwo,
+} from "../../../../icon/tooth-one";
+
+const topTeeth = {
+  1: ToothOne,
+  2: ToothTwo,
+  3: ToothThree,
+  4: ToothFour,
+  5: ToothFive,
+  6: ToothSix,
+  7: ToothSeven,
+  8: ToothEight,
+  9: ToothNine,
+  10: ToothTen,
+  11: ToothEleven,
+  12: ToothTwelve,
+  13: ToothThirteen,
+  14: ToothFourteen,
+  15: ToothFifteen,
+  16: ToothSixteen,
+};
+
+const bottomTeeth = {
+  17: ToothSeventeen,
+  18: ToothEighteen,
+  19: ToothNineteen,
+  20: ToothTwenty,
+  21: ToothTwentyOne,
+  22: ToothTwentyTwo,
+  23: ToothTwentyThree,
+  24: ToothTwentyFour,
+  25: ToothTwentyFive,
+  26: ToothTwentySix,
+  27: ToothTwentySeven,
+  28: ToothTwentyEight,
+  29: ToothTwentyNine,
+  30: ToothThirty,
+  31: ToothThirtyOne,
+  32: ToothThirtyTwo,
+};
 
 export default function OrderDetailsForm({ id }) {
   const [selected, setSelected] = useState("");
@@ -71,9 +142,7 @@ export default function OrderDetailsForm({ id }) {
   const maskNamePart = (name) => {
     if (!name?.trim()) return "Unknown";
     const clean = name.trim();
-    return (
-      clean.charAt(0).toUpperCase() + clean.slice(1, 2).toLowerCase()
-    );
+    return clean.charAt(0).toUpperCase() + clean.slice(1, 2).toLowerCase();
   };
 
   const maskNumber = (num) => {
@@ -249,13 +318,12 @@ export default function OrderDetailsForm({ id }) {
     return toothSum + toothTotal;
   }, 0);
 
-
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
       <div className="md:col-span-8 col-span-4 bg-white p-4 rounded-2xl">
         <div className="flex justify-between items-center pb-4">
           <div>
-            <h4 className="text-[#1A1A1A] font-semibold text-sm font-poppins" >
+            <h4 className="text-[#1A1A1A] font-semibold text-sm font-poppins">
               Implant Design Form:
             </h4>
           </div>
@@ -282,10 +350,9 @@ export default function OrderDetailsForm({ id }) {
           >
             Download Form
           </button>
-
         </div>
 
-        <div >
+        <div>
           <div className="border border-gray-200  rounded-lg p-4 sm:p-5">
             <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText">
               Doctor Info
@@ -297,10 +364,9 @@ export default function OrderDetailsForm({ id }) {
                   Contact Info
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins ">
-                  {`${maskNamePart(orderDetails?.doctorFirstName)}${maskNamePart(
-                    orderDetails?.doctorLastName
-                  )}`}
-
+                  {`${maskNamePart(
+                    orderDetails?.doctorFirstName
+                  )}${maskNamePart(orderDetails?.doctorLastName)}`}
                 </p>
               </div>
               <div>
@@ -308,7 +374,6 @@ export default function OrderDetailsForm({ id }) {
                   Office Registration
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-
                   {maskNumber(orderDetails?.doctorRefNumber) || "-"}
                 </p>
               </div>
@@ -348,11 +413,12 @@ export default function OrderDetailsForm({ id }) {
                   Patient Name:
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {`${maskNamePart(orderDetails?.patientFirstName)}${maskNamePart(
-                    orderDetails?.patientLastName
-                  )}`}
+                  {`${maskNamePart(
+                    orderDetails?.patientFirstName
+                  )}${maskNamePart(orderDetails?.patientLastName)}`}
                 </p>
-              </div>   <div>
+              </div>{" "}
+              <div>
                 <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
                   Subscription ID:
                 </p>
@@ -368,19 +434,55 @@ export default function OrderDetailsForm({ id }) {
           {/* tooth selection  */}
           <div className="border border-gray-200  rounded-lg p-4 mt-4">
             <p className="text-sm font-medium font-poppins text-primaryText mb-4">
-              Tooth Selection  <span className="font-semibold">
-                {orderDetails?.selectedTooths > 0
+              Tooth Selection{" "}
+              <span className="font-semibold">
+                {/* {orderDetails?.selectedTooths > 0
                   ? orderDetails?.selectedTooths.map((t) => `#${t}`).join(", ")
+                  : "None"} */}
+                {(orderDetails?.selectedTooths || []).length > 0
+                  ? orderDetails.selectedTooths.map((t) => `#${t}`).join(", ")
                   : "None"}
               </span>
             </p>
-            <div className="py-4">
+            <div className="">
               {/* <img src="/assets/doctor/teeth.png" alt="image" /> */}
-              <TeethSelection
+              {/* <TeethSelection
                 selectedTeeth={orderDetails?.selectedTooths || []}
-                onToothSelect={() => { }} // No selection needed - display only
+                onToothSelect={() => {}} // No selection needed - display only
                 showIds={true}
-              />
+              /> */}
+              {/* Upper 16 */}
+              <div className="flex flex-wrap gap-4 mt-4 justify-center ">
+                {Object.entries(topTeeth).map(([id, ToothComponent]) => (
+                  <div
+                    key={id}
+                    className="flex flex-col items-center justify-end"
+                  >
+                    <ToothComponent
+                      highlighted={(
+                        orderDetails?.selectedTooths || []
+                      ).includes(Number(id))}
+                    />
+                    <span className="text-sm mt-1 text-gray-600">{id}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Lower 16 */}
+              <div className="flex flex-wrap gap-[16px] mt-4 mb-4 justify-center">
+                {Object.entries(bottomTeeth).map(([id, ToothComponent]) => (
+                  <div
+                    key={id}
+                    className="flex flex-col items-center justify-end"
+                  >
+                    <ToothComponent
+                      highlighted={(
+                        orderDetails?.selectedTooths || []
+                      ).includes(Number(id))}
+                    />
+                    <span className="text-sm text-gray-600 mt-1">{id}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -395,20 +497,14 @@ export default function OrderDetailsForm({ id }) {
               const tooth = teeth[toothId] || {};
 
               return (
-                <div
-                  key={toothId}
-                  className="  p-3 rounded-lg"
-                >
-
+                <div key={toothId} className="  p-3 rounded-lg">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
                     <div>
                       <p className="text-[#949494] text-xs font-poppins">
                         Material:
                       </p>
                       <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth.materialOption?.label ||
-                          tooth.material ||
-                          "N/A"}
+                        {tooth.materialOption?.label || tooth.material || "N/A"}
                       </p>
                     </div>
                     <div>
@@ -469,7 +565,6 @@ export default function OrderDetailsForm({ id }) {
                           "N/A"}
                       </p>
                     </div>
-
                   </div>
                 </div>
               );
@@ -483,10 +578,10 @@ export default function OrderDetailsForm({ id }) {
             <div className=" text-sm sm:text-base pb-2">
               <div>
                 <p className="text-secondaryText     font-normal md:text-sm text-xs font-poppins ">
-                  {`${maskNamePart(orderDetails?.doctorFirstName)}${maskNamePart(
-                    orderDetails?.doctorLastName
-                  )}`}:
-
+                  {`${maskNamePart(
+                    orderDetails?.doctorFirstName
+                  )}${maskNamePart(orderDetails?.doctorLastName)}`}
+                  :
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
                   {orderDetails?.additionalNotes || "-"}
