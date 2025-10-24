@@ -186,10 +186,7 @@ const DoctorOrder = () => {
   };
   const today = new Date();
   // Format YYYY-MM-DD for <input type="date">
-  const formattedToday = today.toISOString().split("T")[0];
-
-  //
-
+  const formattedToday = today.toISOString().split("T")[0]; 
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
@@ -424,12 +421,12 @@ const DoctorOrder = () => {
                             label="Scanner Type"
                             storageKey="scannerType"
                             dropdownClass="text-secondaryBrand"
-                            error={
-                              touched.scannerType &&
-                              !activeToothSelection.scannerType
-                                ? "Select the Teeth first to select Scanner type"
-                                : ""
-                            }
+                          // error={
+                          //   touched.scannerType &&
+                          //     !activeToothSelection.scannerType
+                          //     ? "Select the Teeth first to select Scanner type"
+                          //     : ""
+                          // }
                           />
                           <div>
                             <FileUploadSection />
@@ -572,14 +569,14 @@ const DoctorOrder = () => {
                                         (p) => p.name === "Surgical Guide"
                                       )?.children?.length > 0
                                         ? orders.find(
-                                            (p) => p.name === "Surgical Guide"
-                                          )?.children
+                                          (p) => p.name === "Surgical Guide"
+                                        )?.children
                                         : [
-                                            {
-                                              label: "Not Available",
-                                              value: "",
-                                            },
-                                          ]
+                                          {
+                                            label: "Not Available",
+                                            value: "",
+                                          },
+                                        ]
                                     }
                                     hideCheckForNotAvailable={true}
                                     label="Surgical Guide"
@@ -794,14 +791,14 @@ const DoctorOrder = () => {
                                   storageKey="Photogrammetry files"
                                   className="w-full rounded-xl bg-[#F8F8F8] border-none px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow "
                                   dropdownClass="text-secondaryBrand"
-                                  error={
-                                    touched.photogrammetryfiles &&
-                                    !toothSelections.find(
-                                      (t) => t.toothId === selectedTooth
-                                    )?.photogrammetryfiles
-                                      ? "Please select a tooth first before selecting Photogrammetry files."
-                                      : ""
-                                  }
+                                // error={
+                                //   touched.photogrammetryfiles &&
+                                //   !toothSelections.find(
+                                //     (t) => t.toothId === selectedTooth
+                                //   )?.photogrammetryfiles
+                                //     ? "Please select a tooth first before selecting Photogrammetry files."
+                                //     : ""
+                                // }
                                 />
                               </FormSection>
                             </div>
@@ -909,11 +906,10 @@ const DoctorOrder = () => {
                               type="button"
                               onClick={next}
                               disabled={totalPrice === 0}
-                              className={`font-poppins w-full px-6 py-3 text-sm font-medium ${
-                                totalPrice > 0
-                                  ? "bg-[#0b2b62] text-[#F8F8F8] hover:bg-[#092b58]"
-                                  : "bg-[#0b2b62] text-[#F8F8F8] cursor-not-allowed"
-                              }`}
+                              className={`font-poppins w-full px-6 py-3 text-sm font-medium ${totalPrice > 0
+                                ? "bg-[#0b2b62] text-[#F8F8F8] hover:bg-[#092b58]"
+                                : "bg-[#0b2b62] text-[#F8F8F8] cursor-not-allowed"
+                                }`}
                             >
                               Checkout
                             </button>
@@ -921,6 +917,9 @@ const DoctorOrder = () => {
                             {totalPrice === 0 && (
                               <p className="text-sm text-red-600 text-center mt-2 font-poppins">
                                 Select all the items first to Checkout
+
+
+
                               </p>
                             )}
                           </div>
