@@ -32,7 +32,6 @@ import ThirtyIconSvg from "../../icon/teeth/thirty";
 import ThirtyOneIconSvg from "../../icon/teeth/thirty-one";
 import ThirtyTwoIconSvg from "../../icon/teeth/thirty-two";
 
-// Store all tooth SVG components in an array for dynamic mapping
 const toothComponents = [
   OneIconSvg,
   TwoIconSvg,
@@ -68,10 +67,6 @@ const toothComponents = [
   ThirtyTwoIconSvg,
 ];
 
-/* ---------------------------
-   Tooth names + FDI / Palmer helpers
-   (kept inline so popup can show accurate info)
-   --------------------------- */
 const defaultTeeth = [
   { id: 1, name: "Upper Right 3rd Molar (Wisdom)" },
   { id: 2, name: "Upper Right 2nd Molar" },
@@ -120,11 +115,6 @@ const toPalmerFromFDI = (fdi) => {
   return `${PALMER_QTXT[q]} ${fdi % 10} ${PALMER_SYMBOL[PALMER_QTXT[q]]}`;
 };
 
-/* ---------------------------
-   Component: TeethSvg (with popup on selected)
-   - selectedTeeth: array of selected tooth ids
-   - onToothClick: handler toggling selection in parent
-   --------------------------- */
 export default function RestorationTeethSvg({
   selectedTeeth = [],
   onToothClick = () => {},
@@ -135,7 +125,7 @@ export default function RestorationTeethSvg({
   const lowerTeeth = Array.from({ length: 16 }, (_, i) => i + 17);
   const isSelected = (num) => selectedTeeth.includes(num);
 
-  // Helper: render single tooth with popup when selected
+  // render single tooth with popup when selected
   const renderTooth = (num, i, isUpper = true) => {
     const ToothComponent = toothComponents[num - 1];
     if (!ToothComponent) return null;
@@ -146,15 +136,13 @@ export default function RestorationTeethSvg({
     const fdi = toFDI(num);
     const palmer = toPalmerFromFDI(fdi);
 
-    // arc math (kept from your previous implementation)
+    // arc math
     const radius = 170;
     const total = 16;
     const angleStep = Math.PI / (total + 1);
     const angle = isUpper ? Math.PI - angleStep * (i + 1) : angleStep * (i + 1);
     const x = radius + 120 * Math.cos(angle);
     const y = radius * Math.sin(angle) * (isUpper ? 1 : -1);
-
-    const popupAbove = isUpper; // smart positioning: upper -> above, lower -> below
 
     return (
       <div
@@ -173,24 +161,6 @@ export default function RestorationTeethSvg({
         <div className="inline-block transform-gpu transition-transform duration-200 hover:scale-110">
           <ToothComponent fillColor={color} />
         </div>
-
-        {/* Popup shown only when selected */}
-        {/* {isSelected(num) && (
-          <div
-            className={`absolute left-1/2 z-30 w-max min-w-[140px] max-w-xs -translate-x-1/2 rounded bg-white border shadow-md text-xs`}
-            style={
-              popupAbove
-                ? { bottom: `calc(100% + 10px)` } // above the tooth
-                : { top: `calc(100% + 10px)` } // below the tooth
-            }
-          >
-            <div className="p-2">
-              <p className="font-semibold text-sm leading-tight">{name}</p>
-              <p className="text-[11px] leading-tight mt-1">FDI: {fdi}</p>
-              <p className="text-[11px] leading-tight">Palmer: {palmer}</p>
-            </div>
-          </div>
-        )} */}
       </div>
     );
   };
