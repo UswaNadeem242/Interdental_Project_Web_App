@@ -99,9 +99,9 @@ const Doctor = ({ isLanding }) => {
 
   return (
     <>
-      <div className="bg-gradient-to-b from-[#f7fefc] to-[#e2f7fb]">
+      <div className="bg-gradient-to-b from-[#f7fefc] to-[#e2f7fb] sm:mt-0 mt-20">
         {!isLanding && <Header />}
-        <section className="bg-[#F9FCFF] py-8 sm:py-12 mt-10 md:py-16 px-4 sm:px-6 md:px-8 flex flex-col md:flex-row items-center justify-between">
+        <section className="bg-[#F9FCFF] py-8 sm:py-12 mt-10 md:py-16 px-4 sm:px-6 md:px-8 flex flex-col lg:flex-row items-center justify-between">
           {/* Left Side: Image */}
           <div className="relative w-full md:w-1/2 flex justify-center items-center">
             {/* Circular Image */}
@@ -112,14 +112,14 @@ const Doctor = ({ isLanding }) => {
                   : "/assets/landing-page/doctor-image-3.png"
               }
               alt="Doctor"
-              className="w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] object-cover"
+              className="w-[240px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] object-cover "
             />
             {/* Small Circle */}
           </div>
 
           {/* Right Side: Text */}
           <div className="mt-6 sm:mt-8 md:mt-0 md:ml-8 lg:ml-16 w-full md:w-1/2 text-gray-800">
-            <h3 className="text-3xl md:text-5xl font-bold text-secondaryBrand">
+            <h3 className="text-2xl md:text-5xl font-bold text-secondaryBrand">
               DOCTOR
             </h3>
             <p className="font-poppins capitalize text-base  font-medium py-4">
@@ -168,7 +168,7 @@ const Doctor = ({ isLanding }) => {
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center md:px-16 px-4 py-20">
           {/* Left column */}
           <div className="space-y-4">
-            <h1 className="text-3xl lg:text-4xl font-poppins capitalize">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-poppins capitalize">
               DOCTOR{" "}
               <span className="text-secondaryBrand font-bold capitalize">
                 ENROLLMENT
@@ -308,17 +308,17 @@ const Doctor = ({ isLanding }) => {
 
         <section className="bg-[#F9FCFF] py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8">
           {/* Header */}
-          <h2 className="text-base md:text-3xl font-normal text-primaryText capitalize text-center tracking-wide">
+          <h2 className="text-lg md:text-3xl font-normal text-primaryText capitalize text-center tracking-wide">
             DOCTOR{" "}
-            <span className="font-bold text-3xl font-poppins uppercase text-secondaryBrand">
+            <span className="font-bold text-lg md:text-3xl font-poppins uppercase text-secondaryBrand">
               ENROLLMENT
             </span>{" "}
-            <span className="text-3xl font-bold font-poppins uppercase text-fouthBrand ">
+            <span className="md:text-3xl text-lg font-bold font-poppins uppercase text-fouthBrand ">
               PLANS{" "}
             </span>
           </h2>
           {/* Plans Grid */}
-          <div className="mx-auto mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-full">
+          <div className="mx-auto mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-full">
             {plans.map((plan) => (
               <div
                 key={plan.id}
@@ -464,12 +464,12 @@ const Doctor = ({ isLanding }) => {
 
           {/* Join */}
           <div className="flex flex-col items-center mt-40">
-            <p className="text-[#001D58] text-5xl font-normal">
+            <p className="text-[#001D58] text-3xl md:text-5xl font-normal">
               Join{" "}
               <span className="text-[#94D3DD] font-bold">InterOral.ai</span>{" "}
               Today — Transform Your
             </p>
-            <div className="text-[#94D3DD] font-bold text-5xl ">
+            <div className="text-[#94D3DD] font-bold text-3xl md:text-5xl ">
               Dental Experience!
             </div>
             <p className="text-[#949494] font-normal text-xl font-poppins mt-10 lg:max-w-3xl text-center">
@@ -490,14 +490,14 @@ const Doctor = ({ isLanding }) => {
       </div>
       <section className="container mx-auto px-4 my-16">
         <div className="flex justify-center">
-          <h3 className="text-secondaryBrand text-5xl font-normal font-poppins">
+          <h3 className="text-secondaryBrand text-2xl md:text-5xl font-normal font-poppins">
             Need a{" "}
-            <span className="text-secondaryBrand text-5xl   font-bold font-poppins ">
+            <span className="text-secondaryBrand text-2xl md:text-5xl   font-bold font-poppins ">
               Custom Plan?
             </span>
           </h3>
         </div>
-        <p className="text-xl font-normal font-poppins text-secondaryText max-w-[600px] mx-auto text-center py-8">
+        <p className="md:text-xl text-lg font-normal font-poppins text-secondaryText max-w-[600px] mx-auto text-center py-8">
           We’re happy to build a tailored solution for your team. Just Contact
           Us and let us know what you need.
         </p>

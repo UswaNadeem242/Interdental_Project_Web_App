@@ -8,7 +8,7 @@ function MakeSmile() {
   const navigate = useNavigate();
   return (
     <div>
-      <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 items-center md:px-16 px-4 py-20  ">
+      <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 items-center md:px-16 px-4   ">
         <div className="flex justify-center">
           <img
             src="/assets/landing-page/landing 2.png"

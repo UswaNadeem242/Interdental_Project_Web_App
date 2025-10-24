@@ -18,7 +18,7 @@ const AboutUs = () => {
       {/* Right Side: Text */}
       <div className="mt-8 md:mt-0 md:ml-16 w-full md:w-1/2 text-gray-800">
         <h3 className="text-lg font-bold text-secondaryText pb-4 ">About Us</h3>
-        <h2 className="text-4xl font-bold text-secondaryBrand uppercase">
+        <h2 className="text-xl md:text-4xl font-bold text-secondaryBrand uppercase">
           InterOral. <span className="text-fouthBrand">Ai</span>
         </h2>
         <p className="mt-4 text-gray-600  max-w-[560px] tracking-wide">
@@ -42,7 +42,7 @@ const AboutUs = () => {
           onClick={() => navigate("/about-us")}
           className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2 "
         >
-          <h1 className="font-poppins font-semibold text-base text-[#434343]">
+          <h1 className="font-poppins font-semibold text-sm md:text-base text-[#434343]">
             Learn more
           </h1>
           <div className="rounded-full bg-secondaryBrand text-white p-2">
