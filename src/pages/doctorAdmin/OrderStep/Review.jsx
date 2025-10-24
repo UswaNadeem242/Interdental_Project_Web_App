@@ -180,8 +180,6 @@ const ReviewOrder = ({ next }) => {
       });
     }
   }, [doctorProfile]);
-  console.log("formData", formData);
-
   // Utility function
   const formatDate = (dateString) => {
     if (!dateString) return "";

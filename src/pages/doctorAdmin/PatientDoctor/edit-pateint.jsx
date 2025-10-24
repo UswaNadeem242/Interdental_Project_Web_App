@@ -102,8 +102,9 @@ export default function EditPatientForm({ onClose, userData }) {
                                 label="Email"
                                 placeholder="Enter Email"
                                 type="email"
-                                disabled={isDisabled}
-                                onClick={handleDisable}
+                                readOnly
+                                // disabled={isDisabled}
+                                // onClick={handleDisable}
                             />
                             <ErrorMessage name="email" component="div" className="text-red-700 text-sm" />
                         </div>

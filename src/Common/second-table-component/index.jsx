@@ -249,20 +249,6 @@ export default function SecondTable({
                         onDelete={() => onDelete(row)}
                       />
                     )}
-
-
-                    {/* {open === idx && (
-                      <EditDeleteDropdownMenu
-                        onEdit={() => {
-                          console.log("Edit clicked for:", row);
-                          setOpen(null);
-                        }}
-                        onDelete={() => {
-                          console.log("Delete clicked for:", row);
-                          setOpen(null);
-                        }}
-                      />
-                    )} */}
                   </td>
                 )}
 

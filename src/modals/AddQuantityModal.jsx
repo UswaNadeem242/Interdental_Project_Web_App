@@ -54,8 +54,7 @@ const AddQuantityModal = ({
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
-      );
-      console.log(response);
+      ); 
       alert("Quantity added successfully");
       getAllProducts();
       setIsModalOpen(false);

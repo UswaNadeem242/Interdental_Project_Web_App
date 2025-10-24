@@ -1,30 +1,7 @@
-import { useEffect, useState } from "react";
-import { getClaims } from "../../../api/patient-dashaboard-api";
+
 
 export default function DocotrClaimForm({ row }) {
-
-
-
-    // const [claims, setClaims] = useState([]);
-    // console.log('claims drawer', claims);
-
-    // useEffect(() => {
-    //     const fetchClaims = async () => {
-    //         try {
-    //             const response = await getClaims();
-    //             console.log('reposne claisms', response);
-
-    //             if (response.status === 200) {
-    //                 setClaims(response.data.data);
-    //             }
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     };
-    //     fetchClaims();
-    // }, []);
-
-    const {
+ const {
         id,
         createdAt,
         crownTeeth,
@@ -35,8 +12,6 @@ export default function DocotrClaimForm({ row }) {
         patientName,
         status,
     } = row;
-
-
     return (
         <div className="bg-bgWhite">
 

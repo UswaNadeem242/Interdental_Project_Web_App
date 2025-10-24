@@ -20,7 +20,7 @@ export const DoctorCalimsForm = () => {
     try {
       // ✅ Prepare final payload in backend format
       const payload = {
-        patientId: values?.patient?.id, // make sure Formik stores this
+        patientId: values?.patient, // make sure Formik stores this
         crownTeeth: Array.isArray(values.crownTeeth)
           ? values.crownTeeth.filter(Boolean).join(",")
           : (values.crownTeeth || "").replace(/^,|,$/g, ""),
@@ -29,10 +29,9 @@ export const DoctorCalimsForm = () => {
           : (values.implantTeeth || "").replace(/^,|,$/g, ""),
       };
 
-      console.log("Submitting payload:", payload);
-
+ 
       const response = await getClaimsByUser(payload);
-      console.log('response', response);
+      
 
       if (response.success) {
         dispatch(
@@ -156,7 +155,7 @@ export const DoctorCalimsForm = () => {
                   dropdownClass="text-secondaryBrand"
                   value={values?.patient} // Formik value 
                   onChange={(val) => {
-                     setFieldValue("patient", val);
+                    setFieldValue("patient", val);
                   }}
                   onBlur={() => setFieldTouched("patient", true)}
                   classNameWidth='w-full'
@@ -247,8 +246,6 @@ export const DoctorCalimsForm = () => {
 
                               );
                             })}
-
-
                           </div>
                         )}
                       </FieldArray>

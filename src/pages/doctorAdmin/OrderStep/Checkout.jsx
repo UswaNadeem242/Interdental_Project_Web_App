@@ -60,17 +60,8 @@ const CheckoutForm = ({ next }) => {
     // Get only the doctor ID
     const doctorId = doctorData?.id;
     const formattedDate = doctorData?.dueDate ? `${doctorData.dueDate}T00:00:00` : null;
-
-
-
-    console.log('doctorData', doctorId);
+ 
     const patientId = restoration?.patient?.id || null;
-
-    console.log('patientData', patientId);
-    // const patientData = {};
-    // (restoration.patient || []).forEach(p => {
-    //   patientData[p.field] = p.value;
-    // });
     const selectedTeeth = restoration.selectedTeeth || [12, 13];
 
     return {

@@ -43,8 +43,6 @@ function ListProduct() {
     onSubmit: (values, { resetForm }) => {
       console.log("Form Submitted with values:", values);
       console.log("Uploaded Images:", images);
-      // console.log("Dynamic Options:", inputs);
-
       //  Reset all form fields and state after successful submit
       resetForm();
       setImages([]);

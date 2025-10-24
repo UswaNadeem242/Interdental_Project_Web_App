@@ -2,8 +2,7 @@ import TabsStepper from "../../../Common/TabsStepper";
 import TableComponent from "../../../Common/Table";
 import { useEffect, useState } from "react";
 import {
-    headings,
-    headingsPatientClaimReq,
+    headings, 
 } from "../../../Constant";
 import { SecondaryButton } from "../../../Common/Button";
 import { PlusIcon } from "../../../icon/PlusIcon";

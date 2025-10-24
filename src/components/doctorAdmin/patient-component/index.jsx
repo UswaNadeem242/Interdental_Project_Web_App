@@ -59,6 +59,8 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
     setOpen(false);
     dispatch(setSelectedPatient(patient));
   };
+  // const selectedPatient = patientsList.find((p) => p.id === value?.id);
+
   // Filter patients by search term
   useEffect(() => {
     if (!searchTerm.trim()) {

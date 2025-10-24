@@ -24,7 +24,7 @@ export default function DownloadPdfForm({ id, ref }) {
         acc[d.field] = d.value || "N/A";
         return acc;
     }, {});
-    const formRef = useRef();
+ 
     // Helper function to format date as MM/DD/YYYY
     const formatDate = (dateString) => {
         if (!dateString || dateString === "-") return "-";
@@ -72,53 +72,7 @@ export default function DownloadPdfForm({ id, ref }) {
         return first + middle + last;
     };
     // download the pdf
-    const handleDownloadPDF = async () => {
-        const element = formRef.current;
-        const downloadBtn = element.querySelector(".no-print");
-
-        // Hide the download button during capture
-        if (downloadBtn) downloadBtn.style.display = "none";
-
-        // Wait a moment for reflow
-        await new Promise((resolve) => setTimeout(resolve, 300));
-
-        // Capture the full element, not just the visible part
-        const canvas = await html2canvas(element, {
-            scale: 2, // High quality
-            useCORS: true,
-            backgroundColor: "#ffffff",
-            scrollY: -window.scrollY, // Prevent cropping
-        });
-
-        // Restore the button
-        if (downloadBtn) downloadBtn.style.display = "block";
-
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-
-        const imgWidth = pdfWidth;
-        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-        let heightLeft = imgHeight;
-        let position = 0;
-
-        // Add the first page
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pdfHeight;
-
-        // Add extra pages as needed
-        while (heightLeft > 0) {
-            position = heightLeft - imgHeight;
-            pdf.addPage();
-            pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-            heightLeft -= pdfHeight;
-        }
-
-        pdf.save("Implant_Design_Form.pdf");
-    };
+    
 
     const totalPrice = toothSelections.reduce((toothSum, tooth) => {
         // for each tooth, sum its fields that have price

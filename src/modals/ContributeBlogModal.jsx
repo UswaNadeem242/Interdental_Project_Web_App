@@ -59,11 +59,7 @@ const ContributeBlogModal = ({ isModalOpen, setIsModalOpen }) => {
     if (!formData.name || !formData.office || !formData.topicIdea) {
       alert("Please fill in all required fields");
       return;
-    }
-
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
-
+    }  
     // Close modal after successful submission
     handleCloseModal();
   };
