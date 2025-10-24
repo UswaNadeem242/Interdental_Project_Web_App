@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
-import { tabs } from "../../Constant";
+import React, { useEffect, useState, useCallback } from "react";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import FrequentlyAskedQuestion from "../../components/frequently-asked-question";
 import UpperFooter from "../../components/upper-footer";
 import Footer from "../../components/Footer";
@@ -12,72 +11,126 @@ import ContributeBlogModal from "../../modals/ContributeBlogModal.jsx";
 import api from "../../api/intercepter";
 
 function Blog({ isLanding }) {
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState(null); // null means "all"
   const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [isContributeModalOpen, setIsContributeModalOpen] = useState(false);
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [dynamicTabs, setDynamicTabs] = useState([]);
-  const cardsPerPage = 6;
+  const [categories, setCategories] = useState([]);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 0,
+    size: 6,
+    totalRecord: 0
+  });
 
-  // Fetch blogs from API
+  // Fetch categories from API
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const fetchCategories = async () => {
       try {
-        setLoading(true);
-        setError(null);
-        const response = await api.get("/api/blog");
-        const blogData = response.data?.data || [];
-        setBlogs(blogData);
-
-        // Generate dynamic tabs from blog categories
-        const categories = [...new Set(blogData.map(blog => blog.categoryName).filter(Boolean))];
-        const tabs = [
-          { id: "all", label: "All Topics" },
-          ...categories.map(category => ({
-            id: category.toLowerCase().replace(/\s+/g, '-'),
-            label: category
-          }))
-        ];
-        setDynamicTabs(tabs);
+        const response = await api.get("/api/blog/categories");
+        const categoryData = response.data?.data || [];
+        setCategories(categoryData);
       } catch (err) {
-        console.error('Error fetching blogs:', err);
-        setError('Failed to load blogs');
-        setBlogs([]);
-        setDynamicTabs([{ id: "all", label: "All Topics" }]);
-      } finally {
-        setLoading(false);
+        console.error('Error fetching categories:', err);
+        setCategories([]);
       }
     };
 
-    fetchBlogs();
+    fetchCategories();
   }, []);
 
-  // Filter blogs based on search and active tab
-  const filteredCards = blogs.filter((blog) => {
-    const matchesSearch =
-      blog.title?.toLowerCase().includes(search.toLowerCase()) ||
-      blog.content?.toLowerCase().includes(search.toLowerCase()) ||
-      blog.categoryName?.toLowerCase().includes(search.toLowerCase());
+  // Fetch blogs from API with pagination, search, and category filter
+  const fetchBlogs = useCallback(async (page = 1) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const params = {
+        page: page - 1, // API uses 0-based indexing
+        size: 6,
+      };
+      
+      // Add search parameter if search is not empty
+      if (search) {
+        params.search = search;
+      }
+      
+      // Add categoryId parameter if a category is selected
+      if (activeTab !== null) {
+        params.categoryId = activeTab;
+      }
 
-    // If "All Topics" is selected, show all blogs
-    if (activeTab === "all") {
-      return matchesSearch;
+      const response = await api.get("/api/blog", { params });
+      const responseData = response.data?.data;
+      const content = responseData?.data || [];
+      const totalRecord = responseData?.totalRecord || 0;
+      const totalPages = responseData?.page || 0;
+
+      setBlogs(content);
+
+      setPagination({
+        currentPage: page,
+        totalPages: totalPages,
+        size: 6,
+        totalRecord
+      });
+      
+    } catch (err) {
+      console.error('Error fetching blogs:', err);
+      setError('Failed to load blogs');
+      setBlogs([]);
+    } finally {
+      setLoading(false);
     }
-
-    // Filter by category if not "All Topics"
-    const matchesCategory = blog.categoryName?.toLowerCase() === activeTab.replace(/-/g, ' ');
-    return matchesSearch && matchesCategory;
-  });
-
-  const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
-  const startIndex = (currentPage - 1) * cardsPerPage;
-
-  useEffect(() => {
-    setCurrentPage(1);
   }, [search, activeTab]);
+
+  // Fetch blogs when search or activeTab changes
+  useEffect(() => {
+    fetchBlogs(1);
+  }, [search, activeTab]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      fetchBlogs(newPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const { currentPage, totalPages } = pagination;
+    const pages = [];
+    
+    if (totalPages <= 5) {
+      // Show all pages if 5 or fewer
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always show first page
+      pages.push(1);
+      
+      if (currentPage > 3) {
+        pages.push('...');
+      }
+      
+      // Show pages around current page
+      for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+        pages.push(i);
+      }
+      
+      if (currentPage < totalPages - 2) {
+        pages.push('...');
+      }
+      
+      // Always show last page
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
 
 
   return (
@@ -98,18 +151,27 @@ function Blog({ isLanding }) {
               </p>
             </div>
             {/* Dynamic Tabs */}
-            {!loading && dynamicTabs.length > 0 && (
+            {categories.length > 0 && (
               <div className="flex flex-wrap justify-center items-center gap-4 mb-8">
-                {dynamicTabs.map((tab) => (
+                <button
+                  onClick={() => setActiveTab(null)}
+                  className={`px-6 py-3 rounded-full font-poppins text-sm sm:text-base transition-colors duration-200 ${activeTab === null
+                      ? "bg-fouthBrand text-white"
+                      : "text-secondaryText border-secondaryText border hover:bg-gray-50"
+                    }`}
+                >
+                  All Topics
+                </button>
+                {categories.map((category) => (
                   <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`px-6 py-3 rounded-full font-poppins text-sm sm:text-base transition-colors duration-200 ${activeTab === tab.id
+                    key={category.id}
+                    onClick={() => setActiveTab(category.id)}
+                    className={`px-6 py-3 rounded-full font-poppins text-sm sm:text-base transition-colors duration-200 ${activeTab === category.id
                         ? "bg-fouthBrand text-white"
                         : "text-secondaryText border-secondaryText border hover:bg-gray-50"
                       }`}
                   >
-                    {tab.label}
+                    {category.name}
                   </button>
                 ))}
               </div>
@@ -154,81 +216,96 @@ function Blog({ isLanding }) {
             )}
 
             {/* Cards */}
-            {!loading && (
+            {!loading && !error && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
-                {filteredCards && filteredCards.length > 0 ? (
-                  filteredCards
-                    .slice(startIndex, startIndex + cardsPerPage)
-                    .map((blog, index) => {
-                      return (
-                        <Link
-                          key={blog.id}
-                          to={`/blogs/${blog.id}`}
-                          className="block w-full max-w-sm bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondaryBrand transform hover:-translate-y-1"
-                        >
-                          <img
-                            src={blog.imageUrl?.[0] || "/assets/landing-page/card 3.png"}
-                            alt={blog.title || "Blog card"}
-                            className="w-full h-48 object-contain rounded mb-4"
-                          />
-                          <h3 className="text-sm font-medium font-poppins uppercase text-fouthBrand mb-2">
-                            {blog.categoryName || "Blog"}
-                          </h3>
-                          <p className="text-xl font-normal font-poppins capitalize mb-4 line-clamp-2">
-                            {blog.title}
-                          </p>
+                {blogs && blogs.length > 0 ? (
+                  blogs.map((blog) => {
+                    return (
+                      <Link
+                        key={blog.id}
+                        to={`/blogs/${blog.id}`}
+                        className="block w-full max-w-sm bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondaryBrand transform hover:-translate-y-1"
+                      >
+                        <img
+                          src={blog.imageUrl?.[0] || "/assets/landing-page/card 3.png"}
+                          alt={blog.title || "Blog card"}
+                          className="w-full h-48 object-contain rounded mb-4"
+                        />
+                        <h3 className="text-sm font-medium font-poppins uppercase text-fouthBrand mb-2">
+                          {blog.categoryName || "Blog"}
+                        </h3>
+                        <p className="text-xl font-normal font-poppins capitalize mb-4 line-clamp-2">
+                          {blog.title}
+                        </p>
 
-                          {/* style the Link like a button (avoid nested button-inside-link) */}
-                          <span className="inline-flex justify-start items-center w-fit rounded-full border-2 border-fouthBrand gap-4  px-4 py-2 hover:bg-fouthBrand hover:text-white transition-colors duration-200">
-                            <span className="font-poppins font-semibold text-base text-[#434343]">
-                              Read More
-                            </span>
-                            <span className="rounded-full bg-secondaryBrand text-white p-2">
-                              <ArrowRightIcon className="w-4 h-4" />
-                            </span>
+                        {/* style the Link like a button (avoid nested button-inside-link) */}
+                        <span className="inline-flex justify-start items-center w-fit rounded-full border-2 border-fouthBrand gap-4  px-4 py-2 hover:bg-fouthBrand hover:text-white transition-colors duration-200">
+                          <span className="font-poppins font-semibold text-base text-[#434343]">
+                            Read More
                           </span>
-                        </Link>
-                      );
-                    })
+                          <span className="rounded-full bg-secondaryBrand text-white p-2">
+                            <ArrowRightIcon className="w-4 h-4" />
+                          </span>
+                        </span>
+                      </Link>
+                    );
+                  })
                 ) : (
                   <div className="col-span-full text-center py-12">
                     <p className="text-gray-500 font-poppins text-lg">
-                      {loading ? "Loading blogs..." : "No results found."}
+                      No results found.
                     </p>
                   </div>
                 )}
               </div>
             )}
+
             {/* Pagination */}
-            {!loading && totalPages > 1 && (
+            {!loading && !error && pagination.totalPages > 1 && (
               <div className="flex flex-wrap justify-center items-center mt-16 gap-3">
+                {/* Previous Button */}
                 <button
-                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                  disabled={currentPage === 1}
-                  className="px-4 py-3 rounded-full bg-fouthBrand disabled:opacity-50 hover:bg-opacity-80 transition-colors duration-200"
+                  onClick={() => handlePageChange(pagination.currentPage - 1)}
+                  disabled={pagination.currentPage === 1}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-[#9DD4D3] text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8bc4c3] transition-colors duration-200"
+                  aria-label="Previous page"
                 >
-                  <ArrowLeftIcon className="w-5 h-5 text-white stroke-current" />
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
                 </button>
-                {[...Array(totalPages)].map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPage(i + 1)}
-                    className={`px-4 py-3 border-fouthBrand border rounded-full text-base font-poppins transition-colors duration-200 ${currentPage === i + 1
-                        ? "bg-fouthBrand text-white"
-                        : "hover:bg-fouthBrand hover:text-white"
+
+                {/* Page Numbers */}
+                {getPageNumbers().map((page, index) => (
+                  page === '...' ? (
+                    <span key={`ellipsis-${index}`} className="px-2 text-gray-400 font-poppins">
+                      ...
+                    </span>
+                  ) : (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`w-10 h-10 rounded-full font-poppins text-base transition-all duration-200 ${
+                        pagination.currentPage === page
+                          ? "bg-[#9DD4D3] text-white font-semibold"
+                          : "bg-white border border-gray-300 text-gray-700 hover:border-[#9DD4D3] hover:text-[#9DD4D3]"
                       }`}
-                  >
-                    {i + 1}
-                  </button>
+                    >
+                      {page}
+                    </button>
+                  )
                 ))}
+
+                {/* Next Button */}
                 <button
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(p + 1, totalPages))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="px-4 py-3 rounded-full bg-fouthBrand disabled:opacity-50 hover:bg-opacity-80 transition-colors duration-200"
+                  onClick={() => handlePageChange(pagination.currentPage + 1)}
+                  disabled={pagination.currentPage === pagination.totalPages}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-[#9DD4D3] text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8bc4c3] transition-colors duration-200"
+                  aria-label="Next page"
                 >
-                  <ArrowRightIcon className="w-5 h-5 text-white stroke-current" />
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </button>
               </div>
             )}

@@ -78,7 +78,7 @@ const SingleProduct = () => {
   const getRelatedProducts = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/products/${productId}/related`,
+        `${BASE_URL}/api/product/${productId}/related`,
         {
           headers: {
             Accept: "*/*",
