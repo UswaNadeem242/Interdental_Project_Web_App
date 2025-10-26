@@ -130,14 +130,25 @@ const Orders = () => {
                             </div>
                             <button
                               onClick={() => {
-                                setSelectedProduct(order);
-                                setIsViewReview(false);
-                                SetIsFeedbackOpen(true);
-                                setSelectedProductId(order.productId);
+                                if (orders?.orderStatus === "DELIVERD") {
+                                  setSelectedProduct(order);
+                                  setIsViewReview(false);
+                                  SetIsFeedbackOpen(true);
+                                  setSelectedProductId(order.productId);
+                                }
                               }}
-                              className="flex justify-center items-center w-[113px] h-[32px] rounded-[33px] border-[1px] border-[#F69B26] bg-[#F69B261A] py-[4px] px-[8px] cursor-pointer hover:bg-[#F69B2630] transition-colors flex-shrink-0"
+                              disabled={orders?.orderStatus !== "DELIVERD"}
+                              className={`flex justify-center items-center w-[113px] h-[32px] rounded-[33px] border-[1px] py-[4px] px-[8px] transition-colors flex-shrink-0 ${
+                                orders?.orderStatus === "DELIVERD"
+                                  ? "border-[#F69B26] bg-[#F69B261A] cursor-pointer hover:bg-[#F69B2630]"
+                                  : "border-[#DDDDDD] bg-[#F5F5F5] cursor-not-allowed"
+                              }`}
                             >
-                              <p className="font-poppins font-normal text-[10px] leading-[15px] text-[#F69B26]">
+                              <p className={`font-poppins font-normal text-[10px] leading-[15px] ${
+                                orders?.orderStatus === "DELIVERD" 
+                                  ? "text-[#F69B26]" 
+                                  : "text-[#999999]"
+                              }`}>
                                 Leave Review
                               </p>
                             </button>

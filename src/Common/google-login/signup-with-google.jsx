@@ -46,6 +46,9 @@ export default function SignupWithGoogle({ role }) {
 
         // Check if profile is complete for DOCTOR role
         if (role === "DOCTOR") {
+
+          console.log("Users:", users);
+
           const isComplete = users.drLicenseNo && users.officeRefNo;
           
           if (!isComplete) {

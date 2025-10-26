@@ -47,7 +47,9 @@ export default function LoginWithGoogle() {
 
         // Check profile completeness and redirect accordingly
         const userRole = users.roles[0];
-        
+
+        console.log("User Role:", userRole);
+        console.log("Users:", users);
         if (userRole === "DOCTOR") {
           // Check if doctor profile is complete
           const isComplete = users.drLicenseNo && users.officeRefNo;

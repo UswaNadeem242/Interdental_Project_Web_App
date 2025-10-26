@@ -4,14 +4,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-// import product1 from "../assets/product1.png";
-// import product2 from "../assets/product2.png";
-// import product3 from "../assets/product3.png";
-// import product4 from "../assets/product4.png";
-// import product5 from "../assets/product5.png";
-// import product6 from "../assets/product6.png";
-// import product7 from "../assets/product7.png";
-// import product8 from "../assets/product8.png";
+
 import { useNavigate } from "react-router-dom";
 import Icons from "./Icons";
 
