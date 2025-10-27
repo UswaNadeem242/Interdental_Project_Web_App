@@ -42,201 +42,203 @@ const LandingPage = () => {
   return (
     <>
       <div>{<Header />} </div>
-      <div className="  font-poppins min-h-screen text-gray-800">
+      <div className="font-poppins min-h-screen text-gray-800">
         <HeroSection />
-        <AboutUs />
-        <div className="">
-          <div className="flex justify-center  pt-10   border-background">
-            <h1 className="text-3xl lg:text-4xl font-poppins capitalize">
+
+        {/* About Us Section */}
+        <div className="w-full flex justify-center px-4">
+          <div className="max-w-7xl w-full">
+            <AboutUs />
+          </div>
+        </div>
+
+        {/* Our Modules Section Header */}
+        <div className="w-full flex justify-center px-4 py-8">
+          <div className="max-w-7xl w-full flex flex-col items-center">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-poppins capitalize text-center">
               our
               <span className="text-secondaryBrand font-bold capitalize ml-2">
                 Modules
               </span>
             </h1>
-          </div>
-          <div className="flex justify-center pb-6">
-            <p className="text-secondaryText text-sm font-poppins text-center max-w-3xl py-6">
+            <p className="text-secondaryText text-sm md:text-base font-poppins text-center max-w-xl py-4">
               Explore our top-rated selections crafted just for you!
             </p>
           </div>
         </div>
-        <MakeSmile />
-        <OurModules />
-        <ImplantInterfeace />
-        <FeaturedProducts />
-        <div className="flex flex-col sm:flex-row justify-center items-center w-full max-w-[1511px] h-auto sm:h-[814px]   bg-blue-300/5 py-8 sm:py-12 md:py-16 lg:py-[132px] px-4 sm:px-6 md:px-8 lg:px-[100px] gap-4   ">
-          {/* Text Content */}
-          <div className="flex flex-col justify-start items-start w-full  space-y-4 sm:space-y-[16px] px-4 sm:px-0">
-            {/* max-w-[575px] */}
-            <div className="flex justify-start items-center gap-2 sm:gap-4 font-poppins font-bold sm:text-sm md:text-3xl lg:text-[40px]">
-              <h1 className="text-secondaryBrand text-xl md:text-5xl font-poppins font-semibold">
-                InterOral.ai
-              </h1>
-            </div>
-            <p className="w-full max-w-[500px] font-poppins font-normal text-sm md:text-lg text-[#949494] leading-6 md:leading-[30px]">
-              InterOral.ai &nbsp; is &nbsp; an &nbsp; &nbsp; AI-driven &nbsp;
-              platform &nbsp; that{" "}
-              <span className="hidden md:inline">
-                <br />
-              </span>{" "}
-              seamlessly connects dentists, dental labs, and{" "}
-              <span className="hidden md:inline">
-                <br />
-              </span>{" "}
-              patients &nbsp; under one &nbsp; secure system. &nbsp; Dentists{" "}
-              <span className="hidden md:inline">
-                <br />
-              </span>{" "}
-              can submit digital prescriptions, upload scans,{" "}
-              <span className="hidden md:inline">
-                <br />
-              </span>{" "}
-              order &nbsp; implant &nbsp; parts,&nbsp; while &nbsp; &nbsp; labs
-              &nbsp; efficiently{" "}
-              <span className="hidden md:inline">
-                <br />
-              </span>{" "}
-              receive &nbsp; and &nbsp;manage &nbsp; cases. &nbsp; Patients
-              &nbsp; gain{" "}
-              <span className="hidden md:inline">
-                <br />
-              </span>
-              added &nbsp; value &nbsp; through &nbsp; extended &nbsp;
-              &nbsp;warranty{" "}
-              <span className="hidden md:inline">
-                <br />
-              </span>
-              ensuring a coverage,smooth, connected, and compliant workflow for
-              all.
-            </p>
-            <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-              <h1
-                className="font-poppins font-semibold text-base text-[#434343]"
-                onClick={() => navigate("/about-us")}
-              >
-                View More
-              </h1>
-              <div className="rounded-full bg-secondaryBrand text-white p-2">
-                <ArrowRightIcon className="w-4 h-4" />
-              </div>
-            </button>
+
+        {/* MakeSmile Section */}
+        <div className="w-full flex justify-center px-4">
+          <div className="max-w-7xl w-full">
+            <MakeSmile />
           </div>
-          {/* Image */}
-          <img
-            src="/assets/landing-page/about-us-1.png"
-            alt="about us image"
-            className="w-[300px] sm:w-[400px] md:w-[500px] lg:w-[550px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px]"
-          />
         </div>
+
+        {/* Our Modules Cards Section */}
+        <div className="w-full flex justify-center bg-[#F7FCFC] px-4">
+          <div className="max-w-7xl w-full">
+            <OurModules />
+          </div>
+        </div>
+
+        {/* Implant Interface Section */}
+        <div className="w-full flex justify-center px-4 bg-textField">
+          <div className="max-w-7xl w-full">
+            <ImplantInterfeace />
+          </div>
+        </div>
+
+        {/* Featured Products */}
+        <FeaturedProducts />
+
+        {/* InterOral.ai Info Section */}
+        <div className="w-full flex justify-center px-4 py-8 md:py-12 bg-blue-300/5">
+          <div className="max-w-7xl w-full">
+            <div className="flex flex-col lg:flex-row gap-8 items-center  py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-12 rounded-2xl">
+              {/* Text Content */}
+              <div className="flex-1 space-y-4 flex flex-col justify-center">
+                <h1 className="text-secondaryBrand text-2xl md:text-3xl lg:text-4xl font-poppins font-semibold">
+                  InterOral.ai
+                </h1>
+                <p className="font-poppins font-normal text-sm md:text-base text-[#949494] leading-6 md:leading-7">
+                  InterOral.ai is an AI-driven platform that seamlessly connects dentists, dental labs, and patients under one secure system. Dentists can submit digital prescriptions, upload scans, and order implant parts, while labs efficiently receive and manage cases. Patients gain added value through extended warranty coverage, ensuring a smooth, connected, and compliant workflow for all.
+                </p>
+                <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+                  <h1
+                    className="font-poppins font-semibold text-base text-[#434343]"
+                    onClick={() => navigate("/about-us")}
+                  >
+                    View More
+                  </h1>
+                  <div className="rounded-full bg-secondaryBrand text-white p-2">
+                    <ArrowRightIcon className="w-4 h-4" />
+                  </div>
+                </button>
+              </div>
+              {/* Image */}
+              <div className="flex-1 flex justify-center">
+                <img
+                  src="/assets/landing-page/about-us-1.png"
+                  alt="about us image"
+                  className="w-full max-w-[500px] h-auto object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Doctor Component */}
         <DoctorComponent />
-        <div className="container mx-auto px-3 w-full py-28">
-          <div className="flex justify-center ">
-            <h1 className="text-primaryText text-base md:text-3xl font-normal font-poppins capitalize">
+
+        {/* Warranty Section */}
+        {/* <div className="w-full flex justify-center px-4 py-12 md:py-16">
+          <div className="max-w-7xl w-full flex flex-col items-center">
+            <h1 className="text-primaryText text-2xl md:text-3xl lg:text-4xl font-normal font-poppins capitalize text-center">
               THE
-              <span className="md:text-3xl font-bold font-poppins text-secondaryBrand capitalize ml-2">
+              <span className="font-bold font-poppins text-secondaryBrand capitalize ml-2">
                 WARRANTY
               </span>
             </h1>
-          </div>
-          <div className="flex justify-center pb-6">
-            <p className="text-secondaryText text-sm font-poppins text-center max-w-3xl py-6">
+            <p className="text-secondaryText text-sm md:text-base font-poppins text-center max-w-3xl py-4">
               Interoral.ai provides peace of mind and a unique practice growth
               opportunity with a comprehensive Warranty Plans and Referal
               Program
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] gap-6 justify-items-center">
-            {warrantyCard.map((card, index) => (
-              <div
-                key={index}
-                className="bg-white shadow-lg rounded-xl overflow-hidden grid grid-cols-1 sm:grid-cols-2"
-              >
-                <div className="w-full h-full">
-                  <img
-                    src={card.img}
-                    alt={card.title}
-                    className="w-full sm:w-[200px] md:w-[290px] lg:w-[300px] h-[150px] sm:h-[180px] md:h-[200px] lg:h-[237px] m-2 sm:m-4 rounded-lg object-fit"
-                  />
-                </div>
-                <div className="flex flex-col gap-5 p-4 ">
-                  <div>
-                    <h3 className="text-primaryText text-sm md:text-base font-semibold">
-                      {card.title}
-                    </h3>
-                    <p className="text-fouthBrand text-lg font-bold mb-4">
-                      {card.subtitle}
-                    </p>
-
-                    <ul className="space-y-2">
-                      {card.points.map((point, i) => (
-                        <li
-                          key={i}
-                          className="flex gap-2 items-center text-sm text-secondaryText"
-                        >
-                          <CircleIcon className="text-secondaryBrand w-4 h-4" />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
+            <div className="w-full flex justify-center mt-6">
+              {warrantyCard.map((card, index) => (
+                <div
+                  key={index}
+                  className="bg-white shadow-lg rounded-xl overflow-hidden flex flex-col sm:flex-row max-w-3xl w-full"
+                >
+                  <div className="flex-shrink-0">
+                    <img
+                      src={card.img}
+                      alt={card.title}
+                      className="w-full sm:w-[250px] md:w-[300px] h-[200px] sm:h-full object-cover"
+                    />
                   </div>
-
-                  <button className=" text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
-                    Learn more
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* bloags */}
-        <section className="container md:px-8 px-4 mx-auto py-28 ">
-          <div className="flex justify-between ">
-            <h1 className="text-primaryText text-base md:text-3xl font-bold font-poppins capitalize ">
-              Blog &
-              <span className="md:text-3xl font-bold font-poppins text-fouthBrand capitalize ml-2">
-                Articles
-              </span>
-            </h1>
-            <ThirdButtonUI title="View more" href="/blog" />
-          </div>
-          <div className="flex justify-start pb-6">
-            <p className="text-primaryText text-sm font-poppins text-center max-w-3xl">
-              Read our interesting blog
-            </p>
-          </div>
-          <div className="grid md:grid-cols-12 grid-cols-2   gap-8 justify-items-center  ">
-            {implantCards?.map((card, index) => (
-              <div key={index} className="col-span-4">
-                <Link key={index} to={card?.href}>
-                  <img
-                    src={card.img}
-                    alt={card.title || "Implant card"}
-                    className=""
-                  />
-                  {card.title && (
-                    <>
-                      <h3 className="text-xs font-medium font-poppins uppercase text-fouthBrand pt-5">
+                  <div className="flex flex-col gap-5 p-6 flex-1">
+                    <div>
+                      <h3 className="text-primaryText text-sm md:text-base font-semibold">
                         {card.title}
                       </h3>
-                      <p className="text-xl font-normal font-poppins capitalize w-3/4 py-5">
+                      <p className="text-fouthBrand text-lg font-bold mb-4">
                         {card.subtitle}
                       </p>
-                      <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-                        <h1 className="font-poppins font-semibold text-base text-[#434343]">
-                          {card.button}
-                        </h1>
-                        <div className="rounded-full bg-secondaryBrand text-white p-2">
-                          <ArrowRightIcon className="w-4 h-4" />
-                        </div>
-                      </button>
-                    </>
-                  )}
-                </Link>
-              </div>
-            ))}
+
+                      <ul className="space-y-2">
+                        {card.points.map((point, i) => (
+                          <li
+                            key={i}
+                            className="flex gap-2 items-center text-sm text-secondaryText"
+                          >
+                            <CircleIcon className="text-secondaryBrand w-4 h-4 flex-shrink-0" />
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <button className="text-white bg-secondaryBrand text-sm font-semibold capitalize py-3 px-6 rounded-md self-start hover:bg-secondaryBrand/90 transition">
+                      Learn more
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div> */}
+
+        {/* Blog & Articles Section */}
+        <section className="w-full flex justify-center px-4 py-16 md:py-28">
+          <div className="max-w-7xl w-full">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <h1 className="text-primaryText text-xl md:text-3xl font-bold font-poppins capitalize">
+                Blog &
+                <span className="text-xl md:text-3xl font-bold font-poppins text-fouthBrand capitalize ml-2">
+                  Articles
+                </span>
+              </h1>
+              <ThirdButtonUI title="View more" href="/blog" />
+            </div>
+            <p className="text-primaryText text-sm font-poppins mb-8">
+              Read our interesting blog
+            </p>
+            <div className="flex flex-wrap gap-6 justify-center md:justify-start">
+              {implantCards?.map((card, index) => (
+                <div key={index} className="flex-1 min-w-[280px] max-w-[360px]">
+                  <Link to={card?.href}>
+                    <img
+                      src={card.img}
+                      alt={card.title || "Implant card"}
+                      className="w-full h-auto rounded-lg"
+                    />
+                    {card.title && (
+                      <>
+                        <h3 className="text-xs font-medium font-poppins uppercase text-fouthBrand pt-5">
+                          {card.title}
+                        </h3>
+                        <p className="text-lg md:text-xl font-normal font-poppins capitalize py-4 line-clamp-2">
+                          {card.subtitle}
+                        </p>
+                        <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
+                          <h1 className="font-poppins font-semibold text-sm md:text-base text-[#434343]">
+                            {card.button}
+                          </h1>
+                          <div className="rounded-full bg-secondaryBrand text-white p-2">
+                            <ArrowRightIcon className="w-4 h-4" />
+                          </div>
+                        </button>
+                      </>
+                    )}
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
+
+        {/* FAQ & Contact */}
         <FrequentlyAskedQuestion />
         <ContactFooter className="bg-background" />
       </div>

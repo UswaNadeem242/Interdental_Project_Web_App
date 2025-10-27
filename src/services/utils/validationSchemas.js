@@ -294,14 +294,6 @@ export const doctorProfileCompletionSchema = Yup.object().shape({
   address: Yup.string()
     .min(10, "Address must be at least 10 characters")
     .required("Address is required"),
-  city: Yup.string()
-    .min(2, "City must be at least 2 characters")
-    .max(25, "City must not exceed 25 characters")
-    .matches(/^[a-zA-Z\s]+$/, "City must contain only letters and spaces")
-    .required("City is required"),
-  zip: Yup.string()
-    .matches(/^\d{5,9}$/, "ZIP code must be 5-9 digits")
-    .required("Zip code is required"),
   drLicenseNo: Yup.string()
     .required("Doctor's License Number is required")
     .min(5, "Must be at least 5 characters")

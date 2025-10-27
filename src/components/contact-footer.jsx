@@ -13,14 +13,14 @@ function ContactFooter({ className }) {
                 </div>
 
                 {/* Contact Section */}
-                <div className="relative z-20  top-24 container mx-auto md:px-8 px-4  ">
-                    <div className="text-center">
+                <div className="relative z-20 top-24 w-full flex justify-center px-4">
+                    <div className="max-w-7xl w-full text-center">
                         <Contact />
                     </div>
                 </div>
 
                 {/* Footer Section (Contact overlaps it slightly) */}
-                <div className="relative z-10  -mt-20 md:-mt-28 bg-white shadow-[0px_59px_124px_0px_rgba(0,0,0,0.06)]">
+                <div className="relative z-10 -mt-20 md:-mt-28 bg-white shadow-[0px_59px_124px_0px_rgba(0,0,0,0.06)]">
                     <Footer className=' pt-52' />
                 </div>
             </section>

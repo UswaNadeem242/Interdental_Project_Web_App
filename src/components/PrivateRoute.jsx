@@ -34,18 +34,16 @@ const PrivateRoute = ({
 
   // Check profile completeness - redirect incomplete profiles to completion page
   // Allow access to /complete-profile itself
-  // Temporarily commented out for testing
-  // if (!isProfileComplete() && location.pathname !== "/complete-profile") {
-  //   return <Navigate to="/complete-profile" replace />;
-  // }
+  if (!isProfileComplete() && location.pathname !== "/complete-profile") {
+    return <Navigate to="/complete-profile" replace />;
+  }
 
   // If trying to access /complete-profile with complete profile, redirect to dashboard
-  // Temporarily commented out for testing
-  // if (isProfileComplete() && location.pathname === "/complete-profile") {
-  //   const highestRole = getUserHighestRole();
-  //   const defaultRoute = DEFAULT_ROUTES[highestRole] || "/";
-  //   return <Navigate to={defaultRoute} replace />;
-  // }
+  if (isProfileComplete() && location.pathname === "/complete-profile") {
+    const highestRole = getUserHighestRole();
+    const defaultRoute = DEFAULT_ROUTES[highestRole] || "/";
+    return <Navigate to={defaultRoute} replace />;
+  }
 
   // If no specific roles required, allow access to any authenticated user
   if (!requiredRoles || requiredRoles.length === 0) {

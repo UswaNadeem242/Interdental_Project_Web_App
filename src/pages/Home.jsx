@@ -33,6 +33,8 @@ const Home = () => {
     getAllProducts();
   }, []);
 
+  console.log(products);
+
   return (
     <div className="flex flex-col justify-start items-center space-y-[65px] bg-gray-100 pb-16">
       <HeroSection />

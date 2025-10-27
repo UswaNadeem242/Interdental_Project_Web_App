@@ -213,9 +213,9 @@ function App() {
             <Route
               path="/contact-us"
               element={
-                <div className="my-10">
+            
                   <Contact isLanding={false} />
-                </div>
+                
               }
             />
 
@@ -260,6 +260,7 @@ function App() {
                 </PublicRoute>
               }
             />
+
 
             {/* Profile Completion - Requires authentication but not full protection */}
             <Route

@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import ContributeBlogSection from "../../components/landing-page-component/contribute-blog-section.jsx";
 import ContributeBlogModal from "../../modals/ContributeBlogModal.jsx";
 import api from "../../api/intercepter";
+import { useDebounce } from "../../Hooks/useDebounce";
 
 function Blog({ isLanding }) {
   const [activeTab, setActiveTab] = useState(null); // null means "all"
@@ -86,10 +87,23 @@ function Blog({ isLanding }) {
     }
   }, [search, activeTab]);
 
-  // Fetch blogs when search or activeTab changes
+  // Create debounced version of fetchBlogs for search
+  const debouncedFetchBlogs = useDebounce(fetchBlogs, 500);
+
+  // Fetch blogs when activeTab changes (immediate)
   useEffect(() => {
     fetchBlogs(1);
-  }, [search, activeTab]);
+  }, [activeTab]);
+
+  // Fetch blogs when search changes (debounced)
+  useEffect(() => {
+    if (search !== "") {
+      debouncedFetchBlogs(1);
+    } else {
+      // If search is empty, fetch immediately
+      fetchBlogs(1);
+    }
+  }, [search]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
@@ -331,3 +345,4 @@ function Blog({ isLanding }) {
 }
 
 export default Blog;
+

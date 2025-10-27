@@ -27,14 +27,18 @@ export default function FrequentlyAskedQuestion() {
 
 
 
-        <section className='container mx-auto md:px-8 px-4 py-10 md:py-20  bg-background '>
-            <div className='flex justify-center '>
-                <h1 className='text-primaryText md:text-5xl text-xl text-center'>Frequently <br /> <span className='text-[#94D3DD] font-bold'> Asked Questions</span>
-                </h1>
-            </div>
-            <p className='flex justify-center pb-20 pt-5   font-normal text-lg text-secondaryText'>Get the insights you need about our services, pricing, and processes—answered in one place.</p>
-            <div className=' text-center'>
-                <Accordion items={accordionData} />
+        <section className='bg-background py-12 md:py-16'>
+            <div className='w-full flex justify-center px-4'>
+                <div className='max-w-7xl w-full'>
+                    <div className='flex flex-col items-center'>
+                        <h1 className='text-primaryText text-2xl md:text-3xl lg:text-4xl text-center'>Frequently <br /> <span className='text-[#94D3DD] font-bold'> Asked Questions</span>
+                        </h1>
+                        <p className='pb-12 pt-5 font-normal text-sm md:text-base text-secondaryText text-center'>Get the insights you need about our services, pricing, and processes—answered in one place.</p>
+                    </div>
+                    <div className='text-center'>
+                        <Accordion items={accordionData} />
+                    </div>
+                </div>
             </div>
         </section>
 

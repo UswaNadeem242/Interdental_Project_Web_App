@@ -6,11 +6,10 @@ import { BASE_URL } from "../config";
 import { useAuth } from "../auth/AuthContext";
 import { doctorProfileCompletionSchema } from "../services/utils/validationSchemas";
 import Toast from "../components/Toast";
-import Header from "./landing-page/header";
 
 const CompleteProfile = () => {
     const navigate = useNavigate();
-    const { user, updateUser, isProfileComplete } = useAuth();
+    const { user, updateUser, isProfileComplete, logout } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [toastVisible, setToastVisible] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
@@ -46,12 +45,14 @@ const CompleteProfile = () => {
         setIsSubmitting(true);
 
         const payload = {
+            firstName: user?.firstName || "",
+            lastName: user?.lastName || "",
             phone: values.phoneNumber,
             address: values.address,
             city: values.city,
             zip: values.zip,
-            drLicenseNo: values.drLicenseNo,
-            officeRefNo: values.officeRefNo,
+            officeRefNumber: values.officeRefNo,
+            doctorLicenceNumber: values.drLicenseNo,
         };
 
         try {
@@ -67,20 +68,9 @@ const CompleteProfile = () => {
                 }
             );
 
+            
+
             if (response.data) {
-                // Update user data in context
-                const updatedUserData = {
-                    ...user,
-                    phoneNumber: values.phoneNumber,
-                    address: values.address,
-                    city: values.city,
-                    zip: values.zip,
-                    drLicenseNo: values.drLicenseNo,
-                    officeRefNo: values.officeRefNo,
-                };
-
-                updateUser(updatedUserData);
-
                 setToastMessage("Profile completed successfully!");
                 setToastType("success");
                 setToastVisible(true);
@@ -106,9 +96,75 @@ const CompleteProfile = () => {
         setToastVisible(false);
     };
 
+    // Simple header component matching header.jsx design
+    const SimpleHeader = () => (
+        <header className="fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-300 top-4 w-[95%] sm:w-[92%] md:w-[90%]">
+            {/* pill container */}
+            <div className="mx-auto flex items-center justify-between bg-white/95 ring-1 ring-black/5 backdrop-blur px-3 sm:px-5 md:px-6 py-2.5 transition-all duration-300 rounded-full">
+                {/* Mobile menu button - hidden since we don't need it */}
+                <div className="w-10 lg:hidden" />
+
+                {/* Logo */}
+                <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
+                        <img
+                            src="/assets/logo.png"
+                            alt="Interdental Lab"
+                            className="h-5 w-auto sm:h-5"
+                        />
+                    </div>
+                </div>
+
+                {/* Desktop actions */}
+                <div className="hidden lg:flex items-center gap-4">
+                    {user && user?.email ? (
+                        <button
+                            onClick={() => {
+                                logout();
+                                navigate("/login");
+                            }}
+                            className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white whitespace-nowrap text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)] transition-colors"
+                        >
+                            Logout
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => navigate("/login")}
+                            className="px-4 py-2 rounded-full bg-secondaryBrand text-white whitespace-nowrap text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
+                        >
+                            Log In
+                        </button>
+                    )}
+                </div>
+
+                {/* Mobile logout button */}
+                <div className="lg:hidden">
+                    {user && user?.email ? (
+                        <button
+                            onClick={() => {
+                                logout();
+                                navigate("/login");
+                            }}
+                            className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition-colors"
+                        >
+                            Logout
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => navigate("/login")}
+                            className="px-4 py-2 rounded-full bg-secondaryBrand text-white text-sm font-semibold"
+                        >
+                            Log In
+                        </button>
+                    )}
+                </div>
+            </div>
+        </header>
+    );
+
     return (
         <>
-            <Header />
+            <SimpleHeader />
             <div
                 style={{
                     background: "linear-gradient(180deg, #E7F9FF 0%, rgba(229, 255, 246, 0.19) 106.26%)",
@@ -178,51 +234,6 @@ const CompleteProfile = () => {
                                         {formik.errors.address}
                                     </div>
                                 )}
-                            </div>
-
-                            {/* City + ZIP */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="relative">
-                                    <input
-                                        type="text"
-                                        id="city"
-                                        name="city"
-                                        value={formik.values.city}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        placeholder="City"
-                                        className={`w-full rounded-lg py-3 px-4 text-sm border outline-none transition-colors ${formik.errors.city && formik.touched.city
-                                                ? "border-red-500"
-                                                : "border-gray-300 focus:border-[#013764]"
-                                            }`}
-                                    />
-                                    {formik.errors.city && formik.touched.city && (
-                                        <div className="text-red-500 text-xs mt-1">
-                                            {formik.errors.city}
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="relative">
-                                    <input
-                                        type="text"
-                                        id="zip"
-                                        name="zip"
-                                        value={formik.values.zip}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        placeholder="ZIP"
-                                        className={`w-full rounded-lg py-3 px-4 text-sm border outline-none transition-colors ${formik.errors.zip && formik.touched.zip
-                                                ? "border-red-500"
-                                                : "border-gray-300 focus:border-[#013764]"
-                                            }`}
-                                    />
-                                    {formik.errors.zip && formik.touched.zip && (
-                                        <div className="text-red-500 text-xs mt-1">
-                                            {formik.errors.zip}
-                                        </div>
-                                    )}
-                                </div>
                             </div>
 
                             {/* Doctor's License Number + Office Reference Number */}

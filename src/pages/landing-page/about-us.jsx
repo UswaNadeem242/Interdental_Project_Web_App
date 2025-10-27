@@ -4,35 +4,34 @@ import { useNavigate } from "react-router-dom";
 const AboutUs = () => {
   const navigate = useNavigate();
   return (
-    <section className="bg-white py-16 px-8 flex flex-col md:flex-row items-center justify-between  ">
+    <section className="bg-white py-12 md:py-16 flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
       {/* Left Side: Image */}
-      <div className="relative w-full md:w-1/2 flex justify-center items-center">
-        {/* Tooth-shaped container */}
+      <div className="flex-1 flex justify-center lg:justify-start">
         <img
           src="/assets/landing-page/about-us.png"
           alt="Dentist"
-          className="w-124 h-124 object-cover"
+          className="w-full max-w-lg h-auto object-cover"
         />
       </div>
 
       {/* Right Side: Text */}
-      <div className="mt-8 md:mt-0 md:ml-16 w-full md:w-1/2 text-gray-800">
-        <h3 className="text-lg font-bold text-secondaryText pb-4 ">About Us</h3>
-        <h2 className="text-xl md:text-4xl font-bold text-secondaryBrand uppercase">
+      <div className="flex-1 space-y-4 text-gray-800">
+        <h3 className="text-base md:text-lg font-bold text-secondaryText pb-4">About Us</h3>
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondaryBrand uppercase">
           InterOral. <span className="text-fouthBrand">Ai</span>
         </h2>
-        <p className="mt-4 text-gray-600  max-w-[560px] tracking-wide">
+        <p className="mt-4 text-gray-600 tracking-wide">
           At InterOral.ai, we believe dentistry deserves &nbsp; more{" "}
           <br className="hidden md:block" /> than patchwork solutions.
         </p>
-        <p className="mt-4 text-gray-600 max-w-[560px] tracking-wide">
-          We’re building an integrated digital platform where{" "}
+        <p className="mt-4 text-gray-600 tracking-wide">
+          We're building an integrated digital platform where{" "}
           <br className="hidden md:block" /> dentists, labs, and implant &nbsp;
           suppliers work together <br className="hidden md:block" />{" "}
           seamlessly—powered by AI and data-driven design.{" "}
         </p>
 
-        <p className="mt-4 text-gray-600  max-w-[560px] pb-6 tracking-wide">
+        <p className="mt-4 text-gray-600 pb-6 tracking-wide">
           Our &nbsp; mission &nbsp; is simple: to cut &nbsp; complexity,&nbsp;
           reduce <br className="hidden md:block" /> and give every patient
           access to smarter dentistry.{" "}

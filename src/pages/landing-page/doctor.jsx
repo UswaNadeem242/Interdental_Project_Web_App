@@ -432,13 +432,13 @@ const Doctor = ({ isLanding }) => {
               </p>
             </div>
             {/* Bottom 2 Divs (span across 3 columns) */}
-            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center">
+            <div className="col-span-6 bg-blue-300/10 p-4 rounded">
               <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize">
                 <DotIcon className="w-5 h-5 shrink-0" />
                 Generate prescription sheets and FedEx labels
               </p>
             </div>
-            <div className="col-span-6 bg-blue-300/10 p-4 rounded text-center">
+            <div className="col-span-6 bg-blue-300/10 p-4 rounded  ">
               <p className="flex gap-4 text-primaryText font-medium font-poppins capitalize">
                 <DotIcon className="w-5 h-5 shrink-0" />
                 Route your files directly to design and production labs

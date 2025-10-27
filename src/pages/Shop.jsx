@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, memo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../config";
 import axios from "axios";
@@ -8,96 +8,12 @@ import { useAuth } from "../auth/AuthContext";
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
-  StarIcon,
 } from "@heroicons/react/24/solid";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice"; // adjust path if needed
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
-import { calculateRating } from "../services/utils/calculateRating";
-
-// Memoized ProductCard component to prevent unnecessary re-renders
-const ProductCard = memo(
-  ({ product, wishlistSet, onProductClick, onAddToCart, onToggleWishlist }) => {
-    const isInWishlist = wishlistSet.has(product?.productId);
-
-    return (
-      <div
-        key={product.productId}
-        className="flex flex-col justify-between items-center bg-white rounded-lg shadow-sm p-4 cursor-pointer h-[430px]"
-      >
-        {/* Upper Section */}
-        <div
-          onClick={() => onProductClick(product)}
-          className="flex flex-col items-center flex-grow"
-        >
-          <img
-            src={product.imageUrls[0]}
-            alt={product.name}
-            className="w-[263px] h-[260px] object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-
-          <div className="text-center mt-3 flex flex-col flex-grow justify-between">
-            <h1 className="font-poppins font-semibold text-base text-black leading-snug line-clamp-2">
-              {product.name}
-            </h1>
-
-            <div className="font-poppins font-bold text-[20px] leading-[30px] text-[#94D3DD] flex gap-2 justify-center items-center">
-              ${product.price}
-              <span className="flex items-center gap-1">
-                <StarIcon className="w-4 h-4 text-yellow-400" />
-                <span className="text-xs font-poppins font-normal text-[#585858]">
-                  {calculateRating(product)}
-                </span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Lower Section */}
-        <div className="flex items-center gap-3 mt-1">
-          <div
-            onClick={() => onAddToCart(product?.productId)}
-            className="flex justify-center items-center cursor-pointer w-[185.27px] h-[48px] text-secondaryBrand hover:text-white bg-background hover:bg-secondaryBrand py-[17px] px-[24px] rounded-[28px]"
-          >
-            <h1 className="font-poppins font-normal text-xs leading-[21px]">
-              Add to Cart
-            </h1>
-          </div>
-
-          {/* ❤️ Wishlist Button */}
-          <div
-            onClick={(e) => onToggleWishlist(product?.productId, e)}
-            className={`flex justify-center items-center cursor-pointer w-[51.28px] h-[51.28px] p-[12.82px] gap-[12.81px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${
-              isInWishlist
-                ? "bg-red-50 shadow-md"
-                : "bg-[#F8F8F8] hover:bg-red-50"
-            }`}
-          >
-            <svg
-              width="27"
-              height="27"
-              viewBox="0 0 27 27"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="cursor-pointer transition-all duration-300"
-            >
-              <path
-                d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
-                stroke={isInWishlist ? "#FF0000" : "#001D58"}
-                strokeWidth="1.92211"
-                fill={isInWishlist ? "#FF0000" : "none"}
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-    );
-  },
-);
-
-ProductCard.displayName = "ProductCard";
+import ProductCard from "../components/ProductCard";
+import useOutsideClick from "../Hooks/useOutsideClick";
 
 const Shop = () => {
   const navigate = useNavigate();
@@ -296,6 +212,32 @@ const Shop = () => {
   //   // if same clicked again → uncheck
   // };
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // Use the updated useOutsideClick hook with data attribute support
+  const outsideClickRef = useOutsideClick(
+    () => {
+      // Only close on mobile/tablet (when sidebar is fixed positioned)
+      if (window.innerWidth < 1024) {
+        setIsFilterOpen(false);
+      }
+    },
+    isFilterOpen, // Only active when filter is open
+    'data-filter-sidebar' // Data attribute selector
+  );
+
+  // Prevent body scroll when filter is open
+  useEffect(() => {
+    if (isFilterOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isFilterOpen]);
 
   // Get wishlist items on component mount
   const getWishlist = useCallback(async () => {
@@ -537,195 +479,247 @@ const Shop = () => {
     <div className="bg-background">
       {/* bg-gradient-to-b from-cyan-50 to-emerald-50/0 */}
       <Header />
-      <div className="px-4 md:px-10 py-6 ">
+      <div className="px-4 md:px-10 py-6">
         {/* Header */}
-        <div className="flex justify-between items-center  mt-20">
-          <button
-            className="md:hidden flex items-center gap-2 border mb-4 px-3 py-2 rounded-lg text-sm"
-            onClick={() => setIsFilterOpen(true)}
-          >
-            Filter
-          </button>
-        </div>
-
-        {/* Layout Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8">
-          {/* Sidebar (desktop static, mobile drawer) */}
-          <div
-            className={`fixed top-0 left-0 h-full w-72 rounded-r-2xl bg-white shadow-2xl transform transition-transform duration-300 z-50 md:static md:translate-x-0 md:shadow-none md:rounded-2xl md:z-auto overflow-y-auto
-          ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}`}
-          >
-            {/* Mobile header */}
-            <div className="flex justify-between items-center p-4 border-b md:hidden sticky top-0 bg-white z-10">
-              <h2 className="font-semibold text-lg">Filters</h2>
-              <button 
-                onClick={() => setIsFilterOpen(false)}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Filters content */}
-            <div className="p-4 space-y-3 overflow-y-auto h-full">
-              {/* Filter Header with Reset All Button */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
-                <h2 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
-                  Filter
-                </h2>
-                <button
-                  onClick={handleResetAll}
-                  className="px-4 sm:px-6 py-2 border-2 text-[12px] sm:text-[14px] border-[#001D58] text-[#001D58] rounded-full font-medium hover:bg-[#001D58] hover:text-white transition-colors whitespace-nowrap"
-                >
-                  Reset All
-                </button>
-              </div>
-              {/* 🔍 Search */}
-              <div className="relative flex items-center bg-white border-gray-200 border rounded-full px-4 py-3 mb-6">
+        <div className="mt-20 mb-6">
+          {/* Mobile Layout */}
+          <div className="md:hidden">
+            {/* Mobile Search Bar */}
+            <div className="relative mb-4 md:hidden">
                 <input
                   type="text"
                   placeholder="search"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-                  className="w-full bg-transparent bg-white text-gray-500 text-lg outline-none border-none focus:ring-0 pr-12"
+                  className="w-full px-4 py-4 pr-12 border border-gray-200 rounded-full bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
-                <div className="absolute right-2 bg-[#001D58] w-10 h-10 rounded-full flex items-center justify-center">
-                  <MagnifyingGlassIcon className="h-5 w-5 text-white" />
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-[#001D58] w-8 h-8 rounded-full flex items-center justify-center">
+                  <MagnifyingGlassIcon className="h-4 w-4 text-white" />
+                </div>
+              </div>
+
+            {/* Mobile Shop Title and Filter Button */}
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-bold text-gray-800 font-poppins">Shop</h1>
+              <button
+                className="flex items-center gap-2 bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
+                onClick={() => setIsFilterOpen(true)}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+                Filter
+              </button>
+            </div>
+          </div>
+
+          {/* Tablet Layout */}
+          <div className="hidden md:flex lg:hidden justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold text-gray-800 font-poppins">Shop</h1>
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+                  className="w-80 px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              </div>
+              <button
+                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                onClick={() => setIsFilterOpen(true)}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+                Filter
+              </button>
+            </div>
+          </div>
+
+
+        </div>
+
+        {/* Layout Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+          {/* Sidebar (desktop/tablet static, mobile drawer) */}
+          <div
+            data-filter-sidebar
+            className={`fixed top-0 left-0 h-full w-80 sm:w-72 rounded-r-2xl bg-white shadow-2xl transform transition-transform duration-300 z-[999999] lg:static lg:translate-x-0 lg:shadow-none lg:rounded-2xl lg:z-auto overflow-y-auto
+          ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}`}
+          >
+            {/* Filters content */}
+            <div className="md:pt-0 px-4 space-y-6 overflow-y-auto h-full">
+              {/* Mobile Filter Header */}
+              <div className="flex items-center gap-3 py-4 sticky top-0 bg-white z-10 shadow-sm md:hidden">
+                <button
+                  onClick={() => setIsFilterOpen(false)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+                >
+                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <h2 className="font-semibold text-lg text-gray-800">Filter</h2>
+              </div>
+
+              {/* Desktop Filter Header */}
+              <div className="hidden md:flex justify-between items-center mb-6">
+                <h2 className="font-semibold text-lg text-gray-800">Filter</h2>
+                <button
+                  onClick={handleResetAll}
+                  className="px-4 py-2 border-2 border-[#001D58] text-[#001D58] rounded-full font-medium hover:bg-[#001D58] hover:text-white transition-colors text-sm"
+                >
+                  Reset All
+                </button>
+              </div>
+
+              {/* 🔍 Search */}
+              <div className="relative hidden md:block">
+                <input
+                  type="text"
+                  placeholder="search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+                  className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-full bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#001D58] w-8 h-8 rounded-full flex items-center justify-center">
+                  <MagnifyingGlassIcon className="h-4 w-4 text-white" />
                 </div>
               </div>
               {/* Price Range */}
-              <div className="mb-8 mt-3">
-                <h3 className="font-poppins font-semibold mb-2 text-[14px] leading-[21px] text-[#404145] h-[21px]">
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-4">
                   Price Range
                 </h3>
-                <div className="">
-                  <div className="flex justify-between text-sm text-gray-600 mb-4">
-                    <span>$0</span>
-                    <span>${priceValue}</span>
-                  </div>
+                <div className="relative h-2 bg-gray-200 rounded-full">
+                  {/* Active Range Bar */}
+                  <div
+                    className="absolute h-2 bg-[#001D58] rounded-full"
+                    style={{
+                      width: `${(priceValue / 1000) * 100}%`,
+                    }}
+                  ></div>
 
-                  <div className="relative h-2 bg-gray-300 rounded-full">
-                    {/* Active Range Bar */}
-                    <div
-                      className="absolute h-2 bg-[#001D58] rounded-full"
-                      style={{
-                        width: `${(priceValue / 1000) * 100}%`,
-                      }}
-                    ></div>
+                  {/* Slider Thumb */}
+                  <div
+                    className="absolute w-5 h-5 bg-[#001D58] rounded-full transform -translate-y-1.5 -translate-x-2.5 cursor-pointer shadow-lg"
+                    style={{
+                      left: `${(priceValue / 1000) * 100}%`,
+                    }}
+                  ></div>
 
-                    {/* Slider Thumb */}
-                    <div
-                      className="absolute w-6 h-6 bg-[#001D58] rounded-full transform -translate-y-2 -translate-x-3 cursor-pointer shadow-lg"
-                      style={{
-                        left: `${(priceValue / 1000) * 100}%`,
-                      }}
-                    ></div>
+                  {/* Range Input */}
+                  <input
+                    type="range"
+                    min="0"
+                    max="1000"
+                    value={priceValue}
+                    onChange={handlePriceChange}
+                    className="absolute top-0 w-full h-2 cursor-pointer appearance-none bg-transparent pointer-events-auto z-10 opacity-0"
+                  />
+                </div>
+              </div>
 
-                    {/* Range Input */}
+              {/* Availability */}
+              <div className="border-t border-gray-200 pt-3">
+                <h3 className="font-semibold text-gray-800 mb-4">
+                  Availability
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
                     <input
-                      type="range"
-                      min="0"
-                      max="1000"
-                      value={priceValue}
-                      onChange={handlePriceChange}
-                      className="absolute top-0 w-full h-2 cursor-pointer appearance-none bg-transparent pointer-events-auto z-10 opacity-0"
+                      type="checkbox"
+                      id="inStock"
+                      checked={checked === "inStock"}
+                      onChange={handleCheckboxChange}
+                      className="w-4 h-4 rounded border-gray-300 text-[#001D58] focus:ring-[#001D58]"
                     />
+                    <label
+                      htmlFor="inStock"
+                      className={`text-sm cursor-pointer ${checked === "inStock"
+                          ? "text-[#001D58] font-medium"
+                          : "text-gray-600"
+                        }`}
+                    >
+                      in stock
+                    </label>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="outOfStock"
+                      checked={checked === "outOfStock"}
+                      onChange={handleCheckboxChange}
+                      className="w-4 h-4 rounded border-gray-300 text-[#001D58] focus:ring-[#001D58]"
+                    />
+                    <label
+                      htmlFor="outOfStock"
+                      className={`text-sm cursor-pointer ${checked === "outOfStock"
+                          ? "text-[#001D58] font-medium"
+                          : "text-gray-600"
+                        }`}
+                    >
+                      out of stock
+                    </label>
                   </div>
                 </div>
+              </div>
 
-                <div className="flex flex-col justify-center items-start w-[258px] h-[97px] py-4 space-y-[16px]  border-t-[2px] border-background my-4">
-                  <h1 className="font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] h-[21px]">
-                    Availability
-                  </h1>
-                  <div className="flex flex-col justify-start items-start space-y-3 h-[44px] w-[142px] ">
-                    <div className="flex items-center gap-[5px] h-[18px]">
-                      <input
-                        type="checkbox"
-                        id="inStock"
-                        checked={checked === "inStock"}
-                        onChange={handleCheckboxChange}
-                        className="mr-2 cursor-pointer rounded-[4.43px] border-[0.74px] border-[#949494] w-[14.77px] h-[14.77px]"
-                      />
-                      <label
-                        htmlFor="inStock"
-                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
-                          checked === "inStock"
-                            ? "text-secondaryBrand"
-                            : "text-[#949494]"
+              {/* Categories */}
+              <div className="border-t border-gray-200 pt-3">
+                <h3 className="font-semibold text-gray-800 mb-2">
+                  Categories
+                </h3>
+                <div className="max-h-48 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                  {categoriesList.map((c) => (
+                    <div
+                      key={c.categoryId}
+                      onClick={() =>
+                        handleCategoryChange(c.categoryId, c.name)
+                      }
+                      className={`text-sm cursor-pointer py-1 ${selectedCategory === c.categoryId
+                          ? "text-[#001D58] font-medium"
+                          : "text-gray-600 hover:text-gray-800"
                         }`}
-                      >
-                        In Stock
-                      </label>
+                    >
+                      {c.name}
                     </div>
-
-                    <div className="flex items-center gap-[5px]">
-                      <input
-                        type="checkbox"
-                        id="outOfStock"
-                        checked={checked === "outOfStock"}
-                        onChange={handleCheckboxChange}
-                        className="mr-2 cursor-pointer rounded-[4.43px] border-[0.74px] border-[#949494] w-[14.77px] h-[14.77px]"
-                      />
-                      <label
-                        htmlFor="outOfStock"
-                        className={`cursor-pointer font-poppins font-normal text-[12px] leading-[18px] ${
-                          checked === "outOfStock"
-                            ? "text-secondaryBrand"
-                            : "text-[#949494]"
+                  ))}
+                </div>
+              </div>
+              {/* Brands */}
+              <div className="border-t border-gray-200 pt-3">
+                <h3 className="font-semibold text-gray-800 mb-2">
+                  Brand
+                </h3>
+                <div className="max-h-48 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                  {brandsList.map((b) => (
+                    <div
+                      key={b.id}
+                      onClick={() => handleBrandChange(b.id, b.name)}
+                      className={`text-sm cursor-pointer py-1 ${selectedbrand === b.id
+                          ? "text-[#001D58] font-medium"
+                          : "text-gray-600 hover:text-gray-800"
                         }`}
-                      >
-                        Out of Stock
-                      </label>
+                    >
+                      {b.name}
                     </div>
-                  </div>
+                  ))}
                 </div>
+              </div>
 
-                <div className="w-[258px] h-[1px] border-t-[2px] border-background"></div>
-                <div className="w-[258px] h-auto space-y-4 pt-3">
-                  <h1 className="w-[150px] h-[21px] font-poppins font-semibold text-[14px] leading-[21px] text-[#404145]">
-                    Categories
-                  </h1>
-                  <div className=" max-h-[200px] overflow-y-auto pr-2 space-y-[8px] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    {categoriesList.map((c) => (
-                      <h1
-                        key={c.categoryId}
-                        onClick={() =>
-                          handleCategoryChange(c.categoryId, c.name)
-                        }
-                        className={`font-poppins text-[12px] cursor-pointer leading-[18px] ${
-                          selectedCategory === c.categoryId
-                            ? "text-secondaryBrand  font-medium"
-                            : "text-secondaryText cursor-pointer font-normal"
-                        }`}
-                      >
-                        {c.name}
-                      </h1>
-                    ))}
-                  </div>
-                </div>
-                <div className="w-[258px] h-[201px] space-y-[16px] border-t-[2px] border-background my-4">
-                  <h1 className="w-[150px] h-[21px] font-poppins font-semibold text-[14px] leading-[21px] text-[#404145] py-4">
-                    Brands
-                  </h1>
-                  <div className=" max-h-[150px] overflow-y-auto pr-2 space-y-[8px] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    {brandsList.map((b) => (
-                      <h1
-                        key={b.id}
-                        onClick={() => handleBrandChange(b.id, b.name)}
-                        // className="font-poppins text-[12px] leading-[18px] font-normal text-secondaryText"
-                        className={`font-poppins text-[12px] cursor-pointer leading-[18px] ${
-                          selectedbrand === b.id
-                            ? "text-secondaryBrand  font-medium"
-                            : "text-secondaryText cursor-pointer font-normal"
-                        }`}
-                      >
-                        {b.name}
-                      </h1>
-                    ))}
-                  </div>
-                </div>
+              {/* Reset All Button - Mobile Only */}
+              <div className="border-t border-gray-200 py-3 md:hidden sticky bottom-0 bg-white">
+                <button
+                  onClick={handleResetAll}
+                  className="w-full px-4 py-3 border-2 border-[#001D58] text-[#001D58] rounded-lg font-medium hover:bg-[#001D58] hover:text-white transition-colors"
+                >
+                  Reset All
+                </button>
               </div>
             </div>
           </div>
@@ -733,14 +727,14 @@ const Shop = () => {
           {/* Overlay for mobile */}
           {isFilterOpen && (
             <div
-              className="fixed inset-0 bg-black/50 md:hidden z-40"
+              className="fixed inset-0 bg-black/50 md:hidden z-[9999]"
               onClick={() => setIsFilterOpen(false)}
             />
           )}
 
           {/* Products Grid */}
-          <div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="md:ml-0 lg:ml-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {loading ? (
                 <>
                   {[...Array(6)].map((_, index) => (
@@ -759,10 +753,21 @@ const Shop = () => {
                   />
                 ))
               ) : (
-                <div className="col-span-2 sm:col-span-2 lg:col-span-3 flex justify-center items-center bg-white p-8 rounded-md min-h-[300px]">
+                <div className="col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-4 flex justify-center items-center bg-white p-6 sm:p-8 rounded-md min-h-[250px] sm:min-h-[300px]">
                   <div className="text-center">
-                    <p className="text-xl sm:text-2xl font-poppins text-gray-600">Sorry! No Products Found</p>
-                    <p className="text-sm text-gray-500 mt-2">Try adjusting your filters</p>
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                    <p className="text-lg sm:text-xl md:text-2xl font-poppins text-gray-600 mb-2">No Products Found</p>
+                    <p className="text-sm sm:text-base text-gray-500">Try adjusting your search or filters</p>
+                    <button
+                      onClick={handleResetAll}
+                      className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                    >
+                      Clear Filters
+                    </button>
                   </div>
                 </div>
               )}

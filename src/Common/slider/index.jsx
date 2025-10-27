@@ -1,7 +1,11 @@
-import Slider from "react-slick";
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Autoplay, Pagination } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
 
-export default function ProductCarousel({ items = [] }) {
+export default function ProductCarousel({ items = [], slidesDesktop = 3, slidesLaptop = 3, slidesTablet = 2, slidesPhone = 1 }) {
   const navigate = useNavigate();
 
   const handleProductClick = (item) => {
@@ -9,99 +13,83 @@ export default function ProductCarousel({ items = [] }) {
       navigate(item.route);
     }
   };
+
   if (!items || items.length === 0) return null;
-  const n = items.length;
-  const safeShow = (target) => {
-    if (n <= 1) return 1; // single slide
-    if (n <= target) return n; // show all available slides
-    return target;
-  };
-  const showDesktop = safeShow(4);
-  const showLaptop = safeShow(3);
-  const showTablet = safeShow(2);
-  const settings = {
-    dots: true,
-    arrows: false,
-    infinite: false,
-    slidesToShow: showDesktop,
-    slidesToScroll: 1,
-    speed: 500,
-    autoplay: false,
-    autoplaySpeed: 2500,
-    pauseOnHover: true,
-    cssEase: "ease",
-    swipeToSlide: true,
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: showLaptop,
-          slidesToScroll: 1,
-          dots: true,
-          infinite: false,
-        },
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: showTablet,
-          slidesToScroll: 1,
-          dots: true,
-          infinite: false,
-        },
-      },
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: true,
-          infinite: false,
-        },
-      },
-    ],
-  };
 
   return (
-    <section className="w-full py-10">
-      <style>{`
-        .slick-dots { bottom: -28px !important; }
-        ..slick-dots li button {margin-top:'30px'}
-        .slick-dots li button:before { font-size: 11px; color: #9ca3af; opacity: .6; }
-        .slick-dots li.slick-active button:before { color: #001D58; opacity: 1; }
-        .slick-slider { overflow: visible; }
-      `}</style>
-      <div className="max-w-7xl mx-auto px-4 pb-10">
-        <Slider {...settings}>
+    <section className="w-full">
+      <div className="pb-12">
+        <Swiper
+          spaceBetween={20}
+          slidesPerView={slidesPhone}
+          centeredSlides={false}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+            bulletClass: 'swiper-pagination-bullet',
+            bulletActiveClass: 'swiper-pagination-bullet-active',
+          }}
+          breakpoints={{
+            640: {
+              slidesPerView: slidesTablet,
+              spaceBetween: 20,
+            },
+            900: {
+              slidesPerView: slidesLaptop,
+              spaceBetween: 24,
+            },
+            1200: {
+              slidesPerView: slidesDesktop,
+              spaceBetween: 30,
+            },
+          }}
+          modules={[Autoplay, Pagination]}
+          className="w-full"
+        >
           {items.map((item, index) => (
-            <div key={index} className="px-2">
+            <SwiperSlide key={index}>
               <div
-                className="rounded-2xl bg-white border transition-all duration-300 cursor-pointer hover:shadow-lg hover:border-secondaryBrand group"
                 onClick={() => handleProductClick(item)}
+                className="flex flex-col items-center cursor-pointer border-[1px] border-[#0000000D] rounded-[16px] w-full h-[340px] space-y-4"
               >
-                <div className="p-5">
-                  <div className="aspect-[4/3] overflow-hidden rounded-xl bg-white">
-                    <img
-                      src={item.img ?? item.image}
-                      alt={item.title}
-                      className="h-full w-full object-contain"
-                      loading="lazy"
-                    />
-                  </div>
-                  <h3 className="mt-4 text-center text-sm font-semibold text-gray-800 group-hover:text-secondaryBrand transition-colors">
+                <div className="w-full h-[250px] flex items-center justify-center">
+                  <img
+                    src={item.img ?? item.image}
+                    alt={item.title}
+                    className="max-h-full max-w-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="text-center">
+                  <h3 className="text-base font-semibold text-gray-800 leading-tight">
                     {item.title}
                   </h3>
-                  {item.subtitle && (
-                    <p className="mt-1 text-center text-xs text-gray-500">
-                      {item.subtitle}
-                    </p>
-                  )}
                 </div>
               </div>
-            </div>
+            </SwiperSlide>
           ))}
-        </Slider>
+        </Swiper>
       </div>
+      
+      <style jsx>{`
+        .swiper-pagination {
+          position: relative !important;
+          margin-top: 20px !important;
+        }
+        .swiper-pagination-bullet {
+          width: 12px !important;
+          height: 12px !important;
+          background: #E5E7EB !important;
+          opacity: 1 !important;
+          margin: 0 6px !important;
+        }
+        .swiper-pagination-bullet-active {
+          background: #3B82F6 !important;
+        }
+      `}</style>
     </section>
   );
 }

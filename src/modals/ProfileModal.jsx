@@ -280,8 +280,6 @@ const ProfileModal = ({ isModalOpen, setIsModalOpen }) => {
           profileImage: userResponse?.data?.data?.profileImage,
         };
 
-        console.log(updatedUserData, "[[updated]]");
-
         updateUser(updatedUserData);
 
         dispatch(

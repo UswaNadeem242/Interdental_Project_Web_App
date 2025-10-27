@@ -70,7 +70,7 @@ const Header = () => {
   return (
     <>
       <header
-        className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${isScrolled ? "top-0 w-full" : "top-4 w-[95%] sm:w-[92%] md:w-[90%]"
+        className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${isScrolled ? "top-0 w-full" : "top-4 w-[95%] sm:w-[92%] lg:w-[90%] max-w-screen-2xl mx-auto"
           }`}
       >
         {/* pill container */}

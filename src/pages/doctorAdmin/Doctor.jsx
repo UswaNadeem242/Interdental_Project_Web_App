@@ -24,7 +24,7 @@ const DoctorAdmin = () => {
         <Route path="/profile" element={<DoctorProfile />} />
         <Route path="/orders" element={<OrderDoctorPage />} />
         <Route path="/order-details/:id" element={<DoctorDeailsPage />} />
-         <Route path="/term-condition" element={<DoctorTermCondition/>} />
+        <Route path="/term-condition" element={<DoctorTermCondition/>} />
       </Routes>
     </div>
   );
