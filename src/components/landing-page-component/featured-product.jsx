@@ -1,29 +1,14 @@
 import ProductCarousel from "../../Common/slider";
-
-const products = [
-  {
-    title: "ARGEN PMMA",
-    image: "/assets/landing-page/teeth.png",
-    route: "/product/argen-pmma",
-  },
-  {
-    title: "MULTILAYER PRO",
-    image: "/assets/landing-page/product2.png",
-    route: "/product/multilayer-pro",
-  },
-  {
-    title: "ARGEN Z ST MULTILAYER",
-    image: "/assets/landing-page/product3.png",
-    route: "/product/argenz-st",
-  },
-  {
-    title: "ZirCad Ivoclar",
-    image: "/assets/landing-page/product4.png",
-    route: "/product/zidcard-ivoclar",
-  },
-];
+import { productsOption } from "../../Constant";
 
 export default function FeaturedProducts() {
+  // Transform productsOption to match the carousel expected format
+  const products = productsOption.map(product => ({
+    title: product.title,
+    image: product.image,
+    route: product.nav,
+  }));
+
   return (
     <section className="py-12 md:py-16 bg-white">
       <div className="w-full flex justify-center px-4">
