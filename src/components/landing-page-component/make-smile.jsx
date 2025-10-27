@@ -43,7 +43,9 @@ function MakeSmile() {
             </li>
           </ul>
 
-          <ThirdButtonUI title="Protect Your Smile" />
+          <ThirdButtonUI
+          href="/patient"
+          title="Protect Your Smile" />
         </div>
       </section>
     </div>

@@ -27,7 +27,7 @@ function OurModules() {
               Centralized communication with no more phone calls.
             </li>
           </ul>
-          <ThirdButtonUI title=" Explore Labs Now" />
+          <ThirdButtonUI title=" Explore Labs Now" href="/signup" />
         </div>
         <div className="flex-1 flex justify-center lg:justify-end">
           <img

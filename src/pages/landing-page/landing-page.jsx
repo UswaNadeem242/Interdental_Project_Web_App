@@ -1,37 +1,27 @@
-import Footer from "../../components/Footer";
+
 import Header from "./header";
 import { HeroSection } from "./hero-section";
 import AboutUs from "./about-us";
 import DoctorComponent from "../../components/landing-page-component";
-import CircleIcon from "../../icon/circle-icon";
-import { accordionData, implantCards } from "../../Constant";
+import { implantCards } from "../../Constant";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import OurModules from "../../components/landing-page-component/our-modules";
 import MakeSmile from "../../components/landing-page-component/make-smile";
 import ImplantInterfeace from "../../components/landing-page-component/implant-interface";
 import FrequentlyAskedQuestion from "../../components/frequently-asked-question";
-import UpperFooter from "../../components/upper-footer";
 import FeaturedProducts from "../../components/landing-page-component/featured-product";
 import { ThirdButtonUI } from "../../Common/Button";
-import Contact from "./contact";
-import Accordion from "../../Common/accordion";
 import ContactFooter from "../../components/contact-footer";
+import { useState, useEffect } from "react";
+import api from "../../api/intercepter";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const warrantyCard = [
-    {
-      title: "WARRANTY DASHBOARD",
-      subtitle: "PATIENT",
-      img: "/assets/landing-page/card 2.png",
-      points: [
-        "Easy online activation",
-        "Downloadable warranty certificate",
-        "Direct access to our support team",
-      ],
-    },
-  ];
+  const [blogs, setBlogs] = useState([]);
+  const [blogsLoading, setBlogsLoading] = useState(true);
+  const [blogsError, setBlogsError] = useState(null);
+
   const slugify = (s) =>
     s
       ?.toLowerCase()
@@ -39,6 +29,36 @@ const LandingPage = () => {
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-");
+
+  // Fetch blogs for landing page
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setBlogsLoading(true);
+        setBlogsError(null);
+
+        const response = await api.get("/api/blog", {
+          params: {
+            page: 0, // First page
+            size: 4, // Get first 4 blogs
+          }
+        });
+
+        const responseData = response.data?.data;
+        const blogData = responseData?.data || [];
+
+        setBlogs(blogData);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+        setBlogsError('Failed to load blogs');
+        setBlogs([]);
+      } finally {
+        setBlogsLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
   return (
     <>
       <div>{<Header />} </div>
@@ -92,7 +112,7 @@ const LandingPage = () => {
         <FeaturedProducts />
 
         {/* InterOral.ai Info Section */}
-        <div className="w-full flex justify-center px-4 py-8 md:py-12 bg-blue-300/5">
+        <div className="w-full flex justify-center px-4 py-8 bg-blue-300/5">
           <div className="max-w-7xl w-full">
             <div className="flex flex-col lg:flex-row gap-8 items-center  py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-12 rounded-2xl">
               {/* Text Content */}
@@ -101,14 +121,13 @@ const LandingPage = () => {
                   InterOral.ai
                 </h1>
                 <p className="font-poppins font-normal text-sm md:text-base text-[#949494] leading-6 md:leading-7">
-                  InterOral.ai is an AI-driven platform that seamlessly connects dentists, dental labs, and patients under one secure system. Dentists can submit digital prescriptions, upload scans, and order implant parts, while labs efficiently receive and manage cases. Patients gain added value through extended warranty coverage, ensuring a smooth, connected, and compliant workflow for all.
-                </p>
+                  InterOral.ai is an AI-driven platform that seamlessly connects dentists, dental labs, and patients under one secure system. Dentists can submit digital prescriptions, upload scans, and order implant parts, while labs efficiently receive and manage cases. Patients gain added value through extended warranty coverage, ensuring a smooth, connected, and compliant workflow for all.                </p>
                 <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
                   <h1
                     className="font-poppins font-semibold text-base text-[#434343]"
                     onClick={() => navigate("/about-us")}
                   >
-                    View More
+                    Learn more
                   </h1>
                   <div className="rounded-full bg-secondaryBrand text-white p-2">
                     <ArrowRightIcon className="w-4 h-4" />
@@ -192,49 +211,123 @@ const LandingPage = () => {
         {/* Blog & Articles Section */}
         <section className="w-full flex justify-center px-4 py-16 md:py-28">
           <div className="max-w-7xl w-full">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
               <h1 className="text-primaryText text-xl md:text-3xl font-bold font-poppins capitalize">
                 Blog &
                 <span className="text-xl md:text-3xl font-bold font-poppins text-fouthBrand capitalize ml-2">
                   Articles
                 </span>
               </h1>
-              <ThirdButtonUI title="View more" href="/blog" />
+              <ThirdButtonUI title="View All" href="/blog" />
             </div>
-            <p className="text-primaryText text-sm font-poppins mb-8">
-              Read our interesting blog
+            <p className="text-primaryText text-sm text-center md:text-left font-poppins mb-8">
+              Read our interesting blogs
             </p>
-            <div className="flex flex-wrap gap-6 justify-center md:justify-start">
-              {implantCards?.map((card, index) => (
-                <div key={index} className="flex-1 min-w-[280px] max-w-[360px]">
-                  <Link to={card?.href}>
-                    <img
-                      src={card.img}
-                      alt={card.title || "Implant card"}
-                      className="w-full h-auto rounded-lg"
-                    />
-                    {card.title && (
-                      <>
-                        <h3 className="text-xs font-medium font-poppins uppercase text-fouthBrand pt-5">
-                          {card.title}
-                        </h3>
-                        <p className="text-lg md:text-xl font-normal font-poppins capitalize py-4 line-clamp-2">
-                          {card.subtitle}
-                        </p>
-                        <button className="flex justify-center items-center w-[150px] sm:w-[172.7px] h-[40px] sm:h-[53.73px] rounded-[50.7px] border-2 border-fouthBrand gap-2 sm:gap-4 p-2">
-                          <h1 className="font-poppins font-semibold text-sm md:text-base text-[#434343]">
+            {/* Loading State */}
+            {blogsLoading && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center">
+                {[...Array(4)].map((_, index) => (
+                  <div key={index} className="w-full max-w-sm h-[400px] bg-white p-6 rounded-lg shadow-md animate-pulse flex flex-col">
+                    <div className="h-48 bg-gray-300 rounded mb-4"></div>
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                        <div className="h-6 bg-gray-300 rounded mb-4"></div>
+                      </div>
+                      <div className="h-10 bg-gray-300 rounded w-32"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Error State */}
+            {blogsError && !blogsLoading && (
+              <div className="text-center py-12">
+                <p className="text-red-600 font-poppins text-base mb-4">{blogsError}</p>
+                <p className="text-gray-500 font-poppins text-sm">Using fallback content...</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center mt-6">
+                  {implantCards?.map((card, index) => (
+                    <Link
+                      key={index}
+                      to={card?.href}
+                      className="block w-full max-w-sm h-[400px] bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondaryBrand transform hover:-translate-y-1 flex flex-col"
+                    >
+                      <img
+                        src={card.img}
+                        alt={card.title || "Implant card"}
+                        className="w-full h-48 object-contain rounded mb-4"
+                      />
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <h3 className="text-sm font-medium font-poppins uppercase text-fouthBrand mb-2">
+                            {card.title}
+                          </h3>
+                          <p className="text-xl font-normal font-poppins capitalize mb-4 line-clamp-2">
+                            {card.subtitle}
+                          </p>
+                        </div>
+                        {/* style the Link like a button (avoid nested button-inside-link) */}
+                        <span className="inline-flex justify-start items-center w-fit rounded-full border-2 border-fouthBrand gap-4 px-4 py-2 hover:bg-fouthBrand hover:text-white transition-colors duration-200">
+                          <span className="font-poppins font-semibold text-base text-[#434343]">
                             {card.button}
-                          </h1>
-                          <div className="rounded-full bg-secondaryBrand text-white p-2">
+                          </span>
+                          <span className="rounded-full bg-secondaryBrand text-white p-2">
                             <ArrowRightIcon className="w-4 h-4" />
-                          </div>
-                        </button>
-                      </>
-                    )}
-                  </Link>
+                          </span>
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+
+            {/* Success State - Real Blog Data */}
+            {!blogsLoading && !blogsError && blogs.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center">
+                {blogs.map((blog) => (
+                  <Link
+                    key={blog.id}
+                    to={`/blogs/${blog.id}`}
+                    className=" w-full max-w-sm h-[410px] bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondaryBrand transform hover:-translate-y-1 flex flex-col"
+                  >
+                    <img
+                      src={blog.imageUrl?.[0] || "/assets/landing-page/card 3.png"}
+                      alt={blog.title || "Blog card"}
+                      className="w-full h-48 object-contain rounded mb-4"
+                    />
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-sm font-medium font-poppins uppercase text-fouthBrand mb-2">
+                          {blog.categoryName || "Blog"}
+                        </h3>
+                        <p className="text-xl font-normal flex-1 font-poppins capitalize mb-4 line-clamp-2">
+                          {blog.title}
+                        </p>
+                      </div>
+                      {/* style the Link like a button (avoid nested button-inside-link) */}
+                      <span className="inline-flex mt-auto justify-start items-center w-fit rounded-full border-2 border-fouthBrand gap-4 px-4 py-2 hover:bg-fouthBrand hover:text-white transition-colors duration-200">
+                        <span className="font-poppins font-semibold text-base text-[#434343]">
+                          Read More
+                        </span>
+                        <span className="rounded-full bg-secondaryBrand text-white p-2">
+                          <ArrowRightIcon className="w-4 h-4" />
+                        </span>
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {/* No Blogs State */}
+            {!blogsLoading && !blogsError && blogs.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500 font-poppins text-lg mb-4">No blogs available at the moment.</p>
+                <p className="text-gray-400 font-poppins text-sm">Check back later for new content!</p>
+              </div>
+            )}
           </div>
         </section>
 

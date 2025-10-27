@@ -32,8 +32,8 @@ const AboutUs = () => {
         </p>
 
         <p className="mt-4 text-gray-600 pb-6 tracking-wide">
-          Our &nbsp; mission &nbsp; is simple: to cut &nbsp; complexity,&nbsp;
-          reduce <br className="hidden md:block" /> and give every patient
+          Our mission is simple: to cut complexity,&nbsp;
+          reduce  <br className="hidden md:block" /> costs and give every patient
           access to smarter dentistry.{" "}
         </p>
 

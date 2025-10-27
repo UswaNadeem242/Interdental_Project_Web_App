@@ -153,7 +153,7 @@ function Blog({ isLanding }) {
       <div className="bg-blue-300/5">
 
 
-        <section className="lg:pt-32 pt-20">
+        <section className="lg:pt-32 pt-24">
           <div className="max-w-7xl mx-auto px-4 ">
             <div className="text-center">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-secondaryBrand font-bold font-poppins mb-6">

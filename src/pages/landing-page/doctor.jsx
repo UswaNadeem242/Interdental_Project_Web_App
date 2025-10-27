@@ -296,8 +296,8 @@ const Doctor = ({ isLanding }) => {
           </div>
           <div className="flex flex-col items-center mt-5">
             <ThirdButtonUI
-              title="  Enroll The Office"
-              href="/signup"
+              title="Enroll in the office"
+              href="/signup?role=doctor"
               className="pl-5"
             />
             <p className="text-[#949494] text-sm font-normal italic mt-3">

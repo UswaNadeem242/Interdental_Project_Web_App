@@ -60,9 +60,6 @@ const Signup = () => {
         </div>
       </div>
 
-      {/* Modal and Toast components */}
-
-
 
     </div>
   );

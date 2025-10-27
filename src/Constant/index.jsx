@@ -1680,7 +1680,7 @@ export const Doctorsteps = [
     id: 3,
     title: "Start Your Subscription",
     description: [
-      "First register your office, one dr per subscription",
+      "First register your office, one doctor per subscription",
       "Begin managing your patients efficiently.",
       "Upgrade anytime as your practice grows.",
     ],

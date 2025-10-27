@@ -35,7 +35,7 @@ function ImplantInterfeace() {
               Case and parts are bundled and sent together to the lab.
             </li>
           </ul>
-          <ThirdButtonUI title="Order Smarter" />
+          <ThirdButtonUI title="Order Smarter" href="/signup" />
         </div>
       </section>
     </div>

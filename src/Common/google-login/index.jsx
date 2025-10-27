@@ -52,7 +52,7 @@ export default function LoginWithGoogle() {
         console.log("Users:", users);
         if (userRole === "DOCTOR") {
           // Check if doctor profile is complete
-          const isComplete = users.drLicenseNo && users.officeRefNo;
+          const isComplete = users.drlicenceNo&& users.officeRefNo;
           
           if (!isComplete) {
             navigate("/complete-profile");

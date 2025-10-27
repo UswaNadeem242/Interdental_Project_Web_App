@@ -1,8 +1,20 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 export default function Stepper({ steps, className, selectedColor }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get('role');
+
+  console.log(role, "[ROLE]");
+
+  useEffect(() => {
+    if (role) {
+      setSelectedIndex(steps.findIndex((step) => step.name?.toLowerCase() === role?.toLowerCase()));
+    }
+  }, [role, steps]);
+
   return (
     <div className="px-2 sm:px-4 w-full">
       <div>

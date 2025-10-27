@@ -39,21 +39,15 @@ function DoctorComponent() {
               </h3>
               <p className="mt-4 text-sm md:text-base font-normal text-secondaryText">
               Join a network of providers who trust Interoral.ai and Make Me Smile
-              &nbsp; to &nbsp; deliver exceptional &nbsp; restorations,
-              streamlined &nbsp;&nbsp;&nbsp; workflows, &nbsp;&nbsp;and
-              &nbsp;&nbsp;long-term &nbsp;&nbsp; &nbsp; patient &nbsp;
-              satisfaction.
+              to deliver exceptional restorations,
+              streamlined workflows, and
+              long-term patient satisfaction.
               </p>
               <p className="mt-4 text-sm md:text-base font-normal text-secondaryText tracking-wide">
-                Our &nbsp; technicians &nbsp; combine &nbsp; advanced &nbsp; CAD/CAM
-                technology with artistic &nbsp; craftsmanship to &nbsp; ensure every
-                case &nbsp; supports your &nbsp; reputation—and &nbsp; your bottom
-                line.
+                Our technicians combine advanced CAD/CAM technology with artistic craftsmanship to ensure every case supports your reputation—and your bottom line.
               </p>
               <p className="mt-4 text-sm md:text-base font-normal text-secondaryText pb-4">
-              Register &nbsp; Now &nbsp; to &nbsp;unlock &nbsp; lab
-              &nbsp;discounts, &nbsp;extended warranties, and new patient
-              referrals.
+              Register Now to unlock lab discounts, extended warranties, and new patient referrals.
             </p>
 
             <button
@@ -243,7 +237,7 @@ function DoctorComponent() {
           </div>
 
             <div className="mt-8 flex flex-col items-center gap-2">
-              <ThirdButtonUI title="enroll the office" />
+              <ThirdButtonUI title="Enroll in the office" href="/signup?role=doctor" />
               <p className="text-sm font-normal font-poppins text-secondaryText">
                 We're HIPAA compliant
               </p>

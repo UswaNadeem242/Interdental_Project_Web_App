@@ -233,7 +233,7 @@ function App() {
             <Route
               path="/signup"
               element={
-                <PublicRoute>
+                <PublicRoute redirectAuthenticated={false}>
                   <SimpleLayout>
                     <Signup />
                   </SimpleLayout>

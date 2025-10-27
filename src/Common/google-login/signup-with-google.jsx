@@ -49,7 +49,7 @@ export default function SignupWithGoogle({ role }) {
 
           console.log("Users:", users);
 
-          const isComplete = users.drLicenseNo && users.officeRefNo;
+          const isComplete = users.drlicenceNo && users.officeRefNo;
           
           if (!isComplete) {
             // Redirect to complete profile page
