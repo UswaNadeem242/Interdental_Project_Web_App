@@ -22,6 +22,7 @@ export default function ProductCarousel({ items = [], slidesDesktop = 3, slidesL
         <Swiper
           spaceBetween={20}
           slidesPerView={slidesPhone}
+          slidesPerGroup={slidesPhone}
           centeredSlides={false}
           autoplay={{
             delay: 3000,
@@ -31,18 +32,22 @@ export default function ProductCarousel({ items = [], slidesDesktop = 3, slidesL
             clickable: true,
             bulletClass: 'swiper-pagination-bullet',
             bulletActiveClass: 'swiper-pagination-bullet-active',
+            dynamicBullets: false,
           }}
           breakpoints={{
             640: {
               slidesPerView: slidesTablet,
+              slidesPerGroup: slidesTablet,
               spaceBetween: 20,
             },
             900: {
               slidesPerView: slidesLaptop,
+              slidesPerGroup: slidesLaptop,
               spaceBetween: 24,
             },
             1200: {
               slidesPerView: slidesDesktop,
+              slidesPerGroup: slidesDesktop,
               spaceBetween: 30,
             },
           }}
