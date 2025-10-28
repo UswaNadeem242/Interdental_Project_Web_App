@@ -570,7 +570,7 @@ const DoctorOrder = () => {
                                     }}
                                     label=" Denture"
                                     storageKey="digitalOptions"
-                                    disabled={selectedTeeth.length === 0}
+                                    disabled={selectedTeeth?.length === 0}
                                   />
                                   <MaterialDropdown
                                     className2="relative z-0"
@@ -600,7 +600,7 @@ const DoctorOrder = () => {
                                     hideCheckForNotAvailable={true}
                                     label="Surgical Guide"
                                     storageKey="surgical_guide"
-                                    disabled={selectedTeeth.length === 0}
+                                    disabled={selectedTeeth?.length === 0}
                                   />
 
                                   <MaterialDropdown
@@ -622,7 +622,7 @@ const DoctorOrder = () => {
                                     label="Smart Crown"
                                     storageKey="crown"
                                     className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
-                                    disabled={selectedTeeth.length === 0}
+                                    disabled={selectedTeeth?.length === 0}
                                   />
                                   <MaterialDropdown
                                     className2="relative z-0"
@@ -666,7 +666,7 @@ const DoctorOrder = () => {
                                         })
                                       );
                                     }}
-                                    disabled={selectedTeeth.length === 0}
+                                    disabled={selectedTeeth?.length === 0}
                                   />
 
                                   <MaterialDropdown
@@ -743,7 +743,7 @@ const DoctorOrder = () => {
                                   storageKey="Photogrammetry files"
                                   className="w-full rounded-xl bg-[#F8F8F8] border-none px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow "
                                   dropdownClass="text-secondaryBrand"
-                                  disabled={selectedTeeth.length === 0}
+                                  disabled={selectedTeeth?.length === 0}
                                 />
                               </FormSection>
                             </div>
@@ -809,25 +809,25 @@ const DoctorOrder = () => {
                                 )}
 
                                 {/* Lab */}
-                                {globalSelections.lab && (
+                                {globalSelections?.lab && (
                                   <div className="flex justify-between items-center py-1">
                                     <p className="text-xs text-textFieldHeading">
-                                      {globalSelections.lab.option?.label || "Participating Lab"}
+                                      {globalSelections?.lab?.option?.label || "Participating Lab"}
                                     </p>
                                     <p className="text-xs font-medium">
-                                      ${globalSelections.lab.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections.lab.price || 0) * (selectedTeeth?.length || 0)}
+                                      ${globalSelections?.lab?.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections?.lab?.price || 0) * (selectedTeeth?.length || 0)}
                                     </p>
                                   </div>
                                 )}
 
                                 {/* Scanner Type */}
-                                {globalSelections.scannerType && (
+                                {globalSelections?.scannerType && (
                                   <div className="flex justify-between items-center py-1">
                                     <p className="text-xs text-textFieldHeading">
-                                      {globalSelections.scannerType.option?.label || "Scanner Type"}
+                                      {globalSelections?.scannerType?.option?.label || "Scanner Type"}
                                     </p>
                                     <p className="text-xs font-medium">
-                                      ${globalSelections.scannerType.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections.scannerType.price || 0) * (selectedTeeth?.length || 0)}
+                                      ${globalSelections?.scannerType?.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections?.scannerType?.price || 0) * (selectedTeeth?.length || 0)}
                                     </p>
                                   </div>
                                 )}
@@ -840,7 +840,7 @@ const DoctorOrder = () => {
                                     Subtotal:
                                   </p>
                                   <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                    ${totalPrice.toFixed(2)}
+                                    ${totalPrice?.toFixed(2)}
                                   </p>
                                 </div>
 
@@ -858,7 +858,7 @@ const DoctorOrder = () => {
                                   </p>
 
                                   <p className="text-[#1A1A1A] font-semibold text-lg font-poppins">
-                                    ${totalPrice.toFixed(2)}
+                                    ${totalPrice?.toFixed(2)}
                                   </p>
                                 </div>
                               </div>
