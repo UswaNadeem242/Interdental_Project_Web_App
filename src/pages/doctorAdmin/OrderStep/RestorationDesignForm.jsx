@@ -17,6 +17,7 @@ import {
   setDoctorField,
   setDueDate,
   resetRestoration,
+  setSelectedPatient,
 } from "../../../store/slices/restoration-slice/index";
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import DonePage from "./DonePage";
@@ -55,6 +56,16 @@ const DoctorOrder = () => {
     note,
     globalSelections,
   } = useSelector((state) => state.restoration);
+
+  // Debug logging for patient selection
+  useEffect(() => {
+    console.log('Current Redux state:', {
+      patient,
+      selectedTeeth,
+      globalSelections,
+      doctor
+    });
+  }, [patient, selectedTeeth, globalSelections, doctor]);
   const [touched, setTouched] = useState({});
   const [selected, setSelected] = useState(null);
 
@@ -132,10 +143,15 @@ const DoctorOrder = () => {
     ?.filter((selection) => selection && selection?.price && selection?.price > 0)
     ?.reduce((sum, selection) => sum + (selection?.price || 0), 0) || 0;
 
-  // Remove the resetRestoration call that was clearing all data on mount
+  // Only reset restoration state when component first mounts (not on every render)
   useEffect(() => {
-    dispatch(resetRestoration());
-  }, [dispatch]);
+    // Check if this is a fresh start (no existing data)
+    const hasExistingData = selectedTeeth.length > 0 || patient || note || Object.keys(globalSelections).length > 0;
+    
+    if (!hasExistingData) {
+      dispatch(resetRestoration());
+    }
+  }, []); // Empty dependency array - only run once on mount
 
   const [formData, setFormData] = useState({
     id: "",
@@ -187,6 +203,14 @@ const DoctorOrder = () => {
     setFieldValue("dueDate", value);
   };
 
+  // Function to manually clear all restoration data (for testing)
+  const clearAllData = () => {
+    dispatch(resetRestoration());
+    // Also clear localStorage for restoration
+    localStorage.removeItem('persist:root');
+    console.log('All restoration data cleared');
+  };
+
   const today = new Date();
   // Format YYYY-MM-DD for <input type="date">
   const formattedToday = today.toISOString().split("T")[0];
@@ -196,9 +220,9 @@ const DoctorOrder = () => {
         <main className="flex-1 bg-white rounded-3xl p-4 sm:p-6 w-full">
           <Formik
             initialValues={{
-              officeReg: "",
+              officeReg: formData?.reference || "",
               dueDate: doctor?.dueDate || "",
-              patientFirstName: patient?.name || "",
+              patientFirstName: patient?.firstName || patient?.name || "",
               patientLastName: patient?.lastName || "",
               scannerType: globalSelections?.scannerType?.value || "",
               digitalOptions: globalSelections?.digitalOptions?.value || "",
@@ -380,20 +404,22 @@ const DoctorOrder = () => {
                             <PatientDropdown
                               className="w-full rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow"
                               dropdownClass="text-secondaryBrand"
-                              value={patient || values?.patientFirstName} // Use Redux patient or Formik value
-                              onChange={(patient) => {
-                                console.log(patient, "patient");
-                                // patient is now the full patient object
-                                if (patient) {
-                                  const firstName = patient?.firstName?.trim() || patient?.name || "";
-                                  const lastName = patient?.lastName?.trim() || "";
+                              value={patient} // Use Redux patient object
+                              onChange={(selectedPatient) => {
+                
+                                dispatch(setSelectedPatient(selectedPatient));
+                                
+                                // Update Formik values
+                                if (selectedPatient) {
+                                  const firstName = selectedPatient?.firstName?.trim() || selectedPatient?.name || "";
+                                  const lastName = selectedPatient?.lastName?.trim() || "";
                                   setFieldValue("patientFirstName", firstName);
                                   setFieldValue("patientLastName", lastName);
                                 } else {
                                   setFieldValue("patientFirstName", "");
                                   setFieldValue("patientLastName", "");
                                 }
-                              }} // update formik
+                              }}
                               classNameWidth=" w-80"
                             />
                             {errors?.patientFirstName &&

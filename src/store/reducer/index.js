@@ -26,10 +26,11 @@ import toastReducer from "../toast-slice/index";
 import profileReducer from "../slices/profileImage-slice/index";
 import profileDataReducer from "../slices/profileData-slice/index";
 
-// persist config
+// persist config - exclude restoration state from persistence
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: ['restoration'], // Don't persist restoration state
 };
 
 // combine reducers if you have multiple
