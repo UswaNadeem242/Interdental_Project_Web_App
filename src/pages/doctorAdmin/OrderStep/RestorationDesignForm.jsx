@@ -15,7 +15,6 @@ import {
   selectTooth,
   setNote,
   setDoctorField,
-  resetRestoration,
   setDueDate,
 } from "../../../store/slices/restoration-slice/index";
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
@@ -32,9 +31,8 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import Drawers from "../../../Common/Drawers";
 import AddPatientForm from "../PatientDoctor/AddPatientForm";
-import { getDoctorProfile, getDoctorPatients } from "../../../api/doctorDasboard";
+import { getDoctorProfile } from "../../../api/doctorDasboard";
 import { DropdownWrapper } from "../../../Common/drop-down-wrapper";
-import TeethSvg from "../../../components/teeth-svg";
 import RestorationTeethSvg from "../../../components/restoration-page-teeth";
 const DoctorOrder = () => {
   const dispatch = useDispatch();
@@ -51,8 +49,6 @@ const DoctorOrder = () => {
   const {
     selectedTeeth,
     selectedTooth,
-    toothSelections,
-    doctorOrderItems,
     doctor,
     patient,
     note,
@@ -138,15 +134,14 @@ const DoctorOrder = () => {
     }
   }, [selectedTeeth.length, dispatch]);
 
-  const activeToothSelection =
-    toothSelections?.find((t) => t?.toothId === selectedTooth) || {};
   const totalPrice = (selectedTeeth?.length || 0) * Object?.values(globalSelections || {})
     ?.filter((selection) => selection && selection?.price && selection?.price > 0)
     ?.reduce((sum, selection) => sum + (selection?.price || 0), 0) || 0;
 
-  useEffect(() => {
-    dispatch(resetRestoration());
-  }, [dispatch]);
+  // Remove the resetRestoration call that was clearing all data on mount
+  // useEffect(() => {
+  //   dispatch(resetRestoration());
+  // }, [dispatch]);
   const [formData, setFormData] = useState({
     id: "",
     reference: "",
@@ -184,7 +179,7 @@ const DoctorOrder = () => {
 
   // Update form field when doctor profile loads
   const [formikRef, setFormikRef] = useState(null);
-  
+
   useEffect(() => {
     if (doctorProfile?.officeRefNumber && formikRef) {
       formikRef.setFieldValue('officeReg', doctorProfile.officeRefNumber);
@@ -248,9 +243,9 @@ const DoctorOrder = () => {
                   setActiveIndex(index);
                   return;
                 }
-                
+
                 const formErrors = await validateForm();
-                
+
                 // Check if teeth are selected
                 if (selectedTeeth.length === 0) {
                   dispatch(
@@ -261,7 +256,7 @@ const DoctorOrder = () => {
                   );
                   return;
                 }
-                
+
                 // Check if patient is selected
                 if (!values?.patientFirstName || values?.patientFirstName === "" || values?.patientFirstName === null || values?.patientFirstName === undefined) {
                   dispatch(
@@ -272,14 +267,14 @@ const DoctorOrder = () => {
                   );
                   return;
                 }
- 
+
                 if (Object.keys(formErrors).length === 0) {
                   setActiveIndex(index); // proceed to next tab
                 } else {
                   // Show the first error message
                   const firstErrorField = Object.keys(formErrors)[0];
                   const firstErrorMessage = formErrors[firstErrorField];
-                  
+
                   dispatch(
                     showToast({
                       message: firstErrorMessage,
@@ -868,7 +863,7 @@ const DoctorOrder = () => {
                               onClick={async () => {
                                 // Validate form before proceeding
                                 const formErrors = await validateForm();
-                             
+
                                 // Check if teeth are selected
                                 if (selectedTeeth?.length === 0) {
                                   dispatch(
@@ -879,9 +874,9 @@ const DoctorOrder = () => {
                                   );
                                   return;
                                 }
-                                
+
                                 // Check if patient is selected
-                                if (!values?.patientFirstName ) {
+                                if (!values?.patientFirstName) {
                                   dispatch(
                                     showToast({
                                       message: "Please select a patient first",
@@ -892,14 +887,14 @@ const DoctorOrder = () => {
                                 }
 
                                 console.log(values, "values");
-                                
+
                                 if (Object?.keys(formErrors || {}).length === 0) {
                                   next(); // proceed to next step
                                 } else {
                                   // Show the first error message
                                   const firstErrorField = Object?.keys(formErrors || {})[0];
                                   const firstErrorMessage = formErrors?.[firstErrorField];
-                                  
+
                                   dispatch(
                                     showToast({
                                       message: firstErrorMessage,
@@ -908,7 +903,7 @@ const DoctorOrder = () => {
                                   );
                                 }
                               }}
-                            
+
                               className={`font-poppins w-full px-6 py-3 text-sm font-medium bg-[#0b2b62] text-[#F8F8F8] hover:bg-[#092b58]`}
                             >
                               Checkout
