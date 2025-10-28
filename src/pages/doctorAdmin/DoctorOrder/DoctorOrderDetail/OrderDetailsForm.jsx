@@ -115,8 +115,9 @@ export default function OrderDetailsForm({ id }) {
     }
   };
 
+  const totalPrice = orderDetails?.totalAmount || 0;
   const options = [
-    { label: "Subtotal:", value: orderDetails?.totalAmount || 0 },
+    { label: "Subtotal:", value: totalPrice },
     { label: "Shipping:", value: 0 },
   ];
 
@@ -158,9 +159,7 @@ export default function OrderDetailsForm({ id }) {
 
     return first + middle + last;
   };
- 
-  
-  
+
   const handleDownloadPDF = async () => {
     const element = formRef.current;
     if (!element) {
@@ -203,15 +202,6 @@ export default function OrderDetailsForm({ id }) {
       console.error("Error generating PDF:", error);
     }
   };
-
-  const totalPrice = toothSelections.reduce((toothSum, tooth) => {
-    // for each tooth, sum its fields that have price
-    const toothTotal = Object.values(tooth)
-      .filter((field) => field && typeof field === "object" && field.price)
-      .reduce((sum, field) => sum + field.price, 0);
-
-    return toothSum + toothTotal;
-  }, 0);
 
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
@@ -400,82 +390,79 @@ export default function OrderDetailsForm({ id }) {
               Customization Details
             </h3>
             <hr className="border-gray-200 my-2" />
-            {selectedTeeth.map((toothId) => {
-              const tooth = teeth[toothId] || {};
-
-              return (
-                <div key={toothId} className="  p-3 rounded-lg">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-                    <div>
-                      <p className="text-[#949494] text-xs font-poppins">
-                        Material:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth.materialOption?.label || tooth.material || "N/A"}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#949494] text-xs font-poppins">
-                        Scanner Type:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth.scannerTypeOption?.label ||
-                          tooth.scannerType ||
-                          "N/A"}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#949494] text-xs font-poppins">
-                        Digital Denture:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth?.digitalOptionsOption?.label ||
-                          tooth?.digitalOptions ||
-                          "N/A"}
-                      </p>
-                    </div>
-                    {/* <div>
-                      <p className="text-[#949494] text-xs font-poppins">
-                        Surgical Guide:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth?.surgical_guideOption?.label ||
-                          tooth?.surgical_guide ||
-                          "N/A"}
-                      </p>
-                    </div> */}
-                    <div>
-                      <p className="text-[#949494] text-xs font-poppins">
-                        Digital Model:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth?.digitalOptionsOption?.label ||
-                          tooth?.digitalOptionsOption ||
-                          "N/A"}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#949494] text-xs font-poppins">
-                        Laboratory:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth?.labOption?.label || tooth?.labOption || "N/A"}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#949494] text-xs font-poppins">
-                        Photogrammetry:
-                      </p>
-                      <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                        {tooth?.photogrammetryfilesOption?.label ||
-                          tooth?.photogrammetryfilesOption ||
-                          "N/A"}
-                      </p>
-                    </div>
-                  </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+              {/* Material */}
+              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Material") && (
+                <div>
+                  <p className="text-[#949494] text-xs font-poppins">
+                    Material:
+                  </p>
+                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Material")?.dropdown?.name || "N/A"}
+                  </p>
                 </div>
-              );
-            })}
+              )}
+              
+              {/* Scanner Type */}
+              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Scanner") && (
+                <div>
+                  <p className="text-[#949494] text-xs font-poppins">
+                    Scanner Type:
+                  </p>
+                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Scanner")?.dropdown?.name || "N/A"}
+                  </p>
+                </div>
+              )}
+              
+              {/* Digital Denture */}
+              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Denture") && (
+                <div>
+                  <p className="text-[#949494] text-xs font-poppins">
+                    Digital Denture:
+                  </p>
+                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Denture")?.dropdown?.name || "N/A"}
+                  </p>
+                </div>
+              )}
+              
+              {/* Digital Model Type */}
+              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Digital Model Type") && (
+                <div>
+                  <p className="text-[#949494] text-xs font-poppins">
+                    Digital Model Type:
+                  </p>
+                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Digital Model Type")?.dropdown?.name || "N/A"}
+                  </p>
+                </div>
+              )}
+              
+              {/* Participating Lab */}
+              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Participating Lab") && (
+                <div>
+                  <p className="text-[#949494] text-xs font-poppins">
+                    Participating Lab:
+                  </p>
+                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Participating Lab")?.dropdown?.name || "N/A"}
+                  </p>
+                </div>
+              )}
+              
+              {/* Crown */}
+              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Crown") && (
+                <div>
+                  <p className="text-[#949494] text-xs font-poppins">
+                    Crown:
+                  </p>
+                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Crown")?.dropdown?.name || "N/A"}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
           <div className="border border-gray-200  rounded-lg p-4 sm:p-6 mt-4">
             <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText ">

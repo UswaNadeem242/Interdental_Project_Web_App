@@ -85,40 +85,22 @@ const ReviewOrder = ({ next }) => {
   const [doctorProfile, setDoctorProfile] = useState(null);
   // Map doctor and patient arrays to objects for easier access
   const doctor = restoration.doctor.reduce((acc, d) => {
-    acc[d.field] = d.value || "N/A";
+    acc[d.field] = d.value || "";
     return acc;
   }, {});
+  
+  // Debug logging
+  console.log('Doctor object:', doctor);
+  console.log('Due date value:', doctor?.dueDate);
 
   const toothSelections = restoration.toothSelections || [];
   const selectedTeeth = restoration.selectedTeeth || [];
   const note = restoration.note || "";
+  const globalSelections = restoration.globalSelections || {};
 
-  // Map toothSelections array into an object for easier lookup
-  const teeth = toothSelections.reduce((acc, t) => {
-    acc[t.toothId] = t;
-    return acc;
-  }, {});
-  // Calculate totalPrice for all selected teeth
-  // const totalPrice = selectedTeeth.reduce((sum, toothId) => {
-  //   const tooth = teeth[toothId] || {};
-  //   return (
-  //     sum +
-  //     (tooth.materialPrice || 0) +
-  //     (tooth.digitalOptionsPrice || 0) +
-  //     (tooth.surgical_guidePrice || 0) +
-  //     (tooth.labPrice || 0) +
-  //     (tooth.crownPrice || tooth.crown?.price || 0)
-  //   );
-  // }, 0);
-
-  const totalPrice = toothSelections.reduce((toothSum, tooth) => {
-    // for each tooth, sum its fields that have price
-    const toothTotal = Object.values(tooth)
-      .filter((field) => field && typeof field === "object" && field.price)
-      .reduce((sum, field) => sum + field.price, 0);
-
-    return toothSum + toothTotal;
-  }, 0);
+  const totalPrice = selectedTeeth.length * Object.values(globalSelections)
+    .filter((selection) => selection && selection.price && selection.price > 0)
+    .reduce((sum, selection) => sum + selection.price, 0);
   // Utility function
   const getMaskedFullName = (firstName, lastName) => {
     const mask = (str) => {
@@ -202,6 +184,8 @@ const ReviewOrder = ({ next }) => {
 
     return first + middle + last;
   };
+
+  console.log("globalSelections", globalSelections);
 
   return (
     <div className="">
@@ -350,122 +334,58 @@ const ReviewOrder = ({ next }) => {
               Customization Details
             </h3>
             <hr className="border-gray-200 my-2" />
-            <div className="space-y-4">
-              {selectedTeeth.map((toothId) => {
-                const tooth = teeth[toothId] || {};
-
-                return (
-                  <div
-                    key={toothId}
-                    className="border border-gray-200 p-3 rounded-lg"
-                  >
-                    <h4 className="font-semibold text-sm mb-2 text-secondaryBrand">
-                      Tooth #{toothId}
-                    </h4>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-                      <div>
-                        <p className="text-[#949494] text-xs font-poppins">
-                          Material:
-                        </p>
-                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.materialOption?.label ||
-                            tooth.material ||
-                            "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[#949494] text-xs font-poppins">
-                          Scanner Type:
-                        </p>
-                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.scannerTypeOption?.label ||
-                            tooth.scannerType ||
-                            "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[#949494] text-xs font-poppins">
-                          Denture:
-                        </p>
-                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth?.digitalOptionsOption?.label ||
-                            tooth?.digitalOptions ||
-                            "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[#949494] text-xs font-poppins">
-                          Surgical Guide:
-                        </p>
-                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth?.surgical_guideOption?.label ||
-                            tooth?.surgical_guide ||
-                            "Not Avaliable"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[#949494] font-normal text-xs font-poppins ">
-                          Smart Crown:
-                        </p>
-                        {selectedTeeth.map((toothId) => {
-                          const tooth = teeth[toothId];
-                          return (
-                            <p
-                              key={toothId}
-                              className="font-bold text-secondaryBrand font-poppins text-xs"
-                            >
-                              {tooth?.crown?.label || "No Crown"}
-                            </p>
-                          );
-                        })}
-                      </div>
-                      <div>
-                        <p className="text-[#949494] text-xs font-poppins">
-                          Digital Model:
-                        </p>
-                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth?.digitalOptionsOption?.label ||
-                            tooth?.digitalOptionsOption ||
-                            "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[#949494] text-xs font-poppins">
-                          Laboratory:
-                        </p>
-                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth?.labOption?.label || tooth?.labOption || "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[#949494] text-xs font-poppins">
-                          Photogrammetry:
-                        </p>
-                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth?.photogrammetryfilesOption?.label ||
-                            tooth?.photogrammetryfilesOption ||
-                            "N/A"}
-                        </p>
-                      </div>
-                      {/* Add Shade Section Here */}
-                      <div>
-                        <p className="text-[#949494] text-xs font-poppins">
-                          Shade:
-                        </p>
-                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          {tooth.shadeOption?.label || tooth.shade || "N/A"}
-                        </p>
-                      </div>
-                      {/* <div>
-                        <p className="text-[#949494] text-xs font-poppins">Price:</p>
-                        <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                          ${tooth.materialPrice || 0}
-                        </p>
-                      </div> */}
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+              <div>
+                <p className="text-[#949494] text-xs font-poppins">
+                  Material:
+                </p>
+                <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                  {globalSelections.material?.option?.label || "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-[#949494] text-xs font-poppins">
+                  Colour:
+                </p>
+                <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                  {Object.values(globalSelections.shades || {})
+                    .map((shade) => shade?.name)
+                    .filter(Boolean)
+                    .join(", ") || "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-[#949494] text-xs font-poppins">
+                  Digital Model Type:
+                </p>
+                <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                  {globalSelections.Model_type?.option?.label || "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-[#949494] text-xs font-poppins">
+                  Participating Lab:
+                </p>
+                <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                  {globalSelections.lab?.option?.label || "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-[#949494] text-xs font-poppins">
+                  Crown:
+                </p>
+                <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                  {globalSelections.crown?.option?.label || "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-[#949494] text-xs font-poppins">
+                  Scanner Type:
+                </p>
+                <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                  {globalSelections.scannerType?.option?.label || "N/A"}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -495,56 +415,14 @@ const ReviewOrder = ({ next }) => {
               Order Summary
             </h2>
             <div className="space-y-3 text-sm">
-              {selectedTeeth?.map((toothId) => {
-                const tooth = teeth[toothId] || {};
-                return (
-                  <div key={toothId} className="border-b border-gray-200 pb-2">
-                    <p className="font-semibold text-[#1A1A1A]">
-                      Tooth #{toothId}
-                    </p>
-                    <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">
-                        {tooth?.materialOption?.label}
-                      </span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">
-                        ${tooth?.materialPrice || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">
-                        {tooth?.digitalOptionsOption?.label}
-                      </span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">
-                        ${tooth?.digitalOptionsPrice || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">
-                        {tooth?.surgical_guideOption?.label}
-                      </span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">
-                        ${tooth?.surgical_guidePrice || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">
-                        {tooth?.labOption?.label}
-                      </span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">
-                        ${tooth?.labPrice || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#828386] font-poppins text-sm">
-                        {tooth?.crown?.label}
-                      </span>
-                      <span className="text-[#1A1A1A] font-poppins text-sm">
-                        ${tooth?.crown?.price || 0}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+              <div className="flex justify-between">
+                <span className="text-[#828386] font-poppins text-sm">
+                  Selected Teeth ({selectedTeeth?.length || 0}):
+                </span>
+                <span className="text-[#1A1A1A] font-poppins text-sm">
+                  {selectedTeeth?.map(toothId => `#${toothId}`).join(', ')}
+                </span>
+              </div>
 
               <div className="flex justify-between">
                 <span className="text-[#828386] font-poppins text-sm">

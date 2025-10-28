@@ -29,7 +29,7 @@ const CheckoutForm = ({ next }) => {
   const dispatch = useDispatch();
   const restoration = useSelector((state) => state.restoration);
 
-  const { toothSelections, selectedTooth } = restoration; // destructure from Redux
+  const { toothSelections, selectedTooth, globalSelections, selectedTeeth } = restoration; // destructure from Redux
   const flattenedItems = (restoration.doctorOrderItems || []).map((item, index) => ({
     id: index + 1, // or your API might auto-generate
     doctorOrderId: 1, // assuming this is fixed or can come from somewhere
@@ -115,11 +115,9 @@ const CheckoutForm = ({ next }) => {
     }
   };
   const currentTooth = toothSelections.find((t) => t.toothId === selectedTooth);
-  const totalPrice = currentTooth
-    ? Object.values(currentTooth)
-      .filter((field) => field && typeof field === "object" && field.price)
-      .reduce((sum, field) => sum + field.price, 0)
-    : 0;
+  const totalPrice = (restoration.selectedTeeth || []).length * Object.values(globalSelections)
+    .filter((selection) => selection && selection.price && selection.price > 0)
+    .reduce((sum, selection) => sum + selection.price, 0);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -463,41 +461,27 @@ const CheckoutForm = ({ next }) => {
 
                       <div className="space-y-3 text-sm">
                         {(restoration.selectedTeeth || []).map((toothId) => {
-                          const tooth = restoration.toothSelections.find(t => t.toothId === toothId) || {};
-                          const optionFields = Object.keys(tooth).filter((key) => key.endsWith("Option"));
-
                           return (
                             <div key={toothId} className="space-y-2 mb-4">
-                              {/* Render Option fields with price > 0 */}
-                              {optionFields.map((fieldKey) => {
-                                const option = tooth[fieldKey];
-                                if (!option) return null;
-
-                                const baseKey = fieldKey.replace("Option", "");
-                                const quantity = tooth.quantity || 1;
-                                const price = tooth[`${baseKey}Price`] || option.price || 0;
-
-                                if (price <= 0) return null; // skip zero-price options
+                              <div className="text-xs text-[#828386] font-normal mb-2">
+                                Tooth #{toothId}
+                              </div>
+                              
+                              {/* Display global selections for each tooth */}
+                              {Object.entries(globalSelections).map(([fieldKey, selection]) => {
+                                if (!selection || !selection.price || selection.price <= 0) return null;
 
                                 return (
                                   <div key={fieldKey} className="flex justify-between">
-                                    <span className="text-xs text-[#828386] font-normal">{option.label}</span>
+                                    <span className="text-xs text-[#828386] font-normal">
+                                      {selection.option?.label || fieldKey}
+                                    </span>
                                     <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
-                                      ${price * quantity}
+                                      ${selection.price}
                                     </span>
                                   </div>
                                 );
                               })}
-
-                              {/* Render Crown if selected and price > 0 */}
-                              {tooth.crown && (tooth.crown.price || 0) > 0 && (
-                                <div className="flex justify-between">
-                                  <span className="text-xs text-[#828386] font-normal">{tooth.crown.label}</span>
-                                  <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
-                                    ${(tooth.crown.price || 0) * (tooth.quantity || 1)}
-                                  </span>
-                                </div>
-                              )}
                             </div>
                           );
                         })}
@@ -508,23 +492,9 @@ const CheckoutForm = ({ next }) => {
                           <span className="text-xs text-[#828386] font-normal">Subtotal</span>
                           <span className="text-[#1A1A1A] text-xs font-poppins font-normal">
                             $
-                            {restoration.selectedTeeth.reduce((sum, toothId) => {
-                              const tooth = restoration.toothSelections.find(t => t.toothId === toothId) || {};
-                              const optionFields = Object.keys(tooth).filter((key) => key.endsWith("Option"));
-
-                              const toothTotal = optionFields.reduce((toothSum, fieldKey) => {
-                                const option = tooth[fieldKey];
-                                if (!option) return toothSum;
-                                const baseKey = fieldKey.replace("Option", "");
-                                const quantity = tooth.quantity || 1;
-                                const price = tooth[`${baseKey}Price`] || option.price || 0;
-                                return toothSum + price * quantity;
-                              }, 0);
-
-                              const crownTotal = tooth.crown ? (tooth.crown.price || 0) * (tooth.quantity || 1) : 0;
-
-                              return sum + toothTotal + crownTotal;
-                            }, 0)}
+                            {(restoration.selectedTeeth || []).length * Object.values(globalSelections)
+                              .filter((selection) => selection && selection.price)
+                              .reduce((sum, selection) => sum + selection.price, 0)}
                           </span>
                         </div>
 
@@ -541,23 +511,9 @@ const CheckoutForm = ({ next }) => {
                           <span className="font-poppins">Total</span>
                           <span className="font-poppins font-semibold">
                             $
-                            {restoration.selectedTeeth.reduce((sum, toothId) => {
-                              const tooth = restoration.toothSelections.find(t => t.toothId === toothId) || {};
-                              const optionFields = Object.keys(tooth).filter((key) => key.endsWith("Option"));
-
-                              const toothTotal = optionFields.reduce((toothSum, fieldKey) => {
-                                const option = tooth[fieldKey];
-                                if (!option) return toothSum;
-                                const baseKey = fieldKey.replace("Option", "");
-                                const quantity = tooth.quantity || 1;
-                                const price = tooth[`${baseKey}Price`] || option.price || 0;
-                                return toothSum + price * quantity;
-                              }, 0);
-
-                              const crownTotal = tooth.crown ? (tooth.crown.price || 0) * (tooth.quantity || 1) : 0;
-
-                              return sum + toothTotal + crownTotal;
-                            }, 0)}
+                            {(restoration.selectedTeeth || []).length * Object.values(globalSelections)
+                              .filter((selection) => selection && selection.price)
+                              .reduce((sum, selection) => sum + selection.price, 0)}
                           </span>
                         </div>
                       </div>

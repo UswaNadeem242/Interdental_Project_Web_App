@@ -48,6 +48,7 @@ export default function MaterialDropdown({
   error,
   className2,
   hideCheckForNotAvailable = false, // ✅ new prop
+  disabled = false, // ✅ new disabled prop
 
 }) {
   const [open, setOpen] = useState(false);
@@ -76,9 +77,12 @@ export default function MaterialDropdown({
       {/* Trigger */}
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => !disabled && setOpen((o) => !o)}
+        disabled={disabled}
         className={`${className || ""
-          } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal`}
+          } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal ${
+          disabled ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
         <span>{selected?.label ?? label}</span>
         <ChevronDownIcon
@@ -87,7 +91,7 @@ export default function MaterialDropdown({
       </button>
 
       {/* Panel (removed: absolute z-20) */}
-      {open && (
+      {open && !disabled && (
         <div
           className={` w-full  border border-background bg-white shadow-lg absolute z-20 ${className2}`}
         >

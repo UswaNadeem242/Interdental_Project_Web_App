@@ -21,8 +21,18 @@ const restorationSlice = createSlice({
       { field: "dueDate", value: "" },
     ],
     patient: null,
-    // doctorId: "",
-    // officeReg: "",
+    // Global dropdown selections that apply to all teeth
+  globalSelections: {
+    scannerType: null,
+    digitalOptions: null,
+    surgical_guide: null,
+    material: null,
+    lab: null,
+    crown: null,
+    Model_type: null,
+    photogrammetryfiles: null,
+    shades: {}, // Changed from single shade to multiple shades object
+  },
     note: "",
   },
   reducers: {
@@ -86,6 +96,74 @@ const restorationSlice = createSlice({
       state.doctorOrderItems = items;
       state.totalPrice = total;
     },
+    updateGlobalSelection: (state, action) => {
+      const { field, value, price = 0, option = null } = action.payload;
+      
+      // Update global selection
+      state.globalSelections[field] = {
+        value,
+        price,
+        option,
+      };
+
+      // Recalculate total price and doctor order items based on selected teeth
+      const items = [];
+      let total = 0;
+
+      state.selectedTeeth.forEach((toothId) => {
+        // Apply global selections to each selected tooth
+        Object.entries(state.globalSelections).forEach(([fieldName, selection]) => {
+          if (selection && selection.value) {
+            items.push({
+              id: `${toothId}-${fieldName}`,
+              toothId: toothId,
+              dropdownMasterId: selection.value,
+              unitPrice: selection.price || 0,
+              dropdown: selection.option || null,
+              quantity: 1,
+            });
+            total += selection.price || 0;
+          }
+        });
+      });
+
+      state.doctorOrderItems = items;
+      state.totalPrice = total;
+    },
+    updateShadeSelection: (state, action) => {
+      const { groupName, shade } = action.payload;
+      
+      // If shade is null, remove the selection (deselect)
+      if (shade === null) {
+        delete state.globalSelections.shades[groupName];
+      } else {
+        state.globalSelections.shades[groupName] = shade;
+      }
+      
+      // Recalculate total price and doctor order items
+      const items = [];
+      let total = 0;
+
+      state.selectedTeeth.forEach((toothId) => {
+        // Apply global selections to each selected tooth
+        Object.entries(state.globalSelections).forEach(([fieldName, selection]) => {
+          if (selection && selection.value) {
+            items.push({
+              id: `${toothId}-${fieldName}`,
+              toothId: toothId,
+              dropdownMasterId: selection.value,
+              unitPrice: selection.price || 0,
+              dropdown: selection.option || null,
+              quantity: 1,
+            });
+            total += selection.price || 0;
+          }
+        });
+      });
+
+      state.doctorOrderItems = items;
+      state.totalPrice = total;
+    },
     setSelectedPatient: (state, action) => {
       state.patient = action.payload; // store full patient object
     },
@@ -116,6 +194,23 @@ const restorationSlice = createSlice({
     setNote: (state, action) => {
       state.note = action.payload;
     },
+    resetGlobalSelections: (state) => {
+      // Reset global selections
+      state.globalSelections = {
+        scannerType: null,
+        digitalOptions: null,
+        surgical_guide: null,
+        material: null,
+        lab: null,
+        crown: null,
+        Model_type: null,
+        photogrammetryfiles: null,
+        shades: {}, // Reset shades object
+      };
+      // Recalculate total price and doctor order items
+      state.doctorOrderItems = [];
+      state.totalPrice = 0;
+    },
     resetRestoration: (state) => {
       state.selectedTeeth = [];
       state.selectedTooth = null;
@@ -123,7 +218,18 @@ const restorationSlice = createSlice({
       state.totalPrice = 0;
       state.doctorOrderItems = [];
       state.doctor.forEach((d) => (d.value = ""));
-
+      // Reset global selections
+      state.globalSelections = {
+        scannerType: null,
+        digitalOptions: null,
+        surgical_guide: null,
+        material: null,
+        lab: null,
+        crown: null,
+        Model_type: null,
+        photogrammetryfiles: null,
+        shades: {}, // Reset shades object
+      };
       state.note = "";
     },
   },
@@ -132,6 +238,9 @@ const restorationSlice = createSlice({
 export const {
   selectTooth,
   updateToothSelection,
+  updateGlobalSelection,
+  updateShadeSelection,
+  resetGlobalSelections,
   resetRestoration,
   setDoctorField,
   setDueDate,

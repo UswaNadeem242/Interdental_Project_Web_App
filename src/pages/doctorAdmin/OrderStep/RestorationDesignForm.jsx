@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import FormSection from "../../../components/doctorAdmin/CommonLabel/FormSelection";
 import LabeledInput from "../../../components/doctorAdmin/CommonLabel/inputLable";
 import MaterialDropdown from "../../../components/doctorAdmin/CommonLabel/selectInputLabel";
-import TeethChart from "../../../components/doctorAdmin/TeethComponent";
 import StepperTabs from "../../../components/doctorAdmin/StepperTab";
 import ReviewOrder from "./Review";
 import CheckoutForm from "./Checkout";
@@ -10,7 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDropdowns } from "../../../store/slices/order-dropdown-slice/index";
 import { fetchTeeth } from "../../../store/slices/teeth-slice/index";
 import {
-  updateToothSelection,
+  updateGlobalSelection,
+  updateShadeSelection,
+  resetGlobalSelections,
   selectTooth,
   setNote,
   setDoctorField,
@@ -31,7 +32,7 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import Drawers from "../../../Common/Drawers";
 import AddPatientForm from "../PatientDoctor/AddPatientForm";
-import { getDoctorProfile } from "../../../api/doctorDasboard";
+import { getDoctorProfile, getDoctorPatients } from "../../../api/doctorDasboard";
 import { DropdownWrapper } from "../../../Common/drop-down-wrapper";
 import TeethSvg from "../../../components/teeth-svg";
 import RestorationTeethSvg from "../../../components/restoration-page-teeth";
@@ -43,6 +44,7 @@ const DoctorOrder = () => {
     shadeGroups,
     loading: dropdownLoading,
   } = useSelector((state) => state.dropdown);
+  console.log(shadeGroups, "shadeGroups");
   const { teethData, loading: teethLoading } = useSelector(
     (state) => state.teeth
   );
@@ -54,6 +56,7 @@ const DoctorOrder = () => {
     doctor,
     patient,
     note,
+    globalSelections,
   } = useSelector((state) => state.restoration);
   const [touched, setTouched] = useState({});
   const [selected, setSelected] = useState(null);
@@ -113,11 +116,9 @@ const DoctorOrder = () => {
   }, []);
 
   const handleDropdownChange = (field, option) => {
-    if (!selectedTooth) return; // ❌ this will block if your slice doesn't set selectedTooth properly
     if (!option) return;
     dispatch(
-      updateToothSelection({
-        toothId: selectedTooth, // must be an ID
+      updateGlobalSelection({
         field,
         value: option.value,
         price: Number(option.price) || 0,
@@ -130,16 +131,18 @@ const DoctorOrder = () => {
     dispatch(fetchTeeth());
   }, [dispatch]);
 
+  // Reset global selections when no teeth are selected
+  useEffect(() => {
+    if (selectedTeeth.length === 0) {
+      dispatch(resetGlobalSelections());
+    }
+  }, [selectedTeeth.length, dispatch]);
+
   const activeToothSelection =
     toothSelections.find((t) => t.toothId === selectedTooth) || {};
-  const totalPrice = toothSelections.reduce((toothSum, tooth) => {
-    // for each tooth, sum its fields that have price
-    const toothTotal = Object.values(tooth)
-      .filter((field) => field && typeof field === "object" && field.price)
-      .reduce((sum, field) => sum + field.price, 0);
-
-    return toothSum + toothTotal;
-  }, 0);
+  const totalPrice = selectedTeeth.length * Object.values(globalSelections)
+    .filter((selection) => selection && selection.price && selection.price > 0)
+    .reduce((sum, selection) => sum + selection.price, 0);
 
   useEffect(() => {
     dispatch(resetRestoration());
@@ -179,33 +182,43 @@ const DoctorOrder = () => {
     }
   }, [doctorProfile]);
 
+  // Update form field when doctor profile loads
+  const [formikRef, setFormikRef] = useState(null);
+  
+  useEffect(() => {
+    if (doctorProfile?.officeRefNumber && formikRef) {
+      formikRef.setFieldValue('officeReg', doctorProfile.officeRefNumber);
+    }
+  }, [doctorProfile, formikRef]);
+
   const handleDueDateChange = (e, setFieldValue) => {
     const value = e.target.value;
     dispatch(setDueDate({ dueDate: value }));
     setFieldValue("dueDate", value);
   };
+
   const today = new Date();
   // Format YYYY-MM-DD for <input type="date">
-  const formattedToday = today.toISOString().split("T")[0]; 
+  const formattedToday = today.toISOString().split("T")[0];
   return (
     <>
       <div className="flex flex-col rounded-3xl justify-center items-start">
         <main className="flex-1 bg-white rounded-3xl p-4 sm:p-6 w-full">
           <Formik
             initialValues={{
-              officeReg: formData?.reference || "",
+              officeReg: "",
               dueDate: doctor?.dueDate || "",
               patientFirstName: patient?.name || "",
               patientLastName: patient?.lastName || "",
-              scannerType: "",
-              digitalOptions: "",
-              surgical_guide: "",
-              Model_type: "",
-              material: "",
-              lab: "",
+              scannerType: globalSelections.scannerType?.value || "",
+              digitalOptions: globalSelections.digitalOptions?.value || "",
+              surgical_guide: globalSelections.surgical_guide?.value || "",
+              Model_type: globalSelections.Model_type?.value || "",
+              material: globalSelections.material?.value || "",
+              lab: globalSelections.lab?.value || "",
               note: note || "",
-              crown: "",
-              photogrammetryfiles: "",
+              crown: globalSelections.crown?.value || "",
+              photogrammetryfiles: globalSelections.photogrammetryfiles?.value || "",
             }}
             validationSchema={OrderValidationSchema}
             onSubmit={(values, { setSubmitting }) => {
@@ -223,6 +236,10 @@ const DoctorOrder = () => {
               setFieldValue,
               handleSubmit,
             }) => {
+              // Set formik ref for external updates
+              if (!formikRef) {
+                setFormikRef({ setFieldValue });
+              }
               const handleTabClick = async (index) => {
                 if (index === activeIndex) return; // same tab click - ignore
 
@@ -231,15 +248,64 @@ const DoctorOrder = () => {
                   setActiveIndex(index);
                   return;
                 }
-
-                // Prevent moving forward unless form is valid
+                
                 const formErrors = await validateForm();
+                
+                // Comprehensive debugging
+                console.log("=== VALIDATION DEBUG ===");
+                console.log("Form Values:", values);
+                console.log("Form Errors:", formErrors);
+                console.log("Selected Teeth:", selectedTeeth);
+                console.log("Global Selections:", globalSelections);
+                console.log("Patient:", patient);
+                console.log("Doctor:", doctor);
+                
+                // Check specific field values
+                console.log("Field Checks:");
+                console.log("- officeReg:", values.officeReg, "Expected:", doctorProfile?.officeRefNumber);
+                console.log("- dueDate:", values.dueDate, "Expected:", doctor?.dueDate);
+                console.log("- patientFirstName:", values.patientFirstName, "Expected:", patient?.name);
+                console.log("- scannerType:", values.scannerType, "Expected:", globalSelections.scannerType?.value);
+                console.log("- digitalOptions:", values.digitalOptions, "Expected:", globalSelections.digitalOptions?.value);
+                console.log("- material:", values.material, "Expected:", globalSelections.material?.value);
+                console.log("- crown:", values.crown, "Expected:", globalSelections.crown?.value);
+                console.log("- lab:", values.lab, "Expected:", globalSelections.lab?.value);
+                console.log("- Model_type:", values.Model_type, "Expected:", globalSelections.Model_type?.value);
+                console.log("- photogrammetryfiles:", values.photogrammetryfiles, "Expected:", globalSelections.photogrammetryfiles?.value);
+                console.log("=========================");
+                
+                // Check if teeth are selected
+                if (selectedTeeth.length === 0) {
+                  dispatch(
+                    showToast({
+                      message: "Please select at least one tooth first",
+                      type: "error",
+                    })
+                  );
+                  return;
+                }
+                
+                // Check if patient is selected
+                if (!values.patientFirstName || values.patientFirstName === "" || values.patientFirstName === null || values.patientFirstName === undefined) {
+                  dispatch(
+                    showToast({
+                      message: "Please select a patient first",
+                      type: "error",
+                    })
+                  );
+                  return;
+                }
+ 
                 if (Object.keys(formErrors).length === 0) {
                   setActiveIndex(index); // proceed to next tab
                 } else {
+                  // Show the first error message
+                  const firstErrorField = Object.keys(formErrors)[0];
+                  const firstErrorMessage = formErrors[firstErrorField];
+                  
                   dispatch(
                     showToast({
-                      message: `Please complete all required fields before proceeding to Review.`,
+                      message: firstErrorMessage,
                       type: "error",
                     })
                   );
@@ -347,10 +413,20 @@ const DoctorOrder = () => {
                             <PatientDropdown
                               className="w-full rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow"
                               dropdownClass="text-secondaryBrand"
-                              value={values.patientFirstName} // Formik value
-                              onChange={(val) =>
-                                setFieldValue("patientFirstName", val)
-                              } // update formik
+                              value={patient || values.patientFirstName} // Use Redux patient or Formik value
+                              onChange={(patient) => {
+                                console.log(patient, "patient");
+                                // patient is now the full patient object
+                                if (patient) {
+                                  const firstName = patient?.firstName?.trim() || "";
+                                  const lastName = patient?.lastName?.trim() || "";
+                                  setFieldValue("patientFirstName", firstName);
+                                  setFieldValue("patientLastName", lastName);
+                                } else {
+                                  setFieldValue("patientFirstName", "");
+                                  setFieldValue("patientLastName", "");
+                                }
+                              }} // update formik
                               classNameWidth=" w-80"
                             />
                             {errors.patientFirstName &&
@@ -362,6 +438,7 @@ const DoctorOrder = () => {
                           </FormSection>
                           <div className="bg-textField  rounded-md ">
                             <button
+                              type="button"
                               onClick={() => setIsModalOpen(true)}
                               className="w-full bg-textField  font-poppins text-secondaryBrand rounded-lg px-4 py-3 text-left cursor-pointer border text-sm font-normal flex justify-between"
                             >
@@ -390,27 +467,10 @@ const DoctorOrder = () => {
                               orders.find((p) => p.name === "Scanner")
                                 ?.children || []
                             }
-                            value={activeToothSelection.scannerType || ""}
+                            value={globalSelections.scannerType?.value || ""}
                             onChange={(option) => {
-                              if (!selectedTooth) {
-                                dispatch(
-                                  showToast({
-                                    message: `Please select a tooth first`,
-                                    type: "error",
-                                  })
-                                );
-
-                                return;
-                              }
-                              dispatch(
-                                updateToothSelection({
-                                  toothId: selectedTooth,
-                                  field: "scannerType",
-                                  value: option.value,
-                                  price: option.price,
-                                  option,
-                                })
-                              );
+                              handleDropdownChange("scannerType", option);
+                              setFieldValue("scannerType", option?.value || "");
                               if (option) {
                                 setTouched((prev) => ({
                                   ...prev,
@@ -421,12 +481,6 @@ const DoctorOrder = () => {
                             label="Scanner Type"
                             storageKey="scannerType"
                             dropdownClass="text-secondaryBrand"
-                          // error={
-                          //   touched.scannerType &&
-                          //     !activeToothSelection.scannerType
-                          //     ? "Select the Teeth first to select Scanner type"
-                          //     : ""
-                          // }
                           />
                           <div>
                             <FileUploadSection />
@@ -467,7 +521,7 @@ const DoctorOrder = () => {
                               <p className="text-center">
                                 Select the teeth first{" "}
                               </p>
-                              <button className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">
+                              <button type="button" className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full">
                                 upper Arch
                               </button>
                               {/* <img src='/assets/doctor/image.png' /> */}
@@ -528,31 +582,10 @@ const DoctorOrder = () => {
                                       orders.find((p) => p.name === "Denture")
                                         ?.children || []
                                     }
-                                    value={
-                                      toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.digitalOptions || ""
-                                    }
+                                    value={globalSelections.digitalOptions?.value || ""}
                                     onChange={(option) => {
-                                      if (!selectedTooth) {
-                                        dispatch(
-                                          showToast({
-                                            message: `Please select a tooth first`,
-                                            type: "error",
-                                          })
-                                        );
-
-                                        return;
-                                      }
-                                      dispatch(
-                                        updateToothSelection({
-                                          toothId: selectedTooth,
-                                          field: "digitalOptions",
-                                          value: option.value,
-                                          price: option.price || 0,
-                                          option,
-                                        })
-                                      );
+                                      handleDropdownChange("digitalOptions", option);
+                                      setFieldValue("digitalOptions", option?.value || "");
                                       setTouched((prev) => ({
                                         ...prev,
                                         digitalOptions: false,
@@ -560,10 +593,12 @@ const DoctorOrder = () => {
                                     }}
                                     label=" Denture"
                                     storageKey="digitalOptions"
+                                    disabled={selectedTeeth.length === 0}
                                   />
                                   <MaterialDropdown
                                     className2="relative z-0"
-                                    className="w-full border    bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+
+                                    className="w-full border bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     options={
                                       orders.find(
                                         (p) => p.name === "Surgical Guide"
@@ -575,13 +610,20 @@ const DoctorOrder = () => {
                                           {
                                             label: "Not Available",
                                             value: "",
+                                            disabled: true,
                                           },
                                         ]
                                     }
+                                    value={globalSelections.surgical_guide?.value || null}
+                                    onChange={(option) => {
+                                      console.log("Surgical guide selected:", option);
+                                      handleDropdownChange("surgical_guide", option);
+                                      setFieldValue("surgical_guide", option?.value || "");
+                                    }}
                                     hideCheckForNotAvailable={true}
                                     label="Surgical Guide"
                                     storageKey="surgical_guide"
-                                    disabled={!selectedTooth}
+                                    disabled={selectedTeeth.length === 0}
                                   />
 
                                   <MaterialDropdown
@@ -590,38 +632,10 @@ const DoctorOrder = () => {
                                       orders.find((p) => p.name === "Crown")
                                         ?.children || []
                                     }
-                                    value={
-                                      toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.crown?.value || ""
-                                    }
-                                    onChange={(val) => {
-                                      if (!selectedTooth) {
-                                        toast.error(
-                                          "Please select a tooth first",
-                                          {
-                                            position: "top-right",
-                                            autoClose: 3000,
-                                            hideProgressBar: false,
-                                            closeOnClick: true,
-                                            pauseOnHover: true,
-                                            draggable: true,
-                                            progress: undefined,
-                                          }
-                                        );
-                                        return;
-                                      }
-                                      const option = (
-                                        orders.find((p) => p.name === "Crown")
-                                          ?.children || []
-                                      ).find((c) => c.value === val);
-
-                                      handleDropdownChange("crown", {
-                                        value: option?.value || val,
-                                        label: option?.label || "",
-                                        price: option?.price || 0,
-                                        option, // pass the full object if needed in redux
-                                      });
+                                    value={globalSelections.crown?.value || ""}
+                                    onChange={(option) => {
+                                      handleDropdownChange("crown", option);
+                                      setFieldValue("crown", option?.value || "");
 
                                       setTouched((prev) => ({
                                         ...prev,
@@ -631,6 +645,7 @@ const DoctorOrder = () => {
                                     label="Smart Crown"
                                     storageKey="crown"
                                     className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    disabled={selectedTeeth.length === 0}
                                   />
                                   <MaterialDropdown
                                     className2="relative z-0"
@@ -638,24 +653,10 @@ const DoctorOrder = () => {
                                       orders.find((p) => p.name === "Material")
                                         ?.children || []
                                     }
-                                    value={
-                                      toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.material || ""
-                                    }
+                                    value={globalSelections.material?.value || ""}
                                     onChange={(val) => {
-                                      if (!selectedTooth) {
-                                        dispatch(
-                                          showToast({
-                                            message: `Please select a tooth first`,
-                                            type: "error",
-                                          })
-                                        );
-
-                                        return;
-                                      }
-
                                       handleDropdownChange("material", val);
+                                      setFieldValue("material", val?.value || "");
 
                                       if (val) {
                                         setTouched((prev) => ({
@@ -667,6 +668,7 @@ const DoctorOrder = () => {
                                     label="Material"
                                     storageKey="material"
                                     className="w-full  bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    disabled={selectedTeeth.length === 0}
                                   />
 
                                   <ShadeDropdown
@@ -675,9 +677,19 @@ const DoctorOrder = () => {
                                     selectedTooth={selectedTooth}
                                     touched={touched}
                                     setTouched={setTouched}
-                                    onChange={(selected) => {
-                                      console.log(selected);
+                                    selectedShades={globalSelections.shades || {}}
+                                    onChange={(groupName, selected) => {
+                                      console.log(groupName, selected, "shade selected");
+                                      // Dispatch the shade selection to global selections
+                                      // selected can be null (deselection) or a shade object
+                                      dispatch(
+                                        updateShadeSelection({
+                                          groupName,
+                                          shade: selected,
+                                        })
+                                      );
                                     }}
+                                    disabled={selectedTeeth.length === 0}
                                   />
 
                                   <MaterialDropdown
@@ -687,23 +699,10 @@ const DoctorOrder = () => {
                                         (p) => p.name === "Digital Model Type"
                                       )?.children || []
                                     }
-                                    value={
-                                      toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.Model_type || ""
-                                    } // ✅ correct selected value
+                                    value={globalSelections.Model_type?.value || ""}
                                     onChange={(val) => {
-                                      if (!selectedTooth) {
-                                        dispatch(
-                                          showToast({
-                                            message: `Please select a tooth first`,
-                                            type: "error",
-                                          })
-                                        );
-                                        return;
-                                      }
-
                                       handleDropdownChange("Model_type", val);
+                                      setFieldValue("Model_type", val?.value || "");
 
                                       if (val) {
                                         setTouched((prev) => ({
@@ -715,6 +714,7 @@ const DoctorOrder = () => {
                                     label="Digital Model Type"
                                     storageKey="Digital Model Type"
                                     className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    disabled={selectedTeeth.length === 0}
                                   />
                                   <MaterialDropdown
                                     className2="relative z-0"
@@ -723,23 +723,10 @@ const DoctorOrder = () => {
                                         (p) => p.name === "Participating Lab"
                                       )?.children || []
                                     }
-                                    value={
-                                      toothSelections.find(
-                                        (t) => t.toothId === selectedTooth
-                                      )?.lab || ""
-                                    } // ✅ correct selected value
+                                    value={globalSelections.lab?.value || ""}
                                     onChange={(val) => {
-                                      if (!selectedTooth) {
-                                        dispatch(
-                                          showToast({
-                                            message: `Please select a tooth first`,
-                                            type: "error",
-                                          })
-                                        );
-                                        return;
-                                      }
-
                                       handleDropdownChange("lab", val);
+                                      setFieldValue("lab", val?.value || "");
 
                                       if (val) {
                                         setTouched((prev) => ({
@@ -751,6 +738,7 @@ const DoctorOrder = () => {
                                     label="Dental lab alliance"
                                     storageKey="Dental lab alliance"
                                     className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    disabled={selectedTeeth.length === 0}
                                   />
                                 </DropdownWrapper>
                                 <MaterialDropdown
@@ -759,28 +747,15 @@ const DoctorOrder = () => {
                                       (p) => p.name === "Photogrammetry files"
                                     )?.children || []
                                   }
-                                  value={
-                                    toothSelections.find(
-                                      (t) => t.toothId === selectedTooth
-                                    )?.photogrammetryfiles || ""
-                                  } // ✅ get value from current tooth
-                                  onChange={(val) => {
-                                    if (!selectedTooth) {
-                                      dispatch(
-                                        showToast({
-                                          message: `Please select a tooth first`,
-                                          type: "error",
-                                        })
-                                      );
-                                      return;
-                                    }
-
+                                  value={globalSelections.photogrammetryfiles?.value || ""}
+                                  onChange={(option) => {
                                     handleDropdownChange(
                                       "photogrammetryfiles",
-                                      val
+                                      option
                                     );
+                                    setFieldValue("photogrammetryfiles", option?.value || "");
 
-                                    if (val) {
+                                    if (option) {
                                       setTouched((prev) => ({
                                         ...prev,
                                         photogrammetryfiles: false,
@@ -791,84 +766,93 @@ const DoctorOrder = () => {
                                   storageKey="Photogrammetry files"
                                   className="w-full rounded-xl bg-[#F8F8F8] border-none px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow "
                                   dropdownClass="text-secondaryBrand"
-                                // error={
-                                //   touched.photogrammetryfiles &&
-                                //   !toothSelections.find(
-                                //     (t) => t.toothId === selectedTooth
-                                //   )?.photogrammetryfiles
-                                //     ? "Please select a tooth first before selecting Photogrammetry files."
-                                //     : ""
-                                // }
+                                  disabled={selectedTeeth.length === 0}
                                 />
                               </FormSection>
                             </div>
 
-                            <div className="mt-96">
+                            <div className="mt-10">
                               <div className="flex flex-col space-y-3">
-                                {Object.entries(toothSelections).map(
-                                  ([toothId, values]) => (
-                                    <div key={toothId} className="space-y-1">
-                                      {/* Material */}
-                                      <div className="flex justify-between items-center py-1">
-                                        <p className="text-xs text-textFieldHeading">
-                                          {values.materialOption?.label ||
-                                            "No Material"}{" "}
-                                          x1
-                                        </p>
-                                        <p className="text-xs font-medium">
-                                          $
-                                          {values.materialPrice ||
-                                            values.materialOption?.price ||
-                                            0}
-                                        </p>
-                                      </div>
+                                {/* Selected Teeth */}
+                                <div className="flex gap-2 flex-wrap items-center">
+                                  <span className="text-xs text-textFieldHeading">Selected Teeth:</span>
+                                  {selectedTeeth?.map((toothId) => (
+                                    <span key={toothId} className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                                      #{toothId}
+                                    </span>
+                                  ))}
+                                </div>
 
-                                      {/* Crown */}
-                                      <div className="flex justify-between items-center py-1">
-                                        <p className="text-xs text-textFieldHeading">
-                                          {values.crown?.label || "No Crown"}
-                                        </p>
-                                        <p className="text-xs font-medium">
-                                          ${values.crown?.price || 0}
-                                        </p>
-                                      </div>
+                                {/* Items with cost * total teeth */}
+                                {globalSelections.material && (
+                                  <div className="flex justify-between items-center py-1">
+                                    <p className="text-xs text-textFieldHeading">
+                                      {globalSelections.material.option?.label || "Material"}
+                                    </p>
+                                    <p className="text-xs font-medium">
+                                      ${globalSelections.material.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections.material.price || 0) * (selectedTeeth?.length || 0)}
+                                    </p>
+                                  </div>
+                                )}
 
-                                      {/* digital model */}
-                                      <div className="flex justify-between items-center py-1">
-                                        <p className="text-xs text-textFieldHeading">
-                                          {values.Model_typeOption?.label ||
-                                            "Digital Model Type"}
-                                        </p>
-                                        <p className="text-xs font-medium">
-                                          ${values.Model_typeOption?.price || 0}
-                                        </p>
-                                      </div>
+                                {/* Crown */}
+                                {globalSelections.crown && (
+                                  <div className="flex justify-between items-center py-1">
+                                    <p className="text-xs text-textFieldHeading">
+                                      {globalSelections.crown.option?.label || "Crown"}
+                                    </p>
+                                    <p className="text-xs font-medium">
+                                      ${globalSelections.crown.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections.crown.price || 0) * (selectedTeeth?.length || 0)}
+                                    </p>
+                                  </div>
+                                )}
 
-                                      {/* Digital Denture */}
-                                      <div className="flex justify-between items-center py-1">
-                                        <p className="text-xs text-textFieldHeading">
-                                          {values.digitalOptionsOption?.label ||
-                                            "No Digital Denture"}
-                                        </p>
-                                        <p className="text-xs font-medium">
-                                          $
-                                          {values.digitalOptionsOption?.price ||
-                                            0}
-                                        </p>
-                                      </div>
+                                {/* Digital Model Type */}
+                                {globalSelections.Model_type && (
+                                  <div className="flex justify-between items-center py-1">
+                                    <p className="text-xs text-textFieldHeading">
+                                      {globalSelections.Model_type.option?.label || "Digital Model Type"}
+                                    </p>
+                                    <p className="text-xs font-medium">
+                                      ${globalSelections.Model_type.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections.Model_type.price || 0) * (selectedTeeth?.length || 0)}
+                                    </p>
+                                  </div>
+                                )}
 
-                                      {/* Lab */}
-                                      <div className="flex justify-between items-center py-1">
-                                        <p className="text-xs text-textFieldHeading">
-                                          {values?.labOption?.label ||
-                                            "Participating Lab"}
-                                        </p>
-                                        <p className="text-xs font-medium">
-                                          ${values?.labOption?.price || 0}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  )
+                                {/* Digital Denture */}
+                                {globalSelections.digitalOptions && (
+                                  <div className="flex justify-between items-center py-1">
+                                    <p className="text-xs text-textFieldHeading">
+                                      {globalSelections.digitalOptions.option?.label || "Digital Denture"}
+                                    </p>
+                                    <p className="text-xs font-medium">
+                                      ${globalSelections.digitalOptions.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections.digitalOptions.price || 0) * (selectedTeeth?.length || 0)}
+                                    </p>
+                                  </div>
+                                )}
+
+                                {/* Lab */}
+                                {globalSelections.lab && (
+                                  <div className="flex justify-between items-center py-1">
+                                    <p className="text-xs text-textFieldHeading">
+                                      {globalSelections.lab.option?.label || "Participating Lab"}
+                                    </p>
+                                    <p className="text-xs font-medium">
+                                      ${globalSelections.lab.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections.lab.price || 0) * (selectedTeeth?.length || 0)}
+                                    </p>
+                                  </div>
+                                )}
+
+                                {/* Scanner Type */}
+                                {globalSelections.scannerType && (
+                                  <div className="flex justify-between items-center py-1">
+                                    <p className="text-xs text-textFieldHeading">
+                                      {globalSelections.scannerType.option?.label || "Scanner Type"}
+                                    </p>
+                                    <p className="text-xs font-medium">
+                                      ${globalSelections.scannerType.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections.scannerType.price || 0) * (selectedTeeth?.length || 0)}
+                                    </p>
+                                  </div>
                                 )}
                               </div>
                               <> </>
@@ -904,24 +888,63 @@ const DoctorOrder = () => {
                             </div>
                             <button
                               type="button"
-                              onClick={next}
-                              disabled={totalPrice === 0}
-                              className={`font-poppins w-full px-6 py-3 text-sm font-medium ${totalPrice > 0
-                                ? "bg-[#0b2b62] text-[#F8F8F8] hover:bg-[#092b58]"
-                                : "bg-[#0b2b62] text-[#F8F8F8] cursor-not-allowed"
-                                }`}
+                              onClick={async () => {
+                                // Validate form before proceeding
+                                const formErrors = await validateForm();
+                                
+                                // Comprehensive debugging
+                                console.log("=== CHECKOUT VALIDATION DEBUG ===");
+                                console.log("Form Values:", values);
+                                console.log("Form Errors:", formErrors);
+                                console.log("Selected Teeth:", selectedTeeth);
+                                console.log("Global Selections:", globalSelections);
+                                console.log("Patient:", patient);
+                                console.log("Doctor:", doctor);
+                                console.log("=================================");
+                                
+                                // Check if teeth are selected
+                                if (selectedTeeth.length === 0) {
+                                  dispatch(
+                                    showToast({
+                                      message: "Please select at least one tooth first",
+                                      type: "error",
+                                    })
+                                  );
+                                  return;
+                                }
+                                
+                                // Check if patient is selected
+                                if (!values.patientFirstName || values.patientFirstName === "" || values.patientFirstName === null || values.patientFirstName === undefined) {
+                                  dispatch(
+                                    showToast({
+                                      message: "Please select a patient first",
+                                      type: "error",
+                                    })
+                                  );
+                                  return;
+                                }
+                                
+                                if (Object.keys(formErrors).length === 0) {
+                                  next(); // proceed to next step
+                                } else {
+                                  // Show the first error message
+                                  const firstErrorField = Object.keys(formErrors)[0];
+                                  const firstErrorMessage = formErrors[firstErrorField];
+                                  
+                                  dispatch(
+                                    showToast({
+                                      message: firstErrorMessage,
+                                      type: "error",
+                                    })
+                                  );
+                                }
+                              }}
+                            
+                              className={`font-poppins w-full px-6 py-3 text-sm font-medium bg-[#0b2b62] text-[#F8F8F8] hover:bg-[#092b58]`}
                             >
                               Checkout
                             </button>
 
-                            {totalPrice === 0 && (
-                              <p className="text-sm text-red-600 text-center mt-2 font-poppins">
-                                Select all the items first to Checkout
-
-
-
-                              </p>
-                            )}
                           </div>
                         </aside>
                       </div>

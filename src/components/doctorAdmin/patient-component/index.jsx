@@ -52,10 +52,10 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const selectedPatient = patientsList.find((p) => p.id === value);
+  const selectedPatient = patientsList.find((p) => p.id === value?.id || p.id === value);
 
   const handleSelect = (patient) => {
-    onChange(patient?.id); // update formik value
+    onChange(patient); // pass full patient object to formik
     setOpen(false);
     dispatch(setSelectedPatient(patient));
   };

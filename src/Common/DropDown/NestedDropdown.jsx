@@ -1,8 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
-import { updateToothSelection } from "../../store/slices/restoration-slice/index"; // adjust path
-import { useDispatch, useSelector } from "react-redux";
-import { showToast } from "../../store/toast-slice";
+import { useSelector } from "react-redux";
 
 // --- SubDropdown Component ---
 const SubDropdown = ({ label, options, selected, onSelect }) => {
@@ -11,6 +9,7 @@ const SubDropdown = ({ label, options, selected, onSelect }) => {
   return (
     <div className="border-b border-background py-2">
       <button
+        type="button"
         className="flex items-center justify-between w-full text-sm font-normal text-textFieldHeading font-poppins"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -34,8 +33,10 @@ const SubDropdown = ({ label, options, selected, onSelect }) => {
 
             return (
               <button
+                type="button"
                 key={optionValue}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   onSelect(opt); // ✅ valid here
                   setIsOpen(false); // ✅ close dropdown after select
                 }}
@@ -61,40 +62,25 @@ export const ShadeDropdown = ({
   touched,
   setTouched = () => {},
   className,
+  selectedShades = {}, // New prop for selected shades
+  onChange = () => {}, // Updated to handle groupName and shade
+  disabled = false, // New disabled prop
 }) => {
-  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedShades, setSelectedShades] = useState({});
-  const {
-    selectedTeeth,
-    selectedTooth,
-    toothSelections,
-    totalPrice,
-    doctorOrderItems,
-  } = useSelector((state) => state.restoration);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSelect = (groupName, option) => {
-    if (!selectedTooth) {
-      dispatch(
-        showToast({ message: `Please select a tooth first`, type: "error" })
-      );
-      return;
-    }
+    console.log("option", option);
 
-    const updated = { ...selectedShades, [groupName]: option };
-    setSelectedShades(updated);
+    // Check if this option is already selected
+    const currentSelection = selectedShades[groupName];
+    const isAlreadySelected = currentSelection && currentSelection.id === option.id;
 
-    dispatch(
-      updateToothSelection({
-        toothId: selectedTooth,
-        field: `shade_${groupName}`,
-        value: option.name,
-        price: option.price || 0,
-        option,
-        parentName: groupName,
-      })
-    );
+    // If already selected, deselect it (pass null), otherwise select it
+    const newSelection = isAlreadySelected ? null : option;
+    
+    // Call the onChange prop with groupName and new selection
+    onChange(groupName, newSelection);
 
     setTouched((prev) => ({ ...prev, [`shade_${groupName}`]: false }));
 
@@ -111,10 +97,14 @@ export const ShadeDropdown = ({
   return (
     <div className="border border-background shadow-sm bg-white ">
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-2 rounded-xl bg-white px-4 py-3 text-sm outline-none transition-shadow text-textFieldHeading font-normal"
+        type="button"
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        className={`w-full flex items-center justify-between p-2 rounded-xl bg-white px-4 py-3 text-sm outline-none transition-shadow text-textFieldHeading font-normal ${
+          disabled ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
-        {selectedLabel || "Shade"} {/* ✅ Show selected */}
+        {selectedLabel || "Select Shades"} {/* ✅ Show selected */}
         <span>
           {isOpen ? (
             <ChevronUpIcon className="w-3 h-3" />
@@ -124,7 +114,7 @@ export const ShadeDropdown = ({
         </span>
       </button>
 
-      {isOpen && (
+      {isOpen && !disabled && (
         <div className={`p-3 space-y-3 ${className}`}>
           <input
             type="text"
@@ -145,13 +135,7 @@ export const ShadeDropdown = ({
                   key={group.id}
                   label={group.name}
                   options={filteredOptions} // ⚡ pass filtered options
-                  selected={
-                    selectedShades[group.name] ||
-                    toothSelections.find((t) => t.toothId === selectedTooth)?.[
-                      `shade_${group.name}`
-                    ] ||
-                    null
-                  }
+                  selected={selectedShades[group.name] || null}
                   onSelect={(opt) => handleSelect(group.name, opt)}
                 />
               );

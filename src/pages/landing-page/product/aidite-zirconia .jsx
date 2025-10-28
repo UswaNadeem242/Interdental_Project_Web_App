@@ -66,11 +66,18 @@ function AiditeZirconia({ isLanding }) {
             </div>
           </div>
           <div className="col-span-4 flex flex-col justify-center px-6 ">
-            <img
-              src="/assets/landing-page/ytZincornia.png"
-              alt="ytImg"
-              className="max-h-80 max-w-xl"
-            />
+            <div className="relative w-full max-w-xl mx-auto">
+              <div className="aspect-video w-full">
+                <iframe
+                  src="https://www.youtube.com/embed/GqITm2rMDqo"
+                  title="Aidite Zirconia Video"
+                  className="w-full h-full rounded-lg"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
           </div>
         </div>
       </section>
