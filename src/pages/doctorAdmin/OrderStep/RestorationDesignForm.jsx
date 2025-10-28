@@ -16,6 +16,7 @@ import {
   setNote,
   setDoctorField,
   setDueDate,
+  resetRestoration,
 } from "../../../store/slices/restoration-slice/index";
 import { SmileDesignPicker } from "../../../components/doctorAdmin/DoctorModel/smile";
 import DonePage from "./DonePage";
