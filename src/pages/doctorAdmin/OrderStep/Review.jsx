@@ -74,10 +74,6 @@ const bottomTeeth = {
   32: ToothThirtyTwo,
 };
 
-const toothMap = {
-  1: { normal: ToothOne, highlighted: ToothOne },
-  // 2: { normal: ToothTwo, highlighted: ToothTwoH },}
-};
 
 const ReviewOrder = ({ next }) => {
   const restoration = useSelector((state) => state.restoration);
@@ -93,14 +89,13 @@ const ReviewOrder = ({ next }) => {
   console.log('Doctor object:', doctor);
   console.log('Due date value:', doctor?.dueDate);
 
-  const toothSelections = restoration.toothSelections || [];
   const selectedTeeth = restoration.selectedTeeth || [];
   const note = restoration.note || "";
   const globalSelections = restoration.globalSelections || {};
 
-  const totalPrice = selectedTeeth.length * Object.values(globalSelections)
-    .filter((selection) => selection && selection.price && selection.price > 0)
-    .reduce((sum, selection) => sum + selection.price, 0);
+  const totalPrice = (selectedTeeth?.length || 0) * Object?.values(globalSelections || {})
+    ?.filter((selection) => selection && selection?.price && selection?.price > 0)
+    ?.reduce((sum, selection) => sum + (selection?.price || 0), 0) || 0;
   // Utility function
   const getMaskedFullName = (firstName, lastName) => {
     const mask = (str) => {
@@ -185,8 +180,6 @@ const ReviewOrder = ({ next }) => {
     return first + middle + last;
   };
 
-  console.log("globalSelections", globalSelections);
-
   return (
     <div className="">
       <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -266,19 +259,19 @@ const ReviewOrder = ({ next }) => {
             <p className="text-sm font-medium font-poppins text-black mb-2">
               Selected Teeth:{" "}
               <span className="font-semibold">
-                {selectedTeeth.length > 0
-                  ? selectedTeeth.map((t) => `#${t}`).join(", ")
+                {selectedTeeth?.length > 0
+                  ? selectedTeeth?.map((t) => `#${t}`).join(", ")
                   : "None"}
               </span>
               {/* Upper 16 */}
               <div className="flex flex-wrap gap-3 mt-4 justify-center ">
-                {Object.entries(topTeeth).map(([id, ToothComponent]) => (
+                {Object?.entries(topTeeth || {}).map(([id, ToothComponent]) => (
                   <div
                     key={id}
                     className="flex flex-col items-center justify-end "
                   >
                     <ToothComponent
-                      highlighted={selectedTeeth.includes(Number(id))}
+                      highlighted={selectedTeeth?.includes(Number(id))}
                     />
                     <span className="text-sm mt-1 text-gray-600">{id}</span>
                   </div>
@@ -286,13 +279,13 @@ const ReviewOrder = ({ next }) => {
               </div>
               {/* Lower 16 */}
               <div className="flex flex-wrap gap-[10px] mt-4 mb-4 justify-center">
-                {Object.entries(bottomTeeth).map(([id, ToothComponent]) => (
+                {Object?.entries(bottomTeeth || {}).map(([id, ToothComponent]) => (
                   <div
                     key={id}
                     className="flex flex-col items-center justify-end"
                   >
                     <ToothComponent
-                      highlighted={selectedTeeth.includes(Number(id))}
+                      highlighted={selectedTeeth?.includes(Number(id))}
                     />
                     <span className="text-sm text-gray-600 mt-1">{id}</span>
                   </div>
@@ -340,7 +333,7 @@ const ReviewOrder = ({ next }) => {
                   Material:
                 </p>
                 <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections.material?.option?.label || "N/A"}
+                  {globalSelections?.material?.option?.label || "N/A"}
                 </p>
               </div>
               <div>
@@ -348,8 +341,8 @@ const ReviewOrder = ({ next }) => {
                   Colour:
                 </p>
                 <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {Object.values(globalSelections.shades || {})
-                    .map((shade) => shade?.name)
+                  {Object?.values(globalSelections?.shades || {})
+                    ?.map((shade) => shade?.name)
                     .filter(Boolean)
                     .join(", ") || "N/A"}
                 </p>
@@ -359,7 +352,7 @@ const ReviewOrder = ({ next }) => {
                   Digital Model Type:
                 </p>
                 <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections.Model_type?.option?.label || "N/A"}
+                  {globalSelections?.Model_type?.option?.label || "N/A"}
                 </p>
               </div>
               <div>
@@ -367,7 +360,7 @@ const ReviewOrder = ({ next }) => {
                   Participating Lab:
                 </p>
                 <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections.lab?.option?.label || "N/A"}
+                  {globalSelections?.lab?.option?.label || "N/A"}
                 </p>
               </div>
               <div>
@@ -375,7 +368,7 @@ const ReviewOrder = ({ next }) => {
                   Crown:
                 </p>
                 <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections.crown?.option?.label || "N/A"}
+                  {globalSelections?.crown?.option?.label || "N/A"}
                 </p>
               </div>
               <div>
@@ -383,7 +376,7 @@ const ReviewOrder = ({ next }) => {
                   Scanner Type:
                 </p>
                 <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections.scannerType?.option?.label || "N/A"}
+                  {globalSelections?.scannerType?.option?.label || "N/A"}
                 </p>
               </div>
             </div>
@@ -420,7 +413,7 @@ const ReviewOrder = ({ next }) => {
                   Selected Teeth ({selectedTeeth?.length || 0}):
                 </span>
                 <span className="text-[#1A1A1A] font-poppins text-sm">
-                  {selectedTeeth?.map(toothId => `#${toothId}`).join(', ')}
+                  {selectedTeeth?.map((toothId) => `#${toothId}`).join(', ')}
                 </span>
               </div>
 
