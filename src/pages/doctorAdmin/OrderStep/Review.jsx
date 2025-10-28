@@ -77,10 +77,10 @@ const bottomTeeth = {
 
 const ReviewOrder = ({ next }) => {
   const restoration = useSelector((state) => state.restoration);
-  const patient = restoration.patient;
+  const patient = restoration?.patient;
   const [doctorProfile, setDoctorProfile] = useState(null);
   // Map doctor and patient arrays to objects for easier access
-  const doctor = restoration.doctor.reduce((acc, d) => {
+  const doctor = restoration?.doctor?.reduce((acc, d) => {
     acc[d.field] = d.value || "";
     return acc;
   }, {});
@@ -89,9 +89,9 @@ const ReviewOrder = ({ next }) => {
   console.log('Doctor object:', doctor);
   console.log('Due date value:', doctor?.dueDate);
 
-  const selectedTeeth = restoration.selectedTeeth || [];
-  const note = restoration.note || "";
-  const globalSelections = restoration.globalSelections || {};
+  const selectedTeeth = restoration?.selectedTeeth || [];
+  const note = restoration?.note || "";
+  const globalSelections = restoration?.globalSelections || {};
 
   const totalPrice = (selectedTeeth?.length || 0) * Object?.values(globalSelections || {})
     ?.filter((selection) => selection && selection?.price && selection?.price > 0)
@@ -121,11 +121,11 @@ const ReviewOrder = ({ next }) => {
 
     if (userData) {
       const parsedUserData = JSON.parse(userData);
-      const userId = parsedUserData.id;
+      const userId = parsedUserData?.id;
 
       const fetchDoctorProfile = async () => {
         const response = await getDoctorProfile(userId);
-        setDoctorProfile(response.data.data);
+        setDoctorProfile(response?.data?.data);
       };
       fetchDoctorProfile();
     }
@@ -145,7 +145,7 @@ const ReviewOrder = ({ next }) => {
   // Update form data when doctorProfile is loaded
   useEffect(() => {
     if (doctorProfile) {
-      setFormData({
+      setFormData({ 
         firstName: doctorProfile?.firstName || "",
         lastName: doctorProfile?.lastName || "",
         createdAt: doctorProfile?.createdAt || "",

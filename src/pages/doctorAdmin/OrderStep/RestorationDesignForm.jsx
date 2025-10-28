@@ -390,7 +390,7 @@ const DoctorOrder = () => {
                             <PatientDropdown
                               className="w-full rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow"
                               dropdownClass="text-secondaryBrand"
-                              value={patient || values.patientFirstName} // Use Redux patient or Formik value
+                              value={patient || values?.patientFirstName} // Use Redux patient or Formik value
                               onChange={(patient) => {
                                 console.log(patient, "patient");
                                 // patient is now the full patient object
@@ -433,7 +433,7 @@ const DoctorOrder = () => {
                                   Selected Smile Design:
                                 </p>
                                 <p className="text-xs">
-                                  {selected.name || selected.label || "Unknown"}
+                                  {selected?.name || selected?.label || "Unknown"}
                                 </p>
                               </div>
                             )}
@@ -471,7 +471,7 @@ const DoctorOrder = () => {
                               type="text"
                               rows={2}
                               name="note"
-                              value={values.note}
+                              value={values?.note}
                               placeholder="Write here"
                               maxLength={500}
                               className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none"
@@ -484,9 +484,9 @@ const DoctorOrder = () => {
                               }}
                               onBlur={handleBlur}
                             />
-                            {errors.note && touched.note && (
+                            {errors?.note && touched?.note && (
                               <p className="text-red-800 text-xs capitalize">
-                                {errors.note}
+                                {errors?.note}
                               </p>
                             )}
                           </FormSection>
@@ -609,7 +609,7 @@ const DoctorOrder = () => {
                                       orders?.find((p) => p?.name === "Crown")
                                         ?.children || []
                                     }
-                                    value={globalSelections.crown?.value || ""}
+                                    value={globalSelections?.crown?.value || ""}
                                     onChange={(option) => {
                                       handleDropdownChange("crown", option);
                                       setFieldValue("crown", option?.value || "");
@@ -724,7 +724,7 @@ const DoctorOrder = () => {
                                       (p) => p?.name === "Photogrammetry files"
                                     )?.children || []
                                   }
-                                  value={globalSelections.photogrammetryfiles?.value || ""}
+                                  value={globalSelections?.photogrammetryfiles?.value || ""}
                                   onChange={(option) => {
                                     handleDropdownChange(
                                       "photogrammetryfiles",
@@ -803,7 +803,7 @@ const DoctorOrder = () => {
                                       {globalSelections?.digitalOptions?.option?.label || "Digital Denture"}
                                     </p>
                                     <p className="text-xs font-medium">
-                                      ${globalSelections?.digitalOptions.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections.digitalOptions.price || 0) * (selectedTeeth?.length || 0)}
+                                      ${globalSelections?.digitalOptions?.price || 0} × {selectedTeeth?.length || 0} = ${(globalSelections?.digitalOptions?.price || 0) * (selectedTeeth?.length || 0)}
                                     </p>
                                   </div>
                                 )}
@@ -870,7 +870,7 @@ const DoctorOrder = () => {
                                 const formErrors = await validateForm();
                              
                                 // Check if teeth are selected
-                                if (selectedTeeth.length === 0) {
+                                if (selectedTeeth?.length === 0) {
                                   dispatch(
                                     showToast({
                                       message: "Please select at least one tooth first",
@@ -881,7 +881,7 @@ const DoctorOrder = () => {
                                 }
                                 
                                 // Check if patient is selected
-                                if (!values?.patientFirstName || values?.patientFirstName === "" || values.patientFirstName === null || values.patientFirstName === undefined) {
+                                if (!values?.patientFirstName || values?.patientFirstName === "" || values?.patientFirstName === null || values?.patientFirstName === undefined) {
                                   dispatch(
                                     showToast({
                                       message: "Please select a patient first",
@@ -891,12 +891,12 @@ const DoctorOrder = () => {
                                   return;
                                 }
                                 
-                                if (Object.keys(formErrors).length === 0) {
+                                if (Object?.keys(formErrors || {}).length === 0) {
                                   next(); // proceed to next step
                                 } else {
                                   // Show the first error message
-                                  const firstErrorField = Object.keys(formErrors)[0];
-                                  const firstErrorMessage = formErrors[firstErrorField];
+                                  const firstErrorField = Object?.keys(formErrors || {})[0];
+                                  const firstErrorMessage = formErrors?.[firstErrorField];
                                   
                                   dispatch(
                                     showToast({
