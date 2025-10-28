@@ -862,7 +862,7 @@ const DoctorOrder = () => {
                                     Shipping:
                                   </p>
                                   <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                    Free
+                                  Free
                                   </p>
                                 </div>
                                 <div className="flex justify-between items-center py-3 font-poppins">
