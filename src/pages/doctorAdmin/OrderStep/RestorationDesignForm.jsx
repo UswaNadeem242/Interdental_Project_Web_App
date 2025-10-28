@@ -881,7 +881,7 @@ const DoctorOrder = () => {
                                 }
                                 
                                 // Check if patient is selected
-                                if (!values?.patientFirstName || values?.patientFirstName === "" || values?.patientFirstName === null || values?.patientFirstName === undefined) {
+                                if (!values?.patientFirstName ) {
                                   dispatch(
                                     showToast({
                                       message: "Please select a patient first",
@@ -890,6 +890,8 @@ const DoctorOrder = () => {
                                   );
                                   return;
                                 }
+
+                                console.log(values, "values");
                                 
                                 if (Object?.keys(formErrors || {}).length === 0) {
                                   next(); // proceed to next step
