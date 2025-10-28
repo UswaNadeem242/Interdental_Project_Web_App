@@ -139,9 +139,9 @@ const DoctorOrder = () => {
     ?.reduce((sum, selection) => sum + (selection?.price || 0), 0) || 0;
 
   // Remove the resetRestoration call that was clearing all data on mount
-  // useEffect(() => {
-  //   dispatch(resetRestoration());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(resetRestoration());
+  }, []);
   const [formData, setFormData] = useState({
     id: "",
     reference: "",
