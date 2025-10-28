@@ -26,11 +26,10 @@ import { FileUploadSection } from "../../../components/doctorAdmin/OrderFileSele
 import { ShadeDropdown } from "../../../Common/DropDown/NestedDropdown";
 import { Form, Formik } from "formik";
 import { OrderValidationSchema } from "../../../Common/FormsValidation/order-validation";
-import { toast } from "react-toastify";
+
 import { showToast } from "../../../store/toast-slice";
 import { PatientDropdown } from "../../../components/doctorAdmin/patient-component";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
 import Drawers from "../../../Common/Drawers";
 import AddPatientForm from "../PatientDoctor/AddPatientForm";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
@@ -38,16 +37,14 @@ import { DropdownWrapper } from "../../../Common/drop-down-wrapper";
 import RestorationTeethSvg from "../../../components/restoration-page-teeth";
 const DoctorOrder = () => {
   const dispatch = useDispatch();
-  const navigator = useNavigate();
+
   const {
     orders,
     shadeGroups,
-    loading: dropdownLoading,
+ 
   } = useSelector((state) => state.dropdown);
   console.log(shadeGroups, "shadeGroups");
-  const { teethData, loading: teethLoading } = useSelector(
-    (state) => state.teeth
-  );
+
   const {
     selectedTeeth,
     selectedTooth,
@@ -865,7 +862,7 @@ const DoctorOrder = () => {
                                     Shipping:
                                   </p>
                                   <p className="text-[#1A1A1A] font-medium text-xs font-poppins">
-                                    {/* ${shipping.toFixed(2)} */}
+                                    Free
                                   </p>
                                 </div>
                                 <div className="flex justify-between items-center py-3 font-poppins">

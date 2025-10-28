@@ -118,7 +118,7 @@ export default function OrderDetailsForm({ id }) {
   const totalPrice = orderDetails?.totalAmount || 0;
   const options = [
     { label: "Subtotal:", value: totalPrice },
-    { label: "Shipping:", value: 0 },
+    { label: "Shipping:", value: "Free" },
   ];
 
   const ShippingDetail = [

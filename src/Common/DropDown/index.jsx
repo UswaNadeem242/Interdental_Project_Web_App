@@ -48,11 +48,11 @@ export default function DropDownComponent({
               className="flex justify-between px-4 py-2 text-gray-700 cursor-pointer font-poppins hover:bg-gray-50"
             >
               <span>{option[optionLabel]}</span>
-              {option.value > 0 && (
-                <span className="text-xs text-secondaryBrand">
-                  {totalAmount}
-                </span>
-              )}
+              <span className="text-xs text-secondaryBrand">
+                {typeof option[optionValue] === 'number' && option[optionValue] > 0 
+                  ? `$${option[optionValue]}` 
+                  : option[optionValue]}
+              </span>
             </li>
           ))}
 
