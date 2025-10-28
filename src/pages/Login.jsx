@@ -6,9 +6,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col lg:flex-row justify-start items-center gap-6 lg:gap-24 p-4 lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen">
+    <div className="flex flex-col xl:flex-row justify-start items-center gap-6 lg:gap-24 p-4   lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen ">
       {/* Image section - hidden on mobile */}
-      <div className="hidden lg:flex flex-col items-start justify-start -space-y-9">
+      <div className="hidden xl:flex flex-col  items-start justify-start -space-y-9 ">
         <div
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/")}
@@ -24,9 +24,20 @@ const Login = () => {
       </div>
 
       {/* Login form */}
-      <div className="flex flex-col justify-center items-center gap-6 lg:gap-8">
-        <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto lg:h-[103px] gap-4 lg:gap-[32px]">
-          <img src="/assets/logo.png" alt="logo" className="block lg:hidden" />
+      <div className="flex flex-col justify-center items-center gap-6 lg:gap-8 mt-10 ">
+        <div className="flex flex-col justify-center items-center w-full  lg:w-[494px] h-auto lg:h-[103px] gap-4 lg:gap-[32px]">
+          <div
+            className="flex gap-2 items-center justify-center mr-4 xl:hidden"
+            onClick={() => navigate("/")}
+          >
+            <ArrowLeftIcon className="w-5 h-5" />
+            <img
+              src="/assets/logo.png"
+              alt="logo"
+              className="block xl:hidden"
+              onClick={() => navigate("/")}
+            />
+          </div>
           <h1 className="font-poppins font-bold text-3xl lg:text-[44px] leading-[66px] text-secondaryBrand">
             Log in
           </h1>
