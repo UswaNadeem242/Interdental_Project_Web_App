@@ -89,8 +89,8 @@ const BuySignup = () => {
 
   return (
     <div className=" ">
-      <div className="flex flex-col justify-center items-center w-full lg:w-[494px] h-auto gap-6 lg:gap-[32px]">
-        <div className="flex flex-col justify-center items-center w-full lg:w-[494px] gap-8">
+      <div className="flex flex-col justify-center items-center w-full h-auto gap-6 lg:gap-[32px]">
+        <div className="flex flex-col justify-center items-center w-full gap-8">
           {/* Form */}
           <div className="w-full space-y-4 mt-4">
             {/* Full width */}

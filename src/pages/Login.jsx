@@ -6,7 +6,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col xl:flex-row justify-start items-center gap-6 lg:gap-24 p-4   lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen ">
+    <div className="grid grid-cols-1 xl:grid-cols-2 justify-start items-center gap-6 lg:gap-24 p-4   lg:p-8 bg-gradient-to-b from-[#E7F9FF] to-[#E5FFF600] min-h-screen ">
       {/* Image section - hidden on mobile */}
       <div className="hidden xl:flex flex-col  items-start justify-start -space-y-9 ">
         <div
@@ -24,7 +24,7 @@ const Login = () => {
       </div>
 
       {/* Login form */}
-      <div className="flex flex-col justify-center items-center gap-6 lg:gap-8 mt-10 ">
+      <div className="flex flex-col justify-center items-center gap-6 lg:gap-8 mt-3 ">
         <div className="flex flex-col justify-center items-center w-full  lg:w-[494px] h-auto lg:h-[103px] gap-4 lg:gap-[32px]">
           <div
             className="flex gap-2 items-center justify-center mr-4 xl:hidden"

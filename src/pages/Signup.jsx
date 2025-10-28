@@ -93,7 +93,7 @@ const Signup = () => {
 
       <div className="hidden col-span-1 xl:flex flex-col items-start justify-start -space-y-9">
         <div
-          className="flex items-center gap-2 cursor-pointer"
+          className="flex items-center z-10 gap-2 cursor-pointer"
           onClick={() => navigate("/")}
         >
           <ArrowLeftIcon className="w-5 h-5" />
@@ -113,13 +113,18 @@ const Signup = () => {
         {/*  w-full lg:w-[494px] h-auto lg:h-[581px] */}
         <div className="lg:max-w-xl w-[100%]">
           <div className="flex flex-col justify-center items-center w-full  gap-4 lg:gap-[32px]">
-            <button onClick={() => navigate("/")}>
-              <img
-                src="/assets/logo.png"
-                alt="logo"
-                className="block lg:hidden"
-              />
-            </button>
+                 <div
+            className="flex gap-2 items-center justify-center mr-4 xl:hidden"
+            onClick={() => navigate("/")}
+          >
+            <ArrowLeftIcon className="w-5 h-5" />
+            <img
+              src="/assets/logo.png"
+              alt="logo"
+              className="block xl:hidden"
+              onClick={() => navigate("/")}
+            />
+          </div>
             <h1 className="font-poppins font-bold text-3xl lg:text-[44px] leading-[66px] text-secondaryBrand">
               Sign Up
             </h1>
