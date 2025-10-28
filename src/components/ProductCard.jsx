@@ -10,7 +10,7 @@ const ProductCard = memo(
     return (
       <div
         key={product.productId}
-        className="flex flex-col justify-between items-center bg-white rounded-lg shadow-sm p-3 sm:p-4 cursor-pointer h-[430px] hover:shadow-md transition-shadow"
+        className="flex flex-col justify-between items-center bg-white rounded-lg shadow-sm py-4 px-8 sm:p-4 cursor-pointer h-auto  hover:shadow-md transition-shadow   "
       >
         {/* Upper Section */}
         <div
@@ -20,7 +20,7 @@ const ProductCard = memo(
           <img
             src={product.imageUrls[0]}
             alt={product.name}
-            className="w-[263px] h-[260px] object-cover"
+            className="w-[193px] h-[190px] object-cover"
             loading="lazy"
             decoding="async"
           />
@@ -56,10 +56,11 @@ const ProductCard = memo(
           {/* ❤️ Wishlist Button */}
           <div
             onClick={(e) => onToggleWishlist(product?.productId, e)}
-            className={`flex justify-center items-center cursor-pointer w-[44px] h-[44px] sm:w-[51.28px] sm:h-[51.28px] p-2 sm:p-[12.82px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${isInWishlist
+            className={`flex justify-center items-center cursor-pointer w-[44px] h-[44px] sm:w-[51.28px] sm:h-[51.28px] p-2 sm:p-[12.82px] rounded-[55.1px] transition-all duration-300 hover:scale-110 ${
+              isInWishlist
                 ? "bg-red-50 shadow-md"
                 : "bg-[#F8F8F8] hover:bg-red-50"
-              }`}
+            }`}
           >
             <svg
               width="24"
@@ -80,7 +81,7 @@ const ProductCard = memo(
         </div>
       </div>
     );
-  },
+  }
 );
 
 ProductCard.displayName = "ProductCard";

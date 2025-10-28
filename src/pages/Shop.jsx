@@ -54,7 +54,7 @@ const Shop = () => {
     (product) => {
       navigate(`/shop/${product.productId}`);
     },
-    [navigate],
+    [navigate]
   );
 
   // const getAllProducts = async () => {
@@ -98,7 +98,7 @@ const Shop = () => {
             Accept: "*/*",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       );
       setCategoriesList(response.data);
     } catch (error) {
@@ -194,7 +194,7 @@ const Shop = () => {
   // Memoized wishlist set for faster lookups
   const wishlistSet = useMemo(
     () => new Set(wishlist.map((item) => item.productId)),
-    [wishlist],
+    [wishlist]
   );
 
   const handleCheckboxChange = (e) => {
@@ -222,20 +222,20 @@ const Shop = () => {
       }
     },
     isFilterOpen, // Only active when filter is open
-    'data-filter-sidebar' // Data attribute selector
+    "data-filter-sidebar" // Data attribute selector
   );
 
   // Prevent body scroll when filter is open
   useEffect(() => {
     if (isFilterOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
-    
+
     // Cleanup on unmount
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isFilterOpen]);
 
@@ -270,13 +270,13 @@ const Shop = () => {
           showToast({
             message: "Access Denied. Please login first.",
             type: "error",
-          }),
+          })
         );
         return;
       }
 
       const productItem = filteredProducts?.find(
-        (item) => item?.productId === id,
+        (item) => item?.productId === id
       );
 
       if (!productItem) {
@@ -295,13 +295,13 @@ const Shop = () => {
           if (!wishlistItem || !wishlistItem.id) {
             console.error(
               "❌ Wishlist item not found or missing ID:",
-              wishlistItem,
+              wishlistItem
             );
             dispatch(
               showToast({
                 message: "Error removing from wishlist",
                 type: "error",
-              }),
+              })
             );
             return;
           }
@@ -314,7 +314,7 @@ const Shop = () => {
                 Accept: "*/*",
                 Authorization: `Bearer ${token}`,
               },
-            },
+            }
           );
 
           if (response.data.responseCode === "1500") {
@@ -322,7 +322,7 @@ const Shop = () => {
               showToast({
                 message: "Please try again later.",
                 type: "error",
-              }),
+              })
             );
             return;
           }
@@ -330,7 +330,7 @@ const Shop = () => {
           fetchWishlistCount();
           getWishlist(); // Refetch to get accurate data
           dispatch(
-            showToast({ message: "Removed from Wishlist!", type: "success" }),
+            showToast({ message: "Removed from Wishlist!", type: "success" })
           );
         } else {
           // Add to wishlist
@@ -352,7 +352,7 @@ const Shop = () => {
           fetchWishlistCount();
           getWishlist(); // Refetch to get accurate data with correct IDs
           dispatch(
-            showToast({ message: "Added to Wishlist!", type: "success" }),
+            showToast({ message: "Added to Wishlist!", type: "success" })
           );
         }
       } catch (error) {
@@ -361,11 +361,11 @@ const Shop = () => {
           showToast({
             message: `Error: ${error.response?.data?.message || error.message}`,
             type: "error",
-          }),
+          })
         );
       }
     },
-    [dispatch, filteredProducts, wishlist, fetchWishlistCount, getWishlist],
+    [dispatch, filteredProducts, wishlist, fetchWishlistCount, getWishlist]
   );
 
   const handleAddtoCart = useCallback(
@@ -377,12 +377,12 @@ const Shop = () => {
           showToast({
             message: "Access Denied. Please login first.",
             type: "error",
-          }),
+          })
         );
         return;
       }
       const filterMethode = filteredProducts?.filter(
-        (item) => item?.productId === id,
+        (item) => item?.productId === id
       );
 
       if (!filterMethode || filterMethode.length === 0) {
@@ -390,7 +390,7 @@ const Shop = () => {
           showToast({
             message: "Product not found.",
             type: "error",
-          }),
+          })
         );
         return;
       }
@@ -407,7 +407,7 @@ const Shop = () => {
           showToast({
             message: "Unable to check stock availability.",
             type: "error",
-          }),
+          })
         );
         return;
       }
@@ -417,7 +417,7 @@ const Shop = () => {
           showToast({
             message: "Stock is less than the desired quantity",
             type: "error",
-          }),
+          })
         );
         return;
       }
@@ -445,7 +445,7 @@ const Shop = () => {
             showToast({
               message: "Please try again later.",
               type: "error",
-            }),
+            })
           );
           return;
         }
@@ -459,12 +459,12 @@ const Shop = () => {
           showToast({
             message: "Failed to add item to cart.",
             type: "error",
-          }),
+          })
         );
         // setLoading(false);
       }
     },
-    [dispatch, filteredProducts, fetchCartCount],
+    [dispatch, filteredProducts, fetchCartCount]
   );
 
   useEffect(() => {
@@ -485,28 +485,40 @@ const Shop = () => {
           {/* Mobile Layout */}
           <div className="md:hidden">
             {/* Mobile Search Bar */}
-            <div className="relative mb-4 md:hidden">
-                <input
-                  type="text"
-                  placeholder="search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-                  className="w-full px-4 py-4 pr-12 border border-gray-200 rounded-full bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-[#001D58] w-8 h-8 rounded-full flex items-center justify-center">
-                  <MagnifyingGlassIcon className="h-4 w-4 text-white" />
-                </div>
+            <div className="relative mb-4 md:hidden px-4">
+              <input
+                type="text"
+                placeholder="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+                className="w-full px-4 py-4 pr-12 border border-gray-200 rounded-full bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-[#001D58] w-8 h-8 rounded-full flex items-center justify-center mr-4">
+                <MagnifyingGlassIcon className="h-4 w-4 text-white" />
               </div>
+            </div>
 
             {/* Mobile Shop Title and Filter Button */}
-            <div className="flex justify-between items-center mb-4">
-              <h1 className="text-2xl font-bold text-gray-800 font-poppins">Shop</h1>
+            <div className="flex justify-between items-center mb-4 px-4">
+              <h1 className="text-2xl font-bold text-gray-800 font-poppins">
+                Shop
+              </h1>
               <button
                 className="flex items-center gap-2 bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
                 onClick={() => setIsFilterOpen(true)}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                  />
                 </svg>
                 Filter
               </button>
@@ -515,7 +527,9 @@ const Shop = () => {
 
           {/* Tablet Layout */}
           <div className="hidden md:flex lg:hidden justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-800 font-poppins">Shop</h1>
+            <h1 className="text-3xl font-bold text-gray-800 font-poppins">
+              Shop
+            </h1>
             <div className="flex items-center gap-4">
               <div className="relative">
                 <input
@@ -531,15 +545,23 @@ const Shop = () => {
                 className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                 onClick={() => setIsFilterOpen(true)}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                  />
                 </svg>
                 Filter
               </button>
             </div>
           </div>
-
-
         </div>
 
         {/* Layout Grid */}
@@ -558,8 +580,18 @@ const Shop = () => {
                   onClick={() => setIsFilterOpen(false)}
                   className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
                 >
-                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                  <svg
+                    className="w-5 h-5 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M15 19l-7-7 7-7"
+                    />
                   </svg>
                 </button>
                 <h2 className="font-semibold text-lg text-gray-800">Filter</h2>
@@ -639,10 +671,11 @@ const Shop = () => {
                     />
                     <label
                       htmlFor="inStock"
-                      className={`text-sm cursor-pointer ${checked === "inStock"
+                      className={`text-sm cursor-pointer ${
+                        checked === "inStock"
                           ? "text-[#001D58] font-medium"
                           : "text-gray-600"
-                        }`}
+                      }`}
                     >
                       in stock
                     </label>
@@ -658,10 +691,11 @@ const Shop = () => {
                     />
                     <label
                       htmlFor="outOfStock"
-                      className={`text-sm cursor-pointer ${checked === "outOfStock"
+                      className={`text-sm cursor-pointer ${
+                        checked === "outOfStock"
                           ? "text-[#001D58] font-medium"
                           : "text-gray-600"
-                        }`}
+                      }`}
                     >
                       out of stock
                     </label>
@@ -671,20 +705,17 @@ const Shop = () => {
 
               {/* Categories */}
               <div className="border-t border-gray-200 pt-3">
-                <h3 className="font-semibold text-gray-800 mb-2">
-                  Categories
-                </h3>
+                <h3 className="font-semibold text-gray-800 mb-2">Categories</h3>
                 <div className="max-h-48 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                   {categoriesList.map((c) => (
                     <div
                       key={c.categoryId}
-                      onClick={() =>
-                        handleCategoryChange(c.categoryId, c.name)
-                      }
-                      className={`text-sm cursor-pointer py-1 ${selectedCategory === c.categoryId
+                      onClick={() => handleCategoryChange(c.categoryId, c.name)}
+                      className={`text-sm cursor-pointer py-1 ${
+                        selectedCategory === c.categoryId
                           ? "text-[#001D58] font-medium"
                           : "text-gray-600 hover:text-gray-800"
-                        }`}
+                      }`}
                     >
                       {c.name}
                     </div>
@@ -693,18 +724,17 @@ const Shop = () => {
               </div>
               {/* Brands */}
               <div className="border-t border-gray-200 pt-3">
-                <h3 className="font-semibold text-gray-800 mb-2">
-                  Brand
-                </h3>
+                <h3 className="font-semibold text-gray-800 mb-2">Brand</h3>
                 <div className="max-h-48 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                   {brandsList.map((b) => (
                     <div
                       key={b.id}
                       onClick={() => handleBrandChange(b.id, b.name)}
-                      className={`text-sm cursor-pointer py-1 ${selectedbrand === b.id
+                      className={`text-sm cursor-pointer py-1 ${
+                        selectedbrand === b.id
                           ? "text-[#001D58] font-medium"
                           : "text-gray-600 hover:text-gray-800"
-                        }`}
+                      }`}
                     >
                       {b.name}
                     </div>
@@ -733,7 +763,7 @@ const Shop = () => {
           )}
 
           {/* Products Grid */}
-          <div className="md:ml-0 lg:ml-0">
+          <div className="md:ml-0 lg:ml-0 py-6 px-4 ">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {loading ? (
                 <>
@@ -756,12 +786,26 @@ const Shop = () => {
                 <div className="col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-4 flex justify-center items-center bg-white p-6 sm:p-8 rounded-md min-h-[250px] sm:min-h-[300px]">
                   <div className="text-center">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      <svg
+                        className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
                       </svg>
                     </div>
-                    <p className="text-lg sm:text-xl md:text-2xl font-poppins text-gray-600 mb-2">No Products Found</p>
-                    <p className="text-sm sm:text-base text-gray-500">Try adjusting your search or filters</p>
+                    <p className="text-lg sm:text-xl md:text-2xl font-poppins text-gray-600 mb-2">
+                      No Products Found
+                    </p>
+                    <p className="text-sm sm:text-base text-gray-500">
+                      Try adjusting your search or filters
+                    </p>
                     <button
                       onClick={handleResetAll}
                       className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
