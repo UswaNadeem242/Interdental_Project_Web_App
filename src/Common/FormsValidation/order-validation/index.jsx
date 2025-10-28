@@ -1,24 +1,18 @@
 import * as Yup from "yup";
 
 export const OrderValidationSchema = Yup.object().shape({
-  // doctorName: Yup.string().required("Doctor's Name / Office Name is required"),
-  officeReg: Yup.string()
-    .required("Office registration number is required"),
-  // createDate: Yup.date().nullable().required("Create Date is required"),
+  officeReg: Yup.string().required("Office registration number is required"),
   dueDate: Yup.date().nullable().required("Select the Due Date first"),
   patientFirstName: Yup.string().required("Select a patient first").min(1, "Select a patient first"),
-  // patientLastName: Yup.string().required("Last name is required"),
-  // subscriptionId: Yup.string()
-  //     .matches(/^[A-Za-z0-9@#$%^&*]+$/, "Only letters, numbers, and special characters @#$%^&* are allowed")
-  //     .required("Subscription ID is required"),
   scannerType: Yup.string().required("Scanner Type is required").min(1, "Scanner Type is required"),
   Model_type: Yup.string().required("Digital Model Type is required").min(1, "Digital Model Type is required"),
-  digitalOptions: Yup.string().required("Digital Denture is required").min(1, "Digital Denture is required"),
-  photogrammetryfiles: Yup.string().required("Photogrammetry files is required").min(1, "Photogrammetry files is required"),
-  // surgical_guide: Yup.string().required("Surgical Guide is required"),
   material: Yup.string().required("Material is required").min(1, "Material is required"),
-  crown: Yup.string().required("Crown is required").min(1, "Crown is required"),
   lab: Yup.string().required("Laboratory is required").min(1, "Laboratory is required"),
+  // Optional fields
+  digitalOptions: Yup.string().nullable(),
+  photogrammetryfiles: Yup.string().nullable(),
+  crown: Yup.string().nullable(),
+  surgical_guide: Yup.string().nullable(),
   note: Yup.string().nullable(),
 });
 

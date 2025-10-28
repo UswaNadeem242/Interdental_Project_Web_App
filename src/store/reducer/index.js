@@ -26,11 +26,18 @@ import toastReducer from "../toast-slice/index";
 import profileReducer from "../slices/profileImage-slice/index";
 import profileDataReducer from "../slices/profileData-slice/index";
 
-// persist config - exclude restoration state from persistence
+// persist config - exclude restoration-related slices from persistence
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ['restoration'], // Don't persist restoration state
+  blacklist: [
+    'restoration',    // Main restoration state
+    'dropdown',       // Scanner/order dropdown data
+    'teeth',          // Teeth selection data
+    'toast',          // Toast messages
+    'profile',        // Profile image data
+    'profileData'     // User profile data
+  ],
 };
 
 // combine reducers if you have multiple

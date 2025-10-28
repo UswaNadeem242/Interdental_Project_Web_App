@@ -13,26 +13,26 @@ const restorationSlice = createSlice({
   initialState: {
     selectedTeeth: [],
     selectedTooth: [],
-    toothSelections: [],
     totalPrice: 0,
     doctorOrderItems: [],
+    doctorProfile: null,
     doctor: [
-      { field: "officeReg", value: "", id: "" }, // added id field upfront
+      { field: "officeReg", value: "", id: "" },
       { field: "dueDate", value: "" },
     ],
     patient: null,
-    // Global dropdown selections that apply to all teeth
-  globalSelections: {
-    scannerType: null,
-    digitalOptions: null,
-    surgical_guide: null,
-    material: null,
-    lab: null,
-    crown: null,
-    Model_type: null,
-    photogrammetryfiles: null,
-    shades: {}, // Changed from single shade to multiple shades object
-  },
+    uploadedFiles: [],
+    globalSelections: {
+      scannerType: null,
+      digitalOptions: null,
+      surgical_guide: null,
+      material: null,
+      lab: null,
+      crown: null,
+      Model_type: null,
+      photogrammetryfiles: null,
+      shades: {},
+    },
     note: "",
   },
   reducers: {
@@ -56,45 +56,6 @@ const restorationSlice = createSlice({
       state.selectedTooth = state.selectedTeeth.length
         ? state.selectedTeeth[state.selectedTeeth.length - 1]
         : null;
-    },
-    updateToothSelection: (state, action) => {
-      const {
-        toothId,
-        field,
-        value,
-        price = 0,
-        option = null,
-      } = action.payload;
-      if (!toothId) return;
-      let tooth = state.toothSelections.find((t) => t.toothId === toothId);
-      if (!tooth) {
-        tooth = { toothId };
-        state.toothSelections.push(tooth);
-      }
-      tooth[field] = value;
-      tooth[`${field}Price`] = price;
-      tooth[`${field}Option`] = option;
-      const items = [];
-      let total = 0;
-
-      state.toothSelections.forEach((t) => {
-        ["material", "shade", "crown", "lab", "Model_type"].forEach((f) => {
-          if (t[f]) {
-            items.push({
-              id: `${t.toothId}-${f}`,
-              toothId: t.toothId,
-              dropdownMasterId: t[f],
-              unitPrice: t[`${f}Price`] || 0,
-              dropdown: t[`${f}Option`] || null,
-              quantity: 1,
-            });
-            total += t[`${f}Price`] || 0;
-          }
-        });
-      });
-
-      state.doctorOrderItems = items;
-      state.totalPrice = total;
     },
     updateGlobalSelection: (state, action) => {
       const { field, value, price = 0, option = null } = action.payload;
@@ -194,6 +155,12 @@ const restorationSlice = createSlice({
     setNote: (state, action) => {
       state.note = action.payload;
     },
+    setDoctorProfile: (state, action) => {
+      state.doctorProfile = action.payload;
+    },
+    setUploadedFiles: (state, action) => {
+      state.uploadedFiles = action.payload;
+    },
     resetGlobalSelections: (state) => {
       // Reset global selections
       state.globalSelections = {
@@ -214,11 +181,9 @@ const restorationSlice = createSlice({
     resetRestoration: (state) => {
       state.selectedTeeth = [];
       state.selectedTooth = null;
-      state.toothSelections = [];
       state.totalPrice = 0;
       state.doctorOrderItems = [];
       state.doctor.forEach((d) => (d.value = ""));
-      // Reset global selections
       state.globalSelections = {
         scannerType: null,
         digitalOptions: null,
@@ -228,16 +193,16 @@ const restorationSlice = createSlice({
         crown: null,
         Model_type: null,
         photogrammetryfiles: null,
-        shades: {}, // Reset shades object
+        shades: {},
       };
       state.note = "";
+      state.uploadedFiles = [];
     },
   },
 });
 
 export const {
   selectTooth,
-  updateToothSelection,
   updateGlobalSelection,
   updateShadeSelection,
   resetGlobalSelections,
@@ -246,6 +211,8 @@ export const {
   setDueDate,
   setNote,
   setSelectedPatient,
+  setDoctorProfile,
+  setUploadedFiles,
 } = restorationSlice.actions;
 
 export default restorationSlice.reducer;

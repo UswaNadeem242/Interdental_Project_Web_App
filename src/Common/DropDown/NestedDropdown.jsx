@@ -71,7 +71,6 @@ export const ShadeDropdown = ({
 
   const handleSelect = (groupName, option) => {
     console.log("option", option);
-
     // Check if this option is already selected
     const currentSelection = selectedShades[groupName];
     const isAlreadySelected = currentSelection && currentSelection.id === option.id;

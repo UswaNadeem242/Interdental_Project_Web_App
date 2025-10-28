@@ -4,8 +4,6 @@ import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
-import { useDispatch } from "react-redux";
-import { setSelectedPatient } from "../../../store/slices/restoration-slice";
 
 export function PatientDropdown({ className, dropdownClass, value, onChange, classNameWidth }) {
   const [patientsList, setPatientsList] = useState([]);
@@ -13,7 +11,6 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
-  const dispatch = useDispatch();
   useEffect(() => {
     const fetchPatients = async () => {
       try {
@@ -55,11 +52,9 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
   const selectedPatient = patientsList.find((p) => p.id === value?.id || p.id === value);
 
   const handleSelect = (patient) => {
-    onChange(patient); // pass full patient object to formik
+    onChange(patient);
     setOpen(false);
-    dispatch(setSelectedPatient(patient));
   };
-  // const selectedPatient = patientsList.find((p) => p.id === value?.id);
 
   // Filter patients by search term
   useEffect(() => {
@@ -77,6 +72,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
     }
   }, [searchTerm, patientsList]);
 
+  // Masking utilities
   const maskName = (name) => {
     if (!name?.trim()) return "Unknown";
     const clean = name.trim();
@@ -87,7 +83,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
   };
 
   const maskLastName = (lastName) => {
-    if (!lastName?.trim()) return "Unknown";
+    if (!lastName?.trim()) return "";
     const clean = lastName.trim();
     return (
       clean.slice(0, 2).charAt(0).toUpperCase() +
@@ -111,17 +107,14 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
       >
         {selectedPatient ? (
           <span className="flex items-center gap-2">
-            {selectedPatient.avatar && (
+            {selectedPatient.profileURL && (
               <img
-                src={selectedPatient.avatar}
+                src={selectedPatient.profileURL}
                 alt={selectedPatient.name}
                 className="w-6 h-6 rounded-full object-cover"
               />
             )}
-            {/* <span>{selectedPatient.name}</span> */}
-            <span>{`${maskName(selectedPatient.name)}${maskLastName(
-              selectedPatient.lastName
-            )} - ${maskEmail(selectedPatient.email)}`}</span>
+            <span>{maskName(selectedPatient.name)}{maskLastName(selectedPatient.lastName)} - {maskEmail(selectedPatient.email)}</span>
           </span>
         ) : (
           <span className="text-gray-400">Select Patient</span>
@@ -168,9 +161,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
 
                   <div className="flex flex-col text-left">
                     <span className="text-primaryText font-medium text-sm">
-                      {`${maskName(p.name)}${maskLastName(
-                        p.lastName
-                      )} - ${maskEmail(p.email)}`}
+                      {maskName(p.name)}{maskLastName(p.lastName)} - {maskEmail(p.email)}
                     </span>
                   </div>
                 </button>

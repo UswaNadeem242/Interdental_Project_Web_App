@@ -1,11 +1,14 @@
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import FormSection from "../CommonLabel/FormSelection";
 import { ClipboardDocumentListIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import ExclamationCircleIcon from "../../../icon/exclamation-circle-icon";
+import { setUploadedFiles } from "../../../store/slices/restoration-slice";
 
 export const FileUploadSection = () => {
-    const [files, setFiles] = useState([]);
+    const dispatch = useDispatch();
+    const files = useSelector((state) => state.restoration.uploadedFiles);
 
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
@@ -19,11 +22,13 @@ export const FileUploadSection = () => {
             alert("Only PNG, JPG, JPEG, or PDF files are allowed.");
         }
 
-        setFiles((prev) => [...prev, ...allowedFiles]);
+        const updatedFiles = [...files, ...allowedFiles];
+        dispatch(setUploadedFiles(updatedFiles));
     };
 
     const handleRemoveFile = (index) => {
-        setFiles((prev) => prev.filter((_, i) => i !== index));
+        const updatedFiles = files.filter((_, i) => i !== index);
+        dispatch(setUploadedFiles(updatedFiles));
     };
 
     const formatFileName = (name, front = 10, back = 5) => {

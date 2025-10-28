@@ -462,6 +462,21 @@ export default function OrderDetailsForm({ id }) {
                   </p>
                 </div>
               )}
+              
+              {/* Shade */}
+              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Shade") && (
+                <div>
+                  <p className="text-[#949494] text-xs font-poppins">
+                    Shade:
+                  </p>
+                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
+                    {orderDetails.doctorOrderItems
+                      .filter(item => item.dropdown?.type === "Shade")
+                      .map(item => item.dropdown?.name)
+                      .join(", ") || "N/A"}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           <div className="border border-gray-200  rounded-lg p-4 sm:p-6 mt-4">
