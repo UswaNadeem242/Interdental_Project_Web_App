@@ -5,13 +5,17 @@ import { useSearchParams } from "react-router-dom";
 export default function Stepper({ steps, className, selectedColor }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [searchParams] = useSearchParams();
-  const role = searchParams.get('role');
+  const role = searchParams.get("role");
 
   console.log(role, "[ROLE]");
 
   useEffect(() => {
     if (role) {
-      setSelectedIndex(steps.findIndex((step) => step.name?.toLowerCase() === role?.toLowerCase()));
+      setSelectedIndex(
+        steps.findIndex(
+          (step) => step.name?.toLowerCase() === role?.toLowerCase()
+        )
+      );
     }
   }, [role, steps]);
 
@@ -28,12 +32,12 @@ export default function Stepper({ steps, className, selectedColor }) {
                 className={({ selected }) =>
                   `rounded-xl py-4 px-6 my-2 mx-2 text-xs border w-1/2 border-textField
    focus:outline-none transition-colors duration-200 font-poppins capitalize 
-   ${selected
-                    ? `text-primary font-bold ${selectedColor}`
-                    : "text-primary font-normal text-[#949494]"
-                  }`
+   ${
+     selected
+       ? `text-primary font-bold ${selectedColor}`
+       : "text-primary font-normal text-[#949494]"
+   }`
                 }
-
               >
                 {name}
               </Tab>

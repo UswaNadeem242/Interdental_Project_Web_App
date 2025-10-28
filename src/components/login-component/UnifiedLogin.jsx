@@ -19,7 +19,6 @@ const UnifiedLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
   // Formik setup
   const formik = useFormik({
     initialValues: {
@@ -28,7 +27,7 @@ const UnifiedLogin = () => {
     },
     validationSchema: loginValidationSchema,
     validateOnChange: true,
-    validateOnBlur: true,  
+    validateOnBlur: true,
     onSubmit: async (values) => {
       setLoading(true);
       try {
@@ -98,9 +97,9 @@ const UnifiedLogin = () => {
   return (
     <div className="pt-5">
       {/* Login form */}
-      <div className="flex flex-col justify-center items-center w-full lg:w-[494px] gap-6 lg:gap-8">
+      <div className="flex flex-col justify-center items-center w-[350px] sm:w-[550px] lg:w-[494px] gap-6 lg:gap-8">
         <div className="flex flex-col justify-center items-center w-full px-4 lg:w-[494px] gap-4 lg:gap-4">
-          <div className="relative w-full lg:w-[494px]">
+          <div className="relative w-full lg:w-[494px] mb-2">
             <input
               type="email"
               id="email"
@@ -109,10 +108,11 @@ const UnifiedLogin = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder=" "
-              className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.email && formik.touched.email
+              className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
+                formik.errors.email && formik.touched.email
                   ? "border-red-500"
                   : "border-gray-300 focus:border-secondaryBrand"
-                }`}
+              }`}
             />
             <label
               htmlFor="email"
@@ -140,10 +140,11 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${formik.errors.password && formik.touched.password
+                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${
+                  formik.errors.password && formik.touched.password
                     ? "border-red-500"
                     : "border-gray-300 focus:border-secondaryBrand"
-                  }`}
+                }`}
               />
               <label
                 htmlFor="password"
@@ -195,12 +196,13 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
           </p>
         </div>
 
-        <div className="flex items-center flex-col w-full lg:w-[494px] h-auto lg:h-[270px] gap-6 px-6 lg:gap-[32px]">
+        <div className="flex items-center flex-col w-[100%] h-auto lg:h-[270px] gap-6 px-5 lg:gap-[32px] ">
           <button
             onClick={() => formik.handleSubmit()}
             disabled={loading}
-            className={`w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-4 lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px] ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-              }`}
+            className={`w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-8  lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px] ${
+              loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+            }`}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
