@@ -58,14 +58,7 @@ const DoctorOrder = () => {
   const [touched, setTouched] = useState({});
   const [selected, setSelected] = useState(null);
 
-  // Debug: Log when selected changes
-  useEffect(() => {
-    if (selected) {
-      console.log("Selected object keys:", Object.keys(selected));
-      console.log("Selected name:", selected.name);
-      console.log("Selected name:", selected.name);
-    }
-  }, [selected]);
+
   const [isOpen, setIsOpen] = useState(false);
   const steps = [
     { id: "s1", title: "Restoration Design Form" },
@@ -142,7 +135,8 @@ const DoctorOrder = () => {
   // Remove the resetRestoration call that was clearing all data on mount
   useEffect(() => {
     dispatch(resetRestoration());
-  }, []);
+  }, [dispatch]);
+
   const [formData, setFormData] = useState({
     id: "",
     reference: "",
@@ -259,7 +253,7 @@ const DoctorOrder = () => {
                 }
 
                 // Check if patient is selected
-                if (!values?.patientFirstName || values?.patientFirstName === "" || values?.patientFirstName === null || values?.patientFirstName === undefined) {
+                if (!values?.patientFirstName ) {
                   dispatch(
                     showToast({
                       message: "Please select a patient first",
@@ -391,7 +385,7 @@ const DoctorOrder = () => {
                                 console.log(patient, "patient");
                                 // patient is now the full patient object
                                 if (patient) {
-                                  const firstName = patient?.firstName?.trim() || "";
+                                  const firstName = patient?.firstName?.trim() || patient?.name || "";
                                   const lastName = patient?.lastName?.trim() || "";
                                   setFieldValue("patientFirstName", firstName);
                                   setFieldValue("patientLastName", lastName);
