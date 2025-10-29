@@ -5,7 +5,7 @@ function ViewDetail({ onClose, userData }) {
   const lastName = rest.join(" ");
 
   return (
-    <div className="p-6 font-poppins">
+    <div className="py-6 font-poppins">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* First Name */}
         <div className="flex flex-col">
