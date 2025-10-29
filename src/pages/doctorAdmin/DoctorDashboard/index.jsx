@@ -159,23 +159,20 @@ const DoctorDashaboard = () => {
           // Handle patients response
           if (patientsResponse?.status === 200) {
             const transformedPatients = transformPatientsData(
-              patientsResponse.data.data
+              patientsResponse.data.data?.data
             );
 
-            setDoctorPatients(transformedPatients);
+            setDoctorPatients(transformedPatients || []);
           } else {
             console.error("Failed to fetch doctor patients:", patientsResponse);
+            setDoctorPatients([]);
           }
         }
       } catch (err) {
-        if (isMounted) {
-          console.error("Error fetching dashboard data:", err);
-          setError("Failed to load dashboard data. Please try again.");
-        }
+        console.error("Error fetching dashboard data:", err);
+        setDoctorPatients([]);
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
