@@ -1,4 +1,5 @@
 function ViewDetail({ onClose, userData }) {
+  console.log(userData);
   if (!userData) return null;
 
   const [firstName, ...rest] = userData.name?.trim().split(" ") || [];

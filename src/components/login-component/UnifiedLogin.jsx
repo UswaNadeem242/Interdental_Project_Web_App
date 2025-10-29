@@ -61,14 +61,29 @@ const UnifiedLogin = () => {
           return;
         }
 
-        login(response?.data?.data?.users, response?.data?.data?.accessToken);
+        const user = response?.data?.data?.users;
+        console.log(user, "USER");
+
+        login(user, response?.data?.data?.accessToken);
+
+        // Check if user logged in before
+        const isFirstLogin = !localStorage.getItem(
+          `hasLoggedInBefore:${user.id}`
+        );
+        localStorage.setItem(`hasLoggedInBefore:${user.id}`, "true");
+
+        //
 
         // Navigate based on user role
         const userRole = response.data.data.users.roles[0];
         if (userRole === "PATIENT") {
           navigate("/patient-admin/dashboard");
         } else if (userRole === "DOCTOR") {
-          navigate("/doctor-admin/dashboard");
+          if (isFirstLogin) navigate("/enrollment-plans");
+          else navigate("/doctor-admin/dashboard");
+
+          // navigate("/doctor-admin/dashboard");
+          // navigate("/enrollment-plans");
         } else if (userRole === "ADMIN") {
           navigate("/admin-panel/dashboard");
         } else if (userRole === "CUSTOMER") {
