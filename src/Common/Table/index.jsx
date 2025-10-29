@@ -19,23 +19,33 @@ export default function TableComponent({
   const startIndex = (currentPage - 1) * pageSize;
   const currentData = data.slice(startIndex, startIndex + pageSize);
   return (
-    <div className="grid col-span-1 md:col-span-1 lg:col-span-12">
-      <div className="overflow-x-auto  max-h-[400px] scrollbar-hidden ">
-        <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
-          <thead className="sticky top-0 bg-[#F8F8F8] z-10 ">
-            <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
-              {headings.map((col, idx) => (
-                <th
-                  key={idx}
-                  className="py-5  px-3 font-medium text-secondaryText whitespace-nowrap"
-                >
-                  {col.label}
-                </th>
-              ))}
-            </tr>
-          </thead>{" "}
-          <tbody>
-            {currentData.map((row, idx) => (
+    <div className={`grid col-span-1 md:col-span-1 ${data.length === 0 ? 'lg:col-span-1' : 'lg:col-span-12'}`}>
+      {data.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="text-gray-500 text-lg font-medium mb-2">
+            No data available
+          </div>
+          <div className="text-gray-400 text-sm">
+            There are no records to display at the moment.
+          </div>
+        </div>
+      ) : (
+        <div className="overflow-x-auto  max-h-[400px] scrollbar-hidden ">
+          <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
+            <thead className="sticky top-0 bg-[#F8F8F8] z-10 ">
+              <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
+                {headings.map((col, idx) => (
+                  <th
+                    key={idx}
+                    className="py-5  px-3 font-medium text-secondaryText whitespace-nowrap"
+                  >
+                    {col.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>{" "}
+            <tbody>
+              {currentData.map((row, idx) => (
 
 
               <tr
@@ -125,17 +135,20 @@ export default function TableComponent({
                   </td>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        totalResults={totalResults}
-        pageSize={pageSize}
-        onPageChange={setCurrentPage}
-      />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {data.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalResults={totalResults}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </div>
   );
 }

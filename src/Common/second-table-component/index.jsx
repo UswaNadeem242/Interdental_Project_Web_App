@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import Pagination from "../Pagination";
 import CheckBox from "../check-box";
 import OptionsDots from "../../icon/options-dots";
-import { EditDeleteDropdownMenu } from "../DropDown/edit-delete";
+
 
 export default function SecondTable({
   headings,
@@ -29,34 +29,44 @@ export default function SecondTable({
   const currentData = data.slice(startIndex, startIndex + pageSize);
 
   return (
-    <div className="grid col-span-1 md:col-span-1 lg:col-span-12">
-      <div className="overflow-x-auto max-h-[400px] scrollbar-hidden">
-        <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
-          <thead className="sticky top-0 bg-[#F8F8F8] z-10 ">
-            <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
-              {headings.map((col, idx) => (
-                <th
-                  key={idx}
-                  className="py-5 px-3 font-medium text-secondaryText whitespace-nowrap"
-                >
-                  {/* {col.label} */}
-                  {col.key === "pName" ? (
-                    <span className="flex items-center gap-2 ml-1">
-                      {/* <input type="checkbox" className="h-5 w-5" /> */}
-                      <CheckBox />
-                      <span>{col.label}</span>
-                    </span>
-                  ) : (
-                    col.label
-                  )}
-                </th>
-              ))}
-              {actionButton && <th className="py-5 px-3"></th>}
-            </tr>
-          </thead>
+    <div className={`grid col-span-1 md:col-span-1 ${data.length === 0 ? 'lg:col-span-1' : 'lg:col-span-12'}`}>
+      {data.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="text-gray-500 text-lg font-medium mb-2">
+            No data available
+          </div>
+          <div className="text-gray-400 text-sm">
+            There are no records to display at the moment.
+          </div>
+        </div>
+      ) : (
+        <div className="overflow-x-auto max-h-[400px] scrollbar-hidden">
+          <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
+            <thead className="sticky top-0 bg-[#F8F8F8] z-10 ">
+              <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
+                {headings.map((col, idx) => (
+                  <th
+                    key={idx}
+                    className="py-5 px-3 font-medium text-secondaryText whitespace-nowrap"
+                  >
+                    {/* {col.label} */}
+                    {col.key === "pName" ? (
+                      <span className="flex items-center gap-2 ml-1">
+                        {/* <input type="checkbox" className="h-5 w-5" /> */}
+                        <CheckBox />
+                        <span>{col.label}</span>
+                      </span>
+                    ) : (
+                      col.label
+                    )}
+                  </th>
+                ))}
+                {actionButton && <th className="py-5 px-3"></th>}
+              </tr>
+            </thead>
 
-          <tbody>
-            {currentData.map((row, idx) => (
+            <tbody>
+              {currentData.map((row, idx) => (
               <tr
                 key={idx}
                 className="border-b border-gray-200 transition-all font-poppins"
@@ -258,17 +268,20 @@ export default function SecondTable({
                   </td>
                 )}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        totalResults={totalResults}
-        pageSize={pageSize}
-        onPageChange={setCurrentPage}
-      />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {data.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalResults={totalResults}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </div>
   );
 }

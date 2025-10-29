@@ -157,7 +157,10 @@ const PatientPage = () => {
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 title="Add New User"
-                Content={<AddPatientForm />}
+                Content={
+                  <AddPatientForm
+                  />
+                }
               />
               <Drawers
                 isOpen={isNoteOpen}

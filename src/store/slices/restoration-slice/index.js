@@ -59,7 +59,7 @@ const restorationSlice = createSlice({
     },
     updateGlobalSelection: (state, action) => {
       const { field, value, price = 0, option = null } = action.payload;
-      
+
       // Update global selection
       state.globalSelections[field] = {
         value,
@@ -93,14 +93,14 @@ const restorationSlice = createSlice({
     },
     updateShadeSelection: (state, action) => {
       const { groupName, shade } = action.payload;
-      
+
       // If shade is null, remove the selection (deselect)
       if (shade === null) {
         delete state.globalSelections.shades[groupName];
       } else {
         state.globalSelections.shades[groupName] = shade;
       }
-      
+
       // Recalculate total price and doctor order items
       const items = [];
       let total = 0;
@@ -162,7 +162,6 @@ const restorationSlice = createSlice({
       state.uploadedFiles = action.payload;
     },
     resetGlobalSelections: (state) => {
-      // Reset global selections
       state.globalSelections = {
         scannerType: null,
         digitalOptions: null,
@@ -172,9 +171,9 @@ const restorationSlice = createSlice({
         crown: null,
         Model_type: null,
         photogrammetryfiles: null,
-        shades: {}, // Reset shades object
+        shades: {},
       };
-      // Recalculate total price and doctor order items
+
       state.doctorOrderItems = [];
       state.totalPrice = 0;
     },

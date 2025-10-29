@@ -20,7 +20,7 @@ export const DoctorCalimsForm = () => {
     try {
       // ✅ Prepare final payload in backend format
       const payload = {
-        patientId: values?.patient, // make sure Formik stores this
+        patientId: values?.patient?.id, // make sure Formik stores this
         crownTeeth: Array.isArray(values.crownTeeth)
           ? values.crownTeeth.filter(Boolean).join(",")
           : (values.crownTeeth || "").replace(/^,|,$/g, ""),
