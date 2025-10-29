@@ -130,7 +130,7 @@ const DoctorDashaboard = () => {
             getDoctorPatients({
               status: "ALL",
               page: 0,
-              limit: 100,
+              size: 100,
               search: ""
             }),
           ]);
