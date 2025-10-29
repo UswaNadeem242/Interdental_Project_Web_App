@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import Drawers from "../../../Common/Drawers";
 import { PrimaryButtonUI, SecondaryButton } from "../../../Common/Button";
 import AddPatientForm from "./AddPatientForm";
@@ -23,6 +23,7 @@ import EditPatientForm from "./edit-pateint";
 import { showToast } from "../../../store/toast-slice";
 import { useDispatch } from "react-redux";
 import ViewDetail from "./view-detail";
+import { useDebounce } from "../../../Hooks/useDebounce";
 
 const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,8 +36,15 @@ const PatientPage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
-  const [deleteLoading,setDeleteLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
   const dispatch = useDispatch();
+
+  // Debounced search query
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
   const handleOpenForm = (rowData) => {
     setSelectedData(rowData);
     setShowForm(true);
@@ -90,46 +98,58 @@ const PatientPage = () => {
       profileURL: order?.profileURL,
     }));
   };
-  
-  const fetchPatients = async () => {
-    try {
-      const response = await getDoctorPatients();
 
-      if (response.status === 200) {
-        setPatients(transformPatientsData(response.data.data));
-      }
+  const fetchPatients = useCallback(async (page = 1) => {
+    setLoading(true);
+    try {
+      const response = await getDoctorPatients({
+        status: "ALL",
+        page: page - 1, // Backend uses 0-based indexing
+        size: 10,
+        search: debouncedSearchQuery
+      });
+      
+      const responseData = response.data.data;
+      const content = responseData?.data ?? [];
+      const totalRecord = responseData?.totalRecord ?? 0;
+      const totalPages = responseData?.page ?? 0;
+
+      const transformedData = transformPatientsData(content);
+      setPatients(transformedData);
+      setTotalPages(totalPages);
+      setTotalRecords(totalRecord);
+
     } catch (error) {
       console.log(error);
+      dispatch(
+        showToast({
+          message: "Failed to fetch patients",
+          type: "error",
+        })
+      );
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [debouncedSearchQuery, dispatch]);
+  // Initial load
   useEffect(() => {
-  
-
-    fetchPatients();
+    fetchPatients(1);
   }, []);
 
-  const filteredData = useMemo(() => {
-    let filtered = patients;
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter((row) =>
-        Object.values(row).some((val) =>
-          String(val).toLowerCase().includes(query)
-        )
-      );
-    }
-    if (sortOrder) {
-      filtered = [...filtered].sort((a, b) => {
-        const aVal = Object.values(a)[0]?.toString().toLowerCase() || "";
-        const bVal = Object.values(b)[0]?.toString().toLowerCase() || "";
+  // Handle search changes
+  useEffect(() => {
+    setCurrentPage(1);
+    fetchPatients(1);
+  }, [debouncedSearchQuery]);
 
-        return sortOrder === "asc"
-          ? aVal.localeCompare(bVal)
-          : bVal.localeCompare(aVal);
-      });
-    }
-    return filtered;
-  }, [searchQuery, sortOrder, patients]);
+  // Handle page changes
+  const handlePageChange = useCallback((page) => {
+    setCurrentPage(page);
+    fetchPatients(page);
+  }, [fetchPatients]);
+
+  // Since filtering is now handled by the backend, we use patients directly
+  const filteredData = patients;
 
   return (
     <div>
@@ -188,6 +208,14 @@ const PatientPage = () => {
           onEdit={handleOpenForm}
           OnViewDetail={handleOpenViewDetail}
           onDelete={handleOpenDelete}
+          loading={loading}
+          // Pagination props
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalResults={totalRecords}
+          pageSize={10}
+          onPageChange={handlePageChange}
+          useBackendPagination={true}
         />
         {showForm && (
           <Drawers
