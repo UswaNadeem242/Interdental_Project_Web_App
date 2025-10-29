@@ -99,38 +99,42 @@ const PatientPage = () => {
     }));
   };
 
-  const fetchPatients = useCallback(async (page = 1) => {
-    setLoading(true);
-    try {
-      const response = await getDoctorPatients({
-        status: "ALL",
-        page: page - 1, // Backend uses 0-based indexing
-        size: 10,
-        search: debouncedSearchQuery
-      });
-      
-      const responseData = response.data.data;
-      const content = responseData?.data ?? [];
-      const totalRecord = responseData?.totalRecord ?? 0;
-      const totalPages = responseData?.page ?? 0;
+  const fetchPatients = useCallback(
+    async (page = 1) => {
+      setLoading(true);
+      try {
+        const response = await getDoctorPatients({
+          status: "ALL",
+          page: page - 1, // Backend uses 0-based indexing
+          size: 10,
+          search: debouncedSearchQuery,
+        });
 
-      const transformedData = transformPatientsData(content);
-      setPatients(transformedData);
-      setTotalPages(totalPages);
-      setTotalRecords(totalRecord);
+        const responseData = response.data.data;
+        console.log("Resp Data:", responseData);
+        const content = responseData?.data ?? [];
+        const totalRecord = responseData?.totalRecord ?? 0;
+        const totalPages = responseData?.page ?? 0;
 
-    } catch (error) {
-      console.log(error);
-      dispatch(
-        showToast({
-          message: "Failed to fetch patients",
-          type: "error",
-        })
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [debouncedSearchQuery, dispatch]);
+        const transformedData = transformPatientsData(content);
+        console.log("Trans Data", transformedData);
+        setPatients(transformedData);
+        setTotalPages(totalPages);
+        setTotalRecords(totalRecord);
+      } catch (error) {
+        console.log(error);
+        dispatch(
+          showToast({
+            message: "Failed to fetch patients",
+            type: "error",
+          })
+        );
+      } finally {
+        setLoading(false);
+      }
+    },
+    [debouncedSearchQuery, dispatch]
+  );
   // Initial load
   useEffect(() => {
     fetchPatients(1);
@@ -143,10 +147,13 @@ const PatientPage = () => {
   }, [debouncedSearchQuery]);
 
   // Handle page changes
-  const handlePageChange = useCallback((page) => {
-    setCurrentPage(page);
-    fetchPatients(page);
-  }, [fetchPatients]);
+  const handlePageChange = useCallback(
+    (page) => {
+      setCurrentPage(page);
+      fetchPatients(page);
+    },
+    [fetchPatients]
+  );
 
   // Since filtering is now handled by the backend, we use patients directly
   const filteredData = patients;
@@ -185,7 +192,6 @@ const PatientPage = () => {
                 title="Add New Patient"
                 Content={
                   <AddPatientForm
-
                     onClose={() => setIsOpen(false)}
                     fetchPatients={fetchPatients}
                   />
