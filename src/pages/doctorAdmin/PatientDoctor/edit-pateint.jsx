@@ -168,7 +168,7 @@ export default function EditPatientForm({ onClose, userData }) {
                   disabled={isSubmitting}
                   className="w-full py-4 rounded-full capitalize font-semibold bg-secondaryBrand text-white font-poppins text-sm disabled:opacity-50"
                 >
-                  {isSubmitting ? "Updating..." : "Update Patient"}
+                  {isSubmitting ? "Saving..." : "Save"}
                 </button>
               </div>
 

@@ -272,7 +272,7 @@ export default function AddPatientForm({
                   label="Password"
                   placeholder="Enter Password"
                   type={showPassword ? "text" : "password"}
-                  className="w-full rounded border borderPrimary py-2 px-3 pr-10 outline-none"
+                  className="w-full rounded border borderPrimary py-2 px-2 text-sm outline-none"
                 />
 
                 <span

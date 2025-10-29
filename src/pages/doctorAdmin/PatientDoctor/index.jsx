@@ -184,7 +184,7 @@ const PatientPage = () => {
           <Drawers
             isOpen={showForm}
             // initialData={selectedData
-            title="Update Patient"
+            title="Edit Patient Details"
             onClose={() => setShowForm(false)}
             Content={<EditPatientForm userData={selectedData} />}
           />

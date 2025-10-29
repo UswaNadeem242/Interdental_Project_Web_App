@@ -55,7 +55,7 @@ export default function TextInput({
         </label>
       )}
       <div
-        className={`flex items-center rounded-md border border-borderPrimary ${className2}`}
+        className={`flex items-center rounded-md border overflow-hidden border-borderPrimary ${className2}`}
       >
         <input
           id={id}
