@@ -164,9 +164,9 @@ const DoctorDashaboard = () => {
 
           // Handle patients response
           if (patientsResponse?.status === 200) {
-            const responseData = patientsResponse.data.data;
-            const content = responseData?.data ?? [];
-            const transformedPatients = transformPatientsData(content);
+            const transformedPatients = transformPatientsData(
+              patientsResponse.data.data?.data
+            );
 
             setDoctorPatients(transformedPatients || []);
           } else {

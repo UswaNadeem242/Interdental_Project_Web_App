@@ -19,7 +19,11 @@ export default function TableComponent({
   useBackendPagination = false,
 }) {
   const [frontendCurrentPage, setFrontendCurrentPage] = useState(1);
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 0327de3 (update)
   // Use backend pagination if enabled, otherwise use frontend pagination
   const displayData = useBackendPagination ? data : (() => {
     const startIndex = (frontendCurrentPage - 1) * pageSize;
@@ -28,9 +32,15 @@ export default function TableComponent({
   const displayCurrentPage = useBackendPagination ? (currentPage || 1) : frontendCurrentPage;
   const displayTotalPages = useBackendPagination ? (totalPages || 0) : Math.ceil(data.length / pageSize);
   const displayTotalResults = useBackendPagination ? (totalResults || 0) : data.length;
+<<<<<<< HEAD
  
   // Handle page change for both frontend and backend pagination
   const handlePageChange = useBackendPagination
+=======
+
+  // Handle page change for both frontend and backend pagination
+  const handlePageChange = useBackendPagination 
+>>>>>>> 0327de3 (update)
     ? (onPageChange || (() => {}))
     : setFrontendCurrentPage;
   return (
@@ -66,8 +76,13 @@ export default function TableComponent({
             </thead>{" "}
             <tbody>
               {displayData.map((row, idx) => (
+<<<<<<< HEAD
  
  
+=======
+
+
+>>>>>>> 0327de3 (update)
               <tr
                 key={idx}
                 className="border-b border-gray-200  transition-all font-poppins  "
