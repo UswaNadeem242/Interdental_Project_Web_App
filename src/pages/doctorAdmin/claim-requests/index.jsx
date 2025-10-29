@@ -1,21 +1,24 @@
-import TabsStepper from "../../../Common/TabsStepper";
 import TableComponent from "../../../Common/Table";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { headings } from "../../../Constant";
 import { SecondaryButton } from "../../../Common/Button";
 import { PlusIcon } from "../../../icon/PlusIcon";
 import { getClaims } from "../../../api/patient-dashaboard-api";
 import Drawers from "../../../Common/Drawers";
-import PatientClaimForm from "../../PatientAdmin/ClaimRequest/PatientClaimForm";
 import DocotrClaimForm from "./doctor-claim-form";
-import ViewDetail from "../PatientDoctor/view-detail";
+import { showToast } from "../../../store/toast-slice";
+import { useDispatch } from "react-redux";
 
 const DoctorClaimRequests = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [claims, setClaims] = useState([]);
-
-  const [showDetail, setShowDetail] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [currentStatus, setCurrentStatus] = useState("ALL");
+  const dispatch = useDispatch();
 
   const transformPatientsData = (apiData) => {
     if (!apiData || !Array.isArray(apiData)) return [];
@@ -36,96 +39,71 @@ const DoctorClaimRequests = () => {
       };
     });
   };
-  useEffect(() => {
-    const fetchClaims = async () => {
+  const fetchClaims = useCallback(
+    async (page = 1, status = "ALL") => {
+      setLoading(true);
       try {
-        const response = await getClaims();
+        const response = await getClaims({
+          status,
+          page: page - 1, // Backend uses 0-based indexing
+          size: 10,
+          search: "",
+        });
+
         if (response.status === 200) {
-          setClaims(transformPatientsData(response.data.data));
+          const responseData = response.data.data;
+          const content = responseData?.data ?? [];
+          const totalRecord = responseData?.totalRecord ?? 0;
+          const totalPages = responseData?.page ?? 0;
+
+          const transformedData = transformPatientsData(content);
+          setClaims(transformedData);
+          setTotalPages(totalPages);
+          setTotalRecords(totalRecord);
         }
       } catch (error) {
         console.log(error);
+        dispatch(
+          showToast({
+            message: "Failed to fetch claims",
+            type: "error",
+          })
+        );
+      } finally {
+        setLoading(false);
       }
-    };
-    fetchClaims();
+    },
+    [dispatch]
+  );
+
+  // Initial load
+  useEffect(() => {
+    fetchClaims(1, currentStatus);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //   console.log(
-  //     "Claimss:",
-  //     claims.map((item, key) => item.name)
-  //   );
+  // Handle page changes
+  const handlePageChange = useCallback(
+    (page) => {
+      setCurrentPage(page);
+      fetchClaims(page, currentStatus);
+    },
+    [fetchClaims, currentStatus]
+  );
 
-  const getFilteredDataByStatus = (status) => {
-    if (status === "all") {
-      return claims;
-    }
-    const filtered = claims.filter((order) => order.status === status);
-    return filtered;
-  };
-  //   console.log(getFilteredDataByStatus("all"));
-  //   console.log("selecteddd:", selectedRow);
+  // Handle status changes
+  const handleStatusChange = useCallback(
+    (status) => {
+      setCurrentStatus(status);
+      setCurrentPage(1);
+      fetchClaims(1, status);
+    },
+    [fetchClaims]
+  );
 
-  const steps = [
-    {
-      name: "All",
-      content: (
-        <TableComponent
-          headings={headings}
-          // data={claims}
-          data={getFilteredDataByStatus("all")}
-          onActionClick={(row) => {
-            setSelectedRow(row.originalData); // ✅ full data sent to Drawer
-            setIsOpen(true);
-          }}
-          onActionClickk={() => {
-            setShowDetail(true);
-          }}
-        />
-      ),
-    },
-    {
-      name: "Accepted",
-      content: (
-        <TableComponent
-          headings={headings}
-          // data={claims}
-          data={getFilteredDataByStatus("accepted")}
-          onActionClick={(row) => {
-            setSelectedRow(row.originalData); // ✅ full data sent to Drawer
-            setIsOpen(true);
-          }}
-        />
-      ),
-    },
-    {
-      name: "Pending",
-      content: (
-        <TableComponent
-          headings={headings}
-          // data={claims}
-          data={getFilteredDataByStatus("pending")}
-          onActionClick={(row) => {
-            setSelectedRow(row.originalData); // ✅ full data sent to Drawer
-            setIsOpen(true);
-          }}
-        />
-      ),
-    },
-    {
-      name: "Rejected",
-      content: (
-        <TableComponent
-          headings={headings}
-          // data={claims}
-          data={getFilteredDataByStatus("rejected")}
-          onActionClick={(row) => {
-            setSelectedRow(row.originalData); // ✅ full data sent to Drawer
-            setIsOpen(true);
-          }}
-        />
-      ),
-    },
-  ];
+  // Since filtering is now handled by the backend, we use claims directly
+  const displayData = claims;
+
   const slugify = (text) =>
     text
       .toString()
@@ -133,19 +111,57 @@ const DoctorClaimRequests = () => {
       .trim()
       .replace(/\s+/g, "-") // replace spaces with -
       .replace(/[^\w-]+/g, "");
+
+  const statusOptions = [
+    { value: "ALL", label: "All" },
+    { value: "PENDING", label: "Pending" },
+    { value: "ACCEPTED", label: "Accepted" },
+    { value: "REJECTED", label: "Rejected" },
+  ];
   return (
     <div>
       <div className="bg-white rounded-2xl p-6">
-        <TabsStepper
-          steps={steps}
-          newClaimBtn={
-            <SecondaryButton
-              title="New Claim Request"
-              icon={<PlusIcon />}
-              href={`/doctor-admin/claim-request/${slugify("claim-request")}`}
-              className="w-full md:w-auto rounded-md px-6 py-3 mb-5 font-poppins bg-[#F8F8F8] text-primaryText"
-            />
-          }
+        <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
+          <div className="flex items-center gap-4">
+            {/* Status Filter Buttons */}
+            <div className="flex gap-2">
+              {statusOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => handleStatusChange(option.value)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium font-poppins transition-colors ${
+                    currentStatus === option.value
+                      ? "bg-[#F8F8F8] text-primaryText"
+                      : "bg-white text-primaryText border border-borderPrimary hover:bg-[#F8F8F8]"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <SecondaryButton
+            title="New Claim Request"
+            icon={<PlusIcon />}
+            href={`/doctor-admin/claim-request/${slugify("claim-request")}`}
+            className="w-full md:w-auto rounded-md px-6 py-3 font-poppins bg-[#F8F8F8] text-primaryText"
+          />
+        </div>
+
+        <TableComponent
+          headings={headings}
+          data={displayData}
+          loading={loading}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalResults={totalRecords}
+          pageSize={10}
+          onPageChange={handlePageChange}
+          useBackendPagination={true}
+          onActionClick={(row) => {
+            setSelectedRow(row.originalData);
+            setIsOpen(true);
+          }}
         />
       </div>
 
@@ -156,24 +172,6 @@ const DoctorClaimRequests = () => {
         status={selectedRow?.status}
         Content={<DocotrClaimForm row={selectedRow} />}
       />
-
-      {/* <Drawers
-        isOpen={showProfile}
-        // initialData={selectedData
-        title="Patient Details"
-        onClose={() => setShowProfile(false)}
-        status={selectedRow?.status}
-        Content={<ViewDetail />}
-      /> */}
-      {showDetail && (
-        <Drawers
-          isOpen={showDetail}
-          // initialData={selectedData
-          title="Patient Details"
-          onClose={() => setShowDetail(false)}
-          Content={<ViewDetail userData={claims} />}
-        />
-      )}
     </div>
   );
 };

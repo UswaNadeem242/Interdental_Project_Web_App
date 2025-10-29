@@ -14,9 +14,17 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await getDoctorPatients();        
+        const response = await getDoctorPatients({
+          status: "ALL",
+          page: 0,
+          size: 100,
+          search: ""
+        });        
         if (response.status === 200) {
-          const patients = response.data.data.map((order) => {
+          const responseData = response.data.data;
+          const content = responseData?.data ?? [];
+          
+          const patients = content.map((order) => {
             const firstName = order?.firstName?.trim() || "";
             const lastName = order?.lastName?.trim() || "";
             const fullName = [firstName, lastName].filter(Boolean).join(" ");

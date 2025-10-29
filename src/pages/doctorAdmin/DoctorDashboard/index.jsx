@@ -127,7 +127,12 @@ const DoctorDashaboard = () => {
             getDoctorStats(),
             getDoctorOrders(doctor_id),
             getGrapgStats("month"),
-            getDoctorPatients(),
+            getDoctorPatients({
+              status: "ALL",
+              page: 0,
+              size: 100,
+              search: ""
+            }),
           ]);
 
         // Only update state if component is still mounted
@@ -144,6 +149,7 @@ const DoctorDashaboard = () => {
             const transformedOrders = transformOrdersData(
               ordersResponse.data.data
             );
+            console.log(transformedOrders,'transformedOrders');
             setDoctorOrders(transformedOrders);
           } else {
             console.error("Failed to fetch doctor orders:", ordersResponse);
@@ -158,24 +164,21 @@ const DoctorDashaboard = () => {
 
           // Handle patients response
           if (patientsResponse?.status === 200) {
-            const transformedPatients = transformPatientsData(
-              patientsResponse.data.data
-            );
+            const responseData = patientsResponse.data.data;
+            const content = responseData?.data ?? [];
+            const transformedPatients = transformPatientsData(content);
 
-            setDoctorPatients(transformedPatients);
+            setDoctorPatients(transformedPatients || []);
           } else {
             console.error("Failed to fetch doctor patients:", patientsResponse);
+            setDoctorPatients([]);
           }
         }
       } catch (err) {
-        if (isMounted) {
-          console.error("Error fetching dashboard data:", err);
-          setError("Failed to load dashboard data. Please try again.");
-        }
+        console.error("Error fetching dashboard data:", err);
+        setDoctorPatients([]);
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
@@ -201,6 +204,9 @@ const DoctorDashaboard = () => {
 
     fetchGraphData();
   }, [selectedTimePeriod]);
+
+
+  console.log(doctorOrders,'doc orders');
 
   // Get dynamic counts from API data
   const statsCounts = getStatsCounts(doctorStats.data);
@@ -326,7 +332,7 @@ const DoctorDashaboard = () => {
             doctorOrders && (
               <TableComponent
                 headings={headingsOrder}
-                data={doctorOrders.length > 0 ? doctorOrders : dataOrder}
+                data={doctorOrders.length > 0 ? doctorOrders :[]}
                 actionHrefKey="detailUrl"
               />
             )

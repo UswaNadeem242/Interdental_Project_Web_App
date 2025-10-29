@@ -9,23 +9,50 @@ export default function TableComponent({
   actions,
   actionHrefKey,
   onActionClick,
-  onActionClickk,
+  loading = false,
+  // Backend pagination props
+  currentPage = 1,
+  totalPages = 0,
+  totalResults = 0,
+  pageSize = 10,
+  onPageChange,
+  useBackendPagination = false,
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const [frontendCurrentPage, setFrontendCurrentPage] = useState(1);
 
-  const totalResults = data.length;
-  const totalPages = Math.ceil(totalResults / pageSize);
+  // Use backend pagination if enabled, otherwise use frontend pagination
+  const displayData = useBackendPagination
+    ? data
+    : (() => {
+        const startIndex = (frontendCurrentPage - 1) * pageSize;
+        return data.slice(startIndex, startIndex + pageSize);
+      })();
+  const displayCurrentPage = useBackendPagination
+    ? currentPage || 1
+    : frontendCurrentPage;
+  const displayTotalPages = useBackendPagination
+    ? totalPages || 0
+    : Math.ceil(data.length / pageSize);
+  const displayTotalResults = useBackendPagination
+    ? totalResults || 0
+    : data.length;
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const currentData = data.slice(startIndex, startIndex + pageSize);
+  // Handle page change for both frontend and backend pagination
+  const handlePageChange = useBackendPagination
+    ? onPageChange || (() => {})
+    : setFrontendCurrentPage;
   return (
     <div
       className={`grid col-span-1 md:col-span-1 ${
-        data.length === 0 ? "lg:col-span-1" : "lg:col-span-12"
+        displayData.length === 0 ? "lg:col-span-1" : "lg:col-span-12"
       }`}
     >
-      {data.length === 0 ? (
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-secondaryBrand"></div>
+          <div className="text-gray-500 text-sm mt-2">Loading claims...</div>
+        </div>
+      ) : displayData.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <div className="text-gray-500 text-lg font-medium mb-2">
             No data available
@@ -50,7 +77,7 @@ export default function TableComponent({
               </tr>
             </thead>{" "}
             <tbody>
-              {currentData.map((row, idx) => (
+              {displayData.map((row, idx) => (
                 <tr
                   key={idx}
                   className="border-b border-gray-200  transition-all font-poppins  "
@@ -73,9 +100,9 @@ export default function TableComponent({
                           <div className="flex flex-col">
                             <span>{row.name}</span>
 
-                            {onActionClickk ? (
+                            {onActionClick ? (
                               <button
-                                onClick={() => onActionClickk()}
+                                // onClick={() => onActionClick(row)}
                                 className="text-secondaryBrand flex items-center gap-1 cursor-pointer text-xs font-normal font-poppins pt-2"
                               >
                                 View profile
@@ -144,13 +171,13 @@ export default function TableComponent({
           </table>
         </div>
       )}
-      {data.length > 0 && (
+      {displayData.length > 0 && !loading && (
         <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalResults={totalResults}
+          currentPage={displayCurrentPage}
+          totalPages={displayTotalPages}
+          totalResults={displayTotalResults}
           pageSize={pageSize}
-          onPageChange={setCurrentPage}
+          onPageChange={handlePageChange}
         />
       )}
     </div>

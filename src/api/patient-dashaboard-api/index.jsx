@@ -39,9 +39,11 @@ export const getWarrantiesPatients = async (id) => {
 
 
 // CLAIMS  
-export const getClaims = async () => {
+export const getClaims = async (params = {}) => {
     try {
-        const response = await api.get(ENDPOINTS.PATIENTS.CLAIMS_BY_PATIENT_BYUSER);
+        const { status = "ALL", page = 0, size = 10, search = "" } = params;
+        console.log(params);
+        const response = await api.get(`${ENDPOINTS.PATIENTS.CLAIMS_BY_PATIENT_BYUSER}?status=${status}&page=${page}&size=${size}&search=${search}`);
         return handleApiSuccess(response);
     } catch (error) {
         return handleApiError(error);
