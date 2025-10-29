@@ -40,7 +40,7 @@ export default function SecondTable({
           </div>
         </div>
       ) : (
-        <div className="overflow-x-auto h-[50vh] lg:h-[60vh] scrollbar-hidden">
+        <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-300px)] scrollbar-hidden">
           <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
             <thead className="sticky top-0 bg-[#F8F8F8] z-10 ">
               <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
@@ -248,9 +248,10 @@ export default function SecondTable({
                 {actionButton && (
                   <td className="px-4 py-2 text-right relative">
                     <button
-                      onClick={() =>
-                        setOpen((prev) => (prev === idx ? null : idx))
-                      }
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpen((prev) => (prev === idx ? null : idx));
+                      }}
                       className="p-2"
                     >
                       <OptionsDots />
@@ -260,7 +261,7 @@ export default function SecondTable({
                       <DropdownComponent
                         row={row}
                         onClose={() => setOpen(null)}
-                        onEdit={() => onEdit(row)} // ✅ pass this row’s data
+                        onEdit={() => onEdit(row)} // ✅ pass this row's data
                         onDelete={() => onDelete(row)}
                         OnViewDetail={() => OnViewDetail(row)}
                       />

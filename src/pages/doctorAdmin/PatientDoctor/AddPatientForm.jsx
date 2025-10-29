@@ -8,9 +8,10 @@ import { addPatient } from "../../../api/doctorDasboard";
 import Toast from "../../../components/Toast";
 
 export default function AddPatientForm({
+  fetchPatients,
   onClose,
   imgUpload,
-  skipImageValidation = false,
+  skipImageValidation = false
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -125,14 +126,14 @@ export default function AddPatientForm({
         console.log("Add Patient Form - Success! Patient added successfully");
         showToast("Patient added successfully!", "success");
 
-        // Close drawer and refresh page after success
+       
         setTimeout(() => {
           if (onClose) {
             onClose(); // Close the drawer
           } else {
             console.log("onClose function not available");
           }
-          window.location.reload();
+          fetchPatients();
         }, 2000);
       } else {
         console.log("Add Patient Form - Failed to add patient:", response);
@@ -173,135 +174,135 @@ export default function AddPatientForm({
 
 
 
-            {/* First Name */}
-            <div className="col-span-12 grid grid-cols-12 gap-2">
-              <div className="col-span-12 sm:col-span-6">
+              {/* First Name */}
+              <div className="col-span-12 grid grid-cols-12 gap-2">
+                <div className="col-span-12 sm:col-span-6">
+                  <Field
+                    as={TextInput}
+                    id="username"
+                    name="username"
+                    label="First Name"
+                    placeholder="First Name"
+                    type="text"
+                  />
+                  <ErrorMessage
+                    name="username"
+                    component="div"
+                    className="text-red-700 text-sm"
+                  />
+                </div>
+                <div className="col-span-12 sm:col-span-6">
+                  <Field
+                    as={TextInput}
+                    id="lastName"
+                    name="lastName"
+                    label="Last Name"
+                    placeholder="Last Name"
+                    type="text"
+                  />
+                  <ErrorMessage
+                    name="lastName"
+                    component="div"
+                    className="text-red-700 text-sm"
+                  />
+                </div>
+              </div>
+              {/* Email */}
+              <div className="col-span-12">
                 <Field
                   as={TextInput}
-                  id="username"
-                  name="username"
-                  label="First Name"
-                  placeholder="First Name"
-                  type="text"
+                  id="email"
+                  name="email"
+                  label="Email Address"
+                  placeholder="Enter Email Address"
+                  type="email"
                 />
                 <ErrorMessage
-                  name="username"
+                  name="email"
                   component="div"
                   className="text-red-700 text-sm"
                 />
               </div>
-              <div className="col-span-12 sm:col-span-6">
+
+              {/* Phone */}
+              <div className="col-span-12">
                 <Field
                   as={TextInput}
-                  id="lastName"
-                  name="lastName"
-                  label="Last Name"
-                  placeholder="Last Name"
+                  id="phone"
+                  name="phone"
+                  label="Phone Number"
+                  placeholder="Enter Phone Number"
                   type="text"
                 />
                 <ErrorMessage
-                  name="lastName"
+                  name="phone"
                   component="div"
                   className="text-red-700 text-sm"
                 />
               </div>
-            </div>
-            {/* Email */}
-            <div className="col-span-12">
-              <Field
-                as={TextInput}
-                id="email"
-                name="email"
-                label="Email Address"
-                placeholder="Enter Email Address"
-                type="email"
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
 
-            {/* Phone */}
-            <div className="col-span-12">
-              <Field
-                as={TextInput}
-                id="phone"
-                name="phone"
-                label="Phone Number"
-                placeholder="Enter Phone Number"
-                type="text"
-              />
-              <ErrorMessage
-                name="phone"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
-
-            <div className="col-span-12">
-              <Field
-                as={TextInput}
-                id="address"
-                name="address"
-                label="Address"
-                placeholder="Enter Address"
-                type="text"
-              />
-              <ErrorMessage
-                name="address"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
-
-            {/* Password */}
-            <div className="col-span-12">
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <div className="relative">
+              <div className="col-span-12">
                 <Field
-                  as="input"
-                  id="password"
-                  name="password"
-                  label="Password"
-                  placeholder="Enter Password"
-                  type={showPassword ? "text" : "password"}
-                  className="w-full rounded border borderPrimary py-2 px-2 text-sm outline-none"
+                  as={TextInput}
+                  id="address"
+                  name="address"
+                  label="Address"
+                  placeholder="Enter Address"
+                  type="text"
                 />
+                <ErrorMessage
+                  name="address"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
 
-                <span
-                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
+              {/* Password */}
+              <div className="col-span-12">
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-700"
                 >
-                  {showPassword ? <EyeOpenIcon /> : <EyeCloseIcon />}
-                </span>
-              </div>
+                  Password
+                </label>
+                <div className="relative">
+                  <Field
+                    as="input"
+                    id="password"
+                    name="password"
+                    label="Password"
+                    placeholder="Enter Password"
+                    type={showPassword ? "text" : "password"}
+                    className="w-full rounded border borderPrimary py-2 px-2 text-sm outline-none"
+                  />
 
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-4 rounded-full capitalize font-semibold bg-secondaryBrand text-white font-poppins text-sm disabled:opacity-50"
-              >
-                {isSubmitting ? "Adding Patient..." : "Add Patient"}
-              </button>
-            </div>
+                  <span
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOpenIcon /> : <EyeCloseIcon />}
+                  </span>
+                </div>
+
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
+              <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-4 rounded-full capitalize font-semibold bg-secondaryBrand text-white font-poppins text-sm disabled:opacity-50"
+                >
+                  {isSubmitting ? "Adding Patient..." : "Add Patient"}
+                </button>
+              </div>
             </Form>
-            
+
             {/* Fixed Bottom Submit Button */}
-          
+
           </div>
         )}
       </Formik>

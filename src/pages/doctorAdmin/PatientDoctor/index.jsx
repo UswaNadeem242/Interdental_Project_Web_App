@@ -35,6 +35,7 @@ const PatientPage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
+  const [deleteLoading,setDeleteLoading] = useState(false);
   const dispatch = useDispatch();
   const handleOpenForm = (rowData) => {
     setSelectedData(rowData);
@@ -56,11 +57,12 @@ const PatientPage = () => {
     if (!selectedItem) return;
 
     try {
+      setDeleteLoading(true);
       const response = await deletePatientUser(selectedItem.id);
 
       if (response.success) {
         setShowDeleteModal(false);
-        window.location.reload();
+        fetchPatients();
       } else {
         dispatch(
           showToast({
@@ -71,6 +73,8 @@ const PatientPage = () => {
       }
     } catch (error) {
       console.error("Delete error:", error);
+    } finally {
+      setDeleteLoading(false);
     }
   };
   const transformPatientsData = (apiData) => {
@@ -86,18 +90,20 @@ const PatientPage = () => {
       profileURL: order?.profileURL,
     }));
   };
-  useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const response = await getDoctorPatients();
+  
+  const fetchPatients = async () => {
+    try {
+      const response = await getDoctorPatients();
 
-        if (response.status === 200) {
-          setPatients(transformPatientsData(response.data.data));
-        }
-      } catch (error) {
-        console.log(error);
+      if (response.status === 200) {
+        setPatients(transformPatientsData(response.data.data));
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+  
 
     fetchPatients();
   }, []);
@@ -159,6 +165,9 @@ const PatientPage = () => {
                 title="Add New Patient"
                 Content={
                   <AddPatientForm
+
+                    onClose={() => setIsOpen(false)}
+                    fetchPatients={fetchPatients}
                   />
                 }
               />
@@ -203,9 +212,9 @@ const PatientPage = () => {
 
         {showDeleteModal && (
           <DeleteModel
+            isLoading={deleteLoading}
             title="Are you sure ? "
-            desc="This action cannot be undone. Once deleted, all related data will be permanently removed from the system.
-                Please confirm if you still want to proceed. "
+            desc="You can not undo the action once you delete the patient."
             isOpen={showDeleteModal}
             onClose={() => setShowDeleteModal(false)}
             onConfirm={handleConfirmDelete}

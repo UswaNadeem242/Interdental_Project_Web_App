@@ -120,83 +120,96 @@ const Header = () => {
 
           {/* Desktop actions */}
           <div className="hidden lg:flex items-center gap-4">
-            {/* Cart Icon */}
-            <div className="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <Icons.ShoppingCartIcon
-                className="cursor-pointer w-6 h-6"
-                onClick={() => {
-                  if (user && user?.email) {
-                    handleCart();
-                  } else {
-                    dispatch(
-                      showToast({
-                        message: "Access denied! Please log in first",
-                        type: "error",
-                      }),
-                    );
-                  }
-                }}
-              />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
-                  {cartCount}
-                </span>
-              )}
-            </div>
-
-            {/* Wishlist Icon */}
-            <div
-              onClick={() => {
-                if (user && user?.email) {
-                  handleWishlist();
-                } else {
-                  dispatch(
-                    showToast({
-                      message: `Access denied! Please log in first`,
-                      type: "error",
-                    }),
-                  );
-                }
-              }}
-              className="relative p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
-            >
-              <Icons.WishlistHeart
-                className="w-6 h-6"
-                stroke={wishlistCount ? "#FF0000" : "#292D32"}
-                fill={wishlistCount ? "#FF0000" : "none"}
-              />
-              {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-[#FF0000] rounded-full flex items-center justify-center shadow-lg pointer-events-none">
-                  {wishlistCount}
-                </span>
-              )}
-            </div>
-
-            {/* Notifications Icon */}
-            <div className="relative">
+            {/* Show Dashboard button for logged-in doctors */}
+            {user && user?.email && user?.roles[0] === "DOCTOR" ? (
               <button
-                onClick={handleNotifications}
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
-                data-bell-icon="true"
+                onClick={() => navigate("/doctor-admin/dashboard")}
+                className="px-6 py-2.5 rounded-full bg-secondaryBrand text-white text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)] hover:bg-opacity-90 transition-colors"
               >
-                <BellIconSVG className="w-6 h-6 cursor-pointer" />
-                {unreadNotificationsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
-                    {unreadNotificationsCount}
-                  </span>
-                )}
+                Dashboard
               </button>
-
-              {notificationsDropdown && (
-                <div className="absolute right-0 top-12 z-[100]">
-                  <NotificationsDropdown
-                    notificationsDropdown={notificationsDropdown}
-                    setNotificationsDropdown={setNotificationsDropdown}
+            ) : (
+              <>
+                {/* Cart Icon */}
+                <div className="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
+                  <Icons.ShoppingCartIcon
+                    className="cursor-pointer w-6 h-6"
+                    onClick={() => {
+                      if (user && user?.email) {
+                        handleCart();
+                      } else {
+                        dispatch(
+                          showToast({
+                            message: "Access denied! Please log in first",
+                            type: "error",
+                          }),
+                        );
+                      }
+                    }}
                   />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
+                      {cartCount}
+                    </span>
+                  )}
                 </div>
-              )}
-            </div>
-            {user && user?.email ? (
+
+                {/* Wishlist Icon */}
+                <div
+                  onClick={() => {
+                    if (user && user?.email) {
+                      handleWishlist();
+                    } else {
+                      dispatch(
+                        showToast({
+                          message: `Access denied! Please log in first`,
+                          type: "error",
+                        }),
+                      );
+                    }
+                  }}
+                  className="relative p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
+                >
+                  <Icons.WishlistHeart
+                    className="w-6 h-6"
+                    stroke={wishlistCount ? "#FF0000" : "#292D32"}
+                    fill={wishlistCount ? "#FF0000" : "none"}
+                  />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-[#FF0000] rounded-full flex items-center justify-center shadow-lg pointer-events-none">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </div>
+
+                {/* Notifications Icon */}
+                <div className="relative">
+                  <button
+                    onClick={handleNotifications}
+                    className="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
+                    data-bell-icon="true"
+                  >
+                    <BellIconSVG className="w-6 h-6 cursor-pointer" />
+                    {unreadNotificationsCount > 0 && (
+                      <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
+                        {unreadNotificationsCount}
+                      </span>
+                    )}
+                  </button>
+
+                  {notificationsDropdown && (
+                    <div className="absolute right-0 top-12 z-[100]">
+                      <NotificationsDropdown
+                        notificationsDropdown={notificationsDropdown}
+                        setNotificationsDropdown={setNotificationsDropdown}
+                      />
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+            {/* Show profile dropdown only for non-doctors */}
+            {user && user?.email && user?.roles[0] !== "DOCTOR" ? (
               <div className="flex flex-col relative">
                 <div
                   data-profile-trigger="true"
@@ -226,25 +239,24 @@ const Header = () => {
                   </div>
                 )}
               </div>
-            ) : (
+            ) : null}
+            {/* Show login/signup buttons only for non-authenticated users */}
+            {!user || !user?.email ? (
               <>
-                {" "}
                 <button
                   onClick={() => navigate("/login")}
-                  // className="px-4 py-2 rounded-full bg-gray-100 text-secondaryText text-sm whitespace-nowrap font-semibold"
                   className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
                 >
                   Log In
                 </button>
                 <button
                   onClick={() => navigate("/signup")}
-                  // className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
                   className="x-4 py-2 rounded-full   text-black text-sm whitespace-nowrap font-semibold"
                 >
                   Sign up
                 </button>
               </>
-            )}
+            ) : null}
           </div>
 
           {/* Spacer to keep layout balanced on desktop when center nav grows */}

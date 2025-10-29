@@ -12,7 +12,7 @@ import NotificationsDropdown from "../../dropdowns/NotificationsDropdown";
 const DoctorHeader = ({ title, subTitle, role }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useAuth();
+  const { logout, unreadNotificationsCount, fetchUnreadNotificationsCount } = useAuth();
   const dispatch = useDispatch();
   const handleLogout = () => {
     logout();
@@ -57,6 +57,13 @@ const DoctorHeader = ({ title, subTitle, role }) => {
       fetchDoctorProfile();
     }
   }, []);
+
+  // Fetch notifications count when component mounts
+  useEffect(() => {
+    if (user) {
+      fetchUnreadNotificationsCount();
+    }
+  }, [user, fetchUnreadNotificationsCount]);
   const handleNotifications = () => {
     if (user) {
       setNotificationsDropdown(!notificationsDropdown);
@@ -118,9 +125,20 @@ const DoctorHeader = ({ title, subTitle, role }) => {
           </NavLink>
 
 
-          <button className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center" onClick={handleNotifications}>
-            <BellIconSVG className="w-5 h-5" />
-          </button>
+          <div className="relative">
+            <button 
+              className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center" 
+              onClick={handleNotifications}
+              data-bell-icon="true"
+            >
+              <BellIconSVG className="w-5 h-5" />
+              {unreadNotificationsCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
+                  {unreadNotificationsCount}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
         <div className="hidden md:flex">
           <button
@@ -134,6 +152,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
       {notificationsDropdown && (
         <div className="absolute right-16 top-20 mt-1 z-10">
           <NotificationsDropdown
+            notificationsDropdown={notificationsDropdown}
             setNotificationsDropdown={setNotificationsDropdown}
           />
         </div>
