@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import TextInput from "../../../Common/Input";
 import CloudIcon from "../../../icon/CloudIcon";
 import { ErrorMessage, Field, Formik, Form } from "formik";
-import { PatientvalidationSchema } from "../../../Common/FormsValidation";
+import { AddPatientValidationSchema } from "../../../Common/FormsValidation";
 import { EyeOpenIcon, EyeCloseIcon } from "../../../icon/EyeIcon";
 import { addPatient } from "../../../api/doctorDasboard";
 import Toast from "../../../components/Toast";
-import { TrashIcon } from "@heroicons/react/24/solid";
 
 export default function AddPatientForm({
+  fetchPatients,
   onClose,
   imgUpload,
-  skipImageValidation = false,
+  skipImageValidation = false
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -77,8 +77,9 @@ export default function AddPatientForm({
 
   // Form submit handler
   const handleSubmit = async (values, { setSubmitting }) => {
-    // Validation check (following AddBrandModal pattern)
-    console.log('hello');
+    console.log("Add Patient Form - Starting submission with values:", values);
+    console.log("Add Patient Form - Uploaded image:", uploadedImage);
+    console.log("Add Patient Form - Validation passed, proceeding with API call");
 
     if (
       !values.username ||
@@ -88,6 +89,7 @@ export default function AddPatientForm({
       !values.phone ||
       !values.password
     ) {
+      console.log("Add Patient Form - Validation failed: Missing required fields");
       showToast("Please fill all the fields", "error");
       setSubmitting(false);
       return;
@@ -116,21 +118,25 @@ export default function AddPatientForm({
       );
 
       // API call using the new addPatient function
+      console.log("Add Patient Form - Sending formData to API:", formData);
       const response = await addPatient(formData);
+      console.log("Add Patient Form - API Response:", response);
       // Check for success using the API function response format
       if (response.success) {
+        console.log("Add Patient Form - Success! Patient added successfully");
         showToast("Patient added successfully!", "success");
 
-        // Close drawer and refresh page after success
+       
         setTimeout(() => {
           if (onClose) {
             onClose(); // Close the drawer
           } else {
             console.log("onClose function not available");
           }
-          window.location.reload();
+          fetchPatients();
         }, 2000);
       } else {
+        console.log("Add Patient Form - Failed to add patient:", response);
         showToast(
           response?.data?.responseDesc ||
           "Failed to add patient. Please try again.",
@@ -138,9 +144,10 @@ export default function AddPatientForm({
         );
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error("Add Patient Form - API Error:", error);
       showToast("An error occurred. Please try again.", "error");
     } finally {
+      console.log("Add Patient Form - Submission completed");
       setSubmitting(false);
     }
   };
@@ -150,7 +157,7 @@ export default function AddPatientForm({
       <Formik
         initialValues={initialValues}
         // validationSchema={PatientvalidationSchema}
-        validationSchema={PatientvalidationSchema(skipImageValidation)}
+        validationSchema={AddPatientValidationSchema(skipImageValidation)}
         onSubmit={handleSubmit}
       >
         {({
@@ -161,200 +168,142 @@ export default function AddPatientForm({
           isValid,
           isSubmitting,
         }) => (
-          <Form className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white">
+          <div className="relative h-full bg-white">
+            <Form className="grid md:grid-cols-12 grid-cols-6 gap-4 py-4 pb-20">
 
 
-            {/* <div className={`col-span-6 ${imgUpload}`}>
-              {!imagePreview ? (
-                <label className="inline-flex items-center px-6 py-4 bg-textField text-primaryText text-sm font-medium rounded-lg cursor-pointer transition w-full">
-                  <div className="flex justify-between gap-3 items-center w-full">
-                    <span>
-                      <CloudIcon />
-                    </span>
-                    <p>Upload Photo</p>
-                  </div>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      setFieldValue("photo", e.currentTarget.files[0]);
-                      handleImageUpload(e);
-                    }}
+
+
+              {/* First Name */}
+              <div className="col-span-12 grid grid-cols-12 gap-2">
+                <div className="col-span-12 sm:col-span-6">
+                  <Field
+                    as={TextInput}
+                    id="username"
+                    name="username"
+                    label="First Name"
+                    placeholder="First Name"
+                    type="text"
                   />
-                </label>
-              ) : (
-                <div className="flex flex-col items-center justify-center space-y-3">
-                 
-                  <div className="relative">
-                    <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg">
-                      <img
-                        src={imagePreview}
-                        alt="Uploaded preview"
-                        className="w-full h-full object-cover"
-                      />
-                    </div> 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        handleImageDelete();
-                      }}
-                      className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full shadow-md flex items-center justify-center  "
-                    >
-                      <TrashIcon className="w-4 h-4 text-white" />
-                    </button>
-                  </div>
-
-                  
-                  <label className="px-4 py-2 bg-secondaryBrand text-white text-sm font-medium rounded cursor-pointer transition whitespace-nowrap">
-                    Upload new profile picture
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        setFieldValue("photo", e.currentTarget.files[0]);
-                        handleImageUpload(e);
-                      }}
-                    />
-                  </label>
+                  <ErrorMessage
+                    name="username"
+                    component="div"
+                    className="text-red-700 text-sm"
+                  />
                 </div>
-              )}
-              <ErrorMessage
-                name="photo"
-                component="div"
-                className="text-red-700 text-sm mt-1"
-              />
-            </div> */}
-
-            {/* First Name */}
-            <div className="col-span-12 grid grid-cols-12 gap-2">
-              <div className="col-span-12 sm:col-span-6">
+                <div className="col-span-12 sm:col-span-6">
+                  <Field
+                    as={TextInput}
+                    id="lastName"
+                    name="lastName"
+                    label="Last Name"
+                    placeholder="Last Name"
+                    type="text"
+                  />
+                  <ErrorMessage
+                    name="lastName"
+                    component="div"
+                    className="text-red-700 text-sm"
+                  />
+                </div>
+              </div>
+              {/* Email */}
+              <div className="col-span-12">
                 <Field
                   as={TextInput}
-                  id="username"
-                  name="username"
-                  label="First Name"
-                  placeholder="First Name"
-                  type="text"
+                  id="email"
+                  name="email"
+                  label="Email Address"
+                  placeholder="Enter Email Address"
+                  type="email"
                 />
                 <ErrorMessage
-                  name="username"
+                  name="email"
                   component="div"
                   className="text-red-700 text-sm"
                 />
               </div>
-              <div className="col-span-12 sm:col-span-6">
+
+              {/* Phone */}
+              <div className="col-span-12">
                 <Field
                   as={TextInput}
-                  id="lastName"
-                  name="lastName"
-                  label="Last Name"
-                  placeholder="Last Name"
+                  id="phone"
+                  name="phone"
+                  label="Phone Number"
+                  placeholder="Enter Phone Number"
                   type="text"
                 />
                 <ErrorMessage
-                  name="lastName"
+                  name="phone"
                   component="div"
                   className="text-red-700 text-sm"
                 />
               </div>
-            </div>
-            {/* Email */}
-            <div className="col-span-12">
-              <Field
-                as={TextInput}
-                id="email"
-                name="email"
-                label="Email"
-                placeholder="Enter Email Address"
-                type="email"
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
 
-            {/* Phone */}
-            <div className="col-span-12">
-              <Field
-                as={TextInput}
-                id="phone"
-                name="phone"
-                label="Phone Number"
-                placeholder="Enter Phone Number"
-                type="text"
-              />
-              <ErrorMessage
-                name="phone"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
-
-            <div className="col-span-12">
-              <Field
-                as={TextInput}
-                id="address"
-                name="address"
-                label="Location"
-                placeholder="Enter Patient Location"
-                type="text"
-              />
-              <ErrorMessage
-                name="address"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
-
-            {/* Password */}
-            <div className="col-span-12">
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <div className="relative">
+              <div className="col-span-12">
                 <Field
-                  as="input"
-                  id="password"
-                  name="password"
-                  label="Password"
-                  placeholder="Enter Password"
-                  type={showPassword ? "text" : "password"}
-                  className="w-full rounded border borderPrimary py-2 px-3 pr-10 outline-none"
+                  as={TextInput}
+                  id="address"
+                  name="address"
+                  label="Address"
+                  placeholder="Enter Address"
+                  type="text"
                 />
+                <ErrorMessage
+                  name="address"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
 
-                <span
-                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
+              {/* Password */}
+              <div className="col-span-12">
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-700"
                 >
-                  {showPassword ? <EyeOpenIcon /> : <EyeCloseIcon />}
-                </span>
-              </div>
+                  Password
+                </label>
+                <div className="relative">
+                  <Field
+                    as="input"
+                    id="password"
+                    name="password"
+                    label="Password"
+                    placeholder="Enter Password"
+                    type={showPassword ? "text" : "password"}
+                    className="w-full rounded border borderPrimary py-2 px-2 text-sm outline-none"
+                  />
 
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
-            {/* Submit Button */}
-            <div className="col-span-12 mt-32">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="px-20 py-5 rounded-full capitalize w-full font-semibold bg-secondaryBrand text-white font-poppins text-sm whitespace-nowrap disabled:opacity-50"
-              >
-                {isSubmitting ? "Adding Patient..." : "Add Patient"}
-              </button>
-            </div>
-          </Form>
+                  <span
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOpenIcon /> : <EyeCloseIcon />}
+                  </span>
+                </div>
+
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
+              <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-4 rounded-full capitalize font-semibold bg-secondaryBrand text-white font-poppins text-sm disabled:opacity-50"
+                >
+                  {isSubmitting ? "Adding Patient..." : "Add Patient"}
+                </button>
+              </div>
+            </Form>
+
+            {/* Fixed Bottom Submit Button */}
+
+          </div>
         )}
       </Formik>
 

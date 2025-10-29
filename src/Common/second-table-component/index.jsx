@@ -17,20 +17,40 @@ export default function SecondTable({
   onEdit,
   onDelete,
   OnViewDetail,
+  loading = false,
+  // Backend pagination props
+  currentPage = 1,
+  totalPages = 0,
+  totalResults = 0,
+  pageSize = 10,
+  onPageChange,
+  useBackendPagination = false,
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
-  const pageSize = 10;
+  const [frontendCurrentPage, setFrontendCurrentPage] = useState(1);
 
-  const totalResults = data.length;
-  const totalPages = Math.ceil(totalResults / pageSize);
+  // Use backend pagination if enabled, otherwise use frontend pagination
+  const displayData = useBackendPagination ? data : (() => {
+    const startIndex = (frontendCurrentPage - 1) * pageSize;
+    return data.slice(startIndex, startIndex + pageSize);
+  })();
+  const displayCurrentPage = useBackendPagination ? (currentPage || 1) : frontendCurrentPage;
+  const displayTotalPages = useBackendPagination ? (totalPages || 0) : Math.ceil(data.length / pageSize);
+  const displayTotalResults = useBackendPagination ? (totalResults || 0) : data.length;
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const currentData = data.slice(startIndex, startIndex + pageSize);
+  // Handle page change for both frontend and backend pagination
+  const handlePageChange = useBackendPagination 
+    ? (onPageChange || (() => {}))
+    : setFrontendCurrentPage;
 
   return (
-    <div className={`grid col-span-1 md:col-span-1 ${data.length === 0 ? 'lg:col-span-1' : 'lg:col-span-12'}`}>
-      {data.length === 0 ? (
+    <div className={`grid col-span-1 md:col-span-1 ${displayData.length === 0 ? 'lg:col-span-1' : 'lg:col-span-12'}`}>
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-secondaryBrand"></div>
+          <div className="text-gray-500 text-sm mt-2">Loading patients...</div>
+        </div>
+      ) : displayData.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <div className="text-gray-500 text-lg font-medium mb-2">
             No data available
@@ -40,7 +60,7 @@ export default function SecondTable({
           </div>
         </div>
       ) : (
-        <div className="overflow-x-auto max-h-[400px] scrollbar-hidden">
+        <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-300px)] scrollbar-hidden">
           <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
             <thead className="sticky top-0 bg-[#F8F8F8] z-10 ">
               <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
@@ -66,7 +86,7 @@ export default function SecondTable({
             </thead>
 
             <tbody>
-              {currentData.map((row, idx) => (
+              {displayData.map((row, idx) => (
               <tr
                 key={idx}
                 className="border-b border-gray-200 transition-all font-poppins"
@@ -248,9 +268,10 @@ export default function SecondTable({
                 {actionButton && (
                   <td className="px-4 py-2 text-right relative">
                     <button
-                      onClick={() =>
-                        setOpen((prev) => (prev === idx ? null : idx))
-                      }
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpen((prev) => (prev === idx ? null : idx));
+                      }}
                       className="p-2"
                     >
                       <OptionsDots />
@@ -260,7 +281,7 @@ export default function SecondTable({
                       <DropdownComponent
                         row={row}
                         onClose={() => setOpen(null)}
-                        onEdit={() => onEdit(row)} // ✅ pass this row’s data
+                        onEdit={() => onEdit(row)} // ✅ pass this row's data
                         onDelete={() => onDelete(row)}
                         OnViewDetail={() => OnViewDetail(row)}
                       />
@@ -273,13 +294,13 @@ export default function SecondTable({
           </table>
         </div>
       )}
-      {data.length > 0 && (
+      {displayData.length > 0 && !loading && (
         <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalResults={totalResults}
+          currentPage={displayCurrentPage}
+          totalPages={displayTotalPages}
+          totalResults={displayTotalResults}
           pageSize={pageSize}
-          onPageChange={setCurrentPage}
+          onPageChange={handlePageChange}
         />
       )}
     </div>

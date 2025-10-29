@@ -107,7 +107,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
     <div className="">
       <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Left Panel */}
-        <div className="md:col-span-7 bg-white rounded-xl border border-gray-200 p-4 sm:p-6 space-y-6">
+        <div className="md:col-span-9 bg-white rounded-xl border border-gray-200 p-4 sm:p-6 space-y-6">
           <h2 className="text-sm font-poppins text-primaryText">
             Implant Design Details:
           </h2>
@@ -300,7 +300,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
         </div>
 
         {/* Right Panel / Order Summary */}
-        <div className="lg:col-span-5 bg-white rounded-xl border border-gray-200 p-6 flex flex-col justify-between font-poppins">
+        <div className="lg:col-span-3 bg-white rounded-xl border border-gray-200 p-6 flex flex-col justify-between font-poppins">
           <div>
             <h2 className="text-lg font-semibold mb-4 text-[#1A1A1A]">
               Order Summary

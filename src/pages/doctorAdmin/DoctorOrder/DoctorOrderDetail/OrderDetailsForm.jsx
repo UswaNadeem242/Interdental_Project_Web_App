@@ -206,7 +206,7 @@ export default function OrderDetailsForm({ id }) {
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
       <div
-        className="md:col-span-8 col-span-4 bg-white p-4 rounded-2xl"
+        className="md:col-span-9 col-span-4 bg-white p-4 rounded-2xl"
         ref={formRef}
       >
         <div className="flex justify-between items-center pb-4">
@@ -500,7 +500,7 @@ export default function OrderDetailsForm({ id }) {
           </div>
         </div>
       </div>
-      <div className="col-span-4">
+      <div className="col-span-3">
         <div className="relative">
           <DropDownComponent
             label="Cart Total"

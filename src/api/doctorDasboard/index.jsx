@@ -31,9 +31,9 @@ export const getGrapgStats = async (timePeriod = "month") => {
   }
 };
 
-export const getDoctorPatients = async () => {
+export const getDoctorPatients = async ({status = "ALL", page = 0, limit = 10, search = ""}) => {
   try {
-    const response = await api.get(ENDPOINTS.DOCTOR.PATIENTS);
+    const response = await api.get(`${ENDPOINTS.DOCTOR.PATIENTS}?status=${status}&page=${page}&limit=${limit}&search=${search}`);
     return handleApiSuccess(response);
   } catch (error) {
     return handleApiError(error);

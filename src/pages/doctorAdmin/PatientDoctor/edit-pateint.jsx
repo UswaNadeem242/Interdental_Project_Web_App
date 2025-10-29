@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import TextInput from "../../../Common/Input";
 import Toast from "../../../components/Toast";
-import { PatientvalidationSchema } from "../../../Common/FormsValidation";
+import { EditPatientValidationSchema } from "../../../Common/FormsValidation";
 import { updateUserPatient } from "../../../api/doctorDasboard";
 
 export default function EditPatientForm({ onClose, userData }) {
@@ -26,7 +26,6 @@ export default function EditPatientForm({ onClose, userData }) {
     ? userData.name.split(" ")
     : [];
 
-  // 🧠 Initialize form fields with userData (or empty if not provided)
   const initialValues = {
     firstName: firstName,
     lastName: lastName,
@@ -35,6 +34,10 @@ export default function EditPatientForm({ onClose, userData }) {
     address: userData?.address || "",
   };
   const handleSubmit = async (values, { setSubmitting }) => {
+    console.log("Edit Patient Form - Starting submission with values:", values);
+    console.log("Edit Patient Form - User data:", userData);
+    console.log("Edit Patient Form - Validation passed, proceeding with API call");
+
     try {
       const bodyData = {
         email: values.email,
@@ -43,24 +46,30 @@ export default function EditPatientForm({ onClose, userData }) {
         phone: values.phone,
         address: values.address,
       };
+
+      console.log("Edit Patient Form - Sending data to API:", bodyData);
       const response = await updateUserPatient(bodyData);
+      console.log("Edit Patient Form - API Response:", response);
 
       if (response.success) {
+        console.log("Edit Patient Form - Success! User updated successfully");
         showToast("User updated successfully!", "success");
         setTimeout(() => {
           onClose && onClose();
           window.location.reload();
         }, 1500);
       } else {
+        console.log("Edit Patient Form - Failed to update user:", response);
         showToast(
           response?.data?.responseDesc || "Failed to update user.",
           "error"
         );
       }
     } catch (error) {
-      console.error("Error updating user:", error);
+      console.error("Edit Patient Form - Error updating user:", error);
       showToast("Something went wrong!", "error");
     } finally {
+      console.log("Edit Patient Form - Submission completed");
       setSubmitting(false);
     }
   };
@@ -69,100 +78,104 @@ export default function EditPatientForm({ onClose, userData }) {
     <div>
       <Formik
         initialValues={initialValues}
-        enableReinitialize // ✅ re-fill when userData changes
-        // validationSchema={PatientvalidationSchema(true)}
+        enableReinitialize
+        validationSchema={EditPatientValidationSchema()}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
-          <Form className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white">
-            {/* First + Last Name */}
-            <div className="col-span-6">
-              <Field
-                as={TextInput}
-                name="firstName"
-                label="First Name"
-                placeholder="Enter First Name"
-              />
-              <ErrorMessage
-                name="firstName"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
-            <div className="col-span-6">
-              <Field
-                as={TextInput}
-                name="lastName"
-                label="Last Name"
-                placeholder="Enter Last Name"
-              />
-              <ErrorMessage
-                name="lastName"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
+          <div className="relative h-full bg-white">
+            <Form className="grid md:grid-cols-12 grid-cols-6 gap-4 pb-20">
+              {/* First + Last Name */}
+              <div className="col-span-6">
+                <Field
+                  as={TextInput}
+                  name="firstName"
+                  label="First Name"
+                  placeholder="Enter First Name"
+                />
+                <ErrorMessage
+                  name="firstName"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
+              <div className="col-span-6">
+                <Field
+                  as={TextInput}
+                  name="lastName"
+                  label="Last Name"
+                  placeholder="Enter Last Name"
+                />
+                <ErrorMessage
+                  name="lastName"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
 
-            {/* Email */}
-            <div className="col-span-12">
-              <Field
-                as={TextInput}
-                name="email"
-                label="Email"
-                placeholder="Enter Email"
-                type="email"
-                readOnly
+              {/* Email */}
+              <div className="col-span-12">
+                <Field
+                  as={TextInput}
+                  name="email"
+                  label="Email Address"
+                  placeholder="Enter Email Address"
+                  type="email"
+                  readOnly
                 // disabled={isDisabled}
                 // onClick={handleDisable}
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
+                />
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
 
-            {/* Phone */}
-            <div className="col-span-12">
-              <Field
-                as={TextInput}
-                name="phone"
-                label="Phone Number"
-                placeholder="Enter Phone Number"
-              />
-              <ErrorMessage
-                name="phone"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
+              {/* Phone */}
+              <div className="col-span-12">
+                <Field
+                  as={TextInput}
+                  name="phone"
+                  label="Phone Number"
+                  placeholder="Enter Phone Number"
+                />
+                <ErrorMessage
+                  name="phone"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
 
-            {/* Address */}
-            <div className="col-span-12">
-              <Field
-                as={TextInput}
-                name="address"
-                label="Address"
-                placeholder="Enter Address"
-              />
-              <ErrorMessage
-                name="address"
-                component="div"
-                className="text-red-700 text-sm"
-              />
-            </div>
+              {/* Address */}
+              <div className="col-span-12">
+                <Field
+                  as={TextInput}
+                  name="address"
+                  label="Address"
+                  placeholder="Enter Address"
+                />
+                <ErrorMessage
+                  name="address"
+                  component="div"
+                  className="text-red-700 text-sm"
+                />
+              </div>
+              {/* Fixed Bottom Submit Button */}
+              <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-50">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-4 rounded-full capitalize font-semibold bg-secondaryBrand text-white font-poppins text-sm disabled:opacity-50"
+                >
+                  {isSubmitting ? "Saving..." : "Save"}
+                </button>
+              </div>
 
-            {/* Submit */}
-            <div className="col-span-12 mt-6">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="px-20 py-5 rounded-full capitalize w-full font-semibold bg-secondaryBrand text-white font-poppins text-sm whitespace-nowrap disabled:opacity-50"
-              >
-                {isSubmitting ? "Updating..." : "Update Patient"}
-              </button>
-            </div>
-          </Form>
+            </Form>
+
+
+          </div>
         )}
       </Formik>
 
