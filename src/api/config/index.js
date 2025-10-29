@@ -19,7 +19,7 @@ export const ENDPOINTS = {
     GRAPH_STATS: "/api/dashboard/getDoctorGraph",
     PATIENTS: "/api/users/getPatientByDoctor",
     ADD_PATIENT: "/api/users/addPatient",
-    UPDATE_PATIENT: "api/users/update-user",
+    UPDATE_PATIENT: "/api/users/update-user",
     DELETE_PATIENT: "api/users",
     DOCTOR_PROFILE: "/api/users/getById",
     UPDATE_PROFILE: "/api/users/update-profile-info",

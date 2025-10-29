@@ -548,7 +548,7 @@ export const dataPatient = [
 
 export const headingsOrder = [
   { label: "order ID", key: "id" },
-  { label: "Scan Date", key: "submission" },
+  // { label: "Scan Date", key: "submission" },
   { label: "Doctor Name", key: "dName" },
   { label: "Patient Name", key: "pName" },
   { label: "Shopping Date", key: "shipping" },
