@@ -10,7 +10,10 @@ import {
   headingsPateint,
 } from "../../../Constant";
 import SearchBar from "../../../Common/SearchBar";
-import { deletePatientUser, getDoctorPatients } from "../../../api/doctorDasboard";
+import {
+  deletePatientUser,
+  getDoctorPatients,
+} from "../../../api/doctorDasboard";
 import SecondTable from "../../../Common/second-table-component";
 import { EditDeleteDropdownMenu } from "../../../Common/DropDown/edit-delete";
 import AddNoteForm from "./AddNoteForm";
@@ -19,6 +22,7 @@ import DeleteModel from "../../../modals/delete-model";
 import EditPatientForm from "./edit-pateint";
 import { showToast } from "../../../store/toast-slice";
 import { useDispatch } from "react-redux";
+import ViewDetail from "./view-detail";
 
 const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +31,7 @@ const PatientPage = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [patients, setPatients] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
@@ -35,6 +40,13 @@ const PatientPage = () => {
     setSelectedData(rowData);
     setShowForm(true);
   };
+
+  //
+  const handleOpenViewDetail = (rowData) => {
+    setSelectedData(rowData);
+    setShowDetail(true);
+  };
+
   const handleOpenDelete = (item) => {
     setSelectedItem(item);
     setShowDeleteModal(true);
@@ -145,11 +157,7 @@ const PatientPage = () => {
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 title="Add New User"
-                Content={
-                  <AddPatientForm
-
-                  />
-                }
+                Content={<AddPatientForm />}
               />
               <Drawers
                 isOpen={isNoteOpen}
@@ -166,6 +174,7 @@ const PatientPage = () => {
           actionButton="active"
           DropdownComponent={EditDeleteDropdownMenu}
           onEdit={handleOpenForm}
+          OnViewDetail={handleOpenViewDetail}
           onDelete={handleOpenDelete}
         />
         {showForm && (
@@ -175,15 +184,25 @@ const PatientPage = () => {
             title="Update Patient"
             onClose={() => setShowForm(false)}
             Content={<EditPatientForm userData={selectedData} />}
+          />
+        )}
 
+        {/*  */}
+        {showDetail && (
+          <Drawers
+            isOpen={showDetail}
+            // initialData={selectedData
+            title="Patient Details"
+            onClose={() => setShowDetail(false)}
+            Content={<ViewDetail userData={selectedData} />}
           />
         )}
 
         {showDeleteModal && (
           <DeleteModel
-            title='Are you sure ? '
-            desc='This action cannot be undone. Once deleted, all related data will be permanently removed from the system.
-                Please confirm if you still want to proceed. '
+            title="Are you sure ? "
+            desc="This action cannot be undone. Once deleted, all related data will be permanently removed from the system.
+                Please confirm if you still want to proceed. "
             isOpen={showDeleteModal}
             onClose={() => setShowDeleteModal(false)}
             onConfirm={handleConfirmDelete}

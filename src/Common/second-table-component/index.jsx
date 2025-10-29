@@ -15,7 +15,8 @@ export default function SecondTable({
   actionButton,
   DropdownComponent,
   onEdit,
-  onDelete
+  onDelete,
+  OnViewDetail,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
@@ -63,8 +64,9 @@ export default function SecondTable({
                 {headings.map((col, i) => (
                   <td
                     key={i}
-                    className={`px-4 py-4 text-[#333333] text-xs ${col.key === "name" ? "font-semibold" : "font-normal"
-                      }`}
+                    className={`px-4 py-4 text-[#333333] text-xs ${
+                      col.key === "name" ? "font-semibold" : "font-normal"
+                    }`}
                   >
                     {/* Name column */}
                     {col.key === "name" ? (
@@ -174,20 +176,21 @@ export default function SecondTable({
                       )
                     ) : col.key === "status" ? (
                       <span
-                        className={`px-3 py-2 rounded-full text-xs font-normal capitalize ${row[col.key] === "active"
-                          ? "bg-[#006A670D] text-[#006A67] rounded-none  "
-                          : row[col.key] === "pending"
+                        className={`px-3 py-2 rounded-full text-xs font-normal capitalize ${
+                          row[col.key] === "active"
+                            ? "bg-[#006A670D] text-[#006A67] rounded-none  "
+                            : row[col.key] === "pending"
                             ? "bg-[#FF57570D] text-[#FF5757]"
                             : row[col.key] === "completed"
-                              ? "bg-[#4ECC530D] text-[#4ECC53]"
-                              : row[col.key] === "accepted"
-                                ? "bg-[#4ECC530D] text-[#4ECC53]"
-                                : row[col.key] === "in progress"
-                                  ? "bg-[#EF6A1F1A] text-[#EF6A1F]"
-                                  : row[col.key] === "deactivated"
-                                    ? "bg-[#FFE30D1A] text-[#D4BE16] rounded-none"
-                                    : "bg-[#FF57570D] text-[#FF5757]"
-                          }`}
+                            ? "bg-[#4ECC530D] text-[#4ECC53]"
+                            : row[col.key] === "accepted"
+                            ? "bg-[#4ECC530D] text-[#4ECC53]"
+                            : row[col.key] === "in progress"
+                            ? "bg-[#EF6A1F1A] text-[#EF6A1F]"
+                            : row[col.key] === "deactivated"
+                            ? "bg-[#FFE30D1A] text-[#D4BE16] rounded-none"
+                            : "bg-[#FF57570D] text-[#FF5757]"
+                        }`}
                       >
                         {row[col.key]}
                       </span>
@@ -196,33 +199,33 @@ export default function SecondTable({
                         {row[col.key]}
                       </span>
                     ) : /** substatus */
-                      col.key === "subStatus" ? (
-                        <span className="px-3 py-2 rounded-md text-xs font-semibold capitalize text-[#FF1D1D] border-2 border-[#F44336]">
+                    col.key === "subStatus" ? (
+                      <span className="px-3 py-2 rounded-md text-xs font-semibold capitalize text-[#FF1D1D] border-2 border-[#F44336]">
+                        {row[col.key]}
+                      </span>
+                    ) : col.key === "action" ? (
+                      onActionClick ? (
+                        <button
+                          onClick={() => onActionClick(row)}
+                          className="text-secondaryBrand flex gap-1 items-center"
+                        >
                           {row[col.key]}
-                        </span>
-                      ) : col.key === "action" ? (
-                        onActionClick ? (
-                          <button
-                            onClick={() => onActionClick(row)}
-                            className="text-secondaryBrand flex gap-1 items-center"
-                          >
-                            {row[col.key]}
-                            <ArrowUpRightIcon className="w-4 h-4 text-secondaryBrand" />
-                          </button>
-                        ) : actionHrefKey && row[actionHrefKey] ? (
-                          <NavLink
-                            to={row[actionHrefKey]}
-                            className="text-secondaryBrand flex gap-1 items-center"
-                          >
-                            {row[col.key]}
-                            <ArrowUpRightIcon className="w-4 h-4 text-secondaryBrand" />
-                          </NavLink>
-                        ) : (
-                          row[col.key] || "-"
-                        )
+                          <ArrowUpRightIcon className="w-4 h-4 text-secondaryBrand" />
+                        </button>
+                      ) : actionHrefKey && row[actionHrefKey] ? (
+                        <NavLink
+                          to={row[actionHrefKey]}
+                          className="text-secondaryBrand flex gap-1 items-center"
+                        >
+                          {row[col.key]}
+                          <ArrowUpRightIcon className="w-4 h-4 text-secondaryBrand" />
+                        </NavLink>
                       ) : (
                         row[col.key] || "-"
-                      )}
+                      )
+                    ) : (
+                      row[col.key] || "-"
+                    )}
                   </td>
                 ))}
                 {/* {actionButton && (
@@ -235,7 +238,9 @@ export default function SecondTable({
                 {actionButton && (
                   <td className="px-4 py-2 text-right relative">
                     <button
-                      onClick={() => setOpen((prev) => (prev === idx ? null : idx))}
+                      onClick={() =>
+                        setOpen((prev) => (prev === idx ? null : idx))
+                      }
                       className="p-2"
                     >
                       <OptionsDots />
@@ -245,13 +250,13 @@ export default function SecondTable({
                       <DropdownComponent
                         row={row}
                         onClose={() => setOpen(null)}
-                        onEdit={() => onEdit(row)}       // ✅ pass this row’s data
+                        onEdit={() => onEdit(row)} // ✅ pass this row’s data
                         onDelete={() => onDelete(row)}
+                        OnViewDetail={() => OnViewDetail(row)}
                       />
                     )}
                   </td>
                 )}
-
               </tr>
             ))}
           </tbody>
