@@ -9,6 +9,7 @@ export default function TableComponent({
   actions,
   actionHrefKey,
   onActionClick,
+  onActionClickk,
   loading = false,
   // Backend pagination props
   currentPage = 1,
@@ -102,7 +103,7 @@ export default function TableComponent({
 
                             {onActionClick ? (
                               <button
-                                // onClick={() => onActionClick(row)}
+                                onClick={() => onActionClickk(row)}
                                 className="text-secondaryBrand flex items-center gap-1 cursor-pointer text-xs font-normal font-poppins pt-2"
                               >
                                 View profile

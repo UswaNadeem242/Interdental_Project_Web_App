@@ -8,6 +8,7 @@ import Drawers from "../../../Common/Drawers";
 import DocotrClaimForm from "./doctor-claim-form";
 import { showToast } from "../../../store/toast-slice";
 import { useDispatch } from "react-redux";
+import ViewDetail from "../PatientDoctor/view-detail";
 
 const DoctorClaimRequests = () => {
   const [selectedRow, setSelectedRow] = useState(null);
@@ -18,6 +19,8 @@ const DoctorClaimRequests = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
   const [currentStatus, setCurrentStatus] = useState("ALL");
+
+  // const [showDetail, setShowDetail] = useState(false);
   const dispatch = useDispatch();
 
   const transformPatientsData = (apiData) => {
@@ -162,6 +165,10 @@ const DoctorClaimRequests = () => {
             setSelectedRow(row.originalData);
             setIsOpen(true);
           }}
+          // onActionClickk={(row) => {
+          //   setSelectedRow(row.originalData);
+          //   setShowDetail(true);
+          // }}
         />
       </div>
 
@@ -172,6 +179,16 @@ const DoctorClaimRequests = () => {
         status={selectedRow?.status}
         Content={<DocotrClaimForm row={selectedRow} />}
       />
+
+      {/* {showDetail && (
+        <Drawers
+          isOpen={showDetail}
+          // initialData={selectedData
+          title="Patient Details"
+          onClose={() => setShowDetail(false)}
+          Content={<ViewDetail userData={selectedRow} />}
+        />
+      )} */}
     </div>
   );
 };
