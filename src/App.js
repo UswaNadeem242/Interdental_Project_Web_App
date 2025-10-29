@@ -50,6 +50,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Blog from "./pages/landing-page/blog";
 import ProductDetail from "./components/ProductDetail";
 import { ERole } from "./constants/roles";
+import EnrollmentPlans from "./pages/landing-page/enrollemnt-plans";
 
 const MainLayout = ({ children }) => (
   <div className="flex flex-col min-h-screen">
@@ -187,6 +188,7 @@ function App() {
             />
             <Route path="/patient" element={<Patients isLanding={false} />} />
             <Route path="/doctor" element={<Doctor isLanding={false} />} />
+            <Route path="/enrollment-plans" element={<EnrollmentPlans />} />
             <Route path="/blog" element={<Blog isLanding={false} />} />
             <Route path="/blogs/:id" element={<BlogDetailPage />} />
             <Route
@@ -210,14 +212,7 @@ function App() {
               }
             />
             <Route path="/about-us" element={<About isLanding={false} />} />
-            <Route
-              path="/contact-us"
-              element={
-            
-                  <Contact isLanding={false} />
-                
-              }
-            />
+            <Route path="/contact-us" element={<Contact isLanding={false} />} />
 
             {/* Auth Routes - Public but redirect if authenticated */}
             <Route
@@ -260,7 +255,6 @@ function App() {
                 </PublicRoute>
               }
             />
-
 
             {/* Profile Completion - Requires authentication but not full protection */}
             <Route

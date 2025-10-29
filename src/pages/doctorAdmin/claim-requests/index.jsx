@@ -1,7 +1,7 @@
 import TableComponent from "../../../Common/Table";
 import { useEffect, useState, useCallback } from "react";
 import {
-    headings, 
+    headings,
 } from "../../../Constant";
 import { SecondaryButton } from "../../../Common/Button";
 import { PlusIcon } from "../../../icon/PlusIcon";
@@ -10,7 +10,7 @@ import Drawers from "../../../Common/Drawers";
 import DocotrClaimForm from "./doctor-claim-form";
 import { showToast } from "../../../store/toast-slice";
 import { useDispatch } from "react-redux";
-
+ 
 const DoctorClaimRequests = () => {
     const [selectedRow, setSelectedRow] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -21,10 +21,10 @@ const DoctorClaimRequests = () => {
     const [totalRecords, setTotalRecords] = useState(0);
     const [currentStatus, setCurrentStatus] = useState("ALL");
     const dispatch = useDispatch();
-
+ 
     const transformPatientsData = (apiData) => {
         if (!apiData || !Array.isArray(apiData)) return [];
-
+ 
         return apiData.map((order) => {
             return {
                 id: `#${order?.id}`,
@@ -57,7 +57,7 @@ const DoctorClaimRequests = () => {
                 const content = responseData?.data ?? [];
                 const totalRecord = responseData?.totalRecord ?? 0;
                 const totalPages = responseData?.page ?? 0;
-
+ 
                 const transformedData = transformPatientsData(content);
                 setClaims(transformedData);
                 setTotalPages(totalPages);
@@ -75,29 +75,29 @@ const DoctorClaimRequests = () => {
             setLoading(false);
         }
     }, [dispatch]);
-
+ 
     // Initial load
     useEffect(() => {
         fetchClaims(1, currentStatus);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+ 
     // Handle page changes
     const handlePageChange = useCallback((page) => {
         setCurrentPage(page);
         fetchClaims(page, currentStatus);
     }, [fetchClaims, currentStatus]);
-
+ 
     // Handle status changes
     const handleStatusChange = useCallback((status) => {
         setCurrentStatus(status);
         setCurrentPage(1);
         fetchClaims(1, status);
     }, [fetchClaims]);
-
+ 
     // Since filtering is now handled by the backend, we use claims directly
     const displayData = claims;
-
+ 
     const slugify = (text) =>
         text
             .toString()
@@ -141,7 +141,7 @@ const DoctorClaimRequests = () => {
                         className="w-full md:w-auto rounded-md px-6 py-3 font-poppins bg-[#F8F8F8] text-primaryText"
                     />
                 </div>
-
+ 
                 <TableComponent
                     headings={headings}
                     data={displayData}
@@ -158,7 +158,7 @@ const DoctorClaimRequests = () => {
                     }}
                 />
             </div>
-
+ 
             <Drawers
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
@@ -169,5 +169,5 @@ const DoctorClaimRequests = () => {
         </div>
     );
 };
-
+ 
 export default DoctorClaimRequests;

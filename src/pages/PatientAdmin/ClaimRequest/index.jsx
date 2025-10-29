@@ -41,7 +41,6 @@ const PatientClaimrequests = () => {
 
         if (response.status === 200) {
           setClaims(transformPatientsData(response.data.data));
-
         }
       } catch (error) {
         console.log(error);
@@ -60,7 +59,6 @@ const PatientClaimrequests = () => {
     return filtered;
   };
 
-
   const steps = [
     {
       name: "All",
@@ -68,7 +66,7 @@ const PatientClaimrequests = () => {
         <TableComponent
           headings={headingsPatientClaimReq}
           // data={claims}
-          data={getFilteredDataByStatus('all')}
+          data={getFilteredDataByStatus("all")}
           onActionClick={(row) => {
             setSelectedRow(row);
             setIsOpen(true);
@@ -109,11 +107,10 @@ const PatientClaimrequests = () => {
       .toString()
       .toLowerCase()
       .trim()
-      .replace(/\s+/g, "-")      // replace spaces with -
+      .replace(/\s+/g, "-") // replace spaces with -
       .replace(/[^\w-]+/g, "");
   return (
     <div>
-
       <div className="bg-white rounded-2xl p-6">
         <TabsStepper
           steps={steps}

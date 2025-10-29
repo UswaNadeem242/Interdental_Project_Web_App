@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ArrowUpRightIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import Pagination from "../Pagination";
-
+ 
 export default function TableComponent({
   headings,
   data,
@@ -19,7 +19,7 @@ export default function TableComponent({
   useBackendPagination = false,
 }) {
   const [frontendCurrentPage, setFrontendCurrentPage] = useState(1);
-
+ 
   // Use backend pagination if enabled, otherwise use frontend pagination
   const displayData = useBackendPagination ? data : (() => {
     const startIndex = (frontendCurrentPage - 1) * pageSize;
@@ -28,9 +28,9 @@ export default function TableComponent({
   const displayCurrentPage = useBackendPagination ? (currentPage || 1) : frontendCurrentPage;
   const displayTotalPages = useBackendPagination ? (totalPages || 0) : Math.ceil(data.length / pageSize);
   const displayTotalResults = useBackendPagination ? (totalResults || 0) : data.length;
-
+ 
   // Handle page change for both frontend and backend pagination
-  const handlePageChange = useBackendPagination 
+  const handlePageChange = useBackendPagination
     ? (onPageChange || (() => {}))
     : setFrontendCurrentPage;
   return (
@@ -66,8 +66,8 @@ export default function TableComponent({
             </thead>{" "}
             <tbody>
               {displayData.map((row, idx) => (
-
-
+ 
+ 
               <tr
                 key={idx}
                 className="border-b border-gray-200  transition-all font-poppins  "
@@ -88,7 +88,7 @@ export default function TableComponent({
                         />
                         <div className="flex flex-col">
                           <span>{row.name}</span>
-
+ 
                           {onActionClick ? (
                             <button
                               // onClick={() => onActionClick(row)}
@@ -172,12 +172,12 @@ export default function TableComponent({
     </div>
   );
 }
-
+ 
 // import { useState } from "react";
 // import { ArrowUpRightIcon } from "@heroicons/react/24/solid";
 // import { NavLink } from "react-router-dom";
 // import Pagination from "../Pagination";
-
+ 
 // export default function TableComponent({
 //   headings,
 //   data,
@@ -187,10 +187,10 @@ export default function TableComponent({
 // }) {
 //   const [currentPage, setCurrentPage] = useState(1);
 //   const pageSize = 10;
-
+ 
 //   const totalResults = data.length;
 //   const totalPages = Math.ceil(totalResults / pageSize);
-
+ 
 //   const startIndex = (currentPage - 1) * pageSize;
 //   const currentData = data.slice(startIndex, startIndex + pageSize);
 //   return (
@@ -232,7 +232,7 @@ export default function TableComponent({
 //                         />
 //                         <div className="flex flex-col">
 //                           <span>{row.name}</span>
-
+ 
 //                           {onActionClick ? (
 //                             <button
 //                               // onClick={() => onActionClick(row)}
@@ -313,3 +313,4 @@ export default function TableComponent({
 //     </div>
 //   );
 // }
+ 
