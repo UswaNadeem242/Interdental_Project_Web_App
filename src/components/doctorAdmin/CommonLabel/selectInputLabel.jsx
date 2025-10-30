@@ -143,7 +143,7 @@ export default function MaterialDropdown({
                         </span>
                       )}
 
-                    <span className="text-textFieldHeading text-[10px] font-normal capitalize">
+                    <span className="text-textFieldHeading text-[10px] text-left font-normal capitalize">
                       {opt.label}
                     </span>
                   </span>
