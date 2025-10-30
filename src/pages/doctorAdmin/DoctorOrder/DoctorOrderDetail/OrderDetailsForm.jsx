@@ -203,6 +203,8 @@ export default function OrderDetailsForm({ id }) {
     }
   };
 
+  console.log(orderDetails,'orderDetails');
+
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
       <div
@@ -288,10 +290,7 @@ export default function OrderDetailsForm({ id }) {
                   Due Date
                 </p>
                 <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {/* {formatDate(orderDetails?.expectedDeliveryDate)}
-                   */}
-
-                  {formatDate(doctor?.dueDate)}
+                  {formatDate(orderDetails?.expectedDeliveryDate)}
                 </p>
               </div>
             </div>

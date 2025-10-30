@@ -12,10 +12,17 @@ export default function DocotrClaimForm({ row }) {
         patientName,
         status,
     } = row;
+   
+
     return (
         <div className="bg-bgWhite">
 
-            <div className="font-poppins text-sm  font-normal text-primaryText pb-3">Claim ID: <span className="font-bold">{id}</span></div>
+            <div className="font-poppins text-sm  font-normal text-primaryText pb-3 flex items-center gap-3">
+                <span>
+                    Claim ID: <span className="font-bold">#{id}</span>
+                </span>
+           
+            </div>
             <div className="space-y-3 font-poppins">
                 {/* Product Name */}
                 <div>
@@ -29,7 +36,7 @@ export default function DocotrClaimForm({ row }) {
                     <h6 className="block text-sm mb-1  text-secondaryText pt-3 font-normal">
                         Patient Email Address
                     </h6>
-                    <p className="text-sm mb-1  text-primaryText  font-semibold pt-2">{patientEmail ? patientEmail : 'Null'}</p>
+                    <p className="text-sm mb-1  text-primaryText  font-semibold pt-2">{patientEmail || doctorEmail || 'N/A'}</p>
                 </div>
                 {/* Quantity */}
                 <div className="border-t-2 border-background ">
@@ -45,7 +52,7 @@ export default function DocotrClaimForm({ row }) {
                         <h6 className="block text-sm mb-1 pt-3 text-secondaryText font-normal">
                             Warranty Options
                         </h6>
-                        <p className="text-sm mb-1 text-primaryText font-semibold pt-2 p-2">
+                        <p className="text-sm mb-1 text-primaryText font-semibold pt-2">
                             Crown and Bridges, Onlays/Inlays & Veneers
                         </p>
                         {/* ✅ Render multiple implant teeth as individual boxes */}

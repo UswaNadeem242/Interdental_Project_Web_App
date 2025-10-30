@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ProgressBar } from "../../../../Common/ProgressBar";
-import { getOrderTranckingByID } from "../../../../api/doctorDasboard";
-import { useSelector } from "react-redux";
+import { getOrderByID } from "../../../../api/doctorDasboard";
 import HealthIcon from "../../../../icon/HealthIcon";
 import BoxIcon from "../../../../icon/BoxIcon";
 import ShipIcon from "../../../../icon/ShipIcon";
 import TimeIcon from "../../../../icon/TimeIcon";
 export default function TrackingOrder({ id }) {
-  const [orderTracking, setOrderTracking] = useState(null);
+  const [orderDetails, setOrderDetails] = useState(null);
   const [steps, setSteps] = useState([]);
-
-  const restoration = useSelector((state) => state.restoration);
-  const doctor = restoration.doctor.reduce((acc, d) => {
-    acc[d.field] = d.value || "N/A";
-    return acc;
-  }, {});
 
   const formatDate = (dateString) => {
     if (!dateString || dateString === "-") return "-";
@@ -29,6 +22,29 @@ export default function TrackingOrder({ id }) {
       return `${month}/${day}/${year}`;
     } catch (error) {
       return "-";
+    }
+  };
+
+  const formatTimestamp = (dateString) => {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "";
+
+      const day = String(date.getDate()).padStart(2, "0");
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const month = monthNames[date.getMonth()];
+      const year = date.getFullYear();
+      
+      let hours = date.getHours();
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      
+      return `${day} ${month} ${year}, ${String(hours).padStart(2, "0")}:${minutes} ${ampm}`;
+    } catch (error) {
+      return "";
     }
   };
 
@@ -71,12 +87,12 @@ export default function TrackingOrder({ id }) {
 
   useEffect(() => {
     const fetchOrderByID = async () => {
-      const response = await getOrderTranckingByID(id);
+      const response = await getOrderByID(id);
       if (response.status === 200) {
-        const data = response.data.data; // array from API
-        setOrderTracking(data);
+        const data = response.data.data;
+        setOrderDetails(data);
 
-        const currentStatus = data?.[0]?.status; // e.g. "PENDING"
+        const currentStatus = data?.orderStatus; // e.g. "PENDING"
         const currentIndex = orderSteps.findIndex(
           (s) => s.key === currentStatus,
         );
@@ -88,12 +104,14 @@ export default function TrackingOrder({ id }) {
           return { ...step, status: "upcoming" };
         });
 
-        // Add created date (if available)
-        updatedSteps.forEach((s, i) => {
-          s.date = data?.[i]?.createdAt
-            ? new Date(data[i].createdAt).toLocaleDateString()
-            : "";
-        });
+        // Add timestamp to current step
+        if (currentIndex >= 0) {
+          updatedSteps[currentIndex].timestamp = formatTimestamp(data?.updatedAt || data?.createdAt);
+        }
+        // Add timestamp to first step (order placed)
+        if (updatedSteps[0]) {
+          updatedSteps[0].timestamp = formatTimestamp(data?.createdAt);
+        }
 
         setSteps(updatedSteps);
       }
@@ -118,7 +136,7 @@ export default function TrackingOrder({ id }) {
 
                 <h3 className="text-tertiaryBrand font-semibold">
                   {" "}
-                  {formatDate(doctor?.dueDate)}
+                  {formatDate(orderDetails?.expectedDeliveryDate)}
                 </h3>
               </div>
 
@@ -127,7 +145,7 @@ export default function TrackingOrder({ id }) {
                   tracking ID
                 </h3>
                 <h3 className="text-tertiaryBrand font-semibold flex md:justify-end">
-                  {orderTracking?.map((item) => item?.orderId)}
+                  #{orderDetails?.id}
                 </h3>
               </div>
             </div>
@@ -140,6 +158,18 @@ export default function TrackingOrder({ id }) {
             </h3>
             <div className="mt-4">
               <ProgressBar steps={steps} />
+              {/* Display timestamps below progress bar */}
+              {steps.length > 0 && (
+                <div className="mt-4 text-center">
+                  {steps.map((step, index) => (
+                    step.timestamp && (
+                      <div key={index} className="text-xs text-gray-600 mb-2">
+                        <span className="font-semibold">{step.title}:</span> {step.timestamp}
+                      </div>
+                    )
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

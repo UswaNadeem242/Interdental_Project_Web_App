@@ -13,9 +13,17 @@ export default function Drawers({
   onClose = () => { },
   title,
   Content, 
+  status,
 }) {
   const [open, setOpen] = useState(true);
- 
+
+  const statusStyles = {
+    PENDING: "bg-[#1F27EF0D] text-[#1F27EF]",
+    ACCEPTED: "bg-[#4ECC530D] text-[#4ECC53]",
+    REJECTED: "bg-[#FF57570D] text-[#FF5757]",
+};
+const badgeClass = statusStyles[status] || "text-gray-700 bg-gray-100";
+
   return (
     <div> 
       <Dialog open={isOpen} onClose={onClose} className="relative z-40">
@@ -49,9 +57,9 @@ export default function Drawers({
                     <DialogTitle className="text-xl font-bold font-poppins text-[#0F153E]">
                       <div className="flex justify-between items-center gap-3">
                         {title}
-                        {title === "Claim Details" && (
-                          <span className="bg-rose-500/5 text-[#FF5757] text-xs px-2 py-1 rounded-full">
-                            Pending
+                        {status && (
+                          <span className={`text-xs px-2 py-1 rounded-full ${badgeClass}`}>
+                            {status}
                           </span>
                         )}
                       </div>

@@ -83,7 +83,8 @@ const restorationSlice = createSlice({
               dropdown: selection.option || null,
               quantity: 1,
             });
-            total += selection.price || 0;
+            // Only add to total if price is greater than 0
+            total += (selection.price > 0 ? selection.price : 0);
           }
         });
       });
@@ -117,7 +118,8 @@ const restorationSlice = createSlice({
               dropdown: selection.option || null,
               quantity: 1,
             });
-            total += selection.price || 0;
+            // Only add to total if price is greater than 0
+            total += (selection.price > 0 ? selection.price : 0);
           }
         });
       });

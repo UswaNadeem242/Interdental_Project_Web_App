@@ -71,15 +71,22 @@ export const ShadeDropdown = ({
 
   const handleSelect = (groupName, option) => {
     console.log("option", option);
+    
     // Check if this option is already selected
     const currentSelection = selectedShades[groupName];
     const isAlreadySelected = currentSelection && currentSelection.id === option.id;
 
-    // If already selected, deselect it (pass null), otherwise select it
-    const newSelection = isAlreadySelected ? null : option;
-    
-    // Call the onChange prop with groupName and new selection
-    onChange(groupName, newSelection);
+    // Clear all previous selections first
+    Object.keys(selectedShades).forEach(key => {
+      if (selectedShades[key]) {
+        onChange(key, null);
+      }
+    });
+
+    // If not already selected, select this one shade
+    if (!isAlreadySelected) {
+      onChange(groupName, option);
+    }
 
     setTouched((prev) => ({ ...prev, [`shade_${groupName}`]: false }));
 
@@ -87,10 +94,10 @@ export const ShadeDropdown = ({
     setIsOpen(false);
   };
 
-  // ✅ Build label from selected shades
-  const selectedLabel = Object.values(selectedShades)
-    .map((s) => s?.name)
-    .filter(Boolean)
+  // ✅ Build label from selected shades with "Category – Shade" format
+  const selectedLabel = Object.entries(selectedShades)
+    .filter(([_, shade]) => shade)
+    .map(([category, shade]) => `${category} – ${shade?.name}`)
     .join(", ");
 
   return (
