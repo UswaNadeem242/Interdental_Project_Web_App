@@ -1,12 +1,8 @@
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Drawers from "../../../Common/Drawers";
 import { PrimaryButtonUI, SecondaryButton } from "../../../Common/Button";
 import AddPatientForm from "./AddPatientForm";
-import TableComponent from "../../../Common/Table";
 import {
-  data,
-  dataPatient,
-  headings,
   headingsPateint,
 } from "../../../Constant";
 import SearchBar from "../../../Common/SearchBar";
@@ -17,7 +13,6 @@ import {
 import SecondTable from "../../../Common/second-table-component";
 import { EditDeleteDropdownMenu } from "../../../Common/DropDown/edit-delete";
 import AddNoteForm from "./AddNoteForm";
-import AreYouSureModel from "../../../modals/AreYouSureModel";
 import DeleteModel from "../../../modals/delete-model";
 import EditPatientForm from "./edit-pateint";
 import { showToast } from "../../../store/toast-slice";
@@ -29,7 +24,9 @@ const PatientPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOrder, setSortOrder] = useState("");
+  // Default API sort: newest first (desc), but label starts as "Sort By"
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortLabel, setSortLabel] = useState("Sort By");
   const [patients, setPatients] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -103,11 +100,13 @@ const PatientPage = () => {
     async (page = 1) => {
       setLoading(true);
       try {
+        const sortParam = sortOrder === "asc" ? "createdDateAsc" : "createdDateDesc";
         const response = await getDoctorPatients({
           status: "ALL",
           page: page - 1, // Backend uses 0-based indexing
           size: 10,
           search: debouncedSearchQuery,
+          sort: sortParam,
         });
 
         const responseData = response.data.data;
@@ -133,7 +132,7 @@ const PatientPage = () => {
         setLoading(false);
       }
     },
-    [debouncedSearchQuery, dispatch]
+    [debouncedSearchQuery, sortOrder, dispatch]
   );
   // Initial load
   useEffect(() => {
@@ -146,6 +145,12 @@ const PatientPage = () => {
     fetchPatients(1);
   }, [debouncedSearchQuery]);
 
+  // Handle sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+    fetchPatients(1);
+  }, [sortOrder, fetchPatients]);
+
   // Handle page changes
   const handlePageChange = useCallback(
     (page) => {
@@ -155,7 +160,6 @@ const PatientPage = () => {
     [fetchPatients]
   );
 
-  // Since filtering is now handled by the backend, we use patients directly
   const filteredData = patients;
 
   return (
@@ -164,9 +168,12 @@ const PatientPage = () => {
         <div className="flex flex-col md:flex-row justify-between gap-2 pb-3">
           <div className="md:flex-1 ">
             <SearchBar
-              title="Sort By"
+              title={sortLabel}
               onSearch={setSearchQuery}
-              onSort={setSortOrder}
+              onSort={(order) => {
+                setSortOrder(order);
+                setSortLabel(order === "asc" ? "Ascending" : "Descending");
+              }}
             />
           </div>
 
