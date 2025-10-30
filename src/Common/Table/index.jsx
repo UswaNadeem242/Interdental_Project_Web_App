@@ -101,7 +101,7 @@ export default function TableComponent({
                           <div className="flex flex-col">
                             <span>{row.name}</span>
 
-                            {onActionClick ? (
+                            {onActionClickk ? (
                               <button
                                 onClick={() => onActionClickk(row)}
                                 className="text-secondaryBrand flex items-center gap-1 cursor-pointer text-xs font-normal font-poppins pt-2"

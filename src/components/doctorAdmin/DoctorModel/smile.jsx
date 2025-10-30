@@ -34,16 +34,15 @@ export const SmileDesignPicker = ({
   const handleSelect = (smile) => {
     // Update local state for UI only
     if (smile.parentId === selectedSmile?.parentId) {
-       setSelectedSmile(null);
+      setSelectedSmile(null);
       return null;
     } else {
-     
       setSelectedSmile(smile);
       return null;
     }
   };
 
-  const handleConfirm = () => { 
+  const handleConfirm = () => {
     if (selectedSmile) {
       // Pass the selected smile back to parent component
       setSelected(selectedSmile);
@@ -59,7 +58,7 @@ export const SmileDesignPicker = ({
   };
 
   if (!smileItems || smileItems.length === 0) {
-     return (
+    return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
         <div className="bg-white rounded-2xl p-6 shadow-lg w-[80%] max-w-3xl h-auto max-h-[95vh] overflow-y-auto">
           <div className="flex justify-between items-center mb-4">
@@ -129,14 +128,15 @@ export const SmileDesignPicker = ({
                       }`}
                     />
                   </div>
-                  <span className="md:text-sm text-xs font-poppins">
-                    {smile.name}
+                  <span className="md:text-sm text-xs font-poppins ml-1">
+                    {`${smile.label}_${i + 1}`}
+                    {/* {`Smile Design_${i + 1}`} */}
                   </span>
                 </div>
 
                 <img
                   src={smile.filePath || "/assets/doctor/teeth1.png"}
-                  alt={smile.name}
+                  alt={smile.label}
                   className="w-full h-auto rounded-md mt-2"
                 />
               </label>
