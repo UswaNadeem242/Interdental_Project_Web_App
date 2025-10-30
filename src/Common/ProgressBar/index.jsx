@@ -4,32 +4,32 @@ import HealthIcon from "../../icon/HealthIcon";
 import BoxIcon from "../../icon/BoxIcon";
 import ShipIcon from "../../icon/ShipIcon";
 import TimeIcon from "../../icon/TimeIcon";
-const stepsDefault = [
-  {
-    title: "Order Placed",
-    date: "12 Sep 2024, 04:25 PM",
-    status: "completed",
-    icon: HealthIcon,
-  },
-  {
-    title: "In Progress",
-    date: "12 Sep 2024, 04:25 PM",
-    status: "current",
-    icon: BoxIcon,
-  },
-  {
-    title: "Shipped",
-    date: "12 Sep 2024, 04:25 PM",
-    status: "upcoming",
-    icon: ShipIcon,
-  },
-  {
-    title: "Delivered",
-    date: "12 Sep 2024, 04:25 PM",
-    status: "upcoming",
-    icon: TimeIcon,
-  },
-];
+// const stepsDefault = [
+//   {
+//     title: "Order Placed",
+//     date: "12 Sep 2024, 04:25 PM",
+//     status: "completed",
+//     icon: HealthIcon,
+//   },
+//   {
+//     title: "In Progress",
+//     date: "12 Sep 2024, 04:25 PM",
+//     status: "current",
+//     icon: BoxIcon,
+//   },
+//   {
+//     title: "Shipped",
+//     date: "12 Sep 2024, 04:25 PM",
+//     status: "upcoming",
+//     icon: ShipIcon,
+//   },
+//   {
+//     title: "Delivered",
+//     date: "12 Sep 2024, 04:25 PM",
+//     status: "upcoming",
+//     icon: TimeIcon,
+//   },
+// ];
 
 export const ProgressBar = ({ steps }) => {
   return (

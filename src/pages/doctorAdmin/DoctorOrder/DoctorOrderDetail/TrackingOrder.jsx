@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { ProgressBar } from "../../../../Common/ProgressBar";
 import { getOrderByID } from "../../../../api/doctorDasboard";
-import HealthIcon from "../../../../icon/HealthIcon";
-import BoxIcon from "../../../../icon/BoxIcon";
-import ShipIcon from "../../../../icon/ShipIcon";
-import TimeIcon from "../../../../icon/TimeIcon";
+import Icons from "../../../../components/Icons";
 export default function TrackingOrder({ id }) {
   const [orderDetails, setOrderDetails] = useState(null);
   const [steps, setSteps] = useState([]);
@@ -49,30 +45,10 @@ export default function TrackingOrder({ id }) {
   };
 
   const orderSteps = [
-    {
-      id: 1,
-      title: "Order Placed",
-      key: "PENDING",
-      icon: HealthIcon,
-    },
-    {
-      id: 2,
-      title: "Processing",
-      key: "IN_PROGRESS",
-      icon: BoxIcon,
-    },
-    {
-      id: 3,
-      title: "Shipped",
-      key: "SHIPPED",
-      icon: ShipIcon,
-    },
-    {
-      id: 4,
-      title: "Delivered",
-      key: "DELIVERED",
-      icon: TimeIcon,
-    },
+    { id: 1, title: "Order Placed", key: "PENDING" },
+    { id: 2, title: "Processing", key: "IN_PROGRESS" },
+    { id: 3, title: "Shipped", key: "SHIPPED" },
+    { id: 4, title: "Delivered", key: "DELIVERED" },
   ];
   // useEffect(() => {
   //     const fetchOrderByID = async () => {
@@ -136,7 +112,7 @@ export default function TrackingOrder({ id }) {
 
                 <h3 className="text-tertiaryBrand font-semibold">
                   {" "}
-                  {formatDate(orderDetails?.expectedDeliveryDate)}
+                  {formatDate(orderDetails?.expectedDeliveryDate)?.replace(/\//g, "-")}
                 </h3>
               </div>
 
@@ -145,7 +121,8 @@ export default function TrackingOrder({ id }) {
                   tracking ID
                 </h3>
                 <h3 className="text-tertiaryBrand font-semibold flex md:justify-end">
-                  #{orderDetails?.id}
+                  {/* #{orderDetails?.id} */}
+                  {orderDetails?.trackingId || "N/A"}
                 </h3>
               </div>
             </div>
@@ -156,20 +133,161 @@ export default function TrackingOrder({ id }) {
             <h3 className="text-tertiaryBrand text-sm font-poppins capitalize font-semibold border-b-2 pb-3">
               order status
             </h3>
+
+            {/* Status timeline - same style as OrderInfo.jsx */}
             <div className="mt-4">
-              <ProgressBar steps={steps} />
-              {/* Display timestamps below progress bar */}
-              {steps.length > 0 && (
-                <div className="mt-4 text-center">
-                  {steps.map((step, index) => (
-                    step.timestamp && (
-                      <div key={index} className="text-xs text-gray-600 mb-2">
-                        <span className="font-semibold">{step.title}:</span> {step.timestamp}
-                      </div>
-                    )
-                  ))}
+              <div className="flex w-full py-[16px] px-[8px]">
+                {/* Order Placed */}
+                <div className="flex flex-col items-start gap-[12px] flex-1">
+                  <div className="flex items-center w-full">
+                    <Icons.OrderCheckIcon 
+                      fill={
+                        orderDetails?.orderStatus === "PENDING" ||
+                        orderDetails?.orderStatus === "IN_PROGRESS" ||
+                        orderDetails?.orderStatus === "SHIPPED" ||
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "#7DD3DD"
+                          : "#DDDDDD"
+                      }
+                    />
+                    <div 
+                      className={`flex-1 h-[2px] mx-[8px] ${
+                        orderDetails?.orderStatus === "PENDING" ||
+                        orderDetails?.orderStatus === "IN_PROGRESS" ||
+                        orderDetails?.orderStatus === "SHIPPED" ||
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "bg-[#7DD3DD]" 
+                          : "bg-[#DDDDDD]"
+                      }`}
+                    />
+                  </div>
+                  <div className="flex items-start gap-[8px]">
+                    <Icons.OrderPending 
+                      fill={
+                        orderDetails?.orderStatus === "PENDING" ||
+                        orderDetails?.orderStatus === "IN_PROGRESS" ||
+                        orderDetails?.orderStatus === "SHIPPED" ||
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "#7DD3DD"
+                          : "#DDDDDD"
+                      }
+                    />
+                    <div className="flex flex-col space-y-[2px]">
+                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
+                        Order Placed
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              )}
+
+                {/* In Progress */}
+                <div className="flex flex-col items-start gap-[12px] flex-1">
+                  <div className="flex items-center w-full">
+                    <Icons.OrderCheckIcon 
+                      fill={
+                        orderDetails?.orderStatus === "IN_PROGRESS" ||
+                        orderDetails?.orderStatus === "SHIPPED" ||
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "#7DD3DD"
+                          : "#DDDDDD"
+                      }
+                    />
+                    <div 
+                      className={`flex-1 h-[2px] mx-[8px] ${
+                        orderDetails?.orderStatus === "SHIPPED" ||
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "bg-[#001D58]"
+                          : "bg-[#DDDDDD]"
+                      }`}
+                    />
+                  </div>
+                  <div className="flex items-start gap-[8px]">
+                    <Icons.OrderInProgress 
+                      stroke={
+                        orderDetails?.orderStatus === "IN_PROGRESS" ||
+                        orderDetails?.orderStatus === "SHIPPED" ||
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "#7DD3DD"
+                          : "#DDDDDD"
+                      }
+                    />
+                    <div className="flex flex-col space-y-[2px]">
+                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
+                        In Progress
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Shipped */}
+                <div className="flex flex-col items-start gap-[12px] flex-1">
+                  <div className="flex items-center w-full">
+                    <Icons.OrderCheckIcon 
+                      fill={
+                        orderDetails?.orderStatus === "SHIPPED" ||
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "#001D58"
+                          : "#DDDDDD"
+                      }
+                    />
+                    <div 
+                      className={`flex-1 h-[2px] mx-[8px] ${
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "bg-[#001D58]"
+                          : "bg-[#DDDDDD]"
+                      }`}
+                    />
+                  </div>
+                  <div className="flex items-start gap-[8px]">
+                    <Icons.OrderShipped 
+                      fill={
+                        orderDetails?.orderStatus === "SHIPPED" ||
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "#001D58"
+                          : "#DDDDDD"
+                      }
+                      stroke={
+                        orderDetails?.orderStatus === "SHIPPED" ||
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "#001D58"
+                          : "#DDDDDD"
+                      }
+                    />
+                    <div className="flex flex-col space-y-[2px]">
+                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
+                        Shipped
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Delivered */}
+                <div className="flex flex-col items-start gap-[12px]">
+                  <div className="flex items-center">
+                    <Icons.OrderCheckIcon 
+                      fill={
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "#001D58"
+                          : "#DDDDDD"
+                      }
+                    />
+                  </div>
+                  <div className="flex items-start gap-[8px]">
+                    <Icons.OrderDelivered 
+                      fill={
+                        orderDetails?.orderStatus === "DELIVERED"
+                          ? "#001D58"
+                          : "#DDDDDD"
+                      }
+                    />
+                    <div className="flex flex-col space-y-[2px]">
+                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
+                        Delivered
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
