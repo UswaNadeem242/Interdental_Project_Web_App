@@ -389,14 +389,14 @@ export const DoctorCalimsForm = () => {
                       </span>
                     </button>
 
-                    <div className="flex-1 overflow-y-auto pr-4">
+                    <div className="flex-1 overflow-y-auto pr-4 pb-10">
                       <DoctorTermCondition />
                     </div>
 
-                    <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-bgWhite pb-2 ">
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-bgWhite pb-2 p-4 ">
                       <button
                         type="submit"
-                        className="bg-[#001D58]  text-[#FFFFFF] text-sm font-normal font-poppins px-16  py-2 rounded-full "
+                        className="bg-[#001D58]  text-[#FFFFFF] text-sm font-normal font-poppins px-16  py-4 rounded-full "
                       >
                         Agree & Send Claim Request
                       </button>
