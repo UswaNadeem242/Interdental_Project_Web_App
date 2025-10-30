@@ -136,7 +136,7 @@ export default function TableComponent({
                         </span>
                       ) : col.key === "id" ? (
                         <span
-                          className={`px-3 py-2 rounded-full text-xs font-semibold capitalize  
+                          className={`py-2 rounded-full text-xs font-semibold capitalize  
                           }`}
                         >
                           {row[col.key]}
