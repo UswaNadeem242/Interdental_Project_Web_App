@@ -270,7 +270,7 @@ const DoctorOrder = () => {
                             <FormSection
                               title="Expected Delivery Date "
                               color="text-xs font-semibold"
-                              className="border border-none"
+                              className="border flex flex-col gap-2 border-none"
                               gap="gap-4"
                             >
                               <LabeledInput
