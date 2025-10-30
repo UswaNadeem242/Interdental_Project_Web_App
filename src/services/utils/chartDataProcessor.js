@@ -25,6 +25,22 @@ const getAllDaysOfWeek = () => {
   return ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 };
 
+// Normalize API day labels (e.g., "Monday" → "Mon", maintain already-short labels)
+const normalizeDayLabel = (label) => {
+  if (!label) return "";
+  const l = String(label).trim();
+  const map = {
+    Monday: "Mon",
+    Tuesday: "Tue",
+    Wednesday: "Wed",
+    Thursday: "Thu",
+    Friday: "Fri",
+    Saturday: "Sat",
+    Sunday: "Sun",
+  };
+  return map[l] || l.slice(0, 3);
+};
+
 // Helper function to get years range (current year and 3 years before)
 const getYearsRange = () => {
   const currentYear = new Date().getFullYear();
@@ -96,7 +112,8 @@ export const fillWeekData = (apiData) => {
   // Create a map of existing data for quick lookup
   const dataMap = new Map();
   apiData.forEach((item) => {
-    dataMap.set(item.label, item);
+    const key = normalizeDayLabel(item.label);
+    dataMap.set(key, { ...item, label: key });
   });
 
   // Fill missing days with zero values
