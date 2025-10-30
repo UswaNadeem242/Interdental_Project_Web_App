@@ -373,13 +373,13 @@ export default function OrderDetailsForm({ id }) {
               <div className="p-4 flex items-center gap-2">
                 <span className="text-secondaryText text-sm font-normal font-poppins">Denture type:</span>
                 <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Denture")?.dropdown?.name || "Partial Denture"}
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Denture")?.dropdown?.name || "N/A"}
                 </span>
               </div>
               <div className="p-4 flex items-center gap-2">
                 <span className="text-secondaryText text-sm font-normal font-poppins">Surgical guide:</span>
                 <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Surgical guide")?.dropdown?.name || "Not Available"}
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Surgical guide")?.dropdown?.name || "N/A"}
                 </span>
               </div>
             </div>
@@ -389,13 +389,13 @@ export default function OrderDetailsForm({ id }) {
               <div className="p-4 flex items-center gap-2">
                 <span className="text-secondaryText text-sm font-normal font-poppins">Smart Crown:</span>
                 <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.smartCrownDate ? formatDateDMY(orderDetails.smartCrownDate) : formatDateDMY(orderDetails?.createdAt)}
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Crown")?.dropdown?.name || "N/A"}
                 </span>
               </div>
               <div className="p-4 flex items-center gap-2">
                 <span className="text-secondaryText text-sm font-normal font-poppins">Material:</span>
                 <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Material")?.dropdown?.name || "Ivovlar Prime Cad"}
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Material")?.dropdown?.name || "N/A"}
                 </span>
               </div>
             </div>
@@ -408,13 +408,13 @@ export default function OrderDetailsForm({ id }) {
                   {orderDetails?.doctorOrderItems
                     ?.filter(item => item.dropdown?.type === "Shade")
                     ?.map(item => item.dropdown?.name)
-                    ?.join(", ") || "A2 (Vita Classic Shades)"}
+                    ?.join(", ") || "N/A"}
                 </span>
               </div>
               <div className="p-4 flex items-center gap-2">
                 <span className="text-secondaryText text-sm font-normal font-poppins">Digital Model Type:</span>
                 <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Digital Model Type")?.dropdown?.name || "Full arch"}
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Digital Model Type")?.dropdown?.name || "N/A"}
                 </span>
               </div>
             </div>
@@ -423,7 +423,7 @@ export default function OrderDetailsForm({ id }) {
             <div className="p-4 flex items-center gap-2">
               <span className="text-secondaryText text-sm font-normal font-poppins">Dental Lab Alliance:</span>
               <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Participating Lab")?.dropdown?.name || "Ceramic Arts Dental Lab"}
+                {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Participating Lab")?.dropdown?.name || "N/A"}
               </span>
             </div>
           </div>
