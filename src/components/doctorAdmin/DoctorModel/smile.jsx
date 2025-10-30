@@ -14,6 +14,8 @@ export const SmileDesignPicker = ({
   const [selectedSmile, setSelectedSmile] = useState(null);
   const dispatch = useDispatch();
   // Load Smile Type from dropdownsa
+
+  console.log("dropdowns", dropdowns);
   useEffect(() => {
     if (!dropdowns || !Array.isArray(dropdowns)) return;
     const smileGroup = dropdowns.find((item) => item.name === "Smile Type");

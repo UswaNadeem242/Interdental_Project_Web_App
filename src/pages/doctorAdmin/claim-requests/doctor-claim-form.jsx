@@ -43,7 +43,7 @@ export default function DocotrClaimForm({ row }) {
                     <h6 className="block text-sm mb-1 pt-3  text-secondaryText  font-normal">
                         Claim Submitted On
                     </h6>
-                    <p className="text-sm mb-1  text-primaryText  font-semibold pt-2">{createdAt ? createdAt.slice(0, 10) : 'Null'}</p>
+                    <p className="text-sm mb-1  text-primaryText  font-semibold pt-2">{createdAt ? new Date(createdAt).toLocaleDateString('en-GB').replace(/\//g,'-') : 'Null'}</p>
                 </div>
                 {/* Reason for Claim */}
                 <div className=" ">

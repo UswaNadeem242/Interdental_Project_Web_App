@@ -33,7 +33,7 @@ const DoctorClaimRequests = () => {
         dName: order?.doctorName || "-",
         pEmail: order?.patientEmail || "-",
         submission: order?.createdAt
-          ? new Date(order.createdAt).toISOString().split("T")[0]
+          ? new Date(order.createdAt).toLocaleDateString('en-GB').replace(/\//g,'-')
           : "-",
         status: order?.orderStatus?.toLowerCase() || "pending",
         // date: order?.ccExpiry || "-",
@@ -144,10 +144,10 @@ const DoctorClaimRequests = () => {
             </div>
           </div>
           <SecondaryButton
-            title="New Claim Request"
-            icon={<PlusIcon />}
+            title="Claim New Request"
+            // icon={<PlusIcon className="w-4 h-4 text-white" />}
             href={`/doctor-admin/claim-request/${slugify("claim-request")}`}
-            className="w-full md:w-auto rounded-md px-6 py-3 font-poppins bg-[#F8F8F8] text-primaryText"
+            className="w-full md:w-auto rounded-lg px-6 py-3 font-poppins bg-secondaryBrand text-white"
           />
         </div>
 
