@@ -89,60 +89,32 @@ export function PatientDropdown({
     }
   }, [searchTerm, patientsList]);
 
-  // Masking utilities
-  const maskName = (name) => {
-    if (!name?.trim()) return "Unknown";
-    const clean = name.trim();
-    return (
-      clean.slice(0, 2).charAt(0).toUpperCase() +
-      clean.slice(1, 2).toLowerCase()
-    );
-  };
-
-  const maskLastName = (lastName) => {
-    if (!lastName?.trim()) return "";
-    const clean = lastName.trim();
-    return (
-      clean.slice(0, 2).charAt(0).toUpperCase() +
-      clean.slice(1, 2).toLowerCase()
-    );
-  };
-
-  const maskEmail = (email) => {
-    if (!email) return "";
-    const [localPart, domain] = email.split("@");
-    if (!localPart || !domain) return email;
-    return localPart.slice(0, 3) + "*****@" + domain;
-  };
+  // No masking - show actual details
   return (
     <div className={`relative  ${className || ""}`} ref={dropdownRef}>
       {/* Button */}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex w-full items-center justify-between border rounded-md p-2 bg-white shadow-sm"
+        className="flex w-full items-center justify-start gap-2 border rounded-md p-2 bg-white shadow-sm"
       >
         {selectedPatient ? (
-          <span className="flex items-center gap-2">
-            {selectedPatient.profileURL && (
-              <img
-                src={selectedPatient.profileURL}
-                alt={selectedPatient.name}
-                className="w-6 h-6 rounded-full object-cover"
-              />
-            )}
-            <span>
-              {maskName(selectedPatient.name)}
-              {maskLastName(selectedPatient.lastName)} - {selectedPatient.email}
-              {/* {selectedPatient.name}
-              {selectedPatient.lastName} - {selectedPatient.email} */}
-            </span>
+          <span className="flex items-center gap-2 min-w-0 px-1 py-1">
+            <img
+              src={selectedPatient.profileURL || "/assets/user.png"}
+              alt={selectedPatient.name}
+              className="w-9 h-9 rounded-full object-cover border border-[#285772]"
+            />
+            <div className="flex flex-col text-left min-w-0">
+              <span className="text-secondaryBrand font-medium text-sm truncate">{selectedPatient.name}</span>
+              <span className="text-xs text-gray-500 truncate">{selectedPatient.email || ""}</span>
+            </div>
           </span>
         ) : (
           <span className="text-gray-400">Select Patient</span>
         )}
         <ChevronDownIcon
-          className={`h-4 w-4 text-[#949494] ${dropdownClass || ""}`}
+          className={`ml-auto h-4 w-4 text-[#949494] ${dropdownClass || ""}`}
         />
       </button>
 
@@ -171,7 +143,7 @@ export function PatientDropdown({
                   key={p.id}
                   type="button"
                   onClick={() => handleSelect(p)}
-                  className={`flex  items-center gap-2 px-3 py-2 text-sm transition-colors ${classNameWidth}
+                  className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors ${classNameWidth}
                     ${active ? "bg-indigo-50" : "hover:bg-gray-50"}
                     ${!isLast ? "border-b border-gray-200" : ""}`}
                 >
@@ -181,12 +153,9 @@ export function PatientDropdown({
                     className="w-9 h-9 rounded-full object-cover border border-[#285772]"
                   />
 
-                  <div className="flex flex-col text-left">
-                    <span className="text-primaryText font-medium text-sm">
-                      {/* {maskName(p.name)}{maskLastName(p.lastName)} - {maskEmail(p.email)} */}
-                      {p.name}
-                      {p.lastName} <br /> {p.email}
-                    </span>
+                  <div className="flex flex-col text-left min-w-0 flex-1">
+                    <span className="text-secondaryBrand font-medium text-sm truncate">{p.name}</span>
+                    <span className="text-xs text-gray-500 truncate">{p.email || ""}</span>
                   </div>
                 </button>
               );

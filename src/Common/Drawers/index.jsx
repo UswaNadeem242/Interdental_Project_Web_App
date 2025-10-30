@@ -59,7 +59,7 @@ const badgeClass = statusStyles[status] || "text-gray-700 bg-gray-100";
                         {title}
                         {status && (
                           <span className={`text-xs px-2 py-1 rounded-full ${badgeClass}`}>
-                            {status}
+                            {status.charAt(0).toUpperCase() + status.slice(1)?.toLowerCase()}
                           </span>
                         )}
                       </div>

@@ -59,6 +59,24 @@ const DoctorOrder = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
+  // Persist Smile Design as a GLOBAL selection so it's sent once in Checkout
+  useEffect(() => {
+    if (!selected) return;
+    const value = selected?.id ?? selected?.value ?? null;
+    const label = selected?.name ?? selected?.label ?? "Smile Design";
+    const price = Number(selected?.price) || 0;
+    if (value) {
+      dispatch(
+        updateGlobalSelection({
+          field: "smileDesign",
+          value,
+          price,
+          option: { label },
+        })
+      );
+    }
+  }, [selected, dispatch]);
+
   const steps = [
     { id: "s1", title: "Restoration Design Form" },
     { id: "s2", title: "Review" },
@@ -81,10 +99,13 @@ const DoctorOrder = () => {
   useEffect(() => {
     // Reset restoration state in Redux (persistence is handled by blacklist)
     dispatch(resetRestoration());
-
+    // Explicitly clear any previously selected patient to avoid stale selection
+    dispatch(setSelectedPatient(null));
+    
     // Reset on unmount as well to ensure clean state when navigating back
     return () => {
       dispatch(resetRestoration());
+      dispatch(setSelectedPatient(null));
     };
   }, [dispatch]); // Run on mount and unmount
 
