@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { SecondaryButton } from "../../../../Common/Button";
 import DropDownComponent from "../../../../Common/DropDown";
 // import { options, ShippingDetail } from "../../../../Constant";
 import CardIcon from "../../../../icon/CardIcon";
-import TeethSelection from "../../../../components/doctorAdmin/TeethSelection";
 import { getOrderByID } from "../../../../api/doctorDasboard";
 import { useSelector } from "react-redux";
 import jsPDF from "jspdf";
@@ -98,18 +96,18 @@ export default function OrderDetailsForm({ id }) {
     return acc;
   }, {});
   const formRef = useRef();
-  // Helper function to format date as MM/DD/YYYY
-  const formatDate = (dateString) => {
+  // Helper: format date as DD-MM-YYYY
+  const formatDateDMY = (dateString) => {
     if (!dateString || dateString === "-") return "-";
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return "-";
 
-      const month = String(date.getMonth() + 1).padStart(2, "0");
       const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
       const year = date.getFullYear();
 
-      return `${month}/${day}/${year}`;
+      return `${day}-${month}-${year}`;
     } catch (error) {
       return "-";
     }
@@ -168,14 +166,25 @@ export default function OrderDetailsForm({ id }) {
     }
 
     try {
-      // Give React time to fully render the hidden component
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // Hide the download button before capturing
+      const button = element.querySelector('.pdf-hide-button');
+      if (button) {
+        button.style.display = 'none';
+      }
+
+      // Give React time to fully render
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
       });
+
+      // Show the button again
+      if (button) {
+        button.style.display = '';
+      }
 
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
@@ -197,9 +206,14 @@ export default function OrderDetailsForm({ id }) {
         heightLeft -= pdfHeight;
       }
 
-      pdf.save("Implant_Design_Form.pdf");
+      pdf.save("Restoration_Design_Form.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
+      // Make sure to show the button again even if there's an error
+      const button = element.querySelector('.pdf-hide-button');
+      if (button) {
+        button.style.display = '';
+      }
     }
   };
 
@@ -207,120 +221,77 @@ export default function OrderDetailsForm({ id }) {
 
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
-      <div
-        className="md:col-span-9 col-span-4 bg-white p-4 rounded-2xl"
-        ref={formRef}
-      >
-        <div className="flex justify-between items-center pb-4">
-          <div>
-            <h4 className="text-[#1A1A1A] font-semibold text-sm font-poppins">
-              Implant Design Form:
-            </h4>
-          </div>
-          {/* <div>
-            <SecondaryButton
-              title="Download Form"
-              className="border text-secondaryBrand font-medium text-xs border-secondaryBrand rounded-full  px-6 py-3"
-              onClick={handleDownloadPDF}
-            />
-          </div> */}
-
-          <div
-
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "210mm", // A4 width
-              backgroundColor: "#fff",
-              zIndex: -9999,
-              opacity: 0,
-              pointerEvents: "none",
-            }}
-          >
-            <DownloadPdfForm ref={formRef} />
-          </div>
-
-
-
-          <button
-            onClick={handleDownloadPDF}
-            className="border text-secondaryBrand font-medium text-xs border-secondaryBrand rounded-full px-6 py-3 no-print"
-          >
-            Download Form
-          </button>
+      <div className="md:col-span-9 col-span-4 bg-white p-4 rounded-2xl">
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "210mm",
+            backgroundColor: "#fff",
+            zIndex: -9999,
+            opacity: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <DownloadPdfForm ref={formRef} />
         </div>
+
+        {/* PDF Content - This will be captured */}
+        <div ref={formRef} className="p-4">
+          <div className="flex justify-between items-center pb-4">
+            <h4 className="text-primaryText font-normal text-xl font-poppins">
+              Restoration Design Form
+            </h4>
+            <button
+              onClick={handleDownloadPDF}
+              className="border text-secondaryBrand font-medium text-sm border-secondaryBrand rounded-full px-6 py-3 pdf-hide-button"
+            >
+              Download Form
+            </button>
+          </div>
 
         <div>
-          <div className="border border-gray-200  rounded-lg p-4 sm:p-5">
-            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText">
-              Doctor Info
-            </h3>
-            <hr className="border-gray-200 my-2" />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm sm:text-base text-center">
-              <div>
-                <p className="text-secondaryText    mb-2  font-normal md:text-sm text-xs font-poppins">
-                  Contact Info
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins ">
-                  {`${maskNamePart(
-                    orderDetails?.doctorFirstName
-                  )}${maskNamePart(orderDetails?.doctorLastName)}`}
-                </p>
+          <div className="border border-gray-200 rounded-lg">
+            {/* Row 1 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Doctor's Name</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {`${orderDetails?.doctorFirstName || ""} ${orderDetails?.doctorLastName || ""}`}
+                </span>
               </div>
-              <div>
-                <p className="text-secondaryText    mb-2  font-normal md:text-sm text-xs font-poppins whitespace-nowrap">
-                  Office Registration
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {maskNumber(orderDetails?.doctorRefNumber) || "-"}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                  Create Date
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {formatDate(orderDetails?.createdAt)}
-                </p>
-              </div>
-              <div>
-                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                  Due Date
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {formatDate(orderDetails?.expectedDeliveryDate)}
-                </p>
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Office Reference Number</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {orderDetails?.doctorRefNumber || "-"}
+                </span>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="mt-4">
-          <div className="border border-gray-200  rounded-lg p-4 sm:p-6">
-            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText">
-              Patient Information
-            </h3>
-            <hr className="border-gray-200 my-2" />
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm sm:text-base">
-              <div>
-                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                  Patient Name:
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {`${maskNamePart(
-                    orderDetails?.patientFirstName
-                  )}${maskNamePart(orderDetails?.patientLastName)}`}
-                </p>
-              </div>{" "}
-              <div>
-                <p className="text-secondaryText    mb-2 font-normal md:text-sm text-xs font-poppins">
-                  Subscription ID:
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {patient?.id || "-"}#
-                </p>
+            
+            {/* Row 2 */}
+            <div className="border-b border-gray-200">
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Patient</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {`${orderDetails?.patientFirstName || ""} ${orderDetails?.patientLastName || ""}`}
+                </span>
+              </div>
+            </div>
+            
+            {/* Row 3 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2">
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Created Date</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {formatDateDMY(orderDetails?.createdAt)}
+                </span>
+              </div>
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Expected Delivery Date:</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {formatDateDMY(orderDetails?.expectedDeliveryDate)}
+                </span>
               </div>
             </div>
           </div>
@@ -328,25 +299,9 @@ export default function OrderDetailsForm({ id }) {
 
         <div className="mt-4">
           {/* tooth selection  */}
-          <div className="border border-gray-200  rounded-lg p-4 mt-4">
-            <p className="text-sm font-medium font-poppins text-primaryText mb-4">
-              Tooth Selection{" "}
-              <span className="font-semibold">
-                {/* {orderDetails?.selectedTooths > 0
-                  ? orderDetails?.selectedTooths.map((t) => `#${t}`).join(", ")
-                  : "None"} */}
-                {(orderDetails?.selectedTooths || []).length > 0
-                  ? orderDetails.selectedTooths.map((t) => `#${t}`).join(", ")
-                  : "None"}
-              </span>
-            </p>
+          <div className="border border-gray-200 rounded-lg p-4">
+            <p className="text-sm font-normal font-poppins text-primaryText mb-4">Tooth Selection</p>
             <div className="">
-              {/* <img src="/assets/doctor/teeth.png" alt="image" /> */}
-              {/* <TeethSelection
-                selectedTeeth={orderDetails?.selectedTooths || []}
-                onToothSelect={() => {}} // No selection needed - display only
-                showIds={true}
-              /> */}
               {/* Upper 16 */}
               <div className="flex flex-wrap gap-4 mt-4 justify-center ">
                 {Object.entries(topTeeth).map(([id, ToothComponent]) => (
@@ -383,121 +338,109 @@ export default function OrderDetailsForm({ id }) {
           </div>
         </div>
 
+        {/* Selected Smile Design and Scanner Type - Separate Section */}
         <div className="mt-4">
-          <div className="border border-gray-200  rounded-lg p-4 sm:p-6">
-            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText">
-              Customization Details
-            </h3>
-            <hr className="border-gray-200 my-2" />
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-              {/* Material */}
-              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Material") && (
-                <div>
-                  <p className="text-[#949494] text-xs font-poppins">
-                    Material:
-                  </p>
-                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Material")?.dropdown?.name || "N/A"}
-                  </p>
-                </div>
-              )}
-              
-              {/* Scanner Type */}
-              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Scanner") && (
-                <div>
-                  <p className="text-[#949494] text-xs font-poppins">
-                    Scanner Type:
-                  </p>
-                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Scanner")?.dropdown?.name || "N/A"}
-                  </p>
-                </div>
-              )}
-              
-              {/* Digital Denture */}
-              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Denture") && (
-                <div>
-                  <p className="text-[#949494] text-xs font-poppins">
-                    Digital Denture:
-                  </p>
-                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Denture")?.dropdown?.name || "N/A"}
-                  </p>
-                </div>
-              )}
-              
-              {/* Digital Model Type */}
-              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Digital Model Type") && (
-                <div>
-                  <p className="text-[#949494] text-xs font-poppins">
-                    Digital Model Type:
-                  </p>
-                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Digital Model Type")?.dropdown?.name || "N/A"}
-                  </p>
-                </div>
-              )}
-              
-              {/* Participating Lab */}
-              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Participating Lab") && (
-                <div>
-                  <p className="text-[#949494] text-xs font-poppins">
-                    Participating Lab:
-                  </p>
-                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Participating Lab")?.dropdown?.name || "N/A"}
-                  </p>
-                </div>
-              )}
-              
-              {/* Crown */}
-              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Crown") && (
-                <div>
-                  <p className="text-[#949494] text-xs font-poppins">
-                    Crown:
-                  </p>
-                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                    {orderDetails.doctorOrderItems.find(item => item.dropdown?.type === "Crown")?.dropdown?.name || "N/A"}
-                  </p>
-                </div>
-              )}
-              
-              {/* Shade */}
-              {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Shade") && (
-                <div>
-                  <p className="text-[#949494] text-xs font-poppins">
-                    Shade:
-                  </p>
-                  <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                    {orderDetails.doctorOrderItems
-                      .filter(item => item.dropdown?.type === "Shade")
-                      .map(item => item.dropdown?.name)
-                      .join(", ") || "N/A"}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="border border-gray-200  rounded-lg p-4 sm:p-6 mt-4">
-            <h3 className="font-semibold mb-2 text-sm sm:text-base font-poppins text-primaryText ">
-              Notes
-            </h3>
-            <hr className="border-gray-200 my-2" />
-            <div className=" text-sm sm:text-base pb-2">
-              <div>
-                <p className="text-secondaryText     font-normal md:text-sm text-xs font-poppins ">
-                  {`${maskNamePart(
-                    orderDetails?.doctorFirstName
-                  )}${maskNamePart(orderDetails?.doctorLastName)}`}
-                  :
-                </p>
-                <p className="font-normal text-secondaryBrand  text-sm sm:text-base font-poppins">
-                  {orderDetails?.additionalNotes || "-"}
-                </p>
+          <div className="border border-gray-200 rounded-lg p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Selected Smile Design:</span>
+                <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                  {orderDetails?.smileDesign ||
+                    (orderDetails?.doctorOrderItems || [])
+                      .find(item => {
+                        const t = item?.dropdown?.type || "";
+                        return t === "Smile Type" || t === "Smile Design";
+                      })?.dropdown?.name || "N/A"}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Scanner Type:</span>
+                <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Scanner")?.dropdown?.name || "N/A"}
+                </span>
               </div>
             </div>
           </div>
         </div>
+
+        <div className="mt-4">
+          <h3 className="font-normal text-base font-poppins text-primaryText mb-4">
+            Customization Details
+          </h3>
+          <div className="border border-gray-200 rounded-lg">
+            {/* Row 1 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Denture type:</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Denture")?.dropdown?.name || "Partial Denture"}
+                </span>
+              </div>
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Surgical guide:</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Surgical guide")?.dropdown?.name || "Not Available"}
+                </span>
+              </div>
+            </div>
+            
+            {/* Row 2 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Smart Crown:</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {orderDetails?.smartCrownDate ? formatDateDMY(orderDetails.smartCrownDate) : formatDateDMY(orderDetails?.createdAt)}
+                </span>
+              </div>
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Material:</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Material")?.dropdown?.name || "Ivovlar Prime Cad"}
+                </span>
+              </div>
+            </div>
+            
+            {/* Row 3 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Shade:</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {orderDetails?.doctorOrderItems
+                    ?.filter(item => item.dropdown?.type === "Shade")
+                    ?.map(item => item.dropdown?.name)
+                    ?.join(", ") || "A2 (Vita Classic Shades)"}
+                </span>
+              </div>
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">Digital Model Type:</span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Digital Model Type")?.dropdown?.name || "Full arch"}
+                </span>
+              </div>
+            </div>
+            
+            {/* Row 4 */}
+            <div className="p-4 flex items-center gap-2">
+              <span className="text-secondaryText text-sm font-normal font-poppins">Dental Lab Alliance:</span>
+              <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Participating Lab")?.dropdown?.name || "Ceramic Arts Dental Lab"}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <h3 className="font-normal text-base font-poppins text-primaryText pb-4 border-b border-gray-200">
+            Additional Notes
+          </h3>
+          <div className="pt-4">
+            <p className="text-secondaryText text-sm font-normal font-poppins">
+              {orderDetails?.additionalNotes || "Please ensure shade A2 is used for all anterior crowns. Adjust occlusion slightly to reduce pressure on implant #11. Patient prefers a natural matte finish rather than high gloss."}
+            </p>
+          </div>
+        </div>
+        </div>
+        {/* End of PDF Content */}
       </div>
       <div className="col-span-3">
         <div className="relative">

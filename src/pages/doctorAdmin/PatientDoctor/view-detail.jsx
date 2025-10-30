@@ -7,7 +7,7 @@ function ViewDetail({ onClose, userData }) {
   const profileURL = userData.profileURL;
 
   return (
-    <div className="py-6 font-poppins">
+    <div className="font-poppins">
       {/* Pic */}
       <div className=" flex justify-start mb-6">
         <img
@@ -24,7 +24,7 @@ function ViewDetail({ onClose, userData }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* First Name */}
         <div className="flex flex-col">
-          <label className="text-sm font-bold font-poppins text-[#333A44] mb-1">
+          <label className="text-sm font-medium font-poppins text-[#333A44] mb-1">
             First Name
           </label>
           <input
@@ -37,7 +37,7 @@ function ViewDetail({ onClose, userData }) {
 
         {/* Last Name */}
         <div className="flex flex-col">
-          <label className="text-sm font-bold font-poppins text-[#333A44] mb-1">
+          <label className="text-sm font-medium font-poppins text-[#333A44] mb-1">
             Last Name
           </label>
           <input
@@ -51,7 +51,7 @@ function ViewDetail({ onClose, userData }) {
 
       {/* Email */}
       <div className="flex flex-col mt-4">
-        <label className="text-sm font-bold font-poppins text-[#333A44] mb-1">
+        <label className="text-sm font-medium font-poppins text-[#333A44] mb-1">
           Email Address
         </label>
         <input
@@ -64,7 +64,7 @@ function ViewDetail({ onClose, userData }) {
 
       {/* Phone */}
       <div className="flex flex-col mt-4">
-        <label className="text-sm font-bold font-poppins text-[#333A44] mb-1">
+        <label className="text-sm font-medium font-poppins text-[#333A44] mb-1">
           Phone Number
         </label>
         <input
@@ -77,7 +77,7 @@ function ViewDetail({ onClose, userData }) {
 
       {/* Address */}
       <div className="flex flex-col mt-4">
-        <label className="text-sm font-bold font-poppins text-[#333A44] mb-1">
+        <label className="text-sm font-medium font-poppins text-[#333A44] mb-1">
           Address
         </label>
         <input

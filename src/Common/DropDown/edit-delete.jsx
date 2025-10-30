@@ -13,6 +13,49 @@ export const EditDeleteDropdownMenu = ({
   const [dropdownPosition, setDropdownPosition] = useState("bottom");
   const [isPositioned, setIsPositioned] = useState(false);
 
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    const originalTouchAction = document.body.style.touchAction;
+
+    // Prevent scroll (desktop + mobile)
+    document.body.style.overflow = "hidden"; // desktop
+    document.body.style.touchAction = "none"; // iOS/Android
+
+    // Block wheel/touch/keyboard scrolling
+    const preventDefault = (e) => {
+      e.preventDefault();
+    };
+    const preventKeys = (e) => {
+      const keys = [
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "Space",
+        "PageUp",
+        "PageDown",
+        "Home",
+        "End",
+      ];
+      if (keys.includes(e.code) || keys.includes(e.key)) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("wheel", preventDefault, { passive: false });
+    window.addEventListener("touchmove", preventDefault, { passive: false });
+    window.addEventListener("keydown", preventKeys, { passive: false });
+
+    return () => {
+      // Restore
+      document.body.style.overflow = originalOverflow;
+      document.body.style.touchAction = originalTouchAction;
+      window.removeEventListener("wheel", preventDefault, { passive: false });
+      window.removeEventListener("touchmove", preventDefault, { passive: false });
+      window.removeEventListener("keydown", preventKeys, { passive: false });
+    };
+  }, []);
+
   // Handle outside click detection similar to NotificationsDropdown
   useEffect(() => {
     const handleOutsideClick = (event) => {
