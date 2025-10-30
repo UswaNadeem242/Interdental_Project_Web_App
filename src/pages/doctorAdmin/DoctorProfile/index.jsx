@@ -91,61 +91,7 @@ const DoctorProfile = () => {
     });
   };
 
-  // Handle image upload
-  // const handleImageUpload = async (event) => {
-  //   const file = event.target.files[0];
-  //   if (!file) return;
 
-  //   // Validate file type
-  //   if (!file.type.startsWith("image/")) {
-  //     showToast("Please select a valid image file", "error");
-  //     return;
-  //   }
-
-  //   // Validate file size (max 5MB)
-  //   if (file.size > 5 * 1024 * 1024) {
-  //     showToast("Image size should be less than 5MB", "error");
-  //     return;
-  //   }
-
-  //   // Create preview immediately
-  //   const reader = new FileReader();
-  //   reader.onload = (e) => {
-  //     setProfileImagePreview(e.target.result);
-  //   };
-  //   reader.readAsDataURL(file);
-
-  //   setIsUploadingImage(true);
-
-  //   try {
-  //     const formData = new FormData();
-
-  //     formData.append("profileImage", file);
-
-  //     const response = await updateUserProfileImage(formData);
-
-  //     if (response.status === 200 || response.data?.responseCode === "200") {
-  //       showToast("Profile image updated successfully!", "success");
-  //       // Keep the preview image after successful upload
-  //     } else {
-  //       showToast(
-  //         response.data?.responseMessage || "Failed to update profile image",
-  //         "error"
-  //       );
-  //       // Remove preview on error
-  //       setProfileImagePreview(null);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error uploading image:", error);
-  //     showToast("Error uploading image. Please try again.", "error");
-  //     // Remove preview on error
-  //     setProfileImagePreview(null);
-  //   } finally {
-  //     setIsUploadingImage(false);
-  //     // Reset the file input
-  //     event.target.value = "";
-  //   }
-  // };
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -363,18 +309,20 @@ const DoctorProfile = () => {
       <div className="grid md:grid-cols-12 grid-cols-1 gap-4 bg-white md:p-8 p-4 rounded-2xl items-center ">
         {/* Left side */}
         <div className="col-span-12 md:col-span-6 flex gap-4 items-center">
-          <img
-            // src={
-            //   // profileImagePreview || doctorProfile?.profileImage
-            //   profileImage || doctorProfile?.profileImage
-
-            //   // "/assets/user.png"
-            // }
-            // src={profileImage || "/assets/user.png"}
-            src={profileImage || profileImagePreview || "/assets/user.png"}
-            className="md:w-20 md:h-20 w-12 h-12 object-cover rounded-full"
-            alt="Profile"
-          />
+          {profileImage || profileImagePreview || doctorProfile?.profileImage ? (
+            <img
+              src={profileImage || profileImagePreview || doctorProfile?.profileImage}
+              className="md:w-20 md:h-20 w-12 h-12 object-cover rounded-full"
+              alt="Profile"
+            />
+          ) : (
+            <div className="md:w-20 md:h-20 w-12 h-12 rounded-full bg-secondaryBrand flex items-center justify-center text-white font-semibold text-lg">
+              {doctorProfile
+                ? `${doctorProfile.firstName?.[0] || ""}${doctorProfile.lastName?.[0] || ""
+                  }`.toUpperCase()
+                : "?"}
+            </div>
+          )}
           <div>
             <h3 className="text-2xl font-bold font-poppins">
               {doctorProfile?.firstName} {doctorProfile?.lastName}

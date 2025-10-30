@@ -549,9 +549,8 @@ export const dataPatient = [
 export const headingsOrder = [
   { label: "order ID", key: "id" },
   // { label: "Scan Date", key: "submission" },
-  { label: "Doctor Name", key: "dName" },
   { label: "Patient Name", key: "pName" },
-  { label: "Shopping Date", key: "shipping" },
+  { label: "Created At", key: "shipping" },
   { label: "Order Status", key: "status" },
   { label: "Action", key: "action" },
 ];
@@ -1149,7 +1148,7 @@ export const headingsAdminPanelOrders = [
   { label: "order ID", key: "id" },
   { label: "Scan Date", key: "scanDate" },
   { label: "Doctor Name", key: "dName" },
-  { label: "Patient ID", key: "pId" },
+  { label: "Patient", key: "pId" },
   { label: "Shopping Date", key: "shoppingDate" },
   { label: "Status", key: "status" },
   { label: "Action", key: "action" },

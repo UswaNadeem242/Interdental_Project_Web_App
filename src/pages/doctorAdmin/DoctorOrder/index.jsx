@@ -24,7 +24,7 @@ const OrderDoctorPage = () => {
     if (!apiData || !Array.isArray(apiData)) return [];
 
     return apiData.map((order) => ({
-      id: `${order?.id}`,
+      id: `#${order?.id}`,
       pName: `${order?.patientFirstName || "-"} ${order?.patientLastName || "-"
         }`,
       product: "Argen HT",
@@ -33,11 +33,9 @@ const OrderDoctorPage = () => {
         ? new Date(order?.createdAt).toLocaleDateString()
         : "N/A",
       action: "View Detail",
-      // dName: order?.doctorName || "N/A",
-      dName: `${order?.doctorFirstName || "-"} ${order?.doctorLastName || "-"}`,
-      shipping: order?.expectedDeliveryDate
-        ? new Date(order?.expectedDeliveryDate).toLocaleDateString()
-        : "N/A",
+      shipping: order?.createdAt
+      ? (new Date(order?.createdAt)).toLocaleDateString("en-GB").replace(/\//g, "-")
+      : "N/A",
       detailUrl: `/doctor-admin/order-details/${order?.id}`,
     }));
   };

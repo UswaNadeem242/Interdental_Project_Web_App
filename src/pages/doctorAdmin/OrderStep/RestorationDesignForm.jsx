@@ -81,7 +81,12 @@ const DoctorOrder = () => {
   useEffect(() => {
     // Reset restoration state in Redux (persistence is handled by blacklist)
     dispatch(resetRestoration());
-  }, []); // Run only once on mount
+    
+    // Reset on unmount as well to ensure clean state when navigating back
+    return () => {
+      dispatch(resetRestoration());
+    };
+  }, [dispatch]); // Run on mount and unmount
 
   // Reset global selections when no teeth are selected
   useEffect(() => {
@@ -234,13 +239,13 @@ const DoctorOrder = () => {
                               })}
                             </p>
                             <FormSection
-                              title="Due Date"
+                              title="Expected Delivery Date"
                               color="text-xs font-semibold"
                               className="border border-none"
                               gap="gap-4"
                             >
                               <LabeledInput
-                                label="Case expected due date"
+                                label="Expected Delivery Date"
                                 type="date"
                                 name="dueDate"
                                 min={formattedToday}
@@ -262,7 +267,7 @@ const DoctorOrder = () => {
                           <FormSection
                             title={
                               <div className="flex justify-between items-center">
-                                <span>Patient ID</span>
+                                <span>Patient </span>
                                 <div className="relative group">
                                   <button
                                     type="button"
@@ -544,8 +549,8 @@ const DoctorOrder = () => {
                                       handleDropdownChange("lab", val);
                                       setFieldValue("lab", val?.value || "");
                                     }}
-                                    label="Dental lab alliance"
-                                    storageKey="Dental lab alliance"
+                                    label="Dental Lab Alliance"
+                                    storageKey="Dental Lab Alliance"
                                     className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     disabled={selectedTeeth?.length === 0}
                                   />
@@ -591,7 +596,7 @@ const DoctorOrder = () => {
                                   ))}
                                 </div>
 
-                                {globalSelections?.material && (
+                                {globalSelections?.material && globalSelections?.material?.price > 0 && (
                                   <div className="flex justify-between items-center py-1">
                                     <p className="text-xs text-textFieldHeading">
                                       {globalSelections?.material?.option?.label ||
@@ -606,7 +611,7 @@ const DoctorOrder = () => {
                                   </div>
                                 )}
 
-                                {globalSelections?.crown && (
+                                {globalSelections?.crown && globalSelections?.crown?.price > 0 && (
                                   <div className="flex justify-between items-center py-1">
                                     <p className="text-xs text-textFieldHeading">
                                       {globalSelections?.crown?.option?.label || "Crown"}
@@ -620,7 +625,7 @@ const DoctorOrder = () => {
                                   </div>
                                 )}
 
-                                {globalSelections?.Model_type && (
+                                {globalSelections?.Model_type && globalSelections?.Model_type?.price > 0 && (
                                   <div className="flex justify-between items-center py-1">
                                     <p className="text-xs text-textFieldHeading">
                                       {globalSelections?.Model_type?.option?.label ||
@@ -635,7 +640,7 @@ const DoctorOrder = () => {
                                   </div>
                                 )}
 
-                                {globalSelections?.digitalOptions && (
+                                {globalSelections?.digitalOptions && globalSelections?.digitalOptions?.price > 0 && (
                                   <div className="flex justify-between items-center py-1">
                                     <p className="text-xs text-textFieldHeading">
                                       {globalSelections?.digitalOptions?.option?.label ||
@@ -650,7 +655,7 @@ const DoctorOrder = () => {
                                   </div>
                                 )}
 
-                                {globalSelections?.lab && (
+                                {globalSelections?.lab && globalSelections?.lab?.price > 0 && (
                                   <div className="flex justify-between items-center py-1">
                                     <p className="text-xs text-textFieldHeading">
                                       {globalSelections?.lab?.option?.label ||
@@ -665,7 +670,7 @@ const DoctorOrder = () => {
                                   </div>
                                 )}
 
-                                {globalSelections?.scannerType && (
+                                {globalSelections?.scannerType && globalSelections?.scannerType?.price > 0 && (
                                   <div className="flex justify-between items-center py-1">
                                     <p className="text-xs text-textFieldHeading">
                                       {globalSelections?.scannerType?.option?.label ||

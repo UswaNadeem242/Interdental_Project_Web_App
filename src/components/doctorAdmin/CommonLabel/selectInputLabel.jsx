@@ -77,7 +77,10 @@ export default function MaterialDropdown({
       {/* Trigger */}
       <button
         type="button"
-        onClick={() => !disabled && setOpen((o) => !o)}
+        onClick={(e) => {
+          e.preventDefault();
+          if (!disabled) setOpen((o) => !o);
+        }}
         disabled={disabled}
         className={`${className || ""
           } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal ${
@@ -130,20 +133,21 @@ export default function MaterialDropdown({
                       hideCheckForNotAvailable && isNotAvailable
                     ) && (
                         <span
-                          className={`grid h-4 w-4 place-items-center rounded-full border ${active ? "text-[#4640FF]" : "border-gray-300"
-                            }`}
+                          className={`flex items-center justify-center h-4 w-4 min-w-[16px] min-h-[16px] rounded-full border ${
+                            active ? "border-secondaryBrand border-[1.5px]" : "border-gray-300 border-[1.5px]"
+                          }`}
                         >
                           {active && (
-                            <span className="h-2 w-2 rounded-full bg-secondaryBrand" />
+                            <span className="h-2 w-2 min-w-[8px] min-h-[8px] rounded-full bg-secondaryBrand" />
                           )}
                         </span>
                       )}
 
-                    <span className="text-textFieldHeading text-[10px] font-normal">
+                    <span className="text-textFieldHeading text-[10px] font-normal capitalize">
                       {opt.label}
                     </span>
                   </span>
-                  {opt.price != null && (
+                  {opt.price != null && opt.price > 0 && (
                     <span className="font-semibold text-[#001D58] text-[10px]">
                       ${Number(opt.price).toFixed(2)}
                     </span>
