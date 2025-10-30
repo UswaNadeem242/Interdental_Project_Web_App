@@ -1,12 +1,26 @@
 function ViewDetail({ onClose, userData }) {
-  console.log(userData);
+  // console.log("Datta:", userData);
   if (!userData) return null;
 
   const [firstName, ...rest] = userData.name?.trim().split(" ") || [];
   const lastName = rest.join(" ");
+  const profileURL = userData.profileURL;
 
   return (
     <div className="py-6 font-poppins">
+      {/* Pic */}
+      <div className=" flex justify-start mb-6">
+        <img
+          src={
+            profileURL && profileURL !== "null"
+              ? profileURL
+              : "/assets/user.png"
+          }
+          alt="profile"
+          className="w-20 h-20 rounded-full object-cover border-2 border-gray-300 shadow-sm"
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* First Name */}
         <div className="flex flex-col">
@@ -38,7 +52,7 @@ function ViewDetail({ onClose, userData }) {
       {/* Email */}
       <div className="flex flex-col mt-4">
         <label className="text-sm font-bold font-poppins text-[#333A44] mb-1">
-          Email
+          Email Address
         </label>
         <input
           type="text"

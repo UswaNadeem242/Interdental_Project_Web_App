@@ -13,17 +13,58 @@ import { showToast } from "../../../../store/toast-slice";
 import { PatientDropdown } from "../../../../components/doctorAdmin/patient-component";
 import { getDoctorProfile } from "../../../../api/doctorDasboard";
 import InputField from "../../../../Common/FormInputField";
+import DoctorTermCondition from "../../TermCondition";
+import { toast } from "react-toastify";
+import { Xmark, Xmark2 } from "../../../../icon/xmark";
 export const DoctorCalimsForm = () => {
   const [doctorProfile, setDoctorProfile] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [doctorProfileEmail, setDoctorProfileEmail] = useState(null);
   const dispatch = useDispatch();
   const navigator = useNavigate();
+  const pVarible = `text-[#686868] text-sm font-poppins font-normal py-4 col-span-6 md:col-span-12`;
+  const p2Varible = `text-[#686868] text-sm font-poppins font-normal py-2`;
+  const liVarible = `text-black text-sm font-semibold font-poppins `;
+
+  // Validation Only
+  const validateClaim = (values) => {
+    const errors = {};
+    // Patient must be selected
+    if (!values?.patient?.id) {
+      errors.patient = "Please select a patient.";
+    }
+
+    // At least 1 crown tooth
+    if (!values.crownTeeth || values.crownTeeth.length === 0) {
+      errors.crownTeeth = "Please select at least one Crown tooth.";
+    }
+
+    // At least 1 implant tooth
+    if (!values.implantTeeth || values.implantTeeth.length === 0) {
+      errors.implantTeeth = "Please select at least one Implant tooth.";
+    }
+
+    return errors;
+  };
   // API OF THE FORM
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    const errors = validateClaim(values);
+
+    if (Object.keys(errors).length > 0) {
+      // Show a toast or inline errors
+      dispatch(
+        showToast({
+          message: "Please complete all required fields.",
+          type: "error",
+        })
+      );
+      setSubmitting(false);
+      return;
+    }
     try {
-      // ✅ Prepare final payload in backend format
+      //  Prepare final payload in backend format
       const payload = {
-        patientId: values?.patient?.id, // make sure Formik stores this
+        patientId: values?.patient?.id,
         crownTeeth: Array.isArray(values.crownTeeth)
           ? values.crownTeeth.filter(Boolean).join(",")
           : (values.crownTeeth || "").replace(/^,|,$/g, ""),
@@ -93,7 +134,6 @@ export const DoctorCalimsForm = () => {
     <div className="bg-bgWhite rounded-2xl">
       <Formik
         initialValues={DoctorClaimInitialValues}
-        // validationSchema={patientClaimValidationSchema}
         onSubmit={handleSubmit}
         enableReinitialize
       >
@@ -176,7 +216,7 @@ export const DoctorCalimsForm = () => {
                 </FormSectionHeading>
 
                 {(!values?.patient || values?.patient?.length === 0) && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-400 text-xs mt-1">
                     Please select at least one Patient
                   </p>
                 )}
@@ -284,11 +324,11 @@ export const DoctorCalimsForm = () => {
                     </div>
                   </div>
                 </div>
-              </div>{" "}
-              {/* Footer */}
+              </div>
+              {/* T&C */}
               <div className="pb-4">
                 <div className="flex items-center justify-center gap-2 mt-12 font-poppins">
-                  <input
+                  {/* <input
                     id="terms"
                     type="checkbox"
                     className="h-4 w-4 text-[#00538F] border-gray-300 rounded-lg focus:ring-blue-500 "
@@ -304,7 +344,7 @@ export const DoctorCalimsForm = () => {
                         Terms of Service.
                       </NavLink>
                     </span>
-                  </p>
+                  </p> */}
                 </div>
 
                 <div className="flex gap-4 pt-10 items-center justify-center font-poppins">
@@ -316,15 +356,54 @@ export const DoctorCalimsForm = () => {
                       Go Back
                     </button>
                   </NavLink>
-                  {/* // onClick={() => navigator("/doctor-admin/term-condition")} */}
+
                   <button
-                    type="submit"
+                    // type="submit"
+                    type="button"
+                    onClick={async () => {
+                      const validationErrors = validateClaim(values);
+
+                      if (Object.keys(validationErrors).length === 0) {
+                        setShowModal(true);
+                      } else {
+                        toast.error("Please select all the options first.");
+                      }
+                    }}
                     className="px-16 py-4 capitalize bg-secondaryBrand text-bgWhite rounded-full font-poppins text-base font-bold"
                   >
                     Send Claim Request
                   </button>
                 </div>
               </div>
+              {/*  Modal */}
+              {showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50">
+                  <div className="bg-white  rounded-xl w-[95%] h-[95%] shadow-lg animate-scaleUp overflow-hidden relative flex flex-col">
+                    {/* Close Button */}
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="absolute top-3 right-10 text-gray-500 hover:text-gray-700 text-2xl leading-none "
+                    >
+                      <span>
+                        <Xmark2 />
+                      </span>
+                    </button>
+
+                    <div className="flex-1 overflow-y-auto pr-4">
+                      <DoctorTermCondition />
+                    </div>
+
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-bgWhite pb-2 ">
+                      <button
+                        type="submit"
+                        className="bg-[#001D58]  text-[#FFFFFF] text-sm font-normal font-poppins px-16  py-2 rounded-full "
+                      >
+                        Agree & Send Claim Request
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </Form>
           );
         }}
