@@ -5,12 +5,19 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 
-export function PatientDropdown({ className, dropdownClass, value, onChange, classNameWidth }) {
+export function PatientDropdown({
+  className,
+  dropdownClass,
+  value,
+  onChange,
+  classNameWidth,
+}) {
   const [patientsList, setPatientsList] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
+
   useEffect(() => {
     const fetchPatients = async () => {
       try {
@@ -18,12 +25,12 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
           status: "ALL",
           page: 0,
           size: 100,
-          search: ""
-        });        
+          search: "",
+        });
         if (response.status === 200) {
           const responseData = response.data.data;
           const content = responseData?.data ?? [];
-          
+
           const patients = content.map((order) => {
             const firstName = order?.firstName?.trim() || "";
             const lastName = order?.lastName?.trim() || "";
@@ -45,7 +52,7 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
     };
     fetchPatients();
   }, []);
-   
+
   // close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -57,7 +64,9 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const selectedPatient = patientsList.find((p) => p.id === value?.id || p.id === value);
+  const selectedPatient = patientsList.find(
+    (p) => p.id === value?.id || p.id === value
+  );
 
   const handleSelect = (patient) => {
     onChange(patient);
@@ -122,7 +131,12 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
                 className="w-6 h-6 rounded-full object-cover"
               />
             )}
-            <span>{maskName(selectedPatient.name)}{maskLastName(selectedPatient.lastName)} - {maskEmail(selectedPatient.email)}</span>
+            <span>
+              {maskName(selectedPatient.name)}
+              {maskLastName(selectedPatient.lastName)} - {selectedPatient.email}
+              {/* {selectedPatient.name}
+              {selectedPatient.lastName} - {selectedPatient.email} */}
+            </span>
           </span>
         ) : (
           <span className="text-gray-400">Select Patient</span>
@@ -162,14 +176,16 @@ export function PatientDropdown({ className, dropdownClass, value, onChange, cla
                     ${!isLast ? "border-b border-gray-200" : ""}`}
                 >
                   <img
-                    src={p.profileURL || "/assets/users.png"}
+                    src={p.profileURL || "/assets/user.png"}
                     alt={p.name}
                     className="w-9 h-9 rounded-full object-cover border border-[#285772]"
                   />
 
                   <div className="flex flex-col text-left">
                     <span className="text-primaryText font-medium text-sm">
-                      {maskName(p.name)}{maskLastName(p.lastName)} - {maskEmail(p.email)}
+                      {/* {maskName(p.name)}{maskLastName(p.lastName)} - {maskEmail(p.email)} */}
+                      {p.name}
+                      {p.lastName} <br /> {p.email}
                     </span>
                   </div>
                 </button>

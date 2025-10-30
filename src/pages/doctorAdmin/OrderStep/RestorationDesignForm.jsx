@@ -39,7 +39,7 @@ import { useOrderValidation } from "../../../Hooks/useOrderValidation";
 
 const DoctorOrder = () => {
   const dispatch = useDispatch();
-  
+
   // Fetch doctor profile once using custom hook
   const doctorProfile = useDoctorProfile();
   const { validateOrder } = useOrderValidation();
@@ -81,7 +81,7 @@ const DoctorOrder = () => {
   useEffect(() => {
     // Reset restoration state in Redux (persistence is handled by blacklist)
     dispatch(resetRestoration());
-    
+
     // Reset on unmount as well to ensure clean state when navigating back
     return () => {
       dispatch(resetRestoration());
@@ -100,7 +100,9 @@ const DoctorOrder = () => {
     return (
       (selectedTeeth?.length || 0) *
       Object.values(globalSelections || {})
-        .filter((selection) => selection && selection?.price && selection?.price > 0)
+        .filter(
+          (selection) => selection && selection?.price && selection?.price > 0
+        )
         .reduce((sum, selection) => sum + (selection?.price || 0), 0)
     );
   }, [selectedTeeth, globalSelections]);
@@ -143,8 +145,10 @@ const DoctorOrder = () => {
               material: globalSelections?.material?.value || "",
               lab: globalSelections?.lab?.value || "",
               note: note || "",
+
               crown: globalSelections?.crown?.value || "",
-              photogrammetryfiles: globalSelections?.photogrammetryfiles?.value || "",
+              photogrammetryfiles:
+                globalSelections?.photogrammetryfiles?.value || "",
             }}
             validationSchema={OrderValidationSchema}
             onSubmit={(values, { setSubmitting }) => {
@@ -174,7 +178,9 @@ const DoctorOrder = () => {
                 // Use centralized validation
                 const validation = validateOrder(values);
                 if (!validation.isValid) {
-                  dispatch(showToast({ message: validation.firstError, type: "error" }));
+                  dispatch(
+                    showToast({ message: validation.firstError, type: "error" })
+                  );
                   return;
                 }
 
@@ -185,7 +191,9 @@ const DoctorOrder = () => {
                 // Use centralized validation
                 const validation = validateOrder(values);
                 if (!validation.isValid) {
-                  dispatch(showToast({ message: validation.firstError, type: "error" }));
+                  dispatch(
+                    showToast({ message: validation.firstError, type: "error" })
+                  );
                   return;
                 }
 
@@ -239,7 +247,7 @@ const DoctorOrder = () => {
                               })}
                             </p>
                             <FormSection
-                              title="Expected Delivery Date"
+                              title="Expected Delivery Date "
                               color="text-xs font-semibold"
                               className="border border-none"
                               gap="gap-4"
@@ -301,7 +309,8 @@ const DoctorOrder = () => {
                                     selectedPatient?.firstName?.trim() ||
                                     selectedPatient?.name ||
                                     "";
-                                  const lastName = selectedPatient?.lastName?.trim() || "";
+                                  const lastName =
+                                    selectedPatient?.lastName?.trim() || "";
                                   setFieldValue("patientFirstName", firstName);
                                   setFieldValue("patientLastName", lastName);
                                 } else {
@@ -311,11 +320,12 @@ const DoctorOrder = () => {
                               }}
                               classNameWidth="w-80"
                             />
-                            {errors?.patientFirstName && touched?.patientFirstName && (
-                              <p className="text-red-800 text-xs capitalize">
-                                {errors?.patientFirstName}
-                              </p>
-                            )}
+                            {errors?.patientFirstName &&
+                              touched?.patientFirstName && (
+                                <p className="text-red-800 text-xs capitalize">
+                                  {errors?.patientFirstName}
+                                </p>
+                              )}
                           </FormSection>
 
                           <div className="bg-textField rounded-md">
@@ -335,7 +345,9 @@ const DoctorOrder = () => {
                                   Selected Smile Design:
                                 </p>
                                 <p className="text-xs">
-                                  {selected?.name || selected?.label || "Unknown"}
+                                  {selected?.name ||
+                                    selected?.label ||
+                                    "Unknown"}
                                 </p>
                               </div>
                             )}
@@ -344,7 +356,8 @@ const DoctorOrder = () => {
                           <MaterialDropdown
                             className="w-full rounded-md bg-textField px-4 py-3 text-sm text-secondaryBrand outline-none transition-shadow"
                             options={
-                              orders?.find((p) => p?.name === "Scanner")?.children || []
+                              orders?.find((p) => p?.name === "Scanner")
+                                ?.children || []
                             }
                             value={globalSelections?.scannerType?.value || ""}
                             onChange={(option) => {
@@ -392,7 +405,9 @@ const DoctorOrder = () => {
                         <section className="col-span-12 md:col-span-6 space-y-4">
                           <div className="h-full min-h-[400px] rounded-2xl border border-gray-200 bg-white p-2">
                             <div className="flex flex-wrap gap-2 justify-center flex-col">
-                              <p className="text-center">Select the teeth first</p>
+                              <p className="text-center">
+                                Select the teeth first
+                              </p>
                               <button
                                 type="button"
                                 className="text-[#949494] text-sm font-normal pb-10 font-poppins h-full"
@@ -407,7 +422,9 @@ const DoctorOrder = () => {
                                     const id =
                                       tooth?.id ||
                                       tooth?.toothId ||
-                                      (typeof tooth === "number" ? tooth : null);
+                                      (typeof tooth === "number"
+                                        ? tooth
+                                        : null);
                                     if (id) {
                                       dispatch(selectTooth(id));
                                     }
@@ -433,10 +450,19 @@ const DoctorOrder = () => {
                                       orders?.find((p) => p?.name === "Denture")
                                         ?.children || []
                                     }
-                                    value={globalSelections?.digitalOptions?.value || ""}
+                                    value={
+                                      globalSelections?.digitalOptions?.value ||
+                                      ""
+                                    }
                                     onChange={(option) => {
-                                      handleDropdownChange("digitalOptions", option);
-                                      setFieldValue("digitalOptions", option?.value || "");
+                                      handleDropdownChange(
+                                        "digitalOptions",
+                                        option
+                                      );
+                                      setFieldValue(
+                                        "digitalOptions",
+                                        option?.value || ""
+                                      );
                                     }}
                                     label="Denture"
                                     storageKey="digitalOptions"
@@ -447,10 +473,12 @@ const DoctorOrder = () => {
                                     className2="relative z-0"
                                     className="w-full border bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
                                     options={
-                                      orders?.find((p) => p?.name === "Surgical Guide")
-                                        ?.children?.length > 0
-                                        ? orders?.find((p) => p?.name === "Surgical Guide")
-                                            ?.children
+                                      orders?.find(
+                                        (p) => p?.name === "Surgical Guide"
+                                      )?.children?.length > 0
+                                        ? orders?.find(
+                                            (p) => p?.name === "Surgical Guide"
+                                          )?.children
                                         : [
                                             {
                                               label: "Not Available",
@@ -459,10 +487,19 @@ const DoctorOrder = () => {
                                             },
                                           ]
                                     }
-                                    value={globalSelections?.surgical_guide?.value || null}
+                                    value={
+                                      globalSelections?.surgical_guide?.value ||
+                                      null
+                                    }
                                     onChange={(option) => {
-                                      handleDropdownChange("surgical_guide", option);
-                                      setFieldValue("surgical_guide", option?.value || "");
+                                      handleDropdownChange(
+                                        "surgical_guide",
+                                        option
+                                      );
+                                      setFieldValue(
+                                        "surgical_guide",
+                                        option?.value || ""
+                                      );
                                     }}
                                     hideCheckForNotAvailable={true}
                                     label="Surgical Guide"
@@ -473,13 +510,16 @@ const DoctorOrder = () => {
                                   <MaterialDropdown
                                     className2="relative z-0"
                                     options={
-                                      orders?.find((p) => p?.name === "Crown")?.children ||
-                                      []
+                                      orders?.find((p) => p?.name === "Crown")
+                                        ?.children || []
                                     }
                                     value={globalSelections?.crown?.value || ""}
                                     onChange={(option) => {
                                       handleDropdownChange("crown", option);
-                                      setFieldValue("crown", option?.value || "");
+                                      setFieldValue(
+                                        "crown",
+                                        option?.value || ""
+                                      );
                                     }}
                                     label="Smart Crown"
                                     storageKey="crown"
@@ -490,13 +530,19 @@ const DoctorOrder = () => {
                                   <MaterialDropdown
                                     className2="relative z-0"
                                     options={
-                                      orders?.find((p) => p?.name === "Material")
-                                        ?.children || []
+                                      orders?.find(
+                                        (p) => p?.name === "Material"
+                                      )?.children || []
                                     }
-                                    value={globalSelections?.material?.value || ""}
+                                    value={
+                                      globalSelections?.material?.value || ""
+                                    }
                                     onChange={(val) => {
                                       handleDropdownChange("material", val);
-                                      setFieldValue("material", val?.value || "");
+                                      setFieldValue(
+                                        "material",
+                                        val?.value || ""
+                                      );
                                     }}
                                     label="Material"
                                     storageKey="material"
@@ -508,7 +554,9 @@ const DoctorOrder = () => {
                                     className="relative"
                                     shades={shadeGroups}
                                     selectedTooth={selectedTooth}
-                                    selectedShades={globalSelections?.shades || {}}
+                                    selectedShades={
+                                      globalSelections?.shades || {}
+                                    }
                                     onChange={(groupName, selected) => {
                                       dispatch(
                                         updateShadeSelection({
@@ -527,10 +575,15 @@ const DoctorOrder = () => {
                                         (p) => p?.name === "Digital Model Type"
                                       )?.children || []
                                     }
-                                    value={globalSelections?.Model_type?.value || ""}
+                                    value={
+                                      globalSelections?.Model_type?.value || ""
+                                    }
                                     onChange={(val) => {
                                       handleDropdownChange("Model_type", val);
-                                      setFieldValue("Model_type", val?.value || "");
+                                      setFieldValue(
+                                        "Model_type",
+                                        val?.value || ""
+                                      );
                                     }}
                                     label="Digital Model Type"
                                     storageKey="Digital Model Type"
@@ -541,8 +594,9 @@ const DoctorOrder = () => {
                                   <MaterialDropdown
                                     className2="relative z-0"
                                     options={
-                                      orders?.find((p) => p?.name === "Participating Lab")
-                                        ?.children || []
+                                      orders?.find(
+                                        (p) => p?.name === "Participating Lab"
+                                      )?.children || []
                                     }
                                     value={globalSelections?.lab?.value || ""}
                                     onChange={(val) => {
@@ -562,9 +616,15 @@ const DoctorOrder = () => {
                                       (p) => p?.name === "Photogrammetry files"
                                     )?.children || []
                                   }
-                                  value={globalSelections?.photogrammetryfiles?.value || ""}
+                                  value={
+                                    globalSelections?.photogrammetryfiles
+                                      ?.value || ""
+                                  }
                                   onChange={(option) => {
-                                    handleDropdownChange("photogrammetryfiles", option);
+                                    handleDropdownChange(
+                                      "photogrammetryfiles",
+                                      option
+                                    );
                                     setFieldValue(
                                       "photogrammetryfiles",
                                       option?.value || ""
@@ -596,94 +656,111 @@ const DoctorOrder = () => {
                                   ))}
                                 </div>
 
-                                {globalSelections?.material && globalSelections?.material?.price > 0 && (
-                                  <div className="flex justify-between items-center py-1">
-                                    <p className="text-xs text-textFieldHeading">
-                                      {globalSelections?.material?.option?.label ||
-                                        "Material"}
-                                    </p>
-                                    <p className="text-xs font-medium">
-                                      ${globalSelections?.material?.price || 0} ×{" "}
-                                      {selectedTeeth?.length || 0} = $
-                                      {(globalSelections?.material?.price || 0) *
-                                        (selectedTeeth?.length || 0)}
-                                    </p>
-                                  </div>
-                                )}
+                                {globalSelections?.material &&
+                                  globalSelections?.material?.price > 0 && (
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {globalSelections?.material?.option
+                                          ?.label || "Material"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        $
+                                        {globalSelections?.material?.price || 0}{" "}
+                                        × {selectedTeeth?.length || 0} = $
+                                        {(globalSelections?.material?.price ||
+                                          0) * (selectedTeeth?.length || 0)}
+                                      </p>
+                                    </div>
+                                  )}
 
-                                {globalSelections?.crown && globalSelections?.crown?.price > 0 && (
-                                  <div className="flex justify-between items-center py-1">
-                                    <p className="text-xs text-textFieldHeading">
-                                      {globalSelections?.crown?.option?.label || "Crown"}
-                                    </p>
-                                    <p className="text-xs font-medium">
-                                      ${globalSelections?.crown?.price || 0} ×{" "}
-                                      {selectedTeeth?.length || 0} = $
-                                      {(globalSelections?.crown?.price || 0) *
-                                        (selectedTeeth?.length || 0)}
-                                    </p>
-                                  </div>
-                                )}
+                                {globalSelections?.crown &&
+                                  globalSelections?.crown?.price > 0 && (
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {globalSelections?.crown?.option
+                                          ?.label || "Crown"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        ${globalSelections?.crown?.price || 0} ×{" "}
+                                        {selectedTeeth?.length || 0} = $
+                                        {(globalSelections?.crown?.price || 0) *
+                                          (selectedTeeth?.length || 0)}
+                                      </p>
+                                    </div>
+                                  )}
 
-                                {globalSelections?.Model_type && globalSelections?.Model_type?.price > 0 && (
-                                  <div className="flex justify-between items-center py-1">
-                                    <p className="text-xs text-textFieldHeading">
-                                      {globalSelections?.Model_type?.option?.label ||
-                                        "Digital Model Type"}
-                                    </p>
-                                    <p className="text-xs font-medium">
-                                      ${globalSelections?.Model_type?.price || 0} ×{" "}
-                                      {selectedTeeth?.length || 0} = $
-                                      {(globalSelections?.Model_type?.price || 0) *
-                                        (selectedTeeth?.length || 0)}
-                                    </p>
-                                  </div>
-                                )}
+                                {globalSelections?.Model_type &&
+                                  globalSelections?.Model_type?.price > 0 && (
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {globalSelections?.Model_type?.option
+                                          ?.label || "Digital Model Type"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        $
+                                        {globalSelections?.Model_type?.price ||
+                                          0}{" "}
+                                        × {selectedTeeth?.length || 0} = $
+                                        {(globalSelections?.Model_type?.price ||
+                                          0) * (selectedTeeth?.length || 0)}
+                                      </p>
+                                    </div>
+                                  )}
 
-                                {globalSelections?.digitalOptions && globalSelections?.digitalOptions?.price > 0 && (
-                                  <div className="flex justify-between items-center py-1">
-                                    <p className="text-xs text-textFieldHeading">
-                                      {globalSelections?.digitalOptions?.option?.label ||
-                                        "Digital Denture"}
-                                    </p>
-                                    <p className="text-xs font-medium">
-                                      ${globalSelections?.digitalOptions?.price || 0} ×{" "}
-                                      {selectedTeeth?.length || 0} = $
-                                      {(globalSelections?.digitalOptions?.price || 0) *
-                                        (selectedTeeth?.length || 0)}
-                                    </p>
-                                  </div>
-                                )}
+                                {globalSelections?.digitalOptions &&
+                                  globalSelections?.digitalOptions?.price >
+                                    0 && (
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {globalSelections?.digitalOptions
+                                          ?.option?.label || "Digital Denture"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        $
+                                        {globalSelections?.digitalOptions
+                                          ?.price || 0}{" "}
+                                        × {selectedTeeth?.length || 0} = $
+                                        {(globalSelections?.digitalOptions
+                                          ?.price || 0) *
+                                          (selectedTeeth?.length || 0)}
+                                      </p>
+                                    </div>
+                                  )}
 
-                                {globalSelections?.lab && globalSelections?.lab?.price > 0 && (
-                                  <div className="flex justify-between items-center py-1">
-                                    <p className="text-xs text-textFieldHeading">
-                                      {globalSelections?.lab?.option?.label ||
-                                        "Participating Lab"}
-                                    </p>
-                                    <p className="text-xs font-medium">
-                                      ${globalSelections?.lab?.price || 0} ×{" "}
-                                      {selectedTeeth?.length || 0} = $
-                                      {(globalSelections?.lab?.price || 0) *
-                                        (selectedTeeth?.length || 0)}
-                                    </p>
-                                  </div>
-                                )}
+                                {globalSelections?.lab &&
+                                  globalSelections?.lab?.price > 0 && (
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {globalSelections?.lab?.option?.label ||
+                                          "Participating Lab"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        ${globalSelections?.lab?.price || 0} ×{" "}
+                                        {selectedTeeth?.length || 0} = $
+                                        {(globalSelections?.lab?.price || 0) *
+                                          (selectedTeeth?.length || 0)}
+                                      </p>
+                                    </div>
+                                  )}
 
-                                {globalSelections?.scannerType && globalSelections?.scannerType?.price > 0 && (
-                                  <div className="flex justify-between items-center py-1">
-                                    <p className="text-xs text-textFieldHeading">
-                                      {globalSelections?.scannerType?.option?.label ||
-                                        "Scanner Type"}
-                                    </p>
-                                    <p className="text-xs font-medium">
-                                      ${globalSelections?.scannerType?.price || 0} ×{" "}
-                                      {selectedTeeth?.length || 0} = $
-                                      {(globalSelections?.scannerType?.price || 0) *
-                                        (selectedTeeth?.length || 0)}
-                                    </p>
-                                  </div>
-                                )}
+                                {globalSelections?.scannerType &&
+                                  globalSelections?.scannerType?.price > 0 && (
+                                    <div className="flex justify-between items-center py-1">
+                                      <p className="text-xs text-textFieldHeading">
+                                        {globalSelections?.scannerType?.option
+                                          ?.label || "Scanner Type"}
+                                      </p>
+                                      <p className="text-xs font-medium">
+                                        $
+                                        {globalSelections?.scannerType?.price ||
+                                          0}{" "}
+                                        × {selectedTeeth?.length || 0} = $
+                                        {(globalSelections?.scannerType
+                                          ?.price || 0) *
+                                          (selectedTeeth?.length || 0)}
+                                      </p>
+                                    </div>
+                                  )}
                               </div>
 
                               <div className="">
@@ -728,7 +805,9 @@ const DoctorOrder = () => {
                       </div>
                     </Form>
                   )}
-                  {activeIndex === 1 && <ReviewOrder next={next} doctorProfile={doctorProfile} />}
+                  {activeIndex === 1 && (
+                    <ReviewOrder next={next} doctorProfile={doctorProfile} />
+                  )}
                   {activeIndex === 2 && <CheckoutForm next={next} />}
                   {activeIndex === 3 && <DonePage next={next} />}
                 </>
