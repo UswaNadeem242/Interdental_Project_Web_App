@@ -83,7 +83,7 @@ export const DoctorCalimsForm = () => {
           })
         );
         resetForm();
-        navigator("/doctor-admin/claim-request");
+        navigator("/doctor-admin/claim-requests");
       } else {
         dispatch(
           showToast({
@@ -348,7 +348,7 @@ export const DoctorCalimsForm = () => {
                 </div>
 
                 <div className="flex gap-4 pt-10 items-center justify-center font-poppins">
-                  <NavLink to={`/doctor-admin/claim-request`}>
+                  <NavLink to={`/doctor-admin/claim-requests`}>
                     <button
                       type="button"
                       className="px-16 py-4 bg-card rounded-full text-primaryText font-bold text-base  font-poppins capitalize"

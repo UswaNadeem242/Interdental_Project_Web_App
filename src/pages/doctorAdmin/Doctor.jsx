@@ -19,7 +19,7 @@ const DoctorAdmin = () => {
         <Route path="/patient" element={<PatientPage />} />
         {/* <Route path="/claim-request" element={<ClaimRequest />} /> */}
         <Route path="/claim-requests" element={<DoctorClaimRequests />} />
-        <Route path="/claim-request/:slug" element={<DoctorCalimsForm />} />
+        <Route path="/claim-requests/create" element={<DoctorCalimsForm />} />
         <Route path="/place-order" element={<DoctorOrder />} />
         <Route path="/profile" element={<DoctorProfile />} />
         <Route path="/orders" element={<OrderDoctorPage />} />

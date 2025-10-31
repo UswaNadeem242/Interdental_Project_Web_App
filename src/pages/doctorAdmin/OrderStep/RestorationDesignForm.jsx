@@ -261,7 +261,7 @@ const DoctorOrder = () => {
                               gap="gap-4"
                             ></FormSection>
                             <p className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder-[#949494] outline-none transition-shadow placeholder:font-poppins placeholder:text-[10px] placeholder:capitalize">
-                              {new Date().toLocaleDateString("en-US", {
+                              {new Date().toLocaleDateString("en-GB", {
                                 month: "2-digit",
                                 day: "2-digit",
                                 year: "numeric",
