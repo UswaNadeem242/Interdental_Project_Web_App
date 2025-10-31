@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import DropDownComponent from "../../../../Common/DropDown";
-// import { options, ShippingDetail } from "../../../../Constant";
 import CardIcon from "../../../../icon/CardIcon";
 import { getOrderByID } from "../../../../api/doctorDasboard";
 import { useSelector } from "react-redux";
@@ -164,14 +163,15 @@ export default function OrderDetailsForm({ id }) {
       const pdfWidth = 210;
       const pdfHeight = 297;
 
-      // Margins
-      const margin = 10;
-      const maxWidth = pdfWidth - 2 * margin;
-      const maxHeight = pdfHeight - 2 * margin;
+      // Minimal margins - reduce side margins
+      const marginX = 5; // Small horizontal margins
+      const marginY = 10; // Keep vertical margins
+      const maxWidth = pdfWidth - 2 * marginX;
+      const maxHeight = pdfHeight - 2 * marginY;
 
-      // Calculate image dimensions to fill the width with margins
+      // Calculate image dimensions to fill the width with minimal margins
       const imgRatio = canvas.height / canvas.width;
-      let finalWidth = maxWidth; // Fill the width
+      let finalWidth = maxWidth; // Fill almost full width
       let finalHeight = finalWidth * imgRatio;
 
       // If height exceeds page, scale down to fit
@@ -182,7 +182,7 @@ export default function OrderDetailsForm({ id }) {
 
       // Start from top with margin, center horizontally
       const x = (pdfWidth - finalWidth) / 2;
-      const y = margin;
+      const y = marginY;
 
       pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
       pdf.save("Restoration_Design_Form.pdf");
@@ -195,8 +195,6 @@ export default function OrderDetailsForm({ id }) {
       }
     }
   };
-
-  console.log(orderDetails, "orderDetails");
 
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
