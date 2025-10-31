@@ -50,7 +50,7 @@ export const menuItems = [
 
   {
     name: "Claim Requests",
-    path: "/doctor-admin/claim-request",
+    path: "/doctor-admin/claim-requests",
     icon: ClaimIcon,
   },
 ];
