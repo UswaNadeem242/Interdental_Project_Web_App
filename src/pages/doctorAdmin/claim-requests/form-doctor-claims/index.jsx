@@ -7,7 +7,6 @@ import TeethSvg from "../../../../components/teeth-svg";
 import { FormSectionHeading } from "../../../../Common/FormSection";
 import {
   DoctorClaimInitialValues,
-  patientClaimValidationSchema,
 } from "../../../../Common/FormsValidation/patient-claim-validation";
 import { showToast } from "../../../../store/toast-slice";
 import { PatientDropdown } from "../../../../components/doctorAdmin/patient-component";
@@ -16,10 +15,19 @@ import InputField from "../../../../Common/FormInputField";
 import DoctorTermCondition from "../../TermCondition";
 import { toast } from "react-toastify";
 import { Xmark, Xmark2 } from "../../../../icon/xmark";
+import axios from "axios";
+import { BASE_URL } from "../../../../config";
+import Icons from "../../../../components/Icons";
 export const DoctorCalimsForm = () => {
   const [doctorProfile, setDoctorProfile] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [doctorProfileEmail, setDoctorProfileEmail] = useState(null);
+  const [patientsWithOrders, setPatientsWithOrders] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [availableTeeth, setAvailableTeeth] = useState([]);
+  const [orderDropdownOpen, setOrderDropdownOpen] = useState(false);
+  const orderDropdownRef = React.useRef(null);
   const dispatch = useDispatch();
   const navigator = useNavigate();
   const pVarible = `text-[#686868] text-sm font-poppins font-normal py-4 col-span-6 md:col-span-12`;
@@ -34,14 +42,14 @@ export const DoctorCalimsForm = () => {
       errors.patient = "Please select a patient.";
     }
 
-    // At least 1 crown tooth
-    if (!values.crownTeeth || values.crownTeeth.length === 0) {
-      errors.crownTeeth = "Please select at least one Crown tooth.";
-    }
-
-    // At least 1 implant tooth
-    if (!values.implantTeeth || values.implantTeeth.length === 0) {
-      errors.implantTeeth = "Please select at least one Implant tooth.";
+    // At least 1 tooth from combined set (crown OR implant)
+    const totalSelected = [
+      ...(values.crownTeeth || []),
+      ...(values.implantTeeth || [])
+    ].length;
+    
+    if (totalSelected === 0) {
+      errors.teeth = "Please select at least one tooth.";
     }
 
     return errors;
@@ -127,8 +135,76 @@ export const DoctorCalimsForm = () => {
       }
     };
 
+    const fetchPatientsWithOrders = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/api/users/doctors/patients-with-orders`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.data.responseStatus) {
+          setPatientsWithOrders(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching patients with orders:", error);
+      }
+    };
+
     fetchDoctorProfile();
+    fetchPatientsWithOrders();
   }, []);
+
+  // Close order dropdown on outside click
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (orderDropdownRef.current && !orderDropdownRef.current.contains(event.target)) {
+        setOrderDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Get orders for selected patient
+  const patientOrders = React.useMemo(() => {
+    if (!selectedPatient?.id) return [];
+    return patientsWithOrders.filter((item) => item.id === selectedPatient.id);
+  }, [selectedPatient, patientsWithOrders]);
+
+  // Handle patient selection
+  const handlePatientChange = (patient, setFieldValue, setFieldTouched) => {
+    setSelectedPatient(patient);
+    setSelectedOrderId(null);
+    setAvailableTeeth([]);
+    setFieldValue("patient", patient);
+    setFieldValue("crownTeeth", []);
+    setFieldValue("implantTeeth", []);
+    setFieldTouched("crownTeeth", false);
+    setFieldTouched("implantTeeth", false);
+  };
+
+  // Handle order selection
+  const handleOrderChange = (orderId, setFieldValue, setFieldTouched) => {
+    setSelectedOrderId(orderId);
+    const orderData = patientsWithOrders.find(
+      (item) => item.orderId === orderId
+    );
+    if (orderData && orderData.selectedTeeth) {
+      const teeth = orderData.selectedTeeth
+        .split(",")
+        .map((t) => parseInt(t.trim()))
+        .filter((t) => !isNaN(t));
+      setAvailableTeeth(teeth);
+      // Reset selected teeth and touched state
+      setFieldValue("crownTeeth", []);
+      setFieldValue("implantTeeth", []);
+      setFieldTouched("crownTeeth", false);
+      setFieldTouched("implantTeeth", false);
+    }
+  };
 
   return (
     <div className="bg-bgWhite rounded-2xl">
@@ -162,6 +238,7 @@ export const DoctorCalimsForm = () => {
               }
               arr.sort((a, b) => a - b);
               setFieldValue("crownTeeth", arr);
+              setFieldTouched("crownTeeth", true);
             } else {
               // toggle in implantTeeth
               const arr = values.implantTeeth.slice();
@@ -173,6 +250,7 @@ export const DoctorCalimsForm = () => {
               }
               arr.sort((a, b) => a - b);
               setFieldValue("implantTeeth", arr);
+              setFieldTouched("implantTeeth", true);
             }
           };
           return (
@@ -203,23 +281,109 @@ export const DoctorCalimsForm = () => {
 
                 {/* Patient Info */}
                 <FormSectionHeading title="Patient Information">
-                  <PatientDropdown
-                    className="w-2/4 rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow "
-                    dropdownClass="text-secondaryBrand"
-                    value={values?.patient} // Formik value
-                    onChange={(val) => {
-                      setFieldValue("patient", val);
-                    }}
-                    onBlur={() => setFieldTouched("patient", true)}
-                    classNameWidth="w-full"
-                  />
-                </FormSectionHeading>
+                  <div className="space-y-4">
+                    {/* Patient Dropdown - Original Component */}
+                    <div>
+                      <PatientDropdown
+                        className="w-2/4 rounded-md pt-2 text-sm text-secondaryBrand outline-none transition-shadow "
+                        dropdownClass="text-secondaryBrand"
+                        value={values?.patient}
+                        onChange={(val) => {
+                          setOrderDropdownOpen(false); // Close order dropdown
+                          handlePatientChange(val, setFieldValue, setFieldTouched);
+                        }}
+                        onBlur={() => setFieldTouched("patient", true)}
+                        classNameWidth="w-full"
+                      />
+                      {(!values?.patient || values?.patient?.length === 0) && 
+                        (touched.patient || errors.patient) && (
+                        <p className="text-red-400 text-xs mt-1">
+                          Please select at least one Patient
+                        </p>
+                      )}
+                    </div>
 
-                {(!values?.patient || values?.patient?.length === 0) && (
-                  <p className="text-red-400 text-xs mt-1">
-                    Please select at least one Patient
-                  </p>
-                )}
+                    {/* Order Dropdown - Only show if patient is selected */}
+                    {values?.patient?.id && patientOrders.length > 0 && (
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 mb-2 block">
+                          Select Order
+                        </label>
+                        <div className="relative" ref={orderDropdownRef}>
+                          <button
+                            type="button"
+                            onClick={() => setOrderDropdownOpen(!orderDropdownOpen)}
+                            className="flex w-full items-center justify-between gap-2 border rounded-md p-3 bg-white shadow-sm hover:border-gray-400 transition-colors"
+                          >
+                            <div className="flex items-center gap-2 min-w-0">
+                              {selectedOrderId ? (
+                                <>
+                                  <div className="w-9 h-9 rounded-full bg-[#285772]/10 flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-5 h-5 text-[#285772]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                  </div>
+                                  <div className="flex flex-col text-left min-w-0">
+                                    <span className="text-secondaryBrand font-medium text-sm truncate">
+                                      Order #{selectedOrderId}
+                                    </span>
+                                    <span className="text-xs text-gray-500 truncate">
+                                      Teeth: {patientOrders.find(o => o.orderId === selectedOrderId)?.selectedTeeth}
+                                    </span>
+                                  </div>
+                                </>
+                              ) : (
+                                <span className="text-gray-400">Select Order</span>
+                              )}
+                            </div>
+                            <Icons.ChevronDown className="h-4 w-4 text-[#949494] flex-shrink-0" />
+                          </button>
+
+                          {orderDropdownOpen && (
+                            <div className="absolute z-20 mt-1 w-full rounded-xl border border-gray-200 bg-white shadow-lg max-h-60 overflow-y-auto">
+                              {patientOrders.map((order, idx) => {
+                                const active = selectedOrderId === order.orderId;
+                                const isLast = idx === patientOrders.length - 1;
+                                return (
+                                  <button
+                                    key={order.orderId}
+                                    type="button"
+                                    onClick={() => {
+                                      handleOrderChange(order.orderId, setFieldValue, setFieldTouched);
+                                      setOrderDropdownOpen(false);
+                                    }}
+                                    className={`flex items-center gap-2 px-3 py-3 text-sm transition-colors w-full text-left
+                                      ${active ? "bg-indigo-50" : "hover:bg-gray-50"}
+                                      ${!isLast ? "border-b border-gray-200" : ""}`}
+                                  >
+                                    <div className="w-9 h-9 rounded-full bg-[#285772]/10 flex items-center justify-center flex-shrink-0">
+                                      <svg className="w-5 h-5 text-[#285772]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                      </svg>
+                                    </div>
+                                    <div className="flex flex-col min-w-0 flex-1">
+                                      <span className="text-secondaryBrand font-medium text-sm truncate">
+                                        Order #{order.orderId}
+                                      </span>
+                                      <span className="text-xs text-gray-500 truncate">
+                                        Teeth: {order.selectedTeeth}
+                                      </span>
+                                    </div>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                        {!selectedOrderId && (
+                          <p className="text-red-400 text-xs mt-1">
+                            Please select an order
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </FormSectionHeading>
               </div>
               <div className="pl-6 pr-6 pb-6 ml-2  bg-bgWhite font-poppins ">
                 <div className=" mt-6 grid grid-cols-1 lg:grid-cols-2 ">
@@ -242,18 +406,28 @@ export const DoctorCalimsForm = () => {
                             {Array.from({ length: 16 }, (_, i) => {
                               const num = i + 1;
                               const selected = values.crownTeeth.includes(num);
+                              const isAvailable = availableTeeth.includes(num);
+                              // Disable if: no order selected OR (order selected but tooth not available)
+                              const isDisabled = !selectedOrderId || (availableTeeth.length > 0 && !isAvailable);
                               return (
                                 <button
                                   key={`crown-${num}`}
                                   type="button"
+                                  disabled={isDisabled}
                                   onClick={() => {
-                                    if (selected)
-                                      remove(values.crownTeeth.indexOf(num));
-                                    else push(num);
+                                    if (!isDisabled) {
+                                      if (selected)
+                                        remove(values.crownTeeth.indexOf(num));
+                                      else push(num);
+                                      setFieldTouched("crownTeeth", true);
+                                    }
                                   }}
                                   className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm font-medium
                             ${
                               selected ? "bg-[#94D3DD] text-secondaryBrand" : ""
+                            }
+                            ${
+                              isDisabled ? "opacity-30 cursor-not-allowed bg-gray-100" : ""
                             }`}
                                 >
                                   {num}
@@ -263,13 +437,6 @@ export const DoctorCalimsForm = () => {
                           </div>
                         )}
                       </FieldArray>
-
-                      {(!values.crownTeeth ||
-                        values.crownTeeth.length === 0) && (
-                        <p className="text-red-500 text-xs mt-1">
-                          Please select at least one Crown tooth.
-                        </p>
-                      )}
                     </div>
 
                     {/* Implant */}
@@ -284,18 +451,28 @@ export const DoctorCalimsForm = () => {
                               const num = 17 + i;
                               const selected =
                                 values.implantTeeth.includes(num);
+                              const isAvailable = availableTeeth.includes(num);
+                              // Disable if: no order selected OR (order selected but tooth not available)
+                              const isDisabled = !selectedOrderId || (availableTeeth.length > 0 && !isAvailable);
                               return (
                                 <button
                                   key={`implant-${num}`}
                                   type="button"
+                                  disabled={isDisabled}
                                   onClick={() => {
-                                    if (selected)
-                                      remove(values.implantTeeth.indexOf(num));
-                                    else push(num);
+                                    if (!isDisabled) {
+                                      if (selected)
+                                        remove(values.implantTeeth.indexOf(num));
+                                      else push(num);
+                                      setFieldTouched("implantTeeth", true);
+                                    }
                                   }}
                                   className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm font-medium
                             ${
                               selected ? "bg-[#94D3DD] text-secondaryBrand" : ""
+                            }
+                            ${
+                              isDisabled ? "opacity-30 cursor-not-allowed bg-gray-100" : ""
                             }`}
                                 >
                                   {num}
@@ -305,10 +482,12 @@ export const DoctorCalimsForm = () => {
                           </div>
                         )}
                       </FieldArray>
-                      {(!values.implantTeeth ||
-                        values.implantTeeth.length === 0) && (
+                      {/* Only show validation error at the end if no teeth are selected from combined set */}
+                      {((!values.crownTeeth || values.crownTeeth.length === 0) && 
+                        (!values.implantTeeth || values.implantTeeth.length === 0)) && 
+                        (touched.crownTeeth || touched.implantTeeth || errors.teeth) && (
                         <p className="text-red-500 text-xs mt-1">
-                          Please select at least one implant tooth.
+                          Please select at least one tooth.
                         </p>
                       )}
                     </div>
@@ -361,6 +540,11 @@ export const DoctorCalimsForm = () => {
                     // type="submit"
                     type="button"
                     onClick={async () => {
+                      // Mark fields as touched to show validation errors
+                      setFieldTouched("crownTeeth", true);
+                      setFieldTouched("implantTeeth", true);
+                      setFieldTouched("patient", true);
+                      
                       const validationErrors = validateClaim(values);
 
                       if (Object.keys(validationErrors).length === 0) {
