@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { Xmark2 } from "../../../../icon/xmark";
 import axios from "axios";
 import { BASE_URL } from "../../../../config";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import Icons from "../../../../components/Icons";
 
 // Constants
@@ -430,7 +431,7 @@ export const DoctorCalimsForm = () => {
                                 <span className="text-gray-400">Select Order</span>
                               )}
                             </div>
-                            <Icons.ChevronDown className="h-4 w-4 text-[#949494] flex-shrink-0" />
+                            <ChevronDownIcon className="h-4 w-4 text-[#949494] flex-shrink-0" />
                           </button>
 
                           {orderDropdownOpen && (
