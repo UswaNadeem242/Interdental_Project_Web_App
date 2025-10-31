@@ -225,7 +225,7 @@ export default function OrderDetailsForm({ id }) {
             <div className="border-2 border-gray-200 ">
               {/* Row 1 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Doctor's Name
                   </span>
@@ -235,7 +235,7 @@ export default function OrderDetailsForm({ id }) {
                     }`}
                   </span>
                 </div>
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Office Reference Number
                   </span>
@@ -247,7 +247,7 @@ export default function OrderDetailsForm({ id }) {
 
               {/* Row 2 */}
               <div className="border-b-2 border-gray-200">
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Patient
                   </span>
@@ -261,7 +261,7 @@ export default function OrderDetailsForm({ id }) {
 
               {/* Row 3 */}
               <div className="grid grid-cols-1 sm:grid-cols-2">
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Created Date
                   </span>
@@ -269,7 +269,7 @@ export default function OrderDetailsForm({ id }) {
                     {formatDateDMY(orderDetails?.createdAt)}
                   </span>
                 </div>
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Expected Delivery Date:
                   </span>
@@ -284,7 +284,7 @@ export default function OrderDetailsForm({ id }) {
           <div className="mt-4">
             {/* tooth selection  */}
             <div className="border-2 border-gray-200  ">
-              <p className="text-xs font-normal font-poppins border-b-2 p-3 text-black mb-4">
+              <p className="text-xs font-normal font-poppins border-b-2 p-2 text-black mb-4">
                 Tooth Selection
               </p>
               <div className="p-4">
@@ -330,7 +330,7 @@ export default function OrderDetailsForm({ id }) {
 
           {/* Selected Smile Design and Scanner Type - Separate Section */}
           <div className="mt-4">
-            <div className="border-2 border-gray-200  p-4">
+            <div className="border-2 border-gray-200  p-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
@@ -359,14 +359,14 @@ export default function OrderDetailsForm({ id }) {
             </div>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-7">
             <h3 className="font-normal text-xs font-poppins text-black mb-3">
               Customization Details
             </h3>
             <div className="border-2 border-gray-200 ">
               {/* Row 1 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Denture type:
                   </span>
@@ -376,7 +376,7 @@ export default function OrderDetailsForm({ id }) {
                     )?.dropdown?.name || "N/A"}
                   </span>
                 </div>
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Surgical guide:
                   </span>
@@ -390,7 +390,7 @@ export default function OrderDetailsForm({ id }) {
 
               {/* Row 2 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Smart Crown:
                   </span>
@@ -400,7 +400,7 @@ export default function OrderDetailsForm({ id }) {
                     )?.dropdown?.name || "N/A"}
                   </span>
                 </div>
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Material:
                   </span>
@@ -414,7 +414,7 @@ export default function OrderDetailsForm({ id }) {
 
               {/* Row 3 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Shade:
                   </span>
@@ -425,7 +425,7 @@ export default function OrderDetailsForm({ id }) {
                       ?.join(", ") || "N/A"}
                   </span>
                 </div>
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Digital Model Type:
                   </span>
@@ -438,7 +438,7 @@ export default function OrderDetailsForm({ id }) {
               </div>
 
               {/* Row 4 */}
-              <div className="p-4 flex items-center gap-2">
+              <div className="p-2 flex items-center gap-2">
                 <span className="text-secondaryText text-xs font-normal font-poppins">
                   Dental Lab Alliance:
                 </span>
@@ -451,11 +451,11 @@ export default function OrderDetailsForm({ id }) {
             </div>
           </div>
 
-          <div className="mt-6">
-            <h3 className="font-normal text-xs font-poppins text-black pb-3 border-b-2 border-gray-200">
+          <div className="mt-7">
+            <h3 className="font-normal text-xs font-poppins text-black pb-2 border-b-2 border-gray-200">
               Additional Notes
             </h3>
-            <div className="pt-4">
+            <div className="pt-2">
               <p className="text-secondaryText text-xs font-normal font-poppins">
                 {orderDetails?.additionalNotes ||
                   "Please ensure shade A2 is used for all anterior crowns. Adjust occlusion slightly to reduce pressure on implant #11. Patient prefers a natural matte finish rather than high gloss."}

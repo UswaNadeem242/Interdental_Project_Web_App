@@ -150,7 +150,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
               <div className="border-2 border-gray-200 ">
                 {/* Row 1 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Doctor's Name
                     </span>
@@ -159,7 +159,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                       {doctorProfile?.lastName || ""}
                     </span>
                   </div>
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Office Reference Number
                     </span>
@@ -171,7 +171,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
                 {/* Row 2 */}
                 <div className="border-b-2 border-gray-200">
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Patient
                     </span>
@@ -183,7 +183,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
                 {/* Row 3 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2">
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Created Date
                     </span>
@@ -192,7 +192,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                       {today.toLocaleDateString("en-GB").replace(/\//g, "-")}
                     </span>
                   </div>
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Expected Delivery Date:
                     </span>
@@ -207,7 +207,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
             <div className="mt-4">
               {/* tooth selection  */}
               <div className="border-2 border-gray-200  ">
-                <p className="text-xs font-normal font-poppins border-b-2 p-3 text-[#000000] mb-4">
+                <p className="text-xs font-normal font-poppins border-b-2 p-2 text-[#000000] mb-4">
                   Tooth Selection
                 </p>
                 <div className="p-4">
@@ -249,7 +249,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
             {/* Selected Smile Design and Scanner Type - Separate Section */}
             <div className="mt-4">
-              <div className="border-2 border-gray-200  p-4">
+              <div className="border-2 border-gray-200  p-2">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
@@ -271,14 +271,14 @@ const ReviewOrder = ({ next, doctorProfile }) => {
               </div>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-7">
               <h3 className="font-normal text-xs font-poppins text-[#000000] mb-3">
                 Customization Details
               </h3>
               <div className="border-2 border-gray-200">
                 {/* Row 1 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Denture type:
                     </span>
@@ -286,7 +286,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                       {globalSelections?.digitalOptions?.option.label || "N/A"}
                     </span>
                   </div>
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Surgical guide:
                     </span>
@@ -298,7 +298,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
                 {/* Row 2 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Smart Crown:
                     </span>
@@ -306,7 +306,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                       {globalSelections?.crown?.option?.label || "N/A"}
                     </span>
                   </div>
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Material:
                     </span>
@@ -318,7 +318,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
                 {/* Row 3 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Shade:
                     </span>
@@ -336,7 +336,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                       })()}
                     </span>
                   </div>
-                  <div className="p-4 flex items-center gap-2">
+                  <div className="p-2 flex items-center gap-2">
                     <span className="text-secondaryText text-xs font-normal font-poppins">
                       Digital Model Type:
                     </span>
@@ -347,7 +347,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                 </div>
 
                 {/* Row 4 */}
-                <div className="p-4 flex items-center gap-2">
+                <div className="p-2 flex items-center gap-2">
                   <span className="text-secondaryText text-xs font-normal font-poppins">
                     Dental Lab Alliance:
                   </span>
@@ -358,11 +358,11 @@ const ReviewOrder = ({ next, doctorProfile }) => {
               </div>
             </div>
 
-            <div className="mt-6">
-              <h3 className="font-normal text-xs font-poppins text-[#0F153E] pb-3 border-b-2 border-gray-200">
+            <div className="mt-7">
+              <h3 className="font-normal text-xs font-poppins text-[#0F153E] pb-2 border-b-2 border-gray-200">
                 Additional Notes
               </h3>
-              <div className="pt-4">
+              <div className="pt-2">
                 <p className="text-secondaryText text-xs font-normal font-poppins">
                   {note}
                 </p>
