@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 const DonePage = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-bgWhite p-4 ">
+    <div className="flex items-center justify-center min-h-[calc(80vh-100px)] bg-bgWhite p-4 ">
       <div className="flex flex-col items-center gap-6 text-center max-w-xl">
         {/* Green Circle with SVG */}
         <div className="bg-[#4FAD2E] w-20 h-20 rounded-full flex items-center justify-center">
