@@ -167,9 +167,9 @@ export default function OrderDetailsForm({ id }) {
 
     try {
       // Hide the download button before capturing
-      const button = element.querySelector('.pdf-hide-button');
+      const button = element.querySelector(".pdf-hide-button");
       if (button) {
-        button.style.display = 'none';
+        button.style.display = "none";
       }
 
       // Give React time to fully render
@@ -183,7 +183,7 @@ export default function OrderDetailsForm({ id }) {
 
       // Show the button again
       if (button) {
-        button.style.display = '';
+        button.style.display = "";
       }
 
       const imgData = canvas.toDataURL("image/png");
@@ -210,14 +210,14 @@ export default function OrderDetailsForm({ id }) {
     } catch (error) {
       console.error("Error generating PDF:", error);
       // Make sure to show the button again even if there's an error
-      const button = element.querySelector('.pdf-hide-button');
+      const button = element.querySelector(".pdf-hide-button");
       if (button) {
-        button.style.display = '';
+        button.style.display = "";
       }
     }
   };
 
-  console.log(orderDetails,'orderDetails');
+  console.log(orderDetails, "orderDetails");
 
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
@@ -251,194 +251,243 @@ export default function OrderDetailsForm({ id }) {
             </button>
           </div>
 
-        <div>
-          <div className="border border-gray-200 rounded-lg">
-            {/* Row 1 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Doctor's Name</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {`${orderDetails?.doctorFirstName || ""} ${orderDetails?.doctorLastName || ""}`}
-                </span>
+          <div>
+            <div className="border border-gray-200 rounded-lg">
+              {/* Row 1 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Doctor's Name
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {`${orderDetails?.doctorFirstName || ""} ${
+                      orderDetails?.doctorLastName || ""
+                    }`}
+                  </span>
+                </div>
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Office Reference Number
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {orderDetails?.doctorRefNumber || "-"}
+                  </span>
+                </div>
               </div>
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Office Reference Number</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorRefNumber || "-"}
-                </span>
+
+              {/* Row 2 */}
+              <div className="border-b border-gray-200">
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Patient
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {`${orderDetails?.patientFirstName || ""} ${
+                      orderDetails?.patientLastName || ""
+                    }`}
+                  </span>
+                </div>
               </div>
-            </div>
-            
-            {/* Row 2 */}
-            <div className="border-b border-gray-200">
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Patient</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {`${orderDetails?.patientFirstName || ""} ${orderDetails?.patientLastName || ""}`}
-                </span>
-              </div>
-            </div>
-            
-            {/* Row 3 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2">
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Created Date</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {formatDateDMY(orderDetails?.createdAt)}
-                </span>
-              </div>
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Expected Delivery Date:</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {formatDateDMY(orderDetails?.expectedDeliveryDate)}
-                </span>
+
+              {/* Row 3 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2">
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Created Date
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {formatDateDMY(orderDetails?.createdAt)}
+                  </span>
+                </div>
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Expected Delivery Date:
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {formatDateDMY(orderDetails?.expectedDeliveryDate)}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-4">
-          {/* tooth selection  */}
-          <div className="border border-gray-200 rounded-lg p-4">
-            <p className="text-sm font-normal font-poppins text-primaryText mb-4">Tooth Selection</p>
-            <div className="">
-              {/* Upper 16 */}
-              <div className="flex flex-wrap gap-4 mt-4 justify-center ">
-                {Object.entries(topTeeth).map(([id, ToothComponent]) => (
-                  <div
-                    key={id}
-                    className="flex flex-col items-center justify-end"
-                  >
-                    <ToothComponent
-                      highlighted={(
-                        orderDetails?.selectedTooths || []
-                      ).includes(Number(id))}
-                    />
-                    <span className="text-sm mt-1 text-gray-600">{id}</span>
-                  </div>
-                ))}
-              </div>
-              {/* Lower 16 */}
-              <div className="flex flex-wrap gap-[16px] mt-4 mb-4 justify-center">
-                {Object.entries(bottomTeeth).map(([id, ToothComponent]) => (
-                  <div
-                    key={id}
-                    className="flex flex-col items-center justify-end"
-                  >
-                    <ToothComponent
-                      highlighted={(
-                        orderDetails?.selectedTooths || []
-                      ).includes(Number(id))}
-                    />
-                    <span className="text-sm text-gray-600 mt-1">{id}</span>
-                  </div>
-                ))}
+          <div className="mt-4">
+            {/* tooth selection  */}
+            <div className="border border-gray-200 rounded-lg p-4">
+              <p className="text-sm font-normal font-poppins text-primaryText mb-4">
+                Tooth Selection
+              </p>
+              <div className="">
+                {/* Upper 16 */}
+                <div className="flex flex-wrap gap-4 mt-4 justify-center ">
+                  {Object.entries(topTeeth).map(([id, ToothComponent]) => (
+                    <div
+                      key={id}
+                      className="flex flex-col items-center justify-end"
+                    >
+                      <ToothComponent
+                        highlighted={(
+                          orderDetails?.selectedTooths || []
+                        ).includes(Number(id))}
+                      />
+                      <span className="text-sm mt-1 text-gray-600">{id}</span>
+                    </div>
+                  ))}
+                </div>
+                {/* Lower 16 */}
+                <div className="flex flex-wrap gap-[16px] mt-4 mb-4 justify-center">
+                  {Object.entries(bottomTeeth).map(([id, ToothComponent]) => (
+                    <div
+                      key={id}
+                      className="flex flex-col items-center justify-end"
+                    >
+                      <ToothComponent
+                        highlighted={(
+                          orderDetails?.selectedTooths || []
+                        ).includes(Number(id))}
+                      />
+                      <span className="text-sm text-gray-600 mt-1">{id}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Selected Smile Design and Scanner Type - Separate Section */}
-        <div className="mt-4">
-          <div className="border border-gray-200 rounded-lg p-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Selected Smile Design:</span>
-                <span className="text-secondaryBrand text-sm font-normal font-poppins">
-                  {orderDetails?.smileDesign ||
-                    (orderDetails?.doctorOrderItems || [])
-                      .find(item => {
+          {/* Selected Smile Design and Scanner Type - Separate Section */}
+          <div className="mt-4">
+            <div className="border border-gray-200 rounded-lg p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Selected Smile Design:
+                  </span>
+                  <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                    {orderDetails?.smileDesign ||
+                      (orderDetails?.doctorOrderItems || []).find((item) => {
                         const t = item?.dropdown?.type || "";
                         return t === "Smile Type" || t === "Smile Design";
-                      })?.dropdown?.name || "N/A"}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Scanner Type:</span>
-                <span className="text-secondaryBrand text-sm font-normal font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Scanner")?.dropdown?.name || "N/A"}
-                </span>
+                      })?.dropdown?.name ||
+                      "N/A"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Scanner Type:
+                  </span>
+                  <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                    {orderDetails?.doctorOrderItems?.find(
+                      (item) => item.dropdown?.type === "Scanner"
+                    )?.dropdown?.name || "N/A"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-4">
-          <h3 className="font-normal text-base font-poppins text-primaryText mb-4">
-            Customization Details
-          </h3>
-          <div className="border border-gray-200 rounded-lg">
-            {/* Row 1 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Denture type:</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Denture")?.dropdown?.name || "N/A"}
-                </span>
+          <div className="mt-4">
+            <h3 className="font-normal text-base font-poppins text-primaryText mb-4">
+              Customization Details
+            </h3>
+            <div className="border border-gray-200 rounded-lg">
+              {/* Row 1 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Denture type:
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {orderDetails?.doctorOrderItems?.find(
+                      (item) => item.dropdown?.type === "Denture"
+                    )?.dropdown?.name || "N/A"}
+                  </span>
+                </div>
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Surgical guide:
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {orderDetails?.doctorOrderItems?.find(
+                      (item) => item.dropdown?.type === "Surgical guide"
+                    )?.dropdown?.name || "N/A"}
+                  </span>
+                </div>
               </div>
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Surgical guide:</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Surgical guide")?.dropdown?.name || "N/A"}
-                </span>
-              </div>
-            </div>
-            
-            {/* Row 2 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Smart Crown:</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Crown")?.dropdown?.name || "N/A"}
-                </span>
-              </div>
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Material:</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Material")?.dropdown?.name || "N/A"}
-                </span>
-              </div>
-            </div>
-            
-            {/* Row 3 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Shade:</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems
-                    ?.filter(item => item.dropdown?.type === "Shade")
-                    ?.map(item => item.dropdown?.name)
-                    ?.join(", ") || "N/A"}
-                </span>
-              </div>
-              <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">Digital Model Type:</span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                  {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Digital Model Type")?.dropdown?.name || "N/A"}
-                </span>
-              </div>
-            </div>
-            
-            {/* Row 4 */}
-            <div className="p-4 flex items-center gap-2">
-              <span className="text-secondaryText text-sm font-normal font-poppins">Dental Lab Alliance:</span>
-              <span className="text-secondaryBrand font-normal text-sm font-poppins">
-                {orderDetails?.doctorOrderItems?.find(item => item.dropdown?.type === "Participating Lab")?.dropdown?.name || "N/A"}
-              </span>
-            </div>
-          </div>
-        </div>
 
-        <div className="mt-4">
-          <h3 className="font-normal text-base font-poppins text-primaryText pb-4 border-b border-gray-200">
-            Additional Notes
-          </h3>
-          <div className="pt-4">
-            <p className="text-secondaryText text-sm font-normal font-poppins">
-              {orderDetails?.additionalNotes || "Please ensure shade A2 is used for all anterior crowns. Adjust occlusion slightly to reduce pressure on implant #11. Patient prefers a natural matte finish rather than high gloss."}
-            </p>
+              {/* Row 2 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Smart Crown:
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {orderDetails?.doctorOrderItems?.find(
+                      (item) => item.dropdown?.type === "Crown"
+                    )?.dropdown?.name || "N/A"}
+                  </span>
+                </div>
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Material:
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {orderDetails?.doctorOrderItems?.find(
+                      (item) => item.dropdown?.type === "Material"
+                    )?.dropdown?.name || "N/A"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Row 3 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Shade:
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {orderDetails?.doctorOrderItems
+                      ?.filter((item) => item.dropdown?.type === "Shade")
+                      ?.map((item) => item.dropdown?.name)
+                      ?.join(", ") || "N/A"}
+                  </span>
+                </div>
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Digital Model Type:
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {orderDetails?.doctorOrderItems?.find(
+                      (item) => item.dropdown?.type === "Digital Model Type"
+                    )?.dropdown?.name || "N/A"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Row 4 */}
+              <div className="p-4 flex items-center gap-2">
+                <span className="text-secondaryText text-sm font-normal font-poppins">
+                  Dental Lab Alliance:
+                </span>
+                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  {orderDetails?.doctorOrderItems?.find(
+                    (item) => item.dropdown?.type === "Participating Lab"
+                  )?.dropdown?.name || "N/A"}
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
+
+          <div className="mt-4">
+            <h3 className="font-normal text-base font-poppins text-primaryText pb-4 border-b border-gray-200">
+              Additional Notes
+            </h3>
+            <div className="pt-4">
+              <p className="text-secondaryText text-sm font-normal font-poppins">
+                {orderDetails?.additionalNotes ||
+                  "Please ensure shade A2 is used for all anterior crowns. Adjust occlusion slightly to reduce pressure on implant #11. Patient prefers a natural matte finish rather than high gloss."}
+              </p>
+            </div>
+          </div>
         </div>
         {/* End of PDF Content */}
       </div>
