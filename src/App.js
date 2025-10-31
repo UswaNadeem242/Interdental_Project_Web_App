@@ -73,7 +73,7 @@ const PlainLayout = ({ children }) => {
         <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
           {/* left-4 right-4  top-4*/}
           <div className="md:hidden mr-4">
-            <MobileSidebar items={menuItems} />
+            <MobileSidebar items={menuItems} role={"doctor"} />
           </div>
           <DoctorHeader role={"doctor"} />
         </header>
@@ -99,7 +99,7 @@ const PlainLayoutUser = ({ children }) => (
       <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
         {/* left-4 right-4  top-4*/}
         <div className="md:hidden mr-4">
-          <MobileSidebar items={menuItemsUser} />
+          <MobileSidebar items={menuItemsUser} role={"patient"} />
         </div>
         <DoctorHeader role={"patient"} />
       </header>
@@ -124,7 +124,7 @@ const PlainLayoutPatient = ({ children }) => (
       <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
         {/* left-4 right-4  top-4*/}
         <div className="md:hidden mr-4">
-          <MobileSidebar items={menuPatientItem} />
+          <MobileSidebar items={menuPatientItem} role={"patient"} />
         </div>
         <DoctorHeader />
       </header>
@@ -151,7 +151,7 @@ const PlainLayoutAdminPanel = ({ children }) => (
       <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
         {/* left-4 right-4  top-4*/}
         <div className="md:hidden mr-4">
-          <MobileSidebar items={menuAdminPanelItem} />
+          <MobileSidebar items={menuAdminPanelItem} role={"admin"} />
         </div>
         <DoctorHeader role={"admin"} />
       </header>

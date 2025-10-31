@@ -109,7 +109,7 @@ export default function MaterialDropdown({
                   key={opt.value}
                   type="button"
                   onClick={() => handleSelect(opt)} // pass full object
-                  className={`flex w-full items-center justify-between px-3 py-3 text-sm transition-colors
+                  className={`flex w-full items-start justify-between px-3 py-3 text-sm transition-colors
                     ${active ? "bg-indigo-50" : "hover:bg-gray-50"} 
                     ${!isLast ? "border-b-2 border-background" : ""}`}
                 >
@@ -127,13 +127,13 @@ export default function MaterialDropdown({
                       {opt.label}
                     </span>
                   </span> */}
-                  <span className="flex justify-between items-center gap-1">
+                  <span className="flex items-start gap-1 flex-1 min-w-0">
                     {/* ✅ Hide circle if "Not available" and prop is true */}
                     {!(
                       hideCheckForNotAvailable && isNotAvailable
                     ) && (
                         <span
-                          className={`flex items-center justify-center h-4 w-4 min-w-[16px] min-h-[16px] rounded-full border ${
+                          className={`flex items-center justify-center h-4 w-4 min-w-[16px] min-h-[16px] rounded-full border flex-shrink-0 mt-0.5 ${
                             active ? "border-secondaryBrand border-[1.5px]" : "border-gray-300 border-[1.5px]"
                           }`}
                         >
@@ -143,12 +143,12 @@ export default function MaterialDropdown({
                         </span>
                       )}
 
-                    <span className="text-textFieldHeading text-[10px] text-left font-normal capitalize">
+                    <span className="text-textFieldHeading text-[10px] text-left font-normal capitalize flex-1">
                       {opt.label}
                     </span>
                   </span>
                   {opt.price != null && opt.price > 0 && (
-                    <span className="font-semibold text-[#001D58] text-[10px]">
+                    <span className="font-semibold text-[#001D58] text-[10px] flex-shrink-0 ml-2">
                       ${Number(opt.price).toFixed(2)}
                     </span>
                   )}

@@ -133,7 +133,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
           <div className="p-4">
             <div className="flex justify-between items-center pb-4">
-              <h4 className="text-primaryText font-normal text-xl font-poppins">
+              <h4 className="text-black font-semibold text-xl font-poppins">
                 Restoration Design Form
               </h4>
             </div>
@@ -146,7 +146,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Doctor's Name
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {doctorProfile?.firstName || ""}{" "}
                       {doctorProfile?.lastName || ""}
                     </span>
@@ -155,7 +155,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Office Reference Number
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {doctorProfile?.officeRefNumber || ""}
                     </span>
                   </div>
@@ -167,7 +167,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Patient
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {patient?.name || ""}
                     </span>
                   </div>
@@ -179,7 +179,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Created Date
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {/* {formatDate(doctorProfile?.createdAt)} */}
                       {today.toLocaleDateString("en-GB").replace(/\//g, "-")}
                     </span>
@@ -188,7 +188,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Expected Delivery Date:
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {formatDate(dueDate)}
                     </span>
                   </div>
@@ -198,11 +198,11 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
             <div className="mt-4">
               {/* tooth selection  */}
-              <div className="border border-gray-200 rounded-lg p-4">
-                <p className="text-sm font-normal font-poppins text-primaryText mb-4">
+              <div className="border border-gray-200 rounded-lg ">
+                <p className="text-lg font-normal font-poppins border-b p-3 text-black mb-4">
                   Tooth Selection
                 </p>
-                <div className="">
+                <div className="p-4">
                   {/* Upper 16 */}
                   <div className="flex flex-wrap gap-4 mt-4 justify-center ">
                     {Object.entries(topTeeth).map(([id, ToothComponent]) => (
@@ -213,7 +213,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                         <ToothComponent
                           highlighted={selectedTeeth?.includes(Number(id))}
                         />
-                        <span className="text-sm mt-1 text-gray-600">{id}</span>
+                        <span className="text-sm mt-1 text-gray-600 capitalize">{id}</span>
                       </div>
                     ))}
                   </div>
@@ -227,7 +227,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                         <ToothComponent
                           highlighted={selectedTeeth?.includes(Number(id))}
                         />
-                        <span className="text-sm text-gray-600 mt-1">{id}</span>
+                        <span className="text-sm text-gray-600 mt-1 capitalize">{id}</span>
                       </div>
                     ))}
                   </div>
@@ -243,7 +243,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Selected Smile Design:
                     </span>
-                    <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                    <span className="text-secondaryBrand capitalize text-sm font-normal font-poppins">
                       {globalSelections?.smileDesign?.option?.label || "N/A"}
                     </span>
                   </div>
@@ -251,7 +251,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Scanner Type:
                     </span>
-                    <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                    <span className="text-secondaryBrand capitalize text-sm font-normal font-poppins">
                       {globalSelections?.scannerType?.option?.label || "N/A"}
                     </span>
                   </div>
@@ -260,7 +260,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
             </div>
 
             <div className="mt-4">
-              <h3 className="font-normal text-base font-poppins text-primaryText mb-4">
+              <h3 className="font-normal text-lg font-poppins text-black mb-4">
                 Customization Details
               </h3>
               <div className="border border-gray-200 rounded-lg">
@@ -270,7 +270,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Denture type:
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {globalSelections?.digitalOptions?.option.label || "N/A"}
                     </span>
                   </div>
@@ -278,7 +278,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Surgical guide:
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {globalSelections?.surgical_guide?.option?.label || "N/A"}
                     </span>
                   </div>
@@ -290,7 +290,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Smart Crown:
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {globalSelections?.crown?.option?.label || "N/A"}
                     </span>
                   </div>
@@ -298,7 +298,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Material:
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {globalSelections?.material?.option.label || "N/A"}
                     </span>
                   </div>
@@ -314,7 +314,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                       {globalSelections?.shades?.["Vita Classic Shades"]
                         ?.name || "N/A"}
                     </span> */}
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {(() => {
                         const shades = globalSelections?.shades;
                         if (!shades || Object.keys(shades).length === 0)
@@ -328,7 +328,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     <span className="text-secondaryText text-sm font-normal font-poppins">
                       Digital Model Type:
                     </span>
-                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                       {globalSelections?.Model_type?.option?.label || "N/A"}
                     </span>
                   </div>
@@ -339,7 +339,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Dental Lab Alliance:
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {globalSelections?.lab?.option?.label || "N/A"}
                   </span>
                 </div>
@@ -347,7 +347,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
             </div>
 
             <div className="mt-4">
-              <h3 className="font-normal text-base font-poppins text-primaryText pb-4 border-b border-gray-200">
+              <h3 className="font-normal text-lg font-poppins text-black pb-4 border-b border-gray-200">
                 Additional Notes
               </h3>
               <div className="pt-4">
