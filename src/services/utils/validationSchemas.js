@@ -315,6 +315,63 @@ export const doctorProfileCompletionSchema = Yup.object().shape({
     ),
 });
 
+// Checkout Form Validation Schema
+export const checkoutValidationSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Full Name must be at least 2 characters")
+    .matches(
+      /^[a-zA-Z\s]+$/,
+      "Full Name must contain only letters and spaces"
+    )
+    .required("Full Name is required"),
+  phone: Yup.string()
+    .min(7, "Phone number must be at least 7 digits")
+    .max(15, "Phone number must not exceed 15 digits")
+    .matches(/^[0-9]{7,15}$/i, "Phone number must contain only digits (7–15)")
+    .required("Phone number is required"),
+  email: Yup.string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  country: Yup.string().required("Country is required"),
+  state: Yup.string()
+    .min(3, "State/Province must be at least 3 characters")
+    .matches(/^[a-zA-Z\s]+$/, "State/Province must contain only letters")
+    .required("State/Province is required"),
+  city: Yup.string()
+    .min(2, "City must be at least 2 characters")
+    .matches(/^[a-zA-Z\s\-'.]+$/, "City contains invalid characters")
+    .required("City is required"),
+  street: Yup.string()
+    .min(5, "Street address must be at least 5 characters")
+    .matches(
+      /^[a-zA-Z0-9\s#.,'-]+$/,
+      "Street address can contain letters, numbers, spaces, and # . , ' -"
+    )
+    .required("Street Address is required"),
+  recipientName: Yup.string()
+    .min(2, "Recipient's Name must be at least 2 characters")
+    .matches(
+      /^[a-zA-Z\s]+$/,
+      "Recipient's Name must contain only letters and spaces"
+    )
+    .required("Recipient's Name is required"),
+  paypalUsername: Yup.string()
+    .min(3, "PayPal Username must be at least 3 characters")
+    .required("PayPal Username is required"),
+  paypalEmailPhone: Yup.string()
+    .test(
+      "email-or-phone",
+      "Please enter a valid email or phone number (7-15 digits)",
+      function (value) {
+        if (!value) return false;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^[0-9]{7,15}$/;
+        return emailRegex.test(value) || phoneRegex.test(value);
+      }
+    )
+    .required("PayPal Email/Phone is required"),
+});
+
 export default {
   contactValidationSchema,
   loginValidationSchema,
@@ -324,4 +381,5 @@ export default {
   changePasswordValidationSchema,
   shoppingCartValidationSchema,
   doctorProfileCompletionSchema,
+  checkoutValidationSchema,
 };

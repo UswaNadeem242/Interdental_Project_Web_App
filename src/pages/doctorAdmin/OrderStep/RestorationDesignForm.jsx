@@ -406,7 +406,7 @@ const DoctorOrder = () => {
                               value={values?.note}
                               placeholder="Write here"
                               maxLength={500}
-                              className="w-full resize-none rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none"
+                              className="w-full resize-none mt-2 rounded-sm border border-gray-200 px-4 py-3 text-sm outline-none"
                               onChange={(e) => {
                                 const value = e.target.value;
                                 dispatch(setNote(value));
