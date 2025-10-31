@@ -129,8 +129,6 @@ export default function OrderDetailsForm({ id }) {
     setSelected(option);
   };
 
-
-
   const handleDownloadPDF = async () => {
     const element = formRef.current;
     if (!element) {
@@ -361,8 +359,8 @@ export default function OrderDetailsForm({ id }) {
             </div>
           </div>
 
-          <div className="mt-4">
-            <h3 className="font-normal text-xs font-poppins text-black mb-4">
+          <div className="mt-6">
+            <h3 className="font-normal text-xs font-poppins text-black mb-3">
               Customization Details
             </h3>
             <div className="border-2 border-gray-200 ">
@@ -453,8 +451,8 @@ export default function OrderDetailsForm({ id }) {
             </div>
           </div>
 
-          <div className="mt-4">
-            <h3 className="font-normal text-xs font-poppins text-black pb-4 border-b-2 border-gray-200">
+          <div className="mt-6">
+            <h3 className="font-normal text-xs font-poppins text-black pb-3 border-b-2 border-gray-200">
               Additional Notes
             </h3>
             <div className="pt-4">
