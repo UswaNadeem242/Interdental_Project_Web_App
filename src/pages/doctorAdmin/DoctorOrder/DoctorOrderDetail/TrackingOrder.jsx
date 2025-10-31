@@ -9,8 +9,8 @@ import { format, parseISO } from "date-fns";
 const ORDER_STATUS = {
   BOOKED: "BOOKED",
   PENDING: "PENDING",
-  SHIPED: "SHIPED",
-  DELIVERD: "DELIVERD",
+  SHIPED: "SHIPPED",
+  DELIVERED: "DELIVERED",
 };
 
 // Color constants
