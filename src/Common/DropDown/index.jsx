@@ -9,7 +9,8 @@ export default function DropDownComponent({
   optionLabel = "label",
   optionValue = "value",
   className,
-  totalAmount
+  totalAmount,
+  disabled,
 }) {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -30,44 +31,45 @@ export default function DropDownComponent({
         </span>
 
         <ChevronUpIcon
-          className={`w-5 h-5 ml-2 transition-transform duration-200 ${isOpen ? "rotate-180" : "rotate-0"
-            }`}
+          className={`w-5 h-5 ml-2 transition-transform duration-200 ${
+            isOpen ? "rotate-180" : "rotate-0"
+          }`}
         />
       </button>
 
       {/* Dropdown menu */}
       {isOpen && (
         <ul className="w-full bg-white rounded-bl-2xl rounded-br-2xl shadow-md max-h-60 overflow-auto">
-          {label === "Shipping Detail" ? (
-            // For Shipping Detail, render as non-clickable text
-            options.map((option, index) => (
-              <li
-                key={option[optionValue] || index}
-                className="flex justify-between px-4 py-2 text-gray-700 font-poppins"
-              >
-                <span>{option[optionLabel]}</span>
-              </li>
-            ))
-          ) : (
-            // For other dropdowns, render as clickable items
-            options.map((option, index) => (
-              <li
-                key={option[optionValue] || index}
-                onClick={() => {
-                  onSelect(option);
-                  setIsOpen(false);
-                }}
-                className="flex justify-between px-4 py-2 text-gray-700 cursor-pointer font-poppins hover:bg-gray-50"
-              >
-                <span>{option[optionLabel]}</span>
-                <span className="text-xs text-secondaryBrand">
-                  {typeof option[optionValue] === 'number' && option[optionValue] > 0 
-                    ? `$${option[optionValue]}` 
-                    : option[optionValue]}
-                </span>
-              </li>
-            ))
-          )}
+          {label === "Shipping Detail"
+            ? // For Shipping Detail, render as non-clickable text
+              options.map((option, index) => (
+                <li
+                  key={option[optionValue] || index}
+                  className="flex justify-between px-4 py-2 text-gray-700 font-poppins"
+                >
+                  <span>{option[optionLabel]}</span>
+                </li>
+              ))
+            : // For other dropdowns, render as clickable items
+              options.map((option, index) => (
+                <li
+                  key={option[optionValue] || index}
+                  onClick={() => {
+                    if (disabled) return;
+                    onSelect(option);
+                    setIsOpen(false);
+                  }}
+                  className="flex justify-between px-4 py-2 text-gray-700 cursor-pointer font-poppins hover:bg-gray-50"
+                >
+                  <span>{option[optionLabel]}</span>
+                  <span className="text-xs text-secondaryBrand">
+                    {typeof option[optionValue] === "number" &&
+                    option[optionValue] > 0
+                      ? `$${option[optionValue]}`
+                      : option[optionValue]}
+                  </span>
+                </li>
+              ))}
 
           {/* Cart total row */}
           {label === "Cart Total" && (

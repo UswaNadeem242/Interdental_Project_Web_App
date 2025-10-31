@@ -504,6 +504,7 @@ export default function OrderDetailsForm({ id }) {
             onSelect={handleSelect}
             className="text-xs"
             totalAmount={totalPrice}
+            disabled={true}
           />
         </div>
 

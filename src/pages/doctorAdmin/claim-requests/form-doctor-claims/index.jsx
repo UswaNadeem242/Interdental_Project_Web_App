@@ -351,7 +351,7 @@ export const DoctorCalimsForm = () => {
                   <NavLink to={`/doctor-admin/claim-requests`}>
                     <button
                       type="button"
-                      className="px-16 py-4 bg-card rounded-full text-primaryText font-bold text-base  font-poppins capitalize"
+                      className="px-16 py-4 bg-card rounded-full text-primaryText font-bold md:text-base text-[14px] whitespace-nowrap  font-poppins capitalize"
                     >
                       Go Back
                     </button>
@@ -369,7 +369,7 @@ export const DoctorCalimsForm = () => {
                         toast.error("Please select all the options first.");
                       }
                     }}
-                    className="px-16 py-4 capitalize bg-secondaryBrand text-bgWhite rounded-full font-poppins text-base font-bold"
+                    className="md:px-16 px-10 py-4 capitalize bg-secondaryBrand text-bgWhite rounded-full font-poppins md:text-base text-[14px] whitespace-nowrap font-bold"
                   >
                     Send Claim Request
                   </button>
@@ -380,17 +380,24 @@ export const DoctorCalimsForm = () => {
                 <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50">
                   <div className="bg-white  rounded-xl w-[95%] h-[95%] shadow-lg animate-scaleUp overflow-hidden relative flex flex-col">
                     {/* Close Button */}
-                    <button
-                      onClick={() => setShowModal(false)}
-                      className="absolute top-3 right-10 text-gray-500 hover:text-gray-700 text-2xl leading-none "
-                    >
-                      <span>
-                        <Xmark2 />
-                      </span>
-                    </button>
+
+                    <div className="flex justify-between">
+                      <div></div>
+                      <div className="mr-7 mt-4">
+                        <button
+                          onClick={() => setShowModal(false)}
+                          className=" top-3 right-10 text-gray-500 hover:text-gray-700 text-2xl leading-none "
+                        >
+                          <span>
+                            <Xmark2 />
+                          </span>
+                        </button>
+                      </div>
+                    </div>
 
                     <div className="flex-1 overflow-y-auto pr-4 pb-10">
                       <DoctorTermCondition />
+                      <p>sdf</p>
                     </div>
 
                     <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-bgWhite pb-2 p-4 ">
