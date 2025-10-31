@@ -360,7 +360,7 @@ const ReviewOrder = ({ next, doctorProfile }) => {
           {/* */}
         </div>
         {/* Right Panel / Order Summary */}
-        <div className="lg:col-span-3 bg-white  border-l border-gray-200 p-6 flex flex-col justify-between font-poppins">
+        <div className="col-span-4 md:col-span-3 bg-white  border md:border-l border-gray-200 p-6 flex flex-col justify-between font-poppins ">
           <div>
             <h2 className="text-lg font-semibold mb-4 text-[#1A1A1A]">
               Order Summary
