@@ -19,6 +19,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
   });
   const { fetchUnreadNotificationsCount } = useAuth()
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
+  const currentPageRef = useRef(0); // Use ref to avoid dependency issues
 
   const fetchNotifications = useCallback(async (page = 0, append = false) => {
     if (append) {
@@ -49,7 +50,8 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
       }
       const totalPages = responseData?.page ?? 0;
 
-      const newCurrentPageNumber = append ? currentPageNumber + 1 : 0;
+      const newCurrentPageNumber = append ? currentPageRef.current + 1 : 0;
+      currentPageRef.current = newCurrentPageNumber;
       setCurrentPageNumber(newCurrentPageNumber);
 
       const hasMore = newCurrentPageNumber < totalPages - 1;
@@ -67,7 +69,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [currentPageNumber]);
+  }, []); // Empty dependency array - function is stable
 
 
   const markAsRead = useCallback(
@@ -127,12 +129,13 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
 
   const handleLoadMore = useCallback(() => {
     if (pagination.hasMore && !loading) {
-      fetchNotifications(currentPageNumber + 1, true);
+      fetchNotifications(currentPageRef.current + 1, true);
     }
-  }, [fetchNotifications, pagination.hasMore, currentPageNumber, loading]);
+  }, [fetchNotifications, pagination.hasMore, loading]);
 
   useEffect(() => {
     if (notificationsDropdown) {
+      currentPageRef.current = 0; // Reset ref when dropdown opens
       setCurrentPageNumber(0); // Reset page number when dropdown opens
       fetchNotifications(0, false);
     }
