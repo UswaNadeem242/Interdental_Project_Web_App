@@ -1,210 +1,325 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Formik, Form, FieldArray } from "formik";
 import { getClaimsByUser } from "../../../../api/patient-dashaboard-api";
 import { useDispatch } from "react-redux";
 import TeethSvg from "../../../../components/teeth-svg";
 import { FormSectionHeading } from "../../../../Common/FormSection";
-import {
-  DoctorClaimInitialValues,
-} from "../../../../Common/FormsValidation/patient-claim-validation";
+import { DoctorClaimInitialValues } from "../../../../Common/FormsValidation/patient-claim-validation";
 import { showToast } from "../../../../store/toast-slice";
 import { PatientDropdown } from "../../../../components/doctorAdmin/patient-component";
 import { getDoctorProfile } from "../../../../api/doctorDasboard";
 import InputField from "../../../../Common/FormInputField";
 import DoctorTermCondition from "../../TermCondition";
 import { toast } from "react-toastify";
-import { Xmark, Xmark2 } from "../../../../icon/xmark";
+import { Xmark2 } from "../../../../icon/xmark";
 import axios from "axios";
 import { BASE_URL } from "../../../../config";
 import Icons from "../../../../components/Icons";
+
+// Constants
+const TEETH_RANGES = {
+  CROWN_START: 1,
+  CROWN_END: 16,
+  IMPLANT_START: 17,
+  IMPLANT_END: 32,
+};
+
+const ROUTES = {
+  CLAIM_REQUESTS: "/doctor-admin/claim-requests",
+};
+
+const ERROR_MESSAGES = {
+  SELECT_PATIENT: "Please select a patient.",
+  SELECT_TOOTH: "Please select at least one tooth.",
+  SELECT_ORDER: "Please select an order",
+  COMPLETE_FIELDS: "Please complete all required fields.",
+  SELECT_OPTIONS: "Please select all the options first.",
+  SUBMIT_FAILED: "Failed to submit claim.",
+  API_ERROR: "An error occurred. Please try again.",
+};
+
+const SUCCESS_MESSAGES = {
+  CLAIM_SUBMITTED: "Claim submitted successfully!",
+};
+
 export const DoctorCalimsForm = () => {
+  // State management
   const [doctorProfile, setDoctorProfile] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [doctorProfileEmail, setDoctorProfileEmail] = useState(null);
   const [patientsWithOrders, setPatientsWithOrders] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [availableTeeth, setAvailableTeeth] = useState([]);
   const [orderDropdownOpen, setOrderDropdownOpen] = useState(false);
-  const orderDropdownRef = React.useRef(null);
-  const dispatch = useDispatch();
-  const navigator = useNavigate();
-  const pVarible = `text-[#686868] text-sm font-poppins font-normal py-4 col-span-6 md:col-span-12`;
-  const p2Varible = `text-[#686868] text-sm font-poppins font-normal py-2`;
-  const liVarible = `text-black text-sm font-semibold font-poppins `;
+  const [showModal, setShowModal] = useState(false);
 
-  // Validation Only
-  const validateClaim = (values) => {
+  // Refs
+  const orderDropdownRef = useRef(null);
+
+  // Hooks
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // Validation logic
+  const validateClaim = useCallback((values) => {
     const errors = {};
-    // Patient must be selected
+
     if (!values?.patient?.id) {
-      errors.patient = "Please select a patient.";
+      errors.patient = ERROR_MESSAGES.SELECT_PATIENT;
     }
 
-    // At least 1 tooth from combined set (crown OR implant)
     const totalSelected = [
       ...(values.crownTeeth || []),
-      ...(values.implantTeeth || [])
+      ...(values.implantTeeth || []),
     ].length;
-    
+
     if (totalSelected === 0) {
-      errors.teeth = "Please select at least one tooth.";
+      errors.teeth = ERROR_MESSAGES.SELECT_TOOTH;
     }
 
     return errors;
-  };
-  // API OF THE FORM
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    const errors = validateClaim(values);
+  }, []);
 
-    if (Object.keys(errors).length > 0) {
-      // Show a toast or inline errors
-      dispatch(
-        showToast({
-          message: "Please complete all required fields.",
-          type: "error",
-        })
-      );
-      setSubmitting(false);
-      return;
-    }
-    try {
-      //  Prepare final payload in backend format
-      const payload = {
-        patientId: values?.patient?.id,
-        crownTeeth: Array.isArray(values.crownTeeth)
-          ? values.crownTeeth.filter(Boolean).join(",")
-          : (values.crownTeeth || "").replace(/^,|,$/g, ""),
-        implantTeeth: Array.isArray(values.implantTeeth)
-          ? values.implantTeeth.filter(Boolean).join(",")
-          : (values.implantTeeth || "").replace(/^,|,$/g, ""),
-      };
+  // Prepare payload for submission
+  const preparePayload = useCallback((values) => {
+    const formatTeeth = (teeth) => {
+      return Array.isArray(teeth)
+        ? teeth.filter(Boolean).join(",")
+        : (teeth || "").replace(/^,|,$/g, "");
+    };
 
-      const response = await getClaimsByUser(payload);
+    return {
+      patientId: values?.patient?.id,
+      crownTeeth: formatTeeth(values.crownTeeth),
+      implantTeeth: formatTeeth(values.implantTeeth),
+    };
+  }, []);
 
-      if (response.success) {
+  // Form submission handler
+  const handleSubmit = useCallback(
+    async (values, { setSubmitting, resetForm }) => {
+      const errors = validateClaim(values);
+
+      if (Object.keys(errors).length > 0) {
         dispatch(
           showToast({
-            message: `Claim submitted successfully!`,
-            type: "success",
-          })
-        );
-        resetForm();
-        navigator("/doctor-admin/claim-requests");
-      } else {
-        dispatch(
-          showToast({
-            message: "Failed to submit claim.",
+            message: ERROR_MESSAGES.COMPLETE_FIELDS,
             type: "error",
           })
         );
+        setSubmitting(false);
+        return;
+      }
+
+      try {
+        const payload = preparePayload(values);
+        const response = await getClaimsByUser(payload);
+
+        if (response.success) {
+          dispatch(
+            showToast({
+              message: SUCCESS_MESSAGES.CLAIM_SUBMITTED,
+              type: "success",
+            })
+          );
+          resetForm();
+          navigate(ROUTES.CLAIM_REQUESTS);
+        } else {
+          dispatch(
+            showToast({
+              message: ERROR_MESSAGES.SUBMIT_FAILED,
+              type: "error",
+            })
+          );
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+        dispatch(
+          showToast({
+            message: ERROR_MESSAGES.API_ERROR,
+            type: "error",
+          })
+        );
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [validateClaim, preparePayload, dispatch, navigate]
+  );
+
+  // Fetch doctor profile
+  const fetchDoctorProfile = useCallback(async (userId) => {
+    try {
+      const response = await getDoctorProfile(userId);
+      const profile = response.data.data;
+      const fullName = `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim();
+      setDoctorProfile(fullName);
+      setDoctorProfileEmail(profile?.email || "");
+    } catch (error) {
+      console.error("Error fetching doctor profile:", error);
+    }
+  }, []);
+
+  // Fetch patients with orders
+  const fetchPatientsWithOrders = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No authentication token found");
+        return;
+      }
+
+      const response = await axios.get(
+        `${BASE_URL}/api/users/doctors/patients-with-orders`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.data.responseStatus) {
+        setPatientsWithOrders(response.data.data);
       }
     } catch (error) {
-      console.error("API Error:", error);
-      dispatch(
-        showToast({
-          message: `An error occurred. Please try again.`,
-          type: "error",
-        })
-      );
-    } finally {
-      setSubmitting(false);
+      console.error("Error fetching patients with orders:", error);
     }
-  };
+  }, []);
 
+  // Initialize data on mount
   useEffect(() => {
     const userData = localStorage.getItem("users");
     if (!userData) return;
 
-    const parsedUserData = JSON.parse(userData);
-    const userId = parsedUserData.id;
+    try {
+      const parsedUserData = JSON.parse(userData);
+      const userId = parsedUserData.id;
 
-    const fetchDoctorProfile = async () => {
-      try {
-        const response = await getDoctorProfile(userId);
-
-        const profile = response.data.data;
-        const fullName = `${profile?.firstName || ""} ${
-          profile?.lastName || ""
-        }`.trim();
-        setDoctorProfile(fullName);
-        setDoctorProfileEmail(profile?.email || "");
-      } catch (error) {
-        console.error("Error fetching doctor profile:", error);
+      if (userId) {
+        fetchDoctorProfile(userId);
+        fetchPatientsWithOrders();
       }
-    };
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+    }
+  }, [fetchDoctorProfile, fetchPatientsWithOrders]);
 
-    const fetchPatientsWithOrders = async () => {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/api/users/doctors/patients-with-orders`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        if (response.data.responseStatus) {
-          setPatientsWithOrders(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching patients with orders:", error);
-      }
-    };
-
-    fetchDoctorProfile();
-    fetchPatientsWithOrders();
-  }, []);
-
-  // Close order dropdown on outside click
-  React.useEffect(() => {
+  // Close dropdown on outside click
+  useEffect(() => {
     const handleClickOutside = (event) => {
-      if (orderDropdownRef.current && !orderDropdownRef.current.contains(event.target)) {
+      if (
+        orderDropdownRef.current &&
+        !orderDropdownRef.current.contains(event.target)
+      ) {
         setOrderDropdownOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Get orders for selected patient
-  const patientOrders = React.useMemo(() => {
+  const patientOrders = useMemo(() => {
     if (!selectedPatient?.id) return [];
     return patientsWithOrders.filter((item) => item.id === selectedPatient.id);
   }, [selectedPatient, patientsWithOrders]);
 
-  // Handle patient selection
-  const handlePatientChange = (patient, setFieldValue, setFieldTouched) => {
-    setSelectedPatient(patient);
-    setSelectedOrderId(null);
-    setAvailableTeeth([]);
-    setFieldValue("patient", patient);
+  // Parse teeth from order data
+  const parseTeethFromOrder = useCallback((selectedTeeth) => {
+    if (!selectedTeeth) return [];
+    return selectedTeeth
+      .split(",")
+      .map((t) => parseInt(t.trim()))
+      .filter((t) => !isNaN(t));
+  }, []);
+
+  // Reset form teeth fields
+  const resetTeethFields = useCallback((setFieldValue, setFieldTouched) => {
     setFieldValue("crownTeeth", []);
     setFieldValue("implantTeeth", []);
     setFieldTouched("crownTeeth", false);
     setFieldTouched("implantTeeth", false);
-  };
+  }, []);
+
+  // Handle patient selection
+  const handlePatientChange = useCallback(
+    (patient, setFieldValue, setFieldTouched) => {
+      setSelectedPatient(patient);
+      setSelectedOrderId(null);
+      setAvailableTeeth([]);
+      setFieldValue("patient", patient);
+      resetTeethFields(setFieldValue, setFieldTouched);
+    },
+    [resetTeethFields]
+  );
 
   // Handle order selection
-  const handleOrderChange = (orderId, setFieldValue, setFieldTouched) => {
-    setSelectedOrderId(orderId);
-    const orderData = patientsWithOrders.find(
-      (item) => item.orderId === orderId
-    );
-    if (orderData && orderData.selectedTeeth) {
-      const teeth = orderData.selectedTeeth
-        .split(",")
-        .map((t) => parseInt(t.trim()))
-        .filter((t) => !isNaN(t));
-      setAvailableTeeth(teeth);
-      // Reset selected teeth and touched state
-      setFieldValue("crownTeeth", []);
-      setFieldValue("implantTeeth", []);
-      setFieldTouched("crownTeeth", false);
-      setFieldTouched("implantTeeth", false);
-    }
-  };
+  const handleOrderChange = useCallback(
+    (orderId, setFieldValue, setFieldTouched) => {
+      setSelectedOrderId(orderId);
+      const orderData = patientsWithOrders.find(
+        (item) => item.orderId === orderId
+      );
+
+      if (orderData?.selectedTeeth) {
+        const teeth = parseTeethFromOrder(orderData.selectedTeeth);
+        setAvailableTeeth(teeth);
+        resetTeethFields(setFieldValue, setFieldTouched);
+      }
+    },
+    [patientsWithOrders, parseTeethFromOrder, resetTeethFields]
+  );
+
+  // Handle tooth selection from SVG
+  const handleSvgToothClick = useCallback(
+    (num, values, setFieldValue, setFieldTouched) => {
+      const n = Number(num);
+      const isCrownTooth = n <= TEETH_RANGES.CROWN_END;
+      const fieldName = isCrownTooth ? "crownTeeth" : "implantTeeth";
+      const currentTeeth = values[fieldName].slice();
+      const idx = currentTeeth.indexOf(n);
+
+      if (idx >= 0) {
+        currentTeeth.splice(idx, 1);
+      } else {
+        currentTeeth.push(n);
+      }
+
+      currentTeeth.sort((a, b) => a - b);
+      setFieldValue(fieldName, currentTeeth);
+      setFieldTouched(fieldName, true);
+    },
+    []
+  );
+
+  // Check if tooth button should be disabled
+  const isToothDisabled = useCallback(
+    (toothNum) => {
+      return (
+        !selectedOrderId ||
+        (availableTeeth.length > 0 && !availableTeeth.includes(toothNum))
+      );
+    },
+    [selectedOrderId, availableTeeth]
+  );
+
+  // Handle form validation before showing modal
+  const handleShowModal = useCallback(
+    (values, setFieldTouched) => {
+      setFieldTouched("crownTeeth", true);
+      setFieldTouched("implantTeeth", true);
+      setFieldTouched("patient", true);
+
+      const validationErrors = validateClaim(values);
+
+      if (Object.keys(validationErrors).length === 0) {
+        setShowModal(true);
+      } else {
+        toast.error(ERROR_MESSAGES.SELECT_OPTIONS);
+      }
+    },
+    [validateClaim]
+  );
 
   return (
     <div className="bg-bgWhite rounded-2xl">
@@ -225,34 +340,13 @@ export const DoctorCalimsForm = () => {
             ...values.crownTeeth,
             ...values.implantTeeth,
           ];
-          const handleSvgToothClick = (num) => {
-            const n = Number(num);
-            if (n <= 16) {
-              // toggle in crownTeeth
-              const arr = values.crownTeeth.slice();
-              const idx = arr.indexOf(n);
-              if (idx >= 0) {
-                arr.splice(idx, 1);
-              } else {
-                arr.push(n);
-              }
-              arr.sort((a, b) => a - b);
-              setFieldValue("crownTeeth", arr);
-              setFieldTouched("crownTeeth", true);
-            } else {
-              // toggle in implantTeeth
-              const arr = values.implantTeeth.slice();
-              const idx = arr.indexOf(n);
-              if (idx >= 0) {
-                arr.splice(idx, 1);
-              } else {
-                arr.push(n);
-              }
-              arr.sort((a, b) => a - b);
-              setFieldValue("implantTeeth", arr);
-              setFieldTouched("implantTeeth", true);
-            }
-          };
+
+          // Calculate all disabled teeth (1-32)
+          const allTeeth = Array.from({ length: 32 }, (_, i) => i + 1);
+          const disabledTeethArray = allTeeth.filter((toothNum) =>
+            isToothDisabled(toothNum)
+          );
+
           return (
             <Form>
               {" "}
@@ -305,7 +399,7 @@ export const DoctorCalimsForm = () => {
 
                     {/* Order Dropdown - Only show if patient is selected */}
                     {values?.patient?.id && patientOrders.length > 0 && (
-                      <div>
+                      <div className="w-full lg:w-2/4">
                         <label className="text-sm font-medium text-gray-700 mb-2 block">
                           Select Order
                         </label>
@@ -406,29 +500,25 @@ export const DoctorCalimsForm = () => {
                             {Array.from({ length: 16 }, (_, i) => {
                               const num = i + 1;
                               const selected = values.crownTeeth.includes(num);
-                              const isAvailable = availableTeeth.includes(num);
-                              // Disable if: no order selected OR (order selected but tooth not available)
-                              const isDisabled = !selectedOrderId || (availableTeeth.length > 0 && !isAvailable);
+                              const disabled = isToothDisabled(num);
                               return (
                                 <button
                                   key={`crown-${num}`}
                                   type="button"
-                                  disabled={isDisabled}
+                                  disabled={disabled}
                                   onClick={() => {
-                                    if (!isDisabled) {
+                                    if (!disabled) {
                                       if (selected)
                                         remove(values.crownTeeth.indexOf(num));
                                       else push(num);
                                       setFieldTouched("crownTeeth", true);
                                     }
                                   }}
-                                  className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm font-medium
-                            ${
-                              selected ? "bg-[#94D3DD] text-secondaryBrand" : ""
-                            }
-                            ${
-                              isDisabled ? "opacity-30 cursor-not-allowed bg-gray-100" : ""
-                            }`}
+                                  className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm font-medium ${
+                                    selected ? "bg-[#94D3DD] text-secondaryBrand" : ""
+                                  } ${
+                                    disabled ? "opacity-30 cursor-not-allowed bg-gray-100" : ""
+                                  }`}
                                 >
                                   {num}
                                 </button>
@@ -449,31 +539,26 @@ export const DoctorCalimsForm = () => {
                           <div className="flex flex-wrap gap-2">
                             {Array.from({ length: 16 }, (_, i) => {
                               const num = 17 + i;
-                              const selected =
-                                values.implantTeeth.includes(num);
-                              const isAvailable = availableTeeth.includes(num);
-                              // Disable if: no order selected OR (order selected but tooth not available)
-                              const isDisabled = !selectedOrderId || (availableTeeth.length > 0 && !isAvailable);
+                              const selected = values.implantTeeth.includes(num);
+                              const disabled = isToothDisabled(num);
                               return (
                                 <button
                                   key={`implant-${num}`}
                                   type="button"
-                                  disabled={isDisabled}
+                                  disabled={disabled}
                                   onClick={() => {
-                                    if (!isDisabled) {
+                                    if (!disabled) {
                                       if (selected)
                                         remove(values.implantTeeth.indexOf(num));
                                       else push(num);
                                       setFieldTouched("implantTeeth", true);
                                     }
                                   }}
-                                  className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm font-medium
-                            ${
-                              selected ? "bg-[#94D3DD] text-secondaryBrand" : ""
-                            }
-                            ${
-                              isDisabled ? "opacity-30 cursor-not-allowed bg-gray-100" : ""
-                            }`}
+                                  className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm font-medium ${
+                                    selected ? "bg-[#94D3DD] text-secondaryBrand" : ""
+                                  } ${
+                                    disabled ? "opacity-30 cursor-not-allowed bg-gray-100" : ""
+                                  }`}
                                 >
                                   {num}
                                 </button>
@@ -496,9 +581,17 @@ export const DoctorCalimsForm = () => {
                     <div className="relative w-[120px] h-[380px]">
                       <TeethSvg
                         selectedTeeth={combinedSelected}
-                        onToothClick={handleSvgToothClick}
+                        onToothClick={(num) =>
+                          handleSvgToothClick(
+                            num,
+                            values,
+                            setFieldValue,
+                            setFieldTouched
+                          )
+                        }
                         fillColor="#94D3DD"
                         defaultColor="#ffffff"
+                        disabledTeeth={disabledTeethArray}
                       />
                     </div>
                   </div>
@@ -537,23 +630,10 @@ export const DoctorCalimsForm = () => {
                   </NavLink>
 
                   <button
-                    // type="submit"
                     type="button"
-                    onClick={async () => {
-                      // Mark fields as touched to show validation errors
-                      setFieldTouched("crownTeeth", true);
-                      setFieldTouched("implantTeeth", true);
-                      setFieldTouched("patient", true);
-                      
-                      const validationErrors = validateClaim(values);
-
-                      if (Object.keys(validationErrors).length === 0) {
-                        setShowModal(true);
-                      } else {
-                        toast.error("Please select all the options first.");
-                      }
-                    }}
-                    className="md:px-16 px-10 py-4 capitalize bg-secondaryBrand text-bgWhite rounded-full font-poppins md:text-base text-[14px] whitespace-nowrap font-bold"
+                    onClick={() => handleShowModal(values, setFieldTouched)}
+                    disabled={isSubmitting}
+                    className="md:px-16 px-10 py-4 capitalize bg-secondaryBrand text-bgWhite rounded-full font-poppins md:text-base text-[14px] whitespace-nowrap font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Send Claim Request
                   </button>

@@ -24,13 +24,13 @@ export default function Stepper({ steps, className, selectedColor }) {
       <div>
         <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
           <TabList
-            className={`flex border border-black/10 rounded-lg ${className}`}
+            className={`flex border border-black/10 w-full rounded-lg ${className}`}
           >
             {steps.map(({ name }) => (
               <Tab
                 key={name}
                 className={({ selected }) =>
-                  `rounded-xl py-4 px-6 my-2 mx-2 text-xs border w-1/2 border-textField
+                  `rounded-xl py-4 px-6 my-2 mx-2 text-xs border  lg:w-1/2 w-full border-textField
    focus:outline-none transition-colors duration-200 font-poppins capitalize 
    ${
      selected

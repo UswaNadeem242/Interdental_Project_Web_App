@@ -1,138 +1,144 @@
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../auth/AuthContext";
 import { BellIconSVG } from "../../../icon/Bell";
 import { LogoutIcon } from "../../../icon/LogoutIcon";
 import usePageTitle from "../../../Hooks/usePageTitle";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { setProfileData } from "../../../store/slices/profileData-slice";
 import { getDoctorProfile } from "../../../api/doctorDasboard";
 import NotificationsDropdown from "../../dropdowns/NotificationsDropdown";
 
+// Constants
+const ROLE_LINKS = {
+  doctor: "/doctor-admin/profile",
+  admin: "/admin-panel/profile-info",
+  default: "/patient-admin/profile-settings",
+};
+
 const DoctorHeader = ({ title, subTitle, role }) => {
+  // Hooks
   const navigate = useNavigate();
-  const location = useLocation();
-  const { logout, unreadNotificationsCount, fetchUnreadNotificationsCount } = useAuth();
   const dispatch = useDispatch();
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-  const userData = localStorage.getItem("users");
-  const user = userData ? JSON.parse(userData) : null;
-  const [doctorProfile, setDoctorProfile] = useState(null);
+  const { logout, unreadNotificationsCount, fetchUnreadNotificationsCount } = useAuth();
   const pageTitle = usePageTitle();
-  const displayTitle = pageTitle?.toLowerCase().includes("dashboard");
+
+  // Redux selectors
+  const profileImage = useSelector((state) => state.profile?.profileImage);
+  const profileData = useSelector((state) => state.profileData?.userProfileData);
+
+  // State
+  const [doctorProfile, setDoctorProfile] = useState(null);
   const [notificationsDropdown, setNotificationsDropdown] = useState(false);
 
-  const roleLink =
-    // role === "doctor"
-    //   ? "/doctor-admin/profile"
-    //   : "/patient-admin/profile-settings";
-    role === "doctor"
-      ? "/doctor-admin/profile"
-      : role === "admin"
-        ? "/admin-panel/profile-info "
-        : "/patient-admin/profile-settings";
-  const profileImage = useSelector((state) => state.profile?.profileImage);
-  const profileData = useSelector(
-    (state) => state.profileData?.userProfileData
-  );
-
-  useEffect(() => {
+  // Memoized values
+  const user = useMemo(() => {
     const userData = localStorage.getItem("users");
-
-    if (userData) {
-      const parsedUserData = JSON.parse(userData);
-      const userId = parsedUserData?.id;
-
-      const fetchDoctorProfile = async () => {
-        const response = await getDoctorProfile(userId);
-
-        if (response.status === 200) {
-          dispatch(setProfileData(response?.data?.data));
-        }
-        setDoctorProfile(response?.data?.data);
-      };
-      fetchDoctorProfile();
-    }
+    return userData ? JSON.parse(userData) : null;
   }, []);
 
-  // Fetch notifications count when component mounts (only for doctors)
+  const roleLink = useMemo(() => {
+    return ROLE_LINKS[role] || ROLE_LINKS.default;
+  }, [role]);
+
+  const displayTitle = useMemo(() => {
+    return pageTitle?.toLowerCase().includes("dashboard");
+  }, [pageTitle]);
+
+  const displayName = useMemo(() => {
+    if (displayTitle && doctorProfile) {
+      return `Welcome back ${doctorProfile.firstName || ""} ${doctorProfile.lastName || ""}`.trim();
+    }
+    return pageTitle;
+  }, [displayTitle, doctorProfile, pageTitle]);
+
+  const profileInitials = useMemo(() => {
+    if (!doctorProfile) return "?";
+    const first = doctorProfile.firstName?.[0] || "";
+    const last = doctorProfile.lastName?.[0] || "";
+    return `${first}${last}`.toUpperCase();
+  }, [doctorProfile]);
+
+  // Handlers
+  const handleLogout = useCallback(() => {
+    logout();
+    navigate("/login");
+  }, [logout, navigate]);
+
+  const handleNotifications = useCallback(() => {
+    if (user) {
+      setNotificationsDropdown((prev) => !prev);
+    }
+  }, [user]);
+
+  // Fetch doctor profile
+  const fetchProfile = useCallback(async (userId) => {
+    try {
+      const response = await getDoctorProfile(userId);
+      if (response.status === 200) {
+        const profileData = response?.data?.data;
+        dispatch(setProfileData(profileData));
+        setDoctorProfile(profileData);
+      }
+    } catch (error) {
+      console.error("Error fetching doctor profile:", error);
+    }
+  }, [dispatch]);
+
+  // Initialize profile on mount
+  useEffect(() => {
+    if (user?.id) {
+      fetchProfile(user.id);
+    }
+  }, [user?.id, fetchProfile]);
+
+  // Fetch notifications count on mount
   useEffect(() => {
     if (user) {
-      // Only fetch once on mount, don't refetch on user changes (AuthContext handles that)
-      const userData = localStorage.getItem("users");
-      if (userData) {
-        fetchUnreadNotificationsCount();
-      }
+      fetchUnreadNotificationsCount();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty deps - only run once on mount
-  const handleNotifications = () => {
-    if (user) {
-      setNotificationsDropdown(!notificationsDropdown);
-    }
-  };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+        {/* Page Title */}
         <div>
           <h1 className="text-primaryText font-poppins text-lg md:text-2xl capitalize font-bold">
-            {displayTitle
-              ? `Welcome back ${doctorProfile?.firstName || ""} ${doctorProfile?.lastName || ""
-              }`
-              : pageTitle}
+            {displayName}
           </h1>
-          {/* {location.pathname !== "/patient-admin/profile-settings" && location.pathname !== "/patient-admin/term-condition" && location.pathname !== "/patient-admin/claim-request" && location.pathname !== "/patient-admin/claim-request/claim-request" && (
-            <p className="text-secondaryText text-sm font-normal font-poppins">
-              You have <span className="text-secondaryBrand font-normal">2 Unread</span> Notifications
-            </p>
-          )}         */}
         </div>
-        <div className="hidden md:flex flex-1"></div>
-        <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
-          {/* <img
-            src={
-              profileImage ||
-              doctorProfile?.profileImage ||
-              "/default-avatar.png"
-            }
-            alt="userImg"
-            className="w-10 h-10 rounded-full"
-          /> */}
 
-          {/*  */}
+        {/* Spacer */}
+        <div className="hidden md:flex flex-1" />
+
+        {/* Profile Section */}
+        <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
+          {/* Profile Image or Initials */}
           {profileImage || doctorProfile?.profileImage ? (
             <img
-              src={profileImage || doctorProfile?.profileImage}
-              alt={`${doctorProfile?.firstName || ""} ${doctorProfile?.lastName || ""
-                }`}
+              src={profileImage || doctorProfile.profileImage}
+              alt={doctorProfile ? `${doctorProfile.firstName} ${doctorProfile.lastName}` : "User"}
               className="w-10 h-10 rounded-full object-cover border border-gray-300"
             />
           ) : (
             <div className="w-10 h-10 rounded-full bg-secondaryBrand flex items-center justify-center text-white font-semibold">
-              {doctorProfile
-                ? `${doctorProfile.firstName?.[0] || ""}${doctorProfile.lastName?.[0] || ""
-                  }`.toUpperCase()
-                : "?"}
+              {profileInitials}
             </div>
           )}
 
-          {/*  */}
+          {/* Profile Info */}
           <NavLink to={roleLink} className="flex flex-col justify-center">
             <p className="text-sm font-semibold">
-              {doctorProfile &&
-                `${doctorProfile.firstName} ${doctorProfile.lastName}`}
+              {doctorProfile && `${doctorProfile.firstName} ${doctorProfile.lastName}`}
             </p>
             <p className="text-xs text-gray-500">{doctorProfile?.email}</p>
           </NavLink>
 
-
+          {/* Notifications */}
           <div className="relative">
-            <button 
-              className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center" 
+            <button
+              className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center"
               onClick={handleNotifications}
               data-bell-icon="true"
             >
@@ -145,15 +151,20 @@ const DoctorHeader = ({ title, subTitle, role }) => {
             </button>
           </div>
         </div>
+
+        {/* Logout Button */}
         <div className="hidden md:flex">
           <button
-            className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center"
-            onClick={() => handleLogout()}
+            className="text-gray-700 bg-white w-10 h-10 rounded-full text-center grid place-items-center hover:bg-gray-100 transition-colors"
+            onClick={handleLogout}
+            aria-label="Logout"
           >
             <LogoutIcon />
           </button>
         </div>
       </div>
+
+      {/* Notifications Dropdown */}
       {notificationsDropdown && (
         <div className="absolute right-16 top-20 mt-1 z-10">
           <NotificationsDropdown

@@ -116,16 +116,16 @@ const DoctorClaimRequests = () => {
   ];
   return (
     <div>
-      <div className="bg-white rounded-2xl p-6">
+      <div className="bg-white rounded-2xl lg:p-6 p-4">
         <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 w-full md:w-auto">
             {/* Status Filter Buttons */}
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 w-full md:w-auto">
               {statusOptions.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => handleStatusChange(option.value)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium font-poppins transition-colors ${currentStatus === option.value
+                  className={`px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium font-poppins transition-colors whitespace-nowrap ${currentStatus === option.value
                       ? "bg-[#F8F8F8] text-primaryText"
                       : "bg-white text-primaryText border border-borderPrimary hover:bg-[#F8F8F8]"
                     }`}
@@ -139,7 +139,7 @@ const DoctorClaimRequests = () => {
             title="Claim New Request"
             // icon={<PlusIcon className="w-4 h-4 text-white" />}
             href={`/doctor-admin/claim-requests/create`}
-            className="w-full md:w-auto rounded-lg px-6 py-3 font-poppins bg-secondaryBrand text-white"
+            className="w-full md:w-auto rounded-lg px-4 md:px-6 py-2 md:py-3 text-sm md:text-base font-poppins bg-secondaryBrand text-white whitespace-nowrap"
           />
         </div>
 

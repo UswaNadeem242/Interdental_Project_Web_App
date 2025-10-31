@@ -72,15 +72,20 @@ export default function TeethSvg({
   onToothClick = () => {},
   fillColor = "#94D3DD", // ✅ Default highlight color
   defaultColor = "white",
+  disabledTeeth = [], // Array of disabled tooth numbers
 }) {
   const upperTeeth = Array.from({ length: 16 }, (_, i) => i + 1);
   const lowerTeeth = Array.from({ length: 16 }, (_, i) => i + 17);
   const isSelected = (num) => selectedTeeth.includes(num);
+  const isDisabled = (num) => disabledTeeth.includes(num);
+  
   // Helper to render each tooth with dynamic props
   const renderTooth = (num, i, isUpper = true) => {
     const ToothComponent = toothComponents[num - 1]; // zero-based index
     if (!ToothComponent) return null;
-    const color = isSelected(num) ? fillColor : defaultColor;
+    const selected = isSelected(num);
+    const disabled = isDisabled(num);
+    const color = selected ? fillColor : defaultColor;
 
     const radius = 170; // ↓ smaller = closer curve
     const total = 16;
@@ -90,15 +95,24 @@ export default function TeethSvg({
     const x = radius + 120 * Math.cos(angle);
     const y = radius * Math.sin(angle) * (isUpper ? 1 : -1);
 
+    const handleClick = () => {
+      if (!disabled) {
+        onToothClick(num);
+      }
+    };
+
     return (
       <div
         key={num}
-        onClick={() => onToothClick(num)}
-        className="absolute cursor-pointer transition-transform duration-300 hover:scale-110"
+        onClick={handleClick}
+        className={`absolute transition-transform duration-300 ${
+          disabled
+            ? "cursor-not-allowed opacity-30"
+            : "cursor-pointer hover:scale-110"
+        }`}
         style={{
           left: `calc(50% + ${x}px)`,
           top: `calc(50% - ${y}px)`,
-
           transform: `translate(-990%, -10%)`,
         }}
       >
