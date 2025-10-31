@@ -10,7 +10,7 @@ import { checkoutValidationSchema } from "../../../services/utils/validationSche
 const CheckoutForm = ({ next }) => {
   const [loading, setLoading] = useState(false);
   const [openSections, setOpenSections] = useState(["paypal"]);
-  
+
   const dispatch = useDispatch();
   const restoration = useSelector((state) => state.restoration);
   const { globalSelections, selectedTeeth, uploadedFiles } = restoration;
@@ -24,7 +24,9 @@ const CheckoutForm = ({ next }) => {
     return (
       (selectedTeeth?.length || 0) *
       Object.values(globalSelections || {})
-        .filter((selection) => selection && selection?.price && selection?.price > 0)
+        .filter(
+          (selection) => selection && selection?.price && selection?.price > 0
+        )
         .reduce((sum, selection) => sum + (selection?.price || 0), 0)
     );
   }, [selectedTeeth, globalSelections]);
@@ -42,9 +44,10 @@ const CheckoutForm = ({ next }) => {
   // Get initial values with user data preset
   const getInitialValues = () => {
     return {
-      name: user?.firstName && user?.lastName 
-        ? `${user.firstName} ${user.lastName}` 
-        : "",
+      name:
+        user?.firstName && user?.lastName
+          ? `${user.firstName} ${user.lastName}`
+          : "",
       phone: user?.phoneNumber || "",
       email: user?.email || "",
       country: "America",
@@ -59,7 +62,7 @@ const CheckoutForm = ({ next }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
-    
+
     try {
       const userData = localStorage.getItem("users");
       const parsedUserData = JSON.parse(userData);
@@ -118,7 +121,9 @@ const CheckoutForm = ({ next }) => {
         doctorOrderItems: flattenedItems,
         paymentId: 8,
         name: values.name || "",
-        address: `${values.street || ""}, ${values.city || ""}, ${values.state || ""}, ${values.country || ""}`,
+        address: `${values.street || ""}, ${values.city || ""}, ${
+          values.state || ""
+        }, ${values.country || ""}`,
         email: values.email || "",
         phone: values.phone || "",
         orderStatus: "PENDING",
@@ -135,17 +140,20 @@ const CheckoutForm = ({ next }) => {
 
       const res = await orderService.createOrder(apiFormData);
       console.log("✅ Order created successfully:", res.data);
-      
+
       dispatch(
         showToast({
           message: "Order placed successfully!",
           type: "success",
         })
       );
-      
+
       next();
     } catch (err) {
-      console.error("❌ Error creating order:", err.response?.data || err.message);
+      console.error(
+        "❌ Error creating order:",
+        err.response?.data || err.message
+      );
       dispatch(
         showToast({
           message: err.response?.data?.message || "Failed to place order",
@@ -188,6 +196,7 @@ const CheckoutForm = ({ next }) => {
                           type="text"
                           name="name"
                           placeholder="Full Name"
+                          readOnly
                           className={`border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins ${
                             errors.name && touched.name
                               ? "border-red-500"
@@ -206,6 +215,7 @@ const CheckoutForm = ({ next }) => {
                           type="tel"
                           name="phone"
                           placeholder="Contact Number"
+                          readOnly
                           className={`border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins ${
                             errors.phone && touched.phone
                               ? "border-red-500"
@@ -225,6 +235,7 @@ const CheckoutForm = ({ next }) => {
                         type="email"
                         name="email"
                         placeholder="Email Address"
+                        readOnly
                         className={`border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins ${
                           errors.email && touched.email
                             ? "border-red-500"
@@ -380,7 +391,8 @@ const CheckoutForm = ({ next }) => {
                                 name="paypalUsername"
                                 placeholder="Enter Paypal Username"
                                 className={`border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins ${
-                                  errors.paypalUsername && touched.paypalUsername
+                                  errors.paypalUsername &&
+                                  touched.paypalUsername
                                     ? "border-red-500"
                                     : "border-gray-300"
                                 }`}
@@ -401,7 +413,8 @@ const CheckoutForm = ({ next }) => {
                                 name="paypalEmailPhone"
                                 placeholder="Enter E-mail/Phone number"
                                 className={`border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins ${
-                                  errors.paypalEmailPhone && touched.paypalEmailPhone
+                                  errors.paypalEmailPhone &&
+                                  touched.paypalEmailPhone
                                     ? "border-red-500"
                                     : "border-gray-300"
                                 }`}
@@ -505,7 +518,9 @@ const CheckoutForm = ({ next }) => {
                           : "bg-[rgba(0,29,88,1)] hover:bg-blue-800"
                       }`}
                     >
-                      {loading || isSubmitting ? "Processing..." : "Place Order"}
+                      {loading || isSubmitting
+                        ? "Processing..."
+                        : "Place Order"}
                     </button>
                   </div>
                 </div>
