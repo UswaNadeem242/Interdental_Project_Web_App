@@ -251,36 +251,36 @@ export default function OrderDetailsForm({ id }) {
           </div>
 
           <div>
-            <div className="border border-gray-200 rounded-lg">
+            <div className="border-2 border-gray-200 ">
               {/* Row 1 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Doctor's Name
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {`${orderDetails?.doctorFirstName || ""} ${
                       orderDetails?.doctorLastName || ""
                     }`}
                   </span>
                 </div>
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Office Reference Number
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {orderDetails?.doctorRefNumber || "-"}
                   </span>
                 </div>
               </div>
 
               {/* Row 2 */}
-              <div className="border-b border-gray-200">
+              <div className="border-b-2 border-gray-200">
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Patient
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {`${orderDetails?.patientFirstName || ""} ${
                       orderDetails?.patientLastName || ""
                     }`}
@@ -291,18 +291,18 @@ export default function OrderDetailsForm({ id }) {
               {/* Row 3 */}
               <div className="grid grid-cols-1 sm:grid-cols-2">
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Created Date
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {formatDateDMY(orderDetails?.createdAt)}
                   </span>
                 </div>
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Expected Delivery Date:
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {formatDateDMY(orderDetails?.expectedDeliveryDate)}
                   </span>
                 </div>
@@ -312,8 +312,8 @@ export default function OrderDetailsForm({ id }) {
 
           <div className="mt-4">
             {/* tooth selection  */}
-            <div className="border border-gray-200 rounded-lg ">
-              <p className="text-lg font-normal font-poppins border-b p-3 text-black mb-4">
+            <div className="border-2 border-gray-200  ">
+              <p className="text-xs font-normal font-poppins border-b-2 p-3 text-black mb-4">
                 Tooth Selection
               </p>
               <div className="p-4">
@@ -329,7 +329,9 @@ export default function OrderDetailsForm({ id }) {
                           orderDetails?.selectedTooths || []
                         ).includes(Number(id))}
                       />
-                      <span className="text-sm mt-1 text-gray-600 capitalize">{id}</span>
+                      <span className="text-sm mt-1 text-gray-600 capitalize">
+                        {id}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -345,7 +347,9 @@ export default function OrderDetailsForm({ id }) {
                           orderDetails?.selectedTooths || []
                         ).includes(Number(id))}
                       />
-                      <span className="text-sm text-gray-600 mt-1 capitalize">{id}</span>
+                      <span className="text-sm text-gray-600 mt-1 capitalize">
+                        {id}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -355,10 +359,10 @@ export default function OrderDetailsForm({ id }) {
 
           {/* Selected Smile Design and Scanner Type - Separate Section */}
           <div className="mt-4">
-            <div className="border border-gray-200 rounded-lg p-4">
+            <div className="border-2 border-gray-200  p-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Selected Smile Design:
                   </span>
                   <span className="text-secondaryBrand capitalize text-sm font-normal font-poppins">
@@ -371,7 +375,7 @@ export default function OrderDetailsForm({ id }) {
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Scanner Type:
                   </span>
                   <span className="text-secondaryBrand capitalize text-sm font-normal font-poppins">
@@ -385,27 +389,27 @@ export default function OrderDetailsForm({ id }) {
           </div>
 
           <div className="mt-4">
-            <h3 className="font-normal text-lg font-poppins text-black mb-4">
+            <h3 className="font-normal text-xs font-poppins text-black mb-4">
               Customization Details
             </h3>
-            <div className="border border-gray-200 rounded-lg">
+            <div className="border-2 border-gray-200 ">
               {/* Row 1 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Denture type:
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Denture"
                     )?.dropdown?.name || "N/A"}
                   </span>
                 </div>
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Surgical guide:
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Surgical guide"
                     )?.dropdown?.name || "N/A"}
@@ -414,22 +418,22 @@ export default function OrderDetailsForm({ id }) {
               </div>
 
               {/* Row 2 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Smart Crown:
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Crown"
                     )?.dropdown?.name || "N/A"}
                   </span>
                 </div>
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Material:
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Material"
                     )?.dropdown?.name || "N/A"}
@@ -438,12 +442,12 @@ export default function OrderDetailsForm({ id }) {
               </div>
 
               {/* Row 3 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Shade:
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {orderDetails?.doctorOrderItems
                       ?.filter((item) => item.dropdown?.type === "Shade")
                       ?.map((item) => item.dropdown?.name)
@@ -451,10 +455,10 @@ export default function OrderDetailsForm({ id }) {
                   </span>
                 </div>
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Digital Model Type:
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Digital Model Type"
                     )?.dropdown?.name || "N/A"}
@@ -464,10 +468,10 @@ export default function OrderDetailsForm({ id }) {
 
               {/* Row 4 */}
               <div className="p-4 flex items-center gap-2">
-                <span className="text-secondaryText text-sm font-normal font-poppins">
+                <span className="text-secondaryText text-xs font-normal font-poppins">
                   Dental Lab Alliance:
                 </span>
-                <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                   {orderDetails?.doctorOrderItems?.find(
                     (item) => item.dropdown?.type === "Participating Lab"
                   )?.dropdown?.name || "N/A"}
@@ -477,11 +481,11 @@ export default function OrderDetailsForm({ id }) {
           </div>
 
           <div className="mt-4">
-            <h3 className="font-normal text-lg font-poppins text-black pb-4 border-b border-gray-200">
+            <h3 className="font-normal text-xs font-poppins text-black pb-4 border-b-2 border-gray-200">
               Additional Notes
             </h3>
             <div className="pt-4">
-              <p className="text-secondaryText text-sm font-normal font-poppins">
+              <p className="text-secondaryText text-xs font-normal font-poppins">
                 {orderDetails?.additionalNotes ||
                   "Please ensure shade A2 is used for all anterior crowns. Adjust occlusion slightly to reduce pressure on implant #11. Patient prefers a natural matte finish rather than high gloss."}
               </p>
@@ -504,7 +508,7 @@ export default function OrderDetailsForm({ id }) {
         </div>
 
         <div className="relative mt-4">
-          <div className="bg-white p-4 rounded-lg shadow-lg">
+          <div className="bg-white p-4  shadow-lg">
             <h1 className="text-[#1A1A1A] text-base font-semibold font-poppins capitalize pb-4">
               Payment Detail
             </h1>

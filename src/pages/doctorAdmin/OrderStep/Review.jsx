@@ -105,13 +105,21 @@ const ReviewOrder = ({ next, doctorProfile }) => {
   // Get due date from doctor array
   const dueDate = doctor?.find((d) => d.field === "dueDate")?.value || "";
 
+  // const formatDate = (dateString) => {
+  //   if (!dateString) return "";
+  //   const date = new Date(dateString);
+  //   const day = String(date.getDate()).padStart(2, "0");
+  //   const month = String(date.getMonth() + 1).padStart(2, "0");
+  //   const year = date.getFullYear();
+  //   return `${day}/${month}/${year}`;
+  // };
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${day}-${month}-${year}`;
   };
 
   return (
@@ -133,41 +141,41 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
           <div className="p-4">
             <div className="flex justify-between items-center pb-4">
-              <h4 className="text-black font-semibold text-xl font-poppins">
+              <h4 className="text-[#1A1A1A] font-semibold text-sm font-poppins">
                 Restoration Design Form
               </h4>
             </div>
 
             <div>
-              <div className="border border-gray-200 rounded-lg">
+              <div className="border-2 border-gray-200 ">
                 {/* Row 1 */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Doctor's Name
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {doctorProfile?.firstName || ""}{" "}
                       {doctorProfile?.lastName || ""}
                     </span>
                   </div>
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Office Reference Number
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {doctorProfile?.officeRefNumber || ""}
                     </span>
                   </div>
                 </div>
 
                 {/* Row 2 */}
-                <div className="border-b border-gray-200">
+                <div className="border-b-2 border-gray-200">
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Patient
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {patient?.name || ""}
                     </span>
                   </div>
@@ -176,19 +184,19 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                 {/* Row 3 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2">
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Created Date
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {/* {formatDate(doctorProfile?.createdAt)} */}
                       {today.toLocaleDateString("en-GB").replace(/\//g, "-")}
                     </span>
                   </div>
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Expected Delivery Date:
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {formatDate(dueDate)}
                     </span>
                   </div>
@@ -198,8 +206,8 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
             <div className="mt-4">
               {/* tooth selection  */}
-              <div className="border border-gray-200 rounded-lg ">
-                <p className="text-lg font-normal font-poppins border-b p-3 text-black mb-4">
+              <div className="border-2 border-gray-200  ">
+                <p className="text-xs font-normal font-poppins border-b-2 p-3 text-[#000000] mb-4">
                   Tooth Selection
                 </p>
                 <div className="p-4">
@@ -213,7 +221,9 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                         <ToothComponent
                           highlighted={selectedTeeth?.includes(Number(id))}
                         />
-                        <span className="text-sm mt-1 text-gray-600 capitalize">{id}</span>
+                        <span className="text-sm mt-1 text-gray-600 capitalize">
+                          {id}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -227,7 +237,9 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                         <ToothComponent
                           highlighted={selectedTeeth?.includes(Number(id))}
                         />
-                        <span className="text-sm text-gray-600 mt-1 capitalize">{id}</span>
+                        <span className="text-sm text-gray-600 mt-1 capitalize">
+                          {id}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -237,21 +249,21 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
             {/* Selected Smile Design and Scanner Type - Separate Section */}
             <div className="mt-4">
-              <div className="border border-gray-200 rounded-lg p-4">
+              <div className="border-2 border-gray-200  p-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Selected Smile Design:
                     </span>
-                    <span className="text-secondaryBrand capitalize text-sm font-normal font-poppins">
+                    <span className="text-secondaryBrand capitalize text-xs font-normxs font-poppins">
                       {globalSelections?.smileDesign?.option?.label || "N/A"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Scanner Type:
                     </span>
-                    <span className="text-secondaryBrand capitalize text-sm font-normal font-poppins">
+                    <span className="text-secondaryBrand capitalize text-xs font-normxs font-poppins">
                       {globalSelections?.scannerType?.option?.label || "N/A"}
                     </span>
                   </div>
@@ -260,61 +272,61 @@ const ReviewOrder = ({ next, doctorProfile }) => {
             </div>
 
             <div className="mt-4">
-              <h3 className="font-normal text-lg font-poppins text-black mb-4">
+              <h3 className="font-normal text-xs font-poppins text-[#000000] mb-4">
                 Customization Details
               </h3>
-              <div className="border border-gray-200 rounded-lg">
+              <div className="border-2 border-gray-200">
                 {/* Row 1 */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Denture type:
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {globalSelections?.digitalOptions?.option.label || "N/A"}
                     </span>
                   </div>
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Surgical guide:
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {globalSelections?.surgical_guide?.option?.label || "N/A"}
                     </span>
                   </div>
                 </div>
 
                 {/* Row 2 */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Smart Crown:
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {globalSelections?.crown?.option?.label || "N/A"}
                     </span>
                   </div>
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Material:
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {globalSelections?.material?.option.label || "N/A"}
                     </span>
                   </div>
                 </div>
 
                 {/* Row 3 */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-gray-200">
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Shade:
                     </span>
-                    {/* <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {/* <span className="text-secondaryBrand font-normal text-sm font-popxsns">
                       {globalSelections?.shades?.["Vita Classic Shades"]
                         ?.name || "N/A"}
                     </span> */}
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {(() => {
                         const shades = globalSelections?.shades;
                         if (!shades || Object.keys(shades).length === 0)
@@ -325,10 +337,10 @@ const ReviewOrder = ({ next, doctorProfile }) => {
                     </span>
                   </div>
                   <div className="p-4 flex items-center gap-2">
-                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                    <span className="text-secondaryText text-xs font-normal font-poppins">
                       Digital Model Type:
                     </span>
-                    <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                    <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                       {globalSelections?.Model_type?.option?.label || "N/A"}
                     </span>
                   </div>
@@ -336,10 +348,10 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
                 {/* Row 4 */}
                 <div className="p-4 flex items-center gap-2">
-                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                  <span className="text-secondaryText text-xs font-normal font-poppins">
                     Dental Lab Alliance:
                   </span>
-                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-xs font-poppins">
                     {globalSelections?.lab?.option?.label || "N/A"}
                   </span>
                 </div>
@@ -347,11 +359,11 @@ const ReviewOrder = ({ next, doctorProfile }) => {
             </div>
 
             <div className="mt-4">
-              <h3 className="font-normal text-lg font-poppins text-black pb-4 border-b border-gray-200">
+              <h3 className="font-normal text-xs font-poppins text-[#0F153E] pb-4 border-b-2 border-gray-200">
                 Additional Notes
               </h3>
               <div className="pt-4">
-                <p className="text-secondaryText text-sm font-normal font-poppins">
+                <p className="text-secondaryText text-xs font-normal font-poppins">
                   {note}
                 </p>
               </div>
@@ -360,9 +372,9 @@ const ReviewOrder = ({ next, doctorProfile }) => {
           {/* */}
         </div>
         {/* Right Panel / Order Summary */}
-        <div className="col-span-4 md:col-span-3 bg-white  border md:border-l border-gray-200 p-6 flex flex-col justify-between font-poppins ">
+        <div className="col-span-4 md:mx-0 mx-8 md:col-span-3 bg-white  border-2 md:border-l-2 md:border-t-0 md:border-b-0 md:border-r-0 border-gray-200 p-6 flex flex-col justify-between font-poppins ">
           <div>
-            <h2 className="text-lg font-semibold mb-4 text-[#1A1A1A]">
+            <h2 className="text-xl font-medium mb-4 text-[#1A1A1A]">
               Order Summary
             </h2>
             <div className="space-y-3 text-sm">
