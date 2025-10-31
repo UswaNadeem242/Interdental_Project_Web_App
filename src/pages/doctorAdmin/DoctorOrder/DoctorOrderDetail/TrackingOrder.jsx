@@ -3,7 +3,7 @@ import { getOrderByID } from "../../../../api/doctorDasboard";
 import Icons from "../../../../components/Icons";
 import axios from "axios";
 import { BASE_URL } from "../../../../config";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 // Order status constants
 const ORDER_STATUS = {
@@ -37,12 +37,25 @@ export default function TrackingOrder({ id }) {
     }
   }, []);
 
-  // Format timestamp utility function
+  // Format timestamp utility function - with proper timezone handling
   const formatShortTimestamp = useCallback((dateString) => {
     if (!dateString) return "";
     try {
-      const date = new Date(dateString);
+      // Check if the string has timezone information
+      const hasTimezone = dateString.includes('Z') || dateString.includes('+') || dateString.includes('-', 10);
+      
+      let date;
+      if (hasTimezone) {
+        // Has timezone info, parse normally
+        date = parseISO(dateString);
+      } else {
+        // No timezone info, assume it's UTC and add 'Z' to make it explicit
+        const utcString = dateString + 'Z';
+        date = parseISO(utcString);
+      }
+      
       if (isNaN(date.getTime())) return "";
+
       return format(date, "d MMM yyyy, hh:mm aaa").replace(
         /am|pm/gi,
         (match) => match.toUpperCase()

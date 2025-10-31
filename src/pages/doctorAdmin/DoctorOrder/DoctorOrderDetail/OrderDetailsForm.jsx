@@ -40,7 +40,6 @@ import {
   ToothThirtyOne,
   ToothThirtyTwo,
 } from "../../../../icon/tooth-one";
-import DownloadPdfForm from "../../../../components/doctorAdmin/download-form";
 
 const topTeeth = {
   1: ToothOne,
@@ -146,6 +145,7 @@ export default function OrderDetailsForm({ id }) {
       // Give React time to fully render
       await new Promise((resolve) => setTimeout(resolve, 100));
 
+      // Capture the exact visible content
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
@@ -160,22 +160,41 @@ export default function OrderDetailsForm({ id }) {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
 
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      // A4 dimensions in mm
+      const pdfWidth = 210;
+      const pdfHeight = 297;
 
-      // Scale to fit on one page if needed
-      if (imgHeight > pdfHeight) {
-        // Scale down to fit on one page
-        const scale = pdfHeight / imgHeight;
-        const scaledWidth = pdfWidth * scale;
-        const scaledHeight = imgHeight * scale;
-        pdf.addImage(imgData, "PNG", 0, 0, scaledWidth, scaledHeight);
-      } else {
-        // Fits on one page, use original size
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
+      // Use scale factor to convert pixels to mm at 96 DPI
+      const scale = 3; // html2canvas scale we used
+      const imgWidthMM = (canvas.width / scale) * 0.264583; // 1px = 0.264583mm at 96 DPI
+      const imgHeightMM = (canvas.height / scale) * 0.264583;
+
+      // Small margins
+      const margin = 10;
+      const maxWidth = pdfWidth - 2 * margin;
+      const maxHeight = pdfHeight - 2 * margin;
+
+      // Calculate scaling to fit width with margins
+      let finalWidth = imgWidthMM;
+      let finalHeight = imgHeightMM;
+
+      if (finalWidth > maxWidth) {
+        const ratio = maxWidth / finalWidth;
+        finalWidth = maxWidth;
+        finalHeight = finalHeight * ratio;
       }
 
+      if (finalHeight > maxHeight) {
+        const ratio = maxHeight / finalHeight;
+        finalHeight = maxHeight;
+        finalWidth = finalWidth * ratio;
+      }
+
+      // Start from top with margin, center horizontally
+      const x = (pdfWidth - finalWidth) / 2;
+      const y = margin; // Start from top margin instead of centering vertically
+
+      pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
       pdf.save("Restoration_Design_Form.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
@@ -192,23 +211,8 @@ export default function OrderDetailsForm({ id }) {
   return (
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
       <div className="md:col-span-9 col-span-4 bg-white p-4 rounded-2xl">
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "210mm",
-            backgroundColor: "#fff",
-            zIndex: -9999,
-            opacity: 0,
-            pointerEvents: "none",
-          }}
-        >
-          <DownloadPdfForm ref={formRef} />
-        </div>
-
         {/* PDF Content - This will be captured */}
-        <div ref={formRef} className="p-4">
+        <div ref={formRef} className="p-4 bg-white">
           <div className="flex justify-between items-center pb-4">
             <h4 className="text-black font-semibold text-xl font-poppins">
               Restoration Design Form

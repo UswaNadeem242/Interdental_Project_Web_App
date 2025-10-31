@@ -33,8 +33,6 @@ const OrderDetails = () => {
     getAllOrders();
   }, []);
 
-  const steps = ["Placed", "Shipped", "Delivered", "Completed"]; // your steps
-  const currentStep = 1; // for example, user is at "Delivered"
 
   const handleUpdateStatus = async () => {
     const status =
