@@ -9,7 +9,7 @@ import { format, parseISO } from "date-fns";
 const ORDER_STATUS = {
   BOOKED: "BOOKED",
   PENDING: "PENDING",
-  SHIPED: "SHIPPED",
+  SHIPPED: "SHIPPED",
   DELIVERED: "DELIVERED",
 };
 
@@ -92,10 +92,10 @@ export default function TrackingOrder({ id }) {
         [ORDER_STATUS.PENDING]: [
           ORDER_STATUS.BOOKED, // PENDING is completed when BOOKED exists
           ORDER_STATUS.PENDING,
-          ORDER_STATUS.SHIPED,
+          ORDER_STATUS.SHIPPED,
           ORDER_STATUS.DELIVERED,
         ],
-        [ORDER_STATUS.SHIPED]: [ORDER_STATUS.SHIPED, ORDER_STATUS.DELIVERD],
+        [ORDER_STATUS.SHIPPED]: [ORDER_STATUS.SHIPPED, ORDER_STATUS.DELIVERED],
         [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.DELIVERED],
       };
 
@@ -188,8 +188,8 @@ export default function TrackingOrder({ id }) {
       status === ORDER_STATUS.BOOKED
         ? ORDER_STATUS.PENDING
         : status === ORDER_STATUS.PENDING
-        ? ORDER_STATUS.SHIPED
-        : ORDER_STATUS.DELIVERD;
+        ? ORDER_STATUS.SHIPPED
+        : ORDER_STATUS.DELIVERED;
 
     // For PENDING status, use BOOKED date if PENDING doesn't exist
     const displayTracking = status === ORDER_STATUS.PENDING 
@@ -321,19 +321,19 @@ export default function TrackingOrder({ id }) {
                   iconProps={{ stroke: getStepColor(ORDER_STATUS.PENDING) }}
                 />
                 <OrderStatusStep
-                  status={ORDER_STATUS.SHIPED}
+                  status={ORDER_STATUS.SHIPPED}
                   icon={Icons.OrderShipped}
                   label="Shipped"
                   iconProps={{ 
-                    fill: getStepColor(ORDER_STATUS.SHIPED),
-                    stroke: getStepColor(ORDER_STATUS.SHIPED)
+                    fill: getStepColor(ORDER_STATUS.SHIPPED),
+                    stroke: getStepColor(ORDER_STATUS.SHIPPED)
                   }}
                 />
                 <OrderStatusStep
-                  status={ORDER_STATUS.DELIVERD}
+                  status={ORDER_STATUS.DELIVERED}
                   icon={Icons.OrderDelivered}
                   label="Delivered"
-                  iconProps={{ fill: getStepColor(ORDER_STATUS.DELIVERD) }}
+                  iconProps={{ fill: getStepColor(ORDER_STATUS.DELIVERED) }}
                   isLast
                 />
               </div>
@@ -353,19 +353,19 @@ export default function TrackingOrder({ id }) {
                   iconProps={{ stroke: getStepColor(ORDER_STATUS.PENDING) }}
                 />
                 <OrderStatusStep
-                  status={ORDER_STATUS.SHIPED}
+                  status={ORDER_STATUS.SHIPPED}
                   icon={Icons.OrderShipped}
                   label="Shipped"
                   iconProps={{ 
-                    fill: getStepColor(ORDER_STATUS.SHIPED),
-                    stroke: getStepColor(ORDER_STATUS.SHIPED)
+                    fill: getStepColor(ORDER_STATUS.SHIPPED),
+                    stroke: getStepColor(ORDER_STATUS.SHIPPED)
                   }}
                 />
                 <OrderStatusStep
-                  status={ORDER_STATUS.DELIVERD}
+                  status={ORDER_STATUS.DELIVERED}
                   icon={Icons.OrderDelivered}
                   label="Delivered"
-                  iconProps={{ fill: getStepColor(ORDER_STATUS.DELIVERD) }}
+                  iconProps={{ fill: getStepColor(ORDER_STATUS.DELIVERED) }}
                   isLast
                 />
               </div>
