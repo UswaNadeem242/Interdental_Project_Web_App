@@ -164,35 +164,25 @@ export default function OrderDetailsForm({ id }) {
       const pdfWidth = 210;
       const pdfHeight = 297;
 
-      // Use scale factor to convert pixels to mm at 96 DPI
-      const scale = 3; // html2canvas scale we used
-      const imgWidthMM = (canvas.width / scale) * 0.264583; // 1px = 0.264583mm at 96 DPI
-      const imgHeightMM = (canvas.height / scale) * 0.264583;
-
-      // Small margins
+      // Margins
       const margin = 10;
       const maxWidth = pdfWidth - 2 * margin;
       const maxHeight = pdfHeight - 2 * margin;
 
-      // Calculate scaling to fit width with margins
-      let finalWidth = imgWidthMM;
-      let finalHeight = imgHeightMM;
+      // Calculate image dimensions to fill the width with margins
+      const imgRatio = canvas.height / canvas.width;
+      let finalWidth = maxWidth; // Fill the width
+      let finalHeight = finalWidth * imgRatio;
 
-      if (finalWidth > maxWidth) {
-        const ratio = maxWidth / finalWidth;
-        finalWidth = maxWidth;
-        finalHeight = finalHeight * ratio;
-      }
-
+      // If height exceeds page, scale down to fit
       if (finalHeight > maxHeight) {
-        const ratio = maxHeight / finalHeight;
         finalHeight = maxHeight;
-        finalWidth = finalWidth * ratio;
+        finalWidth = finalHeight / imgRatio;
       }
 
       // Start from top with margin, center horizontally
       const x = (pdfWidth - finalWidth) / 2;
-      const y = margin; // Start from top margin instead of centering vertically
+      const y = margin;
 
       pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
       pdf.save("Restoration_Design_Form.pdf");
