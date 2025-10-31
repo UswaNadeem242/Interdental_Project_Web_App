@@ -93,10 +93,10 @@ export default function TrackingOrder({ id }) {
           ORDER_STATUS.BOOKED, // PENDING is completed when BOOKED exists
           ORDER_STATUS.PENDING,
           ORDER_STATUS.SHIPED,
-          ORDER_STATUS.DELIVERD,
+          ORDER_STATUS.DELIVERED,
         ],
         [ORDER_STATUS.SHIPED]: [ORDER_STATUS.SHIPED, ORDER_STATUS.DELIVERD],
-        [ORDER_STATUS.DELIVERD]: [ORDER_STATUS.DELIVERD],
+        [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.DELIVERED],
       };
 
       const requiredStatuses = statusHierarchy[step] || [];
