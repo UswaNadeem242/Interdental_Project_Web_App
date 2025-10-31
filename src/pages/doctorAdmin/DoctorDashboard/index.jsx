@@ -244,6 +244,8 @@ const DoctorDashaboard = () => {
       icon: <ProfileIcon />,
     },
   ];
+
+  console.log(doctorPatients,'doctorPatients');
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-3 md:gap-3 lg:gap-4 ">
@@ -296,7 +298,7 @@ const DoctorDashaboard = () => {
         <div className="col-span-1 md:col-span-1 lg:col-span-4 bg-[#FFFFFF] rounded-lg md:rounded-xl lg:rounded-xl">
           <PatientCard
             title="Patients"
-            className="hidden"
+            // className="hidden"
             data={doctorPatients || []}
           />
         </div>

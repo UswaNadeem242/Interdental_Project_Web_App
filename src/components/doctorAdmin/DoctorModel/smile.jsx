@@ -129,8 +129,7 @@ export const SmileDesignPicker = ({
                     />
                   </div>
                   <span className="md:text-sm text-xs font-poppins ml-1">
-                    {`${smile.label}_${i + 1}`}
-                    {/* {`Smile Design_${i + 1}`} */}
+                    {`${smile.label}`}
                   </span>
                 </div>
 

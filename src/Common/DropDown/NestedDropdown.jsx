@@ -10,7 +10,7 @@ const SubDropdown = ({ label, options, selected, onSelect }) => {
     <div className="border-b border-background py-2">
       <button
         type="button"
-        className="flex items-center justify-between w-full text-sm font-normal text-textFieldHeading font-poppins"
+        className="flex items-center justify-between text-left w-full text-sm font-normal text-textFieldHeading font-poppins"
         onClick={() => setIsOpen(!isOpen)}
       >
         {label}
@@ -121,7 +121,7 @@ export const ShadeDropdown = ({
       </button>
 
       {isOpen && !disabled && (
-        <div className={`p-3 space-y-3 ${className}`}>
+        <div className={`px-3  space-y-3 ${className}`}>
           <input
             type="text"
             placeholder="Search shades..."
