@@ -32,6 +32,7 @@ const restorationSlice = createSlice({
       Model_type: null,
       photogrammetryfiles: null,
       shades: {},
+      smileDesign: null, //
     },
     note: "",
   },
@@ -73,20 +74,22 @@ const restorationSlice = createSlice({
 
       state.selectedTeeth.forEach((toothId) => {
         // Apply global selections to each selected tooth
-        Object.entries(state.globalSelections).forEach(([fieldName, selection]) => {
-          if (selection && selection.value) {
-            items.push({
-              id: `${toothId}-${fieldName}`,
-              toothId: toothId,
-              dropdownMasterId: selection.value,
-              unitPrice: selection.price || 0,
-              dropdown: selection.option || null,
-              quantity: 1,
-            });
-            // Only add to total if price is greater than 0
-            total += (selection.price > 0 ? selection.price : 0);
+        Object.entries(state.globalSelections).forEach(
+          ([fieldName, selection]) => {
+            if (selection && selection.value) {
+              items.push({
+                id: `${toothId}-${fieldName}`,
+                toothId: toothId,
+                dropdownMasterId: selection.value,
+                unitPrice: selection.price || 0,
+                dropdown: selection.option || null,
+                quantity: 1,
+              });
+              // Only add to total if price is greater than 0
+              total += selection.price > 0 ? selection.price : 0;
+            }
           }
-        });
+        );
       });
 
       state.doctorOrderItems = items;
@@ -108,20 +111,22 @@ const restorationSlice = createSlice({
 
       state.selectedTeeth.forEach((toothId) => {
         // Apply global selections to each selected tooth
-        Object.entries(state.globalSelections).forEach(([fieldName, selection]) => {
-          if (selection && selection.value) {
-            items.push({
-              id: `${toothId}-${fieldName}`,
-              toothId: toothId,
-              dropdownMasterId: selection.value,
-              unitPrice: selection.price || 0,
-              dropdown: selection.option || null,
-              quantity: 1,
-            });
-            // Only add to total if price is greater than 0
-            total += (selection.price > 0 ? selection.price : 0);
+        Object.entries(state.globalSelections).forEach(
+          ([fieldName, selection]) => {
+            if (selection && selection.value) {
+              items.push({
+                id: `${toothId}-${fieldName}`,
+                toothId: toothId,
+                dropdownMasterId: selection.value,
+                unitPrice: selection.price || 0,
+                dropdown: selection.option || null,
+                quantity: 1,
+              });
+              // Only add to total if price is greater than 0
+              total += selection.price > 0 ? selection.price : 0;
+            }
           }
-        });
+        );
       });
 
       state.doctorOrderItems = items;
