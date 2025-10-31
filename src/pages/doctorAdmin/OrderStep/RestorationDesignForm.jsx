@@ -101,7 +101,7 @@ const DoctorOrder = () => {
     dispatch(resetRestoration());
     // Explicitly clear any previously selected patient to avoid stale selection
     dispatch(setSelectedPatient(null));
-    
+
     // Reset on unmount as well to ensure clean state when navigating back
     return () => {
       dispatch(resetRestoration());
@@ -544,7 +544,7 @@ const DoctorOrder = () => {
                                     }}
                                     label="Smart Crown"
                                     storageKey="crown"
-                                    className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow"
+                                    className="w-full bg-white px-4 py-3 text-sm text-textFieldHeading outline-none transition-shadow capitalize"
                                     disabled={selectedTeeth?.length === 0}
                                   />
 

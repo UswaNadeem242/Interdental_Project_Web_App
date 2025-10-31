@@ -35,5 +35,5 @@ export const CheckoutvalidationSchema = Yup.object().shape({
   street: Yup.string().required("Street is required"),
   recipientName: Yup.string().required("Recipient's Name is required"),
   paypalUsername: Yup.string().required("Paypal Username is required"),
-  paypalEmailPhone: Yup.string().required("Paypal Email/Phone is required"),
+  paypalEmailPhone: Yup.string().required("Paypal Email/Phone is requiredx"),
 });
