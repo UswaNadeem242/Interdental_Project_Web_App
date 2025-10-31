@@ -31,9 +31,17 @@ export const getGrapgStats = async (timePeriod = "month") => {
   }
 };
 
-export const getDoctorPatients = async ({status = "ALL", page = 0, size = 10, search = "", sort = "createdDateDesc"}) => {
+export const getDoctorPatients = async ({
+  status = "ALL",
+  page = 0,
+  size = 10,
+  search = "",
+  sort = "createdDateDesc",
+}) => {
   try {
-    const response = await api.get(`${ENDPOINTS.DOCTOR.PATIENTS}?status=${status}&page=${page}&size=${size}&search=${search}&sort=${sort}`);
+    const response = await api.get(
+      `${ENDPOINTS.DOCTOR.PATIENTS}?status=${status}&page=${page}&size=${size}&search=${search}&sort=${sort}`
+    );
     return handleApiSuccess(response);
   } catch (error) {
     return handleApiError(error);
@@ -113,7 +121,6 @@ export const addPatient = async (formData) => {
   }
 };
 
-
 export const updateUserPatient = async (bodyData) => {
   try {
     const endpoint = `${ENDPOINTS.DOCTOR.UPDATE_PATIENT}`;
@@ -123,7 +130,6 @@ export const updateUserPatient = async (bodyData) => {
     return handleApiError(error);
   }
 };
-
 
 export const deletePatientUser = async (id) => {
   try {

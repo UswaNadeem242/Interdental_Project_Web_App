@@ -74,6 +74,8 @@ const bottomTeeth = {
 };
 
 const ReviewOrder = ({ next, doctorProfile }) => {
+  const today = new Date();
+
   const restoration = useSelector((state) => state.restoration);
   const patient = restoration?.patient;
   const doctor = restoration?.doctor;
@@ -81,15 +83,24 @@ const ReviewOrder = ({ next, doctorProfile }) => {
   const note = restoration?.note || "";
   const globalSelections = restoration?.globalSelections || {};
 
+  console.log("Patietns:", patient);
+  console.log("Doctorr", doctor);
+  console.log("profileee", doctorProfile);
+
   // Calculate total price
   const totalPrice = useMemo(() => {
     return (
       (selectedTeeth?.length || 0) *
       Object.values(globalSelections || {})
-        .filter((selection) => selection && selection?.price && selection?.price > 0)
+        .filter(
+          (selection) => selection && selection?.price && selection?.price > 0
+        )
         .reduce((sum, selection) => sum + (selection?.price || 0), 0)
     );
   }, [selectedTeeth, globalSelections]);
+
+  console.log("Nigggaaaaa", globalSelections);
+  //
 
   // Get due date from doctor array
   const dueDate = doctor?.find((d) => d.field === "dueDate")?.value || "";
@@ -105,235 +116,387 @@ const ReviewOrder = ({ next, doctorProfile }) => {
 
   return (
     <div className="">
-      <div className="mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Left Panel */}
-        <div className="md:col-span-9 bg-white rounded-xl border border-gray-200 p-4 sm:p-6 space-y-6">
-          <h2 className="text-sm font-poppins text-primaryText">
-            Implant Design Details:
-          </h2>
+      <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
+        <div className="md:col-span-9 col-span-4 bg-white p-4 rounded-2xl">
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "210mm",
+              backgroundColor: "#fff",
+              zIndex: -9999,
+              opacity: 0,
+              pointerEvents: "none",
+            }}
+          ></div>
 
-          {/* Doctor Info */}
-          <div className="border border-gray-200 p-4 sm:p-6">
-            <h3 className="font-medium mb-2 text-sm sm:text-base font-poppins text-[#434343]">
-              Doctor Info
-            </h3>
-            <hr className="border-gray-200 my-2" />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm sm:text-base">
-              <div>
-                <p className="text-[#949494] font-normal md:text-sm text-xs font-poppins">
-                  Doctor's Name
-                </p>
-                <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-                  {doctorProfile?.firstName || ""} {doctorProfile?.lastName || ""}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494] font-normal md:text-sm text-xs font-poppins">
-                  Office Registration#
-                </p>
-                <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-                  {doctorProfile?.officeRefNumber || ""}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494] font-normal md:text-sm text-xs font-poppins">
-                  Create Date
-                </p>
-                <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-                  {formatDate(doctorProfile?.createdAt)}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494] font-normal md:text-sm text-xs font-poppins">
-                  Due Date
-                </p>
-                <p className="font-normal text-secondaryBrand text-sm sm:text-base font-poppins">
-                  {formatDate(dueDate)}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Patient Information */}
-          <div className="border border-gray-200 p-4 font-poppins">
-            <h3 className="font-medium mb-2 text-[#434343]">Patient Information</h3>
-            <hr className="border-gray-200 my-2" />
-            {patient ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-                <div>
-                  <p className="text-[#949494]">Full Name</p>
-                  <p className="font-normal text-secondaryBrand">
-                    {patient?.name || patient?.firstName || ""}{" "}
-                    {patient?.lastName || ""}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[#949494]">Patient ID:</p>
-                  <p className="font-normal text-secondaryBrand">{patient?.id}#</p>
-                </div>
-                <div>
-                  <p className="text-[#949494]">Email:</p>
-                  <p className="font-normal text-secondaryBrand">{patient?.email || "N/A"}</p>
-                </div>
-              </div>
-            ) : (
-              <p className="text-gray-400 text-sm">No patient selected</p>
-            )}
-          </div>
-
-          {/* Selected Teeth */}
-          <div className="border border-gray-200 p-4">
-            <p className="text-sm font-medium font-poppins text-black mb-2">
-              Selected Teeth:{" "}
-              <span className="font-semibold">
-                {selectedTeeth?.length > 0
-                  ? selectedTeeth?.map((t) => `#${t}`).join(", ")
-                  : "None"}
-              </span>
-            </p>
-
-            {/* Upper 16 */}
-            <div className="flex flex-wrap gap-3 mt-4 justify-center">
-              {Object.entries(topTeeth || {}).map(([id, ToothComponent]) => (
-                <div
-                  key={id}
-                  className="flex flex-col items-center justify-end"
-                >
-                  <ToothComponent
-                    highlighted={selectedTeeth?.includes(Number(id))}
-                  />
-                  <span className="text-sm mt-1 text-gray-600">{id}</span>
-                </div>
-              ))}
+          <div className="p-4">
+            <div className="flex justify-between items-center pb-4">
+              <h4 className="text-primaryText font-normal text-xl font-poppins">
+                Restoration Design Form
+              </h4>
             </div>
 
-            {/* Lower 16 */}
-            <div className="flex flex-wrap gap-[10px] mt-4 mb-4 justify-center">
-              {Object.entries(bottomTeeth || {}).map(([id, ToothComponent]) => (
-                <div
-                  key={id}
-                  className="flex flex-col items-center justify-end"
-                >
-                  <ToothComponent
-                    highlighted={selectedTeeth?.includes(Number(id))}
-                  />
-                  <span className="text-sm text-gray-600 mt-1">{id}</span>
+            <div>
+              <div className="border border-gray-200 rounded-lg">
+                {/* Row 1 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Doctor's Name
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {doctorProfile?.firstName || ""}{" "}
+                      {doctorProfile?.lastName || ""}
+                    </span>
+                  </div>
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Office Reference Number
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {doctorProfile?.officeRefNumber || ""}
+                    </span>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Customization Details */}
-          <div className="border border-gray-200 font-poppins p-4">
-            <h3 className="font-medium mb-3 text-[#000000]">
-              Customization Details
-            </h3>
-            <hr className="border-gray-200 my-2" />
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-              <div>
-                <p className="text-[#949494] text-xs font-poppins">Material:</p>
-                <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections?.material?.option?.label || "N/A"}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494] text-xs font-poppins">Colour:</p>
-                <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {Object.values(globalSelections?.shades || {})
-                    .map((shade) => shade?.name)
-                    .filter(Boolean)
-                    .join(", ") || "N/A"}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494] text-xs font-poppins">
-                  Digital Model Type:
-                </p>
-                <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections?.Model_type?.option?.label || "N/A"}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494] text-xs font-poppins">
-                  Participating Lab:
-                </p>
-                <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections?.lab?.option?.label || "N/A"}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494] text-xs font-poppins">Crown:</p>
-                <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections?.crown?.option?.label || "N/A"}
-                </p>
-              </div>
-              <div>
-                <p className="text-[#949494] text-xs font-poppins">
-                  Scanner Type:
-                </p>
-                <p className="font-bold text-secondaryBrand font-poppins text-xs">
-                  {globalSelections?.scannerType?.option?.label || "N/A"}
-                </p>
+                {/* Row 2 */}
+                <div className="border-b border-gray-200">
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Patient
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {patient?.name || ""}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Row 3 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2">
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Created Date
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {/* {formatDate(doctorProfile?.createdAt)} */}
+                      {today.toLocaleDateString("en-GB").replace(/\//g, "-")}
+                    </span>
+                  </div>
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Expected Delivery Date:
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {formatDate(dueDate)}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Note */}
-          {note && (
-            <div className="border border-gray-200 p-4 sm:p-6">
-              <h3 className="font-medium mb-2 text-sm sm:text-base font-poppins text-[#434343]">
-                Note
+            <div className="mt-4">
+              {/* tooth selection  */}
+              <div className="border border-gray-200 rounded-lg p-4">
+                <p className="text-sm font-normal font-poppins text-primaryText mb-4">
+                  Tooth Selection
+                </p>
+                <div className="">
+                  {/* Upper 16 */}
+                  <div className="flex flex-wrap gap-4 mt-4 justify-center ">
+                    {Object.entries(topTeeth).map(([id, ToothComponent]) => (
+                      <div
+                        key={id}
+                        className="flex flex-col items-center justify-end"
+                      >
+                        <ToothComponent
+                          highlighted={selectedTeeth?.includes(Number(id))}
+                        />
+                        <span className="text-sm mt-1 text-gray-600">{id}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Lower 16 */}
+                  <div className="flex flex-wrap gap-[16px] mt-4 mb-4 justify-center">
+                    {Object.entries(bottomTeeth).map(([id, ToothComponent]) => (
+                      <div
+                        key={id}
+                        className="flex flex-col items-center justify-end"
+                      >
+                        <ToothComponent
+                          highlighted={selectedTeeth?.includes(Number(id))}
+                        />
+                        <span className="text-sm text-gray-600 mt-1">{id}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Selected Smile Design and Scanner Type - Separate Section */}
+            <div className="mt-4">
+              <div className="border border-gray-200 rounded-lg p-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Selected Smile Design:
+                    </span>
+                    <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                      {globalSelections?.smileDesign?.option?.label || "N/A"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Scanner Type:
+                    </span>
+                    <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                      {globalSelections?.scannerType?.option?.label || "N/A"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <h3 className="font-normal text-base font-poppins text-primaryText mb-4">
+                Customization Details
               </h3>
-              <hr className="border-gray-200 my-2" />
-              <div className="grid grid-cols-1 gap-4 text-sm sm:text-base">
-                <div>
-                  <p className="text-[#949494] font-normal text-xs font-poppins pb-2">
-                    {doctorProfile?.firstName || ""} {doctorProfile?.lastName || ""}
-                  </p>
-                  <p className="font-normal text-secondaryBrand text-xs font-poppins">
-                    {note}
-                  </p>
+              <div className="border border-gray-200 rounded-lg">
+                {/* Row 1 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Denture type:
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {globalSelections?.digitalOptions?.option.label || "N/A"}
+                    </span>
+                  </div>
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Surgical guide:
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {globalSelections?.surgical_guide?.option?.label || "N/A"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Row 2 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Smart Crown:
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {globalSelections?.crown?.option?.label || "N/A"}
+                    </span>
+                  </div>
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Material:
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {globalSelections?.material?.option.label || "N/A"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Row 3 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200">
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Shade:
+                    </span>
+                    {/* <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {globalSelections?.shades?.["Vita Classic Shades"]
+                        ?.name || "N/A"}
+                    </span> */}
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {(() => {
+                        const shades = globalSelections?.shades;
+                        if (!shades || Object.keys(shades).length === 0)
+                          return "N/A";
+                        const firstKey = Object.keys(shades)[0]; // e.g. "Vita Classic Shades"
+                        return shades[firstKey]?.name || "N/A";
+                      })()}
+                    </span>
+                  </div>
+                  <div className="p-4 flex items-center gap-2">
+                    <span className="text-secondaryText text-sm font-normal font-poppins">
+                      Digital Model Type:
+                    </span>
+                    <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                      {globalSelections?.Model_type?.option?.label || "N/A"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Row 4 */}
+                <div className="p-4 flex items-center gap-2">
+                  <span className="text-secondaryText text-sm font-normal font-poppins">
+                    Dental Lab Alliance:
+                  </span>
+                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                    {globalSelections?.lab?.option?.label || "N/A"}
+                  </span>
                 </div>
               </div>
             </div>
-          )}
-        </div>
 
+            <div className="mt-4">
+              <h3 className="font-normal text-base font-poppins text-primaryText pb-4 border-b border-gray-200">
+                Additional Notes
+              </h3>
+              <div className="pt-4">
+                <p className="text-secondaryText text-sm font-normal font-poppins">
+                  {note}
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* */}
+        </div>
         {/* Right Panel / Order Summary */}
-        <div className="lg:col-span-3 bg-white rounded-xl border border-gray-200 p-6 flex flex-col justify-between font-poppins">
+        <div className="col-span-4 md:col-span-3 bg-white  border md:border-l border-gray-200 p-6 flex flex-col justify-between font-poppins ">
           <div>
             <h2 className="text-lg font-semibold mb-4 text-[#1A1A1A]">
               Order Summary
             </h2>
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-[#828386] font-poppins text-sm">
-                  Selected Teeth ({selectedTeeth?.length || 0}):
-                </span>
-                <span className="text-[#1A1A1A] font-poppins text-sm">
-                  {selectedTeeth?.map((toothId) => `#${toothId}`).join(", ")}
-                </span>
-              </div>
+              {globalSelections?.material &&
+                globalSelections?.material?.price > 0 && (
+                  <div className="flex justify-between items-center py-1">
+                    <p className="text-[#828386] text-sm font-normal font-poppins">
+                      {globalSelections?.material?.option?.label || "Material"}{" "}
+                      <span className="text-[#1A1A1A] text-xs font-normal">
+                        x{selectedTeeth?.length || 0}
+                      </span>
+                    </p>
+                    <p className="text-sm text-[#1A1A1A] font-normal font-poppins">
+                      $
+                      {(globalSelections?.material?.price || 0) *
+                        (selectedTeeth?.length || 0)}
+                    </p>
+                  </div>
+                )}
 
-              <div className="flex justify-between">
-                <span className="text-[#828386] font-poppins text-sm">
+              {globalSelections?.crown &&
+                globalSelections?.crown?.price > 0 && (
+                  <div className="flex justify-between items-center py-1">
+                    <p className="text-[#828386] text-sm font-normal font-poppins">
+                      {globalSelections?.crown?.option?.label || "Crown"}{" "}
+                      <span className="text-[#1A1A1A] text-xs font-normal">
+                        x{selectedTeeth?.length || 0}
+                      </span>
+                    </p>
+                    <p className="text-sm text-[#1A1A1A] font-normal font-poppins">
+                      $
+                      {(globalSelections?.crown?.price || 0) *
+                        (selectedTeeth?.length || 0)}
+                    </p>
+                  </div>
+                )}
+
+              {globalSelections?.Model_type &&
+                globalSelections?.Model_type?.price > 0 && (
+                  <div className="flex justify-between items-center py-1">
+                    <p className="text-[#828386] text-sm font-normal font-poppins">
+                      {globalSelections?.Model_type?.option?.label ||
+                        "Digital Model Type"}{" "}
+                      <span className="text-[#1A1A1A] text-xs font-normal">
+                        x{selectedTeeth?.length || 0}
+                      </span>
+                    </p>
+                    <p className="text-sm text-[#1A1A1A] font-normal font-poppins">
+                      $
+                      {(globalSelections?.Model_type?.price || 0) *
+                        (selectedTeeth?.length || 0)}
+                    </p>
+                  </div>
+                )}
+
+              {globalSelections?.digitalOptions &&
+                globalSelections?.digitalOptions?.price > 0 && (
+                  <div className="flex justify-between items-center py-1">
+                    <p className="text-[#828386] text-sm font-normal font-poppins">
+                      {globalSelections?.digitalOptions?.option?.label ||
+                        "Digital Denture "}{" "}
+                      <span className="text-[#1A1A1A] text-xs font-normal">
+                        x{selectedTeeth?.length || 0}
+                      </span>
+                    </p>
+                    <p className="text-sm text-[#1A1A1A] font-normal font-poppins">
+                      $
+                      {(globalSelections?.digitalOptions?.price || 0) *
+                        (selectedTeeth?.length || 0)}
+                    </p>
+                  </div>
+                )}
+
+              {globalSelections?.lab && globalSelections?.lab?.price > 0 && (
+                <div className="flex justify-between items-center py-1">
+                  <p className="text-[#828386] text-sm font-normal font-poppins">
+                    {globalSelections?.lab?.option?.label ||
+                      "Participating Lab"}{" "}
+                    <span className="text-[#1A1A1A] text-xs font-normal">
+                      x{selectedTeeth?.length || 0}
+                    </span>
+                  </p>
+                  <p className="text-sm text-[#1A1A1A] font-normal font-poppins">
+                    $
+                    {(globalSelections?.lab?.price || 0) *
+                      (selectedTeeth?.length || 0)}
+                  </p>
+                </div>
+              )}
+
+              {globalSelections?.scannerType &&
+                globalSelections?.scannerType?.price > 0 && (
+                  <div className="flex justify-between items-center py-1">
+                    <p className="text-xs text-textFieldHeading">
+                      {globalSelections?.scannerType?.option?.label ||
+                        "Scanner Type"}{" "}
+                      <span className="text-[#1A1A1A] text-xs font-normal">
+                        x{selectedTeeth?.length || 0}
+                      </span>
+                    </p>
+                    <p className="text-sm text-[#1A1A1A] font-normal font-poppins">
+                      $
+                      {(globalSelections?.scannerType?.price || 0) *
+                        (selectedTeeth?.length || 0)}
+                    </p>
+                  </div>
+                )}
+            </div>
+
+            <div className="">
+              <div className="flex justify-between items-center py-3">
+                <p className="text-[#828386] text-sm font-normal font-poppins">
                   Subtotal:
-                </span>
-                <span className="font-semibold text-[#1A1A1A]">
+                </p>
+                <p className="text-[#1A1A1A] font-semibold text-sm font-poppins">
                   ${totalPrice?.toFixed(2)}
-                </span>
+                </p>
               </div>
 
-              <div className="flex justify-between">
-                <span className="text-[#828386] font-poppins text-sm">
+              <div className="flex justify-between items-center py-3 border-t">
+                <p className="text-[#828386] text-sm font-normal font-poppins">
                   Shipping:
-                </span>
-                <span className="text-[#1A1A1A]">Free</span>
+                </p>
+                <p className="text-[#1A1A1A] font-normal text-sm font-poppins">
+                  Free
+                </p>
               </div>
-
-              <div className="flex justify-between font-normal text-secondaryBrand text-lg mt-4 border-t border-gray-200 pt-2">
-                <span>Total</span>
-                <span>${totalPrice?.toFixed(2)}</span>
+              <div className="flex justify-between items-center py-3 font-poppins">
+                <p className="text-[#001D58] text-base font-normal leading-normal">
+                  Total:
+                </p>
+                <p className="text-[#001D58] font-semibold text-lg font-poppins">
+                  ${totalPrice?.toFixed(2)}
+                </p>
               </div>
             </div>
           </div>
