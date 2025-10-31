@@ -1,65 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { getOrderByID } from "../../../../api/doctorDasboard";
 import Icons from "../../../../components/Icons";
+import axios from "axios";
+import { BASE_URL } from "../../../../config";
+import { format } from "date-fns";
+
 export default function TrackingOrder({ id }) {
   const [orderDetails, setOrderDetails] = useState(null);
   const [steps, setSteps] = useState([]);
+  const [trackingData, setTrackingData] = useState([]);
 
   const formatDate = (dateString) => {
     if (!dateString || dateString === "-") return "-";
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return "-";
-
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const year = date.getFullYear();
-
-      return `${day}-${month}-${year}`;
+      return format(date, "dd-MM-yyyy");
     } catch (error) {
       return "-";
     }
   };
 
-  const formatTimestamp = (dateString) => {
+  const formatShortTimestamp = (dateString) => {
     if (!dateString) return "";
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return "";
-
-      const day = String(date.getDate()).padStart(2, "0");
-      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      const month = monthNames[date.getMonth()];
-      const year = date.getFullYear();
-      
-      let hours = date.getHours();
-      const minutes = String(date.getMinutes()).padStart(2, "0");
-      const ampm = hours >= 12 ? "PM" : "AM";
-      hours = hours % 12;
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-      
-      return `${day} ${month} ${year}, ${String(hours).padStart(2, "0")}:${minutes} ${ampm}`;
+      return format(date, "d MMM yyyy, hh:mm aaa").replace(/am|pm/gi, (match) => match.toUpperCase());
     } catch (error) {
       return "";
     }
   };
 
-  const orderSteps = [
-    { id: 1, title: "Order Placed", key: "PENDING" },
-    { id: 2, title: "Processing", key: "IN_PROGRESS" },
-    { id: 3, title: "Shipped", key: "SHIPPED" },
-    { id: 4, title: "Delivered", key: "DELIVERED" },
-  ];
-  // useEffect(() => {
-  //     const fetchOrderByID = async () => {
-  //         const response = await getOrderTranckingByID(id);
-
-  //         if (response.status === 200) {
-  //             setOrderTracking(response.data.data);
-  //         }
-  //     };
-  //     fetchOrderByID();
-  // }, [id]);
+  const trackingid=trackingData?.[0]?.trackingId || "N/A";
 
   useEffect(() => {
     const fetchOrderByID = async () => {
@@ -67,33 +40,72 @@ export default function TrackingOrder({ id }) {
       if (response.status === 200) {
         const data = response.data.data;
         setOrderDetails(data);
-
-        const currentStatus = data?.orderStatus; // e.g. "PENDING"
-        const currentIndex = orderSteps.findIndex(
-          (s) => s.key === currentStatus,
-        );
-
-        // Mark step statuses dynamically
-        const updatedSteps = orderSteps.map((step, idx) => {
-          if (idx < currentIndex) return { ...step, status: "completed" };
-          if (idx === currentIndex) return { ...step, status: "current" };
-          return { ...step, status: "upcoming" };
-        });
-
-        // Add timestamp to current step
-        if (currentIndex >= 0) {
-          updatedSteps[currentIndex].timestamp = formatTimestamp(data?.updatedAt || data?.createdAt);
-        }
-        // Add timestamp to first step (order placed)
-        if (updatedSteps[0]) {
-          updatedSteps[0].timestamp = formatTimestamp(data?.createdAt);
-        }
-
-        setSteps(updatedSteps);
       }
     };
+
+    const fetchOrderTracking = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/api/ordertracking/byOrderId/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.data.responseStatus) {
+          setTrackingData(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching order tracking:", error);
+      }
+    };
+
     fetchOrderByID();
-  }, [id]); 
+    fetchOrderTracking();
+  }, [id]);
+
+  // Get tracking info for a specific status
+  const getTrackingForStatus = (status) => {
+    return trackingData.find((item) => item.status === status);
+  };
+
+  // Check if a status has been reached based on received tracking data
+  const hasReachedStatus = (status) => {
+    return trackingData.some((item) => item.status === status);
+  };
+
+  // Determine if a step should be shown as completed
+  const isStepCompleted = (step) => {
+    // BOOKED is always completed if we have any tracking data
+    if (step === "BOOKED") return hasReachedStatus("BOOKED");
+    
+    // PENDING is completed if we have PENDING, SHIPED, or DELIVERD
+    if (step === "PENDING") {
+      return hasReachedStatus("PENDING") || hasReachedStatus("SHIPED") || hasReachedStatus("DELIVERD");
+    }
+    
+    // SHIPED is completed if we have SHIPED or DELIVERD
+    if (step === "SHIPED") {
+      return hasReachedStatus("SHIPED") || hasReachedStatus("DELIVERD");
+    }
+    
+    // DELIVERD is only completed if we have DELIVERD
+    if (step === "DELIVERD") {
+      return hasReachedStatus("DELIVERD");
+    }
+    
+    return false;
+  };
+
+  // Get the appropriate color for each step
+  const getStepColor = (step) => {
+    if (step === "BOOKED" || step === "PENDING") {
+      return isStepCompleted(step) ? "#7DD3DD" : "#DDDDDD";
+    }
+    // SHIPED and DELIVERD use darker blue when completed
+    return isStepCompleted(step) ? "#001D58" : "#DDDDDD";
+  }; 
 
   return (
     <>
@@ -122,7 +134,7 @@ export default function TrackingOrder({ id }) {
                 </h3>
                 <h3 className="text-tertiaryBrand font-semibold flex md:justify-end">
                   {/* #{orderDetails?.id} */}
-                  {orderDetails?.trackingId || "N/A"}
+                  {trackingid || "N/A"}
                 </h3>
               </div>
             </div>
@@ -134,156 +146,128 @@ export default function TrackingOrder({ id }) {
               order status
             </h3>
 
-            {/* Status timeline - same style as OrderInfo.jsx */}
+            {/* Status timeline with dates below checkmarks */}
             <div className="mt-4">
               <div className="flex w-full py-[16px] px-[8px]">
-                {/* Order Placed */}
+                {/* Order Placed (BOOKED) */}
                 <div className="flex flex-col items-start gap-[12px] flex-1">
                   <div className="flex items-center w-full">
                     <Icons.OrderCheckIcon 
-                      fill={
-                        orderDetails?.orderStatus === "PENDING" ||
-                        orderDetails?.orderStatus === "IN_PROGRESS" ||
-                        orderDetails?.orderStatus === "SHIPPED" ||
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "#7DD3DD"
-                          : "#DDDDDD"
-                      }
+                      fill={getStepColor("BOOKED")}
                     />
                     <div 
                       className={`flex-1 h-[2px] mx-[8px] ${
-                        orderDetails?.orderStatus === "PENDING" ||
-                        orderDetails?.orderStatus === "IN_PROGRESS" ||
-                        orderDetails?.orderStatus === "SHIPPED" ||
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "bg-[#7DD3DD]" 
-                          : "bg-[#DDDDDD]"
+                        isStepCompleted("BOOKED") ? "bg-[#7DD3DD]" : "bg-[#DDDDDD]"
                       }`}
                     />
                   </div>
-                  <div className="flex items-start gap-[8px]">
-                    <Icons.OrderPending 
-                      fill={
-                        orderDetails?.orderStatus === "PENDING" ||
-                        orderDetails?.orderStatus === "IN_PROGRESS" ||
-                        orderDetails?.orderStatus === "SHIPPED" ||
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "#7DD3DD"
-                          : "#DDDDDD"
-                      }
-                    />
-                    <div className="flex flex-col space-y-[2px]">
-                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
-                        Order Placed
-                      </p>
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-start gap-[8px]">
+                      <Icons.OrderPending 
+                        fill={getStepColor("BOOKED")}
+                      />
+                      <div className="flex flex-col space-y-[2px]">
+                        <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
+                          Order Placed
+                        </p>
+                        {getTrackingForStatus("BOOKED") && (
+                          <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#909198]">
+                            {formatShortTimestamp(getTrackingForStatus("BOOKED").createdAt)}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* In Progress */}
+                {/* In Progress (PENDING) */}
                 <div className="flex flex-col items-start gap-[12px] flex-1">
                   <div className="flex items-center w-full">
                     <Icons.OrderCheckIcon 
-                      fill={
-                        orderDetails?.orderStatus === "IN_PROGRESS" ||
-                        orderDetails?.orderStatus === "SHIPPED" ||
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "#7DD3DD"
-                          : "#DDDDDD"
-                      }
+                      fill={getStepColor("PENDING")}
                     />
                     <div 
                       className={`flex-1 h-[2px] mx-[8px] ${
-                        orderDetails?.orderStatus === "SHIPPED" ||
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "bg-[#001D58]"
-                          : "bg-[#DDDDDD]"
+                        isStepCompleted("SHIPED") ? "bg-[#001D58]" : "bg-[#DDDDDD]"
                       }`}
                     />
                   </div>
-                  <div className="flex items-start gap-[8px]">
-                    <Icons.OrderInProgress 
-                      stroke={
-                        orderDetails?.orderStatus === "IN_PROGRESS" ||
-                        orderDetails?.orderStatus === "SHIPPED" ||
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "#7DD3DD"
-                          : "#DDDDDD"
-                      }
-                    />
-                    <div className="flex flex-col space-y-[2px]">
-                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
-                        In Progress
-                      </p>
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-start gap-[8px]">
+                      <Icons.OrderInProgress 
+                        stroke={getStepColor("PENDING")}
+                      />
+                      <div className="flex flex-col space-y-[2px]">
+                        <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
+                          In Progress
+                        </p>
+                        {/* Use BOOKED date if PENDING doesn't exist */}
+                        {(getTrackingForStatus("PENDING") || getTrackingForStatus("BOOKED")) && (
+                          <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#909198]">
+                            {formatShortTimestamp(
+                              (getTrackingForStatus("PENDING") || getTrackingForStatus("BOOKED")).createdAt
+                            )}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Shipped */}
+                {/* Shipped (SHIPED) */}
                 <div className="flex flex-col items-start gap-[12px] flex-1">
                   <div className="flex items-center w-full">
                     <Icons.OrderCheckIcon 
-                      fill={
-                        orderDetails?.orderStatus === "SHIPPED" ||
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "#001D58"
-                          : "#DDDDDD"
-                      }
+                      fill={getStepColor("SHIPED")}
                     />
                     <div 
                       className={`flex-1 h-[2px] mx-[8px] ${
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "bg-[#001D58]"
-                          : "bg-[#DDDDDD]"
+                        isStepCompleted("DELIVERD") ? "bg-[#001D58]" : "bg-[#DDDDDD]"
                       }`}
                     />
                   </div>
-                  <div className="flex items-start gap-[8px]">
-                    <Icons.OrderShipped 
-                      fill={
-                        orderDetails?.orderStatus === "SHIPPED" ||
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "#001D58"
-                          : "#DDDDDD"
-                      }
-                      stroke={
-                        orderDetails?.orderStatus === "SHIPPED" ||
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "#001D58"
-                          : "#DDDDDD"
-                      }
-                    />
-                    <div className="flex flex-col space-y-[2px]">
-                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
-                        Shipped
-                      </p>
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-start gap-[8px]">
+                      <Icons.OrderShipped 
+                        fill={getStepColor("SHIPED")}
+                        stroke={getStepColor("SHIPED")}
+                      />
+                      <div className="flex flex-col space-y-[2px]">
+                        <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
+                          Shipped
+                        </p>
+                        {getTrackingForStatus("SHIPED") && (
+                          <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#909198]">
+                            {formatShortTimestamp(getTrackingForStatus("SHIPED").createdAt)}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Delivered */}
+                {/* Delivered (DELIVERD) */}
                 <div className="flex flex-col items-start gap-[12px]">
                   <div className="flex items-center">
                     <Icons.OrderCheckIcon 
-                      fill={
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "#001D58"
-                          : "#DDDDDD"
-                      }
+                      fill={getStepColor("DELIVERD")}
                     />
                   </div>
-                  <div className="flex items-start gap-[8px]">
-                    <Icons.OrderDelivered 
-                      fill={
-                        orderDetails?.orderStatus === "DELIVERED"
-                          ? "#001D58"
-                          : "#DDDDDD"
-                      }
-                    />
-                    <div className="flex flex-col space-y-[2px]">
-                      <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
-                        Delivered
-                      </p>
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-start gap-[8px]">
+                      <Icons.OrderDelivered 
+                        fill={getStepColor("DELIVERD")}
+                      />
+                      <div className="flex flex-col space-y-[2px]">
+                        <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
+                          Delivered
+                        </p>
+                        {getTrackingForStatus("DELIVERD") && (
+                          <p className="font-poppins font-normal text-[12px] leading-[18px] text-[#909198]">
+                            {formatShortTimestamp(getTrackingForStatus("DELIVERD").createdAt)}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
