@@ -59,7 +59,7 @@ export default function DropDownComponent({
                     onSelect(option);
                     setIsOpen(false);
                   }}
-                  className="flex justify-between px-4 py-2 text-gray-700 cursor-pointer font-poppins hover:bg-gray-50"
+                  className="flex justify-between px-4 py-2 text-gray-700  font-poppins "
                 >
                   <span>{option[optionLabel]}</span>
                   <span className="text-xs text-secondaryBrand">

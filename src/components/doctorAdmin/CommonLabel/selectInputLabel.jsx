@@ -49,7 +49,6 @@ export default function MaterialDropdown({
   className2,
   hideCheckForNotAvailable = false, // ✅ new prop
   disabled = false, // ✅ new disabled prop
-
 }) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -82,8 +81,9 @@ export default function MaterialDropdown({
           if (!disabled) setOpen((o) => !o);
         }}
         disabled={disabled}
-        className={`${className || ""
-          } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal ${
+        className={`${
+          className || ""
+        } flex w-full items-center justify-between bg-grey-500 border border-background px-2 py-3 text-left text-sm font-normal ${
           disabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
       >
@@ -102,7 +102,8 @@ export default function MaterialDropdown({
             {options.map((opt, idx) => {
               const active = opt.value === value;
               const isLast = idx === options.length - 1;
-              const isNotAvailable = opt.label?.toLowerCase() === "not available"; // ✅ detect
+              const isNotAvailable =
+                opt.label?.toLowerCase() === "not available"; // ✅ detect
 
               return (
                 <button
@@ -129,19 +130,19 @@ export default function MaterialDropdown({
                   </span> */}
                   <span className="flex items-start gap-1 flex-1 min-w-0">
                     {/* ✅ Hide circle if "Not available" and prop is true */}
-                    {!(
-                      hideCheckForNotAvailable && isNotAvailable
-                    ) && (
-                        <span
-                          className={`flex items-center justify-center h-4 w-4 min-w-[16px] min-h-[16px] rounded-full border flex-shrink-0 mt-0.5 ${
-                            active ? "border-secondaryBrand border-[1.5px]" : "border-gray-300 border-[1.5px]"
-                          }`}
-                        >
-                          {active && (
-                            <span className="h-2 w-2 min-w-[8px] min-h-[8px] rounded-full bg-secondaryBrand" />
-                          )}
-                        </span>
-                      )}
+                    {!(hideCheckForNotAvailable && isNotAvailable) && (
+                      <span
+                        className={`flex items-center justify-center h-4 w-4 min-w-[16px] min-h-[16px] rounded-full border flex-shrink-0 mt-0.5 ${
+                          active
+                            ? "border-secondaryBrand border-[1.5px]"
+                            : "border-gray-300 border-[1.5px]"
+                        }`}
+                      >
+                        {active && (
+                          <span className="h-2 w-2 min-w-[8px] min-h-[8px] rounded-full bg-secondaryBrand" />
+                        )}
+                      </span>
+                    )}
 
                     <span className="text-textFieldHeading text-[10px] text-left font-normal capitalize flex-1">
                       {opt.label}
