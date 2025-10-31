@@ -20,7 +20,7 @@ export default function TableComponent({
   useBackendPagination = false,
 }) {
   const [frontendCurrentPage, setFrontendCurrentPage] = useState(1);
-
+  console.log(data, "data");
   // Use backend pagination if enabled, otherwise use frontend pagination
   const displayData = useBackendPagination
     ? data

@@ -31,6 +31,7 @@ const DoctorClaimRequests = () => {
         id: `#${order?.id}`,
         name: order?.patientName || "-",
         dName: order?.doctorName || "-",
+        profileURL: order?.patientProfileUrl,
         pEmail: order?.patientEmail || "-",
         submission: order?.createdAt
           ? new Date(order.createdAt).toLocaleDateString('en-GB').replace(/\//g, '-')
@@ -106,14 +107,6 @@ const DoctorClaimRequests = () => {
 
   // Since filtering is now handled by the backend, we use claims directly
   const displayData = claims;
-
-  const slugify = (text) =>
-    text
-      .toString()
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-") // replace spaces with -
-      .replace(/[^\w-]+/g, "");
 
   const statusOptions = [
     { value: "ALL", label: "All" },

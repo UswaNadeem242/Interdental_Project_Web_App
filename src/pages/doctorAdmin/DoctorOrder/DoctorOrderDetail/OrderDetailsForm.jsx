@@ -121,7 +121,7 @@ export default function OrderDetailsForm({ id }) {
 
   const ShippingDetail = [
     { label: "Shipping Address" },
-    { label: "1901 Thornridge Cir. Shiloh, Hawaii 81063" },
+    { label: orderDetails?.address || "N/A" },
   ];
 
   useEffect(() => {

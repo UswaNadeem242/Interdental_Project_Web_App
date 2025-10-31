@@ -4,8 +4,8 @@ import { ErrorMessage, Field, Formik } from "formik";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 import { orderService } from "../../../services/order-service/index";
-import { CheckoutvalidationSchema } from "../../../Common/FormsValidation/order-validation";
 import { showToast } from "../../../store/toast-slice";
+import { checkoutValidationSchema } from "../../../services/utils/validationSchemas";
 
 const CheckoutForm = ({ next }) => {
   const [loading, setLoading] = useState(false);
@@ -14,6 +14,10 @@ const CheckoutForm = ({ next }) => {
   const dispatch = useDispatch();
   const restoration = useSelector((state) => state.restoration);
   const { globalSelections, selectedTeeth, uploadedFiles } = restoration;
+
+  // Retrieve user data from localStorage
+  const userData = localStorage.getItem("users");
+  const user = userData ? JSON.parse(userData) : null;
 
   // Calculate total price
   const totalPrice = useMemo(() => {
@@ -35,7 +39,25 @@ const CheckoutForm = ({ next }) => {
 
   const isOpen = (section) => openSections.includes(section);
 
-  const handleSubmit = async (values) => {
+  // Get initial values with user data preset
+  const getInitialValues = () => {
+    return {
+      name: user?.firstName && user?.lastName 
+        ? `${user.firstName} ${user.lastName}` 
+        : "",
+      phone: user?.phoneNumber || "",
+      email: user?.email || "",
+      country: "America",
+      state: "",
+      city: "",
+      street: "",
+      recipientName: "",
+      paypalUsername: "",
+      paypalEmailPhone: "",
+    };
+  };
+
+  const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
     
     try {
@@ -132,6 +154,7 @@ const CheckoutForm = ({ next }) => {
       );
     } finally {
       setLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -140,22 +163,14 @@ const CheckoutForm = ({ next }) => {
       <div className="pt-5 pb-10">
         <div className="px-4">
           <Formik
-            initialValues={{
-              name: "",
-              phone: "",
-              email: "",
-              country: "America",
-              state: "",
-              city: "",
-              street: "",
-              recipientName: "",
-              paypalUsername: "",
-              paypalEmailPhone: "",
-            }}
-            validationSchema={CheckoutvalidationSchema}
-            onSubmit={(values) => handleSubmit(values)}
+            initialValues={getInitialValues()}
+            enableReinitialize={true}
+            validationSchema={checkoutValidationSchema}
+            validateOnChange={true}
+            validateOnBlur={true}
+            onSubmit={handleSubmit}
           >
-            {({ handleSubmit }) => (
+            {({ handleSubmit, errors, touched, isSubmitting }) => (
               <form
                 onSubmit={handleSubmit}
                 className="grid gap-8 grid-cols-1 lg:grid-cols-12 font-poppins"
@@ -173,12 +188,16 @@ const CheckoutForm = ({ next }) => {
                           type="text"
                           name="name"
                           placeholder="Full Name"
-                          className="border rounded-lg px-3 py-2 w-full"
+                          className={`border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins ${
+                            errors.name && touched.name
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          }`}
                         />
                         <ErrorMessage
                           name="name"
                           component="div"
-                          className="text-red-800 text-xs mt-1"
+                          className="text-red-600 text-xs mt-1"
                         />
                       </div>
 
@@ -187,12 +206,16 @@ const CheckoutForm = ({ next }) => {
                           type="tel"
                           name="phone"
                           placeholder="Contact Number"
-                          className="border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins"
+                          className={`border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins ${
+                            errors.phone && touched.phone
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          }`}
                         />
                         <ErrorMessage
                           name="phone"
                           component="div"
-                          className="text-red-800 text-xs mt-1"
+                          className="text-red-600 text-xs mt-1"
                         />
                       </div>
                     </div>
@@ -202,12 +225,16 @@ const CheckoutForm = ({ next }) => {
                         type="email"
                         name="email"
                         placeholder="Email Address"
-                        className="border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins"
+                        className={`border outline-none rounded-lg px-3 py-2 w-full bg-white text-gray-700 placeholder:text-sm placeholder:font-poppins ${
+                          errors.email && touched.email
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        }`}
                       />
                       <ErrorMessage
                         name="email"
                         component="div"
-                        className="text-red-800 text-xs mt-1"
+                        className="text-red-600 text-xs mt-1"
                       />
                     </div>
                   </div>
@@ -241,12 +268,16 @@ const CheckoutForm = ({ next }) => {
                           type="text"
                           name="state"
                           placeholder="State/Province"
-                          className="border rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
+                          className={`border rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal ${
+                            errors.state && touched.state
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          }`}
                         />
                         <ErrorMessage
                           name="state"
                           component="div"
-                          className="text-red-800 text-xs mt-1"
+                          className="text-red-600 text-xs mt-1"
                         />
                       </div>
 
@@ -255,12 +286,16 @@ const CheckoutForm = ({ next }) => {
                           type="text"
                           name="city"
                           placeholder="City"
-                          className="border rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
+                          className={`border rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal ${
+                            errors.city && touched.city
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          }`}
                         />
                         <ErrorMessage
                           name="city"
                           component="div"
-                          className="text-red-800 text-xs mt-1"
+                          className="text-red-600 text-xs mt-1"
                         />
                       </div>
 
@@ -269,12 +304,16 @@ const CheckoutForm = ({ next }) => {
                           type="text"
                           name="street"
                           placeholder="Street"
-                          className="border rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal"
+                          className={`border rounded-lg px-3 py-2 w-full bg-white outline-none text-gray-700 placeholder:text-sm placeholder:font-poppins placeholder:font-normal ${
+                            errors.street && touched.street
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          }`}
                         />
                         <ErrorMessage
                           name="street"
                           component="div"
-                          className="text-red-800 text-xs mt-1"
+                          className="text-red-600 text-xs mt-1"
                         />
                       </div>
                     </div>
@@ -318,12 +357,16 @@ const CheckoutForm = ({ next }) => {
                               type="text"
                               name="recipientName"
                               placeholder="Enter Recipient's Name"
-                              className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                              className={`border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins ${
+                                errors.recipientName && touched.recipientName
+                                  ? "border-red-500"
+                                  : "border-gray-300"
+                              }`}
                             />
                             <ErrorMessage
                               name="recipientName"
                               component="div"
-                              className="text-red-800 text-xs mt-1"
+                              className="text-red-600 text-xs mt-1"
                             />
                           </div>
 
@@ -336,12 +379,16 @@ const CheckoutForm = ({ next }) => {
                                 type="text"
                                 name="paypalUsername"
                                 placeholder="Enter Paypal Username"
-                                className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                                className={`border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins ${
+                                  errors.paypalUsername && touched.paypalUsername
+                                    ? "border-red-500"
+                                    : "border-gray-300"
+                                }`}
                               />
                               <ErrorMessage
                                 name="paypalUsername"
                                 component="div"
-                                className="text-red-800 text-xs mt-1"
+                                className="text-red-600 text-xs mt-1"
                               />
                             </div>
 
@@ -353,12 +400,16 @@ const CheckoutForm = ({ next }) => {
                                 type="text"
                                 name="paypalEmailPhone"
                                 placeholder="Enter E-mail/Phone number"
-                                className="border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins"
+                                className={`border rounded-lg px-3 py-2 w-full outline-none bg-gray-50 text-primaryText placeholder:text-xs placeholder:font-poppins ${
+                                  errors.paypalEmailPhone && touched.paypalEmailPhone
+                                    ? "border-red-500"
+                                    : "border-gray-300"
+                                }`}
                               />
                               <ErrorMessage
                                 name="paypalEmailPhone"
                                 component="div"
-                                className="text-red-800 text-xs mt-1"
+                                className="text-red-600 text-xs mt-1"
                               />
                             </div>
                           </div>
@@ -447,14 +498,14 @@ const CheckoutForm = ({ next }) => {
                   <div className="md:col-span-4">
                     <button
                       type="submit"
-                      disabled={loading}
+                      disabled={loading || isSubmitting}
                       className={`mt-6 w-full py-4 rounded-3xl text-white font-medium ${
-                        loading
+                        loading || isSubmitting
                           ? "bg-gray-400 cursor-not-allowed"
                           : "bg-[rgba(0,29,88,1)] hover:bg-blue-800"
                       }`}
                     >
-                      {loading ? "Processing..." : "Place Order"}
+                      {loading || isSubmitting ? "Processing..." : "Place Order"}
                     </button>
                   </div>
                 </div>
