@@ -62,24 +62,23 @@ const MainLayout = ({ children }) => (
 
 const PlainLayout = ({ children }) => {
   return (
-    <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
-      {/* Sidebar */}
-      <div className="w-52 flex-shrink-0  hidden md:block">
+    <div className="flex bg-gray-50 min-h-screen lg:p-4 p-2 gap-4">
+      {/* Sidebar - Only show on large screens (lg and above) */}
+      <div className="w-52 flex-shrink-0 hidden lg:block">
         <DoctorSidebar items={menuItems} />
       </div>
       <div className="flex-1 flex flex-col relative">
         {/* Header */}
-
-        <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
-          {/* left-4 right-4  top-4*/}
-          <div className="md:hidden mr-4">
+        <header className="fixed lg:left-64 lg:top-0 top-2 left-4 lg:right-0 right-4 lg:rounded-none h-20 lg:block py-4 bg-[#f9fafb] flex items-center lg:px-6 px-6 z-20">
+          {/* Mobile/Tablet Sidebar - Show on screens smaller than lg */}
+          <div className="lg:hidden mr-4">
             <MobileSidebar items={menuItems} role={"doctor"} />
           </div>
           <DoctorHeader role={"doctor"} />
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 md:p-6 p-0 mt-16 md:ml-4  rounded-xl overflow-auto">
+        <main className="flex-1 lg:p-6 p-0 mt-20 lg:ml-4 rounded-xl overflow-auto">
           {children}
         </main>
       </div>
@@ -89,23 +88,22 @@ const PlainLayout = ({ children }) => {
 
 const PlainLayoutUser = ({ children }) => (
   <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
-    {/* Sidebar */}
-    <div className="w-52 flex-shrink-0  hidden md:block">
+    {/* Sidebar - Only show on large screens (lg and above) */}
+    <div className="w-52 flex-shrink-0 hidden lg:block">
       <DoctorSidebar items={menuItemsUser} />
     </div>
     <div className="flex-1 flex flex-col relative">
       {/* Header */}
-
-      <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
-        {/* left-4 right-4  top-4*/}
-        <div className="md:hidden mr-4">
+      <header className="fixed lg:left-64 lg:top-0 top-2 left-4 lg:right-0 right-4 lg:rounded-none h-20 lg:block py-4 bg-[#f9fafb] flex items-center lg:px-6 px-6 z-20">
+        {/* Mobile/Tablet Sidebar - Show on screens smaller than lg */}
+        <div className="lg:hidden mr-4">
           <MobileSidebar items={menuItemsUser} role={"patient"} />
         </div>
         <DoctorHeader role={"patient"} />
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 md:p-6 p-0 mt-16 md:ml-4  rounded-xl overflow-auto">
+      <main className="flex-1 lg:p-6 p-0 mt-16 lg:ml-4 rounded-xl overflow-auto">
         {children}
       </main>
     </div>
@@ -114,23 +112,22 @@ const PlainLayoutUser = ({ children }) => (
 // Patient Admin
 const PlainLayoutPatient = ({ children }) => (
   <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
-    {/* Sidebar */}
-    <div className="w-52 flex-shrink-0  hidden md:block">
+    {/* Sidebar - Only show on large screens (lg and above) */}
+    <div className="w-52 flex-shrink-0 hidden lg:block">
       <DoctorSidebar items={menuPatientItem} />
     </div>
     <div className="flex-1 flex flex-col relative">
       {/* Header */}
-
-      <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
-        {/* left-4 right-4  top-4*/}
-        <div className="md:hidden mr-4">
+      <header className="fixed lg:left-64 lg:top-0 top-2 left-4 lg:right-0 right-4 lg:rounded-none h-20 lg:block py-4 bg-[#f9fafb] flex items-center lg:px-6 px-6 z-20">
+        {/* Mobile/Tablet Sidebar - Show on screens smaller than lg */}
+        <div className="lg:hidden mr-4">
           <MobileSidebar items={menuPatientItem} role={"patient"} />
         </div>
         <DoctorHeader />
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 md:p-6 p-0 mt-16 md:ml-4  rounded-xl overflow-auto">
+      <main className="flex-1 lg:p-6 p-0 mt-16 lg:ml-4 rounded-xl overflow-auto">
         {children}
       </main>
     </div>
@@ -138,26 +135,24 @@ const PlainLayoutPatient = ({ children }) => (
 );
 
 // admin-panel
-
 const PlainLayoutAdminPanel = ({ children }) => (
   <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
-    {/* Sidebar */}
-    <div className="w-52 flex-shrink-0  hidden md:block">
+    {/* Sidebar - Only show on large screens (lg and above) */}
+    <div className="w-52 flex-shrink-0 hidden lg:block">
       <DoctorSidebar items={menuAdminPanelItem} />
     </div>
     <div className="flex-1 flex flex-col relative">
       {/* Header */}
-
-      <header className="fixed  md:left-64 md:top-0 top-2 left-4 md:right-0   right-4  md:rounded-none h-20 md:block py-4 bg-[#f9fafb] flex items-center md:px-6 px-6 z-20">
-        {/* left-4 right-4  top-4*/}
-        <div className="md:hidden mr-4">
+      <header className="fixed lg:left-64 lg:top-0 top-2 left-4 lg:right-0 right-4 lg:rounded-none h-20 lg:block py-4 bg-[#f9fafb] flex items-center lg:px-6 px-6 z-20">
+        {/* Mobile/Tablet Sidebar - Show on screens smaller than lg */}
+        <div className="lg:hidden mr-4">
           <MobileSidebar items={menuAdminPanelItem} role={"admin"} />
         </div>
         <DoctorHeader role={"admin"} />
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 md:p-6 p-0 mt-16 md:ml-4  rounded-xl overflow-auto">
+      <main className="flex-1 lg:p-6 p-0 mt-16 lg:ml-4 rounded-xl overflow-auto">
         {children}
       </main>
     </div>

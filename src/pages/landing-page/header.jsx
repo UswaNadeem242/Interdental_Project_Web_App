@@ -1,10 +1,9 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import ProfileDropdown from "../../components/dropdowns/ProfileDropdown";
 import { navItems } from "../../Constant";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-
 import ShoppingCart from "../../modals/ShoppingCartModal";
 import NotificationsDropdown from "../../components/dropdowns/NotificationsDropdown";
 import { BellIconSVG } from "../../icon/Bell";
@@ -12,59 +11,100 @@ import { showToast } from "../../store/toast-slice";
 import { useDispatch } from "react-redux";
 import Icons from "../../components/Icons";
 
+// Constants
+const SCROLL_THRESHOLD = 20;
+const USER_ROLES = {
+  DOCTOR: "DOCTOR",
+};
+
+const ERROR_MESSAGES = {
+  ACCESS_DENIED: "Access denied! Please log in first",
+};
+
 const Header = () => {
+  // Hooks
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { 
+    user, 
+    wishlistCount, 
+    cartCount, 
+    unreadNotificationsCount, 
+    fetchWishlistCount, 
+    fetchCartCount, 
+    fetchUnreadNotificationsCount 
+  } = useAuth();
+
+  // State
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notificationsDropdown, setNotificationsDropdown] = useState(false);
-  const { wishlistCount, cartCount, fetchWishlistCount, fetchCartCount, unreadNotificationsCount, fetchUnreadNotificationsCount } =
-    useAuth();
-  const [setIsActionModalOpen] = useState(false);
+  const [profileDropdown, setProfileDropdown] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const dispatch = useDispatch();
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-  const [profileDropdown, setProfileDropdown] = useState(false);
+  // Memoized values
+  const isDoctor = useMemo(() => user?.roles?.[0] === USER_ROLES.DOCTOR, [user]);
+  const isAuthenticated = useMemo(() => user && user?.email, [user]);
 
-  // Get user from AuthContext instead of localStorage
-  const { user } = useAuth();
+  // Handlers
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen((prev) => !prev);
+  }, []);
 
-  const handleCart = () => {
-    setIsModalOpen(true);
-  };
-  const handleWishlist = () => {
-    if (user) {
+  const handleCart = useCallback(() => {
+    if (isAuthenticated) {
+      setIsModalOpen(true);
+    } else {
+      dispatch(showToast({
+        message: ERROR_MESSAGES.ACCESS_DENIED,
+        type: "error",
+      }));
+    }
+  }, [isAuthenticated, dispatch]);
+
+  const handleWishlist = useCallback(() => {
+    if (isAuthenticated) {
       navigate("/wishlist");
     } else {
-      setIsActionModalOpen(true);
+      dispatch(showToast({
+        message: ERROR_MESSAGES.ACCESS_DENIED,
+        type: "error",
+      }));
     }
-  };
-  const handleNotifications = (e) => {
-    e.stopPropagation();
-    setNotificationsDropdown(!notificationsDropdown);
-  };
+  }, [isAuthenticated, navigate, dispatch]);
 
+  const handleNotifications = useCallback((e) => {
+    e.stopPropagation();
+    setNotificationsDropdown((prev) => !prev);
+  }, []);
+
+  const handleDashboard = useCallback(() => {
+    navigate("/doctor-admin/dashboard");
+  }, [navigate]);
+
+  const handleLogin = useCallback(() => {
+    navigate("/login");
+    setIsMobileMenuOpen(false);
+  }, [navigate]);
+
+  const handleSignup = useCallback(() => {
+    navigate("/signup");
+    setIsMobileMenuOpen(false);
+  }, [navigate]);
+
+  // Fetch counts for authenticated non-doctor users
   useEffect(() => {
-    if (user) {
-      // Don't fetch cart/wishlist/notifications for doctors (they have their own dashboard)
-      if (user?.roles?.[0] === "DOCTOR") {
-        return;
-      }
+    if (isAuthenticated && !isDoctor) {
       fetchWishlistCount();
       fetchCartCount();
       fetchUnreadNotificationsCount();
     }
-  }, [user]);
+  }, [isAuthenticated, isDoctor, fetchWishlistCount, fetchCartCount, fetchUnreadNotificationsCount]);
 
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > SCROLL_THRESHOLD);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -124,10 +164,9 @@ const Header = () => {
 
           {/* Desktop actions */}
           <div className="hidden lg:flex items-center gap-4">
-            {/* Show Dashboard button for logged-in doctors */}
-            {user && user?.email && user?.roles[0] === "DOCTOR" ? (
+            {isAuthenticated && isDoctor ? (
               <button
-                onClick={() => navigate("/doctor-admin/dashboard")}
+                onClick={handleDashboard}
                 className="px-6 py-2.5 rounded-full bg-secondaryBrand text-white text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)] hover:bg-opacity-90 transition-colors"
               >
                 Dashboard
@@ -138,18 +177,7 @@ const Header = () => {
                 <div className="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
                   <Icons.ShoppingCartIcon
                     className="cursor-pointer w-6 h-6"
-                    onClick={() => {
-                      if (user && user?.email) {
-                        handleCart();
-                      } else {
-                        dispatch(
-                          showToast({
-                            message: "Access denied! Please log in first",
-                            type: "error",
-                          }),
-                        );
-                      }
-                    }}
+                    onClick={handleCart}
                   />
                   {cartCount > 0 && (
                     <span className="absolute -top-1 -right-1 w-6 h-6 text-xs font-bold text-white bg-secondaryBrand rounded-full flex items-center justify-center shadow-lg">
@@ -160,18 +188,7 @@ const Header = () => {
 
                 {/* Wishlist Icon */}
                 <div
-                  onClick={() => {
-                    if (user && user?.email) {
-                      handleWishlist();
-                    } else {
-                      dispatch(
-                        showToast({
-                          message: `Access denied! Please log in first`,
-                          type: "error",
-                        }),
-                      );
-                    }
-                  }}
+                  onClick={handleWishlist}
                   className="relative p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
                 >
                   <Icons.WishlistHeart
@@ -212,24 +229,25 @@ const Header = () => {
                 </div>
               </>
             )}
-            {/* Show profile dropdown only for non-doctors */}
-            {user && user?.email && user?.roles[0] !== "DOCTOR" ? (
+
+            {/* Profile dropdown for authenticated non-doctors */}
+            {isAuthenticated && !isDoctor && (
               <div className="flex flex-col relative">
                 <div
                   data-profile-trigger="true"
-                  onClick={() => setProfileDropdown(!profileDropdown)}
+                  onClick={() => setProfileDropdown((prev) => !prev)}
                   className="flex justify-between z-[100] items-center cursor-pointer w-[154px] h-[46px] border-[1px] border-[#0000000D] rounded-[35px] py-[4px] px-[2px] gap-2"
                 >
                   {user?.profileImage ? (
                     <img
-                      src={user?.profileImage}
+                      src={user.profileImage}
                       alt="User Avatar"
-                      className="w-8 h-8 shrink-0 rounded-full"
+                      className="w-8 h-8 shrink-0 rounded-full object-cover"
                     />
                   ) : (
                     <Icons.UserAvatar />
                   )}
-                  <p className="font-poppins font-normal line-clamp-1 text-[14px]  leading-[21px] text-[#393A44]">
+                  <p className="font-poppins font-normal line-clamp-1 text-[14px] leading-[21px] text-[#393A44]">
                     {user?.firstName} {user?.lastName}
                   </p>
                   <ChevronDownIcon className="w-5 h-5 pr-2" />
@@ -243,24 +261,25 @@ const Header = () => {
                   </div>
                 )}
               </div>
-            ) : null}
-            {/* Show login/signup buttons only for non-authenticated users */}
-            {!user || !user?.email ? (
+            )}
+
+            {/* Login/Signup buttons for non-authenticated users */}
+            {!isAuthenticated && (
               <>
                 <button
-                  onClick={() => navigate("/login")}
-                  className="px-4 py-2 rounded-full bg-secondaryBrand text-white  whitespace-nowrap 800 text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
+                  onClick={handleLogin}
+                  className="px-4 py-2 rounded-full bg-secondaryBrand text-white whitespace-nowrap text-sm font-semibold shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)]"
                 >
                   Log In
                 </button>
                 <button
-                  onClick={() => navigate("/signup")}
-                  className="x-4 py-2 rounded-full   text-black text-sm whitespace-nowrap font-semibold"
+                  onClick={handleSignup}
+                  className="px-4 py-2 rounded-full text-black text-sm whitespace-nowrap font-semibold"
                 >
                   Sign up
                 </button>
               </>
-            ) : null}
+            )}
           </div>
 
           {/* Spacer to keep layout balanced on desktop when center nav grows */}
@@ -291,27 +310,23 @@ const Header = () => {
               </button>
             </div>
 
-            <div className="p-5 space-y-3 w-full h-screen  bg-white">
-              <div className="flex gap-3 mb-4">
-                <button
-                  onClick={() => {
-                    navigate("/login");
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="flex-1 py-2.5 rounded-full bg-blue-900 text-white font-semibold"
-                >
-                  Log In
-                </button>
-                <button
-                  onClick={() => {
-                    navigate("/signup");
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="flex-1 py-2.5 rounded-full  text-black font-semibold"
-                >
-                  sign up
-                </button>
-              </div>
+            <div className="p-5 space-y-3 w-full h-screen bg-white">
+              {!isAuthenticated && (
+                <div className="flex gap-3 mb-4">
+                  <button
+                    onClick={handleLogin}
+                    className="flex-1 py-2.5 rounded-full bg-blue-900 text-white font-semibold"
+                  >
+                    Log In
+                  </button>
+                  <button
+                    onClick={handleSignup}
+                    className="flex-1 py-2.5 rounded-full text-black font-semibold"
+                  >
+                    Sign up
+                  </button>
+                </div>
+              )}
 
               <nav className="space-y-2 ">
                 {navItems.map(({ to, label }) => (
