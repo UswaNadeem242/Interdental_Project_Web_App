@@ -16,7 +16,7 @@ export const useOrderValidation = () => {
     ) {
       return {
         isValid: false,
-        firstError: "Please select a Smile Design option",
+        firstError: "Please select a Smile Design",
       };
     }
     //

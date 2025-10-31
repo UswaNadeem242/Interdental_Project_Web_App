@@ -631,9 +631,16 @@ export const DoctorCalimsForm = () => {
 
                   <button
                     type="button"
-                    onClick={() => handleShowModal(values, setFieldTouched)}
-                    disabled={isSubmitting}
-                    className="md:px-16 px-10 py-4 capitalize bg-secondaryBrand text-bgWhite rounded-full font-poppins md:text-base text-[14px] whitespace-nowrap font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={async () => {
+                      const validationErrors = validateClaim(values);
+
+                      if (Object.keys(validationErrors).length === 0) {
+                        setShowModal(true);
+                      } else {
+                        toast.error("Please select all the options first.");
+                      }
+                    }}
+                    className="md:px-16 px-10 py-4 capitalize bg-secondaryBrand text-bgWhite rounded-full font-poppins md:text-base text-[14px] whitespace-nowrap font-bold"
                   >
                     Send Claim Request
                   </button>
