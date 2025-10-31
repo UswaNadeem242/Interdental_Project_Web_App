@@ -29,8 +29,9 @@ export const PatientCard = ({
             <div className="flex gap-4 p-3 rounded-md border border-black/5 mb-5 items-center">
               {/* Left section: user info */}
               <div className="flex gap-2 flex-1 items-center">
+              
                 <img
-                  src={item?.profileURL || "/assets/users.png"}
+                  src={item?.profileURL || "/assets/user.png"}
                   alt="image"
                   className={`w-10 h-10 rounded-full object-cover ${className}`}
                 />

@@ -33,7 +33,7 @@ const DoctorClaimRequests = () => {
         dName: order?.doctorName || "-",
         pEmail: order?.patientEmail || "-",
         submission: order?.createdAt
-          ? new Date(order.createdAt).toLocaleDateString('en-GB').replace(/\//g,'-')
+          ? new Date(order.createdAt).toLocaleDateString('en-GB').replace(/\//g, '-')
           : "-",
         status: order?.orderStatus?.toLowerCase() || "pending",
         // date: order?.ccExpiry || "-",
@@ -132,11 +132,10 @@ const DoctorClaimRequests = () => {
                 <button
                   key={option.value}
                   onClick={() => handleStatusChange(option.value)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium font-poppins transition-colors ${
-                    currentStatus === option.value
+                  className={`px-4 py-2 rounded-full text-sm font-medium font-poppins transition-colors ${currentStatus === option.value
                       ? "bg-[#F8F8F8] text-primaryText"
                       : "bg-white text-primaryText border border-borderPrimary hover:bg-[#F8F8F8]"
-                  }`}
+                    }`}
                 >
                   {option.label}
                 </button>
@@ -146,7 +145,7 @@ const DoctorClaimRequests = () => {
           <SecondaryButton
             title="Claim New Request"
             // icon={<PlusIcon className="w-4 h-4 text-white" />}
-            href={`/doctor-admin/claim-request/${slugify("claim-request")}`}
+            href={`/doctor-admin/claim-requests/create`}
             className="w-full md:w-auto rounded-lg px-6 py-3 font-poppins bg-secondaryBrand text-white"
           />
         </div>
@@ -165,10 +164,10 @@ const DoctorClaimRequests = () => {
             setSelectedRow(row.originalData);
             setIsOpen(true);
           }}
-          // onActionClickk={(row) => {
-          //   setSelectedRow(row.originalData);
-          //   setShowDetail(true);
-          // }}
+        // onActionClickk={(row) => {
+        //   setSelectedRow(row.originalData);
+        //   setShowDetail(true);
+        // }}
         />
       </div>
 

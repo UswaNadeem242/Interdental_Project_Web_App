@@ -193,17 +193,16 @@ export default function OrderDetailsForm({ id }) {
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
-      heightLeft -= pdfHeight;
-
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
-        heightLeft -= pdfHeight;
+      // Scale to fit on one page if needed
+      if (imgHeight > pdfHeight) {
+        // Scale down to fit on one page
+        const scale = pdfHeight / imgHeight;
+        const scaledWidth = pdfWidth * scale;
+        const scaledHeight = imgHeight * scale;
+        pdf.addImage(imgData, "PNG", 0, 0, scaledWidth, scaledHeight);
+      } else {
+        // Fits on one page, use original size
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
       }
 
       pdf.save("Restoration_Design_Form.pdf");
@@ -240,7 +239,7 @@ export default function OrderDetailsForm({ id }) {
         {/* PDF Content - This will be captured */}
         <div ref={formRef} className="p-4">
           <div className="flex justify-between items-center pb-4">
-            <h4 className="text-primaryText font-normal text-xl font-poppins">
+            <h4 className="text-black font-semibold text-xl font-poppins">
               Restoration Design Form
             </h4>
             <button
@@ -259,7 +258,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Doctor's Name
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {`${orderDetails?.doctorFirstName || ""} ${
                       orderDetails?.doctorLastName || ""
                     }`}
@@ -269,7 +268,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Office Reference Number
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {orderDetails?.doctorRefNumber || "-"}
                   </span>
                 </div>
@@ -281,7 +280,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Patient
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {`${orderDetails?.patientFirstName || ""} ${
                       orderDetails?.patientLastName || ""
                     }`}
@@ -295,7 +294,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Created Date
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {formatDateDMY(orderDetails?.createdAt)}
                   </span>
                 </div>
@@ -303,7 +302,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Expected Delivery Date:
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {formatDateDMY(orderDetails?.expectedDeliveryDate)}
                   </span>
                 </div>
@@ -313,11 +312,11 @@ export default function OrderDetailsForm({ id }) {
 
           <div className="mt-4">
             {/* tooth selection  */}
-            <div className="border border-gray-200 rounded-lg p-4">
-              <p className="text-sm font-normal font-poppins text-primaryText mb-4">
+            <div className="border border-gray-200 rounded-lg ">
+              <p className="text-lg font-normal font-poppins border-b p-3 text-black mb-4">
                 Tooth Selection
               </p>
-              <div className="">
+              <div className="p-4">
                 {/* Upper 16 */}
                 <div className="flex flex-wrap gap-4 mt-4 justify-center ">
                   {Object.entries(topTeeth).map(([id, ToothComponent]) => (
@@ -330,7 +329,7 @@ export default function OrderDetailsForm({ id }) {
                           orderDetails?.selectedTooths || []
                         ).includes(Number(id))}
                       />
-                      <span className="text-sm mt-1 text-gray-600">{id}</span>
+                      <span className="text-sm mt-1 text-gray-600 capitalize">{id}</span>
                     </div>
                   ))}
                 </div>
@@ -346,7 +345,7 @@ export default function OrderDetailsForm({ id }) {
                           orderDetails?.selectedTooths || []
                         ).includes(Number(id))}
                       />
-                      <span className="text-sm text-gray-600 mt-1">{id}</span>
+                      <span className="text-sm text-gray-600 mt-1 capitalize">{id}</span>
                     </div>
                   ))}
                 </div>
@@ -362,7 +361,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Selected Smile Design:
                   </span>
-                  <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                  <span className="text-secondaryBrand capitalize text-sm font-normal font-poppins">
                     {orderDetails?.smileDesign ||
                       (orderDetails?.doctorOrderItems || []).find((item) => {
                         const t = item?.dropdown?.type || "";
@@ -375,7 +374,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Scanner Type:
                   </span>
-                  <span className="text-secondaryBrand text-sm font-normal font-poppins">
+                  <span className="text-secondaryBrand capitalize text-sm font-normal font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Scanner"
                     )?.dropdown?.name || "N/A"}
@@ -386,7 +385,7 @@ export default function OrderDetailsForm({ id }) {
           </div>
 
           <div className="mt-4">
-            <h3 className="font-normal text-base font-poppins text-primaryText mb-4">
+            <h3 className="font-normal text-lg font-poppins text-black mb-4">
               Customization Details
             </h3>
             <div className="border border-gray-200 rounded-lg">
@@ -396,7 +395,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Denture type:
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Denture"
                     )?.dropdown?.name || "N/A"}
@@ -406,7 +405,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Surgical guide:
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Surgical guide"
                     )?.dropdown?.name || "N/A"}
@@ -420,7 +419,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Smart Crown:
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Crown"
                     )?.dropdown?.name || "N/A"}
@@ -430,7 +429,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Material:
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Material"
                     )?.dropdown?.name || "N/A"}
@@ -444,7 +443,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Shade:
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {orderDetails?.doctorOrderItems
                       ?.filter((item) => item.dropdown?.type === "Shade")
                       ?.map((item) => item.dropdown?.name)
@@ -455,7 +454,7 @@ export default function OrderDetailsForm({ id }) {
                   <span className="text-secondaryText text-sm font-normal font-poppins">
                     Digital Model Type:
                   </span>
-                  <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                  <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                     {orderDetails?.doctorOrderItems?.find(
                       (item) => item.dropdown?.type === "Digital Model Type"
                     )?.dropdown?.name || "N/A"}
@@ -468,7 +467,7 @@ export default function OrderDetailsForm({ id }) {
                 <span className="text-secondaryText text-sm font-normal font-poppins">
                   Dental Lab Alliance:
                 </span>
-                <span className="text-secondaryBrand font-normal text-sm font-poppins">
+                <span className="text-secondaryBrand capitalize font-normal text-sm font-poppins">
                   {orderDetails?.doctorOrderItems?.find(
                     (item) => item.dropdown?.type === "Participating Lab"
                   )?.dropdown?.name || "N/A"}
@@ -478,7 +477,7 @@ export default function OrderDetailsForm({ id }) {
           </div>
 
           <div className="mt-4">
-            <h3 className="font-normal text-base font-poppins text-primaryText pb-4 border-b border-gray-200">
+            <h3 className="font-normal text-lg font-poppins text-black pb-4 border-b border-gray-200">
               Additional Notes
             </h3>
             <div className="pt-4">

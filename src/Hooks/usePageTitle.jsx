@@ -10,6 +10,8 @@ export default function usePageTitle() {
     "/shipped": "Shipped",
     "/delivered": "Delivered",
     "/doctor-admin/order-details": "Order Details",
+    "/doctor-admin/claim-requests": "Claim Requests",
+    "/doctor-admin/claim-requests/create": "Claim Request",
   };
 
   // Check for exact path match first

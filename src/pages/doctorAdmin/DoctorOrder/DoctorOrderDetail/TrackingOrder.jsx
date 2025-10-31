@@ -15,7 +15,7 @@ export default function TrackingOrder({ id }) {
       const day = String(date.getDate()).padStart(2, "0");
       const year = date.getFullYear();
 
-      return `${month}/${day}/${year}`;
+      return `${day}-${month}-${year}`;
     } catch (error) {
       return "-";
     }

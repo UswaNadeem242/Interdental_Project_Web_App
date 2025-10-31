@@ -83,15 +83,16 @@ export const EditDeleteDropdownMenu = ({
     };
   }, [onClose]);
 
-  // Calculate position on mount only
+  // Calculate position on mount only (based on trigger button/container, not the menu itself)
   useEffect(() => {
     const calculatePosition = () => {
       if (dropdownRef.current) {
-        const rect = dropdownRef.current.getBoundingClientRect();
+        const anchor = dropdownRef.current.parentElement || dropdownRef.current;
+        const rect = anchor.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        const dropdownHeight = 150; // Approximate height of dropdown
+        const dropdownHeight = 150; // Approx height of dropdown
         
-        // Calculate space available below and above
+        // Space relative to viewport using the trigger/anchor, not the menu
         const spaceBelow = viewportHeight - rect.bottom;
         const spaceAbove = rect.top;
         
