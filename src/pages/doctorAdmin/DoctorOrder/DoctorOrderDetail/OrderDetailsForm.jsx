@@ -84,17 +84,7 @@ export default function OrderDetailsForm({ id }) {
   const [selected, setSelected] = useState("");
   const [orderDetails, setOrderDetails] = useState(null);
   const restoration = useSelector((state) => state.restoration);
-  const toothSelections = restoration.toothSelections || [];
-  const selectedTeeth = restoration.selectedTeeth || [];
-  const patient = restoration.patient;
-  const teeth = toothSelections.reduce((acc, t) => {
-    acc[t.toothId] = t;
-    return acc;
-  }, {});
-  const doctor = restoration.doctor.reduce((acc, d) => {
-    acc[d.field] = d.value || "N/A";
-    return acc;
-  }, {});
+
   const formRef = useRef();
   // Helper: format date as DD-MM-YYYY
   const formatDateDMY = (dateString) => {
@@ -139,24 +129,7 @@ export default function OrderDetailsForm({ id }) {
     setSelected(option);
   };
 
-  const maskNamePart = (name) => {
-    if (!name?.trim()) return "Unknown";
-    const clean = name.trim();
-    return clean.charAt(0).toUpperCase() + clean.slice(1, 2).toLowerCase();
-  };
 
-  const maskNumber = (num) => {
-    if (!num) return "";
-    const str = String(num).trim();
-
-    if (str.length <= 2) return str; // too short to mask
-
-    const first = str.charAt(0);
-    const last = str.charAt(str.length - 1);
-    const middle = "*".repeat(str.length - 2);
-
-    return first + middle + last;
-  };
 
   const handleDownloadPDF = async () => {
     const element = formRef.current;

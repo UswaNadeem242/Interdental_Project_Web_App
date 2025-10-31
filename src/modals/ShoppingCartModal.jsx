@@ -90,7 +90,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
           await getCart();
           // Update cart count in header
           fetchCartCount();
-          fetchUnreadNotificationsCount();
+          fetchUnreadNotificationsCount(true); // Force refresh after checkout
         } catch (refreshError) {
           console.log(
             "Failed to refresh cart from server, clearing locally:",
