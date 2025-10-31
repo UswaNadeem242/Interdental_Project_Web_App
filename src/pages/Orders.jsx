@@ -39,7 +39,7 @@ const Orders = () => {
     orders.filter((order) => {
       if (tabs[selectedIndex] === "All") return true;
       if (tabs[selectedIndex] === "Shipped")
-        return order.orderStatus === "SHIPED";
+        return order.orderStatus === "SHIPPED";
       if (tabs[selectedIndex] === "Completed")
         return order.orderStatus === "COMPLETED";
 
@@ -111,12 +111,12 @@ const Orders = () => {
                       <div className="flex-1 flex flex-col justify-center space-y-1">
                         <div className="inline-flex w-fit py-1 px-2 rounded-full bg-blue-50">
                           <p className="font-poppins text-[10px] text-blue-600">
-                            {order?.orderStatus === "SHIPED"
+                            {order?.orderStatus === "SHIPPED"
                               ? "SHIPPED"
                               : order?.orderStatus === "PENDING"
                                 ? "PENDING"
-                                : order?.orderStatus === "DELIVERD" &&
-                                "DELIVERD"}
+                                : order?.orderStatus === "DELIVERED" &&
+                                "DELIVERED"}
                           </p>
                         </div>
                         <p className="font-poppins font-semibold text-sm text-[#434343] line-clamp-1">

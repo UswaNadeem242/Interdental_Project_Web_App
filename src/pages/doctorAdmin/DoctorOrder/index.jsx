@@ -128,7 +128,7 @@ const OrderDoctorPage = () => {
       content: (
         <TableComponent
           headings={headingsOrder}
-          data={getFilteredDataByStatus("shiped")}
+          data={getFilteredDataByStatus("shipped")}
           actionHrefKey="detailUrl"
         />
       ),
@@ -138,7 +138,7 @@ const OrderDoctorPage = () => {
       content: (
         <TableComponent
           headings={headingsOrder}
-          data={getFilteredDataByStatus("deliverd")}
+          data={getFilteredDataByStatus("delivered")}
           actionHrefKey="detailUrl"
         />
       ),

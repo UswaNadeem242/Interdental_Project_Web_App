@@ -29,7 +29,7 @@ const Orders = () => {
           },
         },
       );
-      setOrders(response.data); 
+      setOrders(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +49,7 @@ const Orders = () => {
           },
         },
       );
-       setTrackingData(response.data);
+      setTrackingData(response.data);
     }
     catch (error) {
       console.log(error);
@@ -130,25 +130,23 @@ const Orders = () => {
                             </div>
                             <button
                               onClick={() => {
-                                if (orders?.orderStatus === "DELIVERD") {
+                                if (orders?.orderStatus === "DELIVERED") {
                                   setSelectedProduct(order);
                                   setIsViewReview(false);
                                   SetIsFeedbackOpen(true);
                                   setSelectedProductId(order.productId);
                                 }
                               }}
-                              disabled={orders?.orderStatus !== "DELIVERD"}
-                              className={`flex justify-center items-center w-[113px] h-[32px] rounded-[33px] border-[1px] py-[4px] px-[8px] transition-colors flex-shrink-0 ${
-                                orders?.orderStatus === "DELIVERD"
+                              disabled={orders?.orderStatus !== "DELIVERED"}
+                              className={`flex justify-center items-center w-[113px] h-[32px] rounded-[33px] border-[1px] py-[4px] px-[8px] transition-colors flex-shrink-0 ${orders?.orderStatus === "DELIVERED"
                                   ? "border-[#F69B26] bg-[#F69B261A] cursor-pointer hover:bg-[#F69B2630]"
                                   : "border-[#DDDDDD] bg-[#F5F5F5] cursor-not-allowed"
-                              }`}
+                                }`}
                             >
-                              <p className={`font-poppins font-normal text-[10px] leading-[15px] ${
-                                orders?.orderStatus === "DELIVERD" 
-                                  ? "text-[#F69B26]" 
+                              <p className={`font-poppins font-normal text-[10px] leading-[15px] ${orders?.orderStatus === "DELIVERED"
+                                  ? "text-[#F69B26]"
                                   : "text-[#999999]"
-                              }`}>
+                                }`}>
                                 Leave Review
                               </p>
                             </button>
@@ -172,7 +170,7 @@ const Orders = () => {
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="font-poppins font-normal text-[14px] leading-[21px] text-[#434343]">
-                    Shipping 
+                    Shipping
                   </p>
                   <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#434343]">
                     free
@@ -268,43 +266,42 @@ const Orders = () => {
                 Order Status
               </h1>
               <div className="border-[1px] border-[#E5E7EB] w-full"></div>
-              
+
               {/* Progress Bar and Labels Container */}
               <div className="flex w-full py-[16px] px-[8px]">
                 {/* Order Placed (BOOKED) */}
                 <div className="flex flex-col items-start gap-[12px] flex-1">
                   <div className="flex items-center w-full">
-                    <Icons.OrderCheckIcon 
+                    <Icons.OrderCheckIcon
                       fill={
-                        orders?.orderStatus === "BOOKED" || 
-                        orders?.orderStatus === "PENDING" ||
-                        orders?.orderStatus === "SHIPED" ||
-                        orders?.orderStatus === "DELIVERD"
-                          ? "#7DD3DD" 
+                        orders?.orderStatus === "BOOKED" ||
+                          orders?.orderStatus === "PENDING" ||
+                          orders?.orderStatus === "SHIPPED" ||
+                          orders?.orderStatus === "DELIVERED"
+                          ? "#7DD3DD"
                           : "#DDDDDD"
-                      } 
+                      }
                     />
-                    <div 
-                      className={`flex-1 h-[2px] mx-[8px] ${
-                        orders?.orderStatus === "BOOKED" || 
-                        orders?.orderStatus === "PENDING" ||
-                        orders?.orderStatus === "SHIPED" ||
-                        orders?.orderStatus === "DELIVERD"
-                          ? "bg-[#7DD3DD]" 
+                    <div
+                      className={`flex-1 h-[2px] mx-[8px] ${orders?.orderStatus === "BOOKED" ||
+                          orders?.orderStatus === "PENDING" ||
+                          orders?.orderStatus === "SHIPPED" ||
+                          orders?.orderStatus === "DELIVERED"
+                          ? "bg-[#7DD3DD]"
                           : "bg-[#DDDDDD]"
-                      }`}
+                        }`}
                     ></div>
                   </div>
                   <div className="flex items-start gap-[8px]">
-                    <Icons.OrderPending 
+                    <Icons.OrderPending
                       fill={
-                        orders?.orderStatus === "BOOKED" || 
-                        orders?.orderStatus === "PENDING" ||
-                        orders?.orderStatus === "SHIPED" ||
-                        orders?.orderStatus === "DELIVERD"
-                          ? "#7DD3DD" 
+                        orders?.orderStatus === "BOOKED" ||
+                          orders?.orderStatus === "PENDING" ||
+                          orders?.orderStatus === "SHIPPED" ||
+                          orders?.orderStatus === "DELIVERED"
+                          ? "#7DD3DD"
                           : "#DDDDDD"
-                      } 
+                      }
                     />
                     <div className="flex flex-col space-y-[2px]">
                       <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
@@ -317,33 +314,32 @@ const Orders = () => {
                 {/* In Progress (PENDING) */}
                 <div className="flex flex-col items-start gap-[12px] flex-1">
                   <div className="flex items-center w-full">
-                    <Icons.OrderCheckIcon 
+                    <Icons.OrderCheckIcon
                       fill={
                         orders?.orderStatus === "PENDING" ||
-                        orders?.orderStatus === "SHIPED" ||
-                        orders?.orderStatus === "DELIVERD"
-                          ? "#7DD3DD" 
+                          orders?.orderStatus === "SHIPPED" ||
+                          orders?.orderStatus === "DELIVERED"
+                          ? "#7DD3DD"
                           : "#DDDDDD"
-                      } 
+                      }
                     />
-                    <div 
-                      className={`flex-1 h-[2px] mx-[8px] ${
-                        orders?.orderStatus === "SHIPED" ||
-                        orders?.orderStatus === "DELIVERD"
-                          ? "bg-[#001D58]" 
+                    <div
+                      className={`flex-1 h-[2px] mx-[8px] ${orders?.orderStatus === "SHIPPED" ||
+                          orders?.orderStatus === "DELIVERED"
+                          ? "bg-[#001D58]"
                           : "bg-[#DDDDDD]"
-                      }`}
+                        }`}
                     ></div>
                   </div>
                   <div className="flex items-start gap-[8px]">
-                    <Icons.OrderInProgress 
+                    <Icons.OrderInProgress
                       stroke={
                         orders?.orderStatus === "PENDING" ||
-                        orders?.orderStatus === "SHIPED" ||
-                        orders?.orderStatus === "DELIVERD"
-                          ? "#7DD3DD" 
+                          orders?.orderStatus === "SHIPPED" ||
+                          orders?.orderStatus === "DELIVERED"
+                          ? "#7DD3DD"
                           : "#DDDDDD"
-                      } 
+                      }
                     />
                     <div className="flex flex-col space-y-[2px]">
                       <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">
@@ -353,37 +349,36 @@ const Orders = () => {
                   </div>
                 </div>
 
-                {/* Shipped (SHIPED) */}
+                {/* Shipped (SHIPPED) */}
                 <div className="flex flex-col items-start gap-[12px] flex-1">
                   <div className="flex items-center w-full">
-                    <Icons.OrderCheckIcon 
+                    <Icons.OrderCheckIcon
                       fill={
-                        orders?.orderStatus === "SHIPED" ||
-                        orders?.orderStatus === "DELIVERD"
-                          ? "#001D58" 
+                        orders?.orderStatus === "SHIPPED" ||
+                          orders?.orderStatus === "DELIVERED"
+                          ? "#001D58"
                           : "#DDDDDD"
-                      } 
+                      }
                     />
-                    <div 
-                      className={`flex-1 h-[2px] mx-[8px] ${
-                        orders?.orderStatus === "DELIVERD"
-                          ? "bg-[#001D58]" 
+                    <div
+                      className={`flex-1 h-[2px] mx-[8px] ${orders?.orderStatus === "DELIVERED"
+                          ? "bg-[#001D58]"
                           : "bg-[#DDDDDD]"
-                      }`}
+                        }`}
                     ></div>
                   </div>
                   <div className="flex items-start gap-[8px]">
-                    <Icons.OrderShipped 
+                    <Icons.OrderShipped
                       fill={
-                        orders?.orderStatus === "SHIPED" ||
-                        orders?.orderStatus === "DELIVERD"
-                          ? "#001D58" 
+                        orders?.orderStatus === "SHIPPED" ||
+                          orders?.orderStatus === "DELIVERED"
+                          ? "#001D58"
                           : "#DDDDDD"
                       }
                       stroke={
-                        orders?.orderStatus === "SHIPED" ||
-                        orders?.orderStatus === "DELIVERD"
-                          ? "#001D58" 
+                        orders?.orderStatus === "SHIPPED" ||
+                          orders?.orderStatus === "DELIVERED"
+                          ? "#001D58"
                           : "#DDDDDD"
                       }
                     />
@@ -395,24 +390,24 @@ const Orders = () => {
                   </div>
                 </div>
 
-                {/* Delivered (DELIVERD) */}
+                {/* Delivered (''DELIVERED'') */}
                 <div className="flex flex-col items-start gap-[12px]">
                   <div className="flex items-center">
-                    <Icons.OrderCheckIcon 
+                    <Icons.OrderCheckIcon
                       fill={
-                        orders?.orderStatus === "DELIVERD"
-                          ? "#001D58" 
+                        orders?.orderStatus === "DELIVERED"
+                          ? "#001D58"
                           : "#DDDDDD"
-                      } 
+                      }
                     />
                   </div>
                   <div className="flex items-start gap-[8px]">
-                    <Icons.OrderDelivered 
+                    <Icons.OrderDelivered
                       fill={
-                        orders?.orderStatus === "DELIVERD"
-                          ? "#001D58" 
+                        orders?.orderStatus === "DELIVERED"
+                          ? "#001D58"
                           : "#DDDDDD"
-                      } 
+                      }
                     />
                     <div className="flex flex-col space-y-[2px]">
                       <p className="font-poppins font-semibold text-[14px] leading-[21px] text-[#393A44]">

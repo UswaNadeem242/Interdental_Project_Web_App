@@ -45,8 +45,8 @@ const Orders = () => {
           if (!order) return false; // Skip null/undefined orders
           if (selectedIndex === 0) return true; // All
           if (selectedIndex === 1) return order.orderStatus === "PENDING";
-          if (selectedIndex === 2) return order.orderStatus === "SHIPED";
-          if (selectedIndex === 3) return order.orderStatus === "DELIVERD";
+          if (selectedIndex === 2) return order.orderStatus === "SHIPPED";
+          if (selectedIndex === 3) return order.orderStatus === "DELIVERED";
           return true;
         })
         // 2️⃣ Search filter
