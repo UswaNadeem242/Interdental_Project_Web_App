@@ -67,7 +67,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
       setLoading(false);
       setLoadingMore(false);
     }
-  }, []);
+  }, [currentPageNumber]);
 
 
   const markAsRead = useCallback(
@@ -92,12 +92,12 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
           )
         );
 
-        fetchUnreadNotificationsCount();
+        fetchUnreadNotificationsCount(true); // Force refresh after marking as read
       } catch (_) {
         // no-op UI error; keep dropdown usable
       }
     },
-    []
+    [fetchUnreadNotificationsCount]
   );
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
       setCurrentPageNumber(0); // Reset page number when dropdown opens
       fetchNotifications(0, false);
     }
-  }, [notificationsDropdown]);
+  }, [notificationsDropdown, fetchNotifications]);
 
 
   return (

@@ -58,12 +58,17 @@ const DoctorHeader = ({ title, subTitle, role }) => {
     }
   }, []);
 
-  // Fetch notifications count when component mounts
+  // Fetch notifications count when component mounts (only for doctors)
   useEffect(() => {
     if (user) {
-      fetchUnreadNotificationsCount();
+      // Only fetch once on mount, don't refetch on user changes (AuthContext handles that)
+      const userData = localStorage.getItem("users");
+      if (userData) {
+        fetchUnreadNotificationsCount();
+      }
     }
-  }, [user, fetchUnreadNotificationsCount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty deps - only run once on mount
   const handleNotifications = () => {
     if (user) {
       setNotificationsDropdown(!notificationsDropdown);

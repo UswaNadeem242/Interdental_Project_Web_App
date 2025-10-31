@@ -48,6 +48,10 @@ const Header = () => {
 
   useEffect(() => {
     if (user) {
+      // Don't fetch cart/wishlist/notifications for doctors (they have their own dashboard)
+      if (user?.roles?.[0] === "DOCTOR") {
+        return;
+      }
       fetchWishlistCount();
       fetchCartCount();
       fetchUnreadNotificationsCount();
