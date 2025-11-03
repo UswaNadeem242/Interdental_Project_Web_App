@@ -14,6 +14,7 @@ import ClaimDetailAdminPanel from "./admin-claim-request/claim-detail-form";
 import ProfileInfoAdminPanel from "./admin-profile-info";
 import BlogAndArticles from "./blogs-and-articles";
 import BlogsDetailPage from "./blogs-and-articles/blogs-detail";
+import DropDownAdminPanel from "./drop-downs";
 
 const AdminPanel = () => {
   return (
@@ -35,6 +36,7 @@ const AdminPanel = () => {
         <Route path="/profile-info" element={<ProfileInfoAdminPanel />} />
         <Route path="/blogs-and-articles" element={<BlogAndArticles />} />
         <Route path="/blogs-detail" element={<BlogsDetailPage />} />
+        <Route path="/drop-downs" element={<DropDownAdminPanel />} />
 
         {/* // <Route path="/patient" element={<PatientPage />} />
         // <Route path="/claim-request" element={<ClaimRequest />} />

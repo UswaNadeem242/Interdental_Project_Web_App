@@ -1,4 +1,7 @@
 import { DashboardIcon } from "../icon/dashboard";
+
+// import { ChevronDownIcon } from "@heroicons/react/24/outline";
+
 import { OrderIcon } from "../icon/OrderIcon";
 import { PatienIcon } from "../icon/PatienIcon";
 import { ClaimIcon } from "../icon/claimIcon";
@@ -9,6 +12,7 @@ import UserProfileIcon from "../icon/UserProfileIcon";
 import { DoctorIcon } from "../icon/DoctorIcon";
 import { Crown } from "../icon/Crown";
 import { Revenue } from "../icon/Revenue";
+import ChevronDownIcon from "../icon/ChevronDownIcon";
 export const MATERIAL_OPTIONS = [
   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
   { value: "argen-ht", label: "Argen HT", price: 45 },
@@ -135,6 +139,12 @@ export const menuAdminPanelItem = [
     path: "/admin-panel/blogs-and-articles",
     icon: DashboardIcon,
   },
+  {
+    name: "Drop Downs",
+    path: "/admin-panel/drop-downs",
+    icon: ChevronDownIcon,
+  },
+
   // {
   //   name: "Order Detail",
   //   path: "/admin-panel/order-detail",
