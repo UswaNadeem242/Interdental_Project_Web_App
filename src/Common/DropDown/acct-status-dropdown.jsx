@@ -1,0 +1,189 @@
+import { useEffect, useRef, useState } from "react";
+import DeleteIcon from "../../icon/deleteIcon";
+import { EyeOpenIcon } from "../../icon/EyeIcon";
+import PenIcon from "../../icon/PenIcon";
+import { useNavigate } from "react-router-dom";
+import Activate from "../../icon/Activate";
+import DeActivate from "../../icon/DeActivate";
+
+export const AcctStatusDropDown = ({
+  onEdit,
+  onDelete,
+  onClose,
+  OnViewDetail2,
+  row,
+}) => {
+  const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+  const [dropdownPosition, setDropdownPosition] = useState("bottom");
+  const [isPositioned, setIsPositioned] = useState(false);
+
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    const originalTouchAction = document.body.style.touchAction;
+
+    // Prevent scroll (desktop + mobile)
+    document.body.style.overflow = "hidden"; // desktop
+    document.body.style.touchAction = "none"; // iOS/Android
+
+    // Block wheel/touch/keyboard scrolling
+    const preventDefault = (e) => {
+      e.preventDefault();
+    };
+    const preventKeys = (e) => {
+      const keys = [
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "Space",
+        "PageUp",
+        "PageDown",
+        "Home",
+        "End",
+      ];
+      if (keys.includes(e.code) || keys.includes(e.key)) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("wheel", preventDefault, { passive: false });
+    window.addEventListener("touchmove", preventDefault, { passive: false });
+    window.addEventListener("keydown", preventKeys, { passive: false });
+
+    return () => {
+      // Restore
+      document.body.style.overflow = originalOverflow;
+      document.body.style.touchAction = originalTouchAction;
+      window.removeEventListener("wheel", preventDefault, { passive: false });
+      window.removeEventListener("touchmove", preventDefault, {
+        passive: false,
+      });
+      window.removeEventListener("keydown", preventKeys, { passive: false });
+    };
+  }, []);
+
+  // Handle outside click detection similar to NotificationsDropdown
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      // Don't close if clicking on the options button (three dots)
+      const optionsButton = event.target.closest("button");
+      if (optionsButton && optionsButton.querySelector("svg")) {
+        // Check if it's the options dots button by looking for the svg
+        return;
+      }
+
+      // Close if clicking outside the dropdown
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    // Add event listener with a small delay to prevent immediate closing
+    const timeoutId = setTimeout(() => {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [onClose]);
+
+  // Calculate position on mount only (based on trigger button/container, not the menu itself)
+  useEffect(() => {
+    const calculatePosition = () => {
+      if (dropdownRef.current) {
+        const anchor = dropdownRef.current.parentElement || dropdownRef.current;
+        const rect = anchor.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const dropdownHeight = 150; // Approx height of dropdown
+
+        // Space relative to viewport using the trigger/anchor, not the menu
+        const spaceBelow = viewportHeight - rect.bottom;
+        const spaceAbove = rect.top;
+
+        // Position above if not enough space below AND there's more space above
+        if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
+          setDropdownPosition("top");
+        } else {
+          setDropdownPosition("bottom");
+        }
+
+        // Mark as positioned to make visible
+        setIsPositioned(true);
+      }
+    };
+
+    // Small delay to ensure dropdown is rendered
+    const timer = setTimeout(calculatePosition, 10);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleEdit = () => {
+    onEdit();
+    onClose(); // ✅ close dropdown after edit click
+  };
+
+  const handleDelete = () => {
+    onDelete();
+    onClose(); // ✅ close dropdown after delete click
+  };
+
+  const handleViewDetail = () => {
+    OnViewDetail2();
+    onClose(); // ✅ close dropdown after delete click
+  };
+
+  return (
+    <div
+      ref={dropdownRef}
+      onClick={(e) => e.stopPropagation()}
+      className={`absolute right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50 transition-opacity duration-150 ${
+        dropdownPosition === "top" ? "bottom-full mb-1" : "top-full mt-1"
+      } ${isPositioned ? "opacity-100" : "opacity-0"}`}
+    >
+      <ul className="py-1 text-sm text-gray-700 font-poppins">
+        <li
+          //   onClick={handleViewDetail}
+          onClick={() => navigate("/admin-panel/doctor-detail")}
+          className="px-4 py-2 text-xs font-poppins capitalize font-normal hover:bg-background cursor-pointer flex items-center gap-2"
+        >
+          <span>
+            <EyeOpenIcon />
+          </span>
+          <span className="whitespace-nowrap">View Details</span>
+        </li>
+        <li
+          //   onClick={handleEdit}
+          className="px-4 py-2 text-xs font-poppins capitalize font-normal hover:bg-background cursor-pointer flex items-center "
+        >
+          <span>{/* <PenIcon /> */}</span>{" "}
+          {row.status === "active" ? (
+            <div className="flex items-center">
+              <DeActivate />
+              <p className="whitespace-nowrap ml-3 text-[#D4BE17]">
+                Deactivate account
+              </p>
+            </div>
+          ) : (
+            <div className="flex items-center">
+              <Activate />
+              <p className="whitespace-nowrap ml-3 text-[#1E7C79]">Active</p>
+            </div>
+          )}
+        </li>
+        {/* <li
+          onClick={handleDelete}
+          className="px-4 py-2 hover:bg-background cursor-pointer text-red-500 flex items-center gap-4"
+        >
+          <span>
+            <DeleteIcon />
+          </span>
+          Delete
+        </li> */}
+      </ul>
+    </div>
+  );
+};

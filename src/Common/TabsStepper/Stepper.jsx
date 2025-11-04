@@ -34,7 +34,7 @@ export default function Stepper({ steps, className, selectedColor }) {
    focus:outline-none transition-colors duration-200 font-poppins capitalize 
    ${
      selected
-       ? `text-primary font-bold ${selectedColor}`
+       ? `text-primary font-bold ${selectedColor} bg-[#FFFFFF]`
        : "text-primary font-normal text-[#949494]"
    }`
                 }

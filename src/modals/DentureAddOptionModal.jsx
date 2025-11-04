@@ -214,11 +214,11 @@ export const SmileDesignAddModal = ({
           placeholder="Enter Name"
           className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-6 focus:outline-none  placeholder:font-normal placeholder:text-sm "
         />
-        <input
+        {/* <input
           type="text"
           placeholder="Enter Price"
           className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-6 focus:outline-none  placeholder:font-normal placeholder:text-sm "
-        />
+        /> */}
 
         {/* Add button */}
         <button className="w-full text-sm bg-[#001F54] text-[#F8F8F8] py-3 rounded-full font-semibold hover:bg-[#002B70] transition">

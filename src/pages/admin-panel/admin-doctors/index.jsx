@@ -11,11 +11,20 @@ import SearchBar from "../../../Common/SearchBar";
 import TabsStepper from "../../../Common/TabsStepper";
 import SecondTable from "../../../Common/second-table-component";
 import OptionsDots from "../../../icon/options-dots";
+import { EditDeleteDropdownMenu } from "../../../Common/DropDown/edit-delete";
+import { AcctStatusDropDown } from "../../../Common/DropDown/acct-status-dropdown";
 
 const DoctorsAdminPanel = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [showDetail, setShowDetail] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
+
+  const handleOpenViewDetail = (rowData) => {
+    setSelectedData(rowData);
+    setShowDetail(true);
+  };
 
   const filteredData = useMemo(() => {
     let filtered = dataDoctors;
@@ -46,22 +55,14 @@ const DoctorsAdminPanel = () => {
         <SecondTable
           headings={headingsAdminPanelTable}
           data={filteredData}
-          actionButton="active"
+          DropdownComponent2={AcctStatusDropDown}
+          OnViewDetail2={handleOpenViewDetail}
+          actionButton2="active"
         />
       ),
     },
     {
-      name: "New",
-      content: (
-        <SecondTable
-          headings={headingsAdminPanelTable}
-          data={filteredData}
-          actionButton="active"
-        />
-      ),
-    },
-    {
-      name: "Disabled",
+      name: "Active",
       content: (
         <SecondTable
           headings={headingsAdminPanelTable}
@@ -72,6 +73,16 @@ const DoctorsAdminPanel = () => {
     },
     {
       name: "Deactivated",
+      content: (
+        <SecondTable
+          headings={headingsAdminPanelTable}
+          data={filteredData}
+          actionButton="active"
+        />
+      ),
+    },
+    {
+      name: "Expired",
       content: (
         <SecondTable
           headings={headingsAdminPanelTable}
