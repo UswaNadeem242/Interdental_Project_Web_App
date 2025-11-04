@@ -67,7 +67,9 @@ const DoctorsAdminPanel = () => {
         <SecondTable
           headings={headingsAdminPanelTable}
           data={filteredData}
-          actionButton="active"
+          DropdownComponent2={AcctStatusDropDown}
+          OnViewDetail2={handleOpenViewDetail}
+          actionButton2="active"
         />
       ),
     },
@@ -77,7 +79,9 @@ const DoctorsAdminPanel = () => {
         <SecondTable
           headings={headingsAdminPanelTable}
           data={filteredData}
-          actionButton="active"
+          DropdownComponent2={AcctStatusDropDown}
+          OnViewDetail2={handleOpenViewDetail}
+          actionButton2="active"
         />
       ),
     },
@@ -87,7 +91,9 @@ const DoctorsAdminPanel = () => {
         <SecondTable
           headings={headingsAdminPanelTable}
           data={filteredData}
-          actionButton="active"
+          DropdownComponent2={AcctStatusDropDown}
+          OnViewDetail2={handleOpenViewDetail}
+          actionButton2="active"
         />
       ),
     },
