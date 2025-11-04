@@ -12,10 +12,13 @@ export default function SecondTable({
   actionHrefKey,
   onActionClick,
   actionButton,
+  actionButton2,
   DropdownComponent,
+  DropdownComponent2,
   onEdit,
   onDelete,
   OnViewDetail,
+  OnViewDetail2,
   loading = false,
   // Backend pagination props
   currentPage = 1,
@@ -73,7 +76,7 @@ export default function SecondTable({
       ) : (
         <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-300px)] scrollbar-hidden">
           <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
-            <thead className="sticky top-0 bg-[#F8F8F8] z-10 ">
+            <thead className="sticky top-0 border-b-2 z-10  ">
               <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
                 {headings.map((col, idx) => (
                   <th
@@ -269,13 +272,7 @@ export default function SecondTable({
                       )}
                     </td>
                   ))}
-                  {/* {actionButton && (
-                  <td className="px-4 py-2 text-right">
-                    <button onClick={() => setOpen((prev) => !prev)}>
-                      <OptionsDots />
-                    </button>
-                  </td>
-                )} */}
+
                   {actionButton && (
                     <td className="px-4 py-2 text-right relative">
                       <button
@@ -295,6 +292,31 @@ export default function SecondTable({
                           onEdit={() => onEdit(row)} // ✅ pass this row's data
                           onDelete={() => onDelete(row)}
                           OnViewDetail={() => OnViewDetail(row)}
+                        />
+                      )}
+                    </td>
+                  )}
+
+                  {/* Admin Panel Option Dots */}
+                  {actionButton2 && (
+                    <td className="px-4 py-2 text-right relative">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpen((prev) => (prev === idx ? null : idx));
+                        }}
+                        className="p-2"
+                      >
+                        <OptionsDots />
+                      </button>
+
+                      {open === idx && DropdownComponent2 && (
+                        <DropdownComponent2
+                          row={row}
+                          onClose={() => setOpen(null)}
+                          onEdit={() => onEdit(row)} // ✅ pass this row's data
+                          onDelete={() => onDelete(row)}
+                          OnViewDetail2={() => OnViewDetail2(row)}
                         />
                       )}
                     </td>

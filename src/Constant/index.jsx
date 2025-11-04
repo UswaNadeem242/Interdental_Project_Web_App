@@ -99,11 +99,7 @@ export const menuAdminPanelItem = [
     path: "/admin-panel/doctors",
     icon: DashboardIcon,
   },
-  {
-    name: "Doctor Detail",
-    path: "/admin-panel/doctor-detail",
-    icon: DashboardIcon,
-  },
+
   {
     name: "Orders",
     path: "/admin-panel/orders",
@@ -411,8 +407,8 @@ export const data = [
 export const headings = [
   { label: "Claim ID", key: "id" },
   { label: "Patient Name", key: "name" },
-  { label: "Status", key: "status" },
   { label: "Submission Date", key: "submission" },
+  { label: "Status", key: "status" },
   { label: "Action", key: "action" },
 ];
 
@@ -1115,7 +1111,7 @@ export const headingsAdminPanelTable = [
   { label: "Name", key: "name" },
   { label: "Email", key: "email" },
   { label: "Phone Number ", key: "phoneNumber" },
-  { label: "Address", key: "address" },
+
   { label: "License Number", key: "licenseNum" },
   { label: "Account Status", key: "status" },
   { label: "Sub status", key: "subStatus" },
@@ -1126,7 +1122,7 @@ export const dataDoctors = [
     name: "Jon Doe",
     email: "JonDoe@gmail.com",
     phoneNumber: "0356 7656789",
-    address: "207 Stillwater Lane",
+
     licenseNum: "456 567 43235",
     status: "deactivated",
     subStatus: "expired",
@@ -1136,7 +1132,7 @@ export const dataDoctors = [
     name: "Jon Doe",
     email: "JonDoe@gmail.com",
     phoneNumber: "0356 7656789",
-    address: "207 Stillwater Lane",
+
     licenseNum: "456 567 43235",
     status: "active",
     subStatus: "expired",
@@ -1146,7 +1142,7 @@ export const dataDoctors = [
     name: "Jon Doe",
     email: "JonDoe@gmail.com",
     phoneNumber: "0356 7656789",
-    address: "207 Stillwater Lane",
+
     licenseNum: "456 567 43235",
     status: "active",
     subStatus: "expired",

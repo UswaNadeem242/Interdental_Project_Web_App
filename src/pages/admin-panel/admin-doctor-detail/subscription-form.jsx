@@ -2,8 +2,8 @@ import React from "react";
 
 function SubscriptionForm({ title, para, text, number }) {
   return (
-    <div className="col-span-4 mt-8">
-      <div className="bg-card p-4 rounded-2xl">
+    <div className="col-span-4 ">
+      <div className="bg-card p-4 rounded-2xl pb-8 pt-6">
         <p className="text-black font-poppins font-semibold text-sm ">
           {title}
           <p className="text-xs font-poppins font-medium  pt-6 text-primaryText">
@@ -25,7 +25,9 @@ function SubscriptionForm({ title, para, text, number }) {
           <span className="text-xs text-primaryText font-poppins font-normal">
             {text}
           </span>
-          <span className="text-xs font-medium text-secondaryBrand">{number}</span>
+          <span className="text-xs font-medium text-secondaryBrand">
+            {number}
+          </span>
         </div>
       </div>
     </div>
