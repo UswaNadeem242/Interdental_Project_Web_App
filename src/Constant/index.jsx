@@ -407,8 +407,8 @@ export const data = [
 export const headings = [
   { label: "Claim ID", key: "id" },
   { label: "Patient Name", key: "name" },
-  { label: "Status", key: "status" },
   { label: "Submission Date", key: "submission" },
+  { label: "Status", key: "status" },
   { label: "Action", key: "action" },
 ];
 
