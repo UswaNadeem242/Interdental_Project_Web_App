@@ -1,22 +1,22 @@
 import React from "react";
 
-function SubscriptionForm({ title, para, text, number }) {
+function SubscriptionForm({ title, para, text, number, percentage = 65 }) {
   return (
     <div className="col-span-4 ">
       <div className="bg-card p-4 rounded-2xl pb-8 pt-6">
         <p className="text-black font-poppins font-semibold text-sm ">
           {title}
-          <p className="text-xs font-poppins font-medium  pt-6 text-primaryText">
+          <p className="text-xs font-poppins font-medium pt-6 text-primaryText">
             {para}
           </p>
         </p>
 
-        <div className=" pt-3 pb-3 pr-5">
+        <div className="pt-3 pb-3 pr-5">
           <div className="pb-4">
-            <div className="w-full px-1 py-1  bg-bgWhite rounded-full  ">
+            <div className="w-full px-1 py-1 bg-bgWhite rounded-full">
               <div
-                className="bg-secondaryBrand h-2.5 rounded-full "
-                style={{ width: `65%` }}
+                className="bg-secondaryBrand h-2.5 rounded-full"
+                style={{ width: `${Math.min(percentage, 100)}%` }}
               ></div>
             </div>
           </div>

@@ -1,19 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import DeleteIcon from "../../icon/deleteIcon";
-import { EyeOpenIcon } from "../../icon/EyeIcon";
-import PenIcon from "../../icon/PenIcon";
-import { useNavigate } from "react-router-dom";
-import Activate from "../../icon/Activate";
-import DeActivate from "../../icon/DeActivate";
 
-export const AcctStatusDropDown = ({
-  onEdit,
-  onDelete,
+/**
+ * Base dropdown component for action menus
+ * @param {Object} props
+ * @param {Array} props.actionMenuItems - Array of action menu items
+ * @param {Object} props.rowData - The row data item
+ * @param {function} props.onClose - Close handler
+ */
+export const ActionMenuDropdown = ({
+  actionMenuItems = [],
+  rowData,
   onClose,
-  OnViewDetail2,
-  row,
 }) => {
-  const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const [dropdownPosition, setDropdownPosition] = useState("bottom");
   const [isPositioned, setIsPositioned] = useState(false);
@@ -97,7 +95,11 @@ export const AcctStatusDropDown = ({
         const anchor = dropdownRef.current.parentElement || dropdownRef.current;
         const rect = anchor.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        const dropdownHeight = 150; // Approx height of dropdown
+        
+        // Calculate approximate dropdown height based on number of items
+        // Each item is approximately 40px (py-2 = 8px top + 8px bottom + ~24px content)
+        const itemHeight = 40;
+        const dropdownHeight = actionMenuItems.length * itemHeight + 16; // +16 for padding
 
         // Space relative to viewport using the trigger/anchor, not the menu
         const spaceBelow = viewportHeight - rect.bottom;
@@ -119,71 +121,73 @@ export const AcctStatusDropDown = ({
     const timer = setTimeout(calculatePosition, 10);
 
     return () => clearTimeout(timer);
-  }, []);
-
-  const handleEdit = () => {
-    onEdit();
-    onClose(); // ✅ close dropdown after edit click
-  };
-
-  const handleDelete = () => {
-    onDelete();
-    onClose(); // ✅ close dropdown after delete click
-  };
-
-  const handleViewDetail = () => {
-    OnViewDetail2();
-    onClose(); // ✅ close dropdown after delete click
-  };
+  }, [actionMenuItems.length]);
 
   return (
     <div
       ref={dropdownRef}
       onClick={(e) => e.stopPropagation()}
-      className={`absolute right-0 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50 transition-opacity duration-150 ${
+      className={`absolute right-0 min-w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50 transition-opacity duration-150 ${
         dropdownPosition === "top" ? "bottom-full mb-1" : "top-full mt-1"
       } ${isPositioned ? "opacity-100" : "opacity-0"}`}
     >
       <ul className="py-1 text-sm text-gray-700 font-poppins">
-        <li
-          //   onClick={handleViewDetail}
-          onClick={() => navigate("/admin-panel/doctor-detail")}
-          className="px-4 py-2 text-xs font-poppins capitalize font-normal hover:bg-background cursor-pointer flex items-center gap-2"
-        >
-          <span>
-            <EyeOpenIcon />
-          </span>
-          <span className="whitespace-nowrap">View Details</span>
-        </li>
-        <li
-          //   onClick={handleEdit}
-          className="px-4 py-2 text-xs font-poppins capitalize font-normal hover:bg-background cursor-pointer flex items-center "
-        >
-          <span>{/* <PenIcon /> */}</span>{" "}
-          {row.status === "active" ? (
-            <div className="flex items-center">
-              <DeActivate />
-              <p className="whitespace-nowrap ml-3 text-[#D4BE17]">
-                Deactivate account
-              </p>
-            </div>
-          ) : (
-            <div className="flex items-center">
-              <Activate />
-              <p className="whitespace-nowrap ml-3 text-[#1E7C79]">Active</p>
-            </div>
-          )}
-        </li>
-        {/* <li
-          onClick={handleDelete}
-          className="px-4 py-2 hover:bg-background cursor-pointer text-red-500 flex items-center gap-4"
-        >
-          <span>
-            <DeleteIcon />
-          </span>
-          Delete
-        </li> */}
+        {actionMenuItems.map((menuItem, menuIndex) => {
+          const label = typeof menuItem.label === 'function' 
+            ? menuItem.label(rowData) 
+            : menuItem.label;
+          const icon = typeof menuItem.icon === 'function'
+            ? menuItem.icon(rowData)
+            : menuItem.icon;
+          const isDisabled = typeof menuItem.disabled === 'function'
+            ? menuItem.disabled(rowData)
+            : menuItem.disabled || false;
+          const variant = typeof menuItem.variant === 'function'
+            ? menuItem.variant(rowData)
+            : menuItem.variant || "default";
+          const textColor = typeof menuItem.textColor === 'function'
+            ? menuItem.textColor(rowData)
+            : menuItem.textColor;
+          const iconColor = typeof menuItem.iconColor === 'function'
+            ? menuItem.iconColor(rowData)
+            : menuItem.iconColor;
+
+          // Determine text color class
+          let textColorClass = "text-gray-700";
+          if (textColor) {
+            textColorClass = textColor;
+          } else if (variant === "destructive") {
+            textColorClass = "text-red-500 hover:text-red-600";
+          }
+
+          // Determine icon color class (use textColor if iconColor not specified)
+          const iconColorClass = iconColor || textColorClass;
+
+          return (
+            <li
+              key={menuIndex}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isDisabled) {
+                  menuItem.onClick(rowData);
+                  onClose();
+                }
+              }}
+              className={`px-4 py-2 text-xs font-poppins capitalize font-normal hover:bg-background cursor-pointer flex items-center gap-2 ${textColorClass} ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              {icon && (
+                <span className={`flex items-center ${iconColorClass}`}>
+                  {icon}
+                </span>
+              )}
+              <span className="whitespace-nowrap">{label}</span>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
 };
+
+// Legacy export for backward compatibility
+export const AcctStatusDropDown = ActionMenuDropdown;
