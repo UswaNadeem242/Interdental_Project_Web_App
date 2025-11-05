@@ -43,58 +43,7 @@ const ProductsAdminPanel = () => {
     }
     return filtered;
   }, [searchQuery, sortOrder]);
-  //   const steps = [
-  //     {
-  //       name: "All",
-  //       content: (
-  //         <TableComponent
-  //           headings={headingsOrder}
-  //           data={filteredData}
-  //           actionHrefKey="detailUrl"
-  //         />
-  //       ),
-  //     },
-  //     {
-  //       name: "Pending",
-  //       content: (
-  //         <TableComponent
-  //           headings={headingsOrder}
-  //           data={filteredData}
-  //           actionHrefKey="detailUrl"
-  //         />
-  //       ),
-  //     },
-  //     {
-  //       name: "in Progress",
-  //       content: (
-  //         <TableComponent
-  //           headings={headings}
-  //           data={filteredData}
-  //           actionHrefKey="detailUrl"
-  //         />
-  //       ),
-  //     },
-  //     {
-  //       name: "shipped",
-  //       content: (
-  //         <TableComponent
-  //           headings={headingsOrder}
-  //           data={filteredData}
-  //           actionHrefKey="detailUrl"
-  //         />
-  //       ),
-  //     },
-  //     {
-  //       name: "completed",
-  //       content: (
-  //         <TableComponent
-  //           headings={headings}
-  //           data={filteredData}
-  //           actionHrefKey="detailUrl"
-  //         />
-  //       ),
-  //     },
-  //   ];
+
 
   return (
     <div>

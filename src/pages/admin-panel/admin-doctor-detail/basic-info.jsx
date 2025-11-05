@@ -1,60 +1,65 @@
 import React from "react";
 
-function BasicInfo() {
+function BasicInfo({ doctorData }) {
+  if (!doctorData) {
+    return (
+      <div className="mx-auto py-6 space-y-6 font-poppins">
+        <p className="text-center text-secondaryText">Loading...</p>
+      </div>
+    );
+  }
+
+  const fullName = `${doctorData.firstName || ""} ${doctorData.lastName || ""}`.trim() || "N/A";
+  const email = doctorData.email || "N/A";
+  const phone = doctorData.phoneNumber || "N/A";
+  const address = doctorData.address || "N/A";
+  const licenseNo = doctorData.drLicenseNo || doctorData.licenseNum || "N/A";
+  const officeRefNo = doctorData.officeRefNo || "N/A";
+
   return (
-    <div className=" mx-auto py-6 space-y-6 font-poppins ">
+    <div className="mx-auto py-6 space-y-6 font-poppins">
       {/* Name */}
-      <div className="p-4 border-2 border-[#0000001A] rounded-md font-poppins">
-        <p className="text-sm font-bold text-primaryText mb-1">Name</p>
-        <p className="text-secondaryText text-xs font-medium">glis bunny</p>
+      <div className="p-4 border border-[#0000001A] rounded-md font-poppins">
+        <p className="text-sm font-semibold text-primaryText mb-1">Name</p>
+        <p className="text-secondaryText text-xs font-medium">{fullName}</p>
       </div>
 
       {/* Email + Phone */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-4 border-2 border-[#0000001A] rounded-md">
-          <p className="text-sm font-bold text-primaryText mb-1">
+        <div className="p-4 border border-[#0000001A] rounded-md">
+          <p className="text-sm font-semibold text-primaryText mb-1">
             Email Address
           </p>
-          <p className="text-secondaryText text-xs font-medium">
-            glisbunnygin@gmail.com
-          </p>
+          <p className="text-secondaryText text-xs font-medium">{email}</p>
         </div>
-        <div className="p-4 border-2 border-[#0000001A] rounded-md">
-          <p className="text-sm font-bold text-primaryText mb-1">
+        <div className="p-4 border border-[#0000001A] rounded-md">
+          <p className="text-sm font-semibold text-primaryText mb-1">
             Phone Number
           </p>
-          <p className="text-secondaryText text-xs font-medium">
-            0987 635 45321
-          </p>
+          <p className="text-secondaryText text-xs font-medium">{phone}</p>
         </div>
       </div>
 
       {/* Address */}
-      <div className="p-4 border-2 border-[#0000001A] rounded-md">
-        <p className="text-sm font-bold text-primaryText mb-1">Address</p>
-        <p className="text-secondaryText text-xs font-medium">
-          2464 Royal Ln. Mesa, New Jersey 45463
-        </p>
+      <div className="p-4 border border-[#0000001A] rounded-md">
+        <p className="text-sm font-semibold text-primaryText mb-1">Address</p>
+        <p className="text-secondaryText text-xs font-medium">{address}</p>
       </div>
 
       {/* License */}
-      <div className="p-4 border-2 border-[#0000001A] rounded-md">
-        <p className="text-sm font-bold text-primaryText mb-1">
+      <div className="p-4 border border-[#0000001A] rounded-md">
+        <p className="text-sm font-semibold text-primaryText mb-1">
           Doctor's License Number
         </p>
-        <p className="text-secondaryText text-xs font-medium">
-          67898 68578 00887
-        </p>
+        <p className="text-secondaryText text-xs font-medium">{licenseNo}</p>
       </div>
 
       {/* Office Reference */}
-      <div className="p-4 border-2 border-[#0000001A] rounded-md">
-        <p className="text-sm font-bold text-primaryText mb-1">
+      <div className="p-4 border border-[#0000001A] rounded-md">
+        <p className="text-sm font-semibold text-primaryText mb-1">
           Office Reference Number
         </p>
-        <p className="text-secondaryText text-xs font-medium">
-          578 654 4567865
-        </p>
+        <p className="text-secondaryText text-xs font-medium">{officeRefNo}</p>
       </div>
     </div>
   );

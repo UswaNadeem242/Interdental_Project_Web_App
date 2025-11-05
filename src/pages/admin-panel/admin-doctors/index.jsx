@@ -1,131 +1,320 @@
-import React, { useMemo, useState } from "react";
-import { PrimaryButtonUI } from "../../../Common/Button";
-import TableComponent from "../../../Common/Table";
-import {
-  dataDoctors,
-  headings,
-  headingsAdminPanelTable,
-} from "../../../Constant";
-
-import SearchBar from "../../../Common/SearchBar";
-import TabsStepper from "../../../Common/TabsStepper";
-import SecondTable from "../../../Common/second-table-component";
-import OptionsDots from "../../../icon/options-dots";
-import { EditDeleteDropdownMenu } from "../../../Common/DropDown/edit-delete";
-import { AcctStatusDropDown } from "../../../Common/DropDown/acct-status-dropdown";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import MainTable from "../../../Common/MainTable";
+import axios from "axios";
+import { BASE_URL } from "../../../config";
+import { useDebounce } from "../../../Hooks/useDebounce";
+import { useDispatch } from "react-redux";
+import { showToast } from "../../../store/toast-slice";
+import { EyeOpenIcon } from "../../../icon/EyeIcon";
+import Activate from "../../../icon/Activate";
+import DeActivate from "../../../icon/DeActivate";
 
 const DoctorsAdminPanel = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOrder, setSortOrder] = useState("");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortLabel, setSortLabel] = useState("Sort By");
   const [showDetail, setShowDetail] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [statusChanging, setStatusChanging] = useState(false);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
+  
+  // Active tab filter
+  const [activeTab, setActiveTab] = useState("All");
+  
+  // Debounced search
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  const handleOpenViewDetail = (rowData) => {
-    setSelectedData(rowData);
-    setShowDetail(true);
+  // Map tab names to status values
+  const getStatusFromTab = (tabName) => {
+    const statusMap = {
+      "All": "ALL",
+      "Active": "ACTIVE",
+      "Inactive": "INACTIVE",
+      "Expired": "EXPIRED",
+    };
+    return statusMap[tabName] || "ALL";
   };
 
-  const filteredData = useMemo(() => {
-    let filtered = dataDoctors;
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter((row) =>
-        Object.values(row).some((val) =>
-          String(val).toLowerCase().includes(query)
-        )
-      );
-    }
-    if (sortOrder) {
-      filtered = [...filtered].sort((a, b) => {
-        const aVal = Object.values(a)[0]?.toString().toLowerCase() || "";
-        const bVal = Object.values(b)[0]?.toString().toLowerCase() || "";
-
-        return sortOrder === "asc"
-          ? aVal.localeCompare(bVal)
-          : bVal.localeCompare(aVal);
+  // Fetch doctors from backend
+  const fetchDoctors = useCallback(async (page = 1, status = "ALL", search = "", sort = "desc") => {
+    setLoading(true);
+    try {
+      const statusParam = getStatusFromTab(status);
+      const sortParam = sort === "asc" ? "createdDateAsc" : "createdDateDesc";
+      
+      const response = await axios.get(`${BASE_URL}/api/users/getUserByRole`, {
+        params: {
+          page: page - 1, // Backend uses 0-based indexing
+          size: 10,
+          search: search || undefined,
+          status: statusParam,
+          user: "DOCTOR",
+          sort: sortParam,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
+
+      const responseData = response?.data?.data;
+      const content = responseData?.data || [];
+      const totalRecord = responseData?.totalRecord || 0;
+      const totalPagesCount = responseData?.page || 0;
+
+      setDoctors(content);
+      setTotalPages(totalPagesCount);
+      setTotalRecords(totalRecord);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      setDoctors([]);
+      setTotalPages(0);
+      setTotalRecords(0);
+    } finally {
+      setLoading(false);
     }
-    return filtered;
-  }, [searchQuery, sortOrder]);
-  const steps = [
+  }, []);
+
+  // Initial load
+  useEffect(() => {
+    fetchDoctors(1, activeTab, debouncedSearchQuery, sortOrder);
+  }, [activeTab, debouncedSearchQuery, sortOrder, fetchDoctors]);
+
+  // Handle page change
+  const handlePageChange = useCallback((page) => {
+    setCurrentPage(page);
+    fetchDoctors(page, activeTab, debouncedSearchQuery, sortOrder);
+  }, [activeTab, debouncedSearchQuery, sortOrder, fetchDoctors]);
+
+  // Handle tab change
+  const handleTabChange = useCallback((tabName) => {
+    setActiveTab(tabName);
+    setCurrentPage(1); // Reset to first page on tab change
+  }, []);
+
+  // Handle search change
+  const handleSearch = useCallback((value) => {
+    setSearchQuery(value);
+    setCurrentPage(1); // Reset to first page on search
+  }, []);
+
+  // Handle sort change
+  const handleSort = useCallback((order) => {
+    setSortOrder(order);
+    setSortLabel(order === "asc" ? "Ascending" : "Descending");
+    setCurrentPage(1); // Reset to first page on sort
+  }, []);
+
+  const handleOpenViewDetail = (rowData) => {
+    // Navigate to doctor detail page with ID
+    navigate(`/admin-panel/doctor-detail/${rowData.id}`);
+  };
+
+  // Handle status change (activate/deactivate)
+  const handleStatusChange = useCallback(async (userId, currentStatus) => {
+    if (statusChanging) return;
+    
+    setStatusChanging(true);
+    try {
+      // Determine new status: if active, deactivate (false), if inactive/deactivated, activate (true)
+      const isActive = currentStatus?.toLowerCase() === "active";
+      const newStatus = !isActive; // true to activate, false to deactivate
+
+      const response = await axios.put(
+        `${BASE_URL}/api/admin/users/changeuserstatus`,
+        {
+          userId: userId,
+          status: newStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200 || response.data?.success) {
+        dispatch(
+          showToast({
+            message: `Doctor account ${newStatus ? "activated" : "deactivated"} successfully`,
+            type: "success",
+          })
+        );
+        // Refetch data to show updated status
+        await fetchDoctors(currentPage, activeTab, debouncedSearchQuery, sortOrder);
+      } else {
+        throw new Error("Failed to change status");
+      }
+    } catch (error) {
+      console.error("Error changing user status:", error);
+      dispatch(
+        showToast({
+          message: error.response?.data?.message || "Failed to change account status",
+          type: "error",
+        })
+      );
+    } finally {
+      setStatusChanging(false);
+    }
+  }, [statusChanging, currentPage, activeTab, debouncedSearchQuery, sortOrder, fetchDoctors, dispatch]);
+
+  // Define columns for MainTable
+  const columns = [
     {
-      name: "All",
-      content: (
-        <SecondTable
-          headings={headingsAdminPanelTable}
-          data={filteredData}
-          DropdownComponent2={AcctStatusDropDown}
-          OnViewDetail2={handleOpenViewDetail}
-          actionButton2="active"
-        />
-      ),
+      key: "name",
+      label: "Name",
+      render: (value, item) => {
+        const fullName = `${item.firstName || ""} ${item.lastName || ""}`.trim() || value || "-";
+        return (
+          <div className="flex items-center gap-2">
+            <img
+              src={item.profileURL || item.image || "/assets/user.png"}
+              alt={fullName}
+              className="w-9 h-9 rounded-full object-cover border border-[#285772]"
+            />
+            <span className="font-semibold">{fullName}</span>
+          </div>
+        );
+      },
     },
     {
-      name: "Active",
-      content: (
-        <SecondTable
-          headings={headingsAdminPanelTable}
-          data={filteredData}
-          DropdownComponent2={AcctStatusDropDown}
-          OnViewDetail2={handleOpenViewDetail}
-          actionButton2="active"
-        />
-      ),
+      key: "email",
+      label: "Email",
     },
     {
-      name: "Deactivated",
-      content: (
-        <SecondTable
-          headings={headingsAdminPanelTable}
-          data={filteredData}
-          DropdownComponent2={AcctStatusDropDown}
-          OnViewDetail2={handleOpenViewDetail}
-          actionButton2="active"
-        />
-      ),
+      key: "phoneNumber",
+      label: "Phone Number",
     },
     {
-      name: "Expired",
-      content: (
-        <SecondTable
-          headings={headingsAdminPanelTable}
-          data={filteredData}
-          DropdownComponent2={AcctStatusDropDown}
-          OnViewDetail2={handleOpenViewDetail}
-          actionButton2="active"
-        />
-      ),
+      key: "drLicenseNo",
+      label: "License Number",
     },
-    // {
-    //   name: "completed",
-    //   content: (
-    //     <TableComponent
-    //       headings={headings}
-    //       data={filteredData}
-    //       actionHrefKey="detailUrl"
-    //     />
-    //   ),
-    // },
+    {
+      key: "status",
+      label: "Account Status",
+      render: (value) => {
+        const statusConfig = {
+          active: {
+            className: "bg-[#4ECC530D] text-[#4ECC53]",
+          },
+          inactive: {
+            className: "bg-[#FFE30D1A] text-[#D4BE16] rounded-none",
+          },
+          expired: {
+            className: "bg-[#FF57570D] text-[#FF5757]",
+          },
+          pending: {
+            className: "bg-[#FF57570D] text-[#FF5757]",
+          },
+        };
+
+        const statusLower = value?.toLowerCase() || "";
+        const config = statusConfig[statusLower] || statusConfig.pending;
+        // const label= value?.toLowerCase() === "active" ? "Active" : value?.toLowerCase() === "inactive" ? "Deactivated" : value?.toLowerCase() === "expired" ? "Expired" : "Pending";
+        return (
+          <span
+            className={`px-3 py-2 rounded-full text-xs font-normal capitalize ${config.className}`}
+          >
+            {value || "-"}
+          </span>
+        );
+      },
+    },
+    {
+      key: "subStatus",
+      label: "Sub status",
+      render: (value) => {
+        if (!value) return "-";
+        return (
+          <span className="px-3 py-2 rounded-md text-xs font-semibold capitalize text-[#FF1D1D] border-2 border-[#F44336]">
+            {value}
+          </span>
+        );
+      },
+    },
+  ];
+
+  // Define action menu items
+  const actionMenuItems = useMemo(() => [
+    {
+      label: "View Details",
+      onClick: (item) => {
+        handleOpenViewDetail(item);
+      },
+      icon: <EyeOpenIcon />,
+    },
+    {
+      label: (item) => {
+        const isActive = item.status?.toLowerCase() === "active";
+        return isActive ? "Deactivate account" : "Activate";
+      },
+      onClick: (item) => {
+        handleStatusChange(item.id, item.status);
+      },
+      icon: (item) => {
+        const isActive = item.status?.toLowerCase() === "active";
+        return isActive ? <DeActivate /> : <Activate />;
+      },
+      textColor: (item) => {
+        const isActive = item.status?.toLowerCase() === "active";
+        // Green for activate, yellow/orange for deactivate
+        return isActive ? "text-[#D4BE17]" : "text-[#1E7C79]";
+      },
+      iconColor: (item) => {
+        const isActive = item.status?.toLowerCase() === "active";
+        // Green for activate, yellow/orange for deactivate
+        return isActive ? "text-[#D4BE17]" : "text-[#1E7C79]";
+      },
+    },
+  ], [handleStatusChange, handleOpenViewDetail]);
+
+  // Define tabs configuration
+  const tabs = [
+    { name: "All" },
+    { name: "Active" },
+    { name: "Inactive" },
+    { name: "Expired" },
   ];
 
   return (
     <div>
       <div className="bg-white rounded-2xl py-6 px-6">
-        <div className="flex flex-col md:flex-row justify-between gap-2 pb-3">
-          <div className="md:flex-1 ">
-            <SearchBar
-              //   title="Sort By"
-              className=" py-2"
-              secondaryButton="hide"
-              onSearch={setSearchQuery}
-              onSort={setSortOrder}
-            />
-          </div>
-        </div>
-        <div className="">
-          <TabsStepper steps={steps} />
-        </div>
+        <MainTable
+          columns={columns}
+          data={doctors}
+          actionMenuItems={actionMenuItems}
+          loading={loading}
+          // Search props
+          showSearch={true}
+          searchPlaceholder="Search doctors..."
+          onSearch={handleSearch}
+          searchValue={searchQuery}
+          // Sort props
+          showSort={true}
+          sortLabel={sortLabel}
+          onSort={handleSort}
+          sortOrder={sortOrder}
+          // Tabs props
+          tabs={tabs}
+          onTabChange={handleTabChange}
+          activeTabIndex={tabs.findIndex(tab => tab.name === activeTab)}
+          // Pagination props
+          useBackendPagination={true}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalResults={totalRecords}
+          pageSize={10}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );

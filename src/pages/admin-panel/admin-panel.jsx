@@ -24,7 +24,7 @@ const AdminPanel = () => {
       <Routes>
         <Route path="/dashboard" element={<AdminPanelDashboard />} />
         <Route path="/doctors" element={<DoctorsAdminPanel />} />
-        <Route path="/doctor-detail" element={<AdminPanelDoctorDetail />} />
+        <Route path="/doctor-detail/:id" element={<AdminPanelDoctorDetail />} />
         <Route path="/orders" element={<OrdersAdminPanel />} />
         <Route path="/order-detail" element={<AdminOrdersDetail />} />
         {/* <Route path="/dental-design-form" element={<DentalDesignForm />} /> */}
