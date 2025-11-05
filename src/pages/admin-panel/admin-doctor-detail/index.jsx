@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
@@ -26,85 +26,109 @@ const AdminPanelDoctorDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [statusChanging, setStatusChanging] = useState(false);
 
-  // Fetch doctor data
-  const fetchDoctorData = useCallback(async () => {
+  // Fetch doctor data - only fetch when id changes
+  useEffect(() => {
     if (!id) return;
     
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `${BASE_URL}/api/users/getById/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      setDoctorData(response.data?.data || response.data);
-    } catch (error) {
-      console.error("Error fetching doctor data:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
+    let isMounted = true;
+    
+    const fetchDoctorData = async () => {
 
-  // Fetch patients for this doctor
-  const fetchPatients = useCallback(async (page = 1, sort = "desc") => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/api/users/getById/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (isMounted) {
+          setDoctorData(response.data?.data || response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching doctor data:", error);
+        if (isMounted) {
+          setDoctorData(null);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchDoctorData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]); // Only fetch when id changes
+
+  // Fetch patients for this doctor - only fetch when id, page, or sortOrder changes
+  useEffect(() => {
     if (!id) return;
 
-    setPatientsLoading(true);
-    try {
-      const sortParam = sort === "asc" ? "createdDateAsc" : "createdDateDesc";
-      
-      const response = await axios.get(
-        `${BASE_URL}/api/users/getPatientByDoctor`,
-        {
-          params: {
-            page: page - 1, // Backend uses 0-based indexing
-            size: 10,
-            status: "ALL",
-            search: "",
-            sort: sortParam,
-            doctorId: id, // Include doctor ID to filter patients
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+    let isMounted = true;
+
+    const fetchPatients = async () => {
+  
+      setPatientsLoading(true);
+      try {
+        const sortParam = sortOrder === "asc" ? "createdDateAsc" : "createdDateDesc";
+        
+        const response = await axios.get(
+          `${BASE_URL}/api/users/getPatientByDoctor`,
+          {
+            params: {
+              page: currentPage - 1, // Backend uses 0-based indexing
+              size: 10,
+              status: "ALL",
+              search: "",
+              sort: sortParam,
+              doctorId: id, // Include doctor ID to filter patients
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (isMounted) {
+          const responseData = response?.data?.data || response?.data;
+          const content = responseData?.data || [];
+          const totalRecord = responseData?.totalRecord || 0;
+          const totalPagesCount = responseData?.page || 0;
+
+          setPatients(content);
+          setTotalPages(totalPagesCount);
+          setTotalPatients(totalRecord);
         }
-      );
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+        if (isMounted) {
+          setPatients([]);
+          setTotalPages(0);
+          setTotalPatients(0);
+        }
+      } finally {
+        if (isMounted) {
+          setPatientsLoading(false);
+        }
+      }
+    };
 
-      const responseData = response?.data?.data || response?.data;
-      const content = responseData?.data || [];
-      const totalRecord = responseData?.totalRecord || 0;
-      const totalPagesCount = responseData?.page || 0;
+    fetchPatients();
 
-      setPatients(content);
-      setTotalPages(totalPagesCount);
-      setTotalPatients(totalRecord);
-    } catch (error) {
-      console.error("Error fetching patients:", error);
-      setPatients([]);
-      setTotalPages(0);
-      setTotalPatients(0);
-    } finally {
-      setPatientsLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    fetchDoctorData();
-  }, [fetchDoctorData]);
-
-  useEffect(() => {
-    if (id) {
-      fetchPatients(1, sortOrder);
-    }
-  }, [id, sortOrder]); // Only re-fetch when id or sortOrder changes
+    return () => {
+      isMounted = false;
+    };
+  }, [id, currentPage, sortOrder]); 
 
   const handlePageChange = useCallback((page) => {
     setCurrentPage(page);
-    fetchPatients(page, sortOrder);
-  }, [fetchPatients, sortOrder]);
+  }, []);
 
   // Handle status change button click - open modal
   const handleStatusButtonClick = useCallback(() => {
@@ -113,10 +137,10 @@ const AdminPanelDoctorDetail = () => {
 
   // Handle status change (activate/deactivate)
   const handleStatusChange = useCallback(async () => {
-    if (!doctorData || statusChanging) return;
+    if (!doctorData || !id || statusChanging) return;
     
     setStatusChanging(true);
-    // setIsModalOpen(false);
+    setIsModalOpen(false);
     
     try {
       // Determine new status: if active, deactivate (false), if inactive/deactivated, activate (true)
@@ -144,9 +168,21 @@ const AdminPanelDoctorDetail = () => {
             type: "success",
           })
         );
+        
         // Refetch doctor data to show updated status
-        await fetchDoctorData();
-
+        try {
+          const doctorResponse = await axios.get(
+            `${BASE_URL}/api/users/getById/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          setDoctorData(doctorResponse.data?.data || doctorResponse.data);
+        } catch (error) {
+          console.error("Error refetching doctor data:", error);
+        }
       } else {
         throw new Error("Failed to change status");
       }
@@ -160,11 +196,11 @@ const AdminPanelDoctorDetail = () => {
       );
     } finally {
       setStatusChanging(false);
-      setIsModalOpen(false);
     }
-  }, [doctorData, fetchDoctorData, fetchPatients, currentPage, sortOrder, dispatch]);
+  }, [doctorData, id, statusChanging, dispatch]);
 
-  const stepss = [
+  // Memoize steps to prevent unnecessary re-renders
+  const stepss = useMemo(() => [
     {
       name: "Basic Info",
       content: <BasicInfo doctorData={doctorData} />,
@@ -182,7 +218,7 @@ const AdminPanelDoctorDetail = () => {
         />
       ),
     },
-  ];
+  ], [doctorData, patients, patientsLoading, currentPage, totalPages, totalPatients, handlePageChange]);
 
   if (loading) {
     return (
