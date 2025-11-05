@@ -3,9 +3,41 @@ import * as Yup from "yup";
 import DropDownOptions from "../Common/drop-down-options";
 import TagInput from "../Common/tag-input";
 import AreYouSureModel from "./AreYouSureModel";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import CategoryDropdown from "../Common/CategoryDropDown";
 
 const AddBlogModal = ({ onClose, data }) => {
+  //
+  const [isOpen, setIsOpen] = useState(false);
+  const [categories, setCategories] = useState([
+    "Dental",
+    "Health",
+    "Teeth Treatment",
+    "Facecare",
+  ]);
+  const [selected, setSelected] = useState("");
+  const [newCategory, setNewCategory] = useState("");
+  const dropdownRef = useRef(null);
+
+  // Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Add new category
+  const handleAddCategory = () => {
+    if (newCategory.trim() !== "") {
+      setCategories([...categories, newCategory.trim()]);
+      setNewCategory("");
+    }
+  };
+  //
   const [formData, setFormData] = useState(null);
   const [showSureModal, setShowSureModal] = useState(false); // ⬅️ For AreYouSureModel
 
@@ -38,6 +70,10 @@ const AddBlogModal = ({ onClose, data }) => {
   const handleConfirmClose = () => {
     setShowSureModal(false); // hide confirmation modal
     onClose(); // close main modal
+  };
+  const handleSelect = (cat) => {
+    setSelected(cat);
+    setIsOpen(false);
   };
 
   return (
@@ -152,8 +188,41 @@ const AddBlogModal = ({ onClose, data }) => {
                       <label className="block text-sm text-[#434343] font-poppins font-semibold mb-1">
                         Select Category
                       </label>
+                      <div className="relative w-full" ref={dropdownRef}>
+                        {/* Select Field */}
+                        <button
+                          onClick={() => setIsOpen(!isOpen)}
+                          className="w-full border-2 rounded-lg px-4 py-2 text-gray-500 text-left flex justify-between items-center"
+                        >
+                          <span>{selected || "Select"}</span>
+                          <svg
+                            className={`w-4 h-4 transform transition-transform ${
+                              isOpen ? "rotate-180" : ""
+                            }`}
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
 
-                      <DropDownOptions
+                        {/* Attach Dropdown */}
+                        {isOpen && (
+                          <CategoryDropdown
+                            className={"w-full"}
+                            onSelect={handleSelect}
+                            selected={selected}
+                          />
+                        )}
+                      </div>
+
+                      {/* <DropDownOptions
                         options={["Health", "Fitness", "Nutrition"]}
                         placeholder="Select"
                         buttonClassName="hidden"
@@ -165,7 +234,7 @@ const AddBlogModal = ({ onClose, data }) => {
                         name="category"
                         component="div"
                         className="text-red-500 text-xs "
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>

@@ -2288,8 +2288,8 @@ export const headingsAdminPanelClaimReq = [
   { label: "Claim ID", key: "id" },
   { label: "Patient Name", key: "patientName" },
   { label: "Doctor Name", key: "doctorName" },
-  { label: "Status", key: "status" },
   { label: "Submission Date", key: "submissionDate" },
+  { label: "Status", key: "status" },
 
   { label: "Action", key: "action" },
 ];
