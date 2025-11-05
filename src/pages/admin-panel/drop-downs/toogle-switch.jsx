@@ -6,6 +6,8 @@ export const ToggleSwitch = ({
   price,
   showPrice,
   initialState = true,
+  onClick,
+  setOpen,
 }) => {
   // Use state to manage the toggle's checked status
   const [isChecked, setIsChecked] = useState(initialState);
@@ -17,7 +19,10 @@ export const ToggleSwitch = ({
   };
 
   return (
-    <div className="flex md:min-w-96 items-center justify-between gap-20  py-2 px-3 bg-white border-2 border-gray-100 ">
+    <div
+      onClick={() => setOpen(true)}
+      className="flex md:min-w-96 items-center justify-between gap-20  py-2 px-3 bg-white border-2 border-gray-100 cursor-pointer "
+    >
       {/* Label Text (e.g., '3Shape') */}
       <span className={`text-xs font-normal ml-2 text-[#828386]`}>{label}</span>
 
@@ -27,7 +32,11 @@ export const ToggleSwitch = ({
           ${price || 0}
         </p>
         <button
-          onClick={toggleHandler}
+          // onClick={toggleHandler}
+          onClick={(e) => {
+            e.stopPropagation(); // 🚫 prevent bubbling up
+            toggleHandler(); // ✅ your actual toggle logic
+          }}
           // Tailwind classes for the track (background)
           className={`relative inline-flex items-center h-6 w-10 rounded-full transition-colors duration-200 ease-in-out flex-shrink-0  ${
             isChecked ? "bg-[#001D58]" : "bg-gray-300"

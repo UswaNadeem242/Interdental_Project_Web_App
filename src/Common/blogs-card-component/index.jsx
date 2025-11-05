@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import OptionsDots from "../../icon/options-dots";
 
-const BlogsCardComponent = ({ data }) => {
+const BlogsCardComponent = ({ data, setShowSureModal }) => {
   const defaultData = {
     imageSrc:
       "https://images.unsplash.com/photo-1576091160399-112ba8d25d02?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3",
@@ -71,7 +71,10 @@ const BlogsCardComponent = ({ data }) => {
                   Edit
                 </button>
                 <hr />
-                <button className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold">
+                <button
+                  className="block px-4 py-2 text-sm text-gray-700 hover:font-semibold"
+                  onClick={() => setShowSureModal(true)}
+                >
                   Delete
                 </button>
               </div>

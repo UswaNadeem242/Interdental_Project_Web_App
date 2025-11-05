@@ -21,67 +21,73 @@ const DoctorsAdminPanel = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [statusChanging, setStatusChanging] = useState(false);
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
-  
+
   // Active tab filter
   const [activeTab, setActiveTab] = useState("All");
-  
+
   // Debounced search
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   // Map tab names to status values
   const getStatusFromTab = (tabName) => {
     const statusMap = {
-      "All": "ALL",
-      "Active": "ACTIVE",
-      "Inactive": "INACTIVE",
-      "Expired": "EXPIRED",
+      All: "ALL",
+      Active: "ACTIVE",
+      Inactive: "INACTIVE",
+      Expired: "EXPIRED",
     };
     return statusMap[tabName] || "ALL";
   };
 
   // Fetch doctors from backend
-  const fetchDoctors = useCallback(async (page = 1, status = "ALL", search = "", sort = "desc") => {
-    setLoading(true);
-    try {
-      const statusParam = getStatusFromTab(status);
-      const sortParam = sort === "asc" ? "createdDateAsc" : "createdDateDesc";
-      
-      const response = await axios.get(`${BASE_URL}/api/users/getUserByRole`, {
-        params: {
-          page: page - 1, // Backend uses 0-based indexing
-          size: 10,
-          search: search || undefined,
-          status: statusParam,
-          user: "DOCTOR",
-          sort: sortParam,
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+  const fetchDoctors = useCallback(
+    async (page = 1, status = "ALL", search = "", sort = "desc") => {
+      setLoading(true);
+      try {
+        const statusParam = getStatusFromTab(status);
+        const sortParam = sort === "asc" ? "createdDateAsc" : "createdDateDesc";
 
-      const responseData = response?.data?.data;
-      const content = responseData?.data || [];
-      const totalRecord = responseData?.totalRecord || 0;
-      const totalPagesCount = responseData?.page || 0;
+        const response = await axios.get(
+          `${BASE_URL}/api/users/getUserByRole`,
+          {
+            params: {
+              page: page - 1, // Backend uses 0-based indexing
+              size: 10,
+              search: search || undefined,
+              status: statusParam,
+              user: "DOCTOR",
+              sort: sortParam,
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
-      setDoctors(content);
-      setTotalPages(totalPagesCount);
-      setTotalRecords(totalRecord);
-    } catch (error) {
-      console.error("Error fetching doctors:", error);
-      setDoctors([]);
-      setTotalPages(0);
-      setTotalRecords(0);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+        const responseData = response?.data?.data;
+        const content = responseData?.data || [];
+        const totalRecord = responseData?.totalRecord || 0;
+        const totalPagesCount = responseData?.page || 0;
+
+        setDoctors(content);
+        setTotalPages(totalPagesCount);
+        setTotalRecords(totalRecord);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+        setDoctors([]);
+        setTotalPages(0);
+        setTotalRecords(0);
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
 
   // Initial load
   useEffect(() => {
@@ -89,10 +95,13 @@ const DoctorsAdminPanel = () => {
   }, [activeTab, debouncedSearchQuery, sortOrder, fetchDoctors]);
 
   // Handle page change
-  const handlePageChange = useCallback((page) => {
-    setCurrentPage(page);
-    fetchDoctors(page, activeTab, debouncedSearchQuery, sortOrder);
-  }, [activeTab, debouncedSearchQuery, sortOrder, fetchDoctors]);
+  const handlePageChange = useCallback(
+    (page) => {
+      setCurrentPage(page);
+      fetchDoctors(page, activeTab, debouncedSearchQuery, sortOrder);
+    },
+    [activeTab, debouncedSearchQuery, sortOrder, fetchDoctors]
+  );
 
   // Handle tab change
   const handleTabChange = useCallback((tabName) => {
@@ -119,53 +128,73 @@ const DoctorsAdminPanel = () => {
   };
 
   // Handle status change (activate/deactivate)
-  const handleStatusChange = useCallback(async (userId, currentStatus) => {
-    if (statusChanging) return;
-    
-    setStatusChanging(true);
-    try {
-      // Determine new status: if active, deactivate (false), if inactive/deactivated, activate (true)
-      const isActive = currentStatus?.toLowerCase() === "active";
-      const newStatus = !isActive; // true to activate, false to deactivate
+  const handleStatusChange = useCallback(
+    async (userId, currentStatus) => {
+      if (statusChanging) return;
 
-      const response = await axios.put(
-        `${BASE_URL}/api/admin/users/changeuserstatus`,
-        {
-          userId: userId,
-          status: newStatus,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
+      setStatusChanging(true);
+      try {
+        // Determine new status: if active, deactivate (false), if inactive/deactivated, activate (true)
+        const isActive = currentStatus?.toLowerCase() === "active";
+        const newStatus = !isActive; // true to activate, false to deactivate
+
+        const response = await axios.put(
+          `${BASE_URL}/api/admin/users/changeuserstatus`,
+          {
+            userId: userId,
+            status: newStatus,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      if (response.status === 200 || response.data?.success) {
+        if (response.status === 200 || response.data?.success) {
+          dispatch(
+            showToast({
+              message: `Doctor account ${
+                newStatus ? "activated" : "deactivated"
+              } successfully`,
+              type: "success",
+            })
+          );
+          // Refetch data to show updated status
+          await fetchDoctors(
+            currentPage,
+            activeTab,
+            debouncedSearchQuery,
+            sortOrder
+          );
+        } else {
+          throw new Error("Failed to change status");
+        }
+      } catch (error) {
+        console.error("Error changing user status:", error);
         dispatch(
           showToast({
-            message: `Doctor account ${newStatus ? "activated" : "deactivated"} successfully`,
-            type: "success",
+            message:
+              error.response?.data?.message ||
+              "Failed to change account status",
+            type: "error",
           })
         );
-        // Refetch data to show updated status
-        await fetchDoctors(currentPage, activeTab, debouncedSearchQuery, sortOrder);
-      } else {
-        throw new Error("Failed to change status");
+      } finally {
+        setStatusChanging(false);
       }
-    } catch (error) {
-      console.error("Error changing user status:", error);
-      dispatch(
-        showToast({
-          message: error.response?.data?.message || "Failed to change account status",
-          type: "error",
-        })
-      );
-    } finally {
-      setStatusChanging(false);
-    }
-  }, [statusChanging, currentPage, activeTab, debouncedSearchQuery, sortOrder, fetchDoctors, dispatch]);
+    },
+    [
+      statusChanging,
+      currentPage,
+      activeTab,
+      debouncedSearchQuery,
+      sortOrder,
+      fetchDoctors,
+      dispatch,
+    ]
+  );
 
   // Define columns for MainTable
   const columns = [
@@ -173,7 +202,10 @@ const DoctorsAdminPanel = () => {
       key: "name",
       label: "Name",
       render: (value, item) => {
-        const fullName = `${item.firstName || ""} ${item.lastName || ""}`.trim() || value || "-";
+        const fullName =
+          `${item.firstName || ""} ${item.lastName || ""}`.trim() ||
+          value ||
+          "-";
         return (
           <div className="flex items-center gap-2">
             <img
@@ -231,7 +263,7 @@ const DoctorsAdminPanel = () => {
     },
     {
       key: "subStatus",
-      label: "Sub status",
+      label: "Subscription status",
       render: (value) => {
         if (!value) return "-";
         return (
@@ -244,38 +276,41 @@ const DoctorsAdminPanel = () => {
   ];
 
   // Define action menu items
-  const actionMenuItems = useMemo(() => [
-    {
-      label: "View Details",
-      onClick: (item) => {
-        handleOpenViewDetail(item);
+  const actionMenuItems = useMemo(
+    () => [
+      {
+        label: "View Details",
+        onClick: (item) => {
+          handleOpenViewDetail(item);
+        },
+        icon: <EyeOpenIcon />,
       },
-      icon: <EyeOpenIcon />,
-    },
-    {
-      label: (item) => {
-        const isActive = item.status?.toLowerCase() === "active";
-        return isActive ? "Deactivate account" : "Activate";
+      {
+        label: (item) => {
+          const isActive = item.status?.toLowerCase() === "active";
+          return isActive ? "Deactivate account" : "Activate";
+        },
+        onClick: (item) => {
+          handleStatusChange(item.id, item.status);
+        },
+        icon: (item) => {
+          const isActive = item.status?.toLowerCase() === "active";
+          return isActive ? <DeActivate /> : <Activate />;
+        },
+        textColor: (item) => {
+          const isActive = item.status?.toLowerCase() === "active";
+          // Green for activate, yellow/orange for deactivate
+          return isActive ? "text-[#D4BE17]" : "text-[#1E7C79]";
+        },
+        iconColor: (item) => {
+          const isActive = item.status?.toLowerCase() === "active";
+          // Green for activate, yellow/orange for deactivate
+          return isActive ? "text-[#D4BE17]" : "text-[#1E7C79]";
+        },
       },
-      onClick: (item) => {
-        handleStatusChange(item.id, item.status);
-      },
-      icon: (item) => {
-        const isActive = item.status?.toLowerCase() === "active";
-        return isActive ? <DeActivate /> : <Activate />;
-      },
-      textColor: (item) => {
-        const isActive = item.status?.toLowerCase() === "active";
-        // Green for activate, yellow/orange for deactivate
-        return isActive ? "text-[#D4BE17]" : "text-[#1E7C79]";
-      },
-      iconColor: (item) => {
-        const isActive = item.status?.toLowerCase() === "active";
-        // Green for activate, yellow/orange for deactivate
-        return isActive ? "text-[#D4BE17]" : "text-[#1E7C79]";
-      },
-    },
-  ], [handleStatusChange, handleOpenViewDetail]);
+    ],
+    [handleStatusChange, handleOpenViewDetail]
+  );
 
   // Define tabs configuration
   const tabs = [
@@ -306,7 +341,7 @@ const DoctorsAdminPanel = () => {
           // Tabs props
           tabs={tabs}
           onTabChange={handleTabChange}
-          activeTabIndex={tabs.findIndex(tab => tab.name === activeTab)}
+          activeTabIndex={tabs.findIndex((tab) => tab.name === activeTab)}
           // Pagination props
           useBackendPagination={true}
           currentPage={currentPage}

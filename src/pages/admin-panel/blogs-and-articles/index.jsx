@@ -143,11 +143,15 @@ import BlogsCardComponent from "../../../Common/blogs-card-component";
 import AddBlogModal from "../../../modals/AddBlogModal";
 import { useNavigate } from "react-router-dom";
 import CategoryDropdown from "../../../Common/CategoryDropDown";
+import AreYouSureModel from "../../../modals/AreYouSureModel";
 
 function BlogAndArticles() {
   const [activeTab, setActiveTab] = useState(tabs[0]?.id || "");
   const [showModal, setShowModal] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selected, setSelected] = useState("");
+
+  const [showSureModal, setShowSureModal] = useState(false);
 
   const [selectedCategory, setSelectedCategory] = useState(null);
   const menuRef = useRef(null);
@@ -204,6 +208,11 @@ function BlogAndArticles() {
     },
   ];
 
+  const handleSelect = (cat) => {
+    setSelected(cat);
+    setIsMenuOpen(false);
+  };
+
   return (
     <div className="p-6 bg-bgWhite rounded-xl">
       {/* Header */}
@@ -225,7 +234,7 @@ function BlogAndArticles() {
       </div>
 
       {/* Tabs + Add Category */}
-      <div className="relative flex md:flex-row flex-col justify-between gap-6 mb-6">
+      <div className="relative flex md:flex-row flex-col justify-between gap-6 mb-6 mt-3">
         <div className="flex gap-3">
           {tabs.map((tab) => (
             <button
@@ -246,14 +255,19 @@ function BlogAndArticles() {
         <button
           onClick={() => setIsMenuOpen((prev) => !prev)}
           aria-label="Options"
-          className="text-xs font-normal font-poppins text-[#001D58] px-3 py-2 bg-[#94D3DD33] rounded-full"
+          className="text-xs font-normal font-poppins text-[#001D58] px-5 py-2 bg-[#94D3DD33] rounded-full"
         >
           Add Category
         </button>
 
         {/* Dropdown */}
         {isMenuOpen && (
-          <CategoryDropdown className={" z-50 w-[30%] right-16 top-10"} />
+          <CategoryDropdown
+            className={" z-50 w-[30%] right-16 top-10"}
+            onSelect={handleSelect}
+            selected={selected}
+            onClose={() => setIsMenuOpen(false)}
+          />
         )}
       </div>
 
@@ -261,12 +275,24 @@ function BlogAndArticles() {
       <div className="flex flex-col md:flex-row gap-8 flex-wrap items-center w-full md:w-auto">
         {cardData.map((data, key) => (
           <div key={key} onClick={() => navigate("/admin-panel/blogs-detail")}>
-            <BlogsCardComponent data={data} />
+            <BlogsCardComponent
+              data={data}
+              setShowSureModal={setShowSureModal}
+            />
           </div>
         ))}
       </div>
 
       {showModal && <AddBlogModal onClose={() => setShowModal(false)} />}
+      {/*AreYouSure Modal */}
+      {showSureModal && (
+        <AreYouSureModel
+          title="Are You Sure?"
+          desc="You can not undo the action"
+          // handleUpdateStatus={handleConfirmClose}
+          setIsModalOpen={setShowSureModal}
+        />
+      )}
     </div>
   );
 }

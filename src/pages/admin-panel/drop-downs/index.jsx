@@ -66,6 +66,8 @@ function DropDownAdminPanel() {
   const [isDigitalModalType, setIsDigitalModalType] = useState(false);
   const [isDentalLabModal, setIsDentalLabModal] = useState(false);
   const [isPhotogrammetryModal, setIsPhotogrammetryModal] = useState(false);
+  const [scannerEdit, setScannerEdit] = useState(false);
+  const [materialEdit, setMaterialEdit] = useState(false);
 
   return (
     <div className="flex flex-col gap-4">
@@ -76,6 +78,8 @@ function DropDownAdminPanel() {
         isScannerModal={isScannerModal}
         setIsScannerModal={setIsScannerModal}
         onClick={() => setIsScannerModal(true)}
+        // setState={setScannerEdit}
+        // state={scannerEdit}
       />
       <DropDownCard
         title={"materials"}
@@ -83,6 +87,8 @@ function DropDownAdminPanel() {
         isMaterialModal={isMaterialModal}
         setIsMaterialModal={setIsMaterialModal}
         onClick={() => setIsMaterialModal(true)}
+        // setState={setMaterialEdit}
+        // state={materialEdit}
       />
       <DropDownCard
         title={"smart crown"}

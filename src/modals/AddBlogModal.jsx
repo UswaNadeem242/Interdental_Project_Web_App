@@ -96,7 +96,7 @@ const AddBlogModal = ({ onClose, data }) => {
               {/* When Cancel is clicked, open confirmation modal */}
               <button
                 type="button"
-                onClick={() => setShowSureModal(true)}
+                onClick={() => onClose()}
                 className="px-6 py-3 rounded-full bg-[#F8F8F8] text-[#434343] text-xs font-normal"
               >
                 Cancel
@@ -194,7 +194,9 @@ const AddBlogModal = ({ onClose, data }) => {
                           onClick={() => setIsOpen(!isOpen)}
                           className="w-full border-2 rounded-lg px-4 py-2 text-gray-500 text-left flex justify-between items-center"
                         >
-                          <span>{selected || "Select"}</span>
+                          <span className="font-poppins text-gray-400">
+                            {selected || "Select"}
+                          </span>
                           <svg
                             className={`w-4 h-4 transform transition-transform ${
                               isOpen ? "rotate-180" : ""
@@ -286,14 +288,14 @@ const AddBlogModal = ({ onClose, data }) => {
       </div>
 
       {/*AreYouSure Modal */}
-      {showSureModal && (
+      {/* {showSureModal && (
         <AreYouSureModel
           title="Are You Sure?"
           desc="You can not undo the action"
           handleUpdateStatus={handleConfirmClose}
           setIsModalOpen={setShowSureModal}
         />
-      )}
+      )} */}
     </>
   );
 };
