@@ -6,6 +6,7 @@ import CheckBox from "../check-box";
 import OptionsDots from "../../icon/options-dots";
 
 export default function SecondTable({
+  className,
   headings,
   data,
   actions,
@@ -74,9 +75,11 @@ export default function SecondTable({
           </div>
         </div>
       ) : (
-        <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-300px)] scrollbar-hidden">
+        <div
+          className={`overflow-x-auto min-h-[400px] max-h-[calc(100vh-300px)] scrollbar-hidden ${className}`}
+        >
           <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm ">
-            <thead className="sticky top-0 border-b-2 z-10  ">
+            <thead className="sticky top-0 border-b-2 z-10 bg-bgWhite  ">
               <tr className="font-poppins font-medium text-xs text-secondaryText capitalize ">
                 {headings.map((col, idx) => (
                   <th
@@ -177,6 +180,19 @@ export default function SecondTable({
                           />
                           <div className="flex flex-col">
                             <span>{row.pName}</span>
+                          </div>
+                        </div>
+                      ) : col.key === "products" ? (
+                        <div className="flex items-center gap-2 md:flex-row flex-col">
+                          <img
+                            src={row.image || "/assets/user.png"}
+                            alt={row.name}
+                            className="w-9 h-9 object-cover"
+                          />
+                          <div className="flex flex-col">
+                            <span className="font-semibold">
+                              {row.products}
+                            </span>
                           </div>
                         </div>
                       ) : col.key === "stock" ? (

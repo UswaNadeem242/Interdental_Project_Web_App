@@ -45,7 +45,7 @@ function AdminPanelDashboard() {
       {/* Revenue Graph & Plan Usage */}
       <div className="flex md:flex-row flex-col gap-4 mt-5 justify-between">
         <div>
-          <div className="p-6 bg-bgWhite rounded-2xl md:w-[1000px]">
+          <div className="p-6 bg-bgWhite rounded-2xl md:w-[830px]">
             <ChartDropDown
               title={"Revenue Graph: 100k"}
               selectedPeriod={selectedPeriod}
