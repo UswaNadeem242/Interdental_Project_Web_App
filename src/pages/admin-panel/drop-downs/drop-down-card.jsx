@@ -211,9 +211,7 @@ function DropDownCard({
             title="Add Option for Photogrammetry Files"
           />
         )}
-        {state && (
-          <NameEditModal onClose={() => setState(false)} title="Edit " />
-        )}
+
         {open && (
           <NameAndPriceEditModal
             onClose={() => setOpen(false)}
