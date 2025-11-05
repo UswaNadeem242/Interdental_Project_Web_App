@@ -115,7 +115,7 @@ const DoctorsAdminPanel = () => {
 
   const handleOpenViewDetail = (rowData) => {
     // Navigate to doctor detail page with ID
-    navigate(`/admin-panel/doctor-detail/${rowData.id}`);
+    navigate(`/admin-panel/doctor-detail?id=${rowData.id}`);
   };
 
   // Handle status change (activate/deactivate)

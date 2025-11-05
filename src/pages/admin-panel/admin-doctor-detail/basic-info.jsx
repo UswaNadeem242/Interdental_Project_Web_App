@@ -13,8 +13,8 @@ function BasicInfo({ doctorData }) {
   const email = doctorData.email || "N/A";
   const phone = doctorData.phoneNumber || "N/A";
   const address = doctorData.address || "N/A";
-  const licenseNo = doctorData.drLicenseNo || doctorData.licenseNum || "N/A";
-  const officeRefNo = doctorData.officeRefNo || "N/A";
+  const licenseNo = doctorData.doctorLicenceNumber|| "N/A";
+  const officeRefNo = doctorData.officeRefNumber || "N/A";
 
   return (
     <div className="mx-auto py-6 space-y-6 font-poppins">

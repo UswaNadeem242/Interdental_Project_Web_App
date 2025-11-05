@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
 import Stepper from "../../../Common/TabsStepper/Stepper";
@@ -9,9 +9,16 @@ import AccountDetailForm from "./account-detail-form";
 import PatientsTable from "./patients-table";
 
 const AdminPanelDoctorDetail = () => {
-  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
   const [doctorData, setDoctorData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [patients, setPatients] = useState([]);
+  const [patientsLoading, setPatientsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalPatients, setTotalPatients] = useState(0);
+  const [sortOrder, setSortOrder] = useState("desc");
 
   // Fetch doctor data
   const fetchDoctorData = useCallback(async () => {
@@ -35,9 +42,63 @@ const AdminPanelDoctorDetail = () => {
     }
   }, [id]);
 
+  // Fetch patients for this doctor
+  const fetchPatients = useCallback(async (page = 1, sort = "desc") => {
+    if (!id) return;
+
+    setPatientsLoading(true);
+    try {
+      const sortParam = sort === "asc" ? "createdDateAsc" : "createdDateDesc";
+      
+      const response = await axios.get(
+        `${BASE_URL}/api/users/getPatientByDoctor`,
+        {
+          params: {
+            page: page - 1, // Backend uses 0-based indexing
+            size: 10,
+            status: "ALL",
+            search: "",
+            sort: sortParam,
+            doctorId: id, // Include doctor ID to filter patients
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const responseData = response?.data?.data || response?.data;
+      const content = responseData?.data || [];
+      const totalRecord = responseData?.totalRecord || 0;
+      const totalPagesCount = responseData?.page || 0;
+
+      setPatients(content);
+      setTotalPages(totalPagesCount);
+      setTotalPatients(totalRecord);
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+      setPatients([]);
+      setTotalPages(0);
+      setTotalPatients(0);
+    } finally {
+      setPatientsLoading(false);
+    }
+  }, [id]);
+
   useEffect(() => {
     fetchDoctorData();
   }, [fetchDoctorData]);
+
+  useEffect(() => {
+    if (id) {
+      fetchPatients(1, sortOrder);
+    }
+  }, [id, sortOrder]); // Only re-fetch when id or sortOrder changes
+
+  const handlePageChange = useCallback((page) => {
+    setCurrentPage(page);
+    fetchPatients(page, sortOrder);
+  }, [fetchPatients, sortOrder]);
 
   const stepss = [
     {
@@ -46,7 +107,16 @@ const AdminPanelDoctorDetail = () => {
     },
     {
       name: "Patients",
-      content: <PatientsTable doctorId={id} />,
+      content: (
+        <PatientsTable
+          patients={patients}
+          loading={patientsLoading}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalRecords={totalPatients}
+          onPageChange={handlePageChange}
+        />
+      ),
     },
   ];
 
@@ -69,20 +139,20 @@ const AdminPanelDoctorDetail = () => {
   }
 
   const fullName = `${doctorData.firstName || ""} ${doctorData.lastName || ""}`.trim() || "N/A";
-  const profileImage = doctorData.profileURL || doctorData.image || "/assets/user.png";
+  const profileImage = doctorData.profileImage || "/assets/user.png";
   const email = doctorData.email || "N/A";
   const status = doctorData.status?.toLowerCase() || "inactive";
   const buttonText = status === "active" ? "Deactivate Account" : "Activate Account";
 
-  // Calculate patient count for subscription
-  const patientCount = doctorData.patientCount || 0;
+  // Calculate patient count for subscription using totalPatients from API
+  const patientCount = totalPatients || 0;
   const maxPatients = doctorData.maxPatients || 20;
   const patientPercentage = maxPatients > 0 ? Math.round((patientCount / maxPatients) * 100) : 0;
 
   return (
     <div className="p-4">
-      <div className="grid md:grid-cols-12 grid-cols-1 gap-4 bg-bgWhite rounded-2xl">
-        <div className="bg-bgWhite px-6 py-5 font-poppins md:col-span-4 col-span-1 rounded-2xl">
+      <div className="grid md:grid-cols-12 rounded-2xl bg-white p-4 grid-cols-1 gap-4">
+        <div className="font-poppins md:col-span-4 col-span-1">
           <AccountDetailForm
             name={fullName}
             icon={profileImage}
@@ -91,7 +161,7 @@ const AdminPanelDoctorDetail = () => {
           />
         </div>
 
-        <div className="bg-bgWhite p-6 font-poppins md:col-span-8 col-span-1 rounded-2xl">
+        <div className="font-poppins md:col-span-8 col-span-1">
           <SubscriptionForm
             title="Subscription Plan"
             para={doctorData.subscriptionExpiryDate 

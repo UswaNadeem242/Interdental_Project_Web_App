@@ -236,8 +236,8 @@ export default function MainTable({
       ) : (
         <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-350px)] scrollbar-hidden">
           <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm">
-            <thead className="sticky top-0 bg-[#F8F8F8] z-10">
-              <tr className="font-poppins font-medium text-xs text-secondaryText capitalize">
+            <thead className="sticky top-0 border-b-2 z-10">
+              <tr className="font-poppins font-medium bg-bgWhite text-xs text-secondaryText capitalize">
                 {columns.map((column, idx) => (
                   <th
                     key={idx}
@@ -314,7 +314,6 @@ export default function MainTable({
     </div>
   );
 
-  // If tabs are provided, wrap in TabsStepper
   if (tabs.length > 0) {
     const tabSteps = tabs.map((tab, idx) => ({
       name: tab.name,
