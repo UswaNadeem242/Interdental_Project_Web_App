@@ -1,12 +1,25 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useState } from "react";
 
-export default function TabsStepper({ steps, newClaimBtn }) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+export default function TabsStepper({ steps, newClaimBtn, selectedIndex: controlledSelectedIndex, onTabChange }) {
+  const [internalSelectedIndex, setInternalSelectedIndex] = useState(0);
+  
+  // Use controlled or uncontrolled state
+  const selectedIndex = controlledSelectedIndex !== undefined ? controlledSelectedIndex : internalSelectedIndex;
+  
+  const handleTabChange = (index) => {
+    if (controlledSelectedIndex === undefined) {
+      setInternalSelectedIndex(index);
+    }
+    if (onTabChange) {
+      onTabChange(index);
+    }
+  };
+
   return (
     <div className="w-full">
       <div>
-        <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+        <TabGroup selectedIndex={selectedIndex} onChange={handleTabChange}>
           <div className="flex flex-col md:flex-row md:items-center justify-between  gap-4">
             <TabList className={`  flex flex-wrap gap-2 mb-6`}>
               {steps.map(({ name }) => (

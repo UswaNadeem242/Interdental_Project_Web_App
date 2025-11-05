@@ -340,7 +340,7 @@ function App() {
                 </RoleRoute>
               }
             />
-
+            
             {/* Legacy Admin Route - Accessible by ADMIN role */}
             <Route
               path="/admin/*"
