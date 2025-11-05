@@ -5,12 +5,12 @@ function ClaimDetailAdminPanel() {
   const doctorClaimReqData = [
     { key: "Patient name", data: "vagra Dora" },
     { key: "Patient Email Address", data: "VargaDóra123@gmail.com" },
-    { key: "Doctor Name", data: "Varga Dóra" },
-    { key: "Product name", data: "Dental Crown" },
-    { key: "Quantity", data: "2" },
-    { key: "Purchase Date", data: "10 March,2025" },
     { key: "Claim Submitted On", data: "12 Mar 2025" },
-    { key: "Claim Reason", data: "Defective product" },
+    // { key: "Doctor Name", data: "Varga Dóra" },
+    // { key: "Product name", data: "Dental Crown" },
+    // { key: "Quantity", data: "2" },
+    // { key: "Purchase Date", data: "10 March,2025" },
+    // { key: "Claim Reason", data: "Defective product" },
   ];
 
   return (
@@ -30,8 +30,17 @@ function ClaimDetailAdminPanel() {
             </p>
           </div>
         ))}
+        <div className="col-span-12 space-y-2  pb-2 border-b border-b-borderPrimary mb-4 font-poppins">
+          <p className="text-secondaryText text-sm">Warranty Options</p>
+          <p className="text-sm font-semibold font-poppins text-[#434343]">
+            Crown and Bridges, Onlays/Inlays & Veneers
+          </p>
+          <p className="text-sm font-semibold font-poppins text-[#434343]">
+            Implant Related Crown & Bridges:
+          </p>
+        </div>
 
-        <div className="col-span-12 space-y-2 mt-3 pb-2 border-b border-b-borderPrimary">
+        {/* <div className="col-span-12 space-y-2 mt-3 pb-2 border-b border-b-borderPrimary">
           <p className="text-secondaryText text-sm">Additional Notes</p>
           <p className="text-sm font-normal font-poppins">
             I noticed an issue with my product shortly after use. The fit is not
@@ -39,7 +48,7 @@ function ClaimDetailAdminPanel() {
             images for review. Please let me know if any further details are
             needed.
           </p>
-        </div>
+        </div> */}
 
         <div className="col-span-12 space-y-2  mb-8 mt-6 font-poppins ">
           <span className="flex flex-row gap-4 items-center justify-center">
