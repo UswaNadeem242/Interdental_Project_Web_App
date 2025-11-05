@@ -5,8 +5,8 @@ import AreYouSureModel from "../../../modals/AreYouSureModel";
 import DropDownOptions from "../../../Common/drop-down-options";
 import { dentalDropDownOpts } from "../../../Constant";
 
-function PrintInfoCard() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+function PrintInfoCard({ setOpenModal }) {
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className=" bg-white p-6 flex flex-col h-full justify-between rounded-2xl ">
       <div className="text-primaryText">
@@ -81,21 +81,22 @@ function PrintInfoCard() {
         {/* Buttons */}
         <div className="flex gap-2 justify-center ">
           <SecondaryButton
+            onClick={() => setOpenModal(false)}
             title="Cancel"
             className="w-full  bg-[#F8F8F8] text-primaryText font-medium text-xs border-secondaryBrand rounded-full  px-16 py-3"
           />
           <SecondaryButton
             title="Print"
             className="w-full  bg-[#001D58] text-[#F8F8F8] font-medium text-xs border-secondaryBrand rounded-full  px-16 py-3"
-            onClick={() => setIsModalOpen(true)}
+            // onClick={() => setIsModalOpen(true)}
           />
-          {isModalOpen && (
+          {/* {isModalOpen && (
             <AreYouSureModel
               setIsModalOpen={setIsModalOpen}
               title="Are You Sure"
               desc="You can not undo the action"
             />
-          )}
+          )} */}
         </div>
       </div>
     </div>

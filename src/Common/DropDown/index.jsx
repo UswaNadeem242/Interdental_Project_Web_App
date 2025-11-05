@@ -54,11 +54,11 @@ export default function DropDownComponent({
               options.map((option, index) => (
                 <li
                   key={option[optionValue] || index}
-                  onClick={() => {
-                    if (disabled) return;
-                    onSelect(option);
-                    setIsOpen(false);
-                  }}
+                  // onClick={() => {
+                  //   if (disabled) return;
+                  //   onSelect(option);
+                  //   setIsOpen(false);
+                  // }}
                   className="flex justify-between px-4 py-2 text-gray-700  font-poppins "
                 >
                   <span>{option[optionLabel]}</span>

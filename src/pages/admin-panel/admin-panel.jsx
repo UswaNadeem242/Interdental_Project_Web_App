@@ -15,6 +15,8 @@ import ProfileInfoAdminPanel from "./admin-profile-info";
 import BlogAndArticles from "./blogs-and-articles";
 import BlogsDetailPage from "./blogs-and-articles/blogs-detail";
 import DropDownAdminPanel from "./drop-downs";
+import EcomOrderDetails from "./admin-orders/ecommerece-orders/ecom-order-detail";
+import EcomOrdersDetail from "./admin-orders/ecommerece-orders/ecom-order-detail";
 
 const AdminPanel = () => {
   return (
@@ -25,7 +27,7 @@ const AdminPanel = () => {
         <Route path="/doctor-detail" element={<AdminPanelDoctorDetail />} />
         <Route path="/orders" element={<OrdersAdminPanel />} />
         <Route path="/order-detail" element={<AdminOrdersDetail />} />
-        <Route path="/dental-design-form" element={<DentalDesignForm />} />
+        {/* <Route path="/dental-design-form" element={<DentalDesignForm />} /> */}
         <Route path="/products" element={<ProductsAdminPanel />} />
         <Route path="/list-product" element={<ListProduct />} />
         <Route path="/product-details" element={<ProductDetails />} />
@@ -37,6 +39,7 @@ const AdminPanel = () => {
         <Route path="/blogs-and-articles" element={<BlogAndArticles />} />
         <Route path="/blogs-detail" element={<BlogsDetailPage />} />
         <Route path="/drop-downs" element={<DropDownAdminPanel />} />
+        <Route path="/ecom-detail" element={<EcomOrdersDetail />} />
 
         {/* // <Route path="/patient" element={<PatientPage />} />
         // <Route path="/claim-request" element={<ClaimRequest />} />

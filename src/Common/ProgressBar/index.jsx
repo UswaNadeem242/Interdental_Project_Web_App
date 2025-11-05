@@ -56,17 +56,18 @@ export const ProgressBar = ({ steps }) => {
               >
                 <CheckIcon className="w-4 h-4" />
               </div>
-              {/* {idx !== steps.length - 1 && (
+              {idx !== steps.length - 1 && (
                 <div
                   className={`flex-1 absolute w-full h-0.5 
-                    ${step.status === "completed"
-                      ? "bg-[#001D58]"
-                      : step.status === "current"
+                    ${
+                      step.status === "completed"
+                        ? "bg-[#001D58]"
+                        : step.status === "current"
                         ? "bg-[#94D3DD]"
                         : "bg-gray-300"
                     }`}
                 ></div>
-              )} */}
+              )}
 
               {idx !== steps.length - 1 && (
                 <div

@@ -13,6 +13,10 @@ import { DoctorIcon } from "../icon/DoctorIcon";
 import { Crown } from "../icon/Crown";
 import { Revenue } from "../icon/Revenue";
 import ChevronDownIcon from "../icon/ChevronDownIcon";
+import HealthIcon from "../icon/HealthIcon";
+import BoxIcon from "../icon/BoxIcon";
+import ShipIcon from "../icon/ShipIcon";
+import TimeIcon from "../icon/TimeIcon";
 export const MATERIAL_OPTIONS = [
   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
   { value: "argen-ht", label: "Argen HT", price: 45 },
@@ -1160,6 +1164,93 @@ export const headingsAdminPanelOrders = [
   { label: "Action", key: "action" },
 ];
 
+export const headingsAdminPanelEcomOrders = [
+  { label: "order ID", key: "id" },
+  { label: "Buyer's Name", key: "dName" },
+  { label: "Created Date", key: "scanDate" },
+  { label: "Total Items", key: "totalItems" },
+  { label: "Price", key: "price" },
+  { label: "Order Status", key: "status" },
+  { label: "Action", key: "action" },
+];
+
+export const dataEcomAdminPanel = [
+  {
+    id: "#1235",
+    dName: "Miles,Esther",
+
+    scanDate: "17/22/2026",
+    totalItems: "8",
+    price: "$28",
+    status: "in progress",
+    action: "View Detail",
+
+    detailUrl: "/admin-panel/ecom-detail",
+  },
+  {
+    id: "#1235",
+    dName: "Miles,Esther",
+
+    scanDate: "17/22/2026",
+    totalItems: "8",
+    price: "$28",
+    status: "pending",
+    action: "View Detail",
+
+    detailUrl: "/admin-panel/ecom-detail",
+  },
+  {
+    id: "#1235",
+    dName: "Niles,Esther",
+
+    scanDate: "17/22/2026",
+    totalItems: "8",
+    price: "$28",
+    status: "completed",
+    action: "View Detail",
+
+    detailUrl: "/admin-panel/ecom-detail",
+  },
+  {
+    id: "#1235",
+    dName: "Miles,Esther",
+
+    scanDate: "17/22/2026",
+    totalItems: "8",
+    price: "$28",
+    status: "in progress",
+    action: "View Detail",
+
+    detailUrl: "/admin-panel/ecom-detail",
+  },
+];
+
+export const stepsDefault = [
+  {
+    title: "Order Placed",
+    date: "12 Sep 2024, 04:25 PM",
+    status: "completed",
+    icon: HealthIcon,
+  },
+  {
+    title: "In Progress",
+    date: "12 Sep 2024, 04:25 PM",
+    status: "current",
+    icon: BoxIcon,
+  },
+  {
+    title: "Shipped",
+    date: "12 Sep 2024, 04:25 PM",
+    status: "upcoming",
+    icon: ShipIcon,
+  },
+  {
+    title: "Delivered",
+    date: "12 Sep 2024, 04:25 PM",
+    status: "upcoming",
+    icon: TimeIcon,
+  },
+];
 export const dataOrdersAdminPanel = [
   {
     id: "#1235",

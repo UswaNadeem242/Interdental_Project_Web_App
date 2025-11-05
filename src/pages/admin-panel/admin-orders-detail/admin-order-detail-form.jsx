@@ -35,7 +35,6 @@ export default function AdminOrderDetailForm() {
     <div className="grid md:grid-cols-12 col-span-6  gap-4 mt-7 ">
       <div className="md:col-span-8 col-span-4 bg-white rounded-2xl">
         <ImpalntDesignForm />
-        <h1 className="p-6">adad</h1>
       </div>
 
       <div className="col-span-4">
@@ -47,7 +46,6 @@ export default function AdminOrderDetailForm() {
             optionValue="value"
             onSelect={handleSelect}
             className="text-xs"
-
           />
         </div>
 
