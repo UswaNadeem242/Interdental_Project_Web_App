@@ -2,13 +2,17 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
+import { useDispatch } from "react-redux";
+import { showToast } from "../../../store/toast-slice";
 import Stepper from "../../../Common/TabsStepper/Stepper";
 import SubscriptionForm from "./subscription-form";
 import BasicInfo from "./basic-info";
 import AccountDetailForm from "./account-detail-form";
 import PatientsTable from "./patients-table";
+import AreYouSureModel from "../../../modals/AreYouSureModel";
 
 const AdminPanelDoctorDetail = () => {
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const [doctorData, setDoctorData] = useState(null);
@@ -19,6 +23,8 @@ const AdminPanelDoctorDetail = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalPatients, setTotalPatients] = useState(0);
   const [sortOrder, setSortOrder] = useState("desc");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [statusChanging, setStatusChanging] = useState(false);
 
   // Fetch doctor data
   const fetchDoctorData = useCallback(async () => {
@@ -100,6 +106,64 @@ const AdminPanelDoctorDetail = () => {
     fetchPatients(page, sortOrder);
   }, [fetchPatients, sortOrder]);
 
+  // Handle status change button click - open modal
+  const handleStatusButtonClick = useCallback(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  // Handle status change (activate/deactivate)
+  const handleStatusChange = useCallback(async () => {
+    if (!doctorData || statusChanging) return;
+    
+    setStatusChanging(true);
+    // setIsModalOpen(false);
+    
+    try {
+      // Determine new status: if active, deactivate (false), if inactive/deactivated, activate (true)
+      const isActive = doctorData.status?.toLowerCase() === "active";
+      const newStatus = !isActive; // true to activate, false to deactivate
+
+      const response = await axios.put(
+        `${BASE_URL}/api/admin/users/changeuserstatus`,
+        {
+          userId: doctorData.id,
+          status: newStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200 || response.data?.success) {
+        dispatch(
+          showToast({
+            message: `Doctor account ${newStatus ? "activated" : "deactivated"} successfully`,
+            type: "success",
+          })
+        );
+        // Refetch doctor data to show updated status
+        await fetchDoctorData();
+
+      } else {
+        throw new Error("Failed to change status");
+      }
+    } catch (error) {
+      console.error("Error changing user status:", error);
+      dispatch(
+        showToast({
+          message: error.response?.data?.message || "Failed to change account status",
+          type: "error",
+        })
+      );
+    } finally {
+      setStatusChanging(false);
+      setIsModalOpen(false);
+    }
+  }, [doctorData, fetchDoctorData, fetchPatients, currentPage, sortOrder, dispatch]);
+
   const stepss = [
     {
       name: "Basic Info",
@@ -158,6 +222,9 @@ const AdminPanelDoctorDetail = () => {
             icon={profileImage}
             email={email}
             buttonText={buttonText}
+            onButtonClick={handleStatusButtonClick}
+            isLoading={statusChanging}
+            isActive={status === "active"}
           />
         </div>
 
@@ -182,6 +249,21 @@ const AdminPanelDoctorDetail = () => {
           />
         </div>
       </div>
+
+      {/* Status Change Confirmation Modal */}
+      {isModalOpen && (
+        <AreYouSureModel
+          isLoading={statusChanging}
+          title={status === "active" ? "Deactivate Account?" : "Activate Account?"}
+          desc={
+            status === "active"
+              ? "Are you sure you want to deactivate this doctor's account? They will not be able to access their account after deactivation."
+              : "Are you sure you want to activate this doctor's account? They will be able to access their account after activation."
+          }
+          handleUpdateStatus={handleStatusChange}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </div>
   );
 };

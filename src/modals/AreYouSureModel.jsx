@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-// import Group from "../assets/Group.png";
-import axios from "axios";
-import { BASE_URL } from "../config";
+
 
 const AreYouSureModel = ({
+  isLoading,
   title,
   desc,
   handleUpdateStatus,
@@ -12,7 +11,7 @@ const AreYouSureModel = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
       <div className="w-[383px] h-[295px] gap-[16px]">
-        <div className="flex w-[383px] flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg w-[303px] h-auto relative">
+        <div className="flex w-[383px] flex-col justify-center items-center space-y-[16px]  bg-white py-[16px] rounded-[8px] shadow-lg h-auto relative">
           <svg
             width="120"
             height="120"
@@ -54,10 +53,11 @@ const AreYouSureModel = ({
               Go Back
             </button>
             <button
+              disabled={isLoading}  
               onClick={handleUpdateStatus}
-              className="flex justify-center items-center w-[123.5px] h-[56px] gap-[10px] rounded-[28px] py-[17px] px-[4px] bg-secondaryBrand font-poppins font-semibold text-white text-[14px] leading-[21px]"
+              className={`flex justify-center items-center w-[123.5px] h-[56px] gap-[10px] rounded-[28px] py-[17px] px-[4px] bg-secondaryBrand font-poppins font-semibold text-white text-[14px] leading-[21px] ${isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             >
-              Confirm
+              {isLoading ? "Confirming..." : "Confirm"}
             </button>
           </div>
         </div>
