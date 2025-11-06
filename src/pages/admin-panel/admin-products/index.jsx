@@ -304,7 +304,7 @@ const ProductsAdminPanel = () => {
                 onClick={handleAddStock}
                 className="px-6 py-2 rounded-2xl font-semibold bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-200"
               >
-                Add Stock
+                Update Stock
               </button>
             </div>
           </div>
