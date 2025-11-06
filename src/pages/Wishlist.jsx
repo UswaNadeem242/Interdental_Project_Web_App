@@ -52,7 +52,7 @@ const Wishlist = () => {
         showToast({
           message: "Product Removed From Wishlist!",
           type: "success",
-        }),
+        })
       );
       fetchWishlistCount();
       getWishlist();
@@ -62,7 +62,7 @@ const Wishlist = () => {
         showToast({
           message: `Error: ${error}`,
           type: "error",
-        }),
+        })
       );
     }
   };
@@ -75,7 +75,7 @@ const Wishlist = () => {
         showToast({
           message: "Access Denied. Please login first.",
           type: "error",
-        }),
+        })
       );
       return;
     }
@@ -134,7 +134,7 @@ const Wishlist = () => {
           showToast({
             message: response.data.responseMessage,
             type: "error",
-          }),
+          })
         );
         setAddingToCart(null);
         return;
@@ -145,7 +145,7 @@ const Wishlist = () => {
           showToast({
             message: "Please try again later.",
             type: "error",
-          }),
+          })
         );
         setAddingToCart(null);
         return;
@@ -160,7 +160,7 @@ const Wishlist = () => {
         showToast({
           message: "Failed to add item to cart.",
           type: "error",
-        }),
+        })
       );
       setAddingToCart(null);
     }
