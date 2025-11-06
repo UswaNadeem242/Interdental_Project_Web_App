@@ -6,9 +6,17 @@ function SubscriptionForm({ title, para, text, number, percentage = 65 }) {
       <div className="flex flex-col gap-4">
         {/* Title and Expiration */}
         <div>
-          <p className="text-black font-poppins font-semibold text-sm">
-            {title}
-          </p>
+          <div className="flex justify-between items-center">
+            <p className="text-black font-poppins font-semibold text-sm">
+              {title}
+            </p>
+            <div className="flex items-center gap-2">
+              <p className=" w-2 h-2 rounded-full bg-[#56BC27]"></p>
+              <p className="text-sm text-[#56BC27] font-medium font-poppins ">
+                Starter
+              </p>
+            </div>
+          </div>
           <p className="text-xs font-poppins font-medium pt-2 text-primaryText">
             {para}
           </p>

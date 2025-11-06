@@ -11,7 +11,7 @@ function SubscriptionDetail() {
         email="hunammoinon@gmail.com"
         buttonText="Deactivate Account"
       />
-      <div className="">
+      <div className="mt-4">
         <SubscriptionForm
           title="Subscription Plan"
           para="will be expired on 23 march 2023"

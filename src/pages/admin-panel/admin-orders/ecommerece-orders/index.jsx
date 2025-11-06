@@ -10,6 +10,7 @@ import {
 import SearchBar from "../../../../Common/SearchBar";
 import TabsStepper from "../../../../Common/TabsStepper";
 import SecondTable from "../../../../Common/second-table-component";
+import AdminSearchBar from "../../../../Common/admin-panel-search-bar";
 
 const EcommereceOrders = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -96,10 +97,11 @@ const EcommereceOrders = () => {
       <div className="bg-white rounded-2xl py-6 px-6">
         <div className="flex flex-col md:flex-row justify-between gap-2 pb-3">
           <div className="md:flex-1 ">
-            <SearchBar
+            <AdminSearchBar
               //   title="Sort By"
               className=" py-2 mb-3"
-              secondaryButton="hide"
+              title={"Sort By"}
+              // secondaryButton="hide"
               onSearch={setSearchQuery}
               onSort={setSortOrder}
             />

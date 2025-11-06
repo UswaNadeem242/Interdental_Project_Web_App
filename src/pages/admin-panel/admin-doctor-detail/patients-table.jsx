@@ -1,14 +1,15 @@
 import React from "react";
 import MainTable from "../../../Common/MainTable";
 
-function PatientsTable({ 
-  patients = [], 
-  loading = false, 
-  currentPage = 1, 
-  totalPages = 0, 
+function PatientsTable({
+  patients = [],
+  loading = false,
+  currentPage = 1,
+  totalPages = 0,
   totalRecords = 0,
-  onPageChange 
+  onPageChange,
 }) {
+  console.log("Patients", patients);
 
   // Define columns for patients table
   const columns = [
@@ -16,7 +17,10 @@ function PatientsTable({
       key: "name",
       label: "Name",
       render: (value, item) => {
-        const fullName = `${item.firstName || ""} ${item.lastName || ""}`.trim() || value || "-";
+        const fullName =
+          `${item.firstName || ""} ${item.lastName || ""}`.trim() ||
+          value ||
+          "-";
         return (
           <div className="flex items-center gap-2">
             <img

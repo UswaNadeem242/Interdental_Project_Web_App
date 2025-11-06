@@ -130,7 +130,7 @@ export default function SecondTable({
                                 // onClick={() => onActionClick(row)}
                                 className="text-secondaryBrand flex items-center gap-1 cursor-pointer text-xs font-normal font-poppins "
                               >
-                                View profil
+                                View profile
                                 <ArrowUpRightIcon className="w-3 h-3 text-secondaryBrand" />
                               </button>
                             ) : actionHrefKey ? (
@@ -216,17 +216,17 @@ export default function SecondTable({
                         )
                       ) : col.key === "subscriptionPlan" ? (
                         // Styling for if stock=0
-                        row[col.key] === "silver" ? (
+                        row[col.key] === "starter" ? (
                           <span className="flex items-center gap-1 px-2 py-1 rounded-full capitalize text-[#56BC27] text-xs font-medium w-fit">
                             <span className="w-2 h-2 bg-[#56BC27] rounded-full text-[#56BC27]"></span>
                             {row[col.key]}
                           </span>
-                        ) : row[col.key] === "gold" ? (
+                        ) : row[col.key] === "growth" ? (
                           <span className="flex items-center gap-1 px-2 py-1 rounded-full capitalize text-[#001D58] text-xs font-medium w-fit">
                             <span className="w-2 h-2 bg-[#001D58] rounded-full text-[#001D58]"></span>
                             {row[col.key]}
                           </span>
-                        ) : row[col.key] === "platinum" ? (
+                        ) : row[col.key] === "pro" ? (
                           <span className="flex items-center gap-1 px-2 py-1 rounded-full capitalize text-[#94D3DD] text-xs font-medium w-fit">
                             <span className="w-2 h-2 bg-[#94D3DD] rounded-full text-[#94D3DD]"></span>
                             {row[col.key]}

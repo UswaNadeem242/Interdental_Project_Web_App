@@ -8,6 +8,67 @@ import {
   SmileDesignAddModal,
 } from "../../../modals/DentureAddOptionModal";
 import ChevronDownIcon from "../../../icon/ChevronDownIcon";
+import {
+  NameAndPriceEditModal,
+  NameEditModal,
+  SmileDesignEditModal,
+} from "../../../modals/EditModals";
+
+const materials = [
+  { id: 1, name: "Ivoclar Prime Cad", price: 95.0 },
+  { id: 2, name: "Argen HT", price: 45.0 },
+  { id: 3, name: "Argen ST", price: 50.0 },
+  { id: 4, name: "Emax", price: 95.0 },
+  { id: 5, name: "Aidite", price: 85.0 },
+  { id: 6, name: "Multilayer Pro", price: 75.0 },
+  { id: 7, name: "PMMA", price: 35.0 },
+];
+
+const dentures = [
+  { id: 1, name: "Full Denture", price: 95.0 },
+  { id: 2, name: "Digital Denture", price: 45.0 },
+  { id: 3, name: "Partial Denture", price: 50.0 },
+];
+const smartCrown = [
+  { id: 1, name: "Full Contour Crown", price: 35.0 },
+  { id: 2, name: "Facial Cut black", price: 50.0 },
+  { id: 3, name: "Implant Screw Retained Crown", price: 45.0 },
+];
+const dentalLab = [
+  { id: 1, name: "My Labs", price: 35.0 },
+  { id: 2, name: "Ceramic Arts Dental Lab", price: 50.0 },
+];
+const digitalModel = [
+  { id: 1, name: "Full Arch", price: 35.0 },
+  { id: 2, name: "Quadrant", price: 50.0 },
+];
+const photogrammetryFiles = [
+  { id: 1, name: "STL", price: 35.0 },
+  { id: 2, name: "DICOM", price: 50.0 },
+  { id: 2, name: "3Shape", price: 50.0 },
+  { id: 2, name: "Exocad", price: 50.0 },
+  { id: 2, name: "Blue Sky Bio", price: 50.0 },
+  { id: 2, name: "Itero", price: 50.0 },
+  { id: 2, name: "Ortho CAD", price: 50.0 },
+];
+const smileDesigns = [
+  { id: 1, name: "Smile Design_1", image: "/assets/doctor/teeth1.png" },
+  { id: 2, name: "Smile Design_2", image: "/assets/doctor/teeth1.png" },
+  { id: 3, name: "Smile Design_3", image: "/assets/doctor/teeth1.png" },
+  { id: 4, name: "Smile Design_4", image: "/assets/doctor/teeth1.png" },
+  { id: 5, name: "Smile Design_5", image: "/assets/doctor/teeth1.png" },
+  { id: 6, name: "Smile Design_6", image: "/assets/doctor/teeth1.png" },
+  { id: 7, name: "Smile Design_7", image: "/assets/doctor/teeth1.png" },
+  { id: 7, name: "Smile Design_7", image: "/assets/doctor/teeth1.png" },
+  { id: 7, name: "Smile Design_7", image: "/assets/doctor/teeth1.png" },
+  { id: 7, name: "Smile Design_7", image: "/assets/doctor/teeth1.png" },
+];
+const scannerType = [
+  { id: 1, name: "3Shape", price: 35.0 },
+  { id: 2, name: "Dentsply Sirona", price: 50.0 },
+  { id: 2, name: "Itero", price: 50.0 },
+  { id: 2, name: "Other", price: 50.0 },
+];
 
 function DropDownCard({
   title,
@@ -32,9 +93,31 @@ function DropDownCard({
   isDentalLabModal,
   isPhotogrammetryModal,
   setIsPhotogrammetryModal,
+  setState,
+  state,
+  onClick2,
+  onClick3,
+
+  materialEdit,
+  setMaterialEdit,
+  setCrownEdit,
+  crownEdit,
+  setModelEdit,
+  modelEdit,
+  setDentureEdit,
+  dentureEdit,
+  setLabEdit,
+  labEdit,
+  setPhotoEdit,
+  photoEdit,
+  setSmile,
+  smile,
 }) {
-  // 🔹 CLOSED by default
+  // CLOSED by default
   const [isExpanded, setIsExpanded] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  //
 
   return (
     <div className="w-full mx-auto p-4 sm:p-6 bg-bgWhite font-[Inter]">
@@ -86,12 +169,22 @@ function DropDownCard({
                 initialState={true}
                 price={d.price}
                 showPrice={showPrice}
+                // onClick={() => setOpen(true)}
+                setOpen={setOpen}
+                onClick={onClick2}
               />
             ))}
 
           {smileData &&
             smileData.map((d, key) => (
-              <SmileDesignCard key={key} label={d.name} image={d.image} />
+              <SmileDesignCard
+                key={key}
+                label={d.name}
+                image={d.image}
+                // smile={smile}
+                // setSmile={setSmile}
+                onClick={onClick3}
+              />
             ))}
         </div>
 
@@ -142,6 +235,55 @@ function DropDownCard({
           <NameAddModal
             onClose={() => setIsPhotogrammetryModal(false)}
             title="Add Option for Photogrammetry Files"
+          />
+        )}
+
+        {state && (
+          <NameEditModal
+            onClose={() => setState(false)}
+            title="Edit Scanner Type "
+          />
+        )}
+        {materialEdit && (
+          <NameAndPriceEditModal
+            onClose={() => setMaterialEdit(false)}
+            title="Edit Material "
+          />
+        )}
+        {crownEdit && (
+          <NameAndPriceEditModal
+            onClose={() => setCrownEdit(false)}
+            title="Edit Smart Crown "
+          />
+        )}
+        {modelEdit && (
+          <NameAndPriceEditModal
+            onClose={() => setModelEdit(false)}
+            title="Edit Digital Model "
+          />
+        )}
+        {dentureEdit && (
+          <NameEditModal
+            onClose={() => setDentureEdit(false)}
+            title="Edit Denture "
+          />
+        )}
+        {labEdit && (
+          <NameAndPriceEditModal
+            onClose={() => setLabEdit(false)}
+            title="Edit Dental Lab Alliance "
+          />
+        )}
+        {photoEdit && (
+          <NameEditModal
+            onClose={() => setPhotoEdit(false)}
+            title="Edit Photogrammetry Files "
+          />
+        )}
+        {smile && (
+          <SmileDesignEditModal
+            onClose={() => setSmile(false)}
+            title="Edit Smile Design"
           />
         )}
       </div>

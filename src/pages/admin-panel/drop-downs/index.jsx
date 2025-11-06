@@ -66,6 +66,14 @@ function DropDownAdminPanel() {
   const [isDigitalModalType, setIsDigitalModalType] = useState(false);
   const [isDentalLabModal, setIsDentalLabModal] = useState(false);
   const [isPhotogrammetryModal, setIsPhotogrammetryModal] = useState(false);
+  const [scannerEdit, setScannerEdit] = useState(false);
+  const [materialEdit, setMaterialEdit] = useState(false);
+  const [crownEdit, setCrownEdit] = useState(false);
+  const [modelEdit, setModelEdit] = useState(false);
+  const [dentureEdit, setDentureEdit] = useState(false);
+  const [labEdit, setLabEdit] = useState(false);
+  const [photoEdit, setPhotoEdit] = useState(false);
+  const [smile, setSmile] = useState(false);
 
   return (
     <div className="flex flex-col gap-4">
@@ -76,6 +84,9 @@ function DropDownAdminPanel() {
         isScannerModal={isScannerModal}
         setIsScannerModal={setIsScannerModal}
         onClick={() => setIsScannerModal(true)}
+        setState={setScannerEdit}
+        state={scannerEdit}
+        onClick2={() => setScannerEdit(true)}
       />
       <DropDownCard
         title={"materials"}
@@ -83,6 +94,9 @@ function DropDownAdminPanel() {
         isMaterialModal={isMaterialModal}
         setIsMaterialModal={setIsMaterialModal}
         onClick={() => setIsMaterialModal(true)}
+        setMaterialEdit={setMaterialEdit}
+        materialEdit={materialEdit}
+        onClick2={() => setMaterialEdit(true)}
       />
       <DropDownCard
         title={"smart crown"}
@@ -90,6 +104,9 @@ function DropDownAdminPanel() {
         isCrownModal={isCrownModal}
         setIsCrownModal={setIsCrownModal}
         onClick={() => setIsCrownModal(true)}
+        crownEdit={crownEdit}
+        setCrownEdit={setCrownEdit}
+        onClick2={() => setCrownEdit(true)}
       />
       <DropDownCard
         title={"Smile Design"}
@@ -98,6 +115,9 @@ function DropDownAdminPanel() {
         isSmileDesignModal={isSmileDesignModal}
         setIsSmileDesignModal={setIsSmileDesignModal}
         onClick={() => setIsSmileDesignModal(true)}
+        smile={smile}
+        setSmile={setSmile}
+        onClick3={() => setSmile(true)}
       />
       <DropDownCard
         title={"Digital Model Type"}
@@ -105,6 +125,9 @@ function DropDownAdminPanel() {
         isDigitalModalType={isDigitalModalType}
         setIsDigitalModalType={setIsDigitalModalType}
         onClick={() => setIsDigitalModalType(true)}
+        modelEdit={modelEdit}
+        setModelEdit={setModelEdit}
+        onClick2={() => setModelEdit(true)}
       />
       <DropDownCard
         title={"Denture"}
@@ -113,6 +136,9 @@ function DropDownAdminPanel() {
         isDentureModal={isDentureModal}
         setIsDentureModal={setIsDentureModal}
         onClick={() => setIsDentureModal(true)}
+        dentureEdit={dentureEdit}
+        setDentureEdit={setDentureEdit}
+        onClick2={() => setDentureEdit(true)}
       />
 
       <DropDownCard
@@ -121,6 +147,9 @@ function DropDownAdminPanel() {
         isDentalLabModal={isDentalLabModal}
         setIsDentalLabModal={setIsDentalLabModal}
         onClick={() => setIsDentalLabModal(true)}
+        labEdit={labEdit}
+        setLabEdit={setLabEdit}
+        onClick2={() => setLabEdit(true)}
       />
       <DropDownCard
         title={"Photogrammetry Files"}
@@ -129,6 +158,9 @@ function DropDownAdminPanel() {
         isPhotogrammetryModal={isPhotogrammetryModal}
         setIsPhotogrammetryModal={setIsPhotogrammetryModal}
         onClick={() => setIsPhotogrammetryModal(true)}
+        photoEdit={photoEdit}
+        setPhotoEdit={setPhotoEdit}
+        onClick2={() => setPhotoEdit(true)}
       />
     </div>
   );

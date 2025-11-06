@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  useRef,
+} from "react";
 import { ArrowUpRightIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import Pagination from "../Pagination";
@@ -42,7 +48,7 @@ import { ActionMenuDropdown } from "../DropDown/base-dropdown";
 
 /**
  * MainTable - Professional, reusable table component
- * 
+ *
  * @param {Object} props
  * @param {Array} props.data - Table data array
  * @param {TableColumn[]} props.columns - Column definitions
@@ -53,21 +59,21 @@ import { ActionMenuDropdown } from "../DropDown/base-dropdown";
  * @param {boolean} props.striped - Striped rows
  * @param {boolean} props.compact - Compact mode
  * @param {string} props.className - Additional className
- * 
+ *
  * @param {boolean} props.showSearch - Show search bar
  * @param {string} props.searchPlaceholder - Search placeholder
  * @param {function(value)} props.onSearch - Search handler
  * @param {string} props.searchValue - Controlled search value
- * 
+ *
  * @param {boolean} props.showSort - Show sort button
  * @param {string} props.sortLabel - Sort button label
  * @param {function(order)} props.onSort - Sort handler
  * @param {string} props.sortOrder - Current sort order ("asc"|"desc")
- * 
+ *
  * @param {Tab[]} props.tabs - Tabs configuration (optional)
  * @param {function(tabName)} props.onTabChange - Tab change handler
  * @param {number} props.activeTabIndex - Active tab index
- * 
+ *
  * @param {boolean} props.useBackendPagination - Use backend pagination
  * @param {number} props.currentPage - Current page (for backend pagination)
  * @param {number} props.totalPages - Total pages (for backend pagination)
@@ -111,7 +117,6 @@ export default function MainTable({
   totalResults = 0,
   pageSize = 10,
   onPageChange,
-
 }) {
   const [frontendCurrentPage, setFrontendCurrentPage] = useState(1);
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
@@ -127,23 +132,30 @@ export default function MainTable({
 
     if (openDropdownIndex !== null) {
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [openDropdownIndex]);
 
   // Handle search - just pass to parent
-  const handleSearch = useCallback((value) => {
-    if (onSearch) {
-      onSearch(value);
-    }
-  }, [onSearch]);
+  const handleSearch = useCallback(
+    (value) => {
+      if (onSearch) {
+        onSearch(value);
+      }
+    },
+    [onSearch]
+  );
 
   // Handle tab change - just pass to parent
-  const handleTabIndexChange = useCallback((index) => {
-    if (onTabChange && tabs[index]) {
-      onTabChange(tabs[index].name);
-    }
-  }, [onTabChange, tabs]);
+  const handleTabIndexChange = useCallback(
+    (index) => {
+      if (onTabChange && tabs[index]) {
+        onTabChange(tabs[index].name);
+      }
+    },
+    [onTabChange, tabs]
+  );
 
   // Get nested value from object
   const getNestedValue = useCallback((obj, path) => {
@@ -152,29 +164,35 @@ export default function MainTable({
   }, []);
 
   // Render cell content
-  const renderCellContent = useCallback((column, item, index) => {
-    const value = getNestedValue(item, column.key);
+  const renderCellContent = useCallback(
+    (column, item, index) => {
+      const value = getNestedValue(item, column.key);
 
-    if (column.render) {
-      return column.render(value, item, index);
-    }
+      if (column.render) {
+        return column.render(value, item, index);
+      }
 
-    // Default rendering
-    if (value === null || value === undefined) return "-";
-    if (typeof value === "boolean") return value ? "Yes" : "No";
-    if (typeof value === "number") return value.toLocaleString();
-    if (Array.isArray(value)) return value.join(", ");
-    if (typeof value === "object") return JSON.stringify(value);
+      // Default rendering
+      if (value === null || value === undefined) return "-";
+      if (typeof value === "boolean") return value ? "Yes" : "No";
+      if (typeof value === "number") return value.toLocaleString();
+      if (Array.isArray(value)) return value.join(", ");
+      if (typeof value === "object") return JSON.stringify(value);
 
-    return String(value);
-  }, [getNestedValue]);
+      return String(value);
+    },
+    [getNestedValue]
+  );
 
   // Get alignment class
   const getAlignmentClass = useCallback((align) => {
     switch (align) {
-      case "center": return "text-center";
-      case "right": return "text-right";
-      default: return "text-left";
+      case "center":
+        return "text-center";
+      case "right":
+        return "text-right";
+      default:
+        return "text-left";
     }
   }, []);
 
@@ -196,16 +214,16 @@ export default function MainTable({
     return data.slice(startIndex, startIndex + pageSize);
   }, [data, useBackendPagination, frontendCurrentPage, pageSize]);
 
-  const displayCurrentPage = useBackendPagination 
-    ? currentPage || 1 
+  const displayCurrentPage = useBackendPagination
+    ? currentPage || 1
     : frontendCurrentPage;
 
-  const displayTotalPages = useBackendPagination 
-    ? totalPages || 0 
+  const displayTotalPages = useBackendPagination
+    ? totalPages || 0
     : Math.ceil(data.length / pageSize);
 
-  const displayTotalResults = useBackendPagination 
-    ? totalResults || 0 
+  const displayTotalResults = useBackendPagination
+    ? totalResults || 0
     : data.length;
 
   const handlePageChange = useBackendPagination
@@ -241,16 +259,21 @@ export default function MainTable({
                 {columns.map((column, idx) => (
                   <th
                     key={idx}
-                    className={`py-5 px-3 font-medium text-secondaryText whitespace-nowrap ${
-                      getAlignmentClass(column.align)
-                    } ${getResponsiveColumnClass(column)} ${column.headerClassName || ""}`}
+                    className={`py-5 px-3 font-medium text-secondaryText whitespace-nowrap ${getAlignmentClass(
+                      column.align
+                    )} ${getResponsiveColumnClass(column)} ${
+                      column.headerClassName || ""
+                    }`}
                     style={column.width ? { width: column.width } : {}}
                   >
                     {column.label}
                   </th>
                 ))}
                 {actionMenuItems.length > 0 && (
-                  <th className="py-5 px-3 text-center" style={{ width: "60px", minWidth: "60px" }}></th>
+                  <th
+                    className="py-5 px-3 text-center"
+                    style={{ width: "60px", minWidth: "60px" }}
+                  ></th>
                 )}
               </tr>
             </thead>
@@ -268,21 +291,30 @@ export default function MainTable({
                       key={colIdx}
                       className={`px-4 py-4 text-[#333333] text-xs ${
                         compact ? "py-2" : ""
-                      } ${getAlignmentClass(column.align)} ${getResponsiveColumnClass(column)} ${column.className || ""}`}
+                      } ${getAlignmentClass(
+                        column.align
+                      )} ${getResponsiveColumnClass(column)} ${
+                        column.className || ""
+                      }`}
                       style={column.width ? { width: column.width } : {}}
                     >
                       {renderCellContent(column, item, index)}
                     </td>
                   ))}
-                  
+
                   {/* Action Menu */}
                   {actionMenuItems.length > 0 && (
                     <td className="px-4 py-2 text-right relative">
-                      <div ref={openDropdownIndex === index ? dropdownRef : null} className="relative inline-block">
+                      <div
+                        ref={openDropdownIndex === index ? dropdownRef : null}
+                        className="relative inline-block"
+                      >
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setOpenDropdownIndex(openDropdownIndex === index ? null : index);
+                            setOpenDropdownIndex(
+                              openDropdownIndex === index ? null : index
+                            );
                           }}
                           className="p-2 hover:bg-gray-100 rounded-full"
                         >
@@ -340,9 +372,13 @@ export default function MainTable({
             />
           </div>
         )}
-        <TabsStepper 
+        <TabsStepper
           steps={tabSteps}
-          selectedIndex={controlledActiveTabIndex !== undefined ? controlledActiveTabIndex : 0}
+          selectedIndex={
+            controlledActiveTabIndex !== undefined
+              ? controlledActiveTabIndex
+              : 0
+          }
           onTabChange={handleTabIndexChange}
         />
       </div>

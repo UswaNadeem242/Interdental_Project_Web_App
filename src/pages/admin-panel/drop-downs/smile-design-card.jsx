@@ -1,10 +1,13 @@
 import { useState } from "react";
 
-export default function SmileDesignCard({ label, image }) {
+export default function SmileDesignCard({ label, image, onClick }) {
   const [enabled, setEnabled] = useState(false);
 
   return (
-    <div className=" mx-auto bg-bgWhite rounded-xl shadow-sm border-2 p-3 border-[#0000000D] flex flex-col gap-3 ">
+    <div
+      className=" mx-auto bg-bgWhite rounded-xl shadow-sm border-2 p-3 border-[#0000000D] flex flex-col gap-3 "
+      onClick={() => onClick()}
+    >
       {/* Image */}
 
       <div className="">
@@ -20,7 +23,11 @@ export default function SmileDesignCard({ label, image }) {
         <p className="text-gray-800 font-medium text-sm">{label}</p>
         {/* Toggle */}
         <button
-          onClick={() => setEnabled(!enabled)}
+          // onClick={() => setEnabled(!enabled)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setEnabled(!enabled);
+          }}
           className={`relative w-10 h-6 rounded-full transition-colors duration-300 ${
             enabled ? "bg-[#001D58]" : "bg-gray-300"
           }`}
