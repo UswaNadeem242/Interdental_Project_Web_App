@@ -15,7 +15,7 @@ const DoctorsAdminPanel = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
-  const [sortLabel, setSortLabel] = useState("Sort By");
+  const [sortLabel, setSortLabel] = useState("Desc");
   const [showDetail, setShowDetail] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
   const [doctors, setDoctors] = useState([]);
@@ -109,7 +109,7 @@ const DoctorsAdminPanel = () => {
   // Handle sort change
   const handleSort = useCallback((order) => {
     setSortOrder(order);
-    setSortLabel(order === "asc" ? "Ascending" : "Descending");
+    setSortLabel(order === "asc" ? "Asc" : "Desc");
     setCurrentPage(1); // Reset to first page on sort
   }, []);
 
