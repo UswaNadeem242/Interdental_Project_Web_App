@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import Icons from "../../components/Icons";
 
 const filterOptions = [
-  { value: "all", label: "Category" },
+  { value: "all", label: "All" },
   { value: "categoryName", label: "Category name" },
   { value: "name", label: "Product name" },
   { value: "productId", label: "Product Id" },
