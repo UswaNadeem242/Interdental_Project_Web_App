@@ -11,6 +11,7 @@ import ChevronDownIcon from "../../../icon/ChevronDownIcon";
 import {
   NameAndPriceEditModal,
   NameEditModal,
+  SmileDesignEditModal,
 } from "../../../modals/EditModals";
 
 const materials = [
@@ -94,6 +95,23 @@ function DropDownCard({
   setIsPhotogrammetryModal,
   setState,
   state,
+  onClick2,
+  onClick3,
+
+  materialEdit,
+  setMaterialEdit,
+  setCrownEdit,
+  crownEdit,
+  setModelEdit,
+  modelEdit,
+  setDentureEdit,
+  dentureEdit,
+  setLabEdit,
+  labEdit,
+  setPhotoEdit,
+  photoEdit,
+  setSmile,
+  smile,
 }) {
   // CLOSED by default
   const [isExpanded, setIsExpanded] = useState(false);
@@ -153,12 +171,20 @@ function DropDownCard({
                 showPrice={showPrice}
                 // onClick={() => setOpen(true)}
                 setOpen={setOpen}
+                onClick={onClick2}
               />
             ))}
 
           {smileData &&
             smileData.map((d, key) => (
-              <SmileDesignCard key={key} label={d.name} image={d.image} />
+              <SmileDesignCard
+                key={key}
+                label={d.name}
+                image={d.image}
+                // smile={smile}
+                // setSmile={setSmile}
+                onClick={onClick3}
+              />
             ))}
         </div>
 
@@ -212,10 +238,52 @@ function DropDownCard({
           />
         )}
 
-        {open && (
+        {state && (
+          <NameEditModal
+            onClose={() => setState(false)}
+            title="Edit Scanner Type "
+          />
+        )}
+        {materialEdit && (
           <NameAndPriceEditModal
-            onClose={() => setOpen(false)}
-            title="Edit Option "
+            onClose={() => setMaterialEdit(false)}
+            title="Edit Material "
+          />
+        )}
+        {crownEdit && (
+          <NameAndPriceEditModal
+            onClose={() => setCrownEdit(false)}
+            title="Edit Smart Crown "
+          />
+        )}
+        {modelEdit && (
+          <NameAndPriceEditModal
+            onClose={() => setModelEdit(false)}
+            title="Edit Digital Model "
+          />
+        )}
+        {dentureEdit && (
+          <NameEditModal
+            onClose={() => setDentureEdit(false)}
+            title="Edit Denture "
+          />
+        )}
+        {labEdit && (
+          <NameAndPriceEditModal
+            onClose={() => setLabEdit(false)}
+            title="Edit Dental Lab Alliance "
+          />
+        )}
+        {photoEdit && (
+          <NameEditModal
+            onClose={() => setPhotoEdit(false)}
+            title="Edit Photogrammetry Files "
+          />
+        )}
+        {smile && (
+          <SmileDesignEditModal
+            onClose={() => setSmile(false)}
+            title="Edit Smile Design"
           />
         )}
       </div>

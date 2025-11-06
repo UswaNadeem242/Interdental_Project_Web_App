@@ -20,7 +20,7 @@ export const ToggleSwitch = ({
 
   return (
     <div
-      onClick={() => setOpen(true)}
+      onClick={() => onClick()}
       className="flex md:min-w-96 items-center justify-between gap-20  py-2 px-3 bg-white border-2 border-gray-100 cursor-pointer "
     >
       {/* Label Text (e.g., '3Shape') */}

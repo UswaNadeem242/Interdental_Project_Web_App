@@ -11,7 +11,7 @@ export const NameEditModal = ({
   onClose,
 }) => {
   return (
-    <div className="fixed inset-0  backdrop-blur-sm flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
       <div className="bg-white rounded-2xl shadow-lg w-[90%] max-w-md p-6 relative animate-scaleUp">
         {/* Close button */}
         <button
@@ -118,7 +118,7 @@ export const SmileDesignEditModal = ({
   onClose,
 }) => {
   return (
-    <div className="fixed inset-0  backdrop-blur-sm flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
       <div className="bg-white rounded-2xl shadow-lg w-[90%] max-w-md p-6 relative animate-scaleUp">
         {/* Close button */}
         <button
