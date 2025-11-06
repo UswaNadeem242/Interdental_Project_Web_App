@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useMemo,
-  useEffect,
-  useRef,
-} from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { ArrowUpRightIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import Pagination from "../Pagination";
@@ -12,6 +6,7 @@ import SearchBar from "../SearchBar";
 import TabsStepper from "../TabsStepper";
 import OptionsDots from "../../icon/options-dots";
 import { ActionMenuDropdown } from "../DropDown/base-dropdown";
+import CustomCheckbox from "../CustomCheckbox";
 
 /**
  * TableColumn definition
@@ -69,7 +64,15 @@ import { ActionMenuDropdown } from "../DropDown/base-dropdown";
  * @param {string} props.sortLabel - Sort button label
  * @param {function(order)} props.onSort - Sort handler
  * @param {string} props.sortOrder - Current sort order ("asc"|"desc")
- *
+ * 
+ * @param {ReactNode} props.searchBarActions - Filter dropdown to render inside search bar
+ * @param {ReactNode} props.searchBarRightActions - Components to render alongside search bar (e.g., buttons)
+ * 
+ * @param {boolean} props.showCheckboxes - Show checkbox column
+ * @param {Array} props.selectedRows - Array of selected row IDs/indices
+ * @param {function(selectedRows)} props.onSelectionChange - Handler for selection changes
+ * @param {function(item)} props.getRowId - Function to get unique ID for each row (defaults to index)
+ * 
  * @param {Tab[]} props.tabs - Tabs configuration (optional)
  * @param {function(tabName)} props.onTabChange - Tab change handler
  * @param {number} props.activeTabIndex - Active tab index
@@ -98,12 +101,20 @@ export default function MainTable({
   onSearch,
   searchValue: controlledSearchValue,
   searchClassName,
+  searchBarActions,
+  searchBarRightActions,
 
   // Sort props
   showSort = false,
   sortLabel = "Sort By",
   onSort,
   sortOrder,
+
+  // Checkbox props
+  showCheckboxes = false,
+  selectedRows = [],
+  onSelectionChange,
+  getRowId,
 
   // Tabs props
   tabs = [],
@@ -119,23 +130,6 @@ export default function MainTable({
   onPageChange,
 }) {
   const [frontendCurrentPage, setFrontendCurrentPage] = useState(1);
-  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
-  const dropdownRef = useRef(null);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdownIndex(null);
-      }
-    };
-
-    if (openDropdownIndex !== null) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
-    }
-  }, [openDropdownIndex]);
 
   // Handle search - just pass to parent
   const handleSearch = useCallback(
@@ -209,7 +203,9 @@ export default function MainTable({
     if (useBackendPagination) {
       return data; // Backend already filtered and paginated
     }
+    
     // Frontend pagination only
+    if (data.length === 0) return [];
     const startIndex = (frontendCurrentPage - 1) * pageSize;
     return data.slice(startIndex, startIndex + pageSize);
   }, [data, useBackendPagination, frontendCurrentPage, pageSize]);
@@ -218,9 +214,9 @@ export default function MainTable({
     ? currentPage || 1
     : frontendCurrentPage;
 
-  const displayTotalPages = useBackendPagination
-    ? totalPages || 0
-    : Math.ceil(data.length / pageSize);
+  const displayTotalPages = useBackendPagination 
+    ? totalPages || 0 
+    : (data.length > 0 ? Math.ceil(data.length / pageSize) : 0);
 
   const displayTotalResults = useBackendPagination
     ? totalResults || 0
@@ -229,6 +225,39 @@ export default function MainTable({
   const handlePageChange = useBackendPagination
     ? onPageChange || (() => {})
     : setFrontendCurrentPage;
+
+  // Checkbox handling
+  const handleCheckboxChange = useCallback((rowId, checked) => {
+    if (!onSelectionChange) return;
+    
+    const newSelection = checked
+      ? [...selectedRows, rowId]
+      : selectedRows.filter((id) => id !== rowId);
+    
+    onSelectionChange(newSelection);
+  }, [selectedRows, onSelectionChange]);
+
+  const handleSelectAll = useCallback((checked) => {
+    if (!onSelectionChange) return;
+    
+    const newSelection = checked
+      ? displayData.map((item, index) => getRowId ? getRowId(item, index) : index)
+      : [];
+    
+    onSelectionChange(newSelection);
+  }, [displayData, onSelectionChange, getRowId]);
+
+  const isRowSelected = useCallback((rowId) => {
+    return selectedRows.includes(rowId);
+  }, [selectedRows]);
+
+  const isAllSelected = useMemo(() => {
+    if (displayData.length === 0) return false;
+    return displayData.every((item, index) => {
+      const rowId = getRowId ? getRowId(item, index) : index;
+      return isRowSelected(rowId);
+    });
+  }, [displayData, selectedRows, getRowId, isRowSelected]);
 
   // Build table content
   const tableContent = (
@@ -253,7 +282,7 @@ export default function MainTable({
         </div>
       ) : (
         <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-350px)] scrollbar-hidden">
-          <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm">
+          <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm w-full">
             <thead className="sticky top-0 border-b-2 z-10">
               <tr className="font-poppins font-medium bg-bgWhite text-xs text-secondaryText capitalize">
                 {columns.map((column, idx) => (
@@ -266,7 +295,17 @@ export default function MainTable({
                     }`}
                     style={column.width ? { width: column.width } : {}}
                   >
-                    {column.label}
+                    {showCheckboxes && idx === 0 ? (
+                      <div className="flex items-center gap-4">
+                        <CustomCheckbox
+                          checked={isAllSelected}
+                          onChange={handleSelectAll}
+                        />
+                        <span>{column.label}</span>
+                      </div>
+                    ) : (
+                      column.label
+                    )}
                   </th>
                 ))}
                 {actionMenuItems.length > 0 && (
@@ -278,65 +317,66 @@ export default function MainTable({
               </tr>
             </thead>
             <tbody>
-              {displayData.map((item, index) => (
-                <tr
-                  key={index}
-                  className={`border-b border-gray-200 transition-all font-poppins ${
-                    onRowClick ? "cursor-pointer hover:bg-gray-50" : ""
-                  } ${striped && index % 2 === 1 ? "bg-gray-50" : ""}`}
-                  onClick={() => onRowClick?.(item, index)}
-                >
-                  {columns.map((column, colIdx) => (
-                    <td
-                      key={colIdx}
-                      className={`px-4 py-4 text-[#333333] text-xs ${
-                        compact ? "py-2" : ""
-                      } ${getAlignmentClass(
-                        column.align
-                      )} ${getResponsiveColumnClass(column)} ${
-                        column.className || ""
-                      }`}
-                      style={column.width ? { width: column.width } : {}}
-                    >
-                      {renderCellContent(column, item, index)}
-                    </td>
-                  ))}
-
-                  {/* Action Menu */}
-                  {actionMenuItems.length > 0 && (
-                    <td className="px-4 py-2 text-right relative">
-                      <div
-                        ref={openDropdownIndex === index ? dropdownRef : null}
-                        className="relative inline-block"
+              {displayData.map((item, index) => {
+                const rowId = getRowId ? getRowId(item, index) : index;
+                const isSelected = isRowSelected(rowId);
+                
+                return (
+                  <tr
+                    key={index}
+                    className={`border-b border-gray-200 transition-all font-poppins ${
+                      onRowClick ? "cursor-pointer hover:bg-gray-50" : ""
+                    } ${striped && index % 2 === 1 ? "bg-gray-50" : ""}`}
+                    onClick={() => onRowClick?.(item, index)}
+                  >
+                    {columns.map((column, colIdx) => (
+                      <td
+                        key={colIdx}
+                        className={`px-3 py-4 text-[#333333] text-xs ${
+                          compact ? "py-2" : ""
+                        } ${getAlignmentClass(column.align)} ${getResponsiveColumnClass(column)} ${column.className || ""}`}
+                        style={column.width ? { width: column.width } : {}}
                       >
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setOpenDropdownIndex(
-                              openDropdownIndex === index ? null : index
-                            );
-                          }}
-                          className="p-2 hover:bg-gray-100 rounded-full"
-                        >
-                          <OptionsDots />
-                        </button>
-                        {openDropdownIndex === index && (
-                          <ActionMenuDropdown
-                            actionMenuItems={actionMenuItems}
-                            rowData={item}
-                            onClose={() => setOpenDropdownIndex(null)}
-                          />
+                        {showCheckboxes && colIdx === 0 ? (
+                          <div className="flex items-center gap-4">
+                            <CustomCheckbox
+                              checked={isSelected}
+                              onChange={(checked) => handleCheckboxChange(rowId, checked)}
+                            />
+                            {renderCellContent(column, item, index)}
+                          </div>
+                        ) : (
+                          renderCellContent(column, item, index)
                         )}
-                      </div>
-                    </td>
-                  )}
-                </tr>
-              ))}
+                      </td>
+                    ))}
+                    
+                    {/* Action Menu */}
+                    {actionMenuItems.length > 0 && (
+                      <td className="px-4 py-2 text-right relative">
+                        <ActionMenuDropdown
+                          actionMenuItems={actionMenuItems}
+                          rowData={item}
+                          triggerButton={
+                            <button
+                              type="button"
+                              className="p-2 hover:bg-gray-100 rounded-full"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <OptionsDots />
+                            </button>
+                          }
+                        />
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       )}
-      {displayData.length > 0 && !loading && displayTotalPages > 0 && (
+      {displayData.length > 0 && !loading && displayTotalPages > 1 && (
         <Pagination
           currentPage={displayCurrentPage}
           totalPages={displayTotalPages}
@@ -346,13 +386,41 @@ export default function MainTable({
     </div>
   );
 
+  // Render search bar section (reusable)
+  const renderSearchBar = () => {
+    if (!showSearch) return null;
+
+    return (
+      <div className="mb-6">
+        <div className="flex items-center gap-3">
+          <div className="flex-1">
+            <SearchBar
+              title={showSort ? sortLabel : undefined}
+              onSearch={handleSearch}
+              onSort={showSort ? onSort : undefined}
+              placeholder={searchPlaceholder}
+              className={searchClassName}
+              secondaryButton={showSort ? undefined : "hide"}
+              filterDropdown={searchBarActions}
+            />
+          </div>
+          {searchBarRightActions && (
+            <div className="flex items-center">
+              {searchBarRightActions}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Render with tabs
   if (tabs.length > 0) {
-    const tabSteps = tabs.map((tab, idx) => ({
+    const tabSteps = tabs.map((tab) => ({
       name: tab.name,
       content: tab.content || tableContent,
     }));
 
-    // Handle tab change wrapper
     const handleTabIndexChange = (index) => {
       if (onTabChange && tabs[index]) {
         onTabChange(tabs[index].name);
@@ -361,18 +429,8 @@ export default function MainTable({
 
     return (
       <div className={className}>
-        {showSearch && (
-          <div className="mb-4">
-            <SearchBar
-              title={showSort ? sortLabel : undefined}
-              onSearch={handleSearch}
-              onSort={showSort ? onSort : undefined}
-              placeholder={searchPlaceholder}
-              className={searchClassName}
-            />
-          </div>
-        )}
-        <TabsStepper
+        {renderSearchBar()}
+        <TabsStepper 
           steps={tabSteps}
           selectedIndex={
             controlledActiveTabIndex !== undefined
@@ -385,20 +443,10 @@ export default function MainTable({
     );
   }
 
-  // Regular table without tabs
+  // Render without tabs
   return (
     <div className={className}>
-      {showSearch && (
-        <div className="mb-4">
-          <SearchBar
-            title={showSort ? sortLabel : undefined}
-            onSearch={handleSearch}
-            onSort={showSort ? onSort : undefined}
-            placeholder={searchPlaceholder}
-            className={searchClassName}
-          />
-        </div>
-      )}
+      {renderSearchBar()}
       {tableContent}
     </div>
   );

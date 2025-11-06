@@ -1,191 +1,176 @@
-import { useEffect, useRef, useState } from "react";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { useFloating, offset, flip, shift } from "@floating-ui/react";
+import { useCallback, useEffect } from "react";
 
 /**
- * Base dropdown component for action menus
+ * Scroll close handler component - closes dropdown on scroll
+ */
+const ScrollCloseHandler = ({ open, close }) => {
+  useEffect(() => {
+    if (!open) return;
+
+    const handleScroll = () => {
+      close();
+    };
+
+    // Listen to scroll events with capture phase to catch all scroll events
+    window.addEventListener("scroll", handleScroll, { passive: true, capture: true });
+    document.addEventListener("scroll", handleScroll, { passive: true, capture: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll, { capture: true });
+      document.removeEventListener("scroll", handleScroll, { capture: true });
+    };
+  }, [open, close]);
+
+  return null;
+};
+
+/**
+ * Base dropdown component for action menus using Headless UI Menu with Floating UI for positioning
  * @param {Object} props
  * @param {Array} props.actionMenuItems - Array of action menu items
  * @param {Object} props.rowData - The row data item
- * @param {function} props.onClose - Close handler
+ * @param {ReactNode} props.triggerButton - Custom trigger button (optional)
  */
 export const ActionMenuDropdown = ({
   actionMenuItems = [],
   rowData,
-  onClose,
+  triggerButton,
 }) => {
-  const dropdownRef = useRef(null);
-  const [dropdownPosition, setDropdownPosition] = useState("bottom");
-  const [isPositioned, setIsPositioned] = useState(false);
+  // Floating UI configuration for automatic positioning with edge detection
+  const { refs, floatingStyles } = useFloating({
+    placement: "bottom-end", // Start with bottom-right, will auto-flip
+    middleware: [
+      offset(4), // 4px gap from trigger
+      flip({ // Automatically flip to top if not enough space below
+        fallbackPlacements: ["top-end", "bottom-start", "top-start"],
+      }),
+      shift({ // Shift to keep within viewport
+        padding: 8,
+      }),
+    ],
+  });
 
-  useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    const originalTouchAction = document.body.style.touchAction;
-
-    // Prevent scroll (desktop + mobile)
-    document.body.style.overflow = "hidden"; // desktop
-    document.body.style.touchAction = "none"; // iOS/Android
-
-    // Block wheel/touch/keyboard scrolling
-    const preventDefault = (e) => {
-      e.preventDefault();
-    };
-    const preventKeys = (e) => {
-      const keys = [
-        "ArrowUp",
-        "ArrowDown",
-        "ArrowLeft",
-        "ArrowRight",
-        "Space",
-        "PageUp",
-        "PageDown",
-        "Home",
-        "End",
-      ];
-      if (keys.includes(e.code) || keys.includes(e.key)) {
-        e.preventDefault();
-      }
-    };
-
-    window.addEventListener("wheel", preventDefault, { passive: false });
-    window.addEventListener("touchmove", preventDefault, { passive: false });
-    window.addEventListener("keydown", preventKeys, { passive: false });
-
-    return () => {
-      // Restore
-      document.body.style.overflow = originalOverflow;
-      document.body.style.touchAction = originalTouchAction;
-      window.removeEventListener("wheel", preventDefault, { passive: false });
-      window.removeEventListener("touchmove", preventDefault, {
-        passive: false,
-      });
-      window.removeEventListener("keydown", preventKeys, { passive: false });
-    };
-  }, []);
-
-  // Handle outside click detection similar to NotificationsDropdown
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      // Don't close if clicking on the options button (three dots)
-      const optionsButton = event.target.closest("button");
-      if (optionsButton && optionsButton.querySelector("svg")) {
-        // Check if it's the options dots button by looking for the svg
-        return;
-      }
-
-      // Close if clicking outside the dropdown
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
-
-    // Add event listener with a small delay to prevent immediate closing
-    const timeoutId = setTimeout(() => {
-      document.addEventListener("mousedown", handleOutsideClick);
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [onClose]);
-
-  // Calculate position on mount only (based on trigger button/container, not the menu itself)
-  useEffect(() => {
-    const calculatePosition = () => {
-      if (dropdownRef.current) {
-        const anchor = dropdownRef.current.parentElement || dropdownRef.current;
-        const rect = anchor.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        
-        // Calculate approximate dropdown height based on number of items
-        // Each item is approximately 40px (py-2 = 8px top + 8px bottom + ~24px content)
-        const itemHeight = 40;
-        const dropdownHeight = actionMenuItems.length * itemHeight + 16; // +16 for padding
-
-        // Space relative to viewport using the trigger/anchor, not the menu
-        const spaceBelow = viewportHeight - rect.bottom;
-        const spaceAbove = rect.top;
-
-        // Position above if not enough space below AND there's more space above
-        if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
-          setDropdownPosition("top");
-        } else {
-          setDropdownPosition("bottom");
-        }
-
-        // Mark as positioned to make visible
-        setIsPositioned(true);
-      }
-    };
-
-    // Small delay to ensure dropdown is rendered
-    const timer = setTimeout(calculatePosition, 10);
-
-    return () => clearTimeout(timer);
-  }, [actionMenuItems.length]);
+  // Stable ref callback to prevent re-renders
+  const setReferenceRef = useCallback((node) => {
+    refs.setReference(node);
+  }, []); // refs.setReference is stable, no need to include it in deps
 
   return (
-    <div
-      ref={dropdownRef}
-      onClick={(e) => e.stopPropagation()}
-      className={`absolute right-0 min-w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50 transition-opacity duration-150 ${
-        dropdownPosition === "top" ? "bottom-full mb-1" : "top-full mt-1"
-      } ${isPositioned ? "opacity-100" : "opacity-0"}`}
-    >
-      <ul className="py-1 text-sm text-gray-700 font-poppins">
-        {actionMenuItems.map((menuItem, menuIndex) => {
-          const label = typeof menuItem.label === 'function' 
-            ? menuItem.label(rowData) 
-            : menuItem.label;
-          const icon = typeof menuItem.icon === 'function'
-            ? menuItem.icon(rowData)
-            : menuItem.icon;
-          const isDisabled = typeof menuItem.disabled === 'function'
-            ? menuItem.disabled(rowData)
-            : menuItem.disabled || false;
-          const variant = typeof menuItem.variant === 'function'
-            ? menuItem.variant(rowData)
-            : menuItem.variant || "default";
-          const textColor = typeof menuItem.textColor === 'function'
-            ? menuItem.textColor(rowData)
-            : menuItem.textColor;
-          const iconColor = typeof menuItem.iconColor === 'function'
-            ? menuItem.iconColor(rowData)
-            : menuItem.iconColor;
-
-          // Determine text color class
-          let textColorClass = "text-gray-700";
-          if (textColor) {
-            textColorClass = textColor;
-          } else if (variant === "destructive") {
-            textColorClass = "text-red-500 hover:text-red-600";
-          }
-
-          // Determine icon color class (use textColor if iconColor not specified)
-          const iconColorClass = iconColor || textColorClass;
-
-          return (
-            <li
-              key={menuIndex}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!isDisabled) {
-                  menuItem.onClick(rowData);
-                  onClose();
-                }
-              }}
-              className={`px-4 py-2 text-xs font-poppins capitalize font-normal hover:bg-background cursor-pointer flex items-center gap-2 ${textColorClass} ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+    <Menu as="div" className="relative inline-block text-left">
+      {({ open, close }) => (
+        <>
+          <ScrollCloseHandler open={open} close={close} />
+          {triggerButton ? (
+            <MenuButton
+              ref={setReferenceRef}
+              as="div"
+              className="inline-block"
+              onClick={(e) => e.stopPropagation()}
             >
-              {icon && (
-                <span className={`flex items-center ${iconColorClass}`}>
-                  {icon}
-                </span>
-              )}
-              <span className="whitespace-nowrap">{label}</span>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+              {triggerButton}
+            </MenuButton>
+          ) : (
+            <MenuButton
+              ref={setReferenceRef}
+              className="p-2 hover:bg-gray-100 rounded-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <svg
+                className="w-5 h-5 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                />
+              </svg>
+            </MenuButton>
+          )}
+
+          <MenuItems
+            ref={refs.setFloating}
+            style={floatingStyles}
+            className="min-w-44 rounded-md bg-white border border-gray-200 shadow-lg z-[60] focus:outline-none"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="py-1">
+              {actionMenuItems.map((menuItem, menuIndex) => {
+                const label =
+                  typeof menuItem.label === "function"
+                    ? menuItem.label(rowData)
+                    : menuItem.label;
+                const icon =
+                  typeof menuItem.icon === "function"
+                    ? menuItem.icon(rowData)
+                    : menuItem.icon;
+                const isDisabled =
+                  typeof menuItem.disabled === "function"
+                    ? menuItem.disabled(rowData)
+                    : menuItem.disabled || false;
+                const variant =
+                  typeof menuItem.variant === "function"
+                    ? menuItem.variant(rowData)
+                    : menuItem.variant || "default";
+                const textColor =
+                  typeof menuItem.textColor === "function"
+                    ? menuItem.textColor(rowData)
+                    : menuItem.textColor;
+                const iconColor =
+                  typeof menuItem.iconColor === "function"
+                    ? menuItem.iconColor(rowData)
+                    : menuItem.iconColor;
+
+                // Determine text color class
+                let textColorClass = "text-gray-700";
+                if (textColor) {
+                  textColorClass = textColor;
+                } else if (variant === "destructive") {
+                  textColorClass = "text-red-500 hover:text-red-600";
+                }
+
+                // Determine icon color class (use textColor if iconColor not specified)
+                const iconColorClass = iconColor || textColorClass;
+
+                return (
+                  <MenuItem key={menuIndex} disabled={isDisabled}>
+                    {({ active, disabled }) => (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (!disabled) {
+                            menuItem.onClick(rowData);
+                          }
+                        }}
+                        className={`w-full text-left px-4 py-2 text-xs font-poppins capitalize font-normal flex items-center gap-2 ${
+                          active && !disabled ? "bg-background" : ""
+                        } ${textColorClass} ${
+                          disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                        }`}
+                        disabled={disabled}
+                      >
+                        {icon && (
+                          <span className={`flex items-center ${iconColorClass}`}>
+                            {icon}
+                          </span>
+                        )}
+                        <span className="whitespace-nowrap">{label}</span>
+                      </button>
+                    )}
+                  </MenuItem>
+                );
+              })}
+            </div>
+          </MenuItems>
+        </>
+      )}
+    </Menu>
   );
 };
 

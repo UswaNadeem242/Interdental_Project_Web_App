@@ -39,7 +39,7 @@ const AddBlogModal = ({ onClose, data }) => {
   };
   //
   const [formData, setFormData] = useState(null);
-  const [showSureModal, setShowSureModal] = useState(false); // ⬅️ For AreYouSureModel
+  const [showSureModal, setShowSureModal] = useState(false);
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Title is required"),

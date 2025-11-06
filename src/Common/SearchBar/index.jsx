@@ -1,168 +1,108 @@
-// import { useState } from "react";
-// import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-// import { SecondaryButton } from "../Button";
-// import FilterIcon from "../../icon/FilterIcon";
-
-// export default function SearchBar({
-//   onSearch,
-//   onSort,
-//   placeholder = "Search...",
-//   title,
-// }) {
-//   const [query, setQuery] = useState("");
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   const handleSearch = (e) => {
-//     const value = e.target.value;
-//     setQuery(value);
-//     if (onSearch) onSearch(value); // live search
-//   };
-
-//   const handleSort = (order) => {
-//     setIsOpen(false);
-//     if (onSort) onSort(order); // 🚀 send "asc" | "desc" to parent
-//   };
-//   return (
-//     <div className="flex items-center gap-3 w-full border  bg-[#F8F8F8] rounded-md shadow-sm px-3 py-1">
-//       {/* Search Icon */}
-//       <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
-
-//       {/* Input Field */}
-//       <input
-//         type="text"
-//         value={query}
-//         onChange={handleSearch}
-//         placeholder={placeholder}
-//         className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-[#F8F8F8]"
-//       />
-
-//       {/* Sort Button */}
-//       {/* <SecondaryButton
-//                 title={title}
-//                 variant="outline"
-//                 size="sm"
-//                 onClick={onSort}
-//                 className="rounded-md px-2 py-2 bg-white text-[#344054] flex gap-2"
-//                 icon={<FilterIcon className="w-4 h-4" />}
-//             >
-//                 {title}
-
-//             </SecondaryButton> */}
-
-//       {/* Input Field */}
-
-//       {/* Sort Dropdown */}
-//       <div className="relative">
-//         <SecondaryButton
-//           title={title}
-//           variant="outline"
-//           size="sm"
-//           onClick={() => setIsOpen((prev) => !prev)}
-//           className="rounded-md px-2 py-2 bg-white text-[#344054] flex gap-2"
-//           icon={<FilterIcon className="w-4 h-4" />}
-//         >
-//           {title}
-//         </SecondaryButton>
-
-//         {isOpen && (
-//           <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow-lg z-20">
-//             <button
-//               onClick={() => handleSort("asc")}
-//               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-//             >
-//               Ascending
-//             </button>
-//             <button
-//               onClick={() => handleSort("desc")}
-//               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-//             >
-//               Descending
-//             </button>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-//
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { SecondaryButton } from "../Button";
 import FilterIcon from "../../icon/FilterIcon";
 
+/**
+ * SearchBar Component
+ * 
+ * A reusable search bar with optional filter dropdown or sort button
+ * 
+ * @param {function} onSearch - Callback when search value changes
+ * @param {function} onSort - Callback when sort order changes (asc/desc)
+ * @param {string} placeholder - Input placeholder text
+ * @param {string} title - Sort button title
+ * @param {string} secondaryButton - Show/hide sort button ("hide" to hide)
+ * @param {string} className - Additional CSS classes
+ * @param {ReactNode} filterDropdown - Custom filter dropdown component
+ */
 export default function SearchBar({
   onSearch,
   onSort,
   placeholder = "Search here...",
   title,
   secondaryButton,
-  className,
+  className = "",
+  filterDropdown,
 }) {
   const [query, setQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+
   const handleSearch = (e) => {
     const value = e.target.value;
     setQuery(value);
-
-    // Trigger search immediately from first character
+    
     if (onSearch) {
       onSearch(value.trim().toLowerCase());
     }
   };
- 
+
   const handleSort = (order) => {
-    setIsOpen(false);
-    if (onSort) onSort(order); // 🚀 send "asc" | "desc" to parent
+    setIsSortOpen(false);
+    if (onSort) {
+      onSort(order);
+    }
   };
+
+  const hasRightAction = filterDropdown || secondaryButton !== "hide";
+
   return (
     <div
-      className={`flex items-center gap-3 w-full border  bg-background rounded-md shadow-sm px-3 py-1 ${className}`}
+      className={`relative flex items-center gap-3 w-full border bg-background rounded-md shadow-sm px-3 py-3 ${className}`}
     >
-      {/* Search Icon */}
       <MagnifyingGlassIcon className="w-5 h-5 text-primaryText" />
 
-      {/* Input Field */}
       <input
         type="text"
         value={query}
         onChange={handleSearch}
-        placeholder={placeholder || 'Search here ...'}
-        className="flex-1 outline-none text-sm text-primaryText placeholder-primaryText bg-background"
+        placeholder={placeholder}
+        className={`flex-1 outline-none text-sm text-primaryText placeholder-primaryText bg-background ${
+          hasRightAction ? "pr-28" : ""
+        }`}
       />
-      {/* Sort Dropdown */}
 
-      <div className="relative">
-        {secondaryButton !== "hide" && (
-          <SecondaryButton
-            title={title}
-            variant="outline"
-            size="sm"
-            onClick={() => setIsOpen((prev) => !prev)}
-            className="rounded-md px-2 py-2 bg-white text-[#344054] flex gap-2"
-            icon={<FilterIcon className="w-4 h-4" />}
-          >
-            {title}
-          </SecondaryButton>
-        )}
+      {/* Filter Dropdown (Products page) */}
+      {filterDropdown && (
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-50">
+          {filterDropdown}
+        </div>
+      )}
 
-        {isOpen && (
-          <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow-lg z-20">
-            <button
-              onClick={() => handleSort("asc")}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      {/* Sort Dropdown (Doctors page) */}
+      {secondaryButton !== "hide" && (
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-50">
+          <div className="relative">
+            <SecondaryButton
+              title={title}
+              variant="outline"
+              size="sm"
+              onClick={() => setIsSortOpen((prev) => !prev)}
+              className="rounded-md px-2 py-2 bg-white text-[#344054] flex gap-2 h-[36px]"
+              icon={<FilterIcon className="w-4 h-4" />}
             >
-              Ascending
-            </button>
-            <button
-              onClick={() => handleSort("desc")}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Descending
-            </button>
+              {title}
+            </SecondaryButton>
+
+            {isSortOpen && (
+              <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow-lg z-[100]">
+                <button
+                  onClick={() => handleSort("asc")}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Ascending
+                </button>
+                <button
+                  onClick={() => handleSort("desc")}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Descending
+                </button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
