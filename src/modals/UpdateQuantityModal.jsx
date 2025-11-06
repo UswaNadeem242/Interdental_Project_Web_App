@@ -224,7 +224,7 @@ const UpdateQuantityModal = ({ isOpen, onClose, products, onSave }) => {
                           }
                           className={`px-4 py-1 rounded-lg font-normal font-poppins ${
                             operations[product.productId] === "add"
-                              ? "  shadow-xl text-[#001D58] "
+                              ? "  shadow text-[#001D58] "
                               : "text-[#949494]"
                           }`}
                         >
@@ -238,7 +238,7 @@ const UpdateQuantityModal = ({ isOpen, onClose, products, onSave }) => {
                           }
                           className={`px-4 py-1 rounded-lg font-normal font-poppins ${
                             operations[product.productId] === "subtract"
-                              ? " shadow-xl text-[#001D58]"
+                              ? " shadow text-[#001D58]"
                               : "text-[#949494]"
                           }`}
                         >
