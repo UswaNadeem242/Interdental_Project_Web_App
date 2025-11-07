@@ -2215,7 +2215,7 @@ With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic result
 
 export const headingsSubscriptions = [
   { label: "Sub ID", key: "subId" },
-  { label: "Customer Name", key: "doctorName" },
+  { label: "Doctor Name", key: "doctorName" },
   { label: "Date", key: "date" },
   { label: "Subscription Plan", key: "subscriptionPlan" },
   { label: "Price", key: "totalPrice" },
@@ -2227,7 +2227,7 @@ export const dataSubscriptions = [
   {
     subId: "1235",
     doctorName: "John Doe",
-    date: "Jan 15,2025",
+    date: "15-06-2025",
     subscriptionPlan: "starter",
     totalPrice: "$100",
     status: "active",
@@ -2237,7 +2237,7 @@ export const dataSubscriptions = [
   {
     subId: "1235",
     doctorName: "John Doe",
-    date: "Jan 15,2025",
+    date: "15-06-2025",
     subscriptionPlan: "growth",
     totalPrice: "$100",
     status: "active",
@@ -2247,9 +2247,9 @@ export const dataSubscriptions = [
   {
     subId: "1235",
     doctorName: "John Doe",
-    date: "Jan 15,2025",
+    date: "15-06-2025",
     subscriptionPlan: "pro",
-    totalPrice: "free trial",
+    totalPrice: "200",
     status: "active",
     detailUrl: "/admin-panel/order-detail",
     action: "View Detail",
