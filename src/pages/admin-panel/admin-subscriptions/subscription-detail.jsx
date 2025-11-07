@@ -10,6 +10,8 @@ function SubscriptionDetail() {
         icon="/assets/user01.png"
         email="hunammoinon@gmail.com"
         buttonText="Deactivate Account"
+        button="hidden"
+        bg="bg-bgWhite"
       />
       <div className="mt-4">
         <SubscriptionForm
