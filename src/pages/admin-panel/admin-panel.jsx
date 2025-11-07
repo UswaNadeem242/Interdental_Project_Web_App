@@ -36,6 +36,11 @@ const AdminPanel = () => {
 
         <Route path="/claim-detail-form" element={<ClaimDetailAdminPanel />} />
         <Route path="/profile-info" element={<ProfileInfoAdminPanel />} />
+        <Route
+          path="/profile-information"
+          element={<ProfileInfoAdminPanel />}
+        />
+
         <Route path="/blogs-and-articles" element={<BlogAndArticles />} />
         <Route path="/blogs-detail" element={<BlogsDetailPage />} />
         <Route path="/drop-downs" element={<DropDownAdminPanel />} />

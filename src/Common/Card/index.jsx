@@ -2,7 +2,7 @@ export const CardComponet = ({ title, count, icon, fromDate, toDate }) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col flex-1">
       {/* Title */}
-      <p className="font-poppins text-xs md:text-sm font-medium text-gray-500">
+      <p className="font-poppins text-xs md:text-sm font-semibold text-gray-400">
         {title}
       </p>
 
