@@ -104,6 +104,8 @@ const OrdersTable = () => {
               title="Sort By"
               onSearch={setSearchQuery}
               onSort={setSortOrder}
+              firstField={"Order Id"}
+              secondField={"Doctor Name"}
             />
           </div>
         </div>

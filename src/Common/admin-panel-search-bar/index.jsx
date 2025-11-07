@@ -10,6 +10,8 @@ export default function AdminSearchBar({
   title,
   secondaryButton,
   className,
+  firstField,
+  secondField,
 }) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -64,13 +66,13 @@ export default function AdminSearchBar({
               onClick={() => handleSort("asc")}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              Order Id
+              {firstField}
             </button>
             <button
               onClick={() => handleSort("desc")}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              Doctor Name
+              {secondField}
             </button>
           </div>
         )}

@@ -104,6 +104,8 @@ const EcommereceOrders = () => {
               // secondaryButton="hide"
               onSearch={setSearchQuery}
               onSort={setSortOrder}
+              firstField={"Order Id"}
+              secondField={"Buyer Name"}
             />
           </div>
         </div>
