@@ -232,14 +232,16 @@ function AdminPanelDashboard() {
               Patient
             </button>
           </div>
-          <div className="flex  text-sm font-semibold text-primaryText pb-2 mb-4 items-end font-poppins mt-2 mb-2">
-            <span className="w-10 font-normal text-xs ">#</span>
-            <span className="w-24 font-normal text-xs text-[#444A6D]">
-              Name
-            </span>
+          <div className="flex  text-sm font-semibold text-primaryText pb-2 mb-4 items-end font-poppins mt-2 mb-2 justify-between">
+            <div className="flex gap-0">
+              <span className="w-10 font-normal text-xs ">#</span>
+              <span className="w-24 font-normal text-xs text-[#444A6D]">
+                Name
+              </span>
+            </div>
 
             {/* empty space for progress bar */}
-            <span className="ml-36 text-center font-normal text-xs text-[#434343]  whitespace-nowrap">
+            <span className=" text-center font-normal text-xs text-[#434343]  ">
               Sales Percentage
             </span>
           </div>
