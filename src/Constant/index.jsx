@@ -2257,9 +2257,9 @@ export const dataSubscriptions = [
 ];
 
 export const pamentDetailList = [
-  { title: "account holder name", name: "Kindie Jhancy" },
-  { title: "bank name", name: "allied bank" },
-  { title: "swipe code", name: "qe0ssp3" },
+  { title: "Account holder name", name: "Kindie Jhancy" },
+  { title: "Bank name", name: "allied bank" },
+  { title: "Swipe code", name: "qe0ssp3" },
   { title: "IBAN", name: "8476529761391" },
 ];
 
