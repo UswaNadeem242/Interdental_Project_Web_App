@@ -89,10 +89,12 @@ const DoctorsAdminPanel = () => {
     []
   );
 
-  // Initial load
+  // Single useEffect to handle all fetch triggers (tab, search, sort, initial load)
   useEffect(() => {
+    setCurrentPage(1);
     fetchDoctors(1, activeTab, debouncedSearchQuery, sortOrder);
-  }, [activeTab, debouncedSearchQuery, sortOrder, fetchDoctors]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, debouncedSearchQuery, sortOrder]);
 
   // Handle page change
   const handlePageChange = useCallback(
@@ -100,26 +102,24 @@ const DoctorsAdminPanel = () => {
       setCurrentPage(page);
       fetchDoctors(page, activeTab, debouncedSearchQuery, sortOrder);
     },
-    [activeTab, debouncedSearchQuery, sortOrder, fetchDoctors]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeTab, debouncedSearchQuery, sortOrder]
   );
 
   // Handle tab change
   const handleTabChange = useCallback((tabName) => {
     setActiveTab(tabName);
-    setCurrentPage(1); // Reset to first page on tab change
   }, []);
 
   // Handle search change
   const handleSearch = useCallback((value) => {
     setSearchQuery(value);
-    setCurrentPage(1); // Reset to first page on search
   }, []);
 
   // Handle sort change
   const handleSort = useCallback((order) => {
     setSortOrder(order);
     setSortLabel(order === "asc" ? "Asc" : "Desc");
-    setCurrentPage(1); // Reset to first page on sort
   }, []);
 
   const handleOpenViewDetail = (rowData) => {
@@ -191,8 +191,9 @@ const DoctorsAdminPanel = () => {
       activeTab,
       debouncedSearchQuery,
       sortOrder,
-      fetchDoctors,
       dispatch,
+      // fetchDoctors is stable (empty deps), so it's safe to omit
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     ]
   );
 

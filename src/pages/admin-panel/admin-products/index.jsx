@@ -75,7 +75,7 @@ const ProductsAdminPanel = () => {
         name: (p) => p.name?.toLowerCase().includes(query),
         productId: (p) => String(p.productId)?.includes(query),
         price: (p) => String(p.price)?.includes(query),
-        categoryName: (p) => p.categoryId ? String(p.categoryId).includes(query) : false,
+        categoryName: (p) => p.categoryName?.toLowerCase().includes(query) || false,
       };
       return data.filter(fieldMap[filterType] || (() => false));
     }
@@ -85,7 +85,7 @@ const ProductsAdminPanel = () => {
         product.name?.toLowerCase().includes(query) ||
         String(product.productId)?.includes(query) ||
         String(product.price)?.includes(query) ||
-        (product.categoryId && String(product.categoryId).includes(query))
+        (product.categoryName && product.categoryName.toLowerCase().includes(query))
       );
     });
   }, [debouncedSearchQuery, filterType]);
@@ -215,9 +215,9 @@ const ProductsAdminPanel = () => {
       render: (value) => value || "-",
     },
     {
-      key: "categoryId",
+      key: "categoryName",
       label: "Category",
-      render: (value) => value ? `Category ${value}` : "-",
+      render: (value) => value || "-",
     },
     {
       key: "stockQuantity",

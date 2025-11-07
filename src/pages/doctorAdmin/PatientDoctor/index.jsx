@@ -67,7 +67,7 @@ const PatientPage = () => {
 
       if (response.success) {
         setShowDeleteModal(false);
-        fetchPatients();
+        fetchPatients(currentPage);
       } else {
         dispatch(
           showToast({
@@ -134,22 +134,13 @@ const PatientPage = () => {
     },
     [debouncedSearchQuery, sortOrder, dispatch]
   );
-  // Initial load
-  useEffect(() => {
-    fetchPatients(1);
-  }, []);
 
-  // Handle search changes
+  // Single useEffect to handle all fetch triggers (search, sort, initial load)
   useEffect(() => {
     setCurrentPage(1);
     fetchPatients(1);
-  }, [debouncedSearchQuery]);
-
-  // Handle sort changes
-  useEffect(() => {
-    setCurrentPage(1);
-    fetchPatients(1);
-  }, [sortOrder, fetchPatients]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchQuery, sortOrder]);
 
   // Handle page changes
   const handlePageChange = useCallback(
