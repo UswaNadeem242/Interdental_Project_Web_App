@@ -9,7 +9,7 @@ import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
 import UserProfileIcon from "../icon/UserProfileIcon";
-import { DoctorIcon } from "../icon/DoctorIcon";
+import { DoctorIcon, DoctorIcon2 } from "../icon/DoctorIcon";
 import { Crown } from "../icon/Crown";
 import { Revenue } from "../icon/Revenue";
 import ChevronDownIcon from "../icon/ChevronDownIcon";
@@ -17,6 +17,9 @@ import HealthIcon from "../icon/HealthIcon";
 import BoxIcon from "../icon/BoxIcon";
 import ShipIcon from "../icon/ShipIcon";
 import TimeIcon from "../icon/TimeIcon";
+import ProductIcon from "../icon/ProductIcon";
+import SubscriptionIcon from "../icon/SubscriptionIcon";
+import BlogsIcon from "../icon/BlogsIcon";
 export const MATERIAL_OPTIONS = [
   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
   { value: "argen-ht", label: "Argen HT", price: 45 },
@@ -101,24 +104,24 @@ export const menuAdminPanelItem = [
   {
     name: "Doctors",
     path: "/admin-panel/doctors",
-    icon: DashboardIcon,
+    icon: DoctorIcon2,
   },
 
   {
     name: "Orders",
     path: "/admin-panel/orders",
-    icon: DashboardIcon,
+    icon: OrderIcon,
   },
   {
     name: "Products",
     path: "/admin-panel/products",
-    icon: DashboardIcon,
+    icon: ProductIcon,
   },
-  {
-    name: "List Product",
-    path: "/admin-panel/list-product",
-    icon: DashboardIcon,
-  },
+  // {
+  //   name: "List Product",
+  //   path: "/admin-panel/list-product",
+  //   icon: DashboardIcon,
+  // },
   {
     name: "product Details",
     path: "/admin-panel/product-details",
@@ -127,17 +130,17 @@ export const menuAdminPanelItem = [
   {
     name: "Subscriptions",
     path: "/admin-panel/subscriptions",
-    icon: DashboardIcon,
+    icon: SubscriptionIcon,
   },
   {
     name: "Claim Requests",
     path: "/admin-panel/claim-requests",
-    icon: DashboardIcon,
+    icon: ClaimIcon,
   },
   {
     name: "Blogs & Articles",
     path: "/admin-panel/blogs-and-articles",
-    icon: DashboardIcon,
+    icon: BlogsIcon,
   },
   {
     name: "Drop Downs",
@@ -2212,18 +2215,18 @@ With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic result
 
 export const headingsSubscriptions = [
   { label: "Sub ID", key: "subId" },
-  { label: "Customer Name", key: "name" },
+  { label: "Customer Name", key: "doctorName" },
   { label: "Date", key: "date" },
   { label: "Subscription Plan", key: "subscriptionPlan" },
-  { label: "Total price", key: "totalPrice" },
+  { label: "Price", key: "totalPrice" },
   { label: "Status", key: "status" },
-  { label: "", key: "action" },
+  { label: "Action", key: "action" },
 ];
 
 export const dataSubscriptions = [
   {
     subId: "1235",
-    name: "John Doe",
+    doctorName: "John Doe",
     date: "Jan 15,2025",
     subscriptionPlan: "starter",
     totalPrice: "$100",
@@ -2233,7 +2236,7 @@ export const dataSubscriptions = [
   },
   {
     subId: "1235",
-    name: "John Doe",
+    doctorName: "John Doe",
     date: "Jan 15,2025",
     subscriptionPlan: "growth",
     totalPrice: "$100",
@@ -2243,7 +2246,7 @@ export const dataSubscriptions = [
   },
   {
     subId: "1235",
-    name: "John Doe",
+    doctorName: "John Doe",
     date: "Jan 15,2025",
     subscriptionPlan: "pro",
     totalPrice: "free trial",
@@ -2267,8 +2270,8 @@ export const dropDownOpts = ["FILA", "Transi", "Dentyalo", "Dine"];
 
 export const headingsAdminPanelClaimReq = [
   { label: "Claim ID", key: "id" },
-  { label: "Patient Name", key: "patientName" },
   { label: "Doctor Name", key: "doctorName" },
+  { label: "Patient Name", key: "patientName" },
   { label: "Submission Date", key: "submissionDate" },
   { label: "Status", key: "status" },
 
