@@ -3,8 +3,11 @@ import { SecondaryButton } from "../../../Common/Button";
 
 function ClaimDetailAdminPanel() {
   const doctorClaimReqData = [
+    { key: "Doctor name", data: "Mani Jhon" },
+
     { key: "Patient name", data: "Varga Dora" },
-    { key: "Patient Email Address", data: "VargaDora123@gmail.com" },
+
+    // { key: "Patient Email Address", data: "VargaDora123@gmail.com" },
     { key: "Claim Submitted On", data: "12 Mar 2025" },
   ];
 
@@ -54,7 +57,7 @@ function ClaimDetailAdminPanel() {
         </div>
 
         {/* Action Buttons */}
-        <div className="col-span-12 mt-5 mb-8">
+        <div className="col-span-12 mt-7 ">
           <div className="flex justify-center gap-4">
             <SecondaryButton
               title="Reject"

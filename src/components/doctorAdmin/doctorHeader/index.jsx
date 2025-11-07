@@ -20,12 +20,15 @@ const DoctorHeader = ({ title, subTitle, role }) => {
   // Hooks
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { logout, unreadNotificationsCount, fetchUnreadNotificationsCount } = useAuth();
+  const { logout, unreadNotificationsCount, fetchUnreadNotificationsCount } =
+    useAuth();
   const pageTitle = usePageTitle();
 
   // Redux selectors
   const profileImage = useSelector((state) => state.profile?.profileImage);
-  const profileData = useSelector((state) => state.profileData?.userProfileData);
+  const profileData = useSelector(
+    (state) => state.profileData?.userProfileData
+  );
 
   // State
   const [doctorProfile, setDoctorProfile] = useState(null);
@@ -47,7 +50,9 @@ const DoctorHeader = ({ title, subTitle, role }) => {
 
   const displayName = useMemo(() => {
     if (displayTitle && doctorProfile) {
-      return `Welcome back ${doctorProfile.firstName || ""} ${doctorProfile.lastName || ""}`.trim();
+      return `Welcome back ${doctorProfile.firstName || ""} ${
+        doctorProfile.lastName || ""
+      }`.trim();
     }
     return pageTitle;
   }, [displayTitle, doctorProfile, pageTitle]);
@@ -72,18 +77,21 @@ const DoctorHeader = ({ title, subTitle, role }) => {
   }, [user]);
 
   // Fetch doctor profile
-  const fetchProfile = useCallback(async (userId) => {
-    try {
-      const response = await getDoctorProfile(userId);
-      if (response.status === 200) {
-        const profileData = response?.data?.data;
-        dispatch(setProfileData(profileData));
-        setDoctorProfile(profileData);
+  const fetchProfile = useCallback(
+    async (userId) => {
+      try {
+        const response = await getDoctorProfile(userId);
+        if (response.status === 200) {
+          const profileData = response?.data?.data;
+          dispatch(setProfileData(profileData));
+          setDoctorProfile(profileData);
+        }
+      } catch (error) {
+        console.error("Error fetching doctor profile:", error);
       }
-    } catch (error) {
-      console.error("Error fetching doctor profile:", error);
-    }
-  }, [dispatch]);
+    },
+    [dispatch]
+  );
 
   // Initialize profile on mount
   useEffect(() => {
@@ -118,7 +126,11 @@ const DoctorHeader = ({ title, subTitle, role }) => {
           {profileImage || doctorProfile?.profileImage ? (
             <img
               src={profileImage || doctorProfile.profileImage}
-              alt={doctorProfile ? `${doctorProfile.firstName} ${doctorProfile.lastName}` : "User"}
+              alt={
+                doctorProfile
+                  ? `${doctorProfile.firstName} ${doctorProfile.lastName}`
+                  : "User"
+              }
               className="w-10 h-10 rounded-full object-cover border border-gray-300"
             />
           ) : (
@@ -130,7 +142,8 @@ const DoctorHeader = ({ title, subTitle, role }) => {
           {/* Profile Info */}
           <NavLink to={roleLink} className="flex flex-col justify-center">
             <p className="text-sm font-semibold">
-              {doctorProfile && `${doctorProfile.firstName} ${doctorProfile.lastName}`}
+              {doctorProfile &&
+                `${doctorProfile.firstName} ${doctorProfile.lastName}`}
             </p>
             <p className="text-xs text-gray-500">{doctorProfile?.email}</p>
           </NavLink>

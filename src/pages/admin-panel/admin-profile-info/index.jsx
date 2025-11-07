@@ -19,8 +19,12 @@ const ProfileInfoAdminPanel = () => {
   const validateField = (name, value) => {
     let errorMsg = "";
 
-    if (name === "username") {
+    if (name === "firstName") {
       if (!value.trim()) errorMsg = "First name is required.";
+      else if (value.length < 2) errorMsg = "Must be at least 2 characters.";
+    }
+    if (name === "lastName") {
+      if (!value.trim()) errorMsg = "Last name is required.";
       else if (value.length < 2) errorMsg = "Must be at least 2 characters.";
     }
 
@@ -51,7 +55,10 @@ const ProfileInfoAdminPanel = () => {
     const { name, value } = e.target;
     let newValue = value;
 
-    if (name === "username") {
+    if (name === "firstName") {
+      newValue = newValue.replace(/[^a-zA-Z ]/g, "");
+    }
+    if (name === "lastName") {
       newValue = newValue.replace(/[^a-zA-Z ]/g, "");
     }
 
@@ -122,7 +129,7 @@ const ProfileInfoAdminPanel = () => {
         <div className="grid md:grid-cols-12 grid-cols-6 gap-4  items-center">
           <div className="md:col-span-6 col-span-3 mb-10 mt-4">
             <h3 className="text-primaryText text-lg font-poppins font-semibold  capitalize">
-              Account info
+              Account Information
             </h3>
           </div>
           <div className="md:col-span-6 col-span-3  md:flex  md:justify-end">
@@ -132,20 +139,36 @@ const ProfileInfoAdminPanel = () => {
           </div>
         </div>
         <form className="grid md:grid-cols-12 grid-cols-6 gap-4 bg-white  ">
-          <div className="col-span-12  space-y-4 ">
+          <div className="col-span-6  space-y-4 ">
             <TextInput
-              id="username"
-              name="username"
+              id="firstName"
+              name="firstName"
               label="First Name"
-              placeholder="Bransim"
+              placeholder="Brainsm"
               icon={<PenIcon size={18} />}
-              value={form.username}
+              value={form.firstName}
               onChange={handleChange}
               onBlur={handleBlur}
               className={"font-semibold"}
             />
-            {errors.username && (
-              <p className="text-red-500 text-sm">{errors.username}</p>
+            {errors.firstName && (
+              <p className="text-red-500 text-sm">{errors.firstName}</p>
+            )}
+          </div>
+          <div className="col-span-6  space-y-4 ">
+            <TextInput
+              id="lastName"
+              name="lastName"
+              label="Last Name"
+              placeholder="Hanry"
+              icon={<PenIcon size={18} />}
+              value={form.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={"font-semibold"}
+            />
+            {errors.lastName && (
+              <p className="text-red-500 text-sm">{errors.lastName}</p>
             )}
           </div>
 
