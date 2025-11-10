@@ -144,34 +144,6 @@ const DoctorProfile = () => {
     }
   };
 
-  // Validation function
-  // const validateField = (name, value) => {
-  //   switch (name) {
-  //     case "first Name":
-  //       if (!value.trim()) return "First Name is required";
-  //       else return "";
-  //     case "email":
-  //       if (!value.trim()) return "Email is required";
-  //       else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
-  //         return "Invalid email address";
-  //       else return "";
-  //     case "phone":
-  //       if (!value.trim()) return "Phone number is required";
-  //       else if (!/^\+?\d{7,15}$/.test(value)) return "Invalid phone number";
-  //       else return "";
-  //     case "license":
-  //       if (!value.trim()) return "License number is required";
-  //       else return "";
-  //     case "reference":
-  //       if (!value.trim()) return "Office reference number is required";
-  //       else return "";
-  //     case "address":
-  //       if (!value.trim()) return "Address is required";
-  //       else return "";
-  //     default:
-  //       return "";
-  //   }
-  // };
 
   const validateField = (name, value) => {
     let errorMsg = "";
