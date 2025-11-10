@@ -73,20 +73,7 @@ const Subscriptions = () => {
         />
       ),
     },
-    {
-      name: "Trial",
-      content: (
-        <SecondTable
-          headings={headingsSubscriptions}
-          data={filteredData}
-          onActionClick={(row) => {
-            setSelectedRow(row);
-            setIsOpen(true);
-          }}
-          actionHrefKey="detailUrl"
-        />
-      ),
-    },
+
     {
       name: "Expired",
       content: (
