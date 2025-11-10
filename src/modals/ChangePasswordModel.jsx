@@ -237,7 +237,7 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
           {/* Content */}
           <div className="flex-1">
             <div className="p-6 md:p-8">
-              <h2 className="font-poppins font-semibold text-xl md:text-2xl text-[#0F153E] mb-1">
+              <h2 className="font-poppins font-semibold text-xl md:text-2xl text-[#0F153E] mb-1 pb-1">
                 Change Password
               </h2>
               <div className="w-full h-[1px] bg-gray-200 mb-6"></div>
@@ -434,7 +434,7 @@ const ChangePasswordModel = ({ isModalPassword, setIsModalPassword }) => {
           </div>
 
           {/* Footer spacing to mirror ProfileModal */}
-          <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 md:p-6 rounded-b-3xl"></div>
+          {/* <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 md:p-6 rounded-b-3xl"></div> */}
         </div>
       </div>
     </>, document.body

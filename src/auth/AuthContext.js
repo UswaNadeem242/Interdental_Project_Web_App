@@ -29,13 +29,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = (updatedUserData) => {
-    localStorage.setItem("users", JSON.stringify(updatedUserData));
+    localStorage.setItem("users", JSON.stringify({ ...updatedUserData,roles: [updatedUserData.role] }));
     setUser(updatedUserData);
   };
 
   const fetchWishlistCount = useCallback(async () => {
     if (!user) return;
-    
+
     try {
       const response = await axios.get(`${BASE_URL}/api/wishlist`, {
         headers: {
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchCartCount = useCallback(async () => {
     if (!user) return;
-    
+
     try {
       const response = await axios.get(`${BASE_URL}/api/cart`, {
         headers: {
@@ -69,19 +69,19 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUnreadNotificationsCount = useCallback(async (force = false) => {
     if (!user) return;
-    
+
     // Prevent duplicate calls within 2 seconds unless forced
     if (!force && notificationFetchRef.current) {
       return;
     }
-    
+
     // Clear any existing timeout
     if (notificationFetchTimeoutRef.current) {
       clearTimeout(notificationFetchTimeoutRef.current);
     }
-    
+
     notificationFetchRef.current = true;
-    
+
     try {
       const response = await axios.get(`${BASE_URL}/api/notification`, {
         params: { page: 0, size: 1 },
@@ -180,12 +180,21 @@ export const AuthProvider = ({ children }) => {
   // Helper functions for role management
   const getUserRoles = () => {
     if (!user) return [];
-    // Handle different possible role property names with safe access
-    const roles =
-      user && typeof user === "object"
-        ? user["roles"] || user["Roles"] || user["role"] || user["Role"]
-        : [];
-    return Array.isArray(roles) ? roles : [];
+    // Try to retrieve role(s) from multiple possible property names, handling array or single string
+    let roles =
+      user.roles ||
+      user.Roles ||
+      user.role ||
+      user.Role ||
+      [];
+    if (Array.isArray(roles)) {
+      return roles;
+    }
+    // If roles is a string, wrap in array
+    if (typeof roles === "string") {
+      return [roles];
+    }
+    return [];
   };
 
   // Fetch counts when user is available (but skip for DOCTOR role - they have their own dashboard)
@@ -225,14 +234,14 @@ export const AuthProvider = ({ children }) => {
 
   const isProfileComplete = () => {
     if (!user) return false;
-    
+
     const userRoles = getUserRoles();
-    
+
     // For DOCTOR role, check if drLicenseNo and officeRefNo exist
     if (userRoles.includes("DOCTOR")) {
       return !!(user.drLicenseNo && user.officeRefNo);
     }
-    
+
     // For other roles, profile is considered complete
     return true;
   };
