@@ -1182,7 +1182,7 @@ export const dataEcomAdminPanel = [
     id: "#1235",
     dName: "Miles,Esther",
 
-    scanDate: "17/22/2026",
+    scanDate: "01-10-2026",
     totalItems: "8",
     price: "$28",
     status: "in progress",
@@ -1194,7 +1194,7 @@ export const dataEcomAdminPanel = [
     id: "#1235",
     dName: "Miles,Esther",
 
-    scanDate: "17/22/2026",
+    scanDate: "01-10-2026",
     totalItems: "8",
     price: "$28",
     status: "pending",
@@ -1206,7 +1206,7 @@ export const dataEcomAdminPanel = [
     id: "#1235",
     dName: "Niles,Esther",
 
-    scanDate: "17/22/2026",
+    scanDate: "01-10-2026",
     totalItems: "8",
     price: "$28",
     status: "completed",
@@ -1218,7 +1218,7 @@ export const dataEcomAdminPanel = [
     id: "#1235",
     dName: "Miles,Esther",
 
-    scanDate: "17/22/2026",
+    scanDate: "01-10-2026",
     totalItems: "8",
     price: "$28",
     status: "in progress",
@@ -1258,7 +1258,7 @@ export const dataOrdersAdminPanel = [
   {
     id: "#1235",
     dName: "etedfty6",
-    createdDate: "12/11/25",
+    createdDate: "12-11-2025",
     status: "in progress",
     action: "View Detail",
     price: "$24",
@@ -1267,7 +1267,7 @@ export const dataOrdersAdminPanel = [
   {
     id: "#1235",
     dName: "etedfty6",
-    createdDate: "12/11/25",
+    createdDate: "12-11-2025",
     status: "pending",
     action: "View Detail",
     price: "$24",
@@ -1276,7 +1276,7 @@ export const dataOrdersAdminPanel = [
   {
     id: "#1235",
     dName: "etedfty6",
-    createdDate: "12/11/25",
+    createdDate: "12-11-2025",
     status: "completed",
     action: "View Detail",
     price: "$24",
@@ -1285,7 +1285,7 @@ export const dataOrdersAdminPanel = [
   {
     id: "#1235",
     dName: "etedfty6",
-    createdDate: "12/11/25",
+    createdDate: "12-11-2025",
     status: "in progress",
     action: "View Detail",
     price: "$24",

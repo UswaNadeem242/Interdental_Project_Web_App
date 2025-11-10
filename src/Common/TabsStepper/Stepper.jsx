@@ -20,7 +20,7 @@ export default function Stepper({ steps, className, selectedColor }) {
   }, [role, steps]);
 
   return (
-    <div className="px-2 sm:px-4 w-full">
+    <div className="px-2 sm:px-4  w-full">
       <div>
         <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
           <TabList

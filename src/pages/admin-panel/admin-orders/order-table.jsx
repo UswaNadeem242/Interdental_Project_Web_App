@@ -94,12 +94,12 @@ const OrdersTable = () => {
 
   return (
     <div>
-      <div className="bg-white rounded-2xl py-6 px-6">
+      <div className="bg-white rounded-2xl py-6 ">
         <div className="flex flex-col md:flex-row justify-between gap-2 pb-3">
-          <div className="md:flex-1 ">
+          <div className="w-full ">
             <AdminSearchBar
               //   title="Sort By"
-              className=" py-2 mb-3"
+              className=" py-2 mb-3 mx-auto"
               // secondaryButton="hide"
               title="Sort By"
               onSearch={setSearchQuery}
