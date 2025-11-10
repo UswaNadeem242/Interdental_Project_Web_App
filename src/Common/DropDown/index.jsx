@@ -17,7 +17,7 @@ export default function DropDownComponent({
   return (
     <div
       className={`relative w-full bg-white 
-        ${isOpen ? "rounded-tl-2xl rounded-tr-2xl" : "rounded-2xl"} 
+        ${isOpen ? "rounded-2xl" : "rounded-2xl"} 
         ${className || ""}
       `}
     >
@@ -39,7 +39,7 @@ export default function DropDownComponent({
 
       {/* Dropdown menu */}
       {isOpen && (
-        <ul className="w-full bg-white rounded-bl-2xl rounded-br-2xl shadow-md max-h-60 overflow-auto">
+        <ul className="w-full bg-white  rounded-2xl max-h-60 overflow-auto">
           {label === "Shipping Detail"
             ? // For Shipping Detail, render as non-clickable text
               options.map((option, index) => (
@@ -59,10 +59,10 @@ export default function DropDownComponent({
                   //   onSelect(option);
                   //   setIsOpen(false);
                   // }}
-                  className="flex justify-between px-4 py-2 text-gray-700  font-poppins "
+                  className="flex justify-between px-4 py-2 text-[#828386] text-sm font-normal font-poppins "
                 >
                   <span>{option[optionLabel]}</span>
-                  <span className="text-xs text-secondaryBrand">
+                  <span className="text-sm font-normal text-[#1A1A1A]">
                     {typeof option[optionValue] === "number" &&
                     option[optionValue] > 0
                       ? `$${option[optionValue]}`
@@ -74,9 +74,9 @@ export default function DropDownComponent({
           {/* Cart total row */}
           {label === "Cart Total" && (
             <li className="flex justify-between px-4 py-3 text-gray-700 font-poppins border-t border-borderPrimary text-sm">
-              <p>Total:</p>
-              <p>
-                ${totalAmount}
+              <p className="text-base font-normal font-poppins">Total:</p>
+              <p className="text-[#001D58] text-lg font-semibold">
+                ${totalAmount || 130}
                 {/* {totalAmount
                   .reduce((total, option) => {
                     const value =

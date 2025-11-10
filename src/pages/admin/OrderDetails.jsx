@@ -33,7 +33,6 @@ const OrderDetails = () => {
     getAllOrders();
   }, []);
 
-
   const handleUpdateStatus = async () => {
     const status =
       orders.orderStatus === "PENDING"
