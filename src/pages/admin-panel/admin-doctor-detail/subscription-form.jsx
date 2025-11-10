@@ -2,7 +2,7 @@ import React from "react";
 
 function SubscriptionForm({ title, para, text, number, percentage = 65 }) {
   return (
-    <div className="bg-card p-6 rounded-2xl">
+    <div className="bg-card p-6 rounded-2xl h-full">
       <div className="flex flex-col gap-4">
         {/* Title and Expiration */}
         <div>
