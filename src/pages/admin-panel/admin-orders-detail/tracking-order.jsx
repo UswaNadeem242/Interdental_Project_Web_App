@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { getOrderByID } from "../../../../api/doctorDasboard";
-import Icons from "../../../../components/Icons";
+import { getOrderByID } from "../../../api/doctorDasboard";
+import Icons from "../../../components/Icons";
 import axios from "axios";
-import { BASE_URL } from "../../../../config";
+import { BASE_URL } from "../../../config";
 import { format, parseISO } from "date-fns";
 
 // Order status constants
@@ -20,7 +20,7 @@ const STEP_COLORS = {
   INCOMPLETE: "#DDDDDD",
 };
 
-export default function TrackingOrder({ id }) {
+export default function TrackingOrderAdmin({ id, setIsModalOpen }) {
   const [orderDetails, setOrderDetails] = useState(null);
   const [trackingData, setTrackingData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -158,16 +158,33 @@ export default function TrackingOrder({ id }) {
   }, [id]);
 
   // Fetch all data on mount
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setIsLoading(true);
+  //     await Promise.all([fetchOrderDetails(), fetchOrderTracking()]);
+  //     setIsLoading(false);
+  //   };
+
+  //   if (id) {
+  //     fetchData();
+  //   }
+  // }, [id, fetchOrderDetails, fetchOrderTracking]);
+
+  //Altered
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      await Promise.all([fetchOrderDetails(), fetchOrderTracking()]);
+
+      if (id) {
+        await Promise.all([fetchOrderDetails(), fetchOrderTracking()]);
+      } else {
+        console.warn("No ID provided — showing empty UI");
+      }
+
       setIsLoading(false);
     };
 
-    if (id) {
-      fetchData();
-    }
+    fetchData();
   }, [id, fetchOrderDetails, fetchOrderTracking]);
 
   // Render delivery detail row (responsive)
@@ -288,34 +305,54 @@ export default function TrackingOrder({ id }) {
 
   return (
     <>
-      <div className="bg-white p-4 md:p-8 mt-8 rounded-2xl">
+      <div className="">
         {/* Delivery Details Section */}
-        <div className="bg-white">
-          <div className="border border-borderPrimary p-4 rounded-lg">
-            <h3 className="text-tertiaryBrand text-sm font-poppins capitalize font-semibold border-b-2 pb-3">
-              Delivery Detail
-            </h3>
-            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2 mt-2">
-              <DeliveryDetailRow
-                label="expected delivery date"
-                value={formatDate(orderDetails?.expectedDeliveryDate)}
-              />
-              <DeliveryDetailRow label="tracking ID" value={trackingId} />
-            </div>
-          </div>
-        </div>
 
         {/* Order Status Section */}
-        <div className="bg-white mt-5">
-          <div className="border border-borderPrimary p-4 rounded-lg">
-            <h3 className="text-tertiaryBrand text-sm font-poppins capitalize font-semibold border-b-2 pb-3">
-              order status
-            </h3>
+        <div className="bg-white mt-5 rounded-lg">
+          <div className="  p-4 rounded-2xl">
+            <div className="flex items-center justify-between border-b-2">
+              <h3 className="text-tertiaryBrand text-sm font-poppins capitalize font-semibold  pb-3">
+                order status
+              </h3>
+              <span className="text-tertiaryBrand text-sm font-poppins capitalize font-semibold  pb-3 lg:hidden ">
+                <button
+                  className="px-2 font-poppins text-xs font-medium py-2 bg-[#001D58] rounded-lg text-bgWhite ml-2 -mt-2"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <span className="flex items-center gap-2">
+                    <span>Move Order to Delivered</span>
+                    <span>
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          opacity="0.5"
+                          d="M1.91675 5.21094C1.61903 5.21094 1.37769 5.45228 1.37769 5.75C1.37769 6.04772 1.61903 6.28906 1.91675 6.28906V5.75V5.21094ZM1.91675 5.75V6.28906H9.58341V5.75V5.21094H1.91675V5.75Z"
+                          fill="white"
+                        />
+                        <path
+                          d="M6.70825 2.875L9.58325 5.75L6.70825 8.625"
+                          stroke="white"
+                          stroke-width="1.07812"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+              </span>
+            </div>
 
             {/* Status timeline - Horizontal on Desktop (lg+), Vertical on Mobile/Tablet (md and below) */}
             <div className="mt-4">
               {/* Desktop - Horizontal (only on lg and above) */}
-              <div className="hidden lg:flex w-full py-[16px] px-[8px]">
+              <div className="hidden lg:flex w-full py-[16px] px-[8px] items-start">
                 <OrderStatusStep
                   status={ORDER_STATUS.BOOKED}
                   icon={Icons.OrderPending}
@@ -344,6 +381,36 @@ export default function TrackingOrder({ id }) {
                   iconProps={{ fill: getStepColor(ORDER_STATUS.DELIVERED) }}
                   isLast
                 />
+                <button
+                  className="px-2 font-poppins text-xs font-medium py-2 bg-[#001D58] rounded-lg text-bgWhite ml-2 -mt-2"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <span className="flex items-center gap-2">
+                    <span>Move Order to Delivered</span>
+                    <span>
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          opacity="0.5"
+                          d="M1.91675 5.21094C1.61903 5.21094 1.37769 5.45228 1.37769 5.75C1.37769 6.04772 1.61903 6.28906 1.91675 6.28906V5.75V5.21094ZM1.91675 5.75V6.28906H9.58341V5.75V5.21094H1.91675V5.75Z"
+                          fill="white"
+                        />
+                        <path
+                          d="M6.70825 2.875L9.58325 5.75L6.70825 8.625"
+                          stroke="white"
+                          stroke-width="1.07812"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </button>
               </div>
 
               {/* Mobile/Tablet - Vertical (on mobile and md screens) */}

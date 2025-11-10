@@ -209,17 +209,17 @@ export default function OrderDetailsForm({ id, className }) {
             <h4 className="text-black font-semibold text-xl font-poppins">
               Restoration Design Form
             </h4>
-            <div className={`${className}`}>
+            <div className={` ${className}`}>
               <button
                 onClick={handleDownloadPDF}
-                className="border text-secondaryBrand font-medium text-sm border-secondaryBrand rounded-full px-6 py-3 pdf-hide-button"
+                className="border font-poppins text-[#013764] font-medium text-xs border-secondaryBrand rounded-full px-6 py-3 pdf-hide-button"
               >
                 Download Form
               </button>
               <SecondaryButton
                 // href="/admin-panel/dental-design-form"
                 title="Print Rx"
-                className="border text-[#F8F8F8] font-medium text-xs border-secondaryBrand bg-[#001D58] rounded-full  px-6 py-3 ml-5"
+                className=" text-[#F8F8F8] font-medium text-xs bg-[#001D58] border border-[#001D58] rounded-full font-poppins  px-6 py-3  ml-5"
                 onClick={() => setOpenModal(true)}
               />
             </div>
