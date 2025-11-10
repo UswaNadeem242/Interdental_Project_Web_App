@@ -84,7 +84,7 @@ const AddBlogModal = ({ onClose, data }) => {
         onClick={() => setShowSureModal(true)} // if background is clicked
       >
         <div
-          className="bg-white shadow-xl w-[90%] h-[100%] ml-40 p-8 overflow-y-auto overflow-x-hidden"
+          className="bg-white shadow-xl w-[90%] h-[100%] ml-40 p-8 overflow-y-auto overflow-x-hidden "
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
         >
           {/* Header */}
