@@ -272,7 +272,7 @@ function BlogAndArticles() {
       </div>
 
       {/* Cards */}
-      <div className="flex flex-col md:flex-row gap-8 flex-wrap items-center w-full md:w-auto">
+      <div className="flex flex-col md:flex-row gap-6 flex-wrap items-center w-full md:w-auto">
         {cardData.map((data, key) => (
           <div key={key} onClick={() => navigate("/admin-panel/blogs-detail")}>
             <BlogsCardComponent
