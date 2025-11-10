@@ -9,11 +9,13 @@ function BasicInfo({ doctorData }) {
     );
   }
 
-  const fullName = `${doctorData.firstName || ""} ${doctorData.lastName || ""}`.trim() || "N/A";
+  const fullName =
+    `${doctorData.firstName || ""} ${doctorData.lastName || ""}`.trim() ||
+    "N/A";
   const email = doctorData.email || "N/A";
   const phone = doctorData.phoneNumber || "N/A";
   const address = doctorData.address || "N/A";
-  const licenseNo = doctorData.doctorLicenceNumber|| "N/A";
+  const licenseNo = doctorData.doctorLicenceNumber || "N/A";
   const officeRefNo = doctorData.officeRefNumber || "N/A";
 
   return (
@@ -21,7 +23,7 @@ function BasicInfo({ doctorData }) {
       {/* Name */}
       <div className="p-4 border border-[#0000001A] rounded-md font-poppins">
         <p className="text-sm font-semibold text-primaryText mb-1">Name</p>
-        <p className="text-secondaryText text-xs font-medium">{fullName}</p>
+        <p className="text-secondaryText text-xs font-medium ">{fullName}</p>
       </div>
 
       {/* Email + Phone */}

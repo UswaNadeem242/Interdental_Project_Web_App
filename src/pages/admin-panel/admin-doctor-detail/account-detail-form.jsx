@@ -22,13 +22,13 @@ function AccountDetailForm({
     <div className="flex flex-col gap-4 rounded-2xl h-full border-2 p-4 ">
       {/* Profile Information Section */}
       <div
-        className={`flex items-center gap-4 p-4 bg-[#F8F8F8]  rounded-2xl ${bg}`}
+        className={`flex flex-col items-center gap-4 p-2 bg-[#F8F8F8]  rounded-2xl ${bg}`}
       >
         <div className="flex-shrink-0">
           <img
             src={icon}
             alt={name}
-            className="w-16 h-16 rounded-full object-cover border-2 border-[#0000000D]"
+            className="w-20 h-20 rounded-full object-cover border-2 border-[#0000000D]"
           />
         </div>
         <div className="flex flex-col gap-1 flex-1">

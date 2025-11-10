@@ -139,7 +139,7 @@ export const menuAdminPanelItem = [
   },
   {
     name: "Blogs & Articles",
-    path: "/admin-panel/blogs-and-articles",
+    path: "/admin-panel/blogs-&-articles",
     icon: BlogsIcon,
   },
   {
