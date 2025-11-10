@@ -94,7 +94,7 @@ const EcommereceOrders = () => {
 
   return (
     <div>
-      <div className="bg-white rounded-2xl py-6 px-6">
+      <div className="bg-white rounded-2xl py-6 ">
         <div className="flex flex-col md:flex-row justify-between gap-2 pb-3">
           <div className="md:flex-1 ">
             <AdminSearchBar
