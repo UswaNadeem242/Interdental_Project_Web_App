@@ -99,7 +99,7 @@ const OrdersTable = () => {
           <div className="w-full ">
             <AdminSearchBar
               //   title="Sort By"
-              className=" py-2 mb-3 mx-auto"
+              className="  mb-3 mx-auto"
               // secondaryButton="hide"
               title="Sort By"
               onSearch={setSearchQuery}

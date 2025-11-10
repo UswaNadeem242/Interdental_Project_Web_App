@@ -99,7 +99,7 @@ const EcommereceOrders = () => {
           <div className="md:flex-1 ">
             <AdminSearchBar
               //   title="Sort By"
-              className=" py-2 mb-3"
+              className="  mb-3"
               title={"Sort By"}
               // secondaryButton="hide"
               onSearch={setSearchQuery}

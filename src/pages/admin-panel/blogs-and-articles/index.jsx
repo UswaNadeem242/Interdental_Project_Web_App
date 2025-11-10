@@ -263,7 +263,7 @@ function BlogAndArticles() {
         {/* Dropdown */}
         {isMenuOpen && (
           <CategoryDropdown
-            className={" z-50 w-[30%] right-16 top-10"}
+            className={" z-50  w-[min(20rem,90vw)] right-16 top-10"}
             onSelect={handleSelect}
             selected={selected}
             onClose={() => setIsMenuOpen(false)}
