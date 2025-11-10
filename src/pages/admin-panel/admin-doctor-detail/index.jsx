@@ -278,11 +278,11 @@ const AdminPanelDoctorDetail = () => {
             onButtonClick={handleStatusButtonClick}
             isLoading={statusChanging}
             isActive={status === "active"}
-            bg="bg-bgWhite"
+            // bg="bg-bgWhite"
           />
         </div>
 
-        <div className="font-poppins md:col-span-8 col-span-1">
+        <div className="font-poppins md:col-span-8 col-span-1 block">
           <SubscriptionForm
             title="Subscription Plan"
             para={
