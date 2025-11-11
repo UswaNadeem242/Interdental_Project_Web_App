@@ -21,7 +21,7 @@ export const ToggleSwitch = ({
   return (
     <div
       onClick={() => onClick()}
-      className={`flex ${compact ? "min-w-16" : "md:min-w-40"} rounded-3xl items-center justify-between gap-20 py-2 px-3 ${bgColor} border-2 cursor-pointer`}
+      className={`flex ${compact ? "min-w-16" : "md:min-w-40"} rounded-3xl items-center justify-between gap-10 py-2 px-3 ${bgColor} border-2 cursor-pointer`}
     >
       <span className={`text-xs font-normal ml-2 text-textFieldHeading`}>{label}</span>
 
