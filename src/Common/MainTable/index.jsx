@@ -294,14 +294,14 @@ export default function MainTable({
           </div>
         </div>
       ) : (
-        <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-350px)] scrollbar-hidden">
-          <table className="min-w-[300px] md:min-w-full text-center text-xs md:text-sm w-full">
-            <thead className="sticky top-0 border-b-2 z-10">
+        <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-350px)] scrollbar-hidden -mx-4 md:mx-0 px-4 md:px-0">
+          <table className="min-w-max md:min-w-full text-left text-xs md:text-sm w-full">
+            <thead className="sticky top-0 border-b-2 z-10 bg-bgWhite">
               <tr className="font-poppins font-medium bg-bgWhite text-xs text-secondaryText capitalize">
                 {columns.map((column, idx) => (
                   <th
                     key={idx}
-                    className={`py-5 px-3 font-normal text-xs text-[#828386] whitespace-nowrap ${getAlignmentClass(
+                    className={`py-5 px-6 md:px-8 font-medium text-secondaryText whitespace-nowrap ${getAlignmentClass(
                       column.align
                     )} ${getResponsiveColumnClass(column)} ${
                       column.headerClassName || ""
@@ -323,7 +323,7 @@ export default function MainTable({
                 ))}
                 {actionMenuItems.length > 0 && (
                   <th
-                    className="py-5 px-3 text-center"
+                    className="py-5 px-6 md:px-8 text-center whitespace-nowrap"
                     style={{ width: "60px", minWidth: "60px" }}
                   ></th>
                 )}
@@ -345,7 +345,7 @@ export default function MainTable({
                     {columns.map((column, colIdx) => (
                       <td
                         key={colIdx}
-                        className={`px-3 py-4 text-[#333333] text-xs ${
+                        className={`px-6 md:px-8 py-4 text-[#333333] text-xs whitespace-nowrap ${
                           compact ? "py-2" : ""
                         } ${getAlignmentClass(
                           column.align
@@ -372,7 +372,7 @@ export default function MainTable({
 
                     {/* Action Menu */}
                     {actionMenuItems.length > 0 && (
-                      <td className="px-4 py-2 text-right relative">
+                      <td className="px-6 md:px-8 py-2 text-right relative whitespace-nowrap">
                         <ActionMenuDropdown
                           actionMenuItems={actionMenuItems}
                           rowData={item}

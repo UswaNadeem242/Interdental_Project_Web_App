@@ -1,6 +1,4 @@
-// import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { PlusIcon } from "../../../icon/PlusIcon";
 import { ToggleSwitch } from "./toogle-switch";
 import {
   NameAddModal,
@@ -14,133 +12,161 @@ import {
   SmileDesignEditModal,
 } from "../../../modals/EditModals";
 
-const materials = [
-  { id: 1, name: "Ivoclar Prime Cad", price: 95.0 },
-  { id: 2, name: "Argen HT", price: 45.0 },
-  { id: 3, name: "Argen ST", price: 50.0 },
-  { id: 4, name: "Emax", price: 95.0 },
-  { id: 5, name: "Aidite", price: 85.0 },
-  { id: 6, name: "Multilayer Pro", price: 75.0 },
-  { id: 7, name: "PMMA", price: 35.0 },
-];
-
-const dentures = [
-  { id: 1, name: "Full Denture", price: 95.0 },
-  { id: 2, name: "Digital Denture", price: 45.0 },
-  { id: 3, name: "Partial Denture", price: 50.0 },
-];
-const smartCrown = [
-  { id: 1, name: "Full Contour Crown", price: 35.0 },
-  { id: 2, name: "Facial Cut black", price: 50.0 },
-  { id: 3, name: "Implant Screw Retained Crown", price: 45.0 },
-];
-const dentalLab = [
-  { id: 1, name: "My Labs", price: 35.0 },
-  { id: 2, name: "Ceramic Arts Dental Lab", price: 50.0 },
-];
-const digitalModel = [
-  { id: 1, name: "Full Arch", price: 35.0 },
-  { id: 2, name: "Quadrant", price: 50.0 },
-];
-const photogrammetryFiles = [
-  { id: 1, name: "STL", price: 35.0 },
-  { id: 2, name: "DICOM", price: 50.0 },
-  { id: 2, name: "3Shape", price: 50.0 },
-  { id: 2, name: "Exocad", price: 50.0 },
-  { id: 2, name: "Blue Sky Bio", price: 50.0 },
-  { id: 2, name: "Itero", price: 50.0 },
-  { id: 2, name: "Ortho CAD", price: 50.0 },
-];
-const smileDesigns = [
-  { id: 1, name: "Smile Design_1", image: "/assets/doctor/teeth1.png" },
-  { id: 2, name: "Smile Design_2", image: "/assets/doctor/teeth1.png" },
-  { id: 3, name: "Smile Design_3", image: "/assets/doctor/teeth1.png" },
-  { id: 4, name: "Smile Design_4", image: "/assets/doctor/teeth1.png" },
-  { id: 5, name: "Smile Design_5", image: "/assets/doctor/teeth1.png" },
-  { id: 6, name: "Smile Design_6", image: "/assets/doctor/teeth1.png" },
-  { id: 7, name: "Smile Design_7", image: "/assets/doctor/teeth1.png" },
-  { id: 7, name: "Smile Design_7", image: "/assets/doctor/teeth1.png" },
-  { id: 7, name: "Smile Design_7", image: "/assets/doctor/teeth1.png" },
-  { id: 7, name: "Smile Design_7", image: "/assets/doctor/teeth1.png" },
-];
-const scannerType = [
-  { id: 1, name: "3Shape", price: 35.0 },
-  { id: 2, name: "Dentsply Sirona", price: 50.0 },
-  { id: 2, name: "Itero", price: 50.0 },
-  { id: 2, name: "Other", price: 50.0 },
-];
-
 function DropDownCard({
+  id,
   title,
+  type = "standard",
   data,
   showPrice,
   SmileDesignCard,
   smileData,
-  setIsDentureModal,
-  isDentureModal,
-  onClick,
-  isMaterialModal,
-  setIsMaterialModal,
-  isSmileDesignModal,
-  setIsSmileDesignModal,
-  isScannerModal,
-  setIsScannerModal,
-  setIsCrownModal,
-  isCrownModal,
-  isDigitalModalType,
-  setIsDigitalModalType,
-  setIsDentalLabModal,
-  isDentalLabModal,
-  isPhotogrammetryModal,
-  setIsPhotogrammetryModal,
-  setState,
-  state,
-  onClick2,
-  onClick3,
-
-  materialEdit,
-  setMaterialEdit,
-  setCrownEdit,
-  crownEdit,
-  setModelEdit,
-  modelEdit,
-  setDentureEdit,
-  dentureEdit,
-  setLabEdit,
-  labEdit,
-  setPhotoEdit,
-  photoEdit,
-  setSmile,
-  smile,
+  shadesData,
+  isModalOpen,
+  onOpenAddModal,
+  onCloseAddModal,
+  isEditModalOpen,
+  onOpenEditModal,
+  onCloseEditModal,
+  modalType,
+  editModalType,
 }) {
-  // CLOSED by default
   const [isExpanded, setIsExpanded] = useState(false);
-  const [open, setOpen] = useState(false);
 
-  //
+  const getAddModalTitle = () => {
+    return `Add Option for ${title}`;
+  };
+
+  const getEditModalTitle = () => {
+    return `Edit ${title}`;
+  };
+
+  const renderAddModal = () => {
+    if (!isModalOpen) return null;
+
+    switch (modalType) {
+      case "name":
+        return (
+          <NameAddModal
+            onClose={onCloseAddModal}
+            title={getAddModalTitle()}
+          />
+        );
+      case "name-price":
+        return (
+          <NameAndPriceAddModal
+            onClose={onCloseAddModal}
+            title={getAddModalTitle()}
+          />
+        );
+      case "smile-design":
+        return (
+          <SmileDesignAddModal
+            onClose={onCloseAddModal}
+            title={getAddModalTitle()}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderEditModal = () => {
+    if (!isEditModalOpen) return null;
+
+    switch (editModalType) {
+      case "name":
+        return (
+          <NameEditModal
+            onClose={onCloseEditModal}
+            title={getEditModalTitle()}
+          />
+        );
+      case "name-price":
+        return (
+          <NameAndPriceEditModal
+            onClose={onCloseEditModal}
+            title={getEditModalTitle()}
+          />
+        );
+      case "smile-design":
+        return (
+          <SmileDesignEditModal
+            onClose={onCloseEditModal}
+            title={getEditModalTitle()}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderShadesSection = () => {
+    if (type !== "shades" || !shadesData) return null;
+
+    return (
+      <div className="space-y-6">
+        <div className="bg-background p-4 rounded-lg">
+          <h3 className="text-sm font-semibold text-tertiaryBrand mb-4">
+            Vita Classic Shades
+          </h3>
+          <div className="flex gap-6 flex-wrap">
+            {shadesData.vitaClassic?.map((shade, key) => (
+              <ToggleSwitch
+                key={shade.id || key}
+                label={shade.name}
+                initialState={true}
+                price={shade.price}
+                showPrice={showPrice}
+                onClick={onOpenEditModal}
+                compact={true}
+                bgColor="bg-background"
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-background p-4 rounded-lg">
+          <h3 className="text-sm font-semibold text-tertiaryBrand mb-4">
+            Vita 3D-Master Shades
+          </h3>
+          <div className="flex gap-6 flex-wrap">
+            {shadesData.vita3DMaster?.map((shade, key) => (
+              <ToggleSwitch
+                key={shade.id || key}
+                label={shade.name}
+                initialState={true}
+                price={shade.price}
+                showPrice={showPrice}
+                onClick={onOpenEditModal}
+                compact={true}
+                bgColor="bg-background"
+
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="w-full mx-auto p-4 sm:p-6 bg-bgWhite font-[Inter]">
-      {/* Header Bar */}
+      <div className="w-full mx-auto p-4 sm:p-6 bg-bgWhite font-[Inter]">
       <div className="flex justify-between items-center pb-4 border-gray-100">
-        <h2 className="text-base font-medium text-[#0F153E] capitalize">
+        <h2 className="text-base font-medium text-tertiaryBrand capitalize">
           {title}
         </h2>
         <div className="flex items-center space-x-4">
-          {/* Add Button */}
           <button
-            className="flex items-center px-6 py-3 rounded-lg gap-2 bg-[#F8F8F8]"
-            onClick={onClick}
+            className="flex items-center px-6 py-3 rounded-lg gap-2 bg-background"
+            onClick={onOpenAddModal}
           >
-            <PlusIcon className="w-5 h-5 mr-1" />
-            <span className="text-[#434343] font-semibold text-sm">Add</span>
+            <span className="text-primaryText font-semibold text-sm">Edit</span>
           </button>
 
-          {/* Dropdown/Collapse Icon */}
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             aria-expanded={isExpanded}
-            aria-controls="materials-content"
+            aria-controls={`${id}-content`}
             className="p-2 text-gray-400 hover:text-gray-600 transition duration-150"
           >
             <ChevronDownIcon
@@ -152,141 +178,45 @@ function DropDownCard({
         </div>
       </div>
 
-      {/* Collapsible Content Area */}
+      {isExpanded && (
       <div
-        id="materials-content"
-        className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${
-          isExpanded ? "max-h-[5000px] pt-6" : "max-h-0 pt-0"
-        }`}
-        style={!isExpanded ? { paddingTop: 0 } : {}}
+        id={`${id}-content`}
+        className="pt-6"
       >
-        <div className="flex gap-6 flex-wrap">
-          {data &&
-            data.map((d, key) => (
+        {type === "standard" && data && (
+          <div className="flex gap-6 flex-wrap">
+            {data.map((item, key) => (
               <ToggleSwitch
-                key={key}
-                label={d.name}
+                key={item.id || key}
+                label={item.name}
                 initialState={true}
-                price={d.price}
+                price={item.price}
                 showPrice={showPrice}
-                // onClick={() => setOpen(true)}
-                setOpen={setOpen}
-                onClick={onClick2}
+                onClick={onOpenEditModal}
               />
             ))}
+          </div>
+        )}
 
-          {smileData &&
-            smileData.map((d, key) => (
+        {type === "smile-design" && smileData && SmileDesignCard && (
+          <div className="flex gap-6 flex-wrap">
+            {smileData.map((item, key) => (
               <SmileDesignCard
-                key={key}
-                label={d.name}
-                image={d.image}
-                // smile={smile}
-                // setSmile={setSmile}
-                onClick={onClick3}
+                key={item.id || key}
+                label={item.name}
+                image={item.image}
+                onClick={onOpenEditModal}
               />
             ))}
-        </div>
-
-        {/* Modals */}
-        {isDentureModal && (
-          <NameAddModal
-            onClose={() => setIsDentureModal(false)}
-            title="Add Option for Denture"
-          />
-        )}
-        {isMaterialModal && (
-          <NameAndPriceAddModal
-            onClose={() => setIsMaterialModal(false)}
-            title="Add Option for Material"
-          />
-        )}
-        {isSmileDesignModal && (
-          <SmileDesignAddModal
-            onClose={() => setIsSmileDesignModal(false)}
-            title="Add Option for Smile Design"
-          />
-        )}
-        {isScannerModal && (
-          <NameAddModal
-            onClose={() => setIsScannerModal(false)}
-            title="Add Scanner Type for Smile Design"
-          />
-        )}
-        {isCrownModal && (
-          <NameAndPriceAddModal
-            onClose={() => setIsCrownModal(false)}
-            title="Add Option for Smart Crown"
-          />
-        )}
-        {isDigitalModalType && (
-          <NameAndPriceAddModal
-            onClose={() => setIsDigitalModalType(false)}
-            title="Add Option for Digital Model"
-          />
-        )}
-        {isDentalLabModal && (
-          <NameAndPriceAddModal
-            onClose={() => setIsDentalLabModal(false)}
-            title="Add Option for Dental Lab Alliance"
-          />
-        )}
-        {isPhotogrammetryModal && (
-          <NameAddModal
-            onClose={() => setIsPhotogrammetryModal(false)}
-            title="Add Option for Photogrammetry Files"
-          />
+          </div>
         )}
 
-        {state && (
-          <NameEditModal
-            onClose={() => setState(false)}
-            title="Edit Scanner Type "
-          />
-        )}
-        {materialEdit && (
-          <NameAndPriceEditModal
-            onClose={() => setMaterialEdit(false)}
-            title="Edit Material "
-          />
-        )}
-        {crownEdit && (
-          <NameAndPriceEditModal
-            onClose={() => setCrownEdit(false)}
-            title="Edit Smart Crown "
-          />
-        )}
-        {modelEdit && (
-          <NameAndPriceEditModal
-            onClose={() => setModelEdit(false)}
-            title="Edit Digital Model "
-          />
-        )}
-        {dentureEdit && (
-          <NameEditModal
-            onClose={() => setDentureEdit(false)}
-            title="Edit Denture "
-          />
-        )}
-        {labEdit && (
-          <NameAndPriceEditModal
-            onClose={() => setLabEdit(false)}
-            title="Edit Dental Lab Alliance "
-          />
-        )}
-        {photoEdit && (
-          <NameEditModal
-            onClose={() => setPhotoEdit(false)}
-            title="Edit Photogrammetry Files "
-          />
-        )}
-        {smile && (
-          <SmileDesignEditModal
-            onClose={() => setSmile(false)}
-            title="Edit Smile Design"
-          />
-        )}
+        {type === "shades" && renderShadesSection()}
+
+        {renderAddModal()}
+        {renderEditModal()}
       </div>
+      )}
     </div>
   );
 }

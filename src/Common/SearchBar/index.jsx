@@ -71,7 +71,7 @@ export default function SearchBar({
 
       {/* Sort Dropdown (Doctors page) */}
       {secondaryButton !== "hide" && (
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-50">
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-10">
           <div className="relative">
             <SecondaryButton
               title={title}
