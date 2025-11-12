@@ -86,39 +86,6 @@ const AdminClaimRequest = () => {
         />
       ),
     },
-    // {
-    //   name: "Shipped",
-    //   content: (
-    //     // <TableComponent
-    //     //   headings={headingsAdminPanelOrders}
-    //     //   data={filteredData}
-    //     //   actionHrefKey="detailUrl"
-    //     // />
-    //     <SecondTable
-    //       headings={headingsAdminPanelClaimReq}
-    //       data={filteredData}
-    //       onActionClick={(row) => {
-    //         setSelectedRow(row);
-    //         setIsOpen(true);
-    //       }}
-    //       actionHrefKey="detailUrl"
-    //     />
-    //   ),
-    // },
-    // {
-    //   name: "completed",
-    //   content: (
-    //     <SecondTable
-    //       headings={headingsAdminPanelClaimReq}
-    //       data={filteredData}
-    //       onActionClick={(row) => {
-    //         setSelectedRow(row);
-    //         setIsOpen(true);
-    //       }}
-    //       actionHrefKey="detailUrl"
-    //     />
-    //   ),
-    // },
   ];
 
   return (

@@ -122,11 +122,11 @@ export const menuAdminPanelItem = [
   //   path: "/admin-panel/list-product",
   //   icon: DashboardIcon,
   // },
-  {
-    name: "product Details",
-    path: "/admin-panel/product-details",
-    icon: DashboardIcon,
-  },
+  // {
+  //   name: "product Details",
+  //   path: "/admin-panel/product-detail",
+  //   icon: DashboardIcon,
+  // },
   {
     name: "Subscriptions",
     path: "/admin-panel/subscriptions",

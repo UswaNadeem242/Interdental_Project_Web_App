@@ -4,8 +4,8 @@ import { useCallback } from "react";
 import Icons from "../../components/Icons";
 
 const filterOptions = [
-  { value: "all", label: "All" },
-  { value: "categoryName", label: "Category name" },
+  // { value: "all", label: "All" },
+  { value: "categoryName", label: "Category" },
   { value: "name", label: "Product name" },
   { value: "productId", label: "Product Id" },
   { value: "price", label: "Price" },
@@ -29,9 +29,10 @@ export default function FilterDropdown({ selectedFilter, onFilterChange }) {
     refs.setReference(node);
   }, []);
 
-  const selectedLabel = filterOptions.find(
-    (opt) => opt.value === selectedFilter
-  )?.label || filterOptions[0].label;
+  const selectedLabel =
+    filterOptions.find((opt) => opt.value === selectedFilter)?.label ||
+    "Filter";
+  // filterOptions[0].label;
 
   return (
     <Menu as="div" className="relative inline-block text-left z-50">
@@ -41,7 +42,9 @@ export default function FilterDropdown({ selectedFilter, onFilterChange }) {
         onClick={(e) => e.stopPropagation()}
       >
         <Icons.Filter className="w-5 h-5" stroke="#434343" />
-        <span className="text-sm font-medium text-gray-700">{selectedLabel}</span>
+        <span className="text-sm font-medium text-gray-700">
+          {selectedLabel}
+        </span>
       </MenuButton>
 
       <MenuItems
@@ -83,4 +86,3 @@ export default function FilterDropdown({ selectedFilter, onFilterChange }) {
     </Menu>
   );
 }
-

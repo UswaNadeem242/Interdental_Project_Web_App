@@ -7,8 +7,10 @@ import DropDownOptions from "../../../Common/drop-down-options";
 import { dropDownOpts } from "../../../Constant";
 import UploadPlusIcon from "../../../icon/UploadPlusIcon";
 import { Xmark } from "../../../icon/xmark";
+import { useNavigate } from "react-router-dom";
 
 function ListProduct() {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState([""]);
   const [images, setImages] = useState([]);
 
@@ -94,10 +96,12 @@ function ListProduct() {
     <form onSubmit={formik.handleSubmit}>
       {/* Header */}
       <div className="flex justify-between font-poppins items-center">
-        <h3 className="text-[#1A2D33] text-3xl font-semibold">List Product</h3>
+        <span></span>
+        {/* <h3 className="text-[#1A2D33] text-3xl font-semibold">List Product</h3> */}
         <span className="flex gap-6">
           <div>
             <SecondaryButton
+              href={"/admin-panel/products"}
               title="Discard"
               className=" text-[#013764] border border-[#013764] px-8 py-3 rounded-3xl text-sm font-semibold"
             />
@@ -105,7 +109,7 @@ function ListProduct() {
           <div>
             <button
               type="submit"
-              className="bg-[#001D58] text-[#F8F8F8] px-8 py-3 rounded-3xl text-sm font-normal"
+              className="bg-[#001D58] border border-[#001D58] text-[#F8F8F8] px-8 py-3 rounded-3xl text-sm font-normal"
             >
               Save
             </button>
@@ -208,12 +212,12 @@ function ListProduct() {
                           <div className="flex justify-center items-center mb-1 rounded-[4px] w-[20px] h-[20px] bg-[#1FA4EF1A] mr-2 ">
                             <UploadPlusIcon />
                           </div>
-                          <p className="text-[#001D58] font-medium text-sm mb-1">
+                          <p className="text-[#001D58] font-normal text-sm mb-1">
                             Upload File / URL
                           </p>
                         </div>
                         <p className="text-secondaryText text-xs font-normal ">
-                          accept image, 3d, JPG
+                          Accept Image, 3D & JPG
                         </p>
                       </div>
                     </label>
@@ -286,6 +290,7 @@ function ListProduct() {
                       options={dropDownOpts}
                       placeholder="Select Category"
                       buttonText="Add Category"
+                      buttonClassName="hidden"
                       className={"border-2"}
                       onSelect={handleCategorySelect}
                     />
@@ -328,7 +333,7 @@ function ListProduct() {
                 <div className="my-2 flex gap-2 items-center">
                   <input type="checkbox" name="agree" className="w-4 h-4" />
                   <span className="text-[#000000] text-sm font-normal">
-                    is this product include size or colour
+                    Does this product include size or colour
                   </span>
                 </div>
 
@@ -341,7 +346,7 @@ function ListProduct() {
                     >
                       <input
                         type="text"
-                        placeholder={`Total Stock`}
+                        placeholder={`Size 1`}
                         value={value}
                         onChange={(e) =>
                           handleInputChange(e.target.value, index)
