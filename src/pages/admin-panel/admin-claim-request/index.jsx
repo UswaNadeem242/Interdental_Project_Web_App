@@ -229,6 +229,8 @@ const AdminClaimRequest = () => {
         Content={
           <ClaimDetailAdminPanel
             claimId={selectedRow?.id || selectedRow?.claimId}
+            onClose={() => setIsOpen(false)}
+            getClaimRequestData={fetchClaims}
           />
         }
       />
