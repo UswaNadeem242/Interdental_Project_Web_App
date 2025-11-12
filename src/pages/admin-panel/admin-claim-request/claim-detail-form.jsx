@@ -129,7 +129,7 @@ function ClaimDetailAdminPanel({ claimId }) {
         </div>
 
         {/* Action Buttons */}
-        <div className="col-span-12 mt-5 mb-8">
+        <div className="col-span-12 mt-7 ">
           <div className="flex justify-center gap-4">
             <SecondaryButton
               title="Reject"

@@ -10,17 +10,17 @@ function AdminPanelOrders() {
       content: <OrdersTable />,
     },
     {
-      name: "Ecommerece order",
+      name: "Ecommerce order",
       content: <EcommereceOrders />,
     },
   ];
   return (
-    <div className="bg-white rounded-2xl py-6 px-6">
+    <div className="bg-white rounded-2xl py-6 px-2 ">
       <Stepper
         steps={steps}
         // className="lg:w-1/3 w-full"
         // selectedColor="bg-white "
-        className="md:w-[96%] mb-1 ml-6  bg-[#F8F8F8]  border-none"
+        className="w-full   mb-1    bg-[#F8F8F8]  border-none"
       />
     </div>
   );

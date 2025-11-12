@@ -19,12 +19,11 @@ const Admin = () => {
         <Route path="/users" element={<Users />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:productId" element={<ProductDetails />} />
-        <Route path="/list-product" element={<ListProduct />} />
+        <Route path="/add-product" element={<ListProduct />} />
         <Route path="/update-product/:productId" element={<UpdateProduct />} />
         <Route path="/orders/:id" element={<OrderDetails />} />
         {/* <Route path="/doctorAdmin/doctor" element={<DoctorOrder />} /> */}
         {/* <Route path="/doctor" element={<DoctorOrder/>} /> */}
-
       </Routes>
     </div>
   );

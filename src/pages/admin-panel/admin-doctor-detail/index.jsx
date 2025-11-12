@@ -29,11 +29,10 @@ const AdminPanelDoctorDetail = () => {
   // Fetch doctor data - only fetch when id changes
   useEffect(() => {
     if (!id) return;
-    
-    let isMounted = true;
-    
-    const fetchDoctorData = async () => {
 
+    let isMounted = true;
+
+    const fetchDoctorData = async () => {
       setLoading(true);
       try {
         const response = await axios.get(
@@ -73,11 +72,11 @@ const AdminPanelDoctorDetail = () => {
     let isMounted = true;
 
     const fetchPatients = async () => {
-  
       setPatientsLoading(true);
       try {
-        const sortParam = sortOrder === "asc" ? "createdDateAsc" : "createdDateDesc";
-        
+        const sortParam =
+          sortOrder === "asc" ? "createdDateAsc" : "createdDateDesc";
+
         const response = await axios.get(
           `${BASE_URL}/api/users/getPatientByDoctor`,
           {
@@ -124,7 +123,7 @@ const AdminPanelDoctorDetail = () => {
     return () => {
       isMounted = false;
     };
-  }, [id, currentPage, sortOrder]); 
+  }, [id, currentPage, sortOrder]);
 
   const handlePageChange = useCallback((page) => {
     setCurrentPage(page);
@@ -138,10 +137,10 @@ const AdminPanelDoctorDetail = () => {
   // Handle status change (activate/deactivate)
   const handleStatusChange = useCallback(async () => {
     if (!doctorData || !id || statusChanging) return;
-    
+
     setStatusChanging(true);
     setIsModalOpen(false);
-    
+
     try {
       // Determine new status: if active, deactivate (false), if inactive/deactivated, activate (true)
       const isActive = doctorData.status?.toLowerCase() === "active";
@@ -164,11 +163,13 @@ const AdminPanelDoctorDetail = () => {
       if (response.status === 200 || response.data?.success) {
         dispatch(
           showToast({
-            message: `Doctor account ${newStatus ? "activated" : "deactivated"} successfully`,
+            message: `Doctor account ${
+              newStatus ? "activated" : "deactivated"
+            } successfully`,
             type: "success",
           })
         );
-        
+
         // Refetch doctor data to show updated status
         try {
           const doctorResponse = await axios.get(
@@ -190,7 +191,8 @@ const AdminPanelDoctorDetail = () => {
       console.error("Error changing user status:", error);
       dispatch(
         showToast({
-          message: error.response?.data?.message || "Failed to change account status",
+          message:
+            error.response?.data?.message || "Failed to change account status",
           type: "error",
         })
       );
@@ -200,25 +202,36 @@ const AdminPanelDoctorDetail = () => {
   }, [doctorData, id, statusChanging, dispatch]);
 
   // Memoize steps to prevent unnecessary re-renders
-  const stepss = useMemo(() => [
-    {
-      name: "Basic Info",
-      content: <BasicInfo doctorData={doctorData} />,
-    },
-    {
-      name: "Patients",
-      content: (
-        <PatientsTable
-          patients={patients}
-          loading={patientsLoading}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalRecords={totalPatients}
-          onPageChange={handlePageChange}
-        />
-      ),
-    },
-  ], [doctorData, patients, patientsLoading, currentPage, totalPages, totalPatients, handlePageChange]);
+  const stepss = useMemo(
+    () => [
+      {
+        name: "Basic Info",
+        content: <BasicInfo doctorData={doctorData} />,
+      },
+      {
+        name: "Patients",
+        content: (
+          <PatientsTable
+            patients={patients}
+            loading={patientsLoading}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalRecords={totalPatients}
+            onPageChange={handlePageChange}
+          />
+        ),
+      },
+    ],
+    [
+      doctorData,
+      patients,
+      patientsLoading,
+      currentPage,
+      totalPages,
+      totalPatients,
+      handlePageChange,
+    ]
+  );
 
   if (loading) {
     return (
@@ -238,16 +251,20 @@ const AdminPanelDoctorDetail = () => {
     );
   }
 
-  const fullName = `${doctorData.firstName || ""} ${doctorData.lastName || ""}`.trim() || "N/A";
+  const fullName =
+    `${doctorData.firstName || ""} ${doctorData.lastName || ""}`.trim() ||
+    "N/A";
   const profileImage = doctorData.profileImage || "/assets/user.png";
   const email = doctorData.email || "N/A";
   const status = doctorData.status?.toLowerCase() || "inactive";
-  const buttonText = status === "active" ? "Deactivate Account" : "Activate Account";
+  const buttonText =
+    status === "active" ? "Deactivate Account" : "Activate Account";
 
   // Calculate patient count for subscription using totalPatients from API
   const patientCount = totalPatients || 0;
   const maxPatients = doctorData.maxPatients || 20;
-  const patientPercentage = maxPatients > 0 ? Math.round((patientCount / maxPatients) * 100) : 0;
+  const patientPercentage =
+    maxPatients > 0 ? Math.round((patientCount / maxPatients) * 100) : 0;
 
   return (
     <div className="p-4">
@@ -261,15 +278,20 @@ const AdminPanelDoctorDetail = () => {
             onButtonClick={handleStatusButtonClick}
             isLoading={statusChanging}
             isActive={status === "active"}
+            // bg="bg-bgWhite"
           />
         </div>
 
-        <div className="font-poppins md:col-span-8 col-span-1">
+        <div className="font-poppins md:col-span-8 col-span-1 block">
           <SubscriptionForm
             title="Subscription Plan"
-            para={doctorData.subscriptionExpiryDate 
-              ? `Will be expired on ${new Date(doctorData.subscriptionExpiryDate).toLocaleDateString()}`
-              : "No expiration date"}
+            para={
+              doctorData.subscriptionExpiryDate
+                ? `Will be expired on ${new Date(
+                    doctorData.subscriptionExpiryDate
+                  ).toLocaleDateString()}`
+                : "No expiration date"
+            }
             text="Number of patients"
             number={`${patientCount}/${maxPatients}`}
             percentage={patientPercentage}
@@ -290,7 +312,9 @@ const AdminPanelDoctorDetail = () => {
       {isModalOpen && (
         <AreYouSureModel
           isLoading={statusChanging}
-          title={status === "active" ? "Deactivate Account?" : "Activate Account?"}
+          title={
+            status === "active" ? "Deactivate Account?" : "Activate Account?"
+          }
           desc={
             status === "active"
               ? "Are you sure you want to deactivate this doctor's account? They will not be able to access their account after deactivation."

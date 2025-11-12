@@ -9,7 +9,7 @@ import { UserIcon } from "../icon/UserIcon";
 import { CartIcon } from "../icon/CartIcon";
 import ProfileIcon from "../icon/ProfileIcon";
 import UserProfileIcon from "../icon/UserProfileIcon";
-import { DoctorIcon } from "../icon/DoctorIcon";
+import { DoctorIcon, DoctorIcon2 } from "../icon/DoctorIcon";
 import { Crown } from "../icon/Crown";
 import { Revenue } from "../icon/Revenue";
 import ChevronDownIcon from "../icon/ChevronDownIcon";
@@ -17,6 +17,9 @@ import HealthIcon from "../icon/HealthIcon";
 import BoxIcon from "../icon/BoxIcon";
 import ShipIcon from "../icon/ShipIcon";
 import TimeIcon from "../icon/TimeIcon";
+import ProductIcon from "../icon/ProductIcon";
+import SubscriptionIcon from "../icon/SubscriptionIcon";
+import BlogsIcon from "../icon/BlogsIcon";
 export const MATERIAL_OPTIONS = [
   { value: "ivoclar", label: "Ivovlar Prime Cad", price: 95 },
   { value: "argen-ht", label: "Argen HT", price: 45 },
@@ -101,43 +104,43 @@ export const menuAdminPanelItem = [
   {
     name: "Doctors",
     path: "/admin-panel/doctors",
-    icon: DashboardIcon,
+    icon: DoctorIcon2,
   },
 
   {
     name: "Orders",
     path: "/admin-panel/orders",
-    icon: DashboardIcon,
+    icon: OrderIcon,
   },
   {
     name: "Products",
     path: "/admin-panel/products",
-    icon: DashboardIcon,
+    icon: ProductIcon,
   },
-  {
-    name: "List Product",
-    path: "/admin-panel/list-product",
-    icon: DashboardIcon,
-  },
-  {
-    name: "product Details",
-    path: "/admin-panel/product-details",
-    icon: DashboardIcon,
-  },
+  // {
+  //   name: "List Product",
+  //   path: "/admin-panel/list-product",
+  //   icon: DashboardIcon,
+  // },
+  // {
+  //   name: "product Details",
+  //   path: "/admin-panel/product-detail",
+  //   icon: DashboardIcon,
+  // },
   {
     name: "Subscriptions",
     path: "/admin-panel/subscriptions",
-    icon: DashboardIcon,
+    icon: SubscriptionIcon,
   },
   {
     name: "Claim Requests",
     path: "/admin-panel/claim-requests",
-    icon: DashboardIcon,
+    icon: ClaimIcon,
   },
   {
     name: "Blogs & Articles",
-    path: "/admin-panel/blogs-and-articles",
-    icon: DashboardIcon,
+    path: "/admin-panel/blogs-&-articles",
+    icon: BlogsIcon,
   },
   {
     name: "Drop Downs",
@@ -1179,7 +1182,7 @@ export const dataEcomAdminPanel = [
     id: "#1235",
     dName: "Miles,Esther",
 
-    scanDate: "17/22/2026",
+    scanDate: "01-10-2026",
     totalItems: "8",
     price: "$28",
     status: "in progress",
@@ -1191,7 +1194,7 @@ export const dataEcomAdminPanel = [
     id: "#1235",
     dName: "Miles,Esther",
 
-    scanDate: "17/22/2026",
+    scanDate: "01-10-2026",
     totalItems: "8",
     price: "$28",
     status: "pending",
@@ -1203,7 +1206,7 @@ export const dataEcomAdminPanel = [
     id: "#1235",
     dName: "Niles,Esther",
 
-    scanDate: "17/22/2026",
+    scanDate: "01-10-2026",
     totalItems: "8",
     price: "$28",
     status: "completed",
@@ -1215,7 +1218,7 @@ export const dataEcomAdminPanel = [
     id: "#1235",
     dName: "Miles,Esther",
 
-    scanDate: "17/22/2026",
+    scanDate: "01-10-2026",
     totalItems: "8",
     price: "$28",
     status: "in progress",
@@ -1255,7 +1258,7 @@ export const dataOrdersAdminPanel = [
   {
     id: "#1235",
     dName: "etedfty6",
-    createdDate: "12/11/25",
+    createdDate: "12-11-2025",
     status: "in progress",
     action: "View Detail",
     price: "$24",
@@ -1264,7 +1267,7 @@ export const dataOrdersAdminPanel = [
   {
     id: "#1235",
     dName: "etedfty6",
-    createdDate: "12/11/25",
+    createdDate: "12-11-2025",
     status: "pending",
     action: "View Detail",
     price: "$24",
@@ -1273,7 +1276,7 @@ export const dataOrdersAdminPanel = [
   {
     id: "#1235",
     dName: "etedfty6",
-    createdDate: "12/11/25",
+    createdDate: "12-11-2025",
     status: "completed",
     action: "View Detail",
     price: "$24",
@@ -1282,7 +1285,7 @@ export const dataOrdersAdminPanel = [
   {
     id: "#1235",
     dName: "etedfty6",
-    createdDate: "12/11/25",
+    createdDate: "12-11-2025",
     status: "in progress",
     action: "View Detail",
     price: "$24",
@@ -2212,19 +2215,19 @@ With a maximum flexural strength of 1100 MPa, 3D Pro zirensures aesthetic result
 
 export const headingsSubscriptions = [
   { label: "Sub ID", key: "subId" },
-  { label: "Customer Name", key: "name" },
+  { label: "Doctor Name", key: "doctorName" },
   { label: "Date", key: "date" },
   { label: "Subscription Plan", key: "subscriptionPlan" },
-  { label: "Total price", key: "totalPrice" },
+  { label: "Price", key: "totalPrice" },
   { label: "Status", key: "status" },
-  { label: "", key: "action" },
+  { label: "Action", key: "action" },
 ];
 
 export const dataSubscriptions = [
   {
     subId: "1235",
-    name: "John Doe",
-    date: "Jan 15,2025",
+    doctorName: "John Doe",
+    date: "15-06-2025",
     subscriptionPlan: "starter",
     totalPrice: "$100",
     status: "active",
@@ -2233,8 +2236,8 @@ export const dataSubscriptions = [
   },
   {
     subId: "1235",
-    name: "John Doe",
-    date: "Jan 15,2025",
+    doctorName: "John Doe",
+    date: "15-06-2025",
     subscriptionPlan: "growth",
     totalPrice: "$100",
     status: "active",
@@ -2243,10 +2246,10 @@ export const dataSubscriptions = [
   },
   {
     subId: "1235",
-    name: "John Doe",
-    date: "Jan 15,2025",
+    doctorName: "John Doe",
+    date: "15-06-2025",
     subscriptionPlan: "pro",
-    totalPrice: "free trial",
+    totalPrice: "200",
     status: "active",
     detailUrl: "/admin-panel/order-detail",
     action: "View Detail",
@@ -2254,9 +2257,9 @@ export const dataSubscriptions = [
 ];
 
 export const pamentDetailList = [
-  { title: "account holder name", name: "Kindie Jhancy" },
-  { title: "bank name", name: "allied bank" },
-  { title: "swipe code", name: "qe0ssp3" },
+  { title: "Account holder name", name: "Kindie Jhancy" },
+  { title: "Bank name", name: "allied bank" },
+  { title: "Swipe code", name: "qe0ssp3" },
   { title: "IBAN", name: "8476529761391" },
 ];
 
@@ -2267,8 +2270,8 @@ export const dropDownOpts = ["FILA", "Transi", "Dentyalo", "Dine"];
 
 export const headingsAdminPanelClaimReq = [
   { label: "Claim ID", key: "id" },
-  { label: "Patient Name", key: "patientName" },
   { label: "Doctor Name", key: "doctorName" },
+  { label: "Patient Name", key: "patientName" },
   { label: "Submission Date", key: "submissionDate" },
   { label: "Status", key: "status" },
 
