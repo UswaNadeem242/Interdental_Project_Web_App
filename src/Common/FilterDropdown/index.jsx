@@ -38,7 +38,7 @@ export default function FilterDropdown({ selectedFilter, onFilterChange }) {
     <Menu as="div" className="relative inline-block text-left z-50">
       <MenuButton
         ref={setReferenceRef}
-        className="flex items-center gap-2 px-4 py-2 bg-[#F8F8F8] rounded-md hover:bg-gray-200 transition-colors relative z-50 h-[36px]"
+        className="flex items-center gap-2 px-4 py-2 bg-[#F8F8F8] rounded-md hover:bg-gray-200 transition-colors relative z-30 h-[36px]"
         onClick={(e) => e.stopPropagation()}
       >
         <Icons.Filter className="w-5 h-5" stroke="#434343" />

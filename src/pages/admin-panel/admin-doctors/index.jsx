@@ -16,24 +16,19 @@ const DoctorsAdminPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
   const [sortLabel, setSortLabel] = useState("Desc");
-  const [showDetail, setShowDetail] = useState(false);
-  const [selectedData, setSelectedData] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [statusChanging, setStatusChanging] = useState(false);
 
-  // Pagination state
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  // Active tab filter
   const [activeTab, setActiveTab] = useState("All");
-
-  // Debounced search
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  // Map tab names to status values
+
   const getStatusFromTab = (tabName) => {
     const statusMap = {
       All: "ALL",
@@ -44,7 +39,6 @@ const DoctorsAdminPanel = () => {
     return statusMap[tabName] || "ALL";
   };
 
-  // Fetch doctors from backend
   const fetchDoctors = useCallback(
     async (page = 1, status = "ALL", search = "", sort = "desc") => {
       setLoading(true);
@@ -56,7 +50,7 @@ const DoctorsAdminPanel = () => {
           `${BASE_URL}/api/users/getUserByRole`,
           {
             params: {
-              page: page - 1, // Backend uses 0-based indexing
+              page: page - 1, 
               size: 10,
               search: search || undefined,
               status: statusParam,
@@ -89,14 +83,12 @@ const DoctorsAdminPanel = () => {
     []
   );
 
-  // Single useEffect to handle all fetch triggers (tab, search, sort, initial load)
   useEffect(() => {
     setCurrentPage(1);
     fetchDoctors(1, activeTab, debouncedSearchQuery, sortOrder);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, debouncedSearchQuery, sortOrder]);
 
-  // Handle page change
   const handlePageChange = useCallback(
     (page) => {
       setCurrentPage(page);
@@ -106,37 +98,31 @@ const DoctorsAdminPanel = () => {
     [activeTab, debouncedSearchQuery, sortOrder]
   );
 
-  // Handle tab change
   const handleTabChange = useCallback((tabName) => {
     setActiveTab(tabName);
   }, []);
 
-  // Handle search change
   const handleSearch = useCallback((value) => {
     setSearchQuery(value);
   }, []);
 
-  // Handle sort change
   const handleSort = useCallback((order) => {
     setSortOrder(order);
     setSortLabel(order === "asc" ? "Asc" : "Desc");
   }, []);
 
   const handleOpenViewDetail = (rowData) => {
-    // Navigate to doctor detail page with ID
     navigate(`/admin-panel/doctor-detail?id=${rowData.id}`);
   };
 
-  // Handle status change (activate/deactivate)
   const handleStatusChange = useCallback(
     async (userId, currentStatus) => {
       if (statusChanging) return;
 
       setStatusChanging(true);
       try {
-        // Determine new status: if active, deactivate (false), if inactive/deactivated, activate (true)
         const isActive = currentStatus?.toLowerCase() === "active";
-        const newStatus = !isActive; // true to activate, false to deactivate
+        const newStatus = !isActive; 
 
         const response = await axios.put(
           `${BASE_URL}/api/admin/users/changeuserstatus`,
@@ -161,7 +147,7 @@ const DoctorsAdminPanel = () => {
               type: "success",
             })
           );
-          // Refetch data to show updated status
+     
           await fetchDoctors(
             currentPage,
             activeTab,
@@ -192,12 +178,10 @@ const DoctorsAdminPanel = () => {
       debouncedSearchQuery,
       sortOrder,
       dispatch,
-      // fetchDoctors is stable (empty deps), so it's safe to omit
       // eslint-disable-next-line react-hooks/exhaustive-deps
     ]
   );
 
-  // Define columns for MainTable
   const columns = [
     {
       key: "name",
@@ -252,7 +236,6 @@ const DoctorsAdminPanel = () => {
 
         const statusLower = value?.toLowerCase() || "";
         const config = statusConfig[statusLower] || statusConfig.pending;
-        // const label= value?.toLowerCase() === "active" ? "Active" : value?.toLowerCase() === "inactive" ? "Deactivated" : value?.toLowerCase() === "expired" ? "Expired" : "Pending";
         return (
           <span
             className={`px-3 py-2 rounded-full text-xs font-normal capitalize ${config.className}`}
@@ -276,7 +259,6 @@ const DoctorsAdminPanel = () => {
     },
   ];
 
-  // Define action menu items
   const actionMenuItems = useMemo(
     () => [
       {
@@ -300,12 +282,10 @@ const DoctorsAdminPanel = () => {
         },
         textColor: (item) => {
           const isActive = item.status?.toLowerCase() === "active";
-          // Green for activate, yellow/orange for deactivate
           return isActive ? "text-[#D4BE17]" : "text-[#1E7C79]";
         },
         iconColor: (item) => {
           const isActive = item.status?.toLowerCase() === "active";
-          // Green for activate, yellow/orange for deactivate
           return isActive ? "text-[#D4BE17]" : "text-[#1E7C79]";
         },
       },
@@ -313,7 +293,6 @@ const DoctorsAdminPanel = () => {
     [handleStatusChange, handleOpenViewDetail]
   );
 
-  // Define tabs configuration
   const tabs = [
     { name: "All" },
     { name: "Active" },
@@ -323,27 +302,23 @@ const DoctorsAdminPanel = () => {
 
   return (
     <div>
-      <div className="bg-white rounded-2xl py-6 px-6">
+      <div className="bg-white rounded-2xl md:py-6 md:px-6 py-4 px-4 ">
         <MainTable
           columns={columns}
           data={doctors}
           actionMenuItems={actionMenuItems}
           loading={loading}
-          // Search props
           showSearch={true}
           searchPlaceholder="Search doctors..."
           onSearch={handleSearch}
           searchValue={searchQuery}
-          // Sort props
           showSort={true}
           sortLabel={sortLabel}
           onSort={handleSort}
           sortOrder={sortOrder}
-          // Tabs props
           tabs={tabs}
           onTabChange={handleTabChange}
           activeTabIndex={tabs.findIndex((tab) => tab.name === activeTab)}
-          // Pagination props
           useBackendPagination={true}
           currentPage={currentPage}
           totalPages={totalPages}

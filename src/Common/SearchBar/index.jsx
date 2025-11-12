@@ -43,9 +43,6 @@ export default function SearchBar({
       onSort(order);
     }
   };
-
-  const hasRightAction = filterDropdown || secondaryButton !== "hide";
-
   return (
     <div
       className={`relative flex items-center gap-3 w-full border bg-background rounded-md shadow-sm px-3 py-3 ${className}`}
@@ -57,14 +54,12 @@ export default function SearchBar({
         value={query}
         onChange={handleSearch}
         placeholder={placeholder}
-        className={`flex-1 outline-none text-sm font-poppins text-primaryText placeholder-primaryText bg-background ${
-          hasRightAction ? "pr-28" : ""
-        }`}
+        className={`flex-1 outline-none text-sm font-poppins text-primaryText placeholder-primaryText bg-background`}
       />
 
       {/* Filter Dropdown (Products page) */}
       {filterDropdown && (
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-50">
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-10">
           {filterDropdown}
         </div>
       )}
