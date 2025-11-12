@@ -60,104 +60,25 @@ const MainLayout = ({ children }) => (
   </div>
 );
 
-const PlainLayout = ({ children }) => {
-  return (
-    <div className="flex bg-gray-50 min-h-screen lg:p-4 p-2 gap-4">
-      {/* Sidebar - Only show on large screens (lg and above) */}
-      <div className="w-52 flex-shrink-0 hidden lg:block">
-        <DoctorSidebar items={menuItems} />
-      </div>
-      <div className="flex-1 flex flex-col relative">
-        {/* Header */}
-        <header className="fixed lg:left-64 lg:top-0 top-2 left-4 lg:right-0 right-4 lg:rounded-none h-20 lg:block py-4 bg-[#f9fafb] flex items-center lg:px-6 px-6 z-20">
-          {/* Mobile/Tablet Sidebar - Show on screens smaller than lg */}
-          <div className="lg:hidden mr-4">
-            <MobileSidebar items={menuItems} role={"doctor"} />
-          </div>
-          <DoctorHeader role={"doctor"} />
-        </header>
-
-        {/* Main Content */}
-        <main className="flex-1 lg:p-6 p-0 mt-20 lg:ml-4 rounded-xl overflow-auto">
-          {children}
-        </main>
-      </div>
-    </div>
-  );
-};
-
-const PlainLayoutUser = ({ children }) => (
-  <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
-    {/* Sidebar - Only show on large screens (lg and above) */}
+const DashboardLayout = ({ children, menuItems, role }) => (
+  <div className="flex bg-gray-50 min-h-screen lg:gap-4 lg:p-4">
     <div className="w-52 flex-shrink-0 hidden lg:block">
-      <DoctorSidebar items={menuItemsUser} />
+      <DoctorSidebar items={menuItems} />
     </div>
-    <div className="flex-1 flex flex-col relative">
-      {/* Header */}
-      <header className="fixed lg:left-64 lg:top-0 top-2 left-4 lg:right-0 right-4 lg:rounded-none h-20 lg:block py-4 bg-[#f9fafb] flex items-center lg:px-6 px-6 z-20">
-        {/* Mobile/Tablet Sidebar - Show on screens smaller than lg */}
-        <div className="lg:hidden mr-4">
-          <MobileSidebar items={menuItemsUser} role={"patient"} />
+    <div className="flex-1 flex flex-col relative ">
+      <header className="fixed lg:left-64 lg:top-0 top-0 left-0 lg:right-0 right-0 h-16 lg:h-20 py-3 lg:py-5 bg-[#f9fafb] flex items-center gap-3 lg:px-6 px-4 z-20">
+        <div className="lg:hidden flex-shrink-0">
+          <MobileSidebar items={menuItems} role={role} />
         </div>
-        <DoctorHeader role={"patient"} />
+        <DoctorHeader role={role} />
       </header>
-
-      {/* Main Content */}
-      <main className="flex-1 lg:p-6 p-0 mt-16 lg:ml-4 rounded-xl overflow-auto">
-        {children}
-      </main>
-    </div>
-  </div>
-);
-// Patient Admin
-const PlainLayoutPatient = ({ children }) => (
-  <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
-    {/* Sidebar - Only show on large screens (lg and above) */}
-    <div className="w-52 flex-shrink-0 hidden lg:block">
-      <DoctorSidebar items={menuPatientItem} />
-    </div>
-    <div className="flex-1 flex flex-col relative">
-      {/* Header */}
-      <header className="fixed lg:left-64 lg:top-0 top-2 left-4 lg:right-0 right-4 lg:rounded-none h-20 lg:block py-4 bg-[#f9fafb] flex items-center lg:px-6 px-6 z-20">
-        {/* Mobile/Tablet Sidebar - Show on screens smaller than lg */}
-        <div className="lg:hidden mr-4">
-          <MobileSidebar items={menuPatientItem} role={"patient"} />
-        </div>
-        <DoctorHeader />
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1 lg:p-6 p-0 mt-16 lg:ml-4 rounded-xl overflow-auto">
+      <main className="flex-1 lg:p-6 py-3 px-0 lg:px-6 mt-16 lg:mt-20 lg:ml-4 rounded-xl overflow-auto">
         {children}
       </main>
     </div>
   </div>
 );
 
-// admin-panel
-const PlainLayoutAdminPanel = ({ children }) => (
-  <div className="flex bg-gray-50 min-h-screen p-4 gap-4">
-    {/* Sidebar - Only show on large screens (lg and above) */}
-    <div className="w-52 flex-shrink-0 hidden lg:block">
-      <DoctorSidebar items={menuAdminPanelItem} />
-    </div>
-    <div className="flex-1 flex flex-col relative">
-      {/* Header */}
-      <header className="fixed lg:left-64 lg:top-0 top-2 left-4 lg:right-0 right-4 lg:rounded-none h-20 lg:block py-4 bg-[#f9fafb] flex items-center lg:px-6 px-6 z-20">
-        {/* Mobile/Tablet Sidebar - Show on screens smaller than lg */}
-        <div className="lg:hidden mr-4">
-          <MobileSidebar items={menuAdminPanelItem} role={"admin"} />
-        </div>
-        <DoctorHeader role={"admin"} />
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1 lg:p-6 p-0 mt-16 lg:ml-4 rounded-xl overflow-auto">
-        {children}
-      </main>
-    </div>
-  </div>
-);
 
 const SimpleLayout = ({ children }) => <div className="">{children}</div>;
 
@@ -169,14 +90,8 @@ function App() {
       <AuthProvider>
         <BrowserRouter basename="/">
           <ScrollToTop />
-          {/* <Header /> */}
           <Routes>
-            {/* Public Routes - No authentication required */}
             <Route path="/" element={<LandingPage />} />
-            {/* <Route
-              path="/product"
-              element={<ProductLandingPage isLanding={false} />}
-            />*/}
             <Route
               path="/product/:id"
               element={<ProductDetail isLanding={false} />}
@@ -209,7 +124,6 @@ function App() {
             <Route path="/about-us" element={<About isLanding={false} />} />
             <Route path="/contact-us" element={<Contact isLanding={false} />} />
 
-            {/* Auth Routes - Public but redirect if authenticated */}
             <Route
               path="/login"
               element={
@@ -251,7 +165,6 @@ function App() {
               }
             />
 
-            {/* Profile Completion - Requires authentication but not full protection */}
             <Route
               path="/complete-profile"
               element={
@@ -261,7 +174,6 @@ function App() {
               }
             />
 
-            {/* Customer Routes - Accessible by CUSTOMER role */}
             <Route path="/shop" element={<Shop />} />
             <Route
               path="/shop/:productId"
@@ -302,65 +214,55 @@ function App() {
               }
             />
 
-            {/* Doctor Routes - Accessible by DOCTOR role only */}
             <Route
               path="/doctor-admin/*"
               element={
                 <RoleRoute allowedRoles={[ERole.DOCTOR]}>
-                  <PlainLayout>
+                  <DashboardLayout menuItems={menuItems} role="doctor">
                     <ScrollToTop />
                     <DoctorAdmin />
-                  </PlainLayout>
+                  </DashboardLayout>
                 </RoleRoute>
               }
             />
 
-            {/* Patient Routes - Accessible by PATIENT role */}
             <Route
               path="/patient-admin/*"
               element={
                 <RoleRoute allowedRoles={[ERole.PATIENT]}>
-                  <PlainLayoutPatient>
+                  <DashboardLayout menuItems={menuPatientItem} role="patient">
                     <ScrollToTop />
                     <PatientAdmin />
-                  </PlainLayoutPatient>
+                  </DashboardLayout>
                 </RoleRoute>
               }
             />
 
-            {/* Admin Panel Routes - Accessible by ADMIN role only */}
             <Route
               path="/admin-panel/*"
               element={
                 <RoleRoute allowedRoles={[ERole.ADMIN]} exactRole={true}>
-                  <PlainLayoutAdminPanel>
+                  <DashboardLayout menuItems={menuAdminPanelItem} role="admin">
                     <ScrollToTop />
                     <AdminPanel />
-                  </PlainLayoutAdminPanel>
+                  </DashboardLayout>
                 </RoleRoute>
               }
             />
-            
-            {/* Legacy Admin Route - Accessible by ADMIN role */}
+
             <Route
               path="/admin/*"
               element={
                 <RoleRoute allowedRoles={[ERole.ADMIN]}>
-                  <PlainLayoutUser>
+                  <DashboardLayout menuItems={menuItemsUser} role="patient">
                     <Admin />
-                  </PlainLayoutUser>
+                  </DashboardLayout>
                 </RoleRoute>
               }
             />
           </Routes>
-
-          {/* <Footer /> */}
         </BrowserRouter>
       </AuthProvider>
-
-      {/* <Layout>
-        <RouterProvider router={router} />
-      </Layout> */}
     </div>
   );
 }

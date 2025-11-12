@@ -114,19 +114,19 @@ const DoctorHeader = ({ title, subTitle, role }) => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+      <div className="flex flex-1 items-center justify-between gap-2 lg:gap-4 min-w-0">
         {/* Page Title */}
-        <div>
-          <h1 className="text-primaryText font-poppins text-lg md:text-2xl capitalize font-bold">
+        <div className="flex-1 min-w-0 lg:flex-none">
+          <h1 className="text-primaryText font-poppins text-lg md:text-xl lg:text-2xl capitalize font-bold truncate">
             {displayName}
           </h1>
         </div>
 
-        {/* Spacer */}
-        <div className="hidden md:flex flex-1" />
+        {/* Spacer - Only on large screens */}
+        <div className="hidden lg:flex flex-1" />
 
         {/* Profile Section */}
-        <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
+        <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3 flex-shrink-0">
           {/* Profile Image or Initials */}
           {profileImage || currentProfile?.profileImage ? (
             <img

@@ -9,6 +9,7 @@ import { useDebounce } from "../../../Hooks/useDebounce";
 import AreYouSureModel from "../../../modals/AreYouSureModel";
 import UpdateQuantityModal from "../../../modals/UpdateQuantityModal";
 import { useNavigate } from "react-router-dom";
+import Icons from "../../../components/Icons";
 
 const ProductsAdminPanel = () => {
   const navigate = useNavigate();
@@ -135,10 +136,7 @@ const ProductsAdminPanel = () => {
     setCurrentPage(1);
   }, []);
 
-  const handleSelectionChange = useCallback(
-    (selected) => setSelectedRows(selected),
-    []
-  );
+  const handleSelectionChange = useCallback((selected) => setSelectedRows(selected), []);
 
   const getRowId = useCallback((item) => item.productId, []);
 
@@ -271,7 +269,7 @@ const ProductsAdminPanel = () => {
 
   return (
     <div>
-      <div className="bg-white rounded-2xl py-6 px-6">
+      <div className="bg-white rounded-2xl md:py-6 md:px-6 py-4 px-4 ">
         <MainTable
           onRowClick={() => handleRowClick()}
           columns={columns}
@@ -289,11 +287,13 @@ const ProductsAdminPanel = () => {
             />
           }
           searchBarRightActions={
-            <div className="hidden md:block">
+            <div className="">
               <SecondaryButton
-                title="Add Product"
+                title={
+                  <span className="hidden md:inline">Add Product</span>
+                }
                 className="rounded-md px-8 py-3 font-semibold bg-[#001D58] text-[#F8F8F8]"
-                // icon={<PlusIcon />}
+                icon={<Icons.Plus className="w-5 h-5" fill="white" />}
                 href="/admin-panel/add-product"
               />
             </div>
