@@ -5,6 +5,7 @@ import SearchBar from "../../../Common/SearchBar";
 import { PlusIcon } from "../../../icon/PlusIcon";
 import AddDropDownSidebar from "./add-dropdown-sidebar";
 import Icons from "../../../components/Icons";
+import EditDropDownSidebar from "./edit-dropdown-sidebar";
 
 function DropDownAdminPanel() {
   const [dropdownsData, setDropdownsData] = useState([
@@ -163,6 +164,7 @@ function DropDownAdminPanel() {
   const [editModals, setEditModals] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isEditSidebarOpen, setIsEditSidebarOpen] = useState(false);
 
   const filteredDropdowns = useMemo(() => {
     if (!searchQuery.trim()) return dropdownsData;
@@ -205,9 +207,9 @@ function DropDownAdminPanel() {
           <span>Add Drop Down</span>
         </button>
       </div>
-
       {filteredDropdowns.map((dropdown) => (
         <DropDownCard
+          setIsEditSidebarOpen={setIsEditSidebarOpen}
           key={dropdown.id}
           id={dropdown.id}
           title={dropdown.title}
@@ -227,10 +229,13 @@ function DropDownAdminPanel() {
           editModalType={dropdown.editModalType}
         />
       ))}
-
       <AddDropDownSidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
+      />
+      <EditDropDownSidebar
+        isOpen={isEditSidebarOpen}
+        onClose={() => setIsEditSidebarOpen(false)}
       />
     </div>
   );
