@@ -94,7 +94,7 @@ export default function SecondTable({
                         <span>{col.label}</span>
                       </span>
                     ) : (
-                      col.label
+                      <span className="">{col.label}</span>
                     )}
                   </th>
                 ))}

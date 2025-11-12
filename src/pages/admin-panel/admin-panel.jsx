@@ -29,8 +29,8 @@ const AdminPanel = () => {
         <Route path="/order-detail" element={<AdminOrdersDetail />} />
         {/* <Route path="/dental-design-form" element={<DentalDesignForm />} /> */}
         <Route path="/products" element={<ProductsAdminPanel />} />
-        <Route path="/list-product" element={<ListProduct />} />
-        <Route path="/product-details" element={<ProductDetails />} />
+        <Route path="/add-product" element={<ListProduct />} />
+        <Route path="/product-detail" element={<ProductDetails />} />
         <Route path="/subscriptions" element={<Subscriptions />} />
         <Route path="/claim-requests" element={<AdminClaimRequest />} />
 

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import DropDownArrow from "../../icon/DropDownArrow";
 import PullUpArrow from "../../icon/pull-up-arrow";
+import AddBrandModal from "../../modals/AddBrandModal";
+import AddBrandModall from "../../modals/AddBrandModall";
 
 export default function DropDownOptions({
   options = [], // array of brand names
@@ -13,6 +15,7 @@ export default function DropDownOptions({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [brandModal, setBrandModal] = useState(false);
 
   const handleSelect = (option) => {
     setSelected(option);
@@ -40,10 +43,11 @@ export default function DropDownOptions({
         >
           {/* Add Brand */}
           <button
-            onClick={() => {
-              setIsOpen(false);
-              onAddBrand?.();
-            }}
+            // onClick={() => {
+            //   setIsOpen(false);
+            //   onAddBrand?.();
+            // }}
+            onClick={() => setBrandModal(true)}
             className={`flex items-center gap-2 w-full px-4 py-2 text-[#001D58] text-sm font-normal hover:bg-gray-100 ${buttonClassName}`}
           >
             <span className={`text-xl `}>＋</span> {buttonText}
@@ -60,7 +64,7 @@ export default function DropDownOptions({
             >
               <span>{option}</span>
               <span
-                className={`w-5 h-5 border rounded-full flex items-center justify-center ${buttonClassName} ${
+                className={`w-5 h-5 border rounded-full flex items-center justify-center  ${
                   selected === option ? "border-blue-600" : "border-gray-300"
                 }`}
               >
@@ -72,6 +76,7 @@ export default function DropDownOptions({
           ))}
         </div>
       )}
+      {brandModal && <AddBrandModall setIsModalOpen={setBrandModal} />}
     </div>
   );
 }

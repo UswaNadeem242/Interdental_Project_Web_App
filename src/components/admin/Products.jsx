@@ -124,7 +124,7 @@ const Products = () => {
             </div>
           </div>
           <div
-            onClick={() => navigate("/admin/list-product")}
+            onClick={() => navigate("/admin/add-product")}
             className="w-[175px] h-[48px] cursor-pointer rounded-[8px] bg-[#F8F8F8] py-[17px] px-[12px] gap-[8px] flex justify-center items-center"
           >
             <svg
