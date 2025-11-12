@@ -324,7 +324,7 @@ const DoctorsAdminPanel = () => {
   return (
     <div>
       <div className="bg-white rounded-2xl py-6 px-6">
-        <MainTable
+      <MainTable
           columns={columns}
           data={doctors}
           actionMenuItems={actionMenuItems}

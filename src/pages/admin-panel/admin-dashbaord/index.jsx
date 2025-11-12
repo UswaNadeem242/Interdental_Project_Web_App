@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CardComponet } from "../../../Common/Card";
 import {
   CardAdminPanelDashboard,
@@ -15,29 +15,44 @@ import { SingleLineChart } from "../../../Common/SingleLineChart";
 import { MultiLineChart } from "../../../Common/Chart";
 import { ChartDropDown } from "../../../Common/ChartDropDown";
 import { AdminPanelProductCard } from "../../../Common/AdminPanelProductCard";
+import { getAdminStats } from "../../../services/adminpanel-dashboard";
 
 function AdminPanelDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState("yearly");
   const [selectedPlan, setSelectedPlan] = useState("yearly");
-
+  const [adminStats, setAdminStats] = useState([]);
   const chartDataMap = {
     weekly: weeklyData,
     monthly: monthlyData,
     yearly: yearlyData,
   };
 
+  const fetchDoctorStats = () => {
+    getAdminStats()
+      .then((res) => {
+        console.log("===--=-=-=-=-==--=adminStats=-=--=-=", res.data.data);
+        setAdminStats(res.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetchDoctorStats data:", error);
+      });
+  };
+  useEffect(() => {
+    fetchDoctorStats();
+  }, []);
+
   return (
     <div className="p-2">
       <div className="flex flex-col md:flex-row md:justify-center items-center gap-4">
-        {CardAdminPanelDashboard.map((item, id) => (
+        {adminStats.map((item, id) => (
           <div className="w-full">
             <CardComponet
               key={id}
-              title={item?.title}
-              count={item?.count}
-              fromDate={item?.date}
-              toDate={item?.duedate}
-              icon={item?.icon}
+              title={item?.label}
+              count={item?.value.toString()}
+              // fromDate={item?.date}
+              // toDate={item?.duedate}
+              // icon={item?.icon}
             />
           </div>
         ))}
