@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { CardComponet } from "../../../Common/Card";
 import {
-  CardAdminPanelDashboard,
   Chartdata,
-  ChartStatusLines,
   ChartStatusLines2,
   monthlyData,
   planss,
-  productDataAdminPanel,
   weeklyData,
   yearlyData,
 } from "../../../Constant";
 import { SingleLineChart } from "../../../Common/SingleLineChart";
 import { MultiLineChart } from "../../../Common/Chart";
 import { ChartDropDown } from "../../../Common/ChartDropDown";
-import { AdminPanelProductCard } from "../../../Common/AdminPanelProductCard";
 import { getAdminStats } from "../../../services/adminpanel-dashboard";
 
 function AdminPanelDashboard() {
@@ -35,6 +31,7 @@ function AdminPanelDashboard() {
       })
       .catch((error) => {
         console.error("Error fetchDoctorStats data:", error);
+
       });
   };
   useEffect(() => {

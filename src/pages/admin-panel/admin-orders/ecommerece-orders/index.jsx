@@ -98,7 +98,7 @@ const EcommereceOrders = () => {
         <div className="flex flex-col md:flex-row justify-between gap-2 pb-3">
           <div className="md:flex-1 ">
             <AdminSearchBar
-              //   title="Sort By"
+              //title="Sort By"
               className="  mb-3"
               title={"Sort By"}
               // secondaryButton="hide"
@@ -110,6 +110,7 @@ const EcommereceOrders = () => {
           </div>
         </div>
         <div className="">
+
           <TabsStepper steps={steps} />
         </div>
       </div>
