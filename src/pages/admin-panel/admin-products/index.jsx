@@ -9,6 +9,7 @@ import { useDebounce } from "../../../Hooks/useDebounce";
 import AreYouSureModel from "../../../modals/AreYouSureModel";
 import UpdateQuantityModal from "../../../modals/UpdateQuantityModal";
 import { useNavigate } from "react-router-dom";
+import Icons from "../../../components/Icons";
 
 const ProductsAdminPanel = () => {
   const navigate = useNavigate();
@@ -292,7 +293,7 @@ const ProductsAdminPanel = () => {
                   <span className="hidden md:inline">Add Product</span>
                 }
                 className="rounded-md px-8 py-3 font-semibold bg-[#001D58] text-[#F8F8F8]"
-                icon={<PlusIcon />}
+                icon={<Icons.Plus className="w-5 h-5" fill="white" />}
                 href="/admin-panel/add-product"
               />
             </div>
