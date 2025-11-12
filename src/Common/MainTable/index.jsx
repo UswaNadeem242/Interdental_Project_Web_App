@@ -341,7 +341,7 @@ export default function MainTable({
                       onRowClick ? "cursor-pointer hover:bg-gray-50" : ""
                     } ${striped && index % 2 === 1 ? "bg-gray-50" : ""}`}
                     // onClick={() => onRowClick?.(item, index)}
-                    onClick={() => onRowClick()}
+                    // onClick={() => onRowClick()}
                   >
                     {columns.map((column, colIdx) => (
                       <td
