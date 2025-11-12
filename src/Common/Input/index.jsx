@@ -42,7 +42,8 @@ export default function TextInput({
   onBlur,
   className,
   className2,
-  className3
+  className3,
+  disabled
 }) {
   return (
     <div className="w-full">
@@ -64,6 +65,7 @@ export default function TextInput({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          disabled={disabled}
           onBlur={onBlur}
           className={`block w-full bg-white py-2 px-2 text-base text-primaryText placeholder:text-secondaryText md:placeholder:text-sm placeholder:text-xs  font-poppins focus:outline-none sm:text-sm ${className3}`}
         />

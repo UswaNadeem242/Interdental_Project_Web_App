@@ -84,7 +84,7 @@ const AddBlogModal = ({ onClose, data }) => {
         onClick={() => setShowSureModal(true)} // if background is clicked
       >
         <div
-          className="bg-white shadow-xl w-[90%] h-[100%] ml-40 p-8"
+          className="bg-white shadow-xl w-[90%] h-[100%] ml-40 p-8 overflow-y-auto overflow-x-hidden "
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
         >
           {/* Header */}
@@ -123,11 +123,11 @@ const AddBlogModal = ({ onClose, data }) => {
                 {/* Upload Section */}
                 <div className="flex flex-col items-center max-w-80 border-2 border-[#00000014] rounded-lg p-6 text-center font-poppins">
                   {values.image ? (
-                    <div className="relative">
+                    <div className="relative ">
                       <img
                         src={URL.createObjectURL(values.image)}
                         alt="Preview"
-                        className="w-32 h-20 object-cover rounded-md"
+                        className="w-32 h-[120px] object-cover rounded-md"
                       />
                       <button
                         type="button"
@@ -138,12 +138,15 @@ const AddBlogModal = ({ onClose, data }) => {
                       </button>
                     </div>
                   ) : (
-                    <label className="cursor-pointer flex flex-col items-center justify-center">
+                    <label className="cursor-pointer flex flex-col items-center justify-center py-10">
                       <span className="text-[#001D58] font-normal">
-                        + upload file / URL
+                        <span className=" bg-[#1FA4EF1A] rounded-md px-1">
+                          +
+                        </span>{" "}
+                        Upload File / URL
                       </span>
                       <span className="text-xs text-gray-400 mt-1">
-                        accept image, 3d, JPG
+                        Accept Image, 3D & JPG
                       </span>
                       <input
                         type="file"
@@ -242,7 +245,7 @@ const AddBlogModal = ({ onClose, data }) => {
                 </div>
 
                 {/* Tags */}
-                <div>
+                {/* <div>
                   <label className="block text-sm text-[#434343] font-poppins font-semibold mb-1">
                     Tags
                   </label>
@@ -261,7 +264,7 @@ const AddBlogModal = ({ onClose, data }) => {
                     component="p"
                     className="text-red-500 text-xs"
                   />
-                </div>
+                </div> */}
 
                 {/* Description */}
                 <div className="font-poppins">

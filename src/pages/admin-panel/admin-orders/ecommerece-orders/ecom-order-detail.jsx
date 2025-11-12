@@ -15,6 +15,7 @@ import {
   headingsProducts,
   stepsDefault,
 } from "../../../../Constant";
+import TrackingOrderAdmin from "../../admin-orders-detail/tracking-order";
 
 function EcomOrdersDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -106,26 +107,15 @@ function EcomOrdersDetail() {
 
   return (
     <div className="">
-      <div className="bg-bgWhite col-span-12 border border-borderPrimary p-4 rounded-lg">
-        <h3 className="text-tertiaryBrand text-sm font-poppins capitalize font-semibold border-b-2 pb-3">
-          order status
-        </h3>
-        <div className="">
-          <div className="mt-4 flex  ">
-            <span className="flex-1">
-              <ProgressBar steps={stepsDefault} />
-            </span>
+      <div className="">
+        <TrackingOrderAdmin setIsModalOpen={setIsModalOpen} />
 
-            <div className="">
-              <SecondaryButton
+        {/* <SecondaryButton
                 title="Move Order To Delivered"
                 icon={""}
                 className="bg-[#001D58] text-[#FFFFFF] text-xs font-light font-poppins px-6 py-3 rounded-xl "
                 onClick={() => setIsModalOpen(true)}
-              />
-            </div>
-          </div>
-        </div>
+              /> */}
       </div>
       {/* <AdminOrderDetailForm /> */}
 

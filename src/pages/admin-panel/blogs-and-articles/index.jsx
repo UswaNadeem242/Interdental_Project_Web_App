@@ -216,7 +216,7 @@ function BlogAndArticles() {
   return (
     <div className="p-6 bg-bgWhite rounded-xl">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between gap-2 pb-3 items-center">
+      <div className="flex flex-col md:flex-row justify-between gap-4 pb-3 items-center ">
         <div className="flex-1 w-full">
           <SearchBar
             title="Sort By"
@@ -226,9 +226,9 @@ function BlogAndArticles() {
         </div>
 
         <SecondaryButton
-          title="Add New"
-          className="rounded-md px-8 py-3 font-semibold bg-[#F8F8F8]"
-          icon={<PlusIcon />}
+          title="Add New  Blog & Articles "
+          className="rounded-md px-8 py-3 text-[#F8F8F8] font-semibold bg-[#001D58]"
+          // icon={<PlusIcon />}
           onClick={() => setShowModal(true)}
         />
       </div>
@@ -263,7 +263,7 @@ function BlogAndArticles() {
         {/* Dropdown */}
         {isMenuOpen && (
           <CategoryDropdown
-            className={" z-50 w-[30%] right-16 top-10"}
+            className={" z-50  w-[min(20rem,90vw)] right-16 top-10"}
             onSelect={handleSelect}
             selected={selected}
             onClose={() => setIsMenuOpen(false)}
@@ -272,9 +272,9 @@ function BlogAndArticles() {
       </div>
 
       {/* Cards */}
-      <div className="flex flex-col md:flex-row gap-8 flex-wrap items-center w-full md:w-auto">
+      <div className="flex flex-col md:flex-row gap-6 flex-wrap items-center justify-start w-full md:w-auto">
         {cardData.map((data, key) => (
-          <div key={key} onClick={() => navigate("/admin-panel/blogs-detail")}>
+          <div key={key} onClick={() => navigate("/admin-panel/blog-detail")}>
             <BlogsCardComponent
               data={data}
               setShowSureModal={setShowSureModal}

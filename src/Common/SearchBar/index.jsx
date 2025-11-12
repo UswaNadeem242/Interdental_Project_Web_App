@@ -5,9 +5,9 @@ import FilterIcon from "../../icon/FilterIcon";
 
 /**
  * SearchBar Component
- * 
+ *
  * A reusable search bar with optional filter dropdown or sort button
- * 
+ *
  * @param {function} onSearch - Callback when search value changes
  * @param {function} onSort - Callback when sort order changes (asc/desc)
  * @param {string} placeholder - Input placeholder text
@@ -31,7 +31,7 @@ export default function SearchBar({
   const handleSearch = (e) => {
     const value = e.target.value;
     setQuery(value);
-    
+
     if (onSearch) {
       onSearch(value.trim().toLowerCase());
     }
@@ -57,7 +57,7 @@ export default function SearchBar({
         value={query}
         onChange={handleSearch}
         placeholder={placeholder}
-        className={`flex-1 outline-none text-sm text-primaryText placeholder-primaryText bg-background ${
+        className={`flex-1 outline-none text-sm font-poppins text-primaryText placeholder-primaryText bg-background ${
           hasRightAction ? "pr-28" : ""
         }`}
       />
@@ -71,7 +71,7 @@ export default function SearchBar({
 
       {/* Sort Dropdown (Doctors page) */}
       {secondaryButton !== "hide" && (
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-50">
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-10">
           <div className="relative">
             <SecondaryButton
               title={title}

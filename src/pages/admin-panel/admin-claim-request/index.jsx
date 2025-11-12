@@ -28,9 +28,7 @@ const AdminClaimRequest = () => {
   const getStatusFromTab = (tabName) => {
     const statusMap = {
       All: "all",
-      Pending: "PENDING",
-      "In Progress": "IN_PROGRESS",
-      Completed: "COMPLETED",
+      Accepted: "ACCEPTED",
       Rejected: "REJECTED",
     };
     return statusMap[tabName] || "all";
@@ -118,14 +116,20 @@ const AdminClaimRequest = () => {
 
   // Define columns for MainTable
   const columns = [
-    { key: "id", label: "Claim ID", render: (v, item) => item?.id || item?.claimId || "-" },
+    {
+      key: "id",
+      label: "Claim ID",
+      render: (v, item) => item?.id || item?.claimId || "-",
+    },
     {
       key: "patientName",
       label: "Patient Name",
       render: (v, item) =>
         item?.patientName ||
         item?.patient?.name ||
-        `${item?.patientFirstName || ""} ${item?.patientLastName || ""}`.trim() ||
+        `${item?.patientFirstName || ""} ${
+          item?.patientLastName || ""
+        }`.trim() ||
         "-",
     },
     {
@@ -161,7 +165,9 @@ const AdminClaimRequest = () => {
           statusConfig[value?.toLowerCase?.() || "pending"] ||
           "bg-[#FF57570D] text-[#FF5757]";
         return (
-          <span className={`px-3 py-2 rounded-full text-xs font-normal capitalize ${cls}`}>
+          <span
+            className={`px-3 py-2 rounded-full text-xs font-normal capitalize ${cls}`}
+          >
             {value || "-"}
           </span>
         );
@@ -184,13 +190,7 @@ const AdminClaimRequest = () => {
   );
 
   // Tabs for claims
-  const tabs = [
-    { name: "All" },
-    { name: "Pending" },
-    { name: "In Progress" },
-    { name: "Completed" },
-    { name: "Rejected" },
-  ];
+  const tabs = [{ name: "all" }, { name: "Accepted" }, { name: "Rejected" }];
 
   return (
     <div>

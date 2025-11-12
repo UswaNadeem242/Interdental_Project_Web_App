@@ -64,15 +64,15 @@ import CustomCheckbox from "../CustomCheckbox";
  * @param {string} props.sortLabel - Sort button label
  * @param {function(order)} props.onSort - Sort handler
  * @param {string} props.sortOrder - Current sort order ("asc"|"desc")
- * 
+ *
  * @param {ReactNode} props.searchBarActions - Filter dropdown to render inside search bar
  * @param {ReactNode} props.searchBarRightActions - Components to render alongside search bar (e.g., buttons)
- * 
+ *
  * @param {boolean} props.showCheckboxes - Show checkbox column
  * @param {Array} props.selectedRows - Array of selected row IDs/indices
  * @param {function(selectedRows)} props.onSelectionChange - Handler for selection changes
  * @param {function(item)} props.getRowId - Function to get unique ID for each row (defaults to index)
- * 
+ *
  * @param {Tab[]} props.tabs - Tabs configuration (optional)
  * @param {function(tabName)} props.onTabChange - Tab change handler
  * @param {number} props.activeTabIndex - Active tab index
@@ -203,7 +203,7 @@ export default function MainTable({
     if (useBackendPagination) {
       return data; // Backend already filtered and paginated
     }
-    
+
     // Frontend pagination only
     if (data.length === 0) return [];
     const startIndex = (frontendCurrentPage - 1) * pageSize;
@@ -214,9 +214,11 @@ export default function MainTable({
     ? currentPage || 1
     : frontendCurrentPage;
 
-  const displayTotalPages = useBackendPagination 
-    ? totalPages || 0 
-    : (data.length > 0 ? Math.ceil(data.length / pageSize) : 0);
+  const displayTotalPages = useBackendPagination
+    ? totalPages || 0
+    : data.length > 0
+    ? Math.ceil(data.length / pageSize)
+    : 0;
 
   const displayTotalResults = useBackendPagination
     ? totalResults || 0
@@ -227,29 +229,40 @@ export default function MainTable({
     : setFrontendCurrentPage;
 
   // Checkbox handling
-  const handleCheckboxChange = useCallback((rowId, checked) => {
-    if (!onSelectionChange) return;
-    
-    const newSelection = checked
-      ? [...selectedRows, rowId]
-      : selectedRows.filter((id) => id !== rowId);
-    
-    onSelectionChange(newSelection);
-  }, [selectedRows, onSelectionChange]);
+  const handleCheckboxChange = useCallback(
+    (rowId, checked) => {
+      if (!onSelectionChange) return;
 
-  const handleSelectAll = useCallback((checked) => {
-    if (!onSelectionChange) return;
-    
-    const newSelection = checked
-      ? displayData.map((item, index) => getRowId ? getRowId(item, index) : index)
-      : [];
-    
-    onSelectionChange(newSelection);
-  }, [displayData, onSelectionChange, getRowId]);
+      const newSelection = checked
+        ? [...selectedRows, rowId]
+        : selectedRows.filter((id) => id !== rowId);
 
-  const isRowSelected = useCallback((rowId) => {
-    return selectedRows.includes(rowId);
-  }, [selectedRows]);
+      onSelectionChange(newSelection);
+    },
+    [selectedRows, onSelectionChange]
+  );
+
+  const handleSelectAll = useCallback(
+    (checked) => {
+      if (!onSelectionChange) return;
+
+      const newSelection = checked
+        ? displayData.map((item, index) =>
+            getRowId ? getRowId(item, index) : index
+          )
+        : [];
+
+      onSelectionChange(newSelection);
+    },
+    [displayData, onSelectionChange, getRowId]
+  );
+
+  const isRowSelected = useCallback(
+    (rowId) => {
+      return selectedRows.includes(rowId);
+    },
+    [selectedRows]
+  );
 
   const isAllSelected = useMemo(() => {
     if (displayData.length === 0) return false;
@@ -281,14 +294,14 @@ export default function MainTable({
           </div>
         </div>
       ) : (
-        <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-350px)] scrollbar-hidden">
-          <table className="min-w-[300px] md:min-w-full text-left text-xs md:text-sm w-full">
-            <thead className="sticky top-0 border-b-2 z-10">
+        <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-350px)] scrollbar-hidden -mx-4 md:mx-0 px-4 md:px-0">
+          <table className="min-w-max md:min-w-full text-left text-xs md:text-sm w-full">
+            <thead className="sticky top-0 border-b-2 z-10 bg-bgWhite">
               <tr className="font-poppins font-medium bg-bgWhite text-xs text-secondaryText capitalize">
                 {columns.map((column, idx) => (
                   <th
                     key={idx}
-                    className={`py-5 px-3 font-medium text-secondaryText whitespace-nowrap ${getAlignmentClass(
+                    className={`py-5 px-6 md:px-8 font-medium text-secondaryText whitespace-nowrap ${getAlignmentClass(
                       column.align
                     )} ${getResponsiveColumnClass(column)} ${
                       column.headerClassName || ""
@@ -310,7 +323,7 @@ export default function MainTable({
                 ))}
                 {actionMenuItems.length > 0 && (
                   <th
-                    className="py-5 px-3 text-center"
+                    className="py-5 px-6 md:px-8 text-center whitespace-nowrap"
                     style={{ width: "60px", minWidth: "60px" }}
                   ></th>
                 )}
@@ -320,28 +333,35 @@ export default function MainTable({
               {displayData.map((item, index) => {
                 const rowId = getRowId ? getRowId(item, index) : index;
                 const isSelected = isRowSelected(rowId);
-                
+
                 return (
                   <tr
                     key={index}
                     className={`border-b border-gray-200 transition-all font-poppins ${
                       onRowClick ? "cursor-pointer hover:bg-gray-50" : ""
                     } ${striped && index % 2 === 1 ? "bg-gray-50" : ""}`}
-                    onClick={() => onRowClick?.(item, index)}
+                    // onClick={() => onRowClick?.(item, index)}
+                    // onClick={() => onRowClick()}
                   >
                     {columns.map((column, colIdx) => (
                       <td
                         key={colIdx}
-                        className={`px-3 py-4 text-[#333333] text-xs ${
+                        className={`px-6 md:px-8 py-4 text-[#333333] text-xs whitespace-nowrap ${
                           compact ? "py-2" : ""
-                        } ${getAlignmentClass(column.align)} ${getResponsiveColumnClass(column)} ${column.className || ""}`}
+                        } ${getAlignmentClass(
+                          column.align
+                        )} ${getResponsiveColumnClass(column)} ${
+                          column.className || ""
+                        }`}
                         style={column.width ? { width: column.width } : {}}
                       >
                         {showCheckboxes && colIdx === 0 ? (
                           <div className="flex items-center gap-4">
                             <CustomCheckbox
                               checked={isSelected}
-                              onChange={(checked) => handleCheckboxChange(rowId, checked)}
+                              onChange={(checked) =>
+                                handleCheckboxChange(rowId, checked)
+                              }
                             />
                             {renderCellContent(column, item, index)}
                           </div>
@@ -350,10 +370,10 @@ export default function MainTable({
                         )}
                       </td>
                     ))}
-                    
+
                     {/* Action Menu */}
                     {actionMenuItems.length > 0 && (
-                      <td className="px-4 py-2 text-right relative">
+                      <td className="px-6 md:px-8 py-2 text-right relative whitespace-nowrap">
                         <ActionMenuDropdown
                           actionMenuItems={actionMenuItems}
                           rowData={item}
@@ -405,9 +425,7 @@ export default function MainTable({
             />
           </div>
           {searchBarRightActions && (
-            <div className="flex items-center">
-              {searchBarRightActions}
-            </div>
+            <div className="flex items-center">{searchBarRightActions}</div>
           )}
         </div>
       </div>
@@ -430,7 +448,7 @@ export default function MainTable({
     return (
       <div className={className}>
         {renderSearchBar()}
-        <TabsStepper 
+        <TabsStepper
           steps={tabSteps}
           selectedIndex={
             controlledActiveTabIndex !== undefined

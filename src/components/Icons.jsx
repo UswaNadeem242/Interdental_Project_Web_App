@@ -574,6 +574,40 @@ const Icons = {
     </svg>
   ),
 
+  UploadIcon: ({ className = "w-4 h-4", stroke = "#001D58", ...props }) => (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <path
+        d="M12.5626 8.97363V11.3666C12.5626 11.6839 12.4366 11.9883 12.2122 12.2127C11.9878 12.437 11.6834 12.5631 11.3661 12.5631H2.99068C2.67335 12.5631 2.36902 12.437 2.14463 12.2127C1.92025 11.9883 1.79419 11.6839 1.79419 11.3666V8.97363"
+        stroke={stroke}
+        strokeWidth="1.19649"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.1704 4.78517L7.17922 1.79395L4.18799 4.78517"
+        stroke={stroke}
+        strokeWidth="1.19649"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7.17871 1.79395V8.97289"
+        stroke={stroke}
+        strokeWidth="1.19649"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+
   FileIcon: ({ className = "w-10 h-10", fill = "#001D58", ...props }) => (
     <svg
       width="40"

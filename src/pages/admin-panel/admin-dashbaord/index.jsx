@@ -58,9 +58,9 @@ function AdminPanelDashboard() {
         ))}
       </div>
       {/* Revenue Graph & Plan Usage */}
-      <div className="flex md:flex-row flex-col gap-4 mt-5 justify-between">
-        <div>
-          <div className="p-6 bg-bgWhite rounded-2xl md:w-[830px]">
+      <div className="grid md:grid-cols-12 grid-cols-1 gap-4 mt-4">
+        <div className="md:col-span-8 col-span-1">
+          <div className="p-6 bg-bgWhite rounded-2xl ">
             <ChartDropDown
               title={"Revenue Graph: 100k"}
               selectedPeriod={selectedPeriod}
@@ -82,45 +82,53 @@ function AdminPanelDashboard() {
         </div>
 
         {/* Plan Usage */}
-        <div className="bg-white rounded-2xl p-4 ">
+        <div className="bg-white rounded-2xl p-4 md:col-span-4 col-span-1 ">
           <ChartDropDown
             title={"Plan Usage"}
             selectedPeriod={selectedPlan}
             setSelectedPeriod={setSelectedPlan}
             onChange={(e) => setSelectedPlan(e.target.value)}
           />
-          <div className="flex p-4 gap-4 justify-center">
-            <button className="px-6 py-3 bg-[#F8F8F8] rounded-3xl w-full font-semibold text-primaryText">
+          <div className="flex py-5 gap-4 justify-center">
+            <button className="px-6 py-3 text-sm bg-[#F8F8F8] rounded-3xl w-full font-semibold text-primaryText">
               Doctor
             </button>
-            <button className="px-6 py-3 border border-[#0000000D] rounded-3xl w-full text-secondaryText">
+            <button className="px-6 py-3 text-sm border font-medium font-poppins border-[#0000000D] rounded-3xl w-full text-secondaryText">
               Patient
             </button>
           </div>
-          <div className="flex  text-sm font-semibold text-primaryText pb-2 mb-4 items-end">
-            <span className="w-10 font-normal text-xs ">#</span>
-            <span className="w-24 font-normal text-xs">Name</span>
+          <div className="flex  text-sm font-semibold text-primaryText pb-2 mb-4 items-end font-poppins mt-2 mb-2 justify-between">
+            <div className="flex gap-0">
+              <span className="w-10 font-normal text-xs ">#</span>
+              <span className="w-24 font-normal text-xs text-[#444A6D]">
+                Name
+              </span>
+            </div>
 
             {/* empty space for progress bar */}
-            <span className="ml-36 text-center font-light text-xs text-primaryText  whitespace-nowrap ">
+            <span className=" text-center font-normal text-xs text-[#434343]  ">
               Sales Percentage
             </span>
           </div>
           {planss.map((plan, key) => (
             <div
               key={key}
-              className="flex items-center justify-center text-sm text-gray-700 border-b border-t pt-4 pb-4 "
+              className="flex items-center justify-center text-xs text-gray-700 border-b border-t pt-4 pb-4  "
             >
               {/* ID */}
-              <span className="w-10">{plan.id}</span>
+              <span className="w-10 font-poppins text-[#444A6D] ">
+                {plan.id}
+              </span>
 
               {/* Name */}
-              <span className="w-24">{plan.name}</span>
+              <span className="w-24 font-normal text-xs text-[#444A6D] font-poppins">
+                {plan.name}
+              </span>
 
               {/* Progress + % */}
-              <div className="flex items-center flex-1">
+              <div className="flex items-center flex-1 py-2">
                 {/* Progress bar container */}
-                <div className="relative flex-1 h-1 bg-textFieldColor rounded-full overflow-hidden">
+                <div className="relative flex-1 h-1 bg-textFieldColor rounded-full overflow-hidden ">
                   <div
                     className={`h-1 rounded-full ${plan.color}`}
                     style={{ width: plan.percentage }}
@@ -137,7 +145,7 @@ function AdminPanelDashboard() {
           ))}
         </div>
       </div>
-      <div className="p-6 rounded-2xl bg-bgWhite mt-4 ">
+      <div className="p-6 rounded-2xl bg-bgWhite mt-4 md:col-span-12 col-span-1 ">
         <MultiLineChart
           data={Chartdata}
           lines={ChartStatusLines2}

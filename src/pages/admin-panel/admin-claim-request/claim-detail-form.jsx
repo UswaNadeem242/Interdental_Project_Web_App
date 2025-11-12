@@ -9,11 +9,6 @@ import { showToast } from "../../../store/toast-slice";
 function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
   // Data will be populated from API; fallback placeholders shown until loaded
 
-  const warrantyOptions = [
-    { label: "Crown and Bridges, Onlays/Inlays & Veneers", teeth: [2, 3] },
-    { label: "Implant Related Crown & Bridges", teeth: [2, 3] },
-  ];
-
   const [claimRequest, setClaimRequest] = useState(null);
 
   const patientName =
@@ -127,7 +122,7 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
         </div>
 
         {/* Action Buttons */}
-        <div className="col-span-12 mt-5 mb-8">
+        <div className="col-span-12 mt-7 ">
           <div className="flex justify-center gap-4">
             <SecondaryButton
               title="Reject"

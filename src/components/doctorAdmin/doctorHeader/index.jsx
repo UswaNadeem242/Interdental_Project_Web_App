@@ -20,16 +20,24 @@ const DoctorHeader = ({ title, subTitle, role }) => {
   // Hooks
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { logout, unreadNotificationsCount, fetchUnreadNotificationsCount } = useAuth();
+  const { logout, unreadNotificationsCount, fetchUnreadNotificationsCount } =
+    useAuth();
   const pageTitle = usePageTitle();
 
   // Redux selectors
   const profileImage = useSelector((state) => state.profile?.profileImage);
-  const profileData = useSelector((state) => state.profileData?.userProfileData);
+  const profileData = useSelector(
+    (state) => state.profileData?.userProfileData
+  );
 
   // State
   const [doctorProfile, setDoctorProfile] = useState(null);
   const [notificationsDropdown, setNotificationsDropdown] = useState(false);
+
+  // Use Redux profileData when available, fallback to doctorProfile from state
+  const currentProfile = profileData && Object.keys(profileData).length > 0 
+    ? profileData 
+    : doctorProfile;
 
   // Memoized values
   const user = useMemo(() => {
@@ -46,18 +54,20 @@ const DoctorHeader = ({ title, subTitle, role }) => {
   }, [pageTitle]);
 
   const displayName = useMemo(() => {
-    if (displayTitle && doctorProfile) {
-      return `Welcome back ${doctorProfile.firstName || ""} ${doctorProfile.lastName || ""}`.trim();
+    if (displayTitle && currentProfile) {
+      return `Welcome back ${currentProfile.firstName || ""} ${
+        currentProfile.lastName || ""
+      }`.trim();
     }
     return pageTitle;
-  }, [displayTitle, doctorProfile, pageTitle]);
+  }, [displayTitle, currentProfile, pageTitle]);
 
   const profileInitials = useMemo(() => {
-    if (!doctorProfile) return "?";
-    const first = doctorProfile.firstName?.[0] || "";
-    const last = doctorProfile.lastName?.[0] || "";
+    if (!currentProfile) return "?";
+    const first = currentProfile.firstName?.[0] || "";
+    const last = currentProfile.lastName?.[0] || "";
     return `${first}${last}`.toUpperCase();
-  }, [doctorProfile]);
+  }, [currentProfile]);
 
   // Handlers
   const handleLogout = useCallback(() => {
@@ -72,25 +82,28 @@ const DoctorHeader = ({ title, subTitle, role }) => {
   }, [user]);
 
   // Fetch doctor profile
-  const fetchProfile = useCallback(async (userId) => {
-    try {
-      const response = await getDoctorProfile(userId);
-      if (response.status === 200) {
-        const profileData = response?.data?.data;
-        dispatch(setProfileData(profileData));
-        setDoctorProfile(profileData);
+  const fetchProfile = useCallback(
+    async (userId) => {
+      try {
+        const response = await getDoctorProfile(userId);
+        if (response.status === 200) {
+          const profileData = response?.data?.data;
+          dispatch(setProfileData(profileData));
+          setDoctorProfile(profileData);
+        }
+      } catch (error) {
+        console.error("Error fetching doctor profile:", error);
       }
-    } catch (error) {
-      console.error("Error fetching doctor profile:", error);
-    }
-  }, [dispatch]);
+    },
+    [dispatch]
+  );
 
   // Initialize profile on mount
   useEffect(() => {
     if (user?.id) {
       fetchProfile(user.id);
     }
-  }, [user?.id, fetchProfile]);
+  }, [user?.id]);
 
   // Fetch notifications count on mount
   useEffect(() => {
@@ -115,10 +128,14 @@ const DoctorHeader = ({ title, subTitle, role }) => {
         {/* Profile Section */}
         <div className="hidden md:flex items-center bg-white px-4 py-2 rounded-full gap-3">
           {/* Profile Image or Initials */}
-          {profileImage || doctorProfile?.profileImage ? (
+          {profileImage || currentProfile?.profileImage ? (
             <img
-              src={profileImage || doctorProfile.profileImage}
-              alt={doctorProfile ? `${doctorProfile.firstName} ${doctorProfile.lastName}` : "User"}
+              src={profileImage || currentProfile.profileImage}
+              alt={
+                currentProfile
+                  ? `${currentProfile.firstName} ${currentProfile.lastName}`
+                  : "User"
+              }
               className="w-10 h-10 rounded-full object-cover border border-gray-300"
             />
           ) : (
@@ -130,9 +147,10 @@ const DoctorHeader = ({ title, subTitle, role }) => {
           {/* Profile Info */}
           <NavLink to={roleLink} className="flex flex-col justify-center">
             <p className="text-sm font-semibold">
-              {doctorProfile && `${doctorProfile.firstName} ${doctorProfile.lastName}`}
+              {currentProfile &&
+                `${currentProfile.firstName} ${currentProfile.lastName}`}
             </p>
-            <p className="text-xs text-gray-500">{doctorProfile?.email}</p>
+            <p className="text-xs text-gray-500">{currentProfile?.email}</p>
           </NavLink>
 
           {/* Notifications */}
