@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { SecondaryButton } from "../Button";
 import FilterIcon from "../../icon/FilterIcon";

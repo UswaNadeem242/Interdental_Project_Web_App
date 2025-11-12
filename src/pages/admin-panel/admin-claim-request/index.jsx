@@ -29,6 +29,7 @@ const AdminClaimRequest = () => {
     const statusMap = {
       All: "all",
       Accepted: "ACCEPTED",
+      Pending: "PENDING",
       Rejected: "REJECTED",
     };
     return statusMap[tabName] || "all";
@@ -190,10 +191,12 @@ const AdminClaimRequest = () => {
   );
 
   // Tabs for claims
-  const tabs = [{ name: "all" }, { name: "Accepted" }, { name: "Rejected" }];
+  const tabs = [{ name: "all" }, { name: "Pending" }, { name: "Accepted" }, { name: "Rejected" }];
 
   return (
     <div>
+      <div className="bg-white rounded-2xl py-6 px-6">
+  
       <MainTable
         columns={columns}
         data={claimRequests}
@@ -234,6 +237,7 @@ const AdminClaimRequest = () => {
           />
         }
       />
+    </div>
     </div>
   );
 };

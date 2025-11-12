@@ -122,7 +122,7 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
         </div>
 
         {/* Action Buttons */}
-        <div className="col-span-12 mt-7 ">
+       {claimRequest?.status === "PENDING" && <div className="col-span-12 mt-7 ">
           <div className="flex justify-center gap-4">
             <SecondaryButton
               title="Reject"
@@ -139,7 +139,7 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
               }
             />
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );
