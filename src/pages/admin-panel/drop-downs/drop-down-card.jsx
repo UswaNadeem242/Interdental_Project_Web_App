@@ -73,35 +73,35 @@ function DropDownCard({
     }
   };
 
-  const renderEditModal = () => {
-    if (!isEditModalOpen) return null;
+  // const renderEditModal = () => {
+  //   if (!isEditModalOpen) return null;
 
-    switch (editModalType) {
-      case "name":
-        return (
-          <NameEditModal
-            onClose={onCloseEditModal}
-            title={getEditModalTitle()}
-          />
-        );
-      case "name-price":
-        return (
-          <NameAndPriceEditModal
-            onClose={onCloseEditModal}
-            title={getEditModalTitle()}
-          />
-        );
-      case "smile-design":
-        return (
-          <SmileDesignEditModal
-            onClose={onCloseEditModal}
-            title={getEditModalTitle()}
-          />
-        );
-      default:
-        return null;
-    }
-  };
+  //   switch (editModalType) {
+  //     case "name":
+  //       return (
+  //         <NameEditModal
+  //           onClose={onCloseEditModal}
+  //           title={getEditModalTitle()}
+  //         />
+  //       );
+  //     case "name-price":
+  //       return (
+  //         <NameAndPriceEditModal
+  //           onClose={onCloseEditModal}
+  //           title={getEditModalTitle()}
+  //         />
+  //       );
+  //     case "smile-design":
+  //       return (
+  //         <SmileDesignEditModal
+  //           onClose={onCloseEditModal}
+  //           title={getEditModalTitle()}
+  //         />
+  //       );
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   const renderShadesSection = () => {
     if (type !== "shades" || !shadesData) return null;
@@ -132,10 +132,29 @@ function DropDownCard({
 
         <div className="bg-background p-4 rounded-lg">
           <h3 className="text-sm font-semibold text-tertiaryBrand mb-4">
-            Vita 3D-Master Shades
+            Vita 3D-Master Shades - Set 1
           </h3>
           <div className="flex gap-6 flex-wrap">
             {shadesData.vita3DMaster?.map((shade, key) => (
+              <ToggleSwitch
+                key={shade.id || key}
+                label={shade.name}
+                initialState={true}
+                price={shade.price}
+                showPrice={showPrice}
+                onClick={onOpenEditModal}
+                compact={true}
+                bgColor="bg-background"
+              />
+            ))}
+          </div>
+        </div>
+        <div className="bg-background p-4 rounded-lg">
+          <h3 className="text-sm font-semibold text-tertiaryBrand mb-4">
+            Vita 3D-Master Shades - Set 2
+          </h3>
+          <div className="flex gap-6 flex-wrap">
+            {shadesData.vita3DMasterShadesSet2?.map((shade, key) => (
               <ToggleSwitch
                 key={shade.id || key}
                 label={shade.name}
@@ -244,8 +263,8 @@ function DropDownCard({
 
           {type === "shades" && renderShadesSection()}
 
-          {renderAddModal()}
-          {renderEditModal()}
+          {/* {renderAddModal()}
+          {renderEditModal()} */}
         </div>
       )}
     </div>
