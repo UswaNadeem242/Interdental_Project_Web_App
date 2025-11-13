@@ -107,10 +107,6 @@ function ListProduct() {
     }
   };
 
-  useEffect(() => {
-    getAllCategories();
-  }, []);
-
   // API: Fetch Brands
   const getAllBrands = async () => {
     try {
@@ -128,6 +124,7 @@ function ListProduct() {
 
   useEffect(() => {
     getAllBrands();
+    getAllCategories();
   }, []);
 
   // API Save Product
