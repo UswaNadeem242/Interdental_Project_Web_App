@@ -1,8 +1,7 @@
 import TabsStepper from "../../../Common/TabsStepper";
 import TableComponent from "../../../Common/Table";
 import {
-  headingsPatientDashboardTable,
-  PatientDashTabledata,
+  headingsPatientDashboardTable
 } from "../../../Constant";
 import Drawers from "../../../Common/Drawers";
 import { useEffect, useState } from "react";

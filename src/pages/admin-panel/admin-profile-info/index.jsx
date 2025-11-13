@@ -24,7 +24,6 @@ const ProfileInfoAdminPanel = () => {
   );
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  // Yup validation schema
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, "First name must be at least 2 characters")
@@ -50,7 +49,6 @@ const ProfileInfoAdminPanel = () => {
       .required("Phone number is required"),
   });
 
-  // Initialize Formik
   const formik = useFormik({
     initialValues: {
       firstName: parsedUserData?.firstName || "",
@@ -85,7 +83,7 @@ const ProfileInfoAdminPanel = () => {
         );
 
         if (response.data) {
-          // Fetch updated user data from API to ensure we have the latest data
+         
           const userResponse = await axios.get(
             `${BASE_URL}/api/users/getById/${parsedUserData.id}`,
             {
@@ -124,7 +122,6 @@ const ProfileInfoAdminPanel = () => {
     },
   });
 
-  // Update form values when user data changes
   useEffect(() => {
     if (parsedUserData) {
       formik.setValues({
@@ -138,7 +135,6 @@ const ProfileInfoAdminPanel = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parsedUserData]);
 
-  // Check if form data has changed from initial values
   const hasDataChanged = () => {
     if (!formik || !parsedUserData) return false;
     
@@ -162,11 +158,9 @@ const ProfileInfoAdminPanel = () => {
     let { value } = e.target;
 
     if (name === "firstName" || name === "lastName") {
-      // Sanitize name to allowed characters only
       value = value.replace(/[^a-zA-Z\s'-]/g, "");
     }
     if (name === "phone") {
-      // Keep digits only and clamp to 15
       value = value.replace(/\D/g, "").slice(0, 15);
     }
 
@@ -176,7 +170,6 @@ const ProfileInfoAdminPanel = () => {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validate file type
       if (!file.type.startsWith("image/")) {
         dispatch(
           showToast({
@@ -187,7 +180,6 @@ const ProfileInfoAdminPanel = () => {
         return;
       }
 
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         dispatch(
           showToast({
@@ -204,7 +196,6 @@ const ProfileInfoAdminPanel = () => {
       };
       reader.readAsDataURL(file);
 
-      // Auto-upload the image
       await uploadImage(file);
     }
   };
@@ -229,7 +220,6 @@ const ProfileInfoAdminPanel = () => {
       );
 
       if (response.data) {
-        // Fetch updated user data
         const userResponse = await axios.get(
           `${BASE_URL}/api/users/getById/${parsedUserData.id}`,
           {
@@ -246,7 +236,6 @@ const ProfileInfoAdminPanel = () => {
 
         updateUser(updatedUserData);
         
-        // Update Redux store so header reflects changes immediately
         dispatch(setProfileData(userResponse?.data?.data));
 
         dispatch(
@@ -264,7 +253,6 @@ const ProfileInfoAdminPanel = () => {
           type: "error",
         }),
       );
-      // Reset preview on error
       setImagePreview(parsedUserData?.profileImage || null);
     } finally {
       setUploadingImage(false);
@@ -273,7 +261,6 @@ const ProfileInfoAdminPanel = () => {
   return (
     <>
       <div className="grid md:grid-cols-12 grid-cols-1 gap-4 bg-white md:p-8 p-4 rounded-2xl items-center  ">
-        {/* Left side */}
         <div className="col-span-12 md:col-span-6 flex gap-4 items-center">
           {imagePreview || parsedUserData?.profileImage ? (
             <img
@@ -298,8 +285,7 @@ const ProfileInfoAdminPanel = () => {
             </p>
           </div>
         </div>
-
-        {/* Right side */}
+          
         <div className="col-span-12 md:col-span-6 flex md:justify-end justify-start ">
           <div>
             <input

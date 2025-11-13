@@ -1197,6 +1197,31 @@ const Icons = {
       />
     </svg>
   ),
+
+  ArrowRightSmall: ({ className = "w-3 h-3", fill = "white", ...props }) => (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <path
+        opacity="0.5"
+        d="M1.91675 5.21094C1.61903 5.21094 1.37769 5.45228 1.37769 5.75C1.37769 6.04772 1.61903 6.28906 1.91675 6.28906V5.75V5.21094ZM1.91675 5.75V6.28906H9.58341V5.75V5.21094H1.91675V5.75Z"
+        fill={fill}
+      />
+      <path
+        d="M6.70825 2.875L9.58325 5.75L6.70825 8.625"
+        stroke={fill}
+        strokeWidth="1.07812"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
 };
 
 export default Icons;

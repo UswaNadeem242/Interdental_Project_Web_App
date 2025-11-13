@@ -1,7 +1,7 @@
 import React from "react";
 import Icons from "./Icons";
 import StarRating from "./StarRating";
-import formatRelativeTime from "../services/utils/formatRelativeTime";
+import formatRelativeTime from "../services/utils/formatTime";
 
 const CustomerFeedback = ({ item, isLast, isOnlyItem }) => {
   return (

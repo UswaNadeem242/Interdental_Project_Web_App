@@ -186,6 +186,7 @@ const DoctorsAdminPanel = () => {
     {
       key: "name",
       label: "Name",
+      width: "180px",
       render: (value, item) => {
         const fullName =
           `${item.firstName || ""} ${item.lastName || ""}`.trim() ||
@@ -206,18 +207,22 @@ const DoctorsAdminPanel = () => {
     {
       key: "email",
       label: "Email",
+      width: "200px",
     },
     {
       key: "phoneNumber",
       label: "Phone Number",
+      width: "150px",
     },
     {
       key: "drLicenseNo",
       label: "License Number",
+      width: "150px",
     },
     {
       key: "status",
       label: "Account Status",
+      width: "130px",
       render: (value) => {
         const statusConfig = {
           active: {
@@ -248,6 +253,7 @@ const DoctorsAdminPanel = () => {
     {
       key: "subStatus",
       label: "Subscription status",
+      width: "130px",
       render: (value) => {
         if (!value) return "-";
         return (

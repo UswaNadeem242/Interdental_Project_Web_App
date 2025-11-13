@@ -4,6 +4,7 @@ import ClaimDetailAdminPanel from "./claim-detail-form";
 import { getClaimRequests } from "../../../services/claim-requests";
 import MainTable from "../../../Common/MainTable";
 import { useDebounce } from "../../../Hooks/useDebounce";
+import { formatDate } from "../../../services/utils/formatTime";
 
 const AdminClaimRequest = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,19 +13,16 @@ const AdminClaimRequest = () => {
   const [sortLabel, setSortLabel] = useState("Desc");
   const [selectedRow, setSelectedRow] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  // Active tab filter
   const [activeTab, setActiveTab] = useState("All");
 
-  // Debounced search
+
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  // Map tab names to status values for backend
+
   const getStatusFromTab = (tabName) => {
     const statusMap = {
       All: "all",
@@ -35,11 +33,9 @@ const AdminClaimRequest = () => {
     return statusMap[tabName] || "all";
   };
 
-  // (legacy local table and stepper removed in favor of MainTable pattern)
 
   const [claimRequests, setClaimRequests] = useState([]);
 
-  // Fetch claims from backend
   const fetchClaims = useCallback(
     async (page = 1, status = "All", search = "", sort = "desc") => {
       setLoading(true);
@@ -50,11 +46,9 @@ const AdminClaimRequest = () => {
         params.set("size", "10");
         params.set("status", statusParam);
         if (search) params.set("search", search);
-        // Optional: backend may support sort
         const query = `?${params.toString()}`;
         const res = await getClaimRequests(query);
         const responseData = res?.data?.data;
-        // Attempt to normalize common pagination shapes
         const content =
           responseData?.data ||
           responseData?.content ||
@@ -86,14 +80,12 @@ const AdminClaimRequest = () => {
     []
   );
 
-  // Sync fetch on tab/search/sort
   useEffect(() => {
     setCurrentPage(1);
     fetchClaims(1, activeTab, debouncedSearchQuery, sortOrder);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, debouncedSearchQuery, sortOrder]);
 
-  // Handle page change
   const handlePageChange = useCallback(
     (page) => {
       setCurrentPage(page);
@@ -103,7 +95,6 @@ const AdminClaimRequest = () => {
     [activeTab, debouncedSearchQuery, sortOrder]
   );
 
-  // Handlers
   const handleTabChange = useCallback((tabName) => {
     setActiveTab(tabName);
   }, []);
@@ -115,12 +106,18 @@ const AdminClaimRequest = () => {
     setSortLabel(order === "asc" ? "Asc" : "Desc");
   }, []);
 
-  // Define columns for MainTable
   const columns = [
     {
       key: "id",
       label: "Claim ID",
-      render: (v, item) => item?.id || item?.claimId || "-",
+      render: (v, item) => {
+        const id = item?.id || item?.claimId;
+        return id ? (
+          <span className="font-bold text-primaryText">#{id}</span>
+        ) : (
+          "-"
+        );
+      }
     },
     {
       key: "patientName",
@@ -145,8 +142,10 @@ const AdminClaimRequest = () => {
     {
       key: "submissionDate",
       label: "Submission Date",
-      render: (v, item) =>
-        item?.submissionDate || item?.createdDate || item?.createdAt || "-",
+      render: (v, item) => {
+        const dateValue = item?.submissionDate || item?.createdDate || item?.createdAt;
+        return dateValue ? formatDate(dateValue) : "-";
+      },
     },
     {
       key: "status",
@@ -176,7 +175,6 @@ const AdminClaimRequest = () => {
     },
   ];
 
-  // Action menu: open drawer with details
   const actionMenuItems = useMemo(
     () => [
       {
@@ -190,8 +188,7 @@ const AdminClaimRequest = () => {
     []
   );
 
-  // Tabs for claims
-  const tabs = [{ name: "all" }, { name: "Pending" }, { name: "Accepted" }, { name: "Rejected" }];
+  const tabs = [{ name: "All" }, { name: "Pending" }, { name: "Accepted" }, { name: "Rejected" }];
 
   return (
     <div>
@@ -202,21 +199,17 @@ const AdminClaimRequest = () => {
         data={claimRequests}
         actionMenuItems={actionMenuItems}
         loading={loading}
-        // Search props
         showSearch={true}
         searchPlaceholder="Search claim requests..."
         onSearch={handleSearch}
         searchValue={searchQuery}
-        // Sort props
         showSort={true}
         sortLabel={sortLabel}
         onSort={handleSort}
         sortOrder={sortOrder}
-        // Tabs props
         tabs={tabs}
         onTabChange={handleTabChange}
         activeTabIndex={tabs.findIndex((tab) => tab.name === activeTab)}
-        // Pagination props
         useBackendPagination={true}
         currentPage={currentPage}
         totalPages={totalPages}

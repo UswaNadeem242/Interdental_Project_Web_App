@@ -12,7 +12,7 @@ import NotificationsDropdown from "../../dropdowns/NotificationsDropdown";
 // Constants
 const ROLE_LINKS = {
   doctor: "/doctor-admin/profile",
-  admin: "/admin-panel/profile-info",
+  admin: "/admin-panel/profile",
   default: "/patient-admin/profile-settings",
 };
 
