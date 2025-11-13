@@ -17,7 +17,6 @@ function ListProduct() {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState([""]);
   const [images, setImages] = useState([]);
-
   const [categoriesList, setCategoriesList] = useState([]);
   const [brandsList, setBrandsList] = useState([]);
   const [isAddBrandModal, setIsAddBrandModal] = useState(false);
@@ -26,70 +25,15 @@ function ListProduct() {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
 
-  const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      pricing: "",
-      totalStock: "",
-      category: "",
-      brand: "",
-      image: null,
-    },
-    validationSchema: Yup.object({
-      title: Yup.string().required("Title is required"),
-      description: Yup.string().required("Description is required"),
-      pricing: Yup.string()
-        .required("Pricing is required")
-        .test("is-number", "Pricing must be a number", (v) =>
-          /^\d+(\.\d+)?$/.test(v)
-        ),
-      totalStock: Yup.string()
-        .required("Total Stock is required")
-        .test("is-number", "Total Stock must be a number", (v) =>
-          /^\d+$/.test(v)
-        ),
-      category: Yup.string().required("Category is required"),
-      brand: Yup.string().required("Brand is required"),
-      image: Yup.mixed().required("Image upload is required"),
-    }),
-    onSubmit: async () => {
-      await handleSave();
-    },
-  });
-
-  // Handle file selection
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const newPreviews = files.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    const updatedImages = [...images, ...newPreviews];
-    setImages(updatedImages);
-    // Sync with Formik
-    formik.setFieldValue("image", updatedImages);
+  const showToast = (message, type = "success") => {
+    setToastMessage(message);
+    setToastType(type);
+    setToastVisible(true);
   };
 
-  // Remove image
-  const handleRemoveImage = (index) => {
-    const updated = images.filter((_, i) => i !== index);
-    setImages(updated);
-    formik.setFieldValue("image", updated.length > 0 ? updated : null); // Update formik on remove
-  };
+  const closeToast = () => setToastVisible(false);
 
-  // Dynamic Inputs
-  const handleAddInput = () => setInputs([...inputs, ""]);
-  const handleInputChange = (value, index) => {
-    const updatedInputs = [...inputs];
-    updatedInputs[index] = value;
-    setInputs(updatedInputs);
-  };
-  const handleRemove = (index) => {
-    setInputs(inputs.filter((_, i) => i !== index));
-  };
-
-  // API: Fetch Categories
+  //API Fetch Categories
   const getAllCategories = async () => {
     try {
       const { data } = await axios.get(
@@ -104,10 +48,11 @@ function ListProduct() {
       setCategoriesList(data);
     } catch (err) {
       console.error("Failed to fetch categories:", err);
+      showToast("Failed to load categories.", "error");
     }
   };
 
-  // API: Fetch Brands
+  //API Fetch Brands
   const getAllBrands = async () => {
     try {
       const { data } = await axios.get(`${BASE_URL}/api/brands/getAll`, {
@@ -119,15 +64,49 @@ function ListProduct() {
       setBrandsList(data.data || []);
     } catch (err) {
       console.error("Failed to fetch brands:", err);
+      showToast("Failed to load brands.", "error");
     }
   };
 
   useEffect(() => {
-    getAllBrands();
-    getAllCategories();
+    const fetchData = async () => {
+      await Promise.all([getAllCategories(), getAllBrands()]);
+    };
+    fetchData();
   }, []);
 
-  // API Save Product
+  //Dynamic Inputs
+  const handleAddInput = () => setInputs([...inputs, ""]);
+  const handleInputChange = (value, index) => {
+    const updatedInputs = [...inputs];
+    updatedInputs[index] = value;
+    setInputs(updatedInputs);
+  };
+  const handleRemove = (index) => {
+    setInputs(inputs.filter((_, i) => i !== index));
+  };
+
+  //Image Upload
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newPreviews = files.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+
+    setImages((prev) => [...prev, ...newPreviews]);
+    formik.setFieldValue("image", [...formik.values.image, ...files]);
+  };
+
+  const handleRemoveImage = (index) => {
+    const updatedPreviews = images.filter((_, i) => i !== index);
+    const updatedFiles = formik.values.image.filter((_, i) => i !== index);
+
+    setImages(updatedPreviews);
+    formik.setFieldValue("image", updatedFiles);
+  };
+
+  //API Save Product
   const handleSave = async () => {
     const {
       title: name,
@@ -139,57 +118,20 @@ function ListProduct() {
       image,
     } = formik.values;
 
-    if (
-      !name ||
-      !description ||
-      !price ||
-      !stockQuantity ||
-      !category ||
-      !brand ||
-      !image ||
-      image.length === 0
-    ) {
-      setToastMessage("Please fill all fields and upload at least one image.");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
-
-    if (isNaN(price) || isNaN(stockQuantity)) {
-      setToastMessage("Price and Stock must be valid numbers!");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
-
-    if (price.toString().length > 10 || stockQuantity.toString().length > 10) {
-      setToastMessage("Price and Stock cannot exceed 10 digits!");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
-
-    if (Number(price) <= 0 || Number(stockQuantity) <= 0) {
-      setToastMessage("Price and stock quantity must be greater than 0!");
-      setToastType("error");
-      setToastVisible(true);
-      return;
-    }
-
     try {
       const formData = new FormData();
       const productPayload = {
         name,
         description,
-        price,
-        stockQuantity,
+        price: Number(price),
+        stockQuantity: Number(stockQuantity),
         categoryId: category,
         brandId: brand,
         sku: `SKU-${Math.floor(Math.random() * 100000000)}`,
       };
 
       formData.append("product", JSON.stringify(productPayload));
-      image.forEach((img) => formData.append("images", img.file));
+      image.forEach((file) => formData.append("images", file));
 
       const { data } = await axios.post(
         `${BASE_URL}/api/product/add`,
@@ -203,24 +145,51 @@ function ListProduct() {
       );
 
       if (data.responseCode === "0000") {
-        setToastMessage("Product added successfully!");
-        setToastType("success");
-        setToastVisible(true);
+        showToast("Product added successfully!", "success");
         setTimeout(() => navigate("/admin-panel/products"), 2000);
       } else if (data.responseCode === "1500") {
-        setToastMessage("Product already exists.");
-        setToastType("error");
-        setToastVisible(true);
+        showToast("Product already exists.", "error");
       }
     } catch (err) {
       console.error("Error adding product:", err);
-      setToastMessage("Error while adding product!");
-      setToastType("error");
-      setToastVisible(true);
+      showToast("Error while adding product!", "error");
     }
   };
 
-  const closeToast = () => setToastVisible(false);
+  //
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+      pricing: "",
+      totalStock: "",
+      category: "",
+      brand: "",
+      image: [],
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required("Title is required"),
+      description: Yup.string().required("Description is required"),
+      pricing: Yup.number()
+        .required("Pricing is required")
+        .positive("Pricing must be greater than 0")
+        .max(9999999999, "Pricing cannot exceed 10 digits")
+        .typeError("Pricing must be a number"),
+      totalStock: Yup.number()
+        .required("Total Stock is required")
+        .positive("Stock must be greater than 0")
+        .integer("Stock must be a whole number")
+        .max(9999999999, "Stock cannot exceed 10 digits")
+        .typeError("Total Stock must be a number"),
+      category: Yup.string().required("Category is required"),
+      brand: Yup.string().required("Brand is required"),
+      image: Yup.array()
+        .of(Yup.mixed())
+        .min(1, "At least one image is required")
+        .required("Image upload is required"),
+    }),
+    onSubmit: () => handleSave(),
+  });
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -266,6 +235,7 @@ function ListProduct() {
                   className2="border-2 mt-2 p-2"
                   value={formik.values.title}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.touched.title && formik.errors.title && (
                   <p className="text-red-500 text-xs mt-1">
@@ -284,8 +254,10 @@ function ListProduct() {
                   name="description"
                   placeholder="Bransim"
                   className="w-full p-3 text-primaryText text-sm font-normal  rounded-lg border-2 border-borderPrimary mt-2 resize-none"
+                  rows="4"
                   value={formik.values.description}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 ></textarea>
                 {formik.touched.description && formik.errors.description && (
                   <p className="text-red-500 text-xs mt-1">
@@ -376,6 +348,7 @@ function ListProduct() {
                 className2="border-2 mt-2"
                 value={formik.values.pricing}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
               {formik.touched.pricing && formik.errors.pricing && (
                 <p className="text-red-500 text-xs mt-1">
@@ -400,6 +373,7 @@ function ListProduct() {
                 className2="border-2 mt-2"
                 value={formik.values.totalStock}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
               {formik.touched.totalStock && formik.errors.totalStock && (
                 <p className="text-red-500 text-xs mt-1">
@@ -489,12 +463,12 @@ function ListProduct() {
                     >
                       <input
                         type="text"
-                        placeholder={`Size 1`}
+                        placeholder={`Option ${index + 1}`}
                         value={value}
                         onChange={(e) =>
                           handleInputChange(e.target.value, index)
                         }
-                        className="w-[95%]"
+                        className="w-[95%] outline-none"
                       />
                       <span
                         onClick={() => handleRemove(index)}
