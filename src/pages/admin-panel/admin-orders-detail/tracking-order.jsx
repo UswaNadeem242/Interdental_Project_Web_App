@@ -3,6 +3,8 @@ import Icons from "../../../components/Icons";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
 import { format, parseISO } from "date-fns";
+import AreYouSureModel from "../../../modals/AreYouSureModel";
+import { updateOrderStatus } from "../../../services/admin-order";
 
 const ORDER_STATUS = {
   BOOKED: "BOOKED",
@@ -17,15 +19,15 @@ const STEP_COLORS = {
   INCOMPLETE: "#DDDDDD",
 };
 
-export default function TrackingOrderAdmin({ id, setIsModalOpen }) {
+export default function TrackingOrderAdmin({ id, isadmin, refresh }) {
+  const [orderDetails, setOrderDetails] = useState(null);
   const [trackingData, setTrackingData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
 
   const formatShortTimestamp = useCallback((dateString) => {
     if (!dateString) return "";
     try {
-      
       const hasTimezone =
         dateString.includes("Z") ||
         dateString.includes("+") ||
@@ -115,6 +117,32 @@ export default function TrackingOrderAdmin({ id, setIsModalOpen }) {
       console.error("Error fetching order tracking:", error);
     }
   }, [id]);
+
+  const fetchUpdateOrderStatus = async () => {
+    console.log("hasbdjhabsdjhahjsdbnjhas", trackingData);
+    try {
+      const payload = {
+        orderId: id,
+        description: "Order has been Deliverd",
+        orderType: isadmin ? "DOCTOR_ORDER" : null,
+        statusTemp:
+          trackingData[trackingData.length - 1].status === "BOOKED"
+            ? "SHIPPED"
+            : trackingData[trackingData.length - 1].status === "SHIPPED"
+            ? "DELIVERED"
+            : "DELIVERED",
+      };
+      console.log("payload", payload);
+      const response = await updateOrderStatus(payload);
+      if (response.status === 200) {
+        // refresh();
+        setIsModalOpen(false);
+      }
+      console.log("response", response);
+    } catch (error) {
+      console.error("Error updating order status:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -286,15 +314,17 @@ export default function TrackingOrderAdmin({ id, setIsModalOpen }) {
                   iconProps={{ fill: getStepColor(ORDER_STATUS.DELIVERED) }}
                   isLast
                 />
-                <button
-                  className="px-2 font-poppins text-xs font-medium py-2 bg-[#001D58] rounded-lg text-bgWhite ml-2 -mt-2"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  <span className="flex items-center gap-2">
-                    <span>Move Order to Delivered</span>
-                    <Icons.ArrowRightSmall />
-                  </span>
-                </button>
+                {
+                  <button
+                    className="px-2 font-poppins text-xs font-medium py-2 bg-[#001D58] rounded-lg text-bgWhite ml-2 -mt-2"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>Move Order to Delivered</span>
+                      <Icons.ArrowRightSmall />
+                    </span>
+                  </button>
+                }
               </div>
 
               <div className="flex lg:hidden flex-col py-[16px] px-[8px]">
@@ -329,6 +359,19 @@ export default function TrackingOrderAdmin({ id, setIsModalOpen }) {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          {isModalOpen && (
+            <AreYouSureModel
+              setIsModalOpen={setIsModalOpen}
+              title="Are You Sure"
+              desc="You can not undo the action"
+              handleUpdateStatus={() => {
+                console.log("update status");
+                fetchUpdateOrderStatus();
+              }}
+            />
+          )}
         </div>
       </div>
     </>
