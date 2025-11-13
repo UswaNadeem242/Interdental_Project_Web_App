@@ -1,20 +1,162 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { SecondaryButton } from "../../../Common/Button";
 import TextInput from "../../../Common/Input";
 import DropDownOptions from "../../../Common/drop-down-options";
-import { dropDownOpts } from "../../../Constant";
 import UploadPlusIcon from "../../../icon/UploadPlusIcon";
 import { Xmark } from "../../../icon/xmark";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../../../config";
+import Toast from "../../../components/Toast";
+import AddBrandModal from "../../../modals/AddBrandModal";
+import AddCategoryModal from "../../../modals/AddCategoryModal";
 
 function ListProduct() {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState([""]);
   const [images, setImages] = useState([]);
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [brandsList, setBrandsList] = useState([]);
+  const [isAddBrandModal, setIsAddBrandModal] = useState(false);
+  const [isAddCategoryModal, setIsAddCategoryModal] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
 
-  // Formik setup
+  const showToast = (message, type = "success") => {
+    setToastMessage(message);
+    setToastType(type);
+    setToastVisible(true);
+  };
+
+  const closeToast = () => setToastVisible(false);
+
+  //API Fetch Categories
+  const getAllCategories = async () => {
+    try {
+      const { data } = await axios.get(
+        `${BASE_URL}/api/category/getAllCategories`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setCategoriesList(data);
+    } catch (err) {
+      console.error("Failed to fetch categories:", err);
+      showToast("Failed to load categories.", "error");
+    }
+  };
+
+  //API Fetch Brands
+  const getAllBrands = async () => {
+    try {
+      const { data } = await axios.get(`${BASE_URL}/api/brands/getAll`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setBrandsList(data.data || []);
+    } catch (err) {
+      console.error("Failed to fetch brands:", err);
+      showToast("Failed to load brands.", "error");
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([getAllCategories(), getAllBrands()]);
+    };
+    fetchData();
+  }, []);
+
+  //Dynamic Inputs
+  const handleAddInput = () => setInputs([...inputs, ""]);
+  const handleInputChange = (value, index) => {
+    const updatedInputs = [...inputs];
+    updatedInputs[index] = value;
+    setInputs(updatedInputs);
+  };
+  const handleRemove = (index) => {
+    setInputs(inputs.filter((_, i) => i !== index));
+  };
+
+  //Image Upload
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newPreviews = files.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+
+    setImages((prev) => [...prev, ...newPreviews]);
+    formik.setFieldValue("image", [...formik.values.image, ...files]);
+  };
+
+  const handleRemoveImage = (index) => {
+    const updatedPreviews = images.filter((_, i) => i !== index);
+    const updatedFiles = formik.values.image.filter((_, i) => i !== index);
+
+    setImages(updatedPreviews);
+    formik.setFieldValue("image", updatedFiles);
+  };
+
+  //API Save Product
+  const handleSave = async () => {
+    const {
+      title: name,
+      description,
+      pricing: price,
+      totalStock: stockQuantity,
+      category,
+      brand,
+      image,
+    } = formik.values;
+
+    try {
+      const formData = new FormData();
+      const productPayload = {
+        name,
+        description,
+        price: Number(price),
+        stockQuantity: Number(stockQuantity),
+        categoryId: category,
+        brandId: brand,
+        sku: `SKU-${Math.floor(Math.random() * 100000000)}`,
+      };
+
+      formData.append("product", JSON.stringify(productPayload));
+      image.forEach((file) => formData.append("images", file));
+
+      const { data } = await axios.post(
+        `${BASE_URL}/api/product/add`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (data.responseCode === "0000") {
+        showToast("Product added successfully!", "success");
+        setTimeout(() => navigate("/admin-panel/products"), 2000);
+      } else if (data.responseCode === "1500") {
+        showToast("Product already exists.", "error");
+      }
+    } catch (err) {
+      console.error("Error adding product:", err);
+      showToast("Error while adding product!", "error");
+    }
+  };
+
+  //
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -23,74 +165,31 @@ function ListProduct() {
       totalStock: "",
       category: "",
       brand: "",
-      image: null,
+      image: [],
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
       description: Yup.string().required("Description is required"),
-      pricing: Yup.string()
+      pricing: Yup.number()
         .required("Pricing is required")
-        .test("is-number", "Pricing must be a number", (value) =>
-          /^\d+(\.\d+)?$/.test(value)
-        ),
-      totalStock: Yup.string()
+        .positive("Pricing must be greater than 0")
+        .max(9999999999, "Pricing cannot exceed 10 digits")
+        .typeError("Pricing must be a number"),
+      totalStock: Yup.number()
         .required("Total Stock is required")
-        .test("is-number", "Total Stock must be a number", (value) =>
-          /^\d+$/.test(value)
-        ),
+        .positive("Stock must be greater than 0")
+        .integer("Stock must be a whole number")
+        .max(9999999999, "Stock cannot exceed 10 digits")
+        .typeError("Total Stock must be a number"),
       category: Yup.string().required("Category is required"),
       brand: Yup.string().required("Brand is required"),
-      image: Yup.mixed().required("Image upload is required"),
+      image: Yup.array()
+        .of(Yup.mixed())
+        .min(1, "At least one image is required")
+        .required("Image upload is required"),
     }),
-    onSubmit: (values, { resetForm }) => {
-      console.log("Form Submitted with values:", values);
-      console.log("Uploaded Images:", images);
-      //  Reset all form fields and state after successful submit
-      resetForm();
-      setImages([]);
-      setInputs([""]);
-    },
+    onSubmit: () => handleSave(),
   });
-
-  // Handle file selection
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const newPreviews = files.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    const updatedImages = [...images, ...newPreviews];
-    setImages(updatedImages);
-    formik.setFieldValue("image", updatedImages); // Sync with Formik
-  };
-
-  //  Remove a specific image
-  const handleRemoveImage = (index) => {
-    const updated = images.filter((_, i) => i !== index);
-    setImages(updated);
-    formik.setFieldValue("image", updated.length > 0 ? updated : null); // Update formik on remove
-  };
-
-  //  Dropdown select handlers
-  const handleCategorySelect = (option) => {
-    formik.setFieldValue("category", option);
-  };
-
-  const handleBrandSelect = (option) => {
-    formik.setFieldValue("brand", option);
-  };
-
-  //  Dynamic options
-  const handleAddInput = () => setInputs([...inputs, ""]);
-  const handleInputChange = (value, index) => {
-    const updatedInputs = [...inputs];
-    updatedInputs[index] = value;
-    setInputs(updatedInputs);
-  };
-  const handleRemove = (index) => {
-    const updatedSizes = inputs.filter((_, i) => i !== index);
-    setInputs(updatedSizes);
-  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -136,6 +235,7 @@ function ListProduct() {
                   className2="border-2 mt-2 p-2"
                   value={formik.values.title}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.touched.title && formik.errors.title && (
                   <p className="text-red-500 text-xs mt-1">
@@ -154,8 +254,10 @@ function ListProduct() {
                   name="description"
                   placeholder="Bransim"
                   className="w-full p-3 text-primaryText text-sm font-normal  rounded-lg border-2 border-borderPrimary mt-2 resize-none"
+                  rows="4"
                   value={formik.values.description}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 ></textarea>
                 {formik.touched.description && formik.errors.description && (
                   <p className="text-red-500 text-xs mt-1">
@@ -246,6 +348,7 @@ function ListProduct() {
                 className2="border-2 mt-2"
                 value={formik.values.pricing}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
               {formik.touched.pricing && formik.errors.pricing && (
                 <p className="text-red-500 text-xs mt-1">
@@ -270,6 +373,7 @@ function ListProduct() {
                 className2="border-2 mt-2"
                 value={formik.values.totalStock}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
               {formik.touched.totalStock && formik.errors.totalStock && (
                 <p className="text-red-500 text-xs mt-1">
@@ -281,18 +385,26 @@ function ListProduct() {
             {/* Category and Brand */}
             <div className=" bg-bgWhite p-6 font-poppins mt-4 rounded-xl">
               <div className="w-full  space-y-6">
+                {/* Category */}
                 <div>
                   <label className="text-sm font-semibold text-[#000000] mb-2">
                     Category
                   </label>
                   <div className="relative mt-2">
                     <DropDownOptions
-                      options={dropDownOpts}
+                      options={categoriesList.map((c) => c.name)}
                       placeholder="Select Category"
                       buttonText="Add Category"
                       buttonClassName="hidden"
                       className={"border-2"}
-                      onSelect={handleCategorySelect}
+                      onSelect={(name) => {
+                        const cat = categoriesList.find((c) => c.name === name);
+                        formik.setFieldValue(
+                          "category",
+                          cat ? cat.categoryId : ""
+                        );
+                      }}
+                      onButtonClick={() => setIsAddCategoryModal(true)}
                     />
                     {formik.touched.category && formik.errors.category && (
                       <p className="text-red-500 text-xs mt-1">
@@ -302,17 +414,22 @@ function ListProduct() {
                   </div>
                 </div>
 
+                {/* Brand */}
                 <div>
                   <label className="text-sm font-semibold text-[#000000] mb-2">
                     Brand
                   </label>
                   <div className="relative mt-2">
                     <DropDownOptions
-                      options={dropDownOpts}
+                      options={brandsList.map((b) => b.name)}
                       placeholder="Select Brand"
                       buttonText="Add Brand"
                       className={"border-2"}
-                      onSelect={handleBrandSelect}
+                      onSelect={(name) => {
+                        const brand = brandsList.find((b) => b.name === name);
+                        formik.setFieldValue("brand", brand ? brand.id : "");
+                      }}
+                      onButtonClick={() => setIsAddBrandModal(true)}
                     />
                     {formik.touched.brand && formik.errors.brand && (
                       <p className="text-red-500 text-xs mt-1">
@@ -346,12 +463,12 @@ function ListProduct() {
                     >
                       <input
                         type="text"
-                        placeholder={`Size 1`}
+                        placeholder={`Option ${index + 1}`}
                         value={value}
                         onChange={(e) =>
                           handleInputChange(e.target.value, index)
                         }
-                        className="w-[95%]"
+                        className="w-[95%] outline-none"
                       />
                       <span
                         onClick={() => handleRemove(index)}
@@ -382,6 +499,28 @@ function ListProduct() {
           </div>
         </div>
       </div>
+
+      {isAddBrandModal && (
+        <AddBrandModal
+          isModalOpen={isAddBrandModal}
+          setIsModalOpen={setIsAddBrandModal}
+          getAllBrands={getAllBrands}
+        />
+      )}
+      {isAddCategoryModal && (
+        <AddCategoryModal
+          isModalOpen={isAddCategoryModal}
+          setIsModalOpen={setIsAddCategoryModal}
+          getAllCategories={getAllCategories}
+        />
+      )}
+
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
     </form>
   );
 }
