@@ -25,7 +25,7 @@ const MobileSidebar = ({ items, role }) => {
     role === "doctor"
       ? "/doctor-admin/profile"
       : role === "admin"
-        ? "/admin-panel/profile-info"
+        ? "/admin-panel/profile"
         : "/patient-admin/profile-settings";
 
   useEffect(() => {

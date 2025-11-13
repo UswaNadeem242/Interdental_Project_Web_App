@@ -123,11 +123,10 @@ const UnifiedLogin = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder=" "
-              className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${
-                formik.errors.email && formik.touched.email
-                  ? "border-red-500"
-                  : "border-gray-300 focus:border-secondaryBrand"
-              }`}
+              className={`peer w-full rounded-md py-3 px-4 text-textFieldHeading outline-none border ${formik.errors.email && formik.touched.email
+                ? "border-red-500"
+                : "border-gray-300 focus:border-secondaryBrand"
+                }`}
             />
             <label
               htmlFor="email"
@@ -155,11 +154,10 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder=" "
-                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${
-                  formik.errors.password && formik.touched.password
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-secondaryBrand"
-                }`}
+                className={`peer w-full rounded-md py-3 px-4 pr-12 text-textFieldHeading outline-none border ${formik.errors.password && formik.touched.password
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-secondaryBrand"
+                  }`}
               />
               <label
                 htmlFor="password"
@@ -194,16 +192,7 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
 
           <p
             onClick={() => {
-              if (formik.values.email && formik.values.email.trim() !== "") {
-                navigate("/forgot-password");
-              } else {
-                dispatch(
-                  showToast({
-                    message: "Please Add the Email First",
-                    type: "error",
-                  })
-                );
-              }
+              navigate("/forgot-password");
             }}
             className="flex justify-end w-full font-poppins font-normal cursor-pointer text-xs lg:text-[12px] leading-[18px] text-secondaryBrand"
           >
@@ -215,18 +204,13 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
           <button
             onClick={() => formik.handleSubmit()}
             disabled={loading}
-            className={`w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-8  lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px] ${
-              loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-            }`}
+            className={`w-full lg:w-[494px] h-[57px] gap-[10px] rounded-[99px] py-[18px] px-8  lg:px-[129px] bg-secondaryBrand font-poppins font-semibold text-white text-sm lg:text-[14px] leading-[21px] ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
           <div className="flex flex-row justify-center items-center w-full lg:w-[494px] h-auto lg:h-[56px] gap-4 lg:gap-[16px]">
             <div className="flex w-full h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center cursor-pointer hover:shadow-md transition-shadow">
-              {/* <GoogleIcon className="w-5 h-6" />
-              <h1 className="hidden lg:block text-sm font-poppins">
-                Login with Google
-              </h1> */}
               <LoginWithGoogle />
             </div>
           </div>{" "}

@@ -38,14 +38,23 @@ function AdminPanelDashboard() {
     fetchDoctorStats();
   }, []);
 
+
+const labelMap = {
+  totalDoctor: "Registered Doctors",
+  activeSubscription: "Active Subscriptions",
+  totalRevenue: "Revenue",
+};
+
   return (
     <div className="p-2">
       <div className="flex flex-col md:flex-row md:justify-center items-center gap-4">
         {adminStats.map((item, id) => (
           <div className="w-full">
             <CardComponet
+              map={labelMap}
               key={id}
-              title={item?.label}
+              title={labelMap[item?.label]}
+
               count={item?.value.toString()}
               // fromDate={item?.date}
               // toDate={item?.duedate}

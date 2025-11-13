@@ -3,7 +3,7 @@ import axios from "axios";
 import { BASE_URL } from "../../config";
 import { useAuth } from "../../auth/AuthContext";
 import { NotificationsSkeleton } from "../Skeletons";
-import formatRelativeTime from "../../services/utils/formatRelativeTime";
+import formatRelativeTime from "../../services/utils/formatTime";
 
 const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown }) => {
   const dropdownRef = useRef(null);

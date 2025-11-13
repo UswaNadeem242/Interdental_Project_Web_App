@@ -270,6 +270,11 @@ export default function MainTable({
     });
   }, [displayData, selectedRows, getRowId, isRowSelected]);
 
+  // Check if any column has width defined
+  const hasColumnWidths = useMemo(() => {
+    return columns.some((column) => column.width);
+  }, [columns]);
+
   // Build table content
   const tableContent = (
     <div
@@ -293,18 +298,26 @@ export default function MainTable({
         </div>
       ) : (
         <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-350px)] scrollbar-hidden">
-          <table className="min-w-max md:min-w-full text-left text-xs md:text-sm w-full">
+          <table 
+            className="min-w-max md:min-w-full text-left text-xs md:text-sm w-full"
+            style={hasColumnWidths ? { tableLayout: "auto" } : {}}
+          >
             <thead className="sticky top-0 border-b-2 z-10 bg-bgWhite">
               <tr className="font-poppins font-medium bg-bgWhite text-xs text-secondaryText capitalize">
                 {columns.map((column, idx) => (
                   <th
                     key={idx}
-                    className={`py-2 px-2 md:py-4 md:px-6 lg:px-8 font-medium text-secondaryText whitespace-nowrap ${getAlignmentClass(
+                    className={`py-2 px-2 md:py-4 md:px-4   font-medium text-secondaryText whitespace-nowrap ${getAlignmentClass(
                       column.align
                     )} ${getResponsiveColumnClass(column)} ${
                       column.headerClassName || ""
                     }`}
-                    style={column.width ? { width: column.width } : {}}
+                    style={column.width ? { 
+                      width: column.width, 
+                      minWidth: column.width, 
+                      maxWidth: column.width,
+                     
+                    } : {}}
                   >
                         {showCheckboxes && idx === 0 ? (
                       <div className="flex items-center gap-2 md:gap-4">
@@ -321,7 +334,7 @@ export default function MainTable({
                 ))}
                 {actionMenuItems.length > 0 && (
                   <th
-                    className="py-2 px-2 md:py-4 md:px-6 lg:px-8 text-center whitespace-nowrap"
+                    className="py-2 px-2 md:py-4 md:px-4 text-center whitespace-nowrap"
                     style={{ width: "60px", minWidth: "60px" }}
                   ></th>
                 )}
@@ -344,14 +357,19 @@ export default function MainTable({
                     {columns.map((column, colIdx) => (
                       <td
                         key={colIdx}
-                        className={`px-2 py-2 md:px-6 lg:px-8 md:py-4 text-[#333333] text-xs whitespace-nowrap ${
+                        className={`px-2 py-2 md:px-4 md:py-4 text-[#333333] text-xs whitespace-nowrap ${
                           compact ? "py-1 md:py-2" : ""
                         } ${getAlignmentClass(
                           column.align
                         )} ${getResponsiveColumnClass(column)} ${
                           column.className || ""
                         }`}
-                        style={column.width ? { width: column.width } : {}}
+                        style={column.width ? { 
+                          width: column.width, 
+                          minWidth: column.width, 
+                          maxWidth: column.width,
+                          boxSizing: "border-box"
+                        } : {}}
                       >
                         {showCheckboxes && colIdx === 0 ? (
                           <div className="flex items-center gap-2 md:gap-4">
