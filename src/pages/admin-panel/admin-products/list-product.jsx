@@ -12,6 +12,10 @@ import { BASE_URL } from "../../../config";
 import Toast from "../../../components/Toast";
 import AddBrandModal from "../../../modals/AddBrandModal";
 import AddCategoryModal from "../../../modals/AddCategoryModal";
+import AddCategoryDropDown from "./add-category-dropdown";
+import EditIconTwo from "../../../icon/EditIconTwo";
+import EditCategoriesModal from "../../../modals/EditCategoriesModal";
+import EditBrandsModal from "../../../modals/EditBrandsModal";
 
 function ListProduct() {
   const navigate = useNavigate();
@@ -24,6 +28,8 @@ function ListProduct() {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
+  const [editCategoryModal, setEditCategoryModal] = useState(false);
+  const [editBrandModal, setEditBrandModal] = useState(false);
 
   const showToast = (message, type = "success") => {
     setToastMessage(message);
@@ -387,15 +393,22 @@ function ListProduct() {
               <div className="w-full  space-y-6">
                 {/* Category */}
                 <div>
-                  <label className="text-sm font-semibold text-[#000000] mb-2">
-                    Category
-                  </label>
+                  <div className="flex justify-between">
+                    <label className="text-sm font-semibold text-[#000000] mb-2">
+                      Category
+                    </label>
+                    <button
+                      className="mr-1"
+                      onClick={() => setEditCategoryModal(true)}
+                    >
+                      <EditIconTwo />
+                    </button>
+                  </div>
                   <div className="relative mt-2">
-                    <DropDownOptions
+                    <AddCategoryDropDown
                       options={categoriesList.map((c) => c.name)}
                       placeholder="Select Category"
                       buttonText="Add Category"
-                      buttonClassName="hidden"
                       className={"border-2"}
                       onSelect={(name) => {
                         const cat = categoriesList.find((c) => c.name === name);
@@ -416,9 +429,17 @@ function ListProduct() {
 
                 {/* Brand */}
                 <div>
-                  <label className="text-sm font-semibold text-[#000000] mb-2">
-                    Brand
-                  </label>
+                  <div className="flex justify-between">
+                    <label className="text-sm font-semibold text-[#000000] mb-2">
+                      Brand
+                    </label>
+                    <button
+                      className="mr-1"
+                      onClick={() => setEditBrandModal(true)}
+                    >
+                      <EditIconTwo />
+                    </button>
+                  </div>
                   <div className="relative mt-2">
                     <DropDownOptions
                       options={brandsList.map((b) => b.name)}
@@ -513,6 +534,13 @@ function ListProduct() {
           setIsModalOpen={setIsAddCategoryModal}
           getAllCategories={getAllCategories}
         />
+      )}
+
+      {editBrandModal && (
+        <EditBrandsModal onClose={() => setEditBrandModal(false)} />
+      )}
+      {editCategoryModal && (
+        <EditCategoriesModal onClose={() => setEditCategoryModal(false)} />
       )}
 
       <Toast
