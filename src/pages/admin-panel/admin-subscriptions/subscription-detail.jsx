@@ -24,17 +24,17 @@ function SubscriptionDetail() {
 
       <div className="font-poppins mt-6 ">
         <div>
-          <h1 className="text-[#434343] text-sm font-semibold">
+          <h1 className="text-[#434343] text-base font-semibold font-poppins">
             Payment Detail
           </h1>
         </div>
         {pamentDetailList.map((item, key) => (
           <div className="">
             <div key={key} className="px-6 py-4 bg-[#F7F8F8] rounded-xl mt-4">
-              <h3 className="text-[#98A0A0] text-sm font-normal">
+              <h3 className="text-[#98A0A0] text-sm font-normal capitalize">
                 {item.title}
               </h3>
-              <h3 className="text-[#434343] test-sm font-semibold mt-4">
+              <h3 className="text-[#434343] test-xs font-medium mt-4 capitalize">
                 {item.name}
               </h3>
             </div>
