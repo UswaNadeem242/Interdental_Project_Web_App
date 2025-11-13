@@ -1,20 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { SecondaryButton } from "../../../Common/Button";
 import TextInput from "../../../Common/Input";
 import DropDownOptions from "../../../Common/drop-down-options";
-import { dropDownOpts } from "../../../Constant";
 import UploadPlusIcon from "../../../icon/UploadPlusIcon";
 import { Xmark } from "../../../icon/xmark";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../../../config";
+import Toast from "../../../components/Toast";
+import AddBrandModal from "../../../modals/AddBrandModal";
+import AddCategoryModal from "../../../modals/AddCategoryModal";
 
 function ListProduct() {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState([""]);
   const [images, setImages] = useState([]);
 
-  // Formik setup
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [brandsList, setBrandsList] = useState([]);
+  const [isAddBrandModal, setIsAddBrandModal] = useState(false);
+  const [isAddCategoryModal, setIsAddCategoryModal] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -30,25 +41,20 @@ function ListProduct() {
       description: Yup.string().required("Description is required"),
       pricing: Yup.string()
         .required("Pricing is required")
-        .test("is-number", "Pricing must be a number", (value) =>
-          /^\d+(\.\d+)?$/.test(value)
+        .test("is-number", "Pricing must be a number", (v) =>
+          /^\d+(\.\d+)?$/.test(v)
         ),
       totalStock: Yup.string()
         .required("Total Stock is required")
-        .test("is-number", "Total Stock must be a number", (value) =>
-          /^\d+$/.test(value)
+        .test("is-number", "Total Stock must be a number", (v) =>
+          /^\d+$/.test(v)
         ),
       category: Yup.string().required("Category is required"),
       brand: Yup.string().required("Brand is required"),
       image: Yup.mixed().required("Image upload is required"),
     }),
-    onSubmit: (values, { resetForm }) => {
-      console.log("Form Submitted with values:", values);
-      console.log("Uploaded Images:", images);
-      //  Reset all form fields and state after successful submit
-      resetForm();
-      setImages([]);
-      setInputs([""]);
+    onSubmit: async () => {
+      await handleSave();
     },
   });
 
@@ -61,26 +67,18 @@ function ListProduct() {
     }));
     const updatedImages = [...images, ...newPreviews];
     setImages(updatedImages);
-    formik.setFieldValue("image", updatedImages); // Sync with Formik
+    // Sync with Formik
+    formik.setFieldValue("image", updatedImages);
   };
 
-  //  Remove a specific image
+  // Remove image
   const handleRemoveImage = (index) => {
     const updated = images.filter((_, i) => i !== index);
     setImages(updated);
     formik.setFieldValue("image", updated.length > 0 ? updated : null); // Update formik on remove
   };
 
-  //  Dropdown select handlers
-  const handleCategorySelect = (option) => {
-    formik.setFieldValue("category", option);
-  };
-
-  const handleBrandSelect = (option) => {
-    formik.setFieldValue("brand", option);
-  };
-
-  //  Dynamic options
+  // Dynamic Inputs
   const handleAddInput = () => setInputs([...inputs, ""]);
   const handleInputChange = (value, index) => {
     const updatedInputs = [...inputs];
@@ -88,9 +86,144 @@ function ListProduct() {
     setInputs(updatedInputs);
   };
   const handleRemove = (index) => {
-    const updatedSizes = inputs.filter((_, i) => i !== index);
-    setInputs(updatedSizes);
+    setInputs(inputs.filter((_, i) => i !== index));
   };
+
+  // API: Fetch Categories
+  const getAllCategories = async () => {
+    try {
+      const { data } = await axios.get(
+        `${BASE_URL}/api/category/getAllCategories`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setCategoriesList(data);
+    } catch (err) {
+      console.error("Failed to fetch categories:", err);
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+
+  // API: Fetch Brands
+  const getAllBrands = async () => {
+    try {
+      const { data } = await axios.get(`${BASE_URL}/api/brands/getAll`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setBrandsList(data.data || []);
+    } catch (err) {
+      console.error("Failed to fetch brands:", err);
+    }
+  };
+
+  useEffect(() => {
+    getAllBrands();
+  }, []);
+
+  // API Save Product
+  const handleSave = async () => {
+    const {
+      title: name,
+      description,
+      pricing: price,
+      totalStock: stockQuantity,
+      category,
+      brand,
+      image,
+    } = formik.values;
+
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !stockQuantity ||
+      !category ||
+      !brand ||
+      !image ||
+      image.length === 0
+    ) {
+      setToastMessage("Please fill all fields and upload at least one image.");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    if (isNaN(price) || isNaN(stockQuantity)) {
+      setToastMessage("Price and Stock must be valid numbers!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    if (price.toString().length > 10 || stockQuantity.toString().length > 10) {
+      setToastMessage("Price and Stock cannot exceed 10 digits!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    if (Number(price) <= 0 || Number(stockQuantity) <= 0) {
+      setToastMessage("Price and stock quantity must be greater than 0!");
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      const productPayload = {
+        name,
+        description,
+        price,
+        stockQuantity,
+        categoryId: category,
+        brandId: brand,
+        sku: `SKU-${Math.floor(Math.random() * 100000000)}`,
+      };
+
+      formData.append("product", JSON.stringify(productPayload));
+      image.forEach((img) => formData.append("images", img.file));
+
+      const { data } = await axios.post(
+        `${BASE_URL}/api/product/add`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (data.responseCode === "0000") {
+        setToastMessage("Product added successfully!");
+        setToastType("success");
+        setToastVisible(true);
+        setTimeout(() => navigate("/admin-panel/products"), 2000);
+      } else if (data.responseCode === "1500") {
+        setToastMessage("Product already exists.");
+        setToastType("error");
+        setToastVisible(true);
+      }
+    } catch (err) {
+      console.error("Error adding product:", err);
+      setToastMessage("Error while adding product!");
+      setToastType("error");
+      setToastVisible(true);
+    }
+  };
+
+  const closeToast = () => setToastVisible(false);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -281,18 +414,26 @@ function ListProduct() {
             {/* Category and Brand */}
             <div className=" bg-bgWhite p-6 font-poppins mt-4 rounded-xl">
               <div className="w-full  space-y-6">
+                {/* Category */}
                 <div>
                   <label className="text-sm font-semibold text-[#000000] mb-2">
                     Category
                   </label>
                   <div className="relative mt-2">
                     <DropDownOptions
-                      options={dropDownOpts}
+                      options={categoriesList.map((c) => c.name)}
                       placeholder="Select Category"
                       buttonText="Add Category"
                       buttonClassName="hidden"
                       className={"border-2"}
-                      onSelect={handleCategorySelect}
+                      onSelect={(name) => {
+                        const cat = categoriesList.find((c) => c.name === name);
+                        formik.setFieldValue(
+                          "category",
+                          cat ? cat.categoryId : ""
+                        );
+                      }}
+                      onButtonClick={() => setIsAddCategoryModal(true)}
                     />
                     {formik.touched.category && formik.errors.category && (
                       <p className="text-red-500 text-xs mt-1">
@@ -302,17 +443,22 @@ function ListProduct() {
                   </div>
                 </div>
 
+                {/* Brand */}
                 <div>
                   <label className="text-sm font-semibold text-[#000000] mb-2">
                     Brand
                   </label>
                   <div className="relative mt-2">
                     <DropDownOptions
-                      options={dropDownOpts}
+                      options={brandsList.map((b) => b.name)}
                       placeholder="Select Brand"
                       buttonText="Add Brand"
                       className={"border-2"}
-                      onSelect={handleBrandSelect}
+                      onSelect={(name) => {
+                        const brand = brandsList.find((b) => b.name === name);
+                        formik.setFieldValue("brand", brand ? brand.id : "");
+                      }}
+                      onButtonClick={() => setIsAddBrandModal(true)}
                     />
                     {formik.touched.brand && formik.errors.brand && (
                       <p className="text-red-500 text-xs mt-1">
@@ -382,6 +528,28 @@ function ListProduct() {
           </div>
         </div>
       </div>
+
+      {isAddBrandModal && (
+        <AddBrandModal
+          isModalOpen={isAddBrandModal}
+          setIsModalOpen={setIsAddBrandModal}
+          getAllBrands={getAllBrands}
+        />
+      )}
+      {isAddCategoryModal && (
+        <AddCategoryModal
+          isModalOpen={isAddCategoryModal}
+          setIsModalOpen={setIsAddCategoryModal}
+          getAllCategories={getAllCategories}
+        />
+      )}
+
+      <Toast
+        message={toastMessage}
+        isVisible={toastVisible}
+        onClose={closeToast}
+        type={toastType}
+      />
     </form>
   );
 }
