@@ -1,8 +1,8 @@
 import axios from "axios";
 import { BASE_URL } from "../../config";
 
-const getAllOrders = () =>
-  axios.get(`${BASE_URL}/api/doctororder/getOrders`, {
+const getAllOrders = (queryParams) =>
+  axios.get(`${BASE_URL}/api/doctororder/getOrders${queryParams}`, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -10,8 +10,8 @@ const getAllOrders = () =>
     },
   });
 
-const getAllOrdersById = () =>
-  axios.get(`${BASE_URL}/api/doctororder/getOrdersByDoctor`, {
+const getAllOrdersById = (id) =>
+  axios.get(`${BASE_URL}/api/doctororder/getOrdersByDoctor/${id}`, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -28,4 +28,28 @@ const getOrderTrackingById = (orderId) =>
     },
   });
 
-export { getAllOrders, getAllOrdersById, getOrderTrackingById };
+const updateOrderStatus = (payload) =>
+  axios.post(`${BASE_URL}/api/ordertracking/update`, payload, {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+const getEcomOrderById = (id) =>
+  axios.get(`${BASE_URL}/orders/getOrderByID/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+export {
+  getAllOrders,
+  getAllOrdersById,
+  getOrderTrackingById,
+  updateOrderStatus,
+  getEcomOrderById,
+};

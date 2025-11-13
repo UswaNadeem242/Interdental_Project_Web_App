@@ -8,13 +8,20 @@ import AreYouSureModel from "../../../modals/AreYouSureModel";
 import { stepsDefault } from "../../../Constant";
 import TrackingOrder from "../../doctorAdmin/DoctorOrder/DoctorOrderDetail/TrackingOrder";
 import TrackingOrderAdmin from "./tracking-order";
+import { useSearchParams } from "react-router-dom";
 
 function AdminOrdersDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const fetchOrderDetails = async () => {
+   
+    
+  };
   return (
     <div className="">
       {/* <ProgressBar steps={stepsDefault} /> */}
-      <TrackingOrderAdmin setIsModalOpen={setIsModalOpen} />
+      <TrackingOrderAdmin id={id} isadmin={true} refresh={() => fetchOrderDetails()}/>
 
       {/* <SecondaryButton
                 title="Move Order To Delivered"
@@ -23,7 +30,7 @@ function AdminOrdersDetail() {
                 onClick={() => setIsModalOpen(true)}
               /> */}
 
-      <AdminOrderDetailForm />
+      <AdminOrderDetailForm id={id}/>
       <div>
         {isModalOpen && (
           <AreYouSureModel
@@ -38,3 +45,41 @@ function AdminOrdersDetail() {
 }
 
 export default AdminOrdersDetail;
+
+
+
+
+
+
+
+
+
+
+// function AdminOrdersDetail() {
+//   const [searchParams] = useSearchParams();
+//   const id = searchParams.get("id");
+
+//   const steps = [
+//     {
+//       name: "Order detail",
+//       content: <AdminOrderDetailForm id={id} />,
+//     },
+//     {
+//       name: "track order",
+//       content: <TrackingOrderAdmin id={id} />,
+//     },
+//   ];
+
+//   return (
+//     <div>
+//       <Stepper
+//         steps={steps}
+//         className="lg:w-1/3 w-full"
+//         selectedColor="bg-white "
+//       />
+//     </div>
+//   );
+// }
+
+// export default AdminOrdersDetail;
+

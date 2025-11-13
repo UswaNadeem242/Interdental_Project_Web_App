@@ -1,129 +1,153 @@
-import React, { useState } from "react";
-import { ProgressBar } from "../../../../Common/ProgressBar";
-
+import React, { useState, useEffect } from "react";
 import { SecondaryButton } from "../../../../Common/Button";
-
 import AreYouSureModel from "../../../../modals/AreYouSureModel";
-import AdminOrderDetailForm from "../../admin-orders-detail/admin-order-detail-form";
 import DropDownComponent from "../../../../Common/DropDown";
 import UserDetailsCard from "../../../../Common/UserDetailsCard";
 import CardIcon from "../../../../icon/CardIcon";
 import SecondTable from "../../../../Common/second-table-component";
 import { useMemo } from "react";
-import {
-  dataClaimreqAdminPanel,
-  headingsProducts,
-  stepsDefault,
-} from "../../../../Constant";
 import TrackingOrderAdmin from "../../admin-orders-detail/tracking-order";
+import { useSearchParams } from "react-router-dom";
+import { getEcomOrderById } from "../../../../services/admin-order";
+import { useDispatch } from "react-redux";
+import { showToast } from "../../../../store/toast-slice";
+import axios from "axios";
+import { BASE_URL } from "../../../../config";
 
 function EcomOrdersDetail() {
+  const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selected, setSelected] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortOrder, setSortOrder] = useState("");
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const fetchOrderDetails = async () => {
+    if (!id) return;
+    try {
+      const response = await getEcomOrderById(id);
+      if (response.status === 200) {
+        console.log('order details', response.data);
+        setOrderDetails(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching order details:", error);
+      dispatch(
+        showToast({
+          message: "Failed to fetch order details",
+          type: "error",
+        })
+      );
+    }
+  };
+  useEffect(() => {
+  
+    fetchOrderDetails();
+  }, [id, dispatch]);
 
   const handleSelect = (option) => {
     setSelected(option);
   };
+
+  const handleMoveToDelivered = async () => {
+    if (!id) return;
+    setIsUpdating(true);
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/api/orders/updateOrderStatus/${id}`,
+        {
+          orderStatus: "DELIVERED",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch(
+          showToast({
+            message: "Order status updated to Delivered successfully",
+            type: "success",
+          })
+        );
+        setIsModalOpen(false);
+        // Refetch order details
+        const orderResponse = await getEcomOrderById(id);
+        if (orderResponse.status === 200) {
+          setOrderDetails(orderResponse.data.data);
+        }
+      }
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      dispatch(
+        showToast({
+          message:
+            error.response?.data?.message || "Failed to update order status",
+          type: "error",
+        })
+      );
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const totalAmount = orderDetails?.totalAmount || 0;
   const kratos = [
-    { label: "Emax x4", value: "$80.00" },
-    { label: "Argen ST:", value: "$90.00" },
-    { label: "Subtotal:", value: "$180.00" },
+    { label: "Subtotal:", value: totalAmount },
     { label: "Shipping:", value: "Free" },
   ];
+
   const headings = [
     { label: "Products", key: "products" },
     { label: "Price", key: "price" },
-    { label: "Quality", key: "quality" },
+    { label: "Quantity", key: "quantity" },
     { label: "Sub Total", key: "subTotal" },
   ];
 
-  const data = [
-    {
-      products: "Green Capsicum",
-      price: "$23",
+  // Transform order items to table data
+  const data = useMemo(
+    () =>
+      orderDetails?.orderItems?.map((item) => ({
+        products: item?.productName || item?.name || "N/A",
+        price: `$${item?.price || 0}`,
+        quantity: item?.quantity || 0,
+        subTotal: `$${(item?.price || 0) * (item?.quantity || 0)}`,
+        image: item?.image || "/assets/brush.png",
+      })) || [],
+    [orderDetails]
+  );
 
-      quality: "4",
-      subTotal: "$543",
-      image: "/assets/brush.png",
-    },
-    {
-      products: "Green Capsicum",
-      price: "$23",
-
-      quality: "4",
-      subTotal: "$543",
-      image: "/assets/brush.png",
-    },
-    {
-      products: "Green Capsicum",
-      price: "$23",
-
-      quality: "4",
-      subTotal: "$543",
-      image: "/assets/brush.png",
-    },
-    {
-      products: "Green Capsicum",
-      price: "$23",
-
-      quality: "4",
-      subTotal: "$543",
-      image: "/assets/brush.png",
-    },
-    {
-      products: "Green Capsicum",
-      price: "$23",
-
-      quality: "4",
-      subTotal: "$543",
-      image: "/assets/brush.png",
-    },
-  ];
-  const filteredData = useMemo(() => {
-    let filtered = data;
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter((row) =>
-        Object.values(row).some((val) =>
-          String(val).toLowerCase().includes(query)
-        )
-      );
-    }
-    if (sortOrder) {
-      filtered = [...filtered].sort((a, b) => {
-        const aVal = Object.values(a)[0]?.toString().toLowerCase() || "";
-        const bVal = Object.values(b)[0]?.toString().toLowerCase() || "";
-
-        return sortOrder === "asc"
-          ? aVal.localeCompare(bVal)
-          : bVal.localeCompare(aVal);
-      });
-    }
-    return filtered;
-  }, [searchQuery, sortOrder]);
+  const canMoveToDelivered =
+    orderDetails?.orderStatus?.toUpperCase() !== "DELIVERED";
 
   return (
     <div className="">
       <div className="">
-        <TrackingOrderAdmin setIsModalOpen={setIsModalOpen} />
+        <TrackingOrderAdmin isadmin={false} id={id} refresh={() => fetchOrderDetails()}/>
 
-        {/* <SecondaryButton
-                title="Move Order To Delivered"
-                icon={""}
-                className="bg-[#001D58] text-[#FFFFFF] text-xs font-light font-poppins px-6 py-3 rounded-xl "
-                onClick={() => setIsModalOpen(true)}
-              /> */}
+        {canMoveToDelivered && (
+          <div className="mt-4">
+            <SecondaryButton
+              title={isUpdating ? "Updating..." : "Move Order To Delivered"}
+              icon={""}
+              className="bg-[#001D58] text-[#FFFFFF] text-xs font-medium font-poppins px-6 py-3 rounded-xl"
+              onClick={() => setIsModalOpen(true)}
+              disabled={isUpdating}
+            />
+          </div>
+        )}
       </div>
-      {/* <AdminOrderDetailForm /> */}
 
       <div className="grid grid-cols-12 gap-10 mt-6">
         <div className="col-span-8 bg-bgWhite p-4 rounded-2xl">
           <SecondTable
             headings={headings}
-            data={filteredData}
+            data={data}
             actionHrefKey="detailUrl"
             className={"min-h-[500px]"}
           />
@@ -137,15 +161,23 @@ function EcomOrdersDetail() {
               optionValue="value"
               onSelect={handleSelect}
               className="text-xs"
+              totalAmount={totalAmount}
+              disabled={true}
             />
           </div>
 
           <div className="relative mt-4">
             <UserDetailsCard
-              fullName="Varga Dóra"
-              email="dihec134@gmail.com"
-              contactNumber="0325 4382345"
-              shippingAddress="1901 Thornridge Cir. Shiloh, Hawaii 81063"
+              fullName={
+                orderDetails?.customerName ||
+                `${orderDetails?.firstName || ""} ${
+                  orderDetails?.lastName || ""
+                }`.trim() ||
+                "N/A"
+              }
+              email={orderDetails?.email || "N/A"}
+              contactNumber={orderDetails?.phoneNumber || "N/A"}
+              shippingAddress={orderDetails?.shippingAddress || "N/A"}
             />
           </div>
 
@@ -157,7 +189,7 @@ function EcomOrdersDetail() {
               <div className="flex  items-center gap-2">
                 <CardIcon className="w-3 h-3" />
                 <p className="text-primaryText font-normal font-poppins">
-                  Credit or debit card{" "}
+                  {orderDetails?.paymentMethod || "Credit or debit card"}
                 </p>
               </div>
             </div>
@@ -168,8 +200,10 @@ function EcomOrdersDetail() {
         {isModalOpen && (
           <AreYouSureModel
             setIsModalOpen={setIsModalOpen}
-            title="Are You Sure"
-            desc="You can not undo the action"
+            title="Move Order to Delivered"
+            desc="Are you sure you want to mark this order as delivered? This action will update the order status."
+            onConfirm={handleMoveToDelivered}
+            isLoading={isUpdating}
           />
         )}
       </div>

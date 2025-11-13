@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Stepper from "../../../Common/TabsStepper/Stepper";
 import OrdersTable from "./order-table";
 import EcommereceOrders from "./ecommerece-orders";
+import { getAllOrders } from "../../../services/admin-order";
 
 function AdminPanelOrders() {
+  const [orders, setOrders] = useState([]);
   const steps = [
     {
       name: "Doctor Orders",
@@ -14,6 +16,20 @@ function AdminPanelOrders() {
       content: <EcommereceOrders />,
     },
   ];
+
+  useEffect(() => {
+    fetchAllOrders();
+  }, []);
+
+  const fetchAllOrders = async () => {
+    try {
+      const response = await getAllOrders();
+      setOrders(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="bg-white rounded-2xl py-6 px-2 ">
       <Stepper
