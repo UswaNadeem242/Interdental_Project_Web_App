@@ -148,7 +148,7 @@ const DoctorDashaboard = () => {
             const transformedOrders = transformOrdersData(
               ordersResponse.data.data
             );
-            console.log(transformedOrders,'transformedOrders');
+            console.log(transformedOrders, 'transformedOrders');
             setDoctorOrders(transformedOrders);
           } else {
             console.error("Failed to fetch doctor orders:", ordersResponse);
@@ -205,7 +205,7 @@ const DoctorDashaboard = () => {
   }, [selectedTimePeriod]);
 
 
-  console.log(doctorOrders,'doc orders');
+  console.log(doctorOrders, 'doc orders');
 
   // Get dynamic counts from API data
   const statsCounts = getStatsCounts(doctorStats.data);
@@ -244,7 +244,7 @@ const DoctorDashaboard = () => {
     },
   ];
 
-  console.log(doctorPatients,'doctorPatients');
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-3 md:gap-3 lg:gap-4 ">
@@ -255,8 +255,6 @@ const DoctorDashaboard = () => {
                 key={id}
                 title={item?.title}
                 count={item?.count}
-                // fromDate={item?.date}
-                toDate={item?.duedate}
                 icon={item?.icon}
               />
             ))}
@@ -333,7 +331,7 @@ const DoctorDashaboard = () => {
             doctorOrders && (
               <TableComponent
                 headings={headingsOrder}
-                data={doctorOrders.length > 0 ? doctorOrders :[]}
+                data={doctorOrders.length > 0 ? doctorOrders : []}
                 actionHrefKey="detailUrl"
               />
             )

@@ -2,7 +2,9 @@ import { Crown } from "../../icon/Crown";
 import { DoctorIcon } from "../../icon/DoctorIcon";
 import { Revenue } from "../../icon/Revenue";
 
-export const CardComponet = ({ title, count, icon, fromDate, toDate, map }) => {
+export const CardComponet = ({ title, count, icon,p }) => {
+
+  console.log("title", title);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col flex-1">
@@ -15,13 +17,14 @@ export const CardComponet = ({ title, count, icon, fromDate, toDate, map }) => {
           {count}
         </h2>
         <div className="bg-[#94D3DD1A] p-3 md:p-4 rounded-full flex items-center justify-center">
-          {title === "Registered Doctors" ? (
+          {icon}
+          {/* {title === "Registered Doctors" ? (
             <DoctorIcon />
           ) : title === "Active Subscriptions" ? (
             <Crown />
           ) : title === "Revenue" ? (
             <Revenue />
-          ) : null}
+          ) : null} */}
         </div>
       </div>
 
