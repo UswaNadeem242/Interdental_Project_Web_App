@@ -12,6 +12,9 @@ import { SingleLineChart } from "../../../Common/SingleLineChart";
 import { MultiLineChart } from "../../../Common/Chart";
 import { ChartDropDown } from "../../../Common/ChartDropDown";
 import { getAdminStats } from "../../../services/adminpanel-dashboard";
+import { DoctorIcon } from "../../../icon/DoctorIcon";
+import { Crown } from "../../../icon/Crown";
+import { Revenue } from "../../../icon/Revenue";
 
 function AdminPanelDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState("yearly");
@@ -27,6 +30,7 @@ function AdminPanelDashboard() {
     getAdminStats()
       .then((res) => {
         console.log("===--=-=-=-=-==--=adminStats=-=--=-=", res.data.data);
+
         setAdminStats(res.data.data);
       })
       .catch((error) => {
@@ -38,27 +42,39 @@ function AdminPanelDashboard() {
     fetchDoctorStats();
   }, []);
 
+  const adminStatsData = [
+    {
+      title: "Registered Doctors",
+      count: adminStats[0]?.value,
 
-const labelMap = {
-  totalDoctor: "Registered Doctors",
-  activeSubscription: "Active Subscriptions",
-  totalRevenue: "Revenue",
-};
+      icon: <DoctorIcon />,
+    },
+    {
+      title: "Active Subscriptions",
+      count: adminStats[1]?.value,
+
+      icon: <Crown />,
+    },
+    {
+      title: "Revenue",
+      count: adminStats[2]?.value,
+
+      icon: <Revenue />,
+    },
+  ];
+
+
 
   return (
     <div className="p-2">
       <div className="flex flex-col md:flex-row md:justify-center items-center gap-4">
-        {adminStats.map((item, id) => (
+        {adminStatsData.map((item, id) => (
           <div className="w-full">
             <CardComponet
-              map={labelMap}
               key={id}
-              title={labelMap[item?.label]}
-
-              count={item?.value.toString()}
-              // fromDate={item?.date}
-              // toDate={item?.duedate}
-              // icon={item?.icon}
+              title={item?.title}
+              count={item?.count}
+              icon={item?.icon}
             />
           </div>
         ))}
