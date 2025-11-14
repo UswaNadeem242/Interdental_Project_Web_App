@@ -129,7 +129,6 @@ export default function MainTable({
 }) {
   const [frontendCurrentPage, setFrontendCurrentPage] = useState(1);
 
-  // Handle search - just pass to parent
   const handleSearch = useCallback(
     (value) => {
       if (onSearch) {
@@ -139,23 +138,11 @@ export default function MainTable({
     [onSearch]
   );
 
-  // Handle tab change - just pass to parent
-  const handleTabIndexChange = useCallback(
-    (index) => {
-      if (onTabChange && tabs[index]) {
-        onTabChange(tabs[index].name);
-      }
-    },
-    [onTabChange, tabs]
-  );
-
-  // Get nested value from object
   const getNestedValue = useCallback((obj, path) => {
     if (!path) return undefined;
     return path.split(".").reduce((current, key) => current?.[key], obj);
   }, []);
 
-  // Render cell content
   const renderCellContent = useCallback(
     (column, item, index) => {
       const value = getNestedValue(item, column.key);
@@ -164,7 +151,6 @@ export default function MainTable({
         return column.render(value, item, index);
       }
 
-      // Default rendering
       if (value === null || value === undefined) return "-";
       if (typeof value === "boolean") return value ? "Yes" : "No";
       if (typeof value === "number") return value.toLocaleString();
@@ -176,7 +162,6 @@ export default function MainTable({
     [getNestedValue]
   );
 
-  // Get alignment class
   const getAlignmentClass = useCallback((align) => {
     switch (align) {
       case "center":
@@ -188,7 +173,6 @@ export default function MainTable({
     }
   }, []);
 
-  // Get responsive column class
   const getResponsiveColumnClass = useCallback((column) => {
     const classes = [];
     if (column.hideOnMobile) classes.push("hidden sm:table-cell");
@@ -196,13 +180,11 @@ export default function MainTable({
     return classes.join(" ");
   }, []);
 
-  // Apply frontend pagination if needed (no filtering - parent handles all filtering)
   const displayData = useMemo(() => {
     if (useBackendPagination) {
-      return data; // Backend already filtered and paginated
+      return data;
     }
 
-    // Frontend pagination only
     if (data.length === 0) return [];
     const startIndex = (frontendCurrentPage - 1) * pageSize;
     return data.slice(startIndex, startIndex + pageSize);
@@ -226,7 +208,6 @@ export default function MainTable({
     ? onPageChange || (() => {})
     : setFrontendCurrentPage;
 
-  // Checkbox handling
   const handleCheckboxChange = useCallback(
     (rowId, checked) => {
       if (!onSelectionChange) return;
@@ -270,12 +251,10 @@ export default function MainTable({
     });
   }, [displayData, selectedRows, getRowId, isRowSelected]);
 
-  // Check if any column has width defined
   const hasColumnWidths = useMemo(() => {
     return columns.some((column) => column.width);
   }, [columns]);
 
-  // Build table content
   const tableContent = (
     <div
       className={`grid col-span-1 md:col-span-1 ${
@@ -422,7 +401,6 @@ export default function MainTable({
     </div>
   );
 
-  // Render search bar section (reusable)
   const renderSearchBar = () => {
     if (!showSearch) return null;
 
@@ -448,7 +426,6 @@ export default function MainTable({
     );
   };
 
-  // Render with tabs
   if (tabs.length > 0) {
     const tabSteps = tabs.map((tab) => ({
       name: tab.name,
@@ -477,7 +454,6 @@ export default function MainTable({
     );
   }
 
-  // Render without tabs
   return (
     <div className={className}>
       {renderSearchBar()}

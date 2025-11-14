@@ -110,6 +110,7 @@ const AdminClaimRequest = () => {
     {
       key: "id",
       label: "Claim ID",
+      
       render: (v, item) => {
         const id = item?.id || item?.claimId;
         return id ? (
@@ -117,18 +118,7 @@ const AdminClaimRequest = () => {
         ) : (
           "-"
         );
-      }
-    },
-    {
-      key: "patientName",
-      label: "Patient Name",
-      render: (v, item) =>
-        item?.patientName ||
-        item?.patient?.name ||
-        `${item?.patientFirstName || ""} ${
-          item?.patientLastName || ""
-        }`.trim() ||
-        "-",
+      },
     },
     {
       key: "doctorName",
@@ -140,8 +130,16 @@ const AdminClaimRequest = () => {
         "-",
     },
     {
+      key: "patientName",
+      label: "Patient Name",
+      render: (v, item) =>
+        <span className="capitalize">{item?.patientName || "-"}</span>
+       
+    },
+    {
       key: "submissionDate",
       label: "Submission Date",
+      
       render: (v, item) => {
         const dateValue = item?.submissionDate || item?.createdDate || item?.createdAt;
         return dateValue ? formatDate(dateValue) : "-";
@@ -173,64 +171,70 @@ const AdminClaimRequest = () => {
         );
       },
     },
+    {
+      key: "actions",
+      label: "",
+      align: "left",
+      render: (value, item) => (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedRow(item);
+            setIsOpen(true);
+          }}
+          className="text-secondaryBrand hover:text-secondaryBrand/80 text-sm px-3 py-1 rounded transition-colors"
+        >
+          View Details
+        </button>
+      ),
+    },
   ];
 
-  const actionMenuItems = useMemo(
-    () => [
-      {
-        label: "View Details",
-        onClick: (item) => {
-          setSelectedRow(item);
-          setIsOpen(true);
-        },
-      },
-    ],
-    []
-  );
+  const actionMenuItems = useMemo(() => [], []);
 
   const tabs = [{ name: "All" }, { name: "Pending" }, { name: "Accepted" }, { name: "Rejected" }];
 
   return (
     <div>
       <div className="bg-white rounded-2xl py-6 px-6">
-  
-      <MainTable
-        columns={columns}
-        data={claimRequests}
-        actionMenuItems={actionMenuItems}
-        loading={loading}
-        showSearch={true}
-        searchPlaceholder="Search claim requests..."
-        onSearch={handleSearch}
-        searchValue={searchQuery}
-        showSort={true}
-        sortLabel={sortLabel}
-        onSort={handleSort}
-        sortOrder={sortOrder}
-        tabs={tabs}
-        onTabChange={handleTabChange}
-        activeTabIndex={tabs.findIndex((tab) => tab.name === activeTab)}
-        useBackendPagination={true}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        totalResults={totalRecords}
-        pageSize={10}
-        onPageChange={handlePageChange}
-      />
-      <Drawers
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Claim Details"
-        status={selectedRow?.status}
-        Content={
-          <ClaimDetailAdminPanel
-            claimId={selectedRow?.id || selectedRow?.claimId}
-            onClose={() => setIsOpen(false)}
-            getClaimRequestData={fetchClaims}
-          />
-        }
-      />
-    </div>
+
+        <MainTable
+          columns={columns}
+          data={claimRequests}
+          actionMenuItems={actionMenuItems}
+          loading={loading}
+          showSearch={true}
+          searchPlaceholder="Search claim requests..."
+          onSearch={handleSearch}
+          searchValue={searchQuery}
+          showSort={true}
+          sortLabel={sortLabel}
+          onSort={handleSort}
+          sortOrder={sortOrder}
+          tabs={tabs}
+          onTabChange={handleTabChange}
+          activeTabIndex={tabs.findIndex((tab) => tab.name === activeTab)}
+          useBackendPagination={true}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalResults={totalRecords}
+          pageSize={10}
+          onPageChange={handlePageChange}
+        />
+        <Drawers
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          title="Claim Details"
+          status={selectedRow?.status}
+          Content={
+            <ClaimDetailAdminPanel
+              claimId={selectedRow?.id || selectedRow?.claimId}
+              onClose={() => setIsOpen(false)}
+              getClaimRequestData={fetchClaims}
+            />
+          }
+        />
+      </div>
     </div>
   );
 };

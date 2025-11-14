@@ -143,16 +143,20 @@ const EcommereceOrders = () => {
     {
       key: "id",
       label: "Order ID",
-      render: (value) => `#${value || "-"}`,
+      render: (v, item) => {
+        const id = item?.id || item?.orderId;
+        return id ? (
+          <span className="font-bold text-primaryText">#{id}</span>
+        ) : (
+          "-"
+        );
+      }
     },
     {
       key: "buyerName",
       label: "Buyer's Name",
       render: (v, item) =>
-        item?.buyerName ||
-        item?.customerName ||
-        `${item?.firstName || ""} ${item?.lastName || ""}`.trim() ||
-        "-",
+        item?.name || "-",
     },
     {
       key: "createdAt",
@@ -163,12 +167,12 @@ const EcommereceOrders = () => {
     {
       key: "totalItems",
       label: "Total Items",
-      render: (value) => value || "-",
+      render: (value,item) => item?.orderItems?.length || "-",
     },
     {
       key: "totalAmount",
       label: "Price",
-      render: (value) => (value ? `$${value}` : "-"),
+      render: (value,item) => value || "-",
     },
     {
       key: "orderStatus",

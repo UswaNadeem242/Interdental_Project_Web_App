@@ -13,18 +13,14 @@ const OrdersTable = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  // Active tab filter
   const [activeTab, setActiveTab] = useState("All");
 
-  // Debounced search
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  // Map tab names to status values
   const getStatusFromTab = (tabName) => {
     const statusMap = {
       All: "ALL",
@@ -36,7 +32,6 @@ const OrdersTable = () => {
     return statusMap[tabName] || "ALL";
   };
 
-  // Fetch orders from backend
   const fetchOrders = useCallback(
     async (page = 1, status = "All", search = "", sort = "desc") => {
       setLoading(true);
@@ -44,9 +39,8 @@ const OrdersTable = () => {
         const statusParam = getStatusFromTab(status);
         const sortParam = sort === "asc" ? "createdDateAsc" : "createdDateDesc";
         
-        // Build query parameters
         const params = new URLSearchParams();
-        params.set("page", String(page - 1)); // Backend uses 0-based indexing
+        params.set("page", String(page - 1));
         params.set("size", "10");
         params.set("status", statusParam);
         if (search) {
@@ -77,14 +71,12 @@ const OrdersTable = () => {
     []
   );
 
-  // Fetch on mount and when filters change
   useEffect(() => {
     setCurrentPage(1);
     fetchOrders(1, activeTab, debouncedSearchQuery, sortOrder);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, debouncedSearchQuery, sortOrder]);
 
-  // Handle page change
   const handlePageChange = useCallback(
     (page) => {
       setCurrentPage(page);
@@ -94,7 +86,6 @@ const OrdersTable = () => {
     [activeTab, debouncedSearchQuery, sortOrder]
   );
 
-  // Handlers
   const handleTabChange = useCallback((tabName) => {
     setActiveTab(tabName);
   }, []);
@@ -112,12 +103,18 @@ const OrdersTable = () => {
     navigate(`/admin-panel/order-detail?id=${rowData.id}`);
   }, [navigate]);
 
-  // Define columns for MainTable
   const columns = [
     {
       key: "id",
       label: "Order ID",
-      render: (value) => `#${value || "-"}`,
+      render: (v, item) => {
+        const id = item?.id || item?.orderId;
+        return id ? (
+          <span className="font-bold text-primaryText">#{id}</span>
+        ) : (
+          "-"
+        );
+      }
     },
     {
       key: "doctorName",
@@ -162,7 +159,6 @@ const OrdersTable = () => {
     },
   ];
 
-  // Action menu items
   const actionMenuItems = useMemo(
     () => [
       {
@@ -176,7 +172,6 @@ const OrdersTable = () => {
     [handleOpenViewDetail]
   );
 
-  // Tabs
   const tabs = [
     { name: "All" },
     { name: "Pending" },
@@ -192,21 +187,17 @@ const OrdersTable = () => {
         data={orders}
         actionMenuItems={actionMenuItems}
         loading={loading}
-        // Search props
         showSearch={true}
         searchPlaceholder="Search orders..."
         onSearch={handleSearch}
         searchValue={searchQuery}
-        // Sort props
         showSort={true}
         sortLabel={sortLabel}
         onSort={handleSort}
         sortOrder={sortOrder}
-        // Tabs props
         tabs={tabs}
         onTabChange={handleTabChange}
         activeTabIndex={tabs.findIndex((tab) => tab.name === activeTab)}
-        // Pagination props
         useBackendPagination={true}
         currentPage={currentPage}
         totalPages={totalPages}

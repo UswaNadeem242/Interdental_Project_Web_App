@@ -5,11 +5,13 @@ import {
   putClaimRequests,
 } from "../../../services/claim-requests";
 import { showToast } from "../../../store/toast-slice";
+import RejectClaimModal from "../../../modals/RejectClaimModal";
 
 function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
   // Data will be populated from API; fallback placeholders shown until loaded
 
   const [claimRequest, setClaimRequest] = useState(null);
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
 
   const patientName =
     claimRequest?.patientName || claimRequest?.patient?.name || "—";
@@ -42,11 +44,17 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
       });
   };
 
-  const updateClaimRequest = async ({ id, status }) => {
-    await putClaimRequests({
+  const updateClaimRequest = async ({ id, status, description }) => {
+    const payload = {
       id: id,
       tempstatus: status,
-    })
+    };
+
+    if (description) {
+      payload.description = description;
+    }
+
+    await putClaimRequests(payload)
       .then((res) => {
         getClaimRequest();
         getClaimRequestData();
@@ -55,7 +63,20 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
       })
       .catch((error) => {
         console.error("Error putting claim request:", error);
+        showToast({
+          message: error.response?.data?.message || "Failed to update claim request.",
+          type: "error",
+        });
       });
+  };
+
+  const handleReject = async (description) => {
+    await updateClaimRequest({
+      id: claimId,
+      status: "REJECTED",
+      rejectionReason: description,
+    });
+    setIsRejectModalOpen(false);
   };
 
   return (
@@ -127,9 +148,7 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
             <SecondaryButton
               title="Reject"
               className="text-[#434343] text-sm font-semibold px-14 py-4 bg-[#F8F8F8] w-full rounded-full"
-              onClick={() =>
-                updateClaimRequest({ id: claimId, status: "REJECTED" })
-              }
+              onClick={() => setIsRejectModalOpen(true)}
             />
             <SecondaryButton
               title="Accept"
@@ -141,6 +160,13 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
           </div>
         </div>}
       </div>
+
+      <RejectClaimModal
+        isOpen={isRejectModalOpen}
+        onClose={() => setIsRejectModalOpen(false)}
+        onReject={handleReject}
+        claimId={claimId}
+      />
     </div>
   );
 }
