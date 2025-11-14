@@ -8,7 +8,6 @@ import { showToast } from "../../../store/toast-slice";
 import RejectClaimModal from "../../../modals/RejectClaimModal";
 
 function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
-  // Data will be populated from API; fallback placeholders shown until loaded
 
   const [claimRequest, setClaimRequest] = useState(null);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
@@ -44,14 +43,14 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
       });
   };
 
-  const updateClaimRequest = async ({ id, status, description }) => {
+  const updateClaimRequest = async ({ id, status, rejectionReason }) => {
     const payload = {
       id: id,
       tempstatus: status,
     };
 
-    if (description) {
-      payload.description = description;
+    if (rejectionReason) {
+      payload.rejectionReason = rejectionReason;
     }
 
     await putClaimRequests(payload)
@@ -70,11 +69,11 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
       });
   };
 
-  const handleReject = async (description) => {
+  const handleReject = async (rejectionReason) => {
     await updateClaimRequest({
       id: claimId,
       status: "REJECTED",
-      rejectionReason: description,
+      rejectionReason: rejectionReason,
     });
     setIsRejectModalOpen(false);
   };
@@ -165,7 +164,6 @@ function ClaimDetailAdminPanel({ claimId, onClose, getClaimRequestData }) {
         isOpen={isRejectModalOpen}
         onClose={() => setIsRejectModalOpen(false)}
         onReject={handleReject}
-        claimId={claimId}
       />
     </div>
   );

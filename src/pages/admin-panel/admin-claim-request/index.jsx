@@ -41,10 +41,12 @@ const AdminClaimRequest = () => {
       setLoading(true);
       try {
         const statusParam = getStatusFromTab(status);
+        const sortParam = sort === "asc" ? "createdDateAsc" : "createdDateDesc";
         const params = new URLSearchParams();
         params.set("page", String(page - 1));
         params.set("size", "10");
         params.set("status", statusParam);
+        params.set("sort", sortParam);
         if (search) params.set("search", search);
         const query = `?${params.toString()}`;
         const res = await getClaimRequests(query);
@@ -182,7 +184,7 @@ const AdminClaimRequest = () => {
             setSelectedRow(item);
             setIsOpen(true);
           }}
-          className="text-secondaryBrand hover:text-secondaryBrand/80 text-sm px-3 py-1 rounded transition-colors"
+          className="text-secondaryText hover:text-secondaryText/80 text-sm px-3 py-1 rounded transition-colors"
         >
           View Details
         </button>

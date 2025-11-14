@@ -4,28 +4,28 @@ import Icons from "../components/Icons";
 import { useDispatch } from "react-redux";
 import { showToast } from "../store/toast-slice";
 
-const RejectClaimModal = ({ isOpen, onClose, onReject, claimId }) => {
-  const [description, setDescription] = useState("");
+const RejectClaimModal = ({ isOpen, onClose, onReject }) => {
+  const [rejectionReason, setRejectionReason] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const MAX_LENGTH = 500;
 
   const handleClose = () => {
     if (!isLoading) {
-      setDescription("");
+      setRejectionReason("");
       onClose();
     }
   };
 
-  const handleDescriptionChange = (e) => {
+  const handleRejectionReasonChange = (e) => {
     const value = e.target.value;
     if (value.length <= MAX_LENGTH) {
-      setDescription(value);
+      setRejectionReason(value);
     }
   };
 
   const handleReject = async () => {
-    if (!description.trim()) {
+    if (!rejectionReason.trim()) {
       dispatch(
         showToast({
           message: "Please provide a reason for rejecting this claim.",
@@ -37,8 +37,8 @@ const RejectClaimModal = ({ isOpen, onClose, onReject, claimId }) => {
 
     setIsLoading(true);
     try {
-      await onReject(description);
-      setDescription("");
+      await onReject(rejectionReason);
+      setRejectionReason("");
     } catch (error) {
       console.error("Error rejecting claim:", error);
     } finally {
@@ -65,8 +65,8 @@ const RejectClaimModal = ({ isOpen, onClose, onReject, claimId }) => {
 
             <div className="w-full mt-4">
               <textarea
-                value={description}
-                onChange={handleDescriptionChange}
+                value={rejectionReason}
+                onChange={handleRejectionReasonChange}
                 placeholder="Briefly describe the reason."
                 maxLength={MAX_LENGTH}
                 className="w-full min-h-[120px] px-4 py-3 border border-gray-300 rounded-lg resize-none outline-none focus:ring-0 focus:ring-offset-0 font-poppins text-sm"
@@ -74,7 +74,7 @@ const RejectClaimModal = ({ isOpen, onClose, onReject, claimId }) => {
               />
               <div className="flex justify-end mt-2">
                 <span className="text-xs text-gray-400 font-poppins">
-                  {description.length}/{MAX_LENGTH}
+                  {rejectionReason.length}/{MAX_LENGTH}
                 </span>
               </div>
             </div>
@@ -89,7 +89,7 @@ const RejectClaimModal = ({ isOpen, onClose, onReject, claimId }) => {
               </button>
               <button
                 onClick={handleReject}
-                disabled={isLoading || !description.trim()}
+                disabled={isLoading || !rejectionReason.trim()}
                 className={`flex justify-center items-center w-[123.5px] h-[56px] rounded-[28px] bg-secondaryBrand font-poppins font-semibold text-white text-sm transition-colors hover:bg-secondaryBrand/90 disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isLoading ? "Rejecting..." : "Reject Claim"}
