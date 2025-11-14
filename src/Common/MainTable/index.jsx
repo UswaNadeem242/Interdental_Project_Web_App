@@ -298,11 +298,11 @@ export default function MainTable({
         </div>
       ) : (
         <div className="overflow-x-auto min-h-[400px] max-h-[calc(100vh-350px)] scrollbar-hidden">
-          <table 
+          <table
             className="min-w-max md:min-w-full text-left text-xs md:text-sm w-full"
             style={hasColumnWidths ? { tableLayout: "auto" } : {}}
           >
-            <thead className="sticky top-0 border-b-2 z-10 bg-bgWhite">
+            <thead className="sticky top-0 border-b-2  bg-bgWhite">
               <tr className="font-poppins font-medium bg-bgWhite text-xs text-secondaryText capitalize">
                 {columns.map((column, idx) => (
                   <th
@@ -312,14 +312,17 @@ export default function MainTable({
                     )} ${getResponsiveColumnClass(column)} ${
                       column.headerClassName || ""
                     }`}
-                    style={column.width ? { 
-                      width: column.width, 
-                      minWidth: column.width, 
-                      maxWidth: column.width,
-                     
-                    } : {}}
+                    style={
+                      column.width
+                        ? {
+                            width: column.width,
+                            minWidth: column.width,
+                            maxWidth: column.width,
+                          }
+                        : {}
+                    }
                   >
-                        {showCheckboxes && idx === 0 ? (
+                    {showCheckboxes && idx === 0 ? (
                       <div className="flex items-center gap-2 md:gap-4">
                         <CustomCheckbox
                           checked={isAllSelected}
@@ -364,12 +367,16 @@ export default function MainTable({
                         )} ${getResponsiveColumnClass(column)} ${
                           column.className || ""
                         }`}
-                        style={column.width ? { 
-                          width: column.width, 
-                          minWidth: column.width, 
-                          maxWidth: column.width,
-                          boxSizing: "border-box"
-                        } : {}}
+                        style={
+                          column.width
+                            ? {
+                                width: column.width,
+                                minWidth: column.width,
+                                maxWidth: column.width,
+                                boxSizing: "border-box",
+                              }
+                            : {}
+                        }
                       >
                         {showCheckboxes && colIdx === 0 ? (
                           <div className="flex items-center gap-2 md:gap-4">

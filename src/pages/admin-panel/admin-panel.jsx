@@ -43,7 +43,7 @@ const AdminPanel = () => {
 
         <Route path="/blogs-&-articles" element={<BlogAndArticles />} />
         <Route path="/blog-detail" element={<BlogsDetailPage />} />
-        <Route path="/drop-downs" element={<DropDownAdminPanel />} />
+        <Route path="/dropdown-management" element={<DropDownAdminPanel />} />
         <Route path="/ecom-detail" element={<EcomOrdersDetail />} />
 
         {/* // <Route path="/patient" element={<PatientPage />} />

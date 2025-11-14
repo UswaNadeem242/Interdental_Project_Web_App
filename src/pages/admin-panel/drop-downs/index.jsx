@@ -245,8 +245,7 @@ function DropDownAdminPanel() {
           onClick={() => setIsSidebarOpen(true)}
           className="flex items-center px-6 py-3 rounded-lg gap-2 bg-secondaryBrand text-white font-semibold text-sm hover:bg-secondaryBrand/90 transition"
         >
-          <Icons.Plus className="w-5 h-5" fill="white" />
-          <span>Add Drop Down</span>
+          <span className="font-poppins">Add New DropDown</span>
         </button>
       </div>
       {filteredDropdowns.map((dropdown) => (

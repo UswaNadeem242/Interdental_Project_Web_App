@@ -144,7 +144,7 @@ export const menuAdminPanelItem = [
   },
   {
     name: "Drop Downs",
-    path: "/admin-panel/drop-downs",
+    path: "/admin-panel/dropdown-management",
     icon: ChevronDownIcon,
   },
 
