@@ -42,46 +42,29 @@ const OrdersTable = () => {
       setLoading(true);
       try {
         const statusParam = getStatusFromTab(status);
-        const response = await getAllOrders('?page=0&size=10&status=ALL&search=doctor');
+        const sortParam = sort === "asc" ? "createdDateAsc" : "createdDateDesc";
         
-        let allOrders = response?.data?.data.data || [];
-
-        console.log('allOrders', allOrders);
-        
-        // Filter by status
-        if (statusParam !== "ALL") {
-          allOrders = allOrders.filter(
-            (order) => order?.orderStatus?.toUpperCase() === statusParam
-          );
-        }
-
-        // Filter by search
+        // Build query parameters
+        const params = new URLSearchParams();
+        params.set("page", String(page - 1)); // Backend uses 0-based indexing
+        params.set("size", "10");
+        params.set("status", statusParam);
         if (search) {
-          const query = search.toLowerCase();
-          allOrders = allOrders.filter((order) =>
-            Object.values(order).some((val) =>
-              String(val).toLowerCase().includes(query)
-            )
-          );
+          params.set("search", search);
         }
+        params.set("sort", sortParam);
+        
+        const queryString = `?${params.toString()}`;
+        const response = await getAllOrders(queryString);
+        
+        const responseData = response?.data?.data;
+        const content = responseData?.data || [];
+        const totalRecord = responseData?.totalRecord || 0;
+        const totalPagesCount = responseData?.page || 0;
 
-        // Sort
-        if (sort) {
-          allOrders.sort((a, b) => {
-            const aDate = new Date(a.createdAt || 0);
-            const bDate = new Date(b.createdAt || 0);
-            return sort === "asc" ? aDate - bDate : bDate - aDate;
-          });
-        }
-
-        // Paginate
-        const pageSize = 10;
-        const startIndex = (page - 1) * pageSize;
-        const paginatedOrders = allOrders.slice(startIndex, startIndex + pageSize);
-
-        setOrders(paginatedOrders);
-        setTotalPages(Math.ceil(allOrders.length / pageSize));
-        setTotalRecords(allOrders.length);
+        setOrders(content);
+        setTotalPages(totalPagesCount);
+        setTotalRecords(totalRecord);
       } catch (error) {
         console.error("Error fetching orders:", error);
         setOrders([]);

@@ -119,29 +119,31 @@ export default function AdminOrderDetailForm({ id }) {
   ];
 
   useEffect(() => {
-    const fetchOrderByID = async () => {
-      if (!id) return;
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/api/doctororder/getOrderByID/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          setOrderDetails(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching order details:", error);
-      }
-    };
+    
     fetchOrderByID();
   }, [id]);
+
+  const fetchOrderByID = async () => {
+    if (!id) return;
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/doctororder/getOrderByID/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setOrderDetails(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching order details:", error);
+    }
+  };
 
   const handleSelect = (option) => {
     setSelected(option);
@@ -223,13 +225,10 @@ export default function AdminOrderDetailForm({ id }) {
         }
       );
 
+      console.log('respons hhhhhhhe', response.data);
+
       if (response.status === 200) {
-        dispatch(
-          showToast({
-            message: "Order status updated to Delivered successfully",
-            type: "success",
-          })
-        );
+       
         setIsModalOpen(false);
         // Refetch order details
         const orderResponse = await axios.get(
@@ -242,6 +241,7 @@ export default function AdminOrderDetailForm({ id }) {
             },
           }
         );
+        console.log('order response', orderResponse.data);
         if (orderResponse.status === 200) {
           setOrderDetails(orderResponse.data.data);
         }

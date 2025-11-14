@@ -137,6 +137,7 @@ export default function TrackingOrderAdmin({ id, isadmin, refresh }) {
       if (response.status === 200) {
         // refresh();
         setIsModalOpen(false);
+        fetchOrderTracking();
       }
       console.log("response", response);
     } catch (error) {
