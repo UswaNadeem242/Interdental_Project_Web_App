@@ -1222,6 +1222,34 @@ const Icons = {
       />
     </svg>
   ),
+
+  WarningHexagon: ({ className = "w-[120px] h-[120px]", ...props }) => (
+    <svg
+      width="120"
+      height="120"
+      viewBox="0 0 120 120"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <rect width="120" height="120" rx="60" fill="#001D58" />
+      <path
+        d="M60.0119 50.1765V62.3113M81.5731 52.095V67.9049C81.5731 70.4937 80.1483 72.8975 77.845 74.215L63.74 82.1431C61.4367 83.4375 58.5872 83.4375 56.2601 82.1431L42.1551 74.215C41.0195 73.5742 40.0772 72.6537 39.4228 71.546C38.7684 70.4384 38.425 69.1827 38.427 67.9049V52.095C38.427 49.5062 39.8518 47.1024 42.1551 45.7849L56.2601 37.8568C58.5634 36.5624 61.4129 36.5624 63.74 37.8568L77.845 45.7849C80.1483 47.1024 81.5731 49.4831 81.5731 52.095Z"
+        stroke="white"
+        strokeWidth="4.04494"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M59.8997 70.8352V71.1605"
+        stroke="white"
+        strokeWidth="3.08186"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
 };
 
 export default Icons;

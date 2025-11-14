@@ -398,6 +398,7 @@ function ListProduct() {
                       Category
                     </label>
                     <button
+                      type="button"
                       className="mr-1"
                       onClick={() => setEditCategoryModal(true)}
                     >
@@ -434,6 +435,7 @@ function ListProduct() {
                       Brand
                     </label>
                     <button
+                      type="button"
                       className="mr-1"
                       onClick={() => setEditBrandModal(true)}
                     >

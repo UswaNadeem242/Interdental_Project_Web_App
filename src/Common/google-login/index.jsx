@@ -4,15 +4,17 @@ import GoogleIcon from "../../icon/google";
 import { BASE_URL } from "../../config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
+import { useDispatch } from "react-redux";
+import { showToast } from "../../store/toast-slice";
 
-export default function LoginWithGoogle() {
+export default function GoogleAuth({ role, buttonText, className = "" }) {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const dispatch = useDispatch();
+  const isSignup = !!role;
 
-  const googleLogin = useGoogleLogin({
+  const googleAuth = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(" Google Token Received:", tokenResponse);
-
       const accessToken = tokenResponse.access_token;
 
       try {
@@ -20,43 +22,53 @@ export default function LoginWithGoogle() {
           "https://www.googleapis.com/oauth2/v3/userinfo",
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
-        // console.log(" Google User:", googleUser);
 
-
-        console.log(" Google User:", googleUser);
         const payload = {
           email: googleUser.email,
           firstName: googleUser.given_name,
           lastName: googleUser.family_name,
           googleId: googleUser.sub,
-          role: "DOCTOR",
         };
 
-        // console.log("Sending payload to backend /social-sign-in ...");
+        if (isSignup) {
+          payload.role = role;
+        }
+
         const { data } = await axios.post(
           `${BASE_URL}/api/users/social-sign-in`,
           payload
         );
 
-        console.log("Backend Response:", data);
-
         const { users, accessToken: backendAccessToken } = data.data;
 
-        //  Use context to store login
-        login(users, backendAccessToken);
+        const userRole = isSignup && !users.roles ? role : users.roles[0];
 
-        // Check profile completeness and redirect accordingly
-        const userRole = users.roles[0];
+        login(users, backendAccessToken, isSignup && !users.roles ? role : undefined);
 
-        console.log("User Role:", userRole);
-        console.log("Users:", users);
+        dispatch(
+          showToast({
+            message: "Logged in successfully!",
+            type: "success",
+          })
+        );
+
         if (userRole === "DOCTOR") {
-          // Check if doctor profile is complete
-          const isComplete = users.drlicenceNo&& users.officeRefNo;
-          
+          const isComplete = users.drlicenceNo && users.officeRefNo;
+
           if (!isComplete) {
             navigate("/complete-profile");
           } else {
+            if (!isSignup) {
+              const isFirstLogin = !localStorage.getItem(
+                `hasLoggedInBefore:${users.id}`
+              );
+              localStorage.setItem(`hasLoggedInBefore:${users.id}`, "true");
+
+              if (isFirstLogin) {
+                navigate("/enrollment-plans");
+                return;
+              }
+            }
             navigate("/doctor-admin/dashboard");
           }
         } else if (userRole === "PATIENT") {
@@ -69,19 +81,64 @@ export default function LoginWithGoogle() {
           navigate("/");
         }
       } catch (error) {
-        console.error("Error during login flow:", error);
+        console.error("Error during Google auth flow:", error);
+        
+        const errorMessage =
+          error.response?.data?.responseMessage ||
+          error.message ||
+          (isSignup
+            ? "Failed to sign up with Google. Please try again."
+            : "Failed to login with Google. Please try again.");
+
+        dispatch(
+          showToast({
+            message: errorMessage,
+            type: "error",
+          })
+        );
       }
     },
-    onError: () => console.log("Google login failed"),
+    onError: () => {
+      dispatch(
+        showToast({
+          message: isSignup
+            ? "Google signup was cancelled or failed."
+            : "Google login was cancelled or failed.",
+          type: "error",
+        })
+      );
+    },
     scope: "openid email profile",
   });
 
+  const displayText =
+    buttonText || (isSignup ? "Sign up with Google" : "Login with Google");
+
+  if (isSignup) {
+    return (
+      <button
+        onClick={() => googleAuth()}
+        className={className || "w-full"}
+      >
+        <div className="flex w-full h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center items-center cursor-pointer hover:shadow-md transition-shadow">
+          <GoogleIcon className="w-5 h-6" />
+          <h1 className="hidden lg:block text-sm font-poppins">
+            {displayText}
+          </h1>
+        </div>
+      </button>
+    );
+  }
+
   return (
-    <button onClick={() => googleLogin()}>
-      <span className="flex gap-2 items-center ">
+    <button
+      onClick={() => googleAuth()}
+      className={className || ""}
+    >
+      <span className="flex gap-2 items-center">
         <GoogleIcon className="w-5 h-6" />
         <h1 className="hidden lg:block text-sm font-poppins">
-          Login with Google
+          {displayText}
         </h1>
       </span>
     </button>

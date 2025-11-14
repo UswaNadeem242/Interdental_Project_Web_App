@@ -15,15 +15,12 @@ const CompleteProfile = () => {
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState("success");
 
-    // Redirect if profile is already complete
     useEffect(() => {
-        // Temporarily commented out for testing
         // if (isProfileComplete()) {
         //   navigate("/doctor-admin/dashboard");
         // }
     }, [isProfileComplete, navigate]);
 
-    // Formik setup with real-time validation
     const formik = useFormik({
         initialValues: {
             phoneNumber: user?.phoneNumber || "",
@@ -75,7 +72,6 @@ const CompleteProfile = () => {
                 setToastType("success");
                 setToastVisible(true);
 
-                // Navigate to dashboard after a short delay
                 setTimeout(() => {
                     navigate("/doctor-admin/dashboard");
                 }, 1500);
@@ -96,12 +92,10 @@ const CompleteProfile = () => {
         setToastVisible(false);
     };
 
-    // Simple header component matching header.jsx design
     const SimpleHeader = () => (
         <header className="fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-300 top-4 w-[95%] sm:w-[92%] md:w-[90%]">
             {/* pill container */}
             <div className="mx-auto flex items-center justify-between bg-white/95 ring-1 ring-black/5 backdrop-blur px-3 sm:px-5 md:px-6 py-2.5 transition-all duration-300 rounded-full">
-                {/* Mobile menu button - hidden since we don't need it */}
                 <div className="w-10 lg:hidden" />
 
                 {/* Logo */}
@@ -115,7 +109,6 @@ const CompleteProfile = () => {
                     </div>
                 </div>
 
-                {/* Desktop actions */}
                 <div className="hidden lg:flex items-center gap-4">
                     {user && user?.email ? (
                         <button
@@ -137,7 +130,6 @@ const CompleteProfile = () => {
                     )}
                 </div>
 
-                {/* Mobile logout button */}
                 <div className="lg:hidden">
                     {user && user?.email ? (
                         <button
@@ -175,7 +167,6 @@ const CompleteProfile = () => {
                     border: "3px solid #FFF",
                     background: "rgba(255, 255, 255, 0.30)",
                 }}>
-                    {/* Header */}
                     <div className="text-center mb-8">
                         <h1 className="font-poppins font-bold text-3xl text-[#013764] mb-3">
                             Almost <span className="text-[#00BCD4]">Done</span>!
@@ -185,14 +176,11 @@ const CompleteProfile = () => {
                         </p>
                     </div>
 
-                    {/* Form Card */}
                     <div
 
                         className=""
                     >
-                        {/* Form */}
                         <div className="space-y-4">
-                            {/* Phone Number */}
                             <div className="relative">
                                 <input
                                     type="text"
@@ -214,7 +202,6 @@ const CompleteProfile = () => {
                                 )}
                             </div>
 
-                            {/* Address */}
                             <div className="relative">
                                 <input
                                     type="text"
@@ -236,7 +223,6 @@ const CompleteProfile = () => {
                                 )}
                             </div>
 
-                            {/* Doctor's License Number + Office Reference Number */}
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="relative">
                                     <input
@@ -286,7 +272,6 @@ const CompleteProfile = () => {
                             </div>
                         </div>
 
-                        {/* Continue Button */}
                         <button
                             type="button"
                             onClick={() => formik.handleSubmit()}
@@ -302,7 +287,6 @@ const CompleteProfile = () => {
                 </div>
             </div>
 
-            {/* Toast notification */}
             <Toast
                 message={toastMessage}
                 isVisible={toastVisible}

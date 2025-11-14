@@ -8,7 +8,7 @@ import YearlyPlanModel from "../../modals/yearly-plan";
 import { useFormik } from "formik";
 import Icons from "../../components/Icons";
 import { buyerSignupValidationSchema } from "../../services/utils/validationSchemas";
-import SignupWithGoogle from "../../Common/google-login/signup-with-google";
+import GoogleAuth from "../../Common/google-login";
 
 const BuySignup = () => {
   const navigate = useNavigate();
@@ -324,7 +324,7 @@ const BuySignup = () => {
 
           {/* Google Signup */}
           <div className="w-full lg:w-[494px]">
-            <SignupWithGoogle role="CUSTOMER" />
+            <GoogleAuth role="CUSTOMER" />
           </div>
 
           <div className="flex flex-col justify-center items-center w-full h-auto space-y-4 lg:space-y-[16px]">
