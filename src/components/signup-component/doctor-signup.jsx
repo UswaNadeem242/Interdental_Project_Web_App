@@ -8,7 +8,7 @@ import YearlyPlanModel from "../../modals/yearly-plan";
 import Icons from "../../components/Icons";
 import { doctorSignupValidationSchema } from "../../services/utils/validationSchemas";
 import { useFormik } from "formik";
-import SignupWithGoogle from "../../Common/google-login/signup-with-google";
+import GoogleAuth from "../../Common/google-login";
 
 const DoctorSignup = () => {
   const navigate = useNavigate();
@@ -20,8 +20,6 @@ const DoctorSignup = () => {
   const [yearly, setYearly] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-
-  // Formik setup with real-time validation
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -36,8 +34,8 @@ const DoctorSignup = () => {
       password: "",
     },
     validationSchema: doctorSignupValidationSchema,
-    validateOnChange: true, // Real-time validation as user types
-    validateOnBlur: true,   // Validate when user leaves field
+    validateOnChange: true, 
+    validateOnBlur: true,
     onSubmit: async (values) => {
       await handleSignup(values);
     },
@@ -75,7 +73,6 @@ const DoctorSignup = () => {
 
       const { data } = response;
 
-      // Add delay before navigation to ensure toast is visible
       setTimeout(() => {
         navigate(`/login?role=${data.roles[0]?.name?.toLowerCase()}`);
       }, 2000);
@@ -99,9 +96,9 @@ const DoctorSignup = () => {
     <div className="mt-3">
       <div className="flex flex-col justify-center items-center w-full  h-auto  gap-6 lg:gap-[32px]">
         <div className="flex flex-col justify-center items-center w-full gap-8">
-          {/* Form */}
+          
           <div className="w-full space-y-4">
-            {/* Full width */}
+         
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="relative w-full">
                 <input
@@ -325,7 +322,7 @@ const DoctorSignup = () => {
               </div>
             </div>
 
-            {/* License + Office Ref */}
+   
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="relative w-full">
                 <input
@@ -421,7 +418,7 @@ const DoctorSignup = () => {
                   Password
                 </label>
 
-                {/* Eye Icon */}
+          
                 <div
                   className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
@@ -459,7 +456,7 @@ const DoctorSignup = () => {
 
           {/* Google Signup */}
           <div className="w-full lg:w-[494px]">
-            <SignupWithGoogle role="DOCTOR" />
+            <GoogleAuth role="DOCTOR" />
           </div>
 
           <div className="flex flex-col justify-center items-center w-full h-auto space-y-4 lg:space-y-[16px]">

@@ -21,15 +21,20 @@ export const AuthProvider = ({ children }) => {
   const notificationFetchRef = useRef(false);
   const notificationFetchTimeoutRef = useRef(null);
 
-  const login = (user, token) => {
+  const login = (user, token, role) => {
     localStorage.setItem("token", token);
-    localStorage.setItem("users", JSON.stringify(user));
-    setUser(user);
+    const userToStore = role
+      ? { ...user, roles: [role] }
+      : user;
+
+    localStorage.setItem("users", JSON.stringify(userToStore));
+    setUser(userToStore);
     setLoading(false);
   };
 
+
   const updateUser = (updatedUserData) => {
-    localStorage.setItem("users", JSON.stringify({ ...updatedUserData,roles: [updatedUserData.role] }));
+    localStorage.setItem("users", JSON.stringify({ ...updatedUserData, roles: [updatedUserData.role] }));
     setUser(updatedUserData);
   };
 
@@ -42,7 +47,7 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response?.data?.items?.length, "WISHLIST_COUNT");
+
       setWishlistCount(response?.data?.items?.length);
     } catch (err) {
       console.log("Error fetching wishlist count:", err);
@@ -60,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       });
       const count = response?.data?.items?.length ?? 0;
 
-      setCartCount(count); // fallback to 0
+      setCartCount(count);
     } catch (error) {
       console.error("Failed to fetch cart count:", error);
       setCartCount(0);
@@ -70,12 +75,10 @@ export const AuthProvider = ({ children }) => {
   const fetchUnreadNotificationsCount = useCallback(async (force = false) => {
     if (!user) return;
 
-    // Prevent duplicate calls within 2 seconds unless forced
     if (!force && notificationFetchRef.current) {
       return;
     }
 
-    // Clear any existing timeout
     if (notificationFetchTimeoutRef.current) {
       clearTimeout(notificationFetchTimeoutRef.current);
     }
@@ -95,14 +98,12 @@ export const AuthProvider = ({ children }) => {
       console.error("Failed to fetch unread notifications count:", error);
       setUnreadNotificationsCount(0);
     } finally {
-      // Allow fetching again after 2 seconds
       notificationFetchTimeoutRef.current = setTimeout(() => {
         notificationFetchRef.current = false;
       }, 2000);
     }
   }, [user]);
 
-  // 🔹 Refresh token every 10 minutes
   useEffect(() => {
     const interval = setInterval(
       async () => {
@@ -138,7 +139,6 @@ export const AuthProvider = ({ children }) => {
     setCartCount(0);
     setUnreadNotificationsCount(0);
     setLoading(false);
-    // Clear notification fetch timeout
     if (notificationFetchTimeoutRef.current) {
       clearTimeout(notificationFetchTimeoutRef.current);
       notificationFetchTimeoutRef.current = null;
@@ -146,7 +146,6 @@ export const AuthProvider = ({ children }) => {
     notificationFetchRef.current = false;
   };
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (notificationFetchTimeoutRef.current) {
@@ -155,7 +154,6 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  // Initialize user from localStorage on app start
   useEffect(() => {
     const initializeAuth = () => {
       try {
@@ -177,10 +175,8 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  // Helper functions for role management
   const getUserRoles = () => {
     if (!user) return [];
-    // Try to retrieve role(s) from multiple possible property names, handling array or single string
     let roles =
       user.roles ||
       user.Roles ||
@@ -190,18 +186,15 @@ export const AuthProvider = ({ children }) => {
     if (Array.isArray(roles)) {
       return roles;
     }
-    // If roles is a string, wrap in array
     if (typeof roles === "string") {
       return [roles];
     }
     return [];
   };
 
-  // Fetch counts when user is available (but skip for DOCTOR role - they have their own dashboard)
   useEffect(() => {
     if (user) {
       const userRoles = getUserRoles();
-      // Don't fetch cart/wishlist/notifications for doctors
       if (userRoles.includes("DOCTOR")) {
         return;
       }
@@ -237,12 +230,10 @@ export const AuthProvider = ({ children }) => {
 
     const userRoles = getUserRoles();
 
-    // For DOCTOR role, check if drLicenseNo and officeRefNo exist
     if (userRoles.includes("DOCTOR")) {
       return !!(user.drLicenseNo && user.officeRefNo);
     }
 
-    // For other roles, profile is considered complete
     return true;
   };
 
@@ -260,7 +251,6 @@ export const AuthProvider = ({ children }) => {
         fetchCartCount,
         unreadNotificationsCount,
         fetchUnreadNotificationsCount,
-        // Role management functions
         getUserRoles,
         hasUserRole,
         hasUserAnyRole,

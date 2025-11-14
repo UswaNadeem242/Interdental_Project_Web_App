@@ -8,10 +8,10 @@ import { showToast } from "../../store/toast-slice";
 import { useDispatch } from "react-redux";
 import { loginValidationSchema } from "../../services/utils/validationSchemas";
 import { useFormik } from "formik";
-import LoginWithGoogle from "../../Common/google-login";
+import GoogleAuth from "../../Common/google-login";
 import Icons from "../Icons";
 
-const UnifiedLogin = () => {
+const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const dispatch = useDispatch();
@@ -19,7 +19,6 @@ const UnifiedLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Formik setup
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -62,28 +61,20 @@ const UnifiedLogin = () => {
         }
 
         const user = response?.data?.data?.users;
-        console.log(user, "USER");
 
         login(user, response?.data?.data?.accessToken);
 
-        // Check if user logged in before
         const isFirstLogin = !localStorage.getItem(
           `hasLoggedInBefore:${user.id}`
         );
         localStorage.setItem(`hasLoggedInBefore:${user.id}`, "true");
 
-        //
-
-        // Navigate based on user role
         const userRole = response.data.data.users.roles[0];
         if (userRole === "PATIENT") {
           navigate("/patient-admin/dashboard");
         } else if (userRole === "DOCTOR") {
           if (isFirstLogin) navigate("/enrollment-plans");
           else navigate("/doctor-admin/dashboard");
-
-          // navigate("/doctor-admin/dashboard");
-          // navigate("/enrollment-plans");
         } else if (userRole === "ADMIN") {
           navigate("/admin-panel/dashboard");
         } else if (userRole === "CUSTOMER") {
@@ -111,7 +102,6 @@ const UnifiedLogin = () => {
 
   return (
     <div className="pt-5">
-      {/* Login form */}
       <div className="flex flex-col justify-center items-center w-[350px] sm:w-[550px] lg:w-[494px] gap-6 lg:gap-8">
         <div className="flex flex-col justify-center items-center w-full px-4 lg:w-[494px] gap-4 lg:gap-4">
           <div className="relative w-full lg:w-[494px] mb-2">
@@ -169,16 +159,13 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
                 Password
               </label>
 
-              {/* Eye Icon */}
               <div
                 className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  // Eye Open
                   <Icons.Eye.Open />
                 ) : (
-                  // Eye Closed
                   <Icons.Eye.Closed />
                 )}
               </div>
@@ -211,7 +198,7 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
           </button>
           <div className="flex flex-row justify-center items-center w-full lg:w-[494px] h-auto lg:h-[56px] gap-4 lg:gap-[16px]">
             <div className="flex w-full h-[56px] py-[17px] px-[24px] rounded-[32px] gap-[8px] border-[1px] border-[#FFFFFF] bg-[#FFFFFF] justify-center cursor-pointer hover:shadow-md transition-shadow">
-              <LoginWithGoogle />
+              <GoogleAuth />
             </div>
           </div>{" "}
           <div className="flex flex-col justify-center items-center w-full h-auto lg:h-[93px] space-y-4 lg:space-y-[16px]">
@@ -238,4 +225,4 @@ peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs
   );
 };
 
-export default UnifiedLogin;
+export default LoginForm;
