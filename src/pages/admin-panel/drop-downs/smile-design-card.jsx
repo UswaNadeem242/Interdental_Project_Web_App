@@ -5,7 +5,7 @@ export default function SmileDesignCard({ label, image, onClick }) {
 
   return (
     <div
-      className=" mx-auto bg-bgWhite rounded-xl shadow-sm border-2 p-3 border-cartColor flex flex-col gap-3 "
+      className=" bg-bgWhite rounded-xl shadow-sm border-2 p-3 border-cartColor flex flex-col gap-3 "
       onClick={() => onClick()}
     >
       <div className="">
