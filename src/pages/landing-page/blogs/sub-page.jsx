@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
-import Contact from "../contact";
 import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
 import BlogNext from "../../../components/landing-page-component/blog-next.jsx";

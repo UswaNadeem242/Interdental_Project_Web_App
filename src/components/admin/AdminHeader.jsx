@@ -57,7 +57,7 @@ const AdminHeader = ({ title, subTitle }) => {
         <div className="flex justify-start items-center w-[220px] h-[58px] gap-[8px] p-[8px] rounded-[32px] bg-white">
           <img
             src="/assets/user.png"
-            alt="User Profile Picture"
+            alt="User Profile"
             className="w-[40px] h-[40px] rounded-[32px]"
           />
           <div className="flex flex-col justify-start items-start w-[156px] h-[42px] gap-[3px] bg-white">

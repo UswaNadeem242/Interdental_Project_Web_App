@@ -1,16 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { plans, plansmodel } from "../Constant";
+import { plansmodel } from "../Constant";
 
 const YearlyPlanModel = ({ yearly, setYearly }) => {
     const navigate = useNavigate();
-    const handleOpenModal = () => {
-        setYearly(true);
-    };
-
-    const handleCloseModal = () => {
-        setYearly(false);
-    };
+    // Removed unused handleOpenModal, handleCloseModal
 
     const Check = (props) => (
         <svg

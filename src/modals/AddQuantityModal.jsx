@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 // import Group from "../assets/Group.png";
 import axios from "axios";
 import { BASE_URL } from "../config";
@@ -9,20 +9,12 @@ const AddQuantityModal = ({
   selectedProducts,
   getAllProducts
 }) => {
-  const [name, setName] = useState("");
-  const [parentCategoryId, setParentCategoryId] = useState(null);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [categoryId, setCategoryId] = useState(0);
-  const [quantity, setQuantity] = useState(0);
   const [productQuantities, setProductQuantities] = useState(
     selectedProducts.reduce((acc, product) => {
       acc[product.productId] = 0;
       return acc;
     }, {})
   );
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -44,7 +36,7 @@ const AddQuantityModal = ({
           quantityToAdd: Number(quantityToAdd),
         })
       );
-      const response = await axios.put(
+      await axios.put(
         `${BASE_URL}/api/admin/products/add-stock`,
         payload,
         {

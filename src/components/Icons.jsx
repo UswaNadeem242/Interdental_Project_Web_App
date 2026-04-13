@@ -783,25 +783,6 @@ const Icons = {
     </svg>
   ),
 
-  // Wishlist Heart Icon
-  WishlistHeart: ({ stroke = "#001D58", fill = "none", className = "" }) => (
-    <svg
-      width="27"
-      height="27"
-      viewBox="0 0 27 27"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
-      <path
-        d="M13.5738 23.2431C-7.78248 11.4391 7.16722 -1.37494 13.5738 6.72787C19.9813 -1.37494 34.931 11.4391 13.5738 23.2431Z"
-        stroke={stroke}
-        strokeWidth="1.92211"
-        fill={fill}
-      />
-    </svg>
-  ),
-
   // No Reviews Chat Icon
   NoReviewsIcon: ({ className = "" }) => (
     <svg

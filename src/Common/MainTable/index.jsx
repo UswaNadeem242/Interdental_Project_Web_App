@@ -200,9 +200,9 @@ export default function MainTable({
     ? Math.ceil(data.length / pageSize)
     : 0;
 
-  const displayTotalResults = useBackendPagination
-    ? totalResults || 0
-    : data.length;
+  // const displayTotalResults = useBackendPagination
+  //   ? totalResults || 0
+  //   : data.length;
 
   const handlePageChange = useBackendPagination
     ? onPageChange || (() => {})
@@ -249,7 +249,7 @@ export default function MainTable({
       const rowId = getRowId ? getRowId(item, index) : index;
       return isRowSelected(rowId);
     });
-  }, [displayData, selectedRows, getRowId, isRowSelected]);
+  }, [displayData, getRowId, isRowSelected]);
 
   const hasColumnWidths = useMemo(() => {
     return columns.some((column) => column.width);

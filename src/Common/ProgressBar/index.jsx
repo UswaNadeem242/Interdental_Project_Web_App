@@ -1,9 +1,5 @@
 import React from "react";
-import { CheckIcon } from "@heroicons/react/24/solid";
-import HealthIcon from "../../icon/HealthIcon";
-import BoxIcon from "../../icon/BoxIcon";
-import ShipIcon from "../../icon/ShipIcon";
-import TimeIcon from "../../icon/TimeIcon";
+import { CheckIcon } from "@heroicons/react/24/solid"; 
 // const stepsDefault = [
 //   {
 //     title: "Order Placed",

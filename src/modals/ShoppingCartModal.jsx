@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CartProduct from "../components/CartProduct";
 import axios from "axios";
 import { BASE_URL } from "../config";
@@ -22,7 +22,7 @@ const ShoppingCart = ({ isModalOpen, setIsModalOpen }) => {
   const [openBuyerDetail, setOpenBuyerDetail] = useState(false);
   const [openCartTotal, setOpenCartTotal] = useState(false);
   const [cart, setCart] = useState({});
-  const [country, setCountry] = useState("");
+  // Removed unused country, setCountry
   const [showCoutries, setShowCoutries] = useState(false);
   const [isopenCartModel, setIsOpenCartModel] = useState(false);
   const [toastMessage, setToastMessage] = useState("");

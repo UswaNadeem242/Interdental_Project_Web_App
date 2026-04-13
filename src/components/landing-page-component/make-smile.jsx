@@ -1,11 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import CircleTrickIcon from "../../icon/circle-trick-icon";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { ThirdButtonUI } from "../../Common/Button";
+ import { ThirdButtonUI } from "../../Common/Button";
 
-function MakeSmile() {
-  const navigate = useNavigate();
+function MakeSmile() { 
   return (
     <div>
       <section className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center py-10">

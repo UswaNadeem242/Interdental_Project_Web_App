@@ -1,5 +1,4 @@
 
-import { useEffect, useRef } from 'react';
 import ConfirmIcon from '.././icon/confirmIcon'
 const CartConfirmModel = ({ isopenCartModel, setIsOpenCartModel, createOrder, activeTab }) => {
 

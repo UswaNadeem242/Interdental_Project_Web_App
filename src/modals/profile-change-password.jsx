@@ -95,13 +95,13 @@ const ProfileChangePasswordModel = ({ isPasswordProfile, setIsPasswordProfile })
             errors.push("Must contain a number");
         }
 
-        if (!/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/.test(password)) {
+        if (!/[!@#$%^&*(()\-_=+\[\]{};:'",<.>?\\|`~]/.test(password)) {
             errors.push("Must contain special character");
         }
 
         // Check special character limit
         if (password.length >= 8) {
-            const specialCharCount = (password.match(/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/g) || []).length;
+            const specialCharCount = (password.match(/[!@#$%^&*(()\-_=+\[\]{};:'",<.>?\\|`~]/g) || []).length;
             if (specialCharCount > 8) {
                 errors.push("Maximum 8 special characters allowed");
             }

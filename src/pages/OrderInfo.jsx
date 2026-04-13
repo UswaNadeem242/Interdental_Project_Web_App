@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ChevronLeftIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import FeedbackModal from "../modals/FeedbackModal";
 import axios from "axios";
@@ -59,7 +59,7 @@ const Orders = () => {
   useEffect(() => {
     getAllOrders();
     getOrderTrackingInfo();
-  }, []);
+  }, [getAllOrders, getOrderTrackingInfo]);
 
   return (
     <div className="flex justify-center items-start w-full min-h-screen bg-[#F8F8F8] py-8">
@@ -90,7 +90,7 @@ const Orders = () => {
             </div>
           ))}
         </div>
-        {selectedIndex == 0 && (
+        {selectedIndex === 0 && (
           <div className="flex w-full gap-6">
             <div className="flex flex-col w-[60%] h-auto rounded-[12px] gap-[16px]">
               <div className="flex flex-col justify-start items-start w-full h-auto rounded-[12px] border-[1px] p-[24px] space-y-[28px] bg-white border-[#0000000D]">
@@ -232,7 +232,7 @@ const Orders = () => {
             </div>
           </div>
         )}
-        {selectedIndex == 1 && (
+        {selectedIndex === 1 && (
           <div className="flex flex-col justify-start items-start space-y-6 w-full">
             {/* Delivery Detail */}
             <div className="flex flex-col justify-start items-start w-full rounded-[12px] border-[1px] border-[#0000000D] p-[24px] bg-white space-y-[16px]">

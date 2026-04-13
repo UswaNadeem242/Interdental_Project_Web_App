@@ -79,7 +79,7 @@ function ListProduct() {
       await Promise.all([getAllCategories(), getAllBrands()]);
     };
     fetchData();
-  }, []);
+  }, [getAllCategories, getAllBrands]);
 
   //Dynamic Inputs
   const handleAddInput = () => setInputs([...inputs, ""]);

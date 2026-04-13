@@ -93,7 +93,7 @@ function Blog({ isLanding }) {
   // Fetch blogs when activeTab changes (immediate)
   useEffect(() => {
     fetchBlogs(1);
-  }, [activeTab]);
+  }, [activeTab, fetchBlogs]);
 
   // Fetch blogs when search changes (debounced)
   useEffect(() => {

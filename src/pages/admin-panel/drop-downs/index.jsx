@@ -2,13 +2,10 @@ import React, { useState, useMemo } from "react";
 import DropDownCard from "./drop-down-card";
 import SmileDesignCard from "./smile-design-card";
 import SearchBar from "../../../Common/SearchBar";
-import { PlusIcon } from "../../../icon/PlusIcon";
 import AddDropDownSidebar from "./add-dropdown-sidebar";
-import Icons from "../../../components/Icons";
 import EditDropDownSidebar from "./edit-dropdown-sidebar";
 
 function DropDownAdminPanel() {
-  const [dropdownsData, setDropdownsData] = useState([
     {
       id: "scanner-type",
       title: "Scanner Type",

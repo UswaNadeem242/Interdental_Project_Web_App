@@ -5,7 +5,7 @@ export const AddPatientValidationSchema = (skipImageValidation = false) =>
   Yup.object().shape({
     username: Yup.string()
       .matches(
-        /^[A-Za-z ]+$/,
+      /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
         "First Name should only contain letters and spaces"
       )
       .min(3, "First Name must be at least 3 characters")
@@ -13,7 +13,7 @@ export const AddPatientValidationSchema = (skipImageValidation = false) =>
 
     lastName: Yup.string()
       .matches(
-        /^[A-Za-z ]+$/,
+       /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
         "Last Name should only contain letters and spaces"
       )
       .min(3, "Last Name must be at least 3 characters")
@@ -21,7 +21,7 @@ export const AddPatientValidationSchema = (skipImageValidation = false) =>
 
     address: Yup.string()
       .matches(
-        /^(?![\d!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|~-]+$).*$/,
+        /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/
         "Address cannot be only numbers or special characters"
       )
       .required("Patient Location is required"),
@@ -47,7 +47,7 @@ export const EditPatientValidationSchema = () =>
   Yup.object().shape({
     firstName: Yup.string()
       .matches(
-        /^[A-Za-z ]+$/,
+        /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
         "First Name should only contain letters and spaces"
       )
       .min(3, "First Name must be at least 3 characters")
@@ -55,7 +55,7 @@ export const EditPatientValidationSchema = () =>
 
     lastName: Yup.string()
       .matches(
-        /^[A-Za-z ]+$/,
+       /^(?![\d!@#$%^&*()_+={}[]{}:;"'<>,.?/\\|~-]+$).*/,
         "Last Name should only contain letters and spaces"
       )
       .min(3, "Last Name must be at least 3 characters")
@@ -63,7 +63,7 @@ export const EditPatientValidationSchema = () =>
 
     address: Yup.string()
       .matches(
-        /^(?![\d!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|~-]+$).*$/,
+        /^(?![\d!@#$%^&*()_+={}[]:;"'<>,.?/\\|~-]+$).*/,
         "Address cannot be only numbers or special characters"
       )
       .required("Patient Location is required"),
@@ -98,7 +98,7 @@ export const PatientvalidationSchema = (skipPasswordValidation = false) =>
 
     address: Yup.string()
       .matches(
-        /^(?![\d!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|~-]+$).*$/,
+        /^(?![\d!@#$%^&*()_+={}[]:;"'<>,.?/\\|~-]+$).*/,
         "Address cannot be only numbers or special characters"
       )
       .required("Patient Location is required"),

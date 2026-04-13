@@ -18,7 +18,6 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
     hasMore: false
   });
   const { fetchUnreadNotificationsCount } = useAuth()
-  const [currentPageNumber, setCurrentPageNumber] = useState(0);
   const currentPageRef = useRef(0); // Use ref to avoid dependency issues
 
   const fetchNotifications = useCallback(async (page = 0, append = false) => {

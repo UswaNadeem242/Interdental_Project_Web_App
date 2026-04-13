@@ -5,32 +5,15 @@ import Footer from "../../../components/Footer";
 import {
   cardsecondZidCard,
   CardZidcard,
-  compositionData,
-  newDiameterszidCard,
-  newThicknesseszidCard,
   shadesproductzidCard,
-  zidCardComponent,
 } from "../../../Constant";
 
 import Shades from "../../../Common/product-landing/shades-product-landing";
-import Dimensions from "../../../Common/product-landing/dimensions-product-landing";
 import { NavLink } from "react-router-dom";
 import FrequentlyAskedQuestion from "../../../components/frequently-asked-question";
 import BackButton from "../../../components/BackButton";
 
 function ZidcardIvoclar({ isLanding }) {
-  const application = [
-    { id: 1, text: "Crowns and crown copings" },
-    { id: 2, text: "3-unit bridges and bridge frameworks" },
-    {
-      id: 3,
-      text: "C4-unit and multi-unit bridges and bridge frameworks with max. 2 pontics",
-    },
-    {
-      id: 4,
-      text: "Crowns and bridges on natural teeth and on implant systems",
-    },
-  ];
   return (
     <div>
       <div className="pb-20">{!isLanding && <Header />}</div>
@@ -42,6 +25,7 @@ function ZidcardIvoclar({ isLanding }) {
         <div className="w-full md:pt-10">
           <img
             src="/assets/landing-page/1.4.png"
+            alt="Zidcard Ivoclar product"
             className="md:w-full h-auto min-w-[384px] object-fit"
           />
         </div>

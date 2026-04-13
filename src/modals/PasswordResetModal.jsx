@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
 
 const PasswordReset = ({ isModalOpen, setIsModalOpen }) => {
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };

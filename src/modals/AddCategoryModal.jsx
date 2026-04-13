@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 // import Group from "../assets/Group.png";
 import axios from "axios";
 import { BASE_URL } from "../config";
@@ -12,11 +12,6 @@ const AddCategoryModal = ({
   const [name, setName] = useState("");
   const [parentCategoryId, setParentCategoryId] = useState(null);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [categoryId, setCategoryId] = useState(0);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

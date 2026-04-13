@@ -1,8 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import DropDownOptions from "../Common/drop-down-options";
-import TagInput from "../Common/tag-input";
-import AreYouSureModel from "./AreYouSureModel";
 import { useEffect, useRef, useState } from "react";
 import CategoryDropdown from "../Common/CategoryDropDown";
 
@@ -30,16 +27,7 @@ const AddBlogModal = ({ onClose, data }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Add new category
-  const handleAddCategory = () => {
-    if (newCategory.trim() !== "") {
-      setCategories([...categories, newCategory.trim()]);
-      setNewCategory("");
-    }
-  };
   //
-  const [formData, setFormData] = useState(null);
-  const [showSureModal, setShowSureModal] = useState(false);
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Title is required"),
@@ -66,11 +54,7 @@ const AddBlogModal = ({ onClose, data }) => {
     onClose(); // Close main modal after publishing
   };
 
-  // ✅ Confirm close action
-  const handleConfirmClose = () => {
-    setShowSureModal(false); // hide confirmation modal
-    onClose(); // close main modal
-  };
+
   const handleSelect = (cat) => {
     setSelected(cat);
     setIsOpen(false);

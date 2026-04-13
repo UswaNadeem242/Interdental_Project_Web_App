@@ -13,9 +13,6 @@ import EditIcon from "../../../icon/EditIcon";
 import DeleteLogo from "../../../icon/DeleteLogo";
 
 export default function EditDropDownSidebar({ isOpen, onClose }) {
-  const [selectedDropdown, setSelectedDropdown] = useState(null);
-  const [showAddNewInput, setShowAddNewInput] = useState(false);
-  const [newDropdownName, setNewDropdownName] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

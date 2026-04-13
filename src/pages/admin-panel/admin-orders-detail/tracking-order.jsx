@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Icons from "../../../components/Icons";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
@@ -20,7 +20,6 @@ const STEP_COLORS = {
 };
 
 export default function TrackingOrderAdmin({ id, isadmin, refresh }) {
-  const [orderDetails, setOrderDetails] = useState(null);
   const [trackingData, setTrackingData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -159,7 +158,7 @@ export default function TrackingOrderAdmin({ id, isadmin, refresh }) {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, fetchOrderTracking]);
 
   const OrderStatusStep = ({
     status,

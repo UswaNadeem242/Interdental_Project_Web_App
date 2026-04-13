@@ -6,11 +6,6 @@ import {
   SmileDesignAddModal,
 } from "../../../modals/DentureAddOptionModal";
 import ChevronDownIcon from "../../../icon/ChevronDownIcon";
-import {
-  NameAndPriceEditModal,
-  NameEditModal,
-  SmileDesignEditModal,
-} from "../../../modals/EditModals";
 
 function DropDownCard({
   id,
@@ -41,23 +36,6 @@ function DropDownCard({
   const getAddModalTitle = () => {
     return `Add Option for ${title}`;
   };
-
-  const getEditModalTitle = () => {
-    return `Edit ${title}`;
-  };
-
-  const renderAddModal = () => {
-    if (!isModalOpen) return null;
-
-    switch (modalType) {
-      case "name":
-        return (
-          <NameAddModal onClose={onCloseAddModal} title={getAddModalTitle()} />
-        );
-      case "name-price":
-        return (
-          <NameAndPriceAddModal
-            onClose={onCloseAddModal}
             title={getAddModalTitle()}
           />
         );

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import MainTable from "../../../Common/MainTable";
 import FilterDropdown from "../../../Common/FilterDropdown";
 import { SecondaryButton } from "../../../Common/Button";
-import { PlusIcon } from "../../../icon/PlusIcon";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
 import { useDebounce } from "../../../Hooks/useDebounce";

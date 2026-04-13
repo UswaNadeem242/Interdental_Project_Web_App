@@ -1,9 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import PatientDashboardPage from "../PatientAdmin/PatientDashboard";
-import PatientClaimrequests from "../PatientAdmin/ClaimRequest";
 import ProfileSettings from "../PatientAdmin/ProfileSettings";
-import { PatientForm } from "./PatientForm";
-import PatientTermCondition from "../doctorAdmin/TermCondition";
 
 const PatientAdmin = () => {
 

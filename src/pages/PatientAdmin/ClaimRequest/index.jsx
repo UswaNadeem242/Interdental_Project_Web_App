@@ -1,21 +1,15 @@
 import TabsStepper from "../../../Common/TabsStepper";
 import TableComponent from "../../../Common/Table";
 // import { data, headings } from "../../../Constant";
-import Drawers from "../../../Common/Drawers";
 import { useEffect, useState } from "react";
-import ClaimDetailForm from "../../doctorAdmin/ClaimRequest/ClaimDetailForm";
 import {
   headingsPatientClaimReq,
-  PatientClaimReqData,
 } from "../../../Constant";
 import { SecondaryButton } from "../../../Common/Button";
-import PatientClaimForm from "./PatientClaimForm";
 import { PlusIcon } from "../../../icon/PlusIcon";
 import { getClaims } from "../../../api/patient-dashaboard-api";
 
 const PatientClaimrequests = () => {
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
   const [claims, setClaims] = useState([]);
 
   const transformPatientsData = (apiData) => {

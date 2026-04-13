@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function EditBrandsModal({ isOpen, onClose, onSave }) {
-  const [categories, setCategories] = useState([
+  const [categories] = useState([
     "Brand A",
     "Brand A",
     "Brand A",

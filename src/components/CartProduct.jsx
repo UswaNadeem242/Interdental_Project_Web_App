@@ -14,7 +14,7 @@ const CartProduct = ({ item, getCart }) => {
   const [toastType, setToastType] = useState("success");
   const handleDeleteItem = async () => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `${BASE_URL}/api/cart/${item.id}/remove`,
         {
           headers: {
@@ -49,7 +49,7 @@ const CartProduct = ({ item, getCart }) => {
       setCount(Math.max(0, count - 1));
     }
     try {
-      const response = await axios.put(
+      await axios.put(
         `${BASE_URL}/api/cart/${item.id}/update`,
         {
           cartItemId: item.id,

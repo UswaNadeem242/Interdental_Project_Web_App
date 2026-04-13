@@ -4,7 +4,6 @@ import DoctorsAdminPanel from "./admin-doctors";
 import AdminPanelDoctorDetail from "./admin-doctor-detail";
 import OrdersAdminPanel from "./admin-orders";
 import AdminOrdersDetail from "./admin-orders-detail";
-import DentalDesignForm from "./dental-design-form";
 import ProductsAdminPanel from "./admin-products";
 import ListProduct from "./admin-products/list-product";
 import ProductDetails from "./admin-products/product-details";
@@ -15,7 +14,6 @@ import ProfileInfoAdminPanel from "./admin-profile-info";
 import BlogAndArticles from "./blogs-and-articles";
 import BlogsDetailPage from "./blogs-and-articles/blogs-detail";
 import DropDownAdminPanel from "./drop-downs";
-import EcomOrderDetails from "./admin-orders/ecommerece-orders/ecom-order-detail";
 import EcomOrdersDetail from "./admin-orders/ecommerece-orders/ecom-order-detail";
 
 const AdminPanel = () => {

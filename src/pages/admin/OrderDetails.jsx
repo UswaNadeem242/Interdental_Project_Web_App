@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AdminHeader from "../../components/admin/AdminHeader";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../config";
 import axios from "axios";
@@ -31,7 +30,7 @@ const OrderDetails = () => {
 
   useEffect(() => {
     getAllOrders();
-  }, []);
+  }, [getAllOrders]);
 
   const handleUpdateStatus = async () => {
     const status =
@@ -41,7 +40,7 @@ const OrderDetails = () => {
         ? "delivered"
         : "PENDING";
     try {
-      const response = await axios.put(
+      await axios.put(
         `${BASE_URL}/orders/${params.id}/status?status=${status}`,
         {},
         {

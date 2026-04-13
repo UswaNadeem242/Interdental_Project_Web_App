@@ -9,7 +9,7 @@ import Toast from "../components/Toast";
 
 const CompleteProfile = () => {
     const navigate = useNavigate();
-    const { user, updateUser, isProfileComplete, logout } = useAuth();
+    const { user, isProfileComplete, logout } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [toastVisible, setToastVisible] = useState(false);
     const [toastMessage, setToastMessage] = useState("");

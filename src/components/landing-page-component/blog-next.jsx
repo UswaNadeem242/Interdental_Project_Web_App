@@ -1,4 +1,4 @@
-import { ArrowLongLeftIcon, ArrowLongRightIcon, ArrowRightCircleIcon, ChevronLeftIcon } from '@heroicons/react/24/outline'
+import { ArrowLongLeftIcon, ArrowLongRightIcon} from '@heroicons/react/24/outline'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../../api/intercepter'

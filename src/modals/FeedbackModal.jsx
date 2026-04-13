@@ -10,7 +10,7 @@ const FeedbackModal = ({ isModalOpen, setIsModalOpen, productId, selectedProduct
   const [review, setReview] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasRated, setHasRated] = useState(false);
-  const [showFiveStarAnim, setShowFiveStarAnim] = useState(false);
+  // Removed unused showFiveStarAnim, setShowFiveStarAnim
   const dispatch = useDispatch();
   const handleCloseModal = () => {
     setIsModalOpen(false);

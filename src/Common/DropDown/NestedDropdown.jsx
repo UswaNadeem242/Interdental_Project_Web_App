@@ -1,6 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react"; 
 
 // --- SubDropdown Component ---
 const SubDropdown = ({ label, options, selected, onSelect }) => {

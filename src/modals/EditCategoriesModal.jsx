@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function EditCategoriesModal({ isOpen, onClose, onSave }) {
-  const [categories, setCategories] = useState([
+  const [categories] = useState([
     "Category A",
     "Category A",
     "Category A",

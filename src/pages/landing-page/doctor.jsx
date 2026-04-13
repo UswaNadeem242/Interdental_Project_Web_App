@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "./header";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import DotIcon from "../../icon/dotIcon";
-import { Doctorsteps, steps } from "../../Constant";
+import { Doctorsteps } from "../../Constant";
 import Contact from "./contact";
 import {
   PrimaryButtonUI,

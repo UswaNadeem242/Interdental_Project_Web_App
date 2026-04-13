@@ -1,17 +1,4 @@
-import React, { useState } from "react";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { implantCards, prescriptionCards, warrantyCards } from "../Constant";
-import Header from "./landing-page/header";
-import CircleIcon from "../icon/circle-icon";
-import FrequentlyAskedQuestion from "../components/frequently-asked-question";
-import Contact from "./landing-page/contact";
-import UpperFooter from "../components/upper-footer";
-import Footer from "../components/Footer";
-import { ThirdButtonUI } from "../Common/Button";
-import OurModules from "../components/landing-page-component/our-modules";
-import ImplantInterfeace from "../components/landing-page-component/implant-interface";
-import MakeSmile from "../components/landing-page-component/make-smile";
-import ContactFooter from "../components/contact-footer";
+import React from "react";
 const About = ({ isLanding }) => {
   return (
     <div className="">
@@ -22,7 +9,7 @@ const About = ({ isLanding }) => {
           {/* Image */}
           <img
             src="/assets/landing-page/about-us-1.png"
-            alt="about us image"
+            alt="About us"
             className="w-[300px] sm:w-[400px] md:w-[500px] lg:w-[550px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px]"
           />
 

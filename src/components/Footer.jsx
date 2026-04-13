@@ -4,7 +4,6 @@ import Instgram from "../icon/instgram";
 import Birbble from "../icon/birbble";
 import Twitter from "../icon/twitter";
 import Youtube from "../icon/youtube";
-import { socialIcons } from "../Constant";
 
 const Footer = ({ className }) => {
   const year = new Date().getFullYear();

@@ -1,21 +1,16 @@
-import { useEffect, useRef, useState } from "react";
-import DropDownComponent from "../../../Common/DropDown";
-// import { options, ShippingDetail } from "../../../../Constant";
-import CardIcon from "../../../icon/CardIcon";
+import { useEffect,  useState } from "react"; 
+// import { options, ShippingDetail } from "../../../../Constant"; 
 import TeethSelection from "../../../components/doctorAdmin/TeethSelection";
 import { getOrderByID } from "../../../api/doctorDasboard";
-import { useSelector } from "react-redux";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import { useSelector } from "react-redux";  
 
-export default function DownloadPdfForm({ id, ref }) {
-    const [selected, setSelected] = useState("");
+export default function DownloadPdfForm({ id, ref }) { 
     const [orderDetails, setOrderDetails] = useState(null);
     const restoration = useSelector((state) => state.restoration);
 
     const toothSelections = restoration.toothSelections || [];
     const selectedTeeth = restoration.selectedTeeth || [];
-    const patient = restoration.patient;
+    // const patient = restoration.patient;
     const teeth = toothSelections.reduce((acc, t) => {
         acc[t.toothId] = t;
         return acc;
@@ -74,14 +69,7 @@ export default function DownloadPdfForm({ id, ref }) {
     // download the pdf
     
 
-    const totalPrice = toothSelections.reduce((toothSum, tooth) => {
-        // for each tooth, sum its fields that have price
-        const toothTotal = Object.values(tooth)
-            .filter((field) => field && typeof field === "object" && field.price)
-            .reduce((sum, field) => sum + field.price, 0);
-
-        return toothSum + toothTotal;
-    }, 0);
+ 
 
 
     return (

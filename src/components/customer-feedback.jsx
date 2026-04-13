@@ -20,7 +20,7 @@ function CustomerFeedback({ title, className, data }) {
                 <img
                   src="/assets/user01.png"
                   className="w-10 h-10"
-                  alt="Customer Profile Picture"
+                  alt="Customer Profile"
                 />
                 <div>
                   <p className="font-medium text-[#1A1A1A] text-xs">

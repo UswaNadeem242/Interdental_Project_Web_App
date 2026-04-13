@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 // import Group from "../assets/Group.png";
 
 const AccountDeactivate = ({ isModalOpen, setIsModalOpen }) => {
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+ 
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AdminHeader from "../../components/admin/AdminHeader";
 import FilterOptionsDropdown from "../../components/dropdowns/FilterOptionsDropdown";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,7 +7,6 @@ import { BASE_URL } from "../../config";
 const Orders = () => {
   const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const tabs = ["All", "Pending", "Shipped", "Completed"];

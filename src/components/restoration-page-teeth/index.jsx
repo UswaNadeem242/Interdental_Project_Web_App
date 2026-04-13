@@ -143,7 +143,7 @@ export default function RestorationTeethSvg({
     const angle = isUpper ? Math.PI - angleStep * (i + 1) : angleStep * (i + 1);
     const x = radius + 120 * Math.cos(angle);
     const y = radius * Math.sin(angle) * (isUpper ? 1 : -1);
-    const popupAbove = isUpper;
+   
 
     return (
       <div

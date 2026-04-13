@@ -55,7 +55,7 @@ export const ActionMenuDropdown = ({
   // Stable ref callback to prevent re-renders
   const setReferenceRef = useCallback((node) => {
     refs.setReference(node);
-  }, []); // refs.setReference is stable, no need to include it in deps
+  }, [refs]);
 
   return (
     <Menu as="div" className="relative inline-block text-left">

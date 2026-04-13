@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import Icons from "../components/Icons";
+// Removed unused Menu, MenuButton, MenuItem, MenuItems, Icons
 
 const UpdateQuantityModal = ({ isOpen, onClose, products, onSave }) => {
   const [quantities, setQuantities] = useState({});

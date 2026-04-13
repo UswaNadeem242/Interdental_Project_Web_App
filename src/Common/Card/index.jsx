@@ -1,6 +1,4 @@
-import { Crown } from "../../icon/Crown";
-import { DoctorIcon } from "../../icon/DoctorIcon";
-import { Revenue } from "../../icon/Revenue";
+
 
 export const CardComponet = ({ title, count, icon,p }) => {
 

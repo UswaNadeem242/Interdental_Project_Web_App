@@ -44,7 +44,7 @@ function EcomOrdersDetail() {
   useEffect(() => {
   
     fetchOrderDetails();
-  }, [id, dispatch]);
+  }, [id, dispatch, fetchOrderDetails]);
 
   const handleSelect = (option) => {
     setSelected(option);

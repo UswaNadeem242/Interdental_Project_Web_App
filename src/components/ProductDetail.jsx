@@ -1,6 +1,5 @@
 import React from "react";
 import { useParams, Navigate } from "react-router-dom";
-import BackButton from "./BackButton";
 import ArgebbPmma from "../pages/landing-page/product/argen-pmma";
 import ArgenZ from "../pages/landing-page/product/argen-z-h";
 import ArgenzST from "../pages/landing-page/product/argenz-st";

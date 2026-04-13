@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 // import Group from "../assets/Group.png";
 import axios from "axios";
 import { BASE_URL } from "../config";
@@ -8,7 +8,6 @@ const AddBrandModal = ({ isModalOpen, getAllBrands, setIsModalOpen }) => {
   const fileInputRef = useRef();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [logoUrl, setLogoUrl] = useState("");
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -21,9 +20,6 @@ const AddBrandModal = ({ isModalOpen, getAllBrands, setIsModalOpen }) => {
 
   const triggerFileUpload = () => {
     fileInputRef.current.click();
-  };
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {

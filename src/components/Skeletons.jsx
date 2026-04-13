@@ -165,7 +165,7 @@ export const GridSkeleton = ({ items = 6, columns = 3 }) => (
   </div>
 );
 
-export default {
+const skeletons = {
   ProductSkeleton,
   NotificationSkeleton,
   NotificationsSkeleton,
@@ -178,3 +178,5 @@ export default {
   TextSkeleton,
   GridSkeleton,
 };
+
+export default skeletons;

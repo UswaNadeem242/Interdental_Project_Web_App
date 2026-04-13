@@ -1,8 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { PrimaryButtonUI } from "../../Common/Button";
-export const HeroSection = () => {
-  const navigate = useNavigate();
 
   return (
     <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc]">

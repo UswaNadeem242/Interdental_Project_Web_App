@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { ERole, DEFAULT_ROUTES } from "../constants/roles";
+import { DEFAULT_ROUTES } from "../constants/roles";
 
 const PrivateRoute = ({
   children,
@@ -49,8 +49,6 @@ const PrivateRoute = ({
   if (!requiredRoles || requiredRoles.length === 0) {
     return children;
   }
-
-  const userRoles = getUserRoles();
 
   // Check if user has any of the required roles
   if (!hasUserAnyRole(requiredRoles)) {

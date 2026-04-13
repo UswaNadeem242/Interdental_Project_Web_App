@@ -16,7 +16,6 @@ import { Xmark2 } from "../../../../icon/xmark";
 import axios from "axios";
 import { BASE_URL } from "../../../../config";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import Icons from "../../../../components/Icons";
 
 // Constants
 const TEETH_RANGES = {

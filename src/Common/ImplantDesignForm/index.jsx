@@ -1,8 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import DropDownComponent from "../../../src/Common/DropDown";
-import CardIcon from "../../../src/icon/CardIcon";
+import { useEffect, useRef, useState } from "react"; 
 import { getOrderByID } from "../../../src/api/doctorDasboard";
-import { useSelector } from "react-redux";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import {
@@ -80,10 +77,9 @@ const bottomTeeth = {
   32: ToothThirtyTwo,
 };
 
-export default function OrderDetailsForm({ id, className }) {
-  const [selected, setSelected] = useState("");
+export default function OrderDetailsForm({ id, className }) { 
   const [orderDetails, setOrderDetails] = useState(null);
-  const restoration = useSelector((state) => state.restoration);
+  // const restoration = useSelector((state) => state.restoration);
   const [openModal, setOpenModal] = useState(false);
 
   // console.log(openModal, "op");
@@ -105,16 +101,15 @@ export default function OrderDetailsForm({ id, className }) {
     }
   };
 
-  const totalPrice = orderDetails?.totalAmount || 0;
-  const options = [
-    { label: "Subtotal:", value: totalPrice },
-    { label: "Shipping:", value: "Free" },
-  ];
+  // const options = [
+  //   { label: "Subtotal:", value: totalPrice },
+  //   { label: "Shipping:", value: "Free" },
+  // ];
 
-  const ShippingDetail = [
-    { label: "Shipping Address" },
-    { label: orderDetails?.address || "N/A" },
-  ];
+  // const ShippingDetail = [
+  //   { label: "Shipping Address" },
+  //   { label: orderDetails?.address || "N/A" },
+  // ];
 
   useEffect(() => {
     const fetchOrderByID = async () => {
@@ -127,9 +122,7 @@ export default function OrderDetailsForm({ id, className }) {
     fetchOrderByID();
   }, [id]);
 
-  const handleSelect = (option) => {
-    setSelected(option);
-  };
+   
 
   const handleDownloadPDF = async () => {
     const element = formRef.current;

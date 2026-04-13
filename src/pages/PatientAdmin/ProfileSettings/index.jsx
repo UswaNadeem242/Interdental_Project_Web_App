@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import TextInput from "../../../Common/Input";
 import PenIcon from "../../../icon/PenIcon";
-import ChangePasswordModel from "../../../modals/ChangePasswordModel";
 import ChevronRightIcon from "../../../icon/ChevronRight";
 import LockIcon from "../../../icon/LockIcon";
 import PatientChangePasswordModel from "../../../modals/PatientChangePasswordModal";

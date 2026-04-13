@@ -2,15 +2,11 @@ import Header from "../header";
 import UpperFooter from "../../../components/upper-footer";
 import Footer from "../../../components/Footer";
 import {
-  accordionData,
-  diameters,
   newDiameters,
   newThicknesses,
   settingsOption,
   shadesproduct,
-  shadesProductLanding,
   teethOption,
-  thicknesses,
 } from "../../../Constant";
 import Shades from "../../../Common/product-landing/shades-product-landing";
 import Dimensions from "../../../Common/product-landing/dimensions-product-landing";
@@ -72,6 +68,7 @@ function ArgebbPmma({ isLanding }) {
         <div className="w-full pt-8">
           <img
             src="/assets/landing-page/argen1.png"
+            alt="Argen PMMA product"
             className="w-full h-auto object-cover"
           />
         </div>

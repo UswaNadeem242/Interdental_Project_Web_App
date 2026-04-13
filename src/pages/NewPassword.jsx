@@ -2,7 +2,6 @@ import React, { useState } from "react";
 // import loginrectangle from "../assets/loginrectangle.png";
 // import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import EmailConfirmation from "../modals/EmailConfirmationModal";
 import PasswordReset from "../modals/PasswordResetModal";
 
 const NewPassword = () => {

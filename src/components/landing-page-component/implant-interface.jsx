@@ -1,8 +1,5 @@
-
-import { useNavigate } from "react-router-dom";
 import { ThirdButtonUI } from "../../Common/Button";
-function ImplantInterfeace() {
-  const navigate = useNavigate();
+function ImplantInterfeace() { 
   return (
     <div>
       <section className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center py-12 md:py-16 bg-textField rounded-2xl px-4 md:px-12">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import UploadIcon from "../icon/UploadIcon";
 // import Group from "../assets/Group.png";
 
@@ -6,8 +6,6 @@ const AddBrandModalTwo = ({ isModalOpen, getAllBrands, setIsModalOpen }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const fileInputRef = useRef();
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [logoUrl, setLogoUrl] = useState("");
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -20,9 +18,6 @@ const AddBrandModalTwo = ({ isModalOpen, getAllBrands, setIsModalOpen }) => {
 
   const triggerFileUpload = () => {
     fileInputRef.current.click();
-  };
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {

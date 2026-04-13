@@ -1,16 +1,8 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Contact from "./contact";
 import Header from "./header";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
-import CircleIcon from "../../icon/circle-icon";
-import UpperFooter from "../../components/upper-footer";
-import { concerns, plans, steps } from "../../Constant";
-import CheckCircle from "../../icon/CheckCircle";
-
-const Patients = ({ isLanding }) => {
-  const navigate = useNavigate();
   return (
     <div className="bg-gray-50">
       {!isLanding && <Header />}

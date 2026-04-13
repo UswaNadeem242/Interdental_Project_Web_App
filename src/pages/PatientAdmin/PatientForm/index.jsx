@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 // import { InputField } from "../../../Common/FormInputField";
 import  InputField  from '../../../Common/FormInputField'
-import { FormSection, FormSectionHeading } from "../../../Common/FormSection";
-import { NavLink, useNavigate } from "react-router-dom";
-import { DoctorClaimInitialValues, PatientClaimInitialValues, patientClaimValidationSchema } from "../../../Common/FormsValidation/patient-claim-validation";
+import { FormSectionHeading } from "../../../Common/FormSection";
+import { useNavigate } from "react-router-dom";
+import { DoctorClaimInitialValues, patientClaimValidationSchema } from "../../../Common/FormsValidation/patient-claim-validation";
 import { Formik, Form, FieldArray, Field } from "formik";
 import { getClaimsByUser } from "../../../api/patient-dashaboard-api";
 import { showToast } from "../../../store/toast-slice";
@@ -16,18 +16,6 @@ export const PatientForm = () => {
   const [selectedDenture, setSelectedDenture] = useState(null);
   const dispatch = useDispatch();
   const navigator = useNavigate();
-  const toggleSelection = (num, type) => {
-    if (type === "teeth") {
-      // setSelectedTeeth((prev) =>
-      //   prev.includes(num) ? prev.filter((n) => n !== num) : [...prev, num]
-      // );
-      setSelectedTeeth((prev) =>
-        prev.includes(num) ? prev.filter((t) => t !== num) : [...prev, num]
-      );
-    } else if (type === "implants") {
-      setSelectedImplants((prev) =>
-        prev.includes(num) ? prev.filter((n) => n !== num) : [...prev, num]
-      );
     }
   };
 

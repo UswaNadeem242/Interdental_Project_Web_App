@@ -1,7 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
-// import Group from "../assets/Group.png";
-import axios from "axios";
-import { BASE_URL } from "../config";
+import React from "react";
 
 export const NameAddModal = ({
   title,

@@ -27,7 +27,7 @@ export default function FilterDropdown({ selectedFilter, onFilterChange }) {
 
   const setReferenceRef = useCallback((node) => {
     refs.setReference(node);
-  }, []);
+  }, [refs]);
 
   const selectedLabel =
     filterOptions.find((opt) => opt.value === selectedFilter)?.label ||

@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { PrimaryButtonUI } from "../../../Common/Button";
 import TableComponent from "../../../Common/Table";
 import {
   dataOrdersAdminPanel,

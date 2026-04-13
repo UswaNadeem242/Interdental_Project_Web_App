@@ -103,7 +103,7 @@ const DoctorHeader = ({ title, subTitle, role }) => {
     if (user?.id) {
       fetchProfile(user.id);
     }
-  }, [user?.id]);
+  }, [user?.id, fetchProfile]);
 
   // Fetch notifications count on mount
   useEffect(() => {

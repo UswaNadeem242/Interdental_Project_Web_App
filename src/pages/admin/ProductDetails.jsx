@@ -9,8 +9,6 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 // import starOutlined from "../../assets/star-outlined.png";
 // import customer from "../../assets/customer.png";
 import CustomerFeedback from "../../components/CustomerFeedback";
-import RelatedProducts from "../../components/RelatedProducts";
-import AdminHeader from "../../components/admin/AdminHeader";
 import { BASE_URL } from "../../config";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";

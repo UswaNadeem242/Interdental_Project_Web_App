@@ -7,13 +7,10 @@ import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import ProfileChangePasswordModel from "../../modals/profile-change-password";
 import UserdropdownIcon from "../../icon/userdropdownIcon";
 import BoxdropdownIcon from "../../icon/boxdropdownIcon";
-import { BellIconSVG } from "../../icon/Bell";
-import ToggleIcon from "../../icon/toggleIcon";
 import LockIocn from "../../icon/lockIocn";
 
 const ProfileDropdown = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
-  const [isNotficationsOpen, setisNotificationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPasswordProfile, setIsPasswordProfile] = useState(false);
   const { logout } = useAuth();

@@ -1,5 +1,4 @@
 import React from "react";
-import FileIcon from "../../../icon/FileIcon";
 
 export default function PatientDetailForm({ warranties }) {
 

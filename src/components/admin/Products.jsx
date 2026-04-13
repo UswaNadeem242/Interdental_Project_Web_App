@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AdminHeader from "../../components/admin/AdminHeader";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AddQuantityModal from "../../modals/AddQuantityModal";
@@ -8,10 +7,7 @@ import AreYouSureModel from "../../modals/AreYouSureModel";
 
 const Products = () => {
   const navigate = useNavigate();
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [products, setProducts] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
-  const tabs = ["Name", "Product ID", "Category", "Stock", "Price"];
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [addedProducts, setAddedProducts] = useState([]);
   const [isQuantityModalOpen, setIsQuantityModalOpen] = useState(false);
@@ -54,7 +50,7 @@ const Products = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `${BASE_URL}/api/product/delete/${productId}`,
         {
           headers: {
@@ -200,7 +196,7 @@ const Products = () => {
                       />
                       <img
                         src={p?.imageUrls[0]}
-                        alt="product image"
+                        alt="Product"
                         className="w-[32px] h-[32px]"
                       />
                       <h1

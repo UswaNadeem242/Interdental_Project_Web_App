@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config";
 import axios from "axios";
 import CartOrderIcon from "../icon/cart-order-icon";
-import BackButton from "../components/BackButton";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 // import product8 from "../assets/product8.png";
 

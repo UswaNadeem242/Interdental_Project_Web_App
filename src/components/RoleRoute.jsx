@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { ERole, DEFAULT_ROUTES } from "../constants/roles";
+import { DEFAULT_ROUTES } from "../constants/roles";
 
 const RoleRoute = ({
   children,
@@ -13,7 +13,6 @@ const RoleRoute = ({
     isAuthenticated,
     loading,
     getUserRoles,
-    hasUserRole,
     hasUserAnyRole,
     getUserHighestRole,
   } = useAuth();

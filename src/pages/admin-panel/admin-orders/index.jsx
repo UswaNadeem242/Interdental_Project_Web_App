@@ -5,7 +5,6 @@ import EcommereceOrders from "./ecommerece-orders";
 import { getAllOrders } from "../../../services/admin-order";
 
 function AdminPanelOrders() {
-  const [orders, setOrders] = useState([]);
   const steps = [
     {
       name: "Doctor Orders",

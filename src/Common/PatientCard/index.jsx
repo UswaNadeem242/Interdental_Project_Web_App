@@ -1,6 +1,4 @@
-import { TiltedArrowBlue } from "../../icon/TiltedArrowBlue";
 import { SecondaryButton } from "../Button";
-import { NavLink } from "react-router-dom";
 
 export const PatientCard = ({
   title,
@@ -32,7 +30,7 @@ export const PatientCard = ({
               
                 <img
                   src={item?.profileURL || "/assets/user.png"}
-                  alt="User Profile Picture"
+                  alt="User Profile"
                   className={`w-10 h-10 rounded-full object-cover ${className}`}
                 />
                 <div className="flex flex-col min-w-0">

@@ -18,17 +18,6 @@ import api from "../../api/intercepter";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [blogs, setBlogs] = useState([]);
-  const [blogsLoading, setBlogsLoading] = useState(true);
-  const [blogsError, setBlogsError] = useState(null);
-
-  const slugify = (s) =>
-    s
-      ?.toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
 
   // Fetch blogs for landing page
   useEffect(() => {
@@ -138,7 +127,7 @@ const LandingPage = () => {
               <div className="flex-1 flex justify-center">
                 <img
                   src="/assets/landing-page/about-us-1.png"
-                  alt="about us image"
+                  alt="About us"
                   className="w-full max-w-[500px] h-auto object-cover"
                 />
               </div>

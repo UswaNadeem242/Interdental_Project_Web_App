@@ -30,7 +30,7 @@ const ForgetPassword = () => {
         <img
           className="mt-2 ml-7"
           src="/assets/loginrectangle.png"
-          alt="login rectangle image"
+          alt="Login rectangle"
         />
       </div>
       <div className="flex flex-col justify-center items-center w-[494px] h-[581px] gap-[32px] top-[172px] left-[908px]">

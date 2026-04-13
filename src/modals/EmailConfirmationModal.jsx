@@ -2,10 +2,6 @@ import React, { useEffect } from "react";
 import EnvlopeIcon from "../icon/envlopeIcon";
 
 const EmailConfirmation = ({ isModalOpen, setIsModalOpen }) => {
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };

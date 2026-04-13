@@ -1,6 +1,6 @@
 import React from "react";
 import { Doctorsteps } from "../../Constant";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { ThirdButtonUI } from "../../Common/Button";
 import Slider from "react-slick";

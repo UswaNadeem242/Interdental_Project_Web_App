@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AdminHeader from "../../components/admin/AdminHeader";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AddBrandModal from "../../modals/AddBrandModal";
@@ -25,9 +24,6 @@ const UpdateProduct = () => {
   const [isAddBrandModal, setIsAddBrandModal] = useState(false);
   const [isAddCategoryModal, setIsAddCategoryModal] = useState(false);
   const [images, setImages] = useState([]);
-  const [sku, setSku] = useState(
-    () => `SKU-${Math.floor(Math.random() * 1000000)}`
-  );
 
   const getProductDetails = async () => {
     try {

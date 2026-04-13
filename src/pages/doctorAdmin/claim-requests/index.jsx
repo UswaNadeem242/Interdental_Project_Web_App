@@ -2,13 +2,11 @@ import TableComponent from "../../../Common/Table";
 import { useEffect, useState, useCallback } from "react";
 import { headings } from "../../../Constant";
 import { SecondaryButton } from "../../../Common/Button";
-import { PlusIcon } from "../../../icon/PlusIcon";
 import { getClaims } from "../../../api/patient-dashaboard-api";
 import Drawers from "../../../Common/Drawers";
 import DocotrClaimForm from "./doctor-claim-form";
 import { showToast } from "../../../store/toast-slice";
 import { useDispatch } from "react-redux";
-import ViewDetail from "../PatientDoctor/view-detail";
 
 const DoctorClaimRequests = () => {
   const [selectedRow, setSelectedRow] = useState(null);

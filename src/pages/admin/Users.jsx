@@ -1,10 +1,8 @@
-import React, { act, useEffect, useState } from "react";
-import AdminHeader from "../../components/admin/AdminHeader";
+import React, { useEffect, useState } from "react";
 // import userpic from "../../assets/users.png";
 import axios from "axios";
 import { BASE_URL } from "../../config";
 import Toast from "../../components/Toast";
-import AreYouSureModel from "../../modals/AreYouSureModel";
 
 const Users = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
