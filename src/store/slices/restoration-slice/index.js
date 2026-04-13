@@ -1,13 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-const fields = [
-  "scannerType",
-  "digitalOptions",
-  "surgical_guide",
-  "material",
-  "lab",
-  "crown",
-  "Photogrammetry_files",
-];
 const restorationSlice = createSlice({
   name: "restoration",
   initialState: {

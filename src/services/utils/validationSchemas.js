@@ -62,7 +62,7 @@ export const buyerSignupValidationSchema = Yup.object().shape({
         const hasLower = /[a-z]/.test(value);
         const hasUpper = /[A-Z]/.test(value);
         const hasNumber = /\d/.test(value);
-        const hasSpecial = /[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/.test(
+        const hasSpecial = /[!@#$%^&*()-_=+[\]{};:'",<.>/?\\|`~]/.test(
           value
         );
         return hasLower && hasUpper && hasNumber && hasSpecial;
@@ -74,7 +74,7 @@ export const buyerSignupValidationSchema = Yup.object().shape({
       function (value) {
         if (!value) return true;
         const specialCharCount = (
-          value.match(/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/g) || []
+          value.match(/[!@#$%^&*()-_=+[\]{};:'",<.>/?\\|`~]/g) || []
         ).length;
         return specialCharCount <= 8;
       }
@@ -147,7 +147,7 @@ export const doctorSignupValidationSchema = Yup.object().shape({
         const hasLower = /[a-z]/.test(value);
         const hasUpper = /[A-Z]/.test(value);
         const hasNumber = /\d/.test(value);
-        const hasSpecial = /[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/.test(
+        const hasSpecial = /[!@#$%^&*()-_=+[\]{};:'",<.>/?\\|`~]/.test(
           value
         );
         return hasLower && hasUpper && hasNumber && hasSpecial;
@@ -159,7 +159,7 @@ export const doctorSignupValidationSchema = Yup.object().shape({
       function (value) {
         if (!value) return true;
         const specialCharCount = (
-          value.match(/[!@#$%^&*()\-_=+\[\]{};:'",<.>\/?\\|`~]/g) || []
+          value.match(/[!@#$%^&*()-_=+[\]{};:'",<.>/?\\|`~]/g) || []
         ).length;
         return specialCharCount <= 8;
       }
@@ -201,11 +201,11 @@ export const changePasswordValidationSchema = Yup.object().shape({
         const hasUppercase = /[A-Z]/.test(value);
         const hasLowercase = /[a-z]/.test(value);
         const hasNumber = /[0-9]/.test(value);
-        const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(
+        const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};:'"\\,.<>/?~`]/.test(
           value
         );
         const specialCharCount = (
-          value.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/g) || []
+          value.match(/[!@#$%^&*()_+\-=[\]{};:'"\\,.<>/?~`]/g) || []
         ).length;
 
         if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecialChar) {
@@ -370,7 +370,7 @@ export const checkoutValidationSchema = Yup.object().shape({
     .required("PayPal Email/Phone is required"),
 });
 
-export default {
+const validationSchemas = {
   contactValidationSchema,
   loginValidationSchema,
   buyerSignupValidationSchema,
@@ -381,3 +381,5 @@ export default {
   doctorProfileCompletionSchema,
   checkoutValidationSchema,
 };
+
+export default validationSchemas;
