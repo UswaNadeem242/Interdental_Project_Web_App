@@ -159,7 +159,7 @@ export default function TrackingOrderAdmin({ id, isadmin, refresh }) {
     };
 
     fetchData();
-  }, [id, fetchOrderTracking]);
+  }, [id]);
 
   const OrderStatusStep = ({
     status,

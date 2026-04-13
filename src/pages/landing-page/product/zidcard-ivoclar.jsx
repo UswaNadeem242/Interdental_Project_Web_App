@@ -53,7 +53,7 @@ function ZidcardIvoclar({ isLanding }) {
           <div className="col-span-4 flex justify-center items-center">
             <img
               src="/assets/landing-page/product4.png"
-              alt="image"
+              alt="Zidcard Ivoclar Product"
               className="w-auto h-auto object-contain md:block hidden"
             />
           </div>

@@ -21,7 +21,7 @@ function LayZirPage({ isLanding }) {
         <div className="w-full pt-10">
           <img
             src="/assets/landing-page/LayZir.png"
-            alt="imgZir"
+            alt="Layzir Product Banner"
             className="w-full h-auto object-cover"
           />
         </div>
@@ -32,7 +32,7 @@ function LayZirPage({ isLanding }) {
           <div className="col-span-6 flex justify-center items-center">
             <img
               src="/assets/landing-page/layZirSmall.png"
-              alt="imageZir2"
+              alt="Layzir Product Details"
               className="w-full max-w-[400px] max-h-full h-[100%] object-contain"
             />
           </div>
@@ -155,7 +155,7 @@ function LayZirPage({ isLanding }) {
           <span className="mt-20 ">
             <img
               src="/assets/landing-page/layZir4.png"
-              alt="imageq"
+              alt="Layzir Additional Product View"
               className="w-full max-w-[900px] object-contain"
             />
           </span>

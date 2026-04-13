@@ -52,14 +52,14 @@ const HeroSection = () => {
             <img
               className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
               src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg"
-              alt="img"
+              alt="Hero Slide 1"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
               className="object-cover h-[100%] w-[100%] overflow-hidden rounded-[16px]"
               src="https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg"
-              alt="img"
+              alt="Hero Slide 2"
             />
           </SwiperSlide>
           {/* Navigation Buttons */}

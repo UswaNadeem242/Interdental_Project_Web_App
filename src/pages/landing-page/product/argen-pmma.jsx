@@ -80,7 +80,7 @@ function ArgebbPmma({ isLanding }) {
           <div className="col-span-6 flex justify-center items-center">
             <img
               src="/assets/landing-page/product1.png"
-              alt="image"
+              alt="Argen PMMA Product"
               className="w-full max-w-[300px] h-auto object-contain"
             />
           </div>
@@ -93,7 +93,7 @@ function ArgebbPmma({ isLanding }) {
             </p>
             <img
               src="/assets/landing-page/teeth.png"
-              alt="image"
+              alt="Dental Teeth Diagram"
               className="w-full max-w-[400px] object-contain"
             />
           </div>

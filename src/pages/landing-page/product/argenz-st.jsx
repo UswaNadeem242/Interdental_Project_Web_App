@@ -39,7 +39,7 @@ function ArgenzST({ isLanding }) {
           <div className="col-span-4 flex justify-center items-center ">
             <img
               src="/assets/landing-page/image 6.png"
-              alt="imagexc"
+              alt="Argenz ST Multilayer Product"
               className="w-auto  h-auto object-contain  md:block hidden"
             />
           </div>

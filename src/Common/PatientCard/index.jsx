@@ -32,7 +32,7 @@ export const PatientCard = ({
               
                 <img
                   src={item?.profileURL || "/assets/user.png"}
-                  alt="image"
+                  alt="User Profile Picture"
                   className={`w-10 h-10 rounded-full object-cover ${className}`}
                 />
                 <div className="flex flex-col min-w-0">

@@ -168,7 +168,7 @@ export default function TrackingOrder({ id }) {
     if (id) {
       fetchData();
     }
-  }, [id, fetchOrderDetails, fetchOrderTracking]);
+  }, [id]);
 
   // Render delivery detail row (responsive)
   const DeliveryDetailRow = ({ label, value }) => (

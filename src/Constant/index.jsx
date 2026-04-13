@@ -698,7 +698,7 @@ export const ChartStatusLines2 = [
 
 export const headingsPatientDashboardTable = [
   { label: "Product ID", key: "id" },
-  { label: "Doctoe Name", key: "dName" },
+  { label: "Doctor Name", key: "dName" },
   { label: "Patient Name", key: "pName" },
   { label: "totalAmount", key: "tAmount" },
   { label: "Shopping Date", key: "ShoppingDate" },
@@ -1029,7 +1029,7 @@ export const productDataAdminPanel = [
     itemsSold: "70 Sold",
     totalPrice: "$1400",
     icon: (
-      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+      <img src={"/assets/Avatar.png"} alt="Product Avatar" className="max-w-xs" />
     ),
   },
   {
@@ -1039,7 +1039,7 @@ export const productDataAdminPanel = [
     itemsSold: "70 Sold",
     totalPrice: "$1400",
     icon: (
-      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+      <img src={"/assets/Avatar.png"} alt="Product Avatar" className="max-w-xs" />
     ),
   },
   {
@@ -1049,7 +1049,7 @@ export const productDataAdminPanel = [
     itemsSold: "70 Sold",
     totalPrice: "$1400",
     icon: (
-      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+      <img src={"/assets/Avatar.png"} alt="Product Avatar" className="max-w-xs" />
     ),
   },
   {
@@ -1059,7 +1059,7 @@ export const productDataAdminPanel = [
     itemsSold: "70 Sold",
     totalPrice: "$1400",
     icon: (
-      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+      <img src={"/assets/Avatar.png"} alt="Product Avatar" className="max-w-xs" />
     ),
   },
   {
@@ -1069,7 +1069,7 @@ export const productDataAdminPanel = [
     itemsSold: "70 Sold",
     totalPrice: "$1400",
     icon: (
-      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+      <img src={"/assets/Avatar.png"} alt="Product Avatar" className="max-w-xs" />
     ),
   },
   {
@@ -1079,7 +1079,7 @@ export const productDataAdminPanel = [
     itemsSold: "70 Sold",
     totalPrice: "$1400",
     icon: (
-      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+      <img src={"/assets/Avatar.png"} alt="Product Avatar" className="max-w-xs" />
     ),
   },
   {
@@ -1089,7 +1089,7 @@ export const productDataAdminPanel = [
     itemsSold: "70 Sold",
     totalPrice: "$1400",
     icon: (
-      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+      <img src={"/assets/Avatar.png"} alt="Product Avatar" className="max-w-xs" />
     ),
   },
   {
@@ -1099,7 +1099,7 @@ export const productDataAdminPanel = [
     itemsSold: "70 Sold",
     totalPrice: "$1400",
     icon: (
-      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+      <img src={"/assets/Avatar.png"} alt="Product Avatar" className="max-w-xs" />
     ),
   },
   {
@@ -1109,7 +1109,7 @@ export const productDataAdminPanel = [
     itemsSold: "70 Sold",
     totalPrice: "$1400",
     icon: (
-      <img src={"/assets/Avatar.png"} alt="AvatarImg" className="max-w-xs" />
+      <img src={"/assets/Avatar.png"} alt="Product Avatar" className="max-w-xs" />
     ),
   },
 ];
@@ -1169,7 +1169,7 @@ export const headingsAdminPanelOrders = [
 
 export const headingsAdminPanelEcomOrders = [
   { label: "order ID", key: "id" },
-  { label: "Buyer's Name", key: "dName" },
+  { label: "Buyer's Name", key: "bName" },
   { label: "Created Date", key: "scanDate" },
   { label: "Total Items", key: "totalItems" },
   { label: "Price", key: "price" },

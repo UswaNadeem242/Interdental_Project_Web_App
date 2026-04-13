@@ -42,7 +42,7 @@ function AiditeZirconia({ isLanding }) {
         <div className="w-full pt-8">
           <img
             src="/assets/landing-page/zincornia.png"
-            alt="img3"
+            alt="Aidite Zirconia Product"
             className="w-full h-auto object-fit md:px-48"
           />
         </div>

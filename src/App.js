@@ -42,7 +42,7 @@ import DoctorHeader from "./components/doctorAdmin/doctorHeader";
 import AdminPanel from "./pages/admin-panel/admin-panel";
 import "react-toastify/dist/ReactToastify.css";
 import Toastify from "./Common/react-toastify";
-import ProductLandingPage from "./pages/landing-page/product";
+// import ProductLandingPage from "./pages/landing-page/product";
 import ArgenZ from "./pages/landing-page/product/argen-z-h";
 import BlogDetailPage from "./pages/landing-page/blogs/sub-page";
 import "slick-carousel/slick/slick.css";
