@@ -5,7 +5,7 @@ export const AddPatientValidationSchema = (skipImageValidation = false) =>
   Yup.object().shape({
     username: Yup.string()
       .matches(
-      /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
+        /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
         "First Name should only contain letters and spaces"
       )
       .min(3, "First Name must be at least 3 characters")
@@ -13,7 +13,7 @@ export const AddPatientValidationSchema = (skipImageValidation = false) =>
 
     lastName: Yup.string()
       .matches(
-       /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
+        /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
         "Last Name should only contain letters and spaces"
       )
       .min(3, "Last Name must be at least 3 characters")
@@ -21,7 +21,7 @@ export const AddPatientValidationSchema = (skipImageValidation = false) =>
 
     address: Yup.string()
       .matches(
-        /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/
+        /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
         "Address cannot be only numbers or special characters"
       )
       .required("Patient Location is required"),
@@ -33,7 +33,7 @@ export const AddPatientValidationSchema = (skipImageValidation = false) =>
     phone: Yup.string()
       .matches(/^[0-9]{7,15}$/, "Phone number must be 7-15 digits")
       .required("Phone Number is required"),
-      
+
     password: Yup.string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&^#()_\-+={}[\]|\\:;"'<>,.?/~]).{8,}$/,
@@ -55,7 +55,7 @@ export const EditPatientValidationSchema = () =>
 
     lastName: Yup.string()
       .matches(
-       /^(?![\d!@#$%^&*()_+={}[]{}:;"'<>,.?/\\|~-]+$).*/,
+        /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
         "Last Name should only contain letters and spaces"
       )
       .min(3, "Last Name must be at least 3 characters")
@@ -63,7 +63,7 @@ export const EditPatientValidationSchema = () =>
 
     address: Yup.string()
       .matches(
-        /^(?![\d!@#$%^&*()_+={}[]:;"'<>,.?/\\|~-]+$).*/,
+        /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
         "Address cannot be only numbers or special characters"
       )
       .required("Patient Location is required"),
@@ -98,7 +98,7 @@ export const PatientvalidationSchema = (skipPasswordValidation = false) =>
 
     address: Yup.string()
       .matches(
-        /^(?![\d!@#$%^&*()_+={}[]:;"'<>,.?/\\|~-]+$).*/,
+        /^(?![\d!@#$%^&*()_+={}[\]:;"'<>,.?\/\\|~-]+$).*/,
         "Address cannot be only numbers or special characters"
       )
       .required("Patient Location is required"),
@@ -110,14 +110,13 @@ export const PatientvalidationSchema = (skipPasswordValidation = false) =>
     phone: Yup.string()
       .matches(/^[0-9]{7,15}$/, "Phone number must be 7-15 digits")
       .required("Phone Number is required"),
-      
-    password: skipPasswordValidation ? Yup.string().notRequired() : Yup.string()
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&^#()_\-+={}[\]|\\:;"'<>,.?/~]).{8,}$/,
-        "Password must have: minimum 8 characters, at least 1 uppercase, 1 lowercase, and 1 special character"
-      )
-      .required("Password is required"),
+
+    password: skipPasswordValidation
+      ? Yup.string().notRequired()
+      : Yup.string()
+          .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&^#()_\-+={}[\]|\\:;"'<>,.?/~]).{8,}$/,
+            "Password must have: minimum 8 characters, at least 1 uppercase, 1 lowercase, and 1 special character"
+          )
+          .required("Password is required"),
   });
-
-
-  
