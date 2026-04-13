@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
+ 
 import Footer from "../../components/Footer";
 import Contact from "./contact";
 import Header from "./header";
 import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
+const Patients = () => {
   return (
     <div className="bg-gray-50">
       {!isLanding && <Header />}

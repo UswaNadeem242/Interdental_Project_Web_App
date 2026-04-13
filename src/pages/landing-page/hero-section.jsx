@@ -1,6 +1,6 @@
 import React from "react";
 import { PrimaryButtonUI } from "../../Common/Button";
-
+const HeroSection = () => {
   return (
     <div className="bg-gradient-to-b from-[#e2f7fb] to-[#f7fefc]">
       <div className="max-w-screen-2xl mx-auto px-4 md:px-16 flex flex-col md:flex-row items-center justify-between min-h-[100vh] md:h-[60vh] lg:h-[70vh] pt-28 md:pt-24">
@@ -62,3 +62,5 @@ import { PrimaryButtonUI } from "../../Common/Button";
     </div>
   );
 };
+
+export default HeroSection;
