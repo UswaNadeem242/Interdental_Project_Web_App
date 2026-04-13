@@ -33,23 +33,23 @@ function DropDownCard({
     setIsChecked(!isChecked);
   };
 
-  const getAddModalTitle = () => {
-    return `Add Option for ${title}`;
-  };
-            title={getAddModalTitle()}
-          />
-        );
-      case "smile-design":
-        return (
-          <SmileDesignAddModal
-            onClose={onCloseAddModal}
-            title={getAddModalTitle()}
-          />
-        );
-      default:
-        return null;
-    }
-  };
+  // const getAddModalTitle = () => {
+  //   return `Add Option for ${title}`;
+  // };
+  //           title={getAddModalTitle()}
+  //         />
+  //       );
+  //     case "smile-design":
+  //       return (
+  //         <SmileDesignAddModal
+  //           onClose={onCloseAddModal}
+  //           title={getAddModalTitle()}
+  //         />
+  //       );
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   // const renderEditModal = () => {
   //   if (!isEditModalOpen) return null;

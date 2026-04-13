@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import SearchBar from "./SearchBar";
+import SearchBar from "../../../Common/SearchBar";
 import DropDownCard from "./DropDownCard";
 import AddDropDownSidebar from "./AddDropDownSidebar";
 import EditDropDownSidebar from "./EditDropDownSidebar";

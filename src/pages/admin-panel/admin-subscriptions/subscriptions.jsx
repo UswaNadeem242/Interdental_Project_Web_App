@@ -10,11 +10,8 @@ import {
 import SearchBar from "../../../Common/SearchBar";
 import TabsStepper from "../../../Common/TabsStepper";
 import SecondTable from "../../../Common/second-table-component";
-import Drawers from "../../../Common/Drawers";
-import AddPatientForm from "../../doctorAdmin/PatientDoctor/AddPatientForm";
-import AccountDetailForm from "../admin-doctor-detail/account-detail-form";
-import SubscriptionDetail from "./subscription-detail";
-import SubscriptionForm from "../admin-doctor-detail/subscription-form";
+import Drawers from "../../../Common/Drawers"; 
+import SubscriptionDetail from "./subscription-detail"; 
 
 const Subscriptions = () => {
   const [isOpen, setIsOpen] = useState(false);
