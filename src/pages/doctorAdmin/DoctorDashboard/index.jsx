@@ -24,11 +24,9 @@ import {
 import { CartIcon } from "../../../icon/CartIcon.jsx";
 import ProfileIcon from "../../../icon/ProfileIcon.jsx";
 import GraphStatuses from "../../../Common/Chart/GraphStatuses/index.jsx";
-import { processChartData } from "../../../services/utils/chartDataProcessor";
-import { useNavigate } from "react-router-dom";
+import { processChartData } from "../../../services/utils/chartDataProcessor"; 
 
-const DoctorDashaboard = () => {
-  const navigate = useNavigate();
+const DoctorDashaboard = () => { 
   const [doctorStats, setDoctorStats] = useState([]);
   const [doctorOrders, setDoctorOrders] = useState([]);
   const [graphStats, setGraphStats] = useState([]);

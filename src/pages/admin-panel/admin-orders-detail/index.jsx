@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import { ProgressBar } from "../../../Common/ProgressBar";
-
-import AdminOrderDetailForm from "./admin-order-detail-form";
-import { SecondaryButton } from "../../../Common/Button";
-import ChevronRightIcon from "../../../icon/ChevronRight";
-import AreYouSureModel from "../../../modals/AreYouSureModel";
-import { stepsDefault } from "../../../Constant";
-import TrackingOrder from "../../doctorAdmin/DoctorOrder/DoctorOrderDetail/TrackingOrder";
+import AdminOrderDetailForm from "./admin-order-detail-form"; 
+import AreYouSureModel from "../../../modals/AreYouSureModel"; 
 import TrackingOrderAdmin from "./tracking-order";
 import { useSearchParams } from "react-router-dom";
 

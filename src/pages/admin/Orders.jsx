@@ -9,7 +9,7 @@ const Orders = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  // const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tabs = ["All", "Pending", "Shipped", "Completed"];
 
   const getAllOrders = async () => {
@@ -113,7 +113,7 @@ const Orders = () => {
                 Filter
               </p>
             </div> */}
-            {isFilterOpen && <FilterOptionsDropdown />}
+            {/* {isFilterOpen && <FilterOptionsDropdown />} */}
           </div>
         </div>
         <div className="w-[529px] h-[40px] gap-[8px] flex justify-start items-center">

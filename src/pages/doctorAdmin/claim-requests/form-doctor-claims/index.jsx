@@ -304,22 +304,22 @@ export const DoctorCalimsForm = () => {
   );
 
   // Handle form validation before showing modal
-  const handleShowModal = useCallback(
-    (values, setFieldTouched) => {
-      setFieldTouched("crownTeeth", true);
-      setFieldTouched("implantTeeth", true);
-      setFieldTouched("patient", true);
+  // const handleShowModal = useCallback(
+  //   (values, setFieldTouched) => {
+  //     setFieldTouched("crownTeeth", true);
+  //     setFieldTouched("implantTeeth", true);
+  //     setFieldTouched("patient", true);
 
-      const validationErrors = validateClaim(values);
+  //     const validationErrors = validateClaim(values);
 
-      if (Object.keys(validationErrors).length === 0) {
-        setShowModal(true);
-      } else {
-        toast.error(ERROR_MESSAGES.SELECT_OPTIONS);
-      }
-    },
-    [validateClaim]
-  );
+  //     if (Object.keys(validationErrors).length === 0) {
+  //       setShowModal(true);
+  //     } else {
+  //       toast.error(ERROR_MESSAGES.SELECT_OPTIONS);
+  //     }
+  //   },
+  //   [validateClaim]
+  // );
 
   return (
     <div className="bg-bgWhite rounded-2xl">

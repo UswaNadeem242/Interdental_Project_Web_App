@@ -5,12 +5,10 @@ export default function DocotrClaimForm({ row }) {
         id,
         createdAt,
         crownTeeth,
-        doctorEmail,
-        doctorName,
+        doctorEmail, 
         implantTeeth,
         patientEmail,
-        patientName,
-        status,
+        patientName, 
     } = row;
    
 

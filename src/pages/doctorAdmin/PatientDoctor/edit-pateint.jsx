@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import TextInput from "../../../Common/Input";
 import Toast from "../../../components/Toast";
@@ -6,11 +6,8 @@ import { EditPatientValidationSchema } from "../../../Common/FormsValidation";
 import { updateUserPatient } from "../../../api/doctorDasboard";
 
 export default function EditPatientForm({ onClose, userData }) {
-  const [isDisabled, setIsDisabled] = useState(false);
-
-  const handleDisable = () => {
-    setIsDisabled(true); // disable on click
-  };
+ 
+ 
 
   const [toast, setToast] = useState({
     isVisible: false,

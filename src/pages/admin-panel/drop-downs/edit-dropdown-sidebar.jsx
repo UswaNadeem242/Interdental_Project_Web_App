@@ -15,9 +15,9 @@ import DeleteLogo from "../../../icon/DeleteLogo";
 export default function EditDropDownSidebar({ isOpen, onClose }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedDropdown, setSelectedDropdown] = useState(null);
-  const [showAddNewInput, setShowAddNewInput] = useState(false);
-  const [newDropdownName, setNewDropdownName] = useState("");
+  // const [selectedDropdown, setSelectedDropdown] = useState(null);
+  // const [showAddNewInput, setShowAddNewInput] = useState(false);
+  // const [newDropdownName, setNewDropdownName] = useState("");
 
   const [options, setOptions] = useState([
     { id: 1, photo: null, name: "", price: "" },
@@ -44,9 +44,9 @@ export default function EditDropDownSidebar({ isOpen, onClose }) {
   };
 
   const handleCancel = () => {
-    setSelectedDropdown(null);
-    setShowAddNewInput(false);
-    setNewDropdownName("");
+    // setSelectedDropdown(null);
+    // setShowAddNewInput(false);
+    // setNewDropdownName("");
     setOptions([{ id: 1, photo: null, name: "", price: "" }]);
     onClose();
   };

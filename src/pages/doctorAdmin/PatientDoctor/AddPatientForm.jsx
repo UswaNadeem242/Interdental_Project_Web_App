@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import TextInput from "../../../Common/Input";
-import CloudIcon from "../../../icon/CloudIcon";
+import TextInput from "../../../Common/Input"; 
 import { ErrorMessage, Field, Formik, Form } from "formik";
 import { AddPatientValidationSchema } from "../../../Common/FormsValidation";
 import { EyeOpenIcon, EyeCloseIcon } from "../../../icon/EyeIcon";
@@ -9,13 +8,11 @@ import Toast from "../../../components/Toast";
 
 export default function AddPatientForm({
   fetchPatients,
-  onClose,
-  imgUpload,
+  onClose, 
   skipImageValidation = false
 }) {
   const [showPassword, setShowPassword] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  // const [uploadedImage, setUploadedImage] = useState(null); 
   const [toast, setToast] = useState({
     isVisible: false,
     message: "",
@@ -51,34 +48,34 @@ export default function AddPatientForm({
   };
 
   // Handle image upload
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setUploadedImage(file);
-      // Create preview URL
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     setUploadedImage(file);
+  //     // Create preview URL
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       setImagePreview(e.target.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   // Handle image deletion
-  const handleImageDelete = () => {
-    setUploadedImage(null);
-    setImagePreview(null);
-    // Reset the file input
-    const fileInput = document.getElementById("image-upload");
-    if (fileInput) {
-      fileInput.value = "";
-    }
-  };
+  // const handleImageDelete = () => {
+  //   setUploadedImage(null);
+  //   setImagePreview(null);
+  //   // Reset the file input
+  //   const fileInput = document.getElementById("image-upload");
+  //   if (fileInput) {
+  //     fileInput.value = "";
+  //   }
+  // };
 
   // Form submit handler
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log("Add Patient Form - Starting submission with values:", values);
-    console.log("Add Patient Form - Uploaded image:", uploadedImage);
+    // console.log("Add Patient Form - Uploaded image:", uploadedImage);
     console.log("Add Patient Form - Validation passed, proceeding with API call");
 
     if (

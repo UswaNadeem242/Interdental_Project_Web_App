@@ -73,27 +73,9 @@ const plans = [
   },
 ];
 
-const Check = (props) => (
-  <svg
-    viewBox="0 0 24 24"
-    role="img"
-    aria-hidden="true"
-    className={`h-4 w-4 flex-none ${props.className ?? ""}`}
-  >
-    <path
-      d="M20 6L9 17l-5-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
+ 
 const Doctor = ({ isLanding }) => {
-  const navigate = useNavigate();
-  const userData = localStorage.getItem("users");
+   const userData = localStorage.getItem("users");
   const user = userData ? JSON.parse(userData) : null;
 
   return (

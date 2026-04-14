@@ -6,8 +6,7 @@ import { useAuth } from "../auth/AuthContext";
 import { ChevronLeftIcon, StarIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { showToast } from "../store/toast-slice";
-import BackButton from "../components/BackButton";
+import { showToast } from "../store/toast-slice"; 
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
 
 const Wishlist = () => {

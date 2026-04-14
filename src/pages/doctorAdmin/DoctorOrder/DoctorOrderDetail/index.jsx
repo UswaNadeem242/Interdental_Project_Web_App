@@ -1,12 +1,8 @@
-import React from "react";
-import TabsStepper from "../../../../Common/TabsStepper";
-import TableComponent from "../../../../Common/Table";
-import { dataOrder, headingsOrder } from "../../../../Constant";
+ 
 import Stepper from "../../../../Common/TabsStepper/Stepper";
 import OrderDetailsForm from "./OrderDetailsForm";
 import TrackingOrder from "./TrackingOrder";
-import { useParams } from "react-router-dom";
-import DownloadPdfForm from "../../../../components/doctorAdmin/download-form";
+import { useParams } from "react-router-dom"; 
 
 function DoctorDeailsPage() {
   const { id } = useParams();

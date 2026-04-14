@@ -42,32 +42,32 @@ const Users = () => {
     setToastVisible(false);
   };
 
-  const handleDeactivateUser = async (id) => {
-    try {
-      const response = await axios.delete(
-        `${BASE_URL}/api/admin/users/${id}/deactivate`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "*/*",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      console.log(response);
-      setToastMessage("User De-Activated successfully!");
-      setToastType("success");
-      setToastVisible(true);
-      // alert("User De-Activated successfully");
-      setActionsModal(false);
-      getAllUsers();
-    } catch (error) {
-      console.log(error);
-      setToastMessage(`Error: ${error}`);
-      setToastType("success");
-      setToastVisible(true);
-    }
-  };
+  // const handleDeactivateUser = async (id) => {
+  //   try {
+  //     const response = await axios.delete(
+  //       `${BASE_URL}/api/admin/users/${id}/deactivate`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Accept: "*/*",
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     );
+  //     console.log(response);
+  //     setToastMessage("User De-Activated successfully!");
+  //     setToastType("success");
+  //     setToastVisible(true);
+  //     // alert("User De-Activated successfully");
+  //     setActionsModal(false);
+  //     getAllUsers();
+  //   } catch (error) {
+  //     console.log(error);
+  //     setToastMessage(`Error: ${error}`);
+  //     setToastType("success");
+  //     setToastVisible(true);
+  //   }
+  // };
 
   const handleActivatedUser = async (id, status) => {
     try {

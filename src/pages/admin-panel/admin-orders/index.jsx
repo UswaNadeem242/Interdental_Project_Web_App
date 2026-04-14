@@ -5,7 +5,7 @@ import EcommereceOrders from "./ecommerece-orders";
 import { getAllOrders } from "../../../services/admin-order";
 
 function AdminPanelOrders() {
-  const [orders, setOrders] = useState([]);
+  // const [orders, setOrders] = useState([]);
 
   const steps = [
     {
@@ -25,7 +25,7 @@ function AdminPanelOrders() {
   const fetchAllOrders = async () => {
     try {
       const response = await getAllOrders();
-      setOrders(response.data);
+      // setOrders(response.data);
       console.log(response.data);
     } catch (error) {
       console.log(error);

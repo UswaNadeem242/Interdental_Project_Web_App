@@ -5,14 +5,9 @@ import Header from "./header";
 import { PrimaryButtonUI, ThirdButtonUI } from "../../Common/Button";
 import { concerns, plans, steps } from "../../Constant";
 import UpperFooter from "../../components/upper-footer";
-import CircleIcon from "../../icon/circle-icon";
-import { useState, useEffect } from "react";
-import api from "../../api/intercepter";
+import CircleIcon from "../../icon/circle-icon"; 
 
-const Patients = ({isLanding}) => {
-  const [blogs, setBlogs] = useState([]);
-  const [blogsLoading, setBlogsLoading] = useState(false);
-  const [blogsError, setBlogsError] = useState(null);
+const Patients = ({isLanding}) => { 
   return (
     <div className="bg-gray-50">
       {!isLanding && <Header />}

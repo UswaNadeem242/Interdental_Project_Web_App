@@ -20,7 +20,7 @@ const ListProduct = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isAddBrandModal, setIsAddBrandModal] = useState(false);
   const [isAddCategoryModal, setIsAddCategoryModal] = useState(false);
-  const [sku, setSku] = useState("");
+  // const [sku, setSku] = useState("");
   const [images, setImages] = useState([]);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -165,7 +165,7 @@ const ListProduct = () => {
       !stockQuantity ||
       !categoryId ||
       !brandId ||
-      !sku ||
+      // !sku ||
       !images ||
       images.length === 0
     ) {
@@ -210,7 +210,7 @@ const ListProduct = () => {
         stockQuantity,
         categoryId,
         brandId,
-        sku, // lowercase as per your curl
+        // sku, // lowercase as per your curl
       };
 
       // ✅ Append product as plain JSON string (NOT Blob)

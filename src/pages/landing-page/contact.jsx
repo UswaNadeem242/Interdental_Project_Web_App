@@ -21,7 +21,7 @@ const Contact = ({ isLanding }) => {
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [submittedData, setSubmittedData] = useState({});
-  const navigate = useNavigate();
+  
   // Formik setup
   const formik = useFormik({
     initialValues: {

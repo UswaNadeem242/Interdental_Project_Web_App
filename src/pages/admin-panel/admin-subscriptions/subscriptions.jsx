@@ -1,9 +1,6 @@
 import React, { useMemo, useState } from "react";
-import TableComponent from "../../../Common/Table";
-import {
-  dataOrdersAdminPanel,
-  dataSubscriptions,
-  headingsAdminPanelOrders,
+import { 
+  dataSubscriptions, 
   headingsSubscriptions,
 } from "../../../Constant";
 
@@ -17,7 +14,7 @@ const Subscriptions = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
-  const [selectedRow, setSelectedRow] = useState(null);
+  // const [selectedRow, setSelectedRow] = useState(null);
 
   const filteredData = useMemo(() => {
     let filtered = dataSubscriptions;
@@ -49,7 +46,7 @@ const Subscriptions = () => {
           headings={headingsSubscriptions}
           data={filteredData}
           onActionClick={(row) => {
-            setSelectedRow(row);
+            // setSelectedRow(row);
             setIsOpen(true);
           }}
         />
@@ -62,7 +59,7 @@ const Subscriptions = () => {
           headings={headingsSubscriptions}
           data={filteredData}
           onActionClick={(row) => {
-            setSelectedRow(row);
+            // setSelectedRow(row);
             setIsOpen(true);
           }}
           actionHrefKey="detailUrl"
@@ -77,7 +74,7 @@ const Subscriptions = () => {
           headings={headingsSubscriptions}
           data={filteredData}
           onActionClick={(row) => {
-            setSelectedRow(row);
+            // setSelectedRow(row);
             setIsOpen(true);
           }}
           actionHrefKey="detailUrl"

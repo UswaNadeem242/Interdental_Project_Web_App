@@ -1,13 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { PrimaryButtonUI } from "../../../Common/Button";
 import TableComponent from "../../../Common/Table";
-import {
-  data,
-  dataOrder,
-  dataPatient,
-  headings,
-  headingsOrder,
-  headingsPateint,
+import { 
+  headingsOrder, 
 } from "../../../Constant";
 import SearchBar from "../../../Common/SearchBar";
 import TabsStepper from "../../../Common/TabsStepper";

@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config";
 import axios from "axios";
 import Header from "./landing-page/header";
 import Footer from "../components/Footer";
 import { useAuth } from "../auth/AuthContext";
-import {
-  ChevronDownIcon,
+import { 
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import { useDispatch } from "react-redux";
@@ -26,13 +25,12 @@ const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedbrand, setSelectedbrand] = useState(null);
   const [categoryName, setCategoryName] = useState("");
-  const [brandName, setBrandName] = useState("");
+  // const [brandName, setBrandName] = useState("");
   const [checked, setChecked] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   const { fetchWishlistCount, fetchCartCount } = useAuth();
-  const [wishlist, setWishlist] = useState([]);
-  const [product, setProduct] = useState({});
+  const [wishlist, setWishlist] = useState([]); 
   const [loading, setLoading] = useState(true);
 
   const handlePriceChange = (e) => {
@@ -45,7 +43,7 @@ const Shop = () => {
     setSelectedCategory(null);
     setCategoryName("");
     setSelectedbrand(null);
-    setBrandName("");
+    // setBrandName("");
     setSearchTerm("");
     setChecked(null);
   };
@@ -137,11 +135,11 @@ const Shop = () => {
     if (selectedbrand === id) {
       // If same brand is clicked, reset the filter
       setSelectedbrand(null);
-      setBrandName("");
+      // setBrandName("");
     } else {
       // If different brand is clicked, set it
       setSelectedbrand(id);
-      setBrandName(name);
+      // setBrandName(name);
     }
   };
 
