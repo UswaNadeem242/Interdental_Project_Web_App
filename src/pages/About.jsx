@@ -1,4 +1,12 @@
 import React from "react";
+import Header from "../components/Header";
+import ContactFooter from "../components/contact-footer";
+import MakeSmile from "../components/landing-page-component/make-smile";
+import OurModules from "../components/landing-page-component/our-modules";
+import ImplantInterfeace from "../components/landing-page-component/implant-interface";
+import { prescriptionCards, implantCards } from "../Constant";
+import Icons from "../components/Icons";
+
 const About = ({ isLanding }) => {
   return (
     <div className="">
@@ -262,7 +270,7 @@ const About = ({ isLanding }) => {
                         {card.button}
                       </h1>
                       <div className="rounded-full bg-secondaryBrand text-white p-2">
-                        <ArrowRightIcon className="w-4 h-4" />
+                        <Icons.ArrowRight className="w-4 h-4" />
                       </div>
                     </button>
                   </>

@@ -15,6 +15,7 @@ const AddQuantityModal = ({
       return acc;
     }, {})
   );
+  const [quantity, setQuantity] = useState("");
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

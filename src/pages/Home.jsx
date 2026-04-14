@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import Brands from "../components/Brands";
 import FeaturedProducts from "../components/FeaturedProducts";
 import NewArrival from "../components/NewArrival";
-import TopRatedProducts from "../components/TopRatedProducts";
-import HeroSection from "../components/HeroSection";
+import TopRatedProducts from "../components/TopRatedProducts"; 
 import axios from "axios";
 import { BASE_URL } from "../config";
 import { useAuth } from "../auth/AuthContext";
 import Header from "./landing-page/header";
+import HeroSection from "../components/HeroSection";
 
 const Home = () => {
   const { user } = useAuth();

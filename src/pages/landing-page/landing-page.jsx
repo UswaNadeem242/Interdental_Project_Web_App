@@ -1,6 +1,5 @@
 
-import Header from "./header";
-import { HeroSection } from "./hero-section";
+import Header from "./header"; 
 import AboutUs from "./about-us";
 import DoctorComponent from "../../components/landing-page-component";
 import { implantCards } from "../../Constant";
@@ -15,9 +14,13 @@ import { ThirdButtonUI } from "../../Common/Button";
 import ContactFooter from "../../components/contact-footer";
 import { useState, useEffect } from "react";
 import api from "../../api/intercepter";
+import HeroSection from "./hero-section";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [blogs, setBlogs] = useState([]);
+  const [blogsLoading, setBlogsLoading] = useState(false);
+  const [blogsError, setBlogsError] = useState(null);
 
   // Fetch blogs for landing page
   useEffect(() => {

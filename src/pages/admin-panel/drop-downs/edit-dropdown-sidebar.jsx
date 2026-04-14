@@ -15,6 +15,9 @@ import DeleteLogo from "../../../icon/DeleteLogo";
 export default function EditDropDownSidebar({ isOpen, onClose }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDropdown, setSelectedDropdown] = useState(null);
+  const [showAddNewInput, setShowAddNewInput] = useState(false);
+  const [newDropdownName, setNewDropdownName] = useState("");
 
   const [options, setOptions] = useState([
     { id: 1, photo: null, name: "", price: "" },

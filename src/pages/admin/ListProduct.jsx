@@ -20,6 +20,7 @@ const ListProduct = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isAddBrandModal, setIsAddBrandModal] = useState(false);
   const [isAddCategoryModal, setIsAddCategoryModal] = useState(false);
+  const [sku, setSku] = useState("");
   const [images, setImages] = useState([]);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");

@@ -1,10 +1,5 @@
 import { useState } from "react";
-import { ToggleSwitch } from "./toogle-switch";
-import {
-  NameAddModal,
-  NameAndPriceAddModal,
-  SmileDesignAddModal,
-} from "../../../modals/DentureAddOptionModal";
+import { ToggleSwitch } from "./toogle-switch"; 
 import ChevronDownIcon from "../../../icon/ChevronDownIcon";
 
 function DropDownCard({

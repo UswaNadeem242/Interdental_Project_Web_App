@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
-import SearchBar from "../../../Common/SearchBar";
-import DropDownCard from "./DropDownCard";
-import AddDropDownSidebar from "./AddDropDownSidebar";
-import EditDropDownSidebar from "./EditDropDownSidebar";
-import SmileDesignCard from "./SmileDesignCard";
+import SearchBar from "../../../Common/SearchBar"; 
+import AddDropDownSidebar from "./add-dropdown-sidebar";
+ import SmileDesignCard from "./smile-design-card";
+import DropDownCard from "./drop-down-card";
+import EditDropDownSidebar from "./edit-dropdown-sidebar";
 
 // ✅ Move static data outside (best practice)
 const dropdownsData = [

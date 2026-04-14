@@ -9,6 +9,7 @@ const Orders = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tabs = ["All", "Pending", "Shipped", "Completed"];
 
   const getAllOrders = async () => {

@@ -14,6 +14,8 @@ const AddBlogModal = ({ onClose, data }) => {
   ]);
   const [selected, setSelected] = useState("");
   const [newCategory, setNewCategory] = useState("");
+  const [formData, setFormData] = useState(null);
+  const [showSureModal, setShowSureModal] = useState(false);
   const dropdownRef = useRef(null);
 
   // Close on outside click

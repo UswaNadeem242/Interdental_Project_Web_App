@@ -11,6 +11,7 @@ const NotificationsDropdown = ({ setNotificationsDropdown, notificationsDropdown
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
+  const [currentPageNumber, setCurrentPageNumber] = useState(0);
   const [pagination, setPagination] = useState({
     page: 0,
     size: 10,
